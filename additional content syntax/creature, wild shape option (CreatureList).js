@@ -1,0 +1,639 @@
+/*	-WHAT IS THIS?-
+	The script featured here is an explanation of how to make your own custom addition to MPMB's D&D 5e Character Tools.
+	To add your own content to the Character Sheet, use the syntax below and save it in a file.
+	You can then import this file directly to the sheet using the "Import" button and "Import/Export" bookmark.
+	There you can either import the file as a whole or just copy the text into a dialogue.
+
+	-KEEP IN MIND-
+	Note that you can add as many custom codes as you want, either by importing consecutive files or pasting the scripts into the dialogue.
+	It is recommended to enter the code in a freshly downloaded sheet or to first reset sheet.
+	Thus you don't run the risk of things that have already been filled out causing conflicts.
+
+	-HOW TO READ-
+	Every line comes with a comment immediately after it to show whether it is // Optional // or // Required //,
+	followed by a more explanatory comment
+
+	-THIS IS JAVASCRIPT-
+	The imports scripts work by creating a new entry inside an existing object or by calling functions.
+	You can create new or overwrite existing global variables by omitting 'var'.
+	You will need to understand the basics of JavaScript variables: strings, arrays, and JSON objects.
+	Note that every opening symbol must have its closing counterpart: (), {}, [], "", ''.
+	If these are not present, the code will give an error when imported.
+	Use proper editing software for code (like Notepad++). Text processors like Microsoft Word will screw up your code.
+	To help finding syntax errors, use (online) code checking software like https://jshint.com
+
+	-COMMENTS IN THE EXAMPLE-
+	Anything on a line after two forward slashes is a comment and will be ignored when running the code.
+	Multiline comments are possible. Open them using the forward slash followed by an asterisk and close them with the opposite.
+	The below contains a lot of these comments. The comments are not necessary for the script to work, so feel free to remove them.
+*/
+
+/*	-INFORMATION-
+
+	Subject:	Creature
+
+	Effect:		This is the syntax for adding a new creature to the sheet,
+	        	for use on the companion and wild shape pages.
+
+	Remarks:	You will also need the syntax for adding a weapon if you want the creature
+	        	to have attack options.
+	        	You will also need the syntax for adding a source if you want the creature
+				to have a source that doesn't yet exist in the sheet.
+	        	You will also need the syntax for common attributes if you want to use a
+	        	custom calculation for hit points (calcChanges.hp).
+
+	Sheet:		v13.0.6 and newer
+
+*/
+
+var iFileName = "Homebrew Syntax - CreatureList.js";
+/* 	iFileName // OPTIONAL //
+	TYPE:	string
+	USE:	how the file will be named in the sheet if you import it as a file
+
+	Note that this is a variable called 'iFileName'.
+	Variables invoked inside an import script will not be available after importing.
+	However, if you invoke the variable without the 'var', it will be available after importing.
+
+	This doesn't have to be the same as the actual name of the file.
+	This doesn't need to have the .js file extension.
+	Only the first occurrence of this variable will be used.
+*/
+
+RequiredSheetVersion("13.0.6");
+/*	RequiredSheetVersion // OPTIONAL //
+	TYPE:	function call with one variable, a string or number
+	USE:	the minimum version of the sheet required for the import script to work
+
+	If this script is imported into a sheet with an earlier version than given here, the player will be given a warning.
+
+	The variable you input can be a the full semantic version of the sheet as a string (e.g. "13.0.6" or "13.1.0-beta1+201209").
+	Alternatively, you can input a number, which the sheet will translate to a semantic version.
+	For example:
+		FUNCTION CALL						REQUIRED MINIMUM VERSION
+		`RequiredSheetVersion(13);`			13.0.0
+		`RequiredSheetVersion(13.1);`		13.1.0
+
+	You can find the full semantic version of the sheet at the bottom of every page,
+	or look at the "Get Latest Version" bookmark, which lists the version number,
+	or go to File >> Properties >> Description, where the version is part of the document title.
+*/
+
+CreatureList["purple crawler"] = {
+/* 	CreatureList object name // REQUIRED //
+	TYPE:	string
+	USE:	object name of the creature as it will be used by the sheet
+
+	By adding a new object to the existing CreatureList object, we create a new creature.
+	The object name here is 'purple crawler'. You can use any object name as long as it is not already in use.
+	If you do use an object name that is already in use, you will be overwriting that object.
+	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
+*/
+	name : "Purple Crawler",
+/*	name // REQUIRED //
+	TYPE:	string
+	USE:	name of the creature as it will be used by the sheet
+
+	This name will also be used to recognize what is selected in the race drop-down on
+	the companion and wild shape pages.
+*/
+	nameAlt : ["Purple Creeper"],
+/*	nameAlt // OPTIONAL //
+	TYPE:	array of strings (variable size)
+	USE:	alternative names for the creature
+	ADDED:	v13.0.6
+
+	These names will be used to recognize what is entered into the race drop-down on
+	the companion and wild shape pages, but will not be visible in those drop-down boxes.
+
+	However, if this creature is an option for Find Familiar, Warlock Pact of the Chain,
+	Find Steed, Find Greater Steed, a ranger's companion or something similar,
+	then these alternative names will also be shown in the menu options.
+*/
+	source : ["SRD", 204],
+	source : [["E", 7], ["S", 115]],
+/*	source // REQUIRED //
+	TYPE:	array with two entries (or array of these arrays)
+	USE:	define where the creature is found
+
+	This attribute is used by the sheet to determine if the creature should be available depending on the sources included and excluded.
+
+	This array has two entries, a string followed by a number
+	1. string
+		The first entry has to be the object name of a SourceList object.
+	2. number
+		The second entry is the page number to find the creature at.
+		This can be any number and is ignored if it is a 0.
+
+	See the "source (SourceList).js" file for learning how to add a custom source.
+
+	Alternatively, this can be an array of arrays to indicate it appears in multiple sources.
+	The example above says something appears on both page 7 of the Elemental Evil Player's Companion and
+	on page 115 of the Sword Coast Adventure Guide.
+
+	If a creature is completely homebrew, or you don't want to make a custom source, just put the following:
+		source : ["HB", 0],
+	"HB" refers to the 'homebrew' source.
+*/
+	defaultExcluded : true,
+/*	defaultExcluded // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether this creature should be excluded by default (true) or included by default (false)
+
+	Include this attribute and set it to true if the creature should appear in the Excluded list of the
+	Source Selection Dialog when the script is added for the first time.
+	It will have to be manually set to be included before it is used by the sheet's automation.
+	The user will be made aware of this exclusion.
+
+	This is useful for optional creatures that you wouldn't normally want to use (e.g. playtest or campaign-specific).
+
+	Setting this attribute to false is the same as not including this attribute.
+*/
+	size : 2,
+/*	size // REQUIRED //
+	TYPE:	number
+	USE:	set the size drop-down box
+
+	Set the corresponding number to the size of the creature below:
+		NO	SIZE
+		0	Gargantuan
+		1	Huge
+		2	Large
+		3	Medium
+		4	Small
+		5	Tiny
+*/
+	type : "Fiend",
+/*	type // REQUIRED //
+	TYPE:	string
+	USE:	set the type drop-down box
+
+	This can be anything you like, but is usually one of the known creature types:
+		Aberration
+		Beast
+		Celestial
+		Construct
+		Dragon
+		Elemental
+		Fey
+		Fiend
+		Giant
+		Humanoid
+		Monstrosity
+		Ooze
+		Plant
+		Undead
+
+	This value is put in the type drop-down box of the sheet without any changes,
+	thus it is recommended to capitalize it for consistency.
+*/
+	subtype : "devil",
+/*	subtype // OPTIONAL //
+	TYPE:	string
+	USE:	add the subtype in the type drop-down box
+
+	This can be anything you like. It will be added to the string of the `type` attribute
+	in brackets, and together will be set in the type drop-down box.
+	In this example, it will end up reading as "Fiend (devil)".
+
+	This value is put in the type drop-down box of the sheet without any changes,
+	only with added brackets around it,
+	thus it is recommended to have it all lowercase for consistency.
+*/
+	companion : "familiar",
+/*	companion // OPTIONAL //
+	TYPE:	string
+	USE:	list this creature as an option for a special type of companion
+
+	Setting this to one of the below pre-defined values makes this creature selectable
+	using the Companion Options button on the companion page for special options.
+
+	Note that you can change any creature into one of the special options using the
+	Companion Options button by first selecting a race from the drop-down and subsequently selecting the "Choose this into" option in the Companion Options menu.
+	Use this `companion` attribute for things that are obvious candidates for the special options.
+
+	OPTION				EXPLANATION
+	"familiar"			Find Familiar spell and Pact of the Chain warlock boon
+	"pact_of_the_chain"	Pact of the Chain warlock boon (but not Find Familiar spell)
+	"familiar_not_al"	Same as "familiar", but with the added description "(if DM approves)"
+	                 	However, this creature will not be shown for either Find Familiar 
+	                 	or Pact of the Chain when the DCI field is visible (i.e. Adventurers League)
+	"mount"				Find Steed spell
+	"steed"				Find Greater Steed spell
+	"companion"			Unearthed Arcana: Revised Ranger's Beast Conclave feature
+
+	Some special companion options are not governed by this setting and list their options dynamically.
+	For example, the PHB ranger's companion includes anything that has `type` set as "Beast",
+	`size` as 3 or higher (medium or smaller), and `challengeRating` as 1/4 or lower.
+*/
+	alignment : "Unaligned",
+/*	alignment // REQUIRED //
+	TYPE:	string
+	USE:	set the alignment drop-down box
+
+	This value is put in the alignment drop-down box of the sheet without any changes,
+	thus it is recommended to capitalize it for consistency.
+*/
+	ac : 11,
+/*	ac // REQUIRED //
+	TYPE:	number
+	USE:	set the armour class
+
+	This number is filled in the AC field as-is, no calculations are done with regards to armour worn
+	or anything like that.
+*/
+	hp : 10,
+/*	hp // REQUIRED //
+	TYPE:	number
+	USE:	set the maximum amount of hit points
+
+	This number is filled in the Max HP field without any changed, no calculations are done with
+	regards to hit dice, Constitution modifier, or anything like that.
+	It is still possible to enable automatic updates for the Max HP field using the "Set Max HP" button,
+	but by default only the hp value set here will be displayed and it will not automatically update.
+*/
+	hd : [3, 4],
+/*	hd // REQUIRED //
+	TYPE:	array with two number entries
+	USE:	set the hit dice
+
+	This array has two entries, both have to be a number or an empty string ""
+	1. number
+		The first entry is the amount of hit dice.
+		This will be filled in the "Level" field on the companion page.
+	2. number
+		The second entry is the die type of the hit dice.
+		This can be any number, but normally it is 4, 6, 8, 10, or 12.
+		This will be filled in the "Die" field on the companion page.
+		Don't worry, the "d" will be added automatically (e.g. the 4 above will display as "d4").
+
+	The example above is for 3d4 hit dice.
+*/
+	speed : "20 ft, climb 30 ft",
+/*	speed // REQUIRED //
+	TYPE:	string
+	USE:	set the movement speed
+
+	This value is put in the speed field without any changes,
+	except that on the Printer Friendly sheets any comma followed by a space is replaced with
+	a comma followed by a line break.
+*/
+	proficiencyBonus : 2,
+/*	speed // REQUIRED //
+	TYPE:	number
+	USE:	set the proficiency bonus
+
+	This value is put in the proficiency bonus field without any changes.
+	It is also used for determining the creature's proficiency with skills and saving throws (see below).
+*/
+	challengeRating : "1/2",
+/*	challengeRating // REQUIRED //
+	TYPE:	string
+	USE:	set the challenge rating
+
+	This value is put in the challenge rating field (on the wild shape page) without any changes.
+	This value is used on the wild shape page to show the creature in the right submenu.
+*/
+	scores : [15, 13, 12, 2, 13, 8],
+/*	scores // REQUIRED //
+	TYPE:	array of six numbers
+	USE:	set the ability scores
+
+	This array has six entries, all of which have to be a number.
+	These six correspond to the ability scores in their usual order:
+
+	INDEX	ABILITY SCORE
+	(0)	 	Strength
+	(1)  	Dexterity
+	(2)  	Constitution
+	(3)  	Intelligence
+	(4)  	Wisdom
+	(5)  	Charisma
+
+	[Str, Dex, Con, Int, Wis, Cha]
+*/
+	saves : ["", 3, "", "", "", ""],
+/*	saves // OPTIONAL //
+	TYPE:	array of six numbers
+	USE:	set the saving throw proficiencies
+
+	This array has six entries, all of which can be an empty string or a number.
+	These six correspond to the ability scores in their usual order, see `scores` above.
+
+	Only list here the saving throw bonus for an ability score if it is not the same as that ability's modifier.
+	Normally this would happen if the creature is proficient in a saving throw, although other modifiers might apply as well,
+
+	The sheet will take the number given here, look at the ability score and proficiency bonus, 
+	and determine if the creature is proficient and/or has other modifiers.
+	Then it will check the proficiency box and/or fill the modifier field, as appropriate.
+*/
+	senses : "Darkvision 60 ft",
+/*	senses	// REQUIRED //
+	TYPE:	string
+	USE:	add text to the Senses section on the Companion page
+
+	Even though most creature stat blocks list Passive Perception under senses, do not include
+	it in this attribute. Passive Perception will be calculated automatically from the Perception bonus.
+	If Passive Perception is different than 10 + Perception bonus, you can use the `addMod` attribute
+	to add the bonus to the modifier field.
+
+	If the creature doesn't have any special senses, set an empty string for this attribute, like so:
+		senses : "",
+
+	This text are also displayed on the wild shape page, but in the singular Traits & Features section,
+	together with all other descriptive string, traits, features, and action attributes.
+	As the wild shape pages offer limited space, it is recommended to test if all of these and
+	the other attributes together will fit.
+	If they don't fit (well), consider using the `wildshapeString` attribute, see below.
+*/
+	attacksAction : 2,
+/*	attacksAction // REQUIRED //
+	TYPE:	number
+	USE:	set the number of attacks per action
+
+	This value is put in the attacks per action field (on the companion page) without any changes.
+	This value is not displayed on the wild shape page, hence it is recommended to also explain
+	the multiattack trait in the description of the appropriate attack and/or in the `traits` attribute.
+*/
+	attacks : [{
+		name : "Claws",
+		ability : 1,
+		damage : [2, 6, "slashing"],
+		range : "Melee (5 ft)",
+		description : "Two claws attacks as an Attack action"
+	}],
+/*	attacks // REQUIRED //
+	TYPE:	array (variable length) of WeaponsList objects
+	USE:	set the attack entries
+
+	The syntax of the objects is not explained here, but in the "weapon (WeaponsList).js" syntax file.
+
+	TIP: Mention in a attack's description if it can be used multiple times as part of an action.
+
+	TIP: Use the `tooltip` attribute to explain complex attacks further.
+
+	Each object in the array describes one attack entry.
+	This array is used to populate the Attacks section on the companion and wild shape page.
+	The first three entries in this array will be directly added to the attack section when selecting this creature.
+	You can have more entries in the array, but as the pages only have three attack entries,
+	they will not be visible unless manually changing the selection of one of the attack entries.
+
+	You can have attacks with identical names as weapon options in the attack drop-down box.
+	The companion page will always use the attacks defined in the creature's entry over those in the WeaponsList.
+*/
+	skills : {
+		"Athletics" : 4,
+		"Perception" : 5
+	},
+/*	skills // OPTIONAL //
+	TYPE:	object with skill names as attribute names
+	USE:	set the proficiency, expertise, and extra bonus for skills
+
+	Use this attribute when the creature has a bonus for a skill that is different
+	than just the associated ability score modifier.
+	
+	Add each skill as its own attribute with a value of the total skill bonus.
+
+	The automation will then determine if the skill is considered to be proficient,
+	with expertise (twice the proficiency bonus added), and/or any other bonuses.
+
+	In the example here the Athletics skill will have the proficiency checkbox checked,
+	because the creature has Str 15 (+2) and a Proficiency Bonus of +2,
+	thus the +4 in Athletics is ability score modifier + Proficiency Bonus.
+	However, the creature is considered to have expertise in Perception,
+	as it only has Wis 13 (+1), so the total of +5 Perception must be due adding twice
+	the Proficiency Bonus of +2.
+*/
+	damage_vulnerabilities : "cold",
+	damage_resistances : "lightning; thunder; bludgeoning, piercing, and slashing from nonmagical weapons",
+	damage_immunities : "poison",
+	condition_immunities : "exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious",
+	languages : "Terran",
+/*	damage_vulnerabilities	// OPTIONAL //
+	damage_resistances	  	// OPTIONAL //
+	damage_immunities     	// OPTIONAL //
+	condition_immunities  	// OPTIONAL //
+	languages             	// OPTIONAL //
+	TYPE:	string
+	USE:	add text to the Features section on the Companion/Wild Shape page
+
+	All of these optional attributes are strings that get their content added to the Features section.
+	Each will be preceded with a bullet point and the appropriate name, for example:
+		languages : "Sylvan and Elvish",
+	Will result in:
+		◆ Languages: Sylvan and Elvish.
+ 
+	These text are also displayed on the wild shape page, but all together in the singular Traits & Features section,
+	together with all other descriptive string, traits, features, and action attributes.
+	As the wild shape pages offer limited space, it is recommended to test if all of these and
+	the other attributes together will fit.
+	If they don't fit (well), consider using the `wildshapeString` attribute, see below.
+*/
+	features : [{
+		name : "False Appearance",
+		description : "While the purple crawler remains motionless, it is indistinguishable from an ordinary purple flower."
+	}],
+	actions : [{
+		name : "Invisibility",
+		description : "As an action, the purple crawler magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell)."
+	}],
+	traits : [{
+		name : "Keen Sight",
+		description : "The purple crawler has advantage on Wisdom (Perception) checks that rely on sight."
+	}],
+/*	features // OPTIONAL //
+	actions  // OPTIONAL //
+	traits   // OPTIONAL //
+	TYPE:	array (variable length) with objects
+	USE:	add text to the Traits and Features sections on the Companion page
+
+	Each of these three attributes work in the same way.
+	Each is an array with objects that have at least two attributes, `name` and `description`, that each contain a string.
+
+	Each name is preceded by a bullet point and followed by a colon and the description when
+	added to the right section, for example:
+		{
+			name : "Invisibility",
+			description : "As an action, the purple crawler magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell)."
+		}
+	Will result in:
+		◆ Invisibility: As an action, the purple crawler magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell).
+
+	The three different attributes, traits, features, and actions, are added to different parts of the companion page:
+
+	ATTRIBUTE		ADDED TO SECTION
+	 features		 Features
+	 actions 		 Traits
+	 traits  		 Traits
+
+	Be aware that languages, resistances, vulnerabilities, and immunities are also added to the
+	Features section on the companion page and before the features attribute described here.
+
+	The actions are added before traits to the Traits section.
+
+	The array is processed in the order it is in the code, no sorting will take place.
+
+	These text are also displayed on the wild shape page, but all together in the singular Traits & Features section.
+	As the wild shape pages offer limited space, it is recommended to test if all of these and
+	the other attributes together will fit.
+	If they don't fit (well), consider using the `wildshapeString` attribute, see below.
+*/
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Companion Page Only >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>> //
+/*
+	The below attributes won't affect anything when the creature is select as a wild shape,
+	but they will work on a Companion page.
+*/
+
+	header : "Summon",
+/*	header // OPTIONAL //
+	TYPE:	string
+	USE:	set the single-word header at the top left of the companion page
+			This will only affect hit points on the companion page, not wild shapes
+	ADDED:	v13.0.6
+
+	By default this header reads "Companion".
+
+	Be advised that this header has limited space, especially on the Colourful versions.
+	Anything too long will be cut off.
+
+	This value is put in the header of the companion without any changes,
+	thus it is recommended to capitalize it for consistency.
+	On the Printer Friendly sheets this header is always full caps. This can't be changed.
+
+	This attribute is generally reserved for creatures included in a creatureOptions attribute.
+*/
+	addMod : [
+		{ type : "skill", field : "Init", mod : "Int", text : "The purple crawler adds its Intelligence modifier to initiative rolls." },
+		{ type : "save", field : "all", mod : "max(oCha|1)", text : "The purple crawler adds its master's Charisma modifier (min 1) to all its saving throws." },
+	],
+/*	addMod // OPTIONAL //
+	TYPE:	array of objects (variable length)
+	USE:	add value to a modifier field
+	ADDED:	v13.0.6
+
+	This attribute works identical to the `addMod` attribute found in the
+	"_common attributes.js" file.
+	Please look there for a complete explanation.
+*/
+	calcChanges : {
+/*	calcChanges // OPTIONAL //
+	TYPE:	object (optional attributes)
+	USE:	change how the hit points automation works
+			This will only affect hit points on the companion page, not wild shapes
+	ADDED:	v13.0.6
+
+	The attributes of this object can be `hp` and `setAltHp`.
+
+	Note that `calcChanges` also appears in the list of common attributes,
+	but only its `hp` attribute is shared with the object here.
+*/
+		hp : function (totalHD, HDobj, prefix) {
+			if (!classes.known.ranger) return;
+			var creaHP = CurrentCompRace[prefix] && CurrentCompRace[prefix].hp ? CurrentCompRace[prefix].hp : 0;
+			HDobj.alt.push(Math.max(creaHP, classes.known.ranger.level * 5));
+			HDobj.altStr.push("The ranger companion has 5 hit points per ranger level, regardless of its hit dice or Constitution modifier. If its own hit points are higher, those will be used instead.");
+		},
+	/*	hp // OPTIONAL //
+		TYPE:	function
+		USE:	change how Hit Points are calculated and what the Hit Points tooltip says
+
+		This function works identical to the `calcChanges.hp` function found in the
+		"_common attributes.js" file.
+		Please look there for a complete explanation.
+	*/
+		setAltHp : true,
+	/*	setAltHp // OPTIONAL //
+		TYPE:	boolean
+		USE:	set the maximum HP field to automatically assume the alternative calculation method added with the `hp` function
+
+		This attribute will only work if you set the `hp` attribute (see above) in the same object.
+		Set this attribute to true if you push a value to the HDobj.alt array with the function in the `hp` attribute.
+
+		Setting this attribute to false is the same as not including it.
+	*/
+	},
+
+	eval : function(prefix) {
+		AddString(prefix + 'Cnote.Left', 'The purple crawler always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.', true);
+	},
+/*	eval // OPTIONAL //
+	TYPE:	function
+	USE:	runs a piece of code when the creature is selected on the Companion page
+
+	The function is passed one variable:
+	1) The first variable is a string: the prefix of the Companion page this creature was selected on
+		You can use this variable to call on fields on that page. The example above uses it to set
+		a string to the leftmost Notes section on the Companion page.
+
+	This can be any JavaScript you want to have run whenever this creature is selected on a Companion page.
+	This attribute is processed last, after all other attributes are processed.
+*/
+
+	removeeval : function(prefix) {
+		RemoveString(prefix + 'Cnote.Left', 'The purple crawler always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.', true);
+	},
+/*	removeeval // OPTIONAL //
+	TYPE:	function
+	USE:	runs a piece of code when the creature is removed from the Companion page
+
+	The function is passed one variable:
+	1) The first variable is a string: the prefix of the Companion page this creature was selected on
+		You can use this variable to call on fields on that page. The example above uses it to remove
+		a string to the leftmost Notes section on the Companion page.
+
+
+	This can be any JavaScript you want to have run whenever the creature is removed from a Companion page.
+	This attribute is processed last, after all other attributes are processed.
+*/
+
+	changeeval : function(prefix, newLvl) {
+		Value(prefix + "Comp.Use.HD.Level", Math.max( newLvl, 2 ) );
+	},
+/*	changeeval // OPTIONAL //
+	TYPE:	function
+	USE:	runs a piece of code every time the main character's level changes
+	ADDED:	v13.0.6
+
+	Here "main character" refers to the character on the first page.
+	A companion doesn't have its own 'level' that is used for the automation.
+
+	The function is passed two variables:
+	1) The first variable is a string: the prefix of the Companion page this creature was selected on
+		You can use this variable to call on fields on that page. The example above uses it to set the
+		creature's HD to be equal to the character's level, or 2, whichever is higher.
+	2) The second variable is a number: the total character level of the main character
+		Use this if you want the creature to have features that scale with the main character's level.
+		If you need a specific class' level, don't use this variable, but use
+		the global `classes.known` variable (e.g. `classes.known.wizard.level`).
+
+	This can be any JavaScript you want to have run whenever the level changes.
+	This attribute is processed last, after all other attributes have been processed.
+	It is processed both when the creature is first added to the companion page and
+	when the main character's level changes.
+*/
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Wild Shape Page Only >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+/*
+	The below attributes won't affect anything when the creature is select as a companion,
+	but they will work on a Wild Shape page.
+*/
+
+	wildshapeString : "Darkvision 60 ft; Tremorsense 60 ft| Knows Terran| Vulnerable to: thunder| Resistant to: bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, paralyzed, petrified, poisoned, unconscious| Earth Glide: can burrow through nonmagical, unworked earth and stone without disturbing the material| Siege Monster: does double damage to objects and structures",
+/*	wildshapeString	// OPTIONAL	 //
+	TYPE:	string
+	USE:	add text to the Traits & Features section on the Wild Shape page
+
+	When selecting a creature on the Wild Shape page that has this attribute, this string will be displayed
+	in the Traits & Features section and nothing else.
+
+	Normally, the content of the Traits & Features section on the Wild Shape page will be generated
+	automatically from all descriptive attributes that contain strings (e.g. senses, languages, traits, etc.).
+	However, that can result in too much content for the limited space on the Wild Shape pages and
+	hence the need for the `wildshapeString` attribute.
+*/
+}

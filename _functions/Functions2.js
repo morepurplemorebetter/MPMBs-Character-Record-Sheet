@@ -10,6 +10,7 @@ function ParseCreature(input) {
 
 	for (var key in CreatureList) { //scan string for all creatures
 		var kObj = CreatureList[key];
+		testLen = 0;
 
 		if (testSource(key, kObj, "creaExcl")) continue; // test if the creature or its source isn't excluded
 
@@ -17,9 +18,16 @@ function ParseCreature(input) {
 			testLen = key.length;
 		} else if (input.indexOf(kObj.name.toLowerCase()) != -1) { // see if the text matches the name
 			testLen = kObj.name.length;
-		} else {
-			continue; // no match, so skip this one
+		} else if (kObj.nameAlt) { // see if the text matches the alternative names
+			var arrNames = !isArray(kObj.nameAlt) ? [kObj.nameAlt] : kObj.nameAlt;
+			for (var i = 0; i < arrNames.length; i++) {
+				var aName = arrNames[i];
+				if (input.indexOf(aName.toLowerCase()) != -1 && aName.length >= testLen) {
+					testLen = aName.length;
+				}
+			}
 		}
+		if (!testLen) continue; // no match, so skip this one
 
 		// only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
 		var tempDate = sourceDate(kObj.source);
@@ -83,10 +91,10 @@ function setCurrentCompRace(prefix, type, found) {
 		CurrentCompRace[prefix] = {};
 		return;
 	}
-	var fObj = type == "creature" ? CreatureList[found] : RaceList[found[0]];
+	var fObj = type === "creature" ? CreatureList[found] : RaceList[found[0]];
 	CurrentCompRace[prefix] = {};
 	CurrentCompRace[prefix].typeFound = type;
-	if (type == "creature") {
+	if (type === "creature") {
 		CurrentCompRace[prefix].known = found;
 	} else {
 		CurrentCompRace[prefix].known = found[0];
@@ -97,7 +105,7 @@ function setCurrentCompRace(prefix, type, found) {
 		if ((/^(known|variants?|level)$/i).test(prop)) continue;
 		CurrentCompRace[prefix][prop] = fObj[prop];
 	}
-	if (type == "race" && found[1]) {
+	if (type === "race" && found[1]) {
 		// the properties of the variant (overriding anything from the main)
 		var subrace = found[0] + "-" + found[1];
 		for (var prop in RaceSubList[subrace]) {
@@ -210,74 +218,93 @@ function ApplyCompRace(newRace) {
 		for (var c = 0; c < clearSubmitNames.length; c++) AddTooltip(clearSubmitNames[c], undefined, "");
 	}
 
-	var doCreatureEval = function(type) {
-		var theEval = CurrentCompRace[prefix][type];
-		if (CurrentCompRace[prefix].typeFound !== "creature" || !theEval || typeof theEval != 'function') return;
+	var doCreatureEval = function(objCrea, type) {
+		var theEval = objCrea[type];
+		if (objCrea.typeFound !== "creature" || !theEval || typeof theEval != 'function') return;
+		var curLvl = type === "changeeval" ? undefined : What("Character Level") ? Number(What("Character Level")) : 1;
 		try {
-			theEval(prefix);
+			theEval(prefix, curLvl);
 		} catch (error) {
-			var eText = "The " + type + " from '" + CurrentCompRace[prefix].name + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
-			for (var e in error) eText += e + ": " + error[e] + ";\n ";
+			var eText = "The " + type + " from '" + objCrea.name + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error;
+			for (var e in error) eText += "\n " + e + ": " + error[e];
 			console.println(eText);
 			console.show();
 		}
 	}
 
+	var undoCreaturePresistents = function(prefix, objCrea) {
+		// remove strings
+		resetCompTypes(prefix);
+		// undo calcChanges (just calcChanges.hp)
+		if (objCrea.calcChanges) addCompEvals(objCrea.calcChanges, prefix, objCrea.name + " HP calculation", false);
+		// undo modifiers
+		if (objCrea.addMod) processMods(false, objCrea.name, objCrea.addMod, prefix);
+		// execute the removeeval from the previously known creature, if any
+		doCreatureEval(objCrea, "removeeval");
+	}
+
 	var compFields = [
+		prefix + "Comp.Type",
 		prefix + "Comp.Use",
 		prefix + "Text.Comp.Use",
 		prefix + "BlueText.Comp.Use"
 	];
 
-	//reset all the fields if the input is nothing
+	// Reset all the fields if the input is nothing
+	var oldCrea = CurrentCompRace[prefix];
 	if (newRace === "") {
 		thermoTxt = thermoM("Resetting the companion page...", false); //change the progress dialog text
-		doCreatureEval("removeeval");
-		resetCompTypes(prefix); //remove strings
+		undoCreaturePresistents(prefix, oldCrea);
 		CurrentCompRace[prefix] = {}; //reset the global variable to nothing
 		thermoM(1/3); //increment the progress dialog's progress
-		tDoc.resetForm(compFields); //rest all the fields
+		tDoc.resetForm(compFields); //reset all the fields
 		resetDescTooltips(); //remove descriptive tooltips
 		thermoM(2/3); //increment the progress dialog's progress
 		tDoc.getField(prefix + "Comp.Race").submitName = "";
 		thermoM(thermoTxt, true); // Stop progress bar
 		return; //don't do the rest of the function
 	}
+
 	var fndObj = FindCompRace(newRace, prefix);
 	if (!fndObj.new) { // No (new) race was found, so stop here
 		thermoM(thermoTxt, true); // Stop progress bar
 		return; //don't do the rest of the function
 	}
-	resetCompTypes(prefix); //remove stuff from the companion type (actions, strings, etc.)
-	doCreatureEval("removeeval"); // execute the removeeval from the previously known creature, if any
-	setCurrentCompRace(prefix, fndObj.type, fndObj.found); // fill the global variable with the newly found race
-	if (CurrentCompRace[prefix].typeFound === "race") {// do the following if a race was found
+
+	// Undo things from a previous race, if any
+	undoCreaturePresistents(prefix, oldCrea);
+
+	// fill the global variable with the newly found race
+	setCurrentCompRace(prefix, fndObj.type, fndObj.found);
+	var aCrea = CurrentCompRace[prefix];
+
+	if (aCrea.typeFound === "race") {// do the following if a race was found
 		tDoc.resetForm(compFields); //reset all the fields
 		thermoTxt = thermoM("Adding the companion's player race...", false); //change the progress dialog text
 
 		//set descriptive tooltips
-		var theHeight = What("Unit System") === "imperial" ? CurrentCompRace[prefix].height : CurrentCompRace[prefix].heightMetric ? CurrentCompRace[prefix].heightMetric : CurrentCompRace[prefix].height;
-		var theWeight = What("Unit System") === "imperial" ? CurrentCompRace[prefix].weight : CurrentCompRace[prefix].weightMetric ? CurrentCompRace[prefix].weightMetric : CurrentCompRace[prefix].weight;
-		AddTooltip(prefix + "Comp.Desc.Height", CurrentCompRace[prefix].plural + theHeight);
-		AddTooltip(prefix + "Comp.Desc.Weight", CurrentCompRace[prefix].plural + theWeight);
-		AddTooltip(prefix + "Comp.Desc.Age", CurrentCompRace[prefix].plural + CurrentCompRace[prefix].age);
+		var theHeight = What("Unit System") === "imperial" ? aCrea.height : aCrea.heightMetric ? aCrea.heightMetric : aCrea.height;
+		var theWeight = What("Unit System") === "imperial" ? aCrea.weight : aCrea.weightMetric ? aCrea.weightMetric : aCrea.weight;
+		AddTooltip(prefix + "Comp.Desc.Height", aCrea.plural + theHeight);
+		AddTooltip(prefix + "Comp.Desc.Weight", aCrea.plural + theWeight);
+		AddTooltip(prefix + "Comp.Desc.Age", aCrea.plural + aCrea.age);
 
 		thermoM(1/11); //increment the progress dialog's progress
 
 		//set race's size
-		PickDropdown(prefix + "Comp.Desc.Size", CurrentCompRace[prefix].size);
+		PickDropdown(prefix + "Comp.Desc.Size", aCrea.size);
 
 		//set race's type
 		Value(prefix + "Comp.Desc.MonsterType", "Humanoid");
 
 		//set racial traits
-		var theTraits = What("Unit System") === "imperial" ? CurrentCompRace[prefix].trait : ConvertToMetric(CurrentCompRace[prefix].trait, 0.5);
+		var theTraits = What("Unit System") === "imperial" ? aCrea.trait : ConvertToMetric(aCrea.trait, 0.5);
 		Value(prefix + "Comp.Use.Traits", theTraits);
 
 		thermoM(2/11); //increment the progress dialog's progress
 
 		//set speed
-		var raceSpeed = CurrentCompRace[prefix].speed;
+		var raceSpeed = aCrea.speed;
 		if (isArray(raceSpeed)) { //legacy
 			var theSpeed = isNaN(raceSpeed[0]) ? raceSpeed[0] : raceSpeed[0] + " ft";
 		} else {
@@ -295,9 +322,9 @@ function ApplyCompRace(newRace) {
 		thermoM(3/11); //increment the progress dialog's progress
 
 		//set senses
-		if (CurrentCompRace[prefix].vision) {
+		if (aCrea.vision) {
 			var theSenseStr = "";
-			var theSenses = CurrentCompRace[prefix].vision;
+			var theSenses = aCrea.vision;
 			if (!isArray(theSenses) || (theSenses.length === 2 && !isArray(theSenses[0]) && !isArray(theSenses[1]) && (!isNaN(theSenses[1]) || !isNaN(theSenses[1].substr(1))))) {
 				theSenses = [theSenses];
 			};
@@ -316,10 +343,10 @@ function ApplyCompRace(newRace) {
 		thermoM(4/11); //increment the progress dialog's progress
 
 		//add a string of the languages known to the features
-		if (CurrentCompRace[prefix].languageProfs) {
+		if (aCrea.languageProfs) {
 			var theLangs = [];
-			for (var l = 0; l < CurrentCompRace[prefix].languageProfs.length; l++) {
-				var aLang = CurrentCompRace[prefix].languageProfs[l];
+			for (var l = 0; l < aCrea.languageProfs.length; l++) {
+				var aLang = aCrea.languageProfs[l];
 				if (isNaN(aLang)) {
 					theLangs.push(aLang);
 				} else {
@@ -333,11 +360,11 @@ function ApplyCompRace(newRace) {
 		thermoM(5/11); //increment the progress dialog's progress
 
 		//add a string of the saveText to the features
-		if (CurrentCompRace[prefix].savetxt) {
-			if (typeof CurrentCompRace[prefix].savetxt === "string") {
-				var svString = "\u25C6 Saving Throws: " + CurrentCompRace[prefix].savetxt + ".";
+		if (aCrea.savetxt) {
+			if (typeof aCrea.savetxt === "string") {
+				var svString = "\u25C6 Saving Throws: " + aCrea.savetxt + ".";
 			} else {
-				var svObj = CurrentCompRace[prefix].savetxt;
+				var svObj = aCrea.savetxt;
 				var svString = "";
 				if (svObj.text) {
 					svString += svString ? "; " : "\u25C6 Saving Throws: ";
@@ -357,28 +384,28 @@ function ApplyCompRace(newRace) {
 		thermoM(6/11); //increment the progress dialog's progress
 
 		//add saving throw proficiencies
-		if (CurrentCompRace[prefix].saves) {
-			for (var s = 0; s < CurrentCompRace[prefix].saves.length; s++) {
-				var Abi = AbilityScores.fields[CurrentCompRace[prefix].saves[s].substr(0,3)];
+		if (aCrea.saves) {
+			for (var s = 0; s < aCrea.saves.length; s++) {
+				var Abi = AbilityScores.fields[aCrea.saves[s].substr(0,3)];
 				if (Abi) Checkbox(prefix + "Comp.Use.Ability." + Abi + ".ST.Prof");
 			}
 		}
 
 		//add modifiers
-		if (CurrentCompRace[prefix].addMod) {
-			processMods(true, CurrentCompRace[prefix].name, CurrentCompRace[prefix].addMod);
+		if (aCrea.addMod) {
+			processMods(true, aCrea.name, aCrea.addMod, prefix);
 		}
 
 		//add a string of any resistances to the features
-		if (CurrentCompRace[prefix].dmgres) {
-			var dmgresString = formatLineList("\u25C6 Damage Resistances:", CurrentCompRace[prefix].dmgres);
+		if (aCrea.dmgres) {
+			var dmgresString = formatLineList("\u25C6 Damage Resistances:", aCrea.dmgres);
 			if (dmgresString) AddString(prefix + "Comp.Use.Features", dmgresString + ".", true);
 		};
 
 		thermoM(7/11); //increment the progress dialog's progress
 
 		//add a string of any weapon proficiencies to the features
-		var weaponProf = CurrentCompRace[prefix].weaponProfs ? CurrentCompRace[prefix].weaponProfs : CurrentCompRace[prefix].weaponprofs ? CurrentCompRace[prefix].weaponprofs : false;
+		var weaponProf = aCrea.weaponProfs ? aCrea.weaponProfs : aCrea.weaponprofs ? aCrea.weaponprofs : false;
 		if (weaponProf) {
 			var theWeaponArray = [];
 			if (weaponProf[0]) theWeaponArray.push("simple weapons");
@@ -389,7 +416,7 @@ function ApplyCompRace(newRace) {
 		};
 
 		//add a string of any armour proficiencies to the features
-		var armorProf = CurrentCompRace[prefix].armorProfs ? CurrentCompRace[prefix].armorProfs : CurrentCompRace[prefix].armor ? CurrentCompRace[prefix].armor : false;
+		var armorProf = aCrea.armorProfs ? aCrea.armorProfs : aCrea.armor ? aCrea.armor : false;
 		if (armorProf) {
 			var theArmourArray = [];
 			if (armorProf[0]) theArmourArray.push("light armor");
@@ -403,10 +430,10 @@ function ApplyCompRace(newRace) {
 		thermoM(8/11); //increment the progress dialog's progress
 
 		//add a string of any tool proficiencies to the features
-		if (CurrentCompRace[prefix].toolProfs) {
+		if (aCrea.toolProfs) {
 			var theTools = [];
-			for (var l = 0; l < CurrentCompRace[prefix].toolProfs.length; l++) {
-				var aTool = CurrentCompRace[prefix].toolProfs[l];
+			for (var l = 0; l < aCrea.toolProfs.length; l++) {
+				var aTool = aCrea.toolProfs[l];
 				if (isArray(aTool)) {
 					if (!isNaN(aTool[1]) && Number(aTool[1]) > 1) {
 						theTools.push(aTool[1] + " \u00d7 " + aTool[0]);
@@ -425,10 +452,10 @@ function ApplyCompRace(newRace) {
 
 		//add skill proficiencies and feature text
 		var skillsTxt;
-		if (CurrentCompRace[prefix].skills) {
+		if (aCrea.skills) {
 			var skillsNameArr = [];
-			for (var i = 0; i < CurrentCompRace[prefix].skills.length; i++) {
-				var aSk = CurrentCompRace[prefix].skills[i];
+			for (var i = 0; i < aCrea.skills.length; i++) {
+				var aSk = aCrea.skills[i];
 				if (isArray(aSk)) {
 					var doSkill = aSk[0];
 					var doExp = aSk[1];
@@ -441,175 +468,261 @@ function ApplyCompRace(newRace) {
 			}
 			skillsTxt = formatLineList("\u25C6 Skill Proficiencies:", skillsNameArr);
 		};
-		if (CurrentCompRace[prefix].skillstxt) {
-			skillsTxt = "\u25C6 Skill Proficiencies: " + CurrentCompRace[prefix].skillstxt.replace(/^( |\n)*.*: |\;$|\.$/g, '');
+		if (aCrea.skillstxt) {
+			skillsTxt = "\u25C6 Skill Proficiencies: " + aCrea.skillstxt.replace(/^( |\n)*.*: |\;$|\.$/g, '');
 		}
 		if (skillsTxt) AddString(prefix + "Comp.Use.Features", skillsTxt + ".", true);
 
 		thermoM(10/11); //increment the progress dialog's progress
 
+		// Add HP calculations (only calcChanges.hp is supported)
+		if (aCrea.calcChanges) addCompEvals(aCrea.calcChanges, prefix, aCrea.name + " hit points calculation", true);
+
 		//add weapons
-		var weaponAdd = CurrentCompRace[prefix].weaponsAdd ? CurrentCompRace[prefix].weaponsAdd : CurrentCompRace[prefix].weapons ? CurrentCompRace[prefix].weapons : [];
+		var weaponAdd = aCrea.weaponsAdd ? aCrea.weaponsAdd : aCrea.weapons ? aCrea.weapons : [];
 		if (!isArray(weaponAdd)) weaponAdd = [weaponAdd];
 		for (i = 0; i < weaponAdd.length; i++) {
 			AddWeapon(weaponAdd[i]);
 		}
 
 		//add armour
-		var anArmorAdd = CurrentCompRace[prefix].armorAdd ? CurrentCompRace[prefix].armorAdd : CurrentCompRace[prefix].addarmor ? CurrentCompRace[prefix].addarmor : false;
+		var anArmorAdd = aCrea.armorAdd ? aCrea.armorAdd : aCrea.addarmor ? aCrea.addarmor : false;
 		if (anArmorAdd) AddArmor(anArmorAdd, true, prefix);
 
 		// If the race has any other features that aren't applied here
-		if (CurrentCompRace[prefix].eval || CurrentCompRace[prefix].features || CurrentCompRace[prefix].scores || CurrentCompRace[prefix].action) {
+		if (aCrea.eval || aCrea.features || aCrea.scores || aCrea.action) {
 			app.alert({
 				cTitle : "Player race not fully compatible with companion page",
 				nIcon : 3,
-				cMsg : "The companion page is not fully compatible with all the possible features of races that are designed to be used as a player race (i.e. normally used to create a character with levels).\n\nThe sheet has tried its best to add the '" + CurrentCompRace[prefix].name + "' race to the companion page, but some aspects will be missing:\n\u2022 Anything gained from level-dependent features;\n\u2022 Limited features;\n\u2022 Racial spellcasting;\n\u2022 Additional actions, bonus actions, and reactions;\n\u2022 Automated attack calculation changes;\n\u2022 Anything added using the 'eval' or 'changeeval' attributes."
+				cMsg : "The companion page is not fully compatible with all the possible features of races that are designed to be used as a player race (i.e. normally used to create a character with levels).\n\nThe sheet has tried its best to add the '" + aCrea.name + "' race to the companion page, but some aspects will be missing:\n\u2022 Anything gained from level-dependent features;\n\u2022 Limited features;\n\u2022 Racial spellcasting;\n\u2022 Additional actions, bonus actions, and reactions;\n\u2022 Automated attack calculation changes;\n\u2022 Anything added using the 'eval' or 'changeeval' attributes."
 			})
 		}
 
-	} else if (CurrentCompRace[prefix].typeFound === "creature") {// do the following if a creature was found
+	} else if (aCrea.typeFound === "creature") {// do the following if a creature was found
 		thermoTxt = thermoM("Adding the companion creature...", false); //change the progress dialog text
 		resetDescTooltips(); //remove descriptive tooltips
 		tDoc.resetForm(compFields); //reset all the fields
+		//set the header (if defined)
+
+		if (aCrea.header) Value(prefix + "Comp.Type", aCrea.header);
 
 		//add the size
-		PickDropdown(prefix + "Comp.Desc.Size", CurrentCompRace[prefix].size);
+		PickDropdown(prefix + "Comp.Desc.Size", aCrea.size);
 
 		//set race's type
-		var typeString = CurrentCompRace[prefix].subtype ? CurrentCompRace[prefix].type + " (" + CurrentCompRace[prefix].subtype + ")" : CurrentCompRace[prefix].type;
+		var typeString = aCrea.subtype ? aCrea.type + " (" + aCrea.subtype + ")" : aCrea.type;
 		Value(prefix + "Comp.Desc.MonsterType", typeString);
 
 		//set senses
-		var theSenses = What("Unit System") === "imperial" ? CurrentCompRace[prefix].senses : ConvertToMetric(CurrentCompRace[prefix].senses, 0.5);
+		var theSenses = What("Unit System") === "imperial" ? aCrea.senses : ConvertToMetric(aCrea.senses, 0.5);
 		Value(prefix + "Comp.Use.Senses", theSenses);
 
-		Value(prefix + "Comp.Desc.Alignment", CurrentCompRace[prefix].alignment); //set alignment
-		Value(prefix + "Comp.Use.Proficiency Bonus", CurrentCompRace[prefix].proficiencyBonus); //set proficiency bonus
-		Value(prefix + "Comp.Use.Attack.perAction", CurrentCompRace[prefix].attacksAction); //set attacks per action
-		Value(prefix + "Comp.Use.AC", CurrentCompRace[prefix].ac); //set AC
-		Value(prefix + "Comp.Use.HP.Max", CurrentCompRace[prefix].hp); //set HP
-		Value(prefix + "Comp.Use.HD.Level", CurrentCompRace[prefix].hd[0]); //set HD #
-		Value(prefix + "Comp.Use.HD.Die", CurrentCompRace[prefix].hd[1]); //set HD die
+		Value(prefix + "Comp.Desc.Alignment", aCrea.alignment); //set alignment
+		Value(prefix + "Comp.Use.Proficiency Bonus", aCrea.proficiencyBonus); //set proficiency bonus
+		Value(prefix + "Comp.Use.Attack.perAction", aCrea.attacksAction); //set attacks per action
+		Value(prefix + "Comp.Use.AC", aCrea.ac); //set AC
+		Value(prefix + "Comp.Use.HP.Max", aCrea.hp); //set HP
+		Value(prefix + "Comp.Use.HD.Level", aCrea.hd[0]); //set HD #
+		Value(prefix + "Comp.Use.HD.Die", aCrea.hd[1]); //set HD die
 
 		//add ability scores
 		for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
-			Value(prefix + "Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".Score", CurrentCompRace[prefix].scores[a]);
-			Value(prefix + "Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".Mod", Math.round((CurrentCompRace[prefix].scores[a] - 10.5) * 0.5));
+			Value(prefix + "Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".Score", aCrea.scores[a]);
+			Value(prefix + "Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".Mod", Math.round((aCrea.scores[a] - 10.5) * 0.5));
 		}
 
 		thermoM(1/10); //increment the progress dialog's progress
 
 		//add speed
-		var theSpeed = What("Unit System") === "imperial" ? CurrentCompRace[prefix].speed : ConvertToMetric(CurrentCompRace[prefix].speed, 0.5);
-		if (typePF) theSpeed = theSpeed.replace("(,|;) ", "$1\n"); // add line breaks
+		var theSpeed = What("Unit System") === "imperial" ? aCrea.speed : ConvertToMetric(aCrea.speed, 0.5);
+		// add line breaks for the printer friendly sheets
+		if (typePF) theSpeed = theSpeed.replace(/(,|;) /g, "$1\n");
 		Value(prefix + "Comp.Use.Speed", theSpeed);
 
 		thermoM(2/10); //increment the progress dialog's progress
 
 		//add any weapons the creature possesses
-		for (var a = 0; a < CurrentCompRace[prefix].attacks.length; a++) {
-			AddWeapon(CurrentCompRace[prefix].attacks[a].name);
+		for (var a = 0; a < aCrea.attacks.length; a++) {
+			AddWeapon(aCrea.attacks[a].name);
 		}
 
 		thermoM(3/10); //increment the progress dialog's progress
 
 		//calculate the ability score modifiers
 		var mods = [];
-		for (var i = 0; i < CurrentCompRace[prefix].scores.length; i++) {
-			mods[i] = Math.round((CurrentCompRace[prefix].scores[i] - 10.5) * 0.5);
+		for (var i = 0; i < aCrea.scores.length; i++) {
+			mods[i] = Math.round((aCrea.scores[i] - 10.5) * 0.5);
 		}
 
 		thermoM(4/10); //increment the progress dialog's progress
 
 		//add skill proficiencies
-		if (CurrentCompRace[prefix].skills) {
-			for (var aSkill in CurrentCompRace[prefix].skills) {
-				var profSkill = CompSkillRefer(aSkill, CurrentCompRace[prefix].skills[aSkill], CurrentCompRace[prefix].scores, CurrentCompRace[prefix].proficiencyBonus);
+		if (aCrea.skills) {
+			for (var aSkill in aCrea.skills) {
+				var profSkill = CompSkillRefer(aSkill, aCrea.skills[aSkill], aCrea.scores, aCrea.proficiencyBonus);
 				AddSkillProf(profSkill[0], profSkill[1] !== "nothing", profSkill[1] === "expertise", false, profSkill[2]); //set the proficiency
+			}
+		}
+
+		//add saving throw proficiencies
+		if (aCrea.saves && isArray(aCrea.saves)) {
+			for (var s = 0; s < aCrea.saves.length; s++) {
+				if (aCrea.saves[s] !== "") {//only do something if a value is detected
+					var saveFld = "Comp.Use.Ability." + AbilityScores.abbreviations[s] + ".ST";
+					Checkbox(prefix + saveFld + ".Prof"); //set the save as proficient
+					Value(prefix + "BlueText." + saveFld + ".Bonus", aCrea.saves[s] - mods[s] - aCrea.proficiencyBonus);
+				}
 			}
 		}
 
 		thermoM(5/10); //increment the progress dialog's progress
 
-		//add saving throw proficiencies
-		for (var s = 0; s < CurrentCompRace[prefix].saves.length; s++) {
-			if (CurrentCompRace[prefix].saves[s] !== "") {//only do something if a value is detected
-				var saveFld = "Comp.Use.Ability." + AbilityScores.abbreviations[s] + ".ST";
-				Checkbox(prefix + saveFld + ".Prof"); //set the save as proficient
-				Value(prefix + "BlueText." + saveFld + ".Bonus", CurrentCompRace[prefix].saves[s] - mods[s] - CurrentCompRace[prefix].proficiencyBonus);
-			}
-		}
+		// Add HP calculations (only calcChanges.hp is supported)
+		if (aCrea.calcChanges) addCompEvals(aCrea.calcChanges, prefix, aCrea.name + " hit points calculation", true);
 
-		//add features
-		if (CurrentCompRace[prefix].damage_vulnerabilities) {
-			var tempString = "\u25C6 Damage Vulnerabilities: " + CurrentCompRace[prefix].damage_vulnerabilities + ".";
-			AddString(prefix + "Comp.Use.Features", tempString, true);
-		}
-		if (CurrentCompRace[prefix].damage_resistances) {
-			var tempString = "\u25C6 Damage Resistances: " + CurrentCompRace[prefix].damage_resistances + ".";
-			AddString(prefix + "Comp.Use.Features", tempString, true);
-		}
-		if (CurrentCompRace[prefix].damage_immunities) {
-			var tempString = "\u25C6 Damage Immunities: " + CurrentCompRace[prefix].damage_immunities + ".";
-			AddString(prefix + "Comp.Use.Features", tempString, true);
-		}
-		if (CurrentCompRace[prefix].condition_immunities) {
-			var tempString = "\u25C6 Condition Immunities: " + CurrentCompRace[prefix].condition_immunities + ".";
-			AddString(prefix + "Comp.Use.Features", tempString, true);
-		}
-		if (CurrentCompRace[prefix].languages) {
-			var tempString = "\u25C6 Languages: " + CurrentCompRace[prefix].languages + ".";
-			AddString(prefix + "Comp.Use.Features", tempString, true);
+		//add modifiers
+		if (aCrea.addMod) {
+			processMods(true, aCrea.name, aCrea.addMod, prefix);
 		}
 
 		thermoM(6/10); //increment the progress dialog's progress
 
+		// >>>> Features section <<<<
+		var strFeatures = "";
+
+		//add special stat block info
+		if (aCrea.damage_vulnerabilities) {
+			strFeatures += "\u25C6 Damage Vulnerabilities: " + aCrea.damage_vulnerabilities + ".";
+		}
+		if (aCrea.damage_resistances) {
+			strFeatures += "\n\u25C6 Damage Resistances: " + aCrea.damage_resistances + ".";
+		}
+		if (aCrea.damage_immunities) {
+			strFeatures += "\n\u25C6 Damage Immunities: " + aCrea.damage_immunities + ".";
+		}
+		if (aCrea.condition_immunities) {
+			strFeatures += "\n\u25C6 Condition Immunities: " + aCrea.condition_immunities + ".";
+		}
+		if (aCrea.languages) {
+			strFeatures += "\n\u25C6 Languages: " + aCrea.languages + ".";
+		}
+
 		//add features
-		if (CurrentCompRace[prefix].features) {
-			for (var t = 0; t < CurrentCompRace[prefix].features.length; t++) {
-				var featureString = "\u25C6 " + CurrentCompRace[prefix].features[t].name + ": ";
-				featureString += CurrentCompRace[prefix].features[t].description;
-				AddString(prefix + "Comp.Use.Features", featureString, true);
+		if (aCrea.features) {
+			for (var t = 0; t < aCrea.features.length; t++) {
+				strFeatures += "\n\u25C6 " + aCrea.features[t].name + ": " + aCrea.features[t].description;
 			}
 		}
 
 		thermoM(7/10); //increment the progress dialog's progress
 
+		// >>>> Traits section <<<<
+		var strTraits = "";
+
 		//add actions
-		if (CurrentCompRace[prefix].actions) {
-			for (var t = 0; t < CurrentCompRace[prefix].actions.length; t++) {
-				var actionString = "\u25C6 " + CurrentCompRace[prefix].actions[t].name + ": ";
-				actionString += CurrentCompRace[prefix].actions[t].description;
-				AddString(prefix + "Comp.Use.Traits", actionString, true);
+		if (aCrea.actions) {
+			for (var t = 0; t < aCrea.actions.length; t++) {
+				strTraits += "\n\u25C6 " + aCrea.actions[t].name + ": " + aCrea.actions[t].description;
+			}
+		}
+
+		//add traits
+		if (aCrea.traits) {
+			for (var t = 0; t < aCrea.traits.length; t++) {
+				strTraits += "\n\u25C6 " + aCrea.traits[t].name + ": " + aCrea.traits[t].description;
 			}
 		}
 
 		thermoM(8/10); //increment the progress dialog's progress
 
-		//add traits
-		if (CurrentCompRace[prefix].traits) {
-			for (var t = 0; t < CurrentCompRace[prefix].traits.length; t++) {
-				var traitString = "\u25C6 " + CurrentCompRace[prefix].traits[t].name + ": ";
-				traitString += CurrentCompRace[prefix].traits[t].description;
-				AddString(prefix + "Comp.Use.Traits", traitString, true);
-			}
+		//convert to metric, if applicable
+		if (What("Unit System") === "metric") {
+			strFeatures = ConvertToMetric(strFeatures, 0.5);
+			strTraits = ConvertToMetric(strTraits, 0.5);
+		}
+
+		// Set the strings to the fields but remove starting line breaks and implement name
+		var strRaceEntry = clean(newRace).toLowerCase();
+		if (strFeatures) {
+			strFeatures = strFeatures.replace(/^\n+|^\r+/g, "").replace(/\[THIS\]/g, strRaceEntry);
+			AddString(prefix + "Comp.Use.Features", strFeatures, true);
+		}
+		if (strTraits) {
+			strTraits = strTraits.replace(/^\n+|^\r+/g, "").replace(/\[THIS\]/g, strRaceEntry);
+			AddString(prefix + "Comp.Use.Traits", strTraits, true);
 		}
 
 		thermoM(9/10); //increment the progress dialog's progress
 
-		//convert to metric, if applicable
-		if (What("Unit System") === "metric") {
-			if (What(prefix + "Comp.Use.Traits")) Value(prefix + "Comp.Use.Traits", ConvertToMetric(What(prefix + "Comp.Use.Traits"), 0.5));
-			if (What(prefix + "Comp.Use.Features")) Value(prefix + "Comp.Use.Features", ConvertToMetric(What(prefix + "Comp.Use.Features"), 0.5));
-		}
-
 		// execute eval
-		doCreatureEval("eval");
+		doCreatureEval(aCrea, "eval");
+		doCreatureEval(aCrea, "changeeval");
 	}
 
 	SetHPTooltip(false, true);
 	thermoM(thermoTxt, true); // Stop progress bar
+}
+
+// set a race on an empty companion page (or add a new page)
+// aCreaAdds is an array with arrays of 3 entries: [sRace (string), bRemoveWholePage (boolean), fCallBack (function)], but the 2nd and 3rd entries are optional
+function processAddCompanions(bAddRemove, srcNm, aCreaAdds) {
+	if (!isArray(aCreaAdds)) aCreaAdds = [aCreaAdds];
+	var aChangeMsg = [];
+	for (var i = 0; i < aCreaAdds.length; i++) {
+		var aCreaAdd = !isArray(aCreaAdds[i]) ? [aCreaAdds[i]] : aCreaAdds[i];
+		var sRace = aCreaAdd[0];
+		var sRaceLow = sRace.toString().toLowerCase();
+		var bRemoveWholePage = aCreaAdd[1];
+		var fCallBack = aCreaAdd[2];
+		var AScompA = isTemplVis('AScomp') ? What('Template.extras.AScomp').split(',') : false;
+		if (bAddRemove) { // add
+			var prefix = false, stopMatch = false;
+			if (AScompA) {
+				for (var a = 1; a < AScompA.length; a++) {
+					var sFndRace = What(AScompA[a] + 'Comp.Race');
+					if (!prefix && !sFndRace) prefix = AScompA[a];
+					if (sFndRace.toLowerCase() === sRaceLow && CurrentCompRace[AScompA[a]]) {
+						prefix = AScompA[a];
+						stopMatch = true;
+						break;
+					}
+				}
+			}
+			if (!prefix) prefix = DoTemplate('AScomp', 'Add');
+			if (!stopMatch) {
+				Value(prefix + 'Comp.Race', sRace);
+				aChangeMsg.push('A "' + sRace + '" has been added to the companion page at page number ' + (tDoc.getField(prefix + 'Comp.Race').page + 1));
+			}
+		} else { // remove
+			for (var a = 1; a < AScompA.length; a++) {
+				if (What(AScompA[a] + 'Comp.Race').toLowerCase().indexOf(sRaceLow) !== -1) {
+					var iPageNo = tDoc.getField(AScompA[a] + 'Comp.Race').page + 1;
+					if (bRemoveWholePage) { // remove the whole page
+						DoTemplate("AScomp", "Remove", AScompA[a], true);
+					} else {
+						Value(prefix + 'Comp.Race', ""); // reset the race field
+					}
+					aChangeMsg.push('The companion page at page number ' + iPageNo + ' has ' + (bRemoveWholePage ? 'been removed' : 'had its race option reset') + ' as it contained the "' + sRace + '" race.');
+				}
+			}
+		}
+		if (fCallBack && typeof fCallBack == 'function') {
+			try {
+				fCallBack(bAddRemove, prefix);
+			} catch (error) {
+				var eText = 'The callback function of the creaturesAdd attribute from "' + srcNm + '" produced an error while ' + (bAddRemove ? 'adding' : 'removing') + ' the "' + sRace + '" creature! Please contact the author of the feature to correct this issue:\n '  + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
+				console.println(eText);
+				console.show();
+			}
+		}
+	}
+	// Add a reminder to the notes of the changes pop-up
+	if (aChangeMsg.length) {
+		CurrentUpdates.types.push("notes");
+		if (!CurrentUpdates.companionChanges) CurrentUpdates.companionChanges = [];
+		CurrentUpdates.companionChanges = CurrentUpdates.companionChanges.concat(aChangeMsg);
+	}
 }
 
 //calculate whether the skill bonus equals proficiency, expertise, or something else
@@ -702,40 +815,87 @@ function FindCompWeapons(ArrayNmbr, aPrefix) {
 			var endArray = CurrentWeapons.compField[prefix].length;
 		}
 
-		//parse the weapons into tempArray
+		// parse the weapons into tempArray
 		for (var j = startArray; j < endArray; j++) {
 			tempString = CurrentWeapons.compField[prefix][j];
-			tempArray[j] = [];
+			tempArray[j] = [
+				"", // 0 - attack entry in WeaponsList or companion attack array
+				0,			// 1 - magic bonus
+				true		// 2 - add ability modifier to damage
+			];
+			// if a creature is found, check to see if attack entered matches one of the creature's attacks
 			var compAttackFound = false;
-			if (isCompRace) { //if a creature is found, check to see if attack entered matches one of the creature's attacks
+			if (isCompRace) { 
 				tempArray[j][0] = parseCompWeapon(tempString, prefix);
 				compAttackFound = tempArray[j][0] !== "";
 			}
-
-			if (!compAttackFound) { //if not a comprace or nothing was found above
-				//see if the field contains a known weapon
+			// if not a comprace or nothing was found above, see if the field contains a known weapon
+			if (!compAttackFound) { 
 				tempArray[j][0] = ParseWeapon(tempString);
 			}
-
-			//add magical bonus, denoted by a "+" or "-"
-			tempArray[j][1] = 0;
+			// add magical bonus, denoted by a "+" or "-"
 			var magicRegex = /(?:^|\s|\(|\[)([\+-]\d+)/;
 			if (magicRegex.test(tempString)) {
 				tempArray[j][1] = parseFloat(tempString.match(magicRegex)[1]);
 			}
-
-			//add the true/false switch for adding ability score to damage or not
+			// add the true/false switch for adding ability score to damage or not
 			if (!compAttackFound && tempArray[j][0]) {
-				tempArray[j][2] = WeaponsList[tempArray[j][0]].abilitytodamage;
+				var theWea = WeaponsList[tempArray[j][0]];
+				tempArray[j][2] = theWea.abilitytodamage !== undefined ? theWea.abilitytodamage : true;
 			} else if (compAttackFound) {
-				var compMod = CurrentCompRace[prefix].attacks[tempArray[j][0]].modifiers;
-				tempArray[j][2] = compMod && compMod[2] !== "" ? compMod[2] : true;
+				var compAttack = CurrentCompRace[prefix].attacks[tempArray[j][0]];
+				if (compAttack.abilitytodamage !== undefined) {
+					tempArray[j][2] = compAttack.abilitytodamage;
+				} else if (compAttack.modifiers && compAttack.modifiers[2] !== "") {
+					// --- backwards compatibility --- //
+					tempArray[j][2] = compAttack.modifiers[2];
+				}
 			}
 			//put tempArray in known
 			CurrentWeapons.compKnown[prefix][j] = tempArray[j];
 		}
 	}
 };
+
+function addCompEvals(evalObj, prefix, NameEntity, Add) {
+	if (!evalObj) return;
+
+	// do the stuff for the hp calculations
+	if (evalObj.hp) {
+		if (Add) {
+			if (!CurrentEvals.Comp) CurrentEvals.Comp = {};
+			if (!CurrentEvals.Comp[prefix]) CurrentEvals.Comp[prefix] = {};
+			if (!CurrentEvals.Comp[prefix].hp) CurrentEvals.Comp[prefix].hp = {};
+			CurrentEvals.Comp[prefix].hp[NameEntity] = evalObj.hp;
+		} else if (CurrentEvals.Comp && CurrentEvals.Comp[prefix] && CurrentEvals.Comp[prefix].hp && CurrentEvals.Comp[prefix].hp[NameEntity]) {
+			delete CurrentEvals.Comp[prefix].hp[NameEntity];
+		};
+		if (evalObj.hpForceRecalc) {
+			if (CurrentEvals.Comp[prefix].hpForceRecalc === undefined) CurrentEvals.Comp[prefix].hpForceRecalc = 0;
+			if (Add) {
+				CurrentEvals.Comp[prefix].hpForceRecalc++;
+			} else if (CurrentEvals.Comp[prefix].hpForceRecalc) {
+				CurrentEvals.Comp[prefix].hpForceRecalc--;
+			}
+		}
+	};
+	var theFld = prefix + "Comp.Use.HP.Max";
+	var theSettingPre = How(theFld).split(",");
+	SetHPTooltip(false, true, prefix);
+	if (evalObj.hp && evalObj.setAltHp) {
+		var theSettingPost = How(theFld).split(",");
+		if (theSettingPre.length !== theSettingPost.length) {
+			var setLen = theSettingPost.length - 1;
+			if (setLen > 3) {
+				theSettingPost[3] = "alt:" + setLen;
+				Value(theFld, theSettingPost[setLen], Who(theFld), theSettingPost.join());
+			} else if (theSettingPost[3].indexOf("alt") !== -1) {
+				theSettingPost[3] = "nothing";
+				AddTooltip(theFld, undefined, theSettingPost.join());
+			}
+		}
+	}
+}
 
 //add a wildshape based on the selection and calculation settings
 function ApplyWildshape() {
@@ -1068,55 +1228,54 @@ function ApplyWildshape() {
 	thermoM(7/10); //increment the progress dialog's progress
 
 	//add traits & features
-	var traitsFld = prefix + "Wildshape." + Fld + ".Traits";
+	var strTraits = "";
 	if (theCrea.wildshapeString) {
-		Value(traitsFld, theCrea.wildshapeString)
+		strTraits = theCrea.wildshapeString;
 	} else {
+		//set senses
 		var sensesToAdd = theCrea.senses.replace(/(\; )?Adv\..+(hearing|sight|smell)/i, ""); //avoid duplicating the information with regards to the keen hearing/sight/smell traits
 		if (sensesToAdd) {
-			AddString(traitsFld, "\u25C6 Senses: " + sensesToAdd, true); //set senses
+			strTraits += "\u25C6 Senses: " + sensesToAdd; 
 		}
 		//add resistances & immunities
 		if (theCrea.damage_vulnerabilities) {
-			var tempString = "\u25C6 Damage Vulnerabilities: " + theCrea.damage_vulnerabilities + ".";
-			AddString(traitsFld, tempString, true);
+			strTraits += "\n\u25C6 Damage Vulnerabilities: " + theCrea.damage_vulnerabilities + ".";
 		}
 		if (theCrea.damage_resistances) {
-			var tempString = "\u25C6 Damage Resistances: " + theCrea.damage_resistances + ".";
-			AddString(traitsFld, tempString, true);
+			strTraits += "\n\u25C6 Damage Resistances: " + theCrea.damage_resistances + ".";
 		}
 		if (theCrea.damage_immunities) {
-			var tempString = "\u25C6 Damage Immunities: " + theCrea.damage_immunities + ".";
-			AddString(traitsFld, tempString, true);
+			strTraits += "\n\u25C6 Damage Immunities: " + theCrea.damage_immunities + ".";
 		}
 		if (theCrea.condition_immunities) {
-			var tempString = "\u25C6 Condition Immunities: " + theCrea.condition_immunities + ".";
-			AddString(traitsFld, tempString, true);
+			strTraits += "\n\u25C6 Condition Immunities: " + theCrea.condition_immunities + ".";
 		}
 		//add actions
 		if (theCrea.actions) {
 			for (var t = 0; t < theCrea.actions.length; t++) {
-				var actionString = "\u25C6 " + theCrea.actions[t].name + ": ";
-				actionString += theCrea.actions[t].description;
-				AddString(traitsFld, actionString, true);
+				strTraits += "\n\u25C6 " + theCrea.actions[t].name + ": " + theCrea.actions[t].description;
 			}
 		}
 		//add traits
 		if (theCrea.traits) {
 			for (var t = 0; t < theCrea.traits.length; t++) {
-				var traitString = "\u25C6 " + theCrea.traits[t].name + ": ";
-				traitString += theCrea.traits[t].description;
-				AddString(traitsFld, traitString, true);
+				strTraits += "\n\u25C6 " + theCrea.traits[t].name + ": " + theCrea.traits[t].description;
 			}
 		}
 	}
 
-	thermoM(8/10); //increment the progress dialog's progress
+	thermoM(9/10); //increment the progress dialog's progress
 
 	//convert to metric, if applicable
-	if (What("Unit System") === "metric") {
-		if (What(traitsFld)) Value(traitsFld, ConvertToMetric(What(traitsFld), 0.5));
+	if (strTraits && What("Unit System") === "metric") strTraits = ConvertToMetric(strTraits, 0.5);
+	// add the string to the field
+	if (strTraits) {
+		strTraits = strTraits.replace(/^\n+|^\r+/g, "").replace(/\[THIS\]/g, clean(newForm));
+		AddString(prefix + "Wildshape." + Fld + ".Traits", strTraits, true);
 	}
+
+	thermoM(8/10); //increment the progress dialog's progress
+
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
@@ -1258,8 +1417,11 @@ function MakeWildshapeMenu() {
 
 	for (var crea in CreatureList) {
 		var thisCrea = CreatureList[crea];
-		if ((!(/^(air|earth|fire|water) elemental$/i).test(crea) && thisCrea.type !== "Beast") || allCrea.keys[thisCrea.name] || testSource(crea, thisCrea, "creaExcl")) {
-			continue; //go on to the next creature if the creature is not a beast or its source isn't excluded
+		if ((!(/^(air|earth|fire|water) elemental$/i).test(crea) && thisCrea.type !== "Beast")
+			|| allCrea.keys[thisCrea.name]
+			|| (CurrentVars.extraCreatures && CurrentVars.extraCreatures[crea])
+			|| testSource(crea, thisCrea, "creaExcl")) {
+			continue; //go on to the next creature if the creature is not a beast, was already added, is added by a creatureOptions attribute, or its source isn't excluded
 		};
 		allCrea.keys[thisCrea.name] = crea;
 		allCrea.names.push(thisCrea.name);
@@ -1480,6 +1642,7 @@ function SetWildshapeDropdown(forceTooltips) {
 	var theList = [];
 
 	for (var key in CreatureList) {
+		if (CurrentVars.extraCreatures && CurrentVars.extraCreatures[key]) continue;
 		if ((CreatureList[key].type === "Beast" && eval_ish(CreatureList[key].challengeRating) <= 6) || (/^(air|earth|fire|water) elemental$/i).test(key)) {
 			if (testSource(key, CreatureList[key], "creaExcl") || theList.indexOf(CreatureList[key].name) !== -1) continue;
 			theList.push(CreatureList[key].name);
@@ -1515,23 +1678,27 @@ function SetCompDropdown(forceTooltips) {
 	tempString += "\n\n" + toUni("Selecting a player race") + "\nAll the same things as selecting a player race on the first page will happen, with the exception that no limited feature or ability DC is added as there is no room for that."
 	tempString += "\n\n" + toUni("Changing the race") + "\nIf you entered a race that was recognized and then change the entry to something that is not recognized, all the features and abilities of the recognized race will remain in place. This way, you can change the name of the race to something, while keeping the stats of something else. For example, you can choose \"Frog\" and then change it to \"Toad\", creating a toad with the stats of a frog.";
 
-	var theList = [""];
+	var theListStart = [], theListR = [], theListC = [];
 
 	for (var key in RaceList) {
 		if (testSource(key, RaceList[key], "racesExcl")) continue;
 		var raceNm = RaceList[key].sortname ? RaceList[key].sortname : RaceList[key].name.capitalize();
-		if (theList.indexOf(raceNm) === -1) theList.push(raceNm);
+		if (theListR.indexOf(raceNm) === -1) theListR.push(raceNm);
 	}
-	theList.sort();
+	theListR.sort().unshift("");
 
-	var theListC = [""];
 	for (var key in CreatureList) {
 		if (testSource(key, CreatureList[key], "creaExcl")) continue;
+		if (CurrentVars.extraCreatures && CurrentVars.extraCreatures[key] && theListStart.indexOf(CreatureList[key].name) === -1) {
+			theListStart.push(CreatureList[key].name);
+			continue;
+		}
 		if (theListC.indexOf(CreatureList[key].name) === -1) theListC.push(CreatureList[key].name);
 	}
-	theListC.sort();
+	if (theListStart.length) theListStart.sort().unshift("");
+	theListC.sort().unshift("");
 
-	theList = theList.concat(theListC);
+	var theList = theListStart.concat(theListR).concat(theListC);
 
 	var applyItems = tDoc.getField("Companion.Remember").submitName !== theList.toSource();
 	if (applyItems) tDoc.getField("Companion.Remember").submitName = theList.toSource();
@@ -1554,7 +1721,7 @@ function MakeCompMenu() {
 	var prefix = getTemplPre(event.target.name, "AScomp", true);
 	var usingRevisedRanger = ClassList.rangerua && !testSource("rangerua", ClassList.rangerua, "classExcl");
 	var usingArtificer = SourceList["UA:A"] && CurrentSources.globalExcl.indexOf("UA:A") === -1;
-	var menuLVL2 = function (menu, name, array) {
+	var menuLVL2 = function (menu, name, array, specialArray, addName) {
 		var temp = {};
 		var enabled = name[1] === "change" ? What(prefix + "Comp.Race") : true;
 		temp.cName = name[0];
@@ -1571,9 +1738,11 @@ function MakeCompMenu() {
 				} else {
 					var subMarked = What(prefix + "Companion.Remember") === name[1] && CurrentCompRace[prefix].known === array[i][1];
 				}
+				var aName = array[i][0];
+				if (specialArray && addName && specialArray.indexOf(array[i][1]) !== -1) aName += addName;
 				temp.oSubMenu.push({
-					cName : array[i][0],
-					cReturn : name[1] + "#" + array[i][1],
+					cName : aName,
+					cReturn : name[1] + "#" + array[i][1] + "#" + array[i][0],
 					bMarked : subMarked,
 					bEnabled : array[i][1] === "no-mm" ? false : name[1] === "change" && (array[i][1] === "companion" || array[i][1] === "companionrr") && CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound !== "creature" ? false : true
 				})
@@ -1590,7 +1759,16 @@ function MakeCompMenu() {
 		}
 	};
 
-	var CompMenu = [], familiars = [], chainPact = [], mounts = [], steeds = [], companions = [], companionRR = [], mechanicalServs = [];
+	var CompMenu = [], familiars_not_al = [];
+	var cObj = {
+		familiars : [],
+		chainPact : [],
+		mounts : [],
+		steeds : [],
+		companions : [],
+		companionRR : [],
+		mechanicalServs : []
+	};
 	var change = [
 		["Into a familiar (Find Familiar spell)", "familiar"],
 		["Into a Pact of the Chain familiar (Warlock feature)", "pact_of_the_chain"],
@@ -1613,61 +1791,61 @@ function MakeCompMenu() {
 	//make a list of all the creatures
 	for (var aCrea in CreatureList) {
 		var theCrea = CreatureList[aCrea];
-		if (testSource(aCrea, theCrea, "creaExcl")) continue; // test if the creature or its source isn't excluded
+		// test if the creature or its source isn't excluded
+		if (testSource(aCrea, theCrea, "creaExcl")) continue;
+		var arrAlts = [];
+		if (theCrea.nameAlt) {
+			var arrNames = isArray(theCrea.nameAlt) ? theCrea.nameAlt : [theCrea.nameAlt];
+			for (var i = 0; i < arrNames.length; i++) {
+				arrAlts.push([arrNames[i], aCrea]);
+			}
+		}
 		if (theCrea.type === "Beast" && theCrea.size >= 3 && eval_ish(theCrea.challengeRating) <= 1/4) {
-			companions.push([theCrea.name, aCrea]);
+			cObj.companions = cObj.companions.concat([[theCrea.name, aCrea]]).concat(arrAlts);
 		} else if (theCrea.type === "Beast" && theCrea.size === 2 && eval_ish(theCrea.challengeRating) <= 2) {
-			mechanicalServs.push([theCrea.name, aCrea]);
+			cObj.mechanicalServs = cObj.mechanicalServs.concat([[theCrea.name, aCrea]]).concat(arrAlts);
 		};
 		switch (theCrea.companion) {
 			case "familiar_not_al" :
-			if (isDisplay("DCI.Text")) break;
+				if (!isDisplay("DCI.Text")) break;
+				familiars_not_al.push(aCrea);
 			case "familiar" :
-				familiars.push([theCrea.name, aCrea]);
+				cObj.familiars = cObj.familiars.concat([[theCrea.name, aCrea]]).concat(arrAlts);
 			case "pact_of_the_chain" :
-				chainPact.push([theCrea.name, aCrea]);
+				cObj.chainPact = cObj.chainPact.concat([[theCrea.name, aCrea]]).concat(arrAlts);
 				break;
 			case "mount" :
-				mounts.push([theCrea.name, aCrea]);
+				cObj.mounts = cObj.mounts.concat([[theCrea.name, aCrea]]).concat(arrAlts);
 				break;
 			case "steed" :
-				steeds.push([theCrea.name, aCrea]);
+				cObj.steeds = cObj.steeds.concat([[theCrea.name, aCrea]]).concat(arrAlts);
 				break;
 			case "companion" :
-				companionRR.push([theCrea.name, aCrea]);
+				cObj.companionRR = cObj.companionRR.concat([[theCrea.name, aCrea]]).concat(arrAlts);
 				break;
-		};
-	};
-	familiars.sort();
-	chainPact.sort();
-	mounts.sort();
-	steeds.sort();
-	companions.sort();
-	companionRR.sort();
-	mechanicalServs.sort();
+		}
+	}
 
+	// Add a reminder if the monster manual & SRD have been excluded from the sources
 	var noSrd = CurrentSources.globalExcl.indexOf("SRD") !== -1;
 	var existMm = SourceList.M;
-	if ((existMm && CurrentSources.globalExcl.indexOf("M") && noSrd) || (!existMm && noSrd)) { // the monster manual & SRD have been excluded from the sources
-		var reminder = ["Be aware: the SRD " + (existMm ? "and Monster Manual are" : "is") + " excluded from the sources!", "no-mm"];
-		familiars.unshift(reminder);
-		chainPact.unshift(reminder);
-		mounts.unshift(reminder);
-		steeds.unshift(reminder);
-		companions.unshift(reminder);
-		companionRR.unshift(reminder);
-		mechanicalServs.unshift(reminder);
-	};
+	var reminder = (existMm && CurrentSources.globalExcl.indexOf("M") && noSrd) || (!existMm && noSrd) ? ["Be aware: the SRD " + (existMm ? "and Monster Manual are" : "is") + " excluded from the sources!", "no-mm"] : false;
 
-	menuLVL2(CompMenu, ["Create familiar (Find Familiar spell)", "familiar"], familiars);
-	menuLVL2(CompMenu, ["Create familiar (Warlock Pact of the Chain)", "pact_of_the_chain"], chainPact);
-	menuLVL2(CompMenu, ["Create mount (Find Steed spell)", "mount"], mounts);
-	if (SpellsList["find greater steed"]) menuLVL2(CompMenu, ["Create greater mount (Find Greater Steed spell)", "steed"], steeds);
-	if (usingArtificer) menuLVL2(CompMenu, ["Create Mechanical Servant (Artificer feature)", "mechanicalserv"], mechanicalServs);
+	// Sort the arrays and add the reminder (if any)
+	for (var cType in cObj) {
+		cObj[cType].sort();
+		if (reminder) cObj[cType].unshift(reminder);
+	}
+
+	menuLVL2(CompMenu, ["Create familiar (Find Familiar spell)", "familiar"], cObj.familiars, familiars_not_al, " (if DM approves)");
+	menuLVL2(CompMenu, ["Create familiar (Warlock Pact of the Chain)", "pact_of_the_chain"], cObj.chainPact, familiars_not_al, " (if DM approves)");
+	menuLVL2(CompMenu, ["Create mount (Find Steed spell)", "mount"], cObj.mounts);
+	if (SpellsList["find greater steed"]) menuLVL2(CompMenu, ["Create greater mount (Find Greater Steed spell)", "steed"], cObj.steeds);
+	if (usingArtificer) menuLVL2(CompMenu, ["Create Mechanical Servant (Artificer feature)", "mechanicalserv"], cObj.mechanicalServs);
 	if (usingRevisedRanger) {
-		menuLVL2(CompMenu, ["Create Revised Ranger's Companion", "companionrr"], companionRR);
+		menuLVL2(CompMenu, ["Create Revised Ranger's Companion", "companionrr"], cObj.companionRR);
 	} else {
-		menuLVL2(CompMenu, ["Create Ranger's Companion", "companion"], companions);
+		menuLVL2(CompMenu, ["Create Ranger's Companion", "companion"], cObj.companions);
 	};
 
 	CompMenu.push({cName : "-"}); //add a divider
@@ -1685,45 +1863,49 @@ function CompOptions() {
 	if (!MenuSelection || MenuSelection[0] == "nothing") return
 	var prefix = getTemplPre(event.target.name, "AScomp", true);
 
-	if (MenuSelection[0] === "reset") {
-		// Start progress bar and stop calculations
-		var thermoTxt = thermoM("Resetting the companion page...");
-		calcStop();
-
-		tDoc.resetForm([prefix + "Comp", prefix + "Text.Comp", prefix + "BlueText.Comp", prefix + "Cnote", prefix + "Companion"]); //reset all the fields
-
-		thermoM(0.5); // Increment the progress bar
-
-		ApplyAttackColor("", "", "Comp.", prefix); //reset the colour of the attack boxes
-		SetHPTooltip("reset", true);
-		ShowCompanionLayer(prefix);
-		ClearIcons(prefix + "Comp.img.Portrait", true); //reset the appearance image
-
-		thermoTxt = thermoM("Applying...", false); // Change the progress bar text
-	} else if (MenuSelection[0] === "add page") {
-		DoTemplate("AScomp", "Add");
-	} else if (MenuSelection[0] === "remove page") {
-		//remove the prefix, if found, from the array in the remember field
-		DoTemplate("AScomp", "Remove", prefix);
-	} else if (MenuSelection[0] === "visible") {
-		var toShow = eval_ish(What(prefix + "Companion.Layers.Remember"));
-		if (MenuSelection[1] === "comp.img") {
-			toShow[0] = !toShow[0];
-		} else if (MenuSelection[1] === "comp.eqp") {
-			toShow[1] = !toShow[1];
-		}
-		Value(prefix + "Companion.Layers.Remember", toShow.toSource());
-		ShowCompanionLayer(prefix);
-	} else {
-		if (MenuSelection[0] === "change" && MenuSelection[1] === "reset") {
-			resetCompTypes(prefix);
-		} else {
-			if (MenuSelection[0] !== "change") {
-				Value(prefix + "Comp.Race", CreatureList[MenuSelection[1]].name);
+	switch (MenuSelection[0]) {
+		case "reset":
+			// Start progress bar and stop calculations
+			var thermoTxt = thermoM("Resetting the companion page...");
+			calcStop();
+	
+			tDoc.resetForm([prefix + "Comp", prefix + "Text.Comp", prefix + "BlueText.Comp", prefix + "Cnote", prefix + "Companion"]); //reset all the fields
+	
+			thermoM(0.5); // Increment the progress bar
+	
+			ApplyAttackColor("", "", "Comp.", prefix); //reset the colour of the attack boxes
+			SetHPTooltip("reset", true);
+			ShowCompanionLayer(prefix);
+			ClearIcons(prefix + "Comp.img.Portrait", true); //reset the appearance image
+	
+			thermoTxt = thermoM("Applying...", false); // Change the progress bar text
+			break;
+		case "add page":
+			DoTemplate("AScomp", "Add");
+			break;
+		case "add page":
+			DoTemplate("AScomp", "Remove", prefix);
+			break;
+		case "visible":
+			var toShow = eval_ish(What(prefix + "Companion.Layers.Remember"));
+			if (MenuSelection[1] === "comp.img") {
+				toShow[0] = !toShow[0];
+			} else if (MenuSelection[1] === "comp.eqp") {
+				toShow[1] = !toShow[1];
 			}
-			var type = MenuSelection[0] !== "change" ? MenuSelection[0] : MenuSelection[1];
-			changeCompType(type, prefix);
-		}
+			Value(prefix + "Companion.Layers.Remember", toShow.toSource());
+			ShowCompanionLayer(prefix);
+			break;
+		default:
+			if (MenuSelection[0] === "change" && MenuSelection[1] === "reset") {
+				resetCompTypes(prefix);
+			} else {
+				if (MenuSelection[0] !== "change") {
+					Value(prefix + "Comp.Race", MenuSelection[2] ? MenuSelection[2].capitalize() : CreatureList[MenuSelection[1]].name);
+				}
+				var type = MenuSelection[0] !== "change" ? MenuSelection[0] : MenuSelection[1];
+				changeCompType(type, prefix);
+			}
 	}
 	thermoM(thermoTxt, true); // Stop progress bar
 }
@@ -2642,13 +2824,15 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 				switch (tempNm) {
 				case "AScomp" : // Remove the CurrentCompRace attributes that no longer refer to an existing page
 					for (var i = 0; i < tempExtras.length; i++) {
-						var theCurRace = CurrentCompRace[tempExtras[i]];
+						var prefix = tempExtras[i];
+						var theCurRace = CurrentCompRace[prefix];
 						if (theCurRace.typeFound == "creature" && theCurRace.removeeval && typeof theCurRace.removeeval == 'function') {
 							try { theCurRace.removeeval(); } catch (error) {};
 						}
-						delete CurrentCompRace[tempExtras[i]];
-						delete CurrentWeapons.compField[tempExtras[i]];
-						delete CurrentWeapons.compKnown[tempExtras[i]];
+						delete CurrentCompRace[prefix];
+						delete CurrentWeapons.compField[prefix];
+						delete CurrentWeapons.compKnown[prefix];
+						if (CurrentEvals.Comp && CurrentEvals.Comp[prefix]) delete CurrentEvals.Comp[prefix];
 					}
 					break;
 				 case "ALlog" :
@@ -3932,7 +4116,9 @@ function calcHPtotals(prefix) {
 		dieStr : [],
 		average : 0,
 		fixed : 0,
-		max : 0
+		max : 0,
+		alt : [],
+		altStr : []
 	}
 	// loop through all the HD fields
 	for (var i = 0; i < (prefix ? 1 : 3); i++) {
@@ -3969,43 +4155,55 @@ function calcHPtotals(prefix) {
 }
 
 // Update the tooltip for the Max HP field and set the Max HP if that is set to be auto-calculated
-function SetHPTooltip(resetHP, onlyComp) {
-	var tempExtras = What("Template.extras.AScomp").split(",");
+function SetHPTooltip(resetHP, onlyComp, aPrefix) {
+	var tempExtras = onlyComp && aPrefix ? ["", aPrefix] : What("Template.extras.AScomp").split(",");
 	for (var tE = 0; tE < tempExtras.length; tE++) {
 		// Test if we should do this page or not
-		if ((tE == 0 && onlyComp) || (tE > 0 && onlyComp === false)) continue;
+		if ((tE === 0 && onlyComp) || (tE > 0 && onlyComp === false)) continue;
 		// Set some general variables
 		var prefix = tempExtras[tE]; // if !prefix, it is the main character
 		var HPmaxFld = prefix ? prefix + "Comp.Use.HP.Max" : "HP Max";
 		var HDflds = prefix ? [prefix + "Comp.Use.HD.Die"] : ["HD1 Die", "HD2 Die", "HD3 Die"];
-		var extrastring = prefix ? "\n + Special modifiers from other sources" : "";
+		var extrastring = "";
 		var extrahp = 0, setHP;
 		// Get the calculated HP
 		var HD = calcHPtotals(prefix);
 		// And for backwards compatibility
 		var totalhd = HD.count;
-		// If this is the main char and there are custom HP changes, do them
-		if (!prefix && CurrentEvals.hp) {
-			for (var hpEval in CurrentEvals.hp) {
-				var evalThing = CurrentEvals.hp[hpEval];
+		// If there are custom HP changes, do them now
+		var hpEvalObj = !prefix && CurrentEvals.hp ? CurrentEvals.hp :
+			(prefix && CurrentEvals.Comp && CurrentEvals.Comp[prefix] && CurrentEvals.Comp[prefix].hp ? CurrentEvals.Comp[prefix].hp : false);
+		if (hpEvalObj) {
+			for (var hpEval in hpEvalObj) {
+				var evalThing = hpEvalObj[hpEval];
+				var altLen = HD.alt.length;
 				try {
 					if (typeof evalThing == 'string') {
 						eval(evalThing);
 					} else if (typeof evalThing == 'function') {
-						var addHP = evalThing(HD.count, HD);
+						var addHP = evalThing(HD.count, HD, prefix);
 						if (!isArray(addHP)) addHP = [addHP];
 						if ((addHP[0] || addHP[0] === 0) && !isNaN(addHP[0])) {
 							if (!addHP[1]) addHP[1] = hpEval;
 							extrahp += addHP[0];
 							extrastring += addHP[2] ? addHP[1] : '\n ' + (addHP[0] > -1 ? "+ " : "") + addHP[0] + ' from ' + addHP[1];
 						}
+						// if something was added to the alt array
+						if (altLen < HD.alt.length) {
+							var curEntry = HD.altStr[HD.alt.length - 1];
+							HD.altStr[HD.alt.length - 1] = "\n" + toUni("[" + HD.alt.length + "] " + hpEval) + "\n" + HD.alt[HD.alt.length - 1] + " total hit points" + (curEntry ? "\n" + curEntry : "");
+						}
 					}
 				} catch (error) {
-					var eText = "The custom hit point calculation addition '" + hpEval + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
-					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					var eText = "The custom hit point calculation addition '" + hpEval + "' produced an error! It will be ignored for now, but you will get this warning every time you open the sheet again. Please contact the author of the feature to have this issue corrected:\n " + error;
+					for (var e in error) eText += "\n " + e + ": " + error[e];
 					console.println(eText);
 					console.show();
-					delete CurrentEvals.hp[hpEval];
+					if (prefix) {
+						delete CurrentEvals.Comp[prefix].hp[hpEval];
+					} else {
+						delete CurrentEvals.hp[hpEval];
+					}
 				}
 			}
 		}
@@ -4018,14 +4216,18 @@ function SetHPTooltip(resetHP, onlyComp) {
 			"\n \u2022 " + toUni(HD.fixed + extrahp) + " is the total HP when using fixed values" +
 			"\n \u2022 " + toUni(HD.max + extrahp) + " is the total maximum HP" +
 			(HD.conCorrection ? "\n\nNote that the Constitution modifier can't bring the HP gained from a single HD below 1 before adding other bonuses. Thus, the totals may seem off from the calculation above them. See PHB, page 15." : "");
+		if (HD.altStr.length) {
+			tooltip += "\n\n>> ALTERNATIVE TOTAL HP CALCULATIONS <<" + HD.altStr.join("\n\n");
+		}
 		// Now see if the menu setting tells us that we need to change the max HP
 		extrahp = isNaN(extrahp) ? 0 : Number(extrahp);
-		var theSetting = How(HPmaxFld).split(",");
+		var theSetting = How(HPmaxFld).split(",").slice(0,4);
 		theSetting[0] = Math.round(HD.average + extrahp);
 		theSetting[1] = HD.fixed + extrahp;
 		theSetting[2] = HD.max + extrahp;
 		if (resetHP) theSetting[3] = "nothing";
-		switch (theSetting[3]) {
+		if (HD.alt.length) theSetting = theSetting.concat(HD.alt);
+		switch (theSetting[3].replace(/:.*/, '')) {
 			case "average" :
 				setHP = theSetting[0];
 				break;
@@ -4034,6 +4236,10 @@ function SetHPTooltip(resetHP, onlyComp) {
 				break;
 			case "max" :
 				setHP = theSetting[2];
+				break;
+			case "alt" :
+				var altNo = Number(theSetting[3].replace(/alt:(.*)/, '$1'));
+				setHP = theSetting[altNo] !== undefined ? theSetting[altNo] : What(HPmaxFld);
 				break;
 			case "nothing" :
 			default :
@@ -4046,36 +4252,48 @@ function SetHPTooltip(resetHP, onlyComp) {
 	}
 };
 
-function MakeHPMenu_HPOptions(preSelect) {
-
+function MakeHPMenu_HPOptions(preSelect, prefix) {
 	//define some variables
-	var theFld = preSelect ? "HP Max" : event.target.name.replace("Buttons.", "");
-	var theInputs = tDoc.getField(theFld).submitName.split(",");
+	prefix = prefix === true ? getTemplPre(event.target.name, "AScomp", true) : prefix ? prefix : "";
+	var theFld = prefix ? prefix + "Comp.Use.HP.Max" : "HP Max";
+	var theInputs = How(theFld).split(",");
 	if (!preSelect || preSelect == "justMenu") {
 		var optionsArray = [
-			["The total average HP (" + theInputs[0] + ")", "average"],
-			["The total HP when using fixed values (" + theInputs[1] + ")", "fixed"],
-			["The total maximum HP (" + theInputs[2] + ")", "max"]
-		]
-		var hpMenu = [];
+			["The total average HP", theInputs[0], "average"],
+			["The total HP using fixed values", theInputs[1], "fixed"],
+			["The total maximum HP", theInputs[2], "max"]
+		];
+		if (theInputs[4]) {
+			optionsArray.push(["-", "", "-"]);
+			optionsArray.push(["[see tooltip for alternatives]", "", "-"]);
+			for (var i = 4; i < theInputs.length; i++) {
+				optionsArray.push(["Alternative [" + (i-3) + "] HP calculation", theInputs[i], "alt:"+i]);
+			}
+		}
+		var hpMenu = [{
+			cName : "Display HP calculations tooltip in a dialog",
+			cReturn : "hp#popup"
+		}];
 
 		var menuLVL2 = function (menu, name, array) {
 			var temp = {};
 			temp.cName = name[0];
 			temp.oSubMenu = [];
 			for (var i = 0; i < array.length; i++) {
-				var isMarked = name[1] === "auto" && array[i][1] === theInputs[3];
+				var isMarked = array[i][2] === theInputs[3];
 				temp.oSubMenu.push({
-					cName : array[i][0],
-					cReturn : "hp#" + name[1] + "#" + theInputs[i] + "#" + array[i][1],
-					bMarked : isMarked
+					cName : array[i][0] + (array[i][1] !== "" ? " (" + array[i][1] + ")" : ""),
+					cReturn : "hp#" + name[1] + "#" + array[i][1] + "#" + array[i][2] + "#" + (isMarked ? "marked" : ""),
+					bMarked : isMarked,
+					bEnabled : array[i][2] !== "-"
 				})
 			}
 			menu.push(temp);
 		};
 
 		menuLVL2(hpMenu, ["Change the Max HP to", "change"], optionsArray);
-		optionsArray.push(["Don't change the maximum HP automatically", "nothing"])
+		optionsArray.push(["-", "", "-"]);
+		optionsArray.push(["Don't change the maximum HP automatically", "", "nothing"]);
 		menuLVL2(hpMenu, ["Set the Max HP to automatically assume", "auto"], optionsArray);
 
 		//parse it into a global variable
@@ -4085,19 +4303,31 @@ function MakeHPMenu_HPOptions(preSelect) {
 
 	//now call the menu
 	var MenuSelection = preSelect ? preSelect : getMenu("hp");
-	if (!MenuSelection || MenuSelection[0] == "nothing") return;
+	if (!MenuSelection || MenuSelection[0] === "nothing" || MenuSelection[4] === "marked") return;
 
-	switch (MenuSelection[1]) {
-	 case "auto" :
-		theInputs[3] = MenuSelection[3];
-		tDoc.getField(theFld).submitName = theInputs.join();
-	 case "change" :
-		if (MenuSelection[3] !== "nothing") {
-			//set the value of the field
-			Value(theFld, MenuSelection[2]);
-		}
+	if (MenuSelection[1] === "popup") {
+		var aName = What(prefix ? prefix + "Comp.Desc.Name" : "PC Name");
+		if (!aName) aName = !prefix ? "Main character" : What(prefix + "Comp.Race") ? What(prefix + "Comp.Race") : "Companion on page " + tDoc.getField(prefix + "Comp.Race").page;
+		ShowDialog(aName + " HP calculation", Who(theFld));
+	} else {
+		theInputs[3] = MenuSelection[1] === "auto" ? MenuSelection[3] : "nothing";
+		Value(theFld, MenuSelection[2], Who(theFld), theInputs.join());
 	}
 };
+
+// update the max HP value if set to do so whenever any field changes (triggered by field calculation)
+function calcHP(prefix) {
+	prefix = prefix === true ? getTemplPre(event.target.name, "AScomp", true) : prefix ? prefix : "";
+	var theFld = prefix ? prefix + "Comp.Use.HP.Max" : "HP Max";
+	var theInputs = How(theFld).split(",");
+	// Test if automatic update is enabled
+	if ((theInputs[3] !== "nothing") && (
+		(prefix && CurrentEvals.Comp && CurrentEvals.Comp[prefix] && CurrentEvals.Comp[prefix].hpForceRecalc) ||
+		(!prefix && CurrentEvals.hpForceRecalc) )
+	) {
+		SetHPTooltip(false, !!prefix, prefix);
+	}
+}
 
 // add the action "Attack (X attacks per action)" to the top of the "actions" fields, if there is room to do so
 function AddAttacksPerAction() {
@@ -5412,6 +5642,14 @@ function addEvals(evalObj, NameEntity, Add) {
 		} else if (CurrentEvals.hp && CurrentEvals.hp[NameEntity]) {
 			delete CurrentEvals.hp[NameEntity];
 		};
+		if (evalObj.hpForceRecalc) {
+			if (CurrentEvals.hpForceRecalc === undefined) CurrentEvals.hpForceRecalc = 0;
+			if (Add) {
+				CurrentEvals.hpForceRecalc++;
+			} else if (CurrentEvals.hpForceRecalc) {
+				CurrentEvals.hpForceRecalc--;
+			}
+		}
 		CurrentUpdates.types.push("hp");
 	};
 
@@ -5651,8 +5889,8 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 						evalThing(fields, gatherVars);
 					}
 				} catch (error) {
-					var eText = "The custom ApplyWeapon/atkAdd script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
-					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					var eText = "The custom ApplyWeapon/atkAdd script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+					for (var e in error) eText += "\n " + e + ": " + error[e];
 					console.println(eText);
 					console.show();
 					delete CurrentEvals.atkAdd[evalsToDo[i]];
@@ -5746,9 +5984,15 @@ function CalcAttackDmgHit(fldName) {
 	var WeaponName = thisWeapon[0];
 	var aWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] && CurrentCompRace[prefix].attacks ? CurrentCompRace[prefix].attacks[WeaponName] : false;
 	var WeaponText = QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr];
-	var aWeaAbi = aWea && aWea.ability !== undefined ? aWea.ability : aWea && aWea.baseWeapon && WeaponsList[aWea.baseWeapon] && WeaponsList[aWea.baseWeapon].ability !== undefined ? WeaponsList[aWea.baseWeapon].ability : false;
+	var theWea = {};
+	if (aWea && aWea.baseWeapon && WeaponsList[aWea.baseWeapon]) {
+		for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
+	}
+	if (aWea) for (var attr in aWea) theWea[attr] = aWea[attr];
+	var fixedCaster = theWea.useSpellMod && CurrentSpells[theWea.useSpellMod] ? CurrentSpells[theWea.useSpellMod] : false;
+	var aWeaNoAbi = theWea.ability === 0 || (fixedCaster && fixedCaster.fixedDC && fixedCaster.abilityToUse && !fixedCaster.abilityToUse[0]);
 
-	if (!WeaponText || ((/^(| |empty)$/).test(fields.Mod) && aWeaAbi !== 0)) {
+	if (!WeaponText || ((/^(| |empty)$/).test(fields.Mod) && !aWeaNoAbi)) {
 		Value(fldBase + "Damage", "");
 		Value(fldBase + "To Hit", "");
 		if (QI) CurrentWeapons.offHands[ArrayNmbr] = false;
@@ -5772,118 +6016,131 @@ function CalcAttackDmgHit(fldName) {
 	};
 
 	// define some variables that we can check against later or with the CurrentEvals
-	var isDC = (/dc/i).test(fields.To_Hit_Bonus);
-	if (QI) {
-		var theWea = {};
-		if (aWea && aWea.baseWeapon && WeaponsList[aWea.baseWeapon]) {
-			for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
+	var isDC = (/dc/i).test(fields.To_Hit_Bonus), spTypeShort = isDC ? "dc" : "atk", spTypeFull = isDC ? "dc" : "attack";
+
+	// Gather some information on the weapon
+	var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText));
+	var isWeapon = !isSpell || (isSpell && theWea && !(/cantrip|spell/).test(theWea.Type));
+	var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
+	var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
+	var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
+
+	// see if this is a off-hand attack and the modToDmg shouldn't be use
+	var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText);
+	if (isOffHand) output.modToDmg = output.mod < 0;
+	// Add the off-hand attack action (only for attacks on the first page)
+	if (QI && CurrentWeapons.offHands[ArrayNmbr] !== isOffHand) {
+		CurrentWeapons.offHands[ArrayNmbr] = isOffHand;
+		SetOffHandAction();
+	}
+
+	// Run special To Hit / Damage calculation functions added by features, but only for attacks on the first page
+	if (QI && CurrentEvals.atkCalc) {
+
+		var gatherVars = {
+			WeaponText : WeaponText,
+			WeaponTextName : WeaponText.replace(" " + fields.Description, ""),
+			isDC : isDC,
+			isSpell : isSpell,
+			isWeapon : isWeapon,
+			isMeleeWeapon : isMeleeWeapon,
+			isRangedWeapon : isRangedWeapon,
+			isNaturalWeapon : isNaturalWeapon,
+			theWea : theWea,
+			WeaponName : WeaponName,
+			baseWeaponName : theWea.baseWeapon ? theWea.baseWeapon : WeaponName,
+			thisWeapon : thisWeapon,
+			isOffHand : isOffHand
 		}
-		if (aWea) for (var attr in aWea) theWea[attr] = aWea[attr];
 
-		var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText));
-		var isWeapon = !isSpell || (isSpell && theWea && !(/cantrip|spell/).test(theWea.Type));
-		var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
-		var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
-		var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
-
-		// see if this is a off-hand attack and the modToDmg shouldn't be use
-		var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText);
-		if (CurrentWeapons.offHands[ArrayNmbr] !== isOffHand) {
-			CurrentWeapons.offHands[ArrayNmbr] = isOffHand;
-			SetOffHandAction();
+		var evalsToDo = [[], [], []]; // [0] magic items, [1] feats, [2] others
+		for (var anEval in CurrentEvals.atkCalc) {
+			evalsToDo[anEval.indexOf("(magic item)") != -1 ? 0 : anEval.indexOf("(feat)") != -1 ? 1 : 2].push(anEval);
 		}
-		if (isOffHand) output.modToDmg = output.mod < 0;
-
-		//add the BlueText field value of the corresponding spellcasting class
-		var spCaster = false;
-		var abiScoreNo = tDoc.getField(fldBase + "Mod").currentValueIndices;
-		if (thisWeapon[3] && thisWeapon[4].length) {
-			var DCorHit = isDC ? "dc" : "atk";
-			var abiBonArr = thisWeapon[4].map( function(sClass) {
-				var ExtraBonus = CurrentSpells[sClass] && CurrentSpells[sClass].ability == abiScoreNo && CurrentSpells[sClass].blueTxt && CurrentSpells[sClass].blueTxt[DCorHit] ? CurrentSpells[sClass].blueTxt[DCorHit] : 0;
-				return EvalBonus(ExtraBonus, true);
-			});
-			var highestBon = Math.max.apply(Math, abiBonArr);
-			if (highestBon) {
-				spCaster = [];
-				for (var i = 0; i < abiBonArr.length; i++) {
-					if (abiBonArr[i] == highestBon) spCaster.push(thisWeapon[4][i]);
+		evalsToDo = evalsToDo[0].concat(evalsToDo[1]).concat(evalsToDo[2]);
+		for (var i = 0; i < evalsToDo.length; i++) {
+			var evalThing = CurrentEvals.atkCalc[evalsToDo[i]];
+			try {
+				if (typeof evalThing == 'string') {
+					eval(evalThing);
+				} else if (typeof evalThing == 'function') {
+					evalThing(fields, gatherVars, output);
 				}
-				output.extraHit += highestBon;
-			}
-		};
-
-		// now run the code that was added by class/race/feat
-		if (CurrentEvals.atkCalc) {
-
-			var gatherVars = {
-				WeaponText : WeaponText,
-				WeaponTextName : WeaponText.replace(" " + fields.Description, ""),
-				isDC : isDC,
-				isSpell : isSpell,
-				isWeapon : isWeapon,
-				isMeleeWeapon : isMeleeWeapon,
-				isRangedWeapon : isRangedWeapon,
-				isNaturalWeapon : isNaturalWeapon,
-				theWea : theWea,
-				WeaponName : WeaponName,
-				baseWeaponName : theWea.baseWeapon ? theWea.baseWeapon : WeaponName,
-				thisWeapon : thisWeapon,
-				isOffHand : isOffHand
-			}
-
-			var evalsToDo = [[], [], []]; // [0] magic items, [1] feats, [2] others
-			for (var anEval in CurrentEvals.atkCalc) {
-				evalsToDo[anEval.indexOf("(magic item)") != -1 ? 0 : anEval.indexOf("(feat)") != -1 ? 1 : 2].push(anEval);
-			}
-			evalsToDo = evalsToDo[0].concat(evalsToDo[1]).concat(evalsToDo[2]);
-			for (var i = 0; i < evalsToDo.length; i++) {
-				var evalThing = CurrentEvals.atkCalc[evalsToDo[i]];
-				try {
-					if (typeof evalThing == 'string') {
-						eval(evalThing);
-					} else if (typeof evalThing == 'function') {
-						evalThing(fields, gatherVars, output);
-					}
-				} catch (error) {
-					var eText = "The custom CalcAttackDmgHit/atkCalc script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
-					for (var e in error) eText += e + ": " + error[e] + ";\n ";
-					console.println(eText);
-					console.show();
-					delete CurrentEvals.atkCalc[evalsToDo[i]];
-				}
-			}
-		};
-		if (isSpell && CurrentEvals.spellCalc) {
-			// get the variables we need to pass to the function
-			var spType = isDC ? "dc" : "attack";
-			var spCasters = spCaster ? spCaster : !thisWeapon[4].length ? [] : thisWeapon[4].map( function(sClass) {
-				return CurrentSpells[sClass] && CurrentSpells[sClass].ability == abiScoreNo ? sClass : "";
-			});
-
-			var evalsToDo = [[], [], []]; // [0] magic items, [1] feats, [2] others
-			for (var anEval in CurrentEvals.spellCalc) {
-				evalsToDo[anEval.indexOf("(magic item)") != -1 ? 0 : anEval.indexOf("(feat)") != -1 ? 1 : 2].push(anEval);
-			}
-			evalsToDo = evalsToDo[0].concat(evalsToDo[1]).concat(evalsToDo[2]);
-			for (var i = 0; i < evalsToDo.length; i++) {
-				var evalThing = CurrentEvals.spellCalc[evalsToDo[i]];
-				try {
-					if (typeof evalThing == 'function') {
-						var addSpellNo = evalThing(spType, spCasters, abiScoreNo);
-						if (!isNaN(addSpellNo)) output.extraHit += Number(addSpellNo);
-					}
-				} catch (error) {
-					var eText = "The custom spell attack/DC (spellCalc) script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
-					for (var e in error) eText += e + ": " + error[e] + ";\n ";
-					console.println(eText);
-					console.show();
-					delete CurrentEvals.spellCalc[evalsToDo[i]];
-				}
+			} catch (error) {
+				var eText = "The custom CalcAttackDmgHit/atkCalc script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
+				console.println(eText);
+				console.show();
+				delete CurrentEvals.atkCalc[evalsToDo[i]];
 			}
 		}
 	};
 
+	// Add the BlueText field value of the corresponding spellcasting class
+	var spCaster = false;
+	var abiScoreNo = tDoc.getField(fldBase + "Mod").currentValueIndices;
+	if (fixedCaster) {
+		spCaster = [theWea.useSpellMod];
+		if (fixedCaster.blueTxt && fixedCaster.blueTxt[spTypeShort]) {
+			// Add the modifier bonus field for the specific caster
+			output.extraHit += EvalBonus(fixedCaster.blueTxt[spTypeShort], true);
+		}
+		if (fixedCaster && fixedCaster.abilityToUse && fixedCaster.abilityToUse[0] != abiScoreNo) {
+			// Set the ability modifier to use the modifier of the ability score
+			abiScoreNo = fixedCaster.abilityToUse[0];
+			tDoc.getField(fldBase + "Mod").currentValueIndices = abiScoreNo;
+		}
+		if (!abiScoreNo) output.mod = 0; // if ability is 0, set the modifier to 0 as well
+		if (!abiScoreNo && fixedCaster.fixedDC) {
+			// If fixedDC, we need to replace the ability modifier and proficiency bonus with the fixed value
+			// abilityToUse[0] / abiScoreNo is going to be 0, so we will only have to change the Prof
+			output.prof = fixedCaster.fixedDC - 8;
+		} else if (!QI) {
+			// If on the companion page, use the ability modifier and proficiency bonus from the main character
+			if (abiScoreNo) output.mod = Number( What( ["", "Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"][abiScoreNo] + " Mod" ) );
+			output.prof = tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) ? 0 : Number(How("Proficiency Bonus"));
+		}
+	} else if (QI && thisWeapon[3] && thisWeapon[4].length) {
+		var abiBonArr = thisWeapon[4].map( function(sClass) {
+			var ExtraBonus = CurrentSpells[sClass] && CurrentSpells[sClass].abilityToUse && CurrentSpells[sClass].abilityToUse[0] == abiScoreNo && CurrentSpells[sClass].blueTxt && CurrentSpells[sClass].blueTxt[spTypeShort] ? CurrentSpells[sClass].blueTxt[spTypeShort] : 0;
+			return EvalBonus(ExtraBonus, true);
+		});
+		var highestBon = Math.max.apply(Math, abiBonArr);
+		if (highestBon) {
+			spCaster = [];
+			for (var i = 0; i < abiBonArr.length; i++) {
+				if (abiBonArr[i] == highestBon) spCaster.push(thisWeapon[4][i]);
+			}
+			output.extraHit += highestBon;
+		}
+	};
+	// Now the spellCalc custom functions
+	if ( CurrentEvals.spellCalc &&
+		( (fixedCaster && !fixedCaster.fixedDC) || (QI && isSpell && !fixedCaster) )
+	) {
+		// get the variables we need to pass to the function
+		var spCasters = spCaster ? spCaster : !thisWeapon[4].length ? [] : thisWeapon[4].map( function(sClass) {
+			return CurrentSpells[sClass] && CurrentSpells[sClass].ability == abiScoreNo ? sClass : "";
+		});
+
+		for (var spCalc in CurrentEvals.spellCalc) { // the iteration order doesn't matter
+			var evalThing = CurrentEvals.spellCalc[spCalc];
+			try {
+				if (typeof evalThing == 'function') {
+					var addSpellNo = evalThing(spTypeFull, spCasters, abiScoreNo);
+					if (!isNaN(addSpellNo)) output.extraHit += Number(addSpellNo);
+				}
+			} catch (error) {
+				var eText = "The custom spell attack/DC (spellCalc) script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
+				console.println(eText);
+				console.show();
+				delete CurrentEvals.spellCalc[evalsToDo[i]];
+			}
+		}
+	}
+
+	// Now we parse all that information to a total
 	var dmgDie = "";
 	var dmgNum = 0;
 	var hitNum = 0;
@@ -5898,42 +6155,48 @@ function CalcAttackDmgHit(fldName) {
 	if (tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0)) isDC = false;
 	for (var out in output) {
 		switch (out) {
-		 case "modToDmg" :
-			break;
-		 case "prof" :
-			addNum(output[out], "hit");
-			break;
-		 case "extraHit" :
-			addNum(output[out], "hit");
-			break;
-		 case "extraDmg" :
-			addNum(output[out], "dmg");
-			break;
+		// The damage die
 		 case "die" :
 			dmgDie = EvalDmgDie(output[out], QI ? true : prefix);
 			break;
 		 case "mod" :
+		// Add modifier to Damage if set to do so
 			if (output.modToDmg) addNum(output[out], "dmg");
+		 case "prof" :
+		// Both modifier and proficiency are added to the To Hit
 			addNum(output[out], "hit");
 			break;
+		// Extra To Hit / Damage from custom functions
+		 case "extraHit" :
+		 case "extraDmg" :
+			addNum(output[out], out);
+			break;
+		// Bluetext/Modifier fields
 		 case "bHit" :
 			if (isDC) {
+				// Also add 8 if this is for a DC and not a forced overwrite
 				addNum(8, "hit");
 			};
 		 case "bDmg" :
-		 // if the blueText field is not a number, find the ability modifier
 			addNum(EvalBonus(output[out], QI ? true : prefix), out);
 			break;
-		 default :
+		// Add magic bonus to both To Hit and Damage
+		 case "magic" :
 			addNum(output[out]);
+			break;
+		// Ignore all the rest
+		 default :
 			break;
 		};
 	};
+	// Further modify the string for the damage die and add the damage
 	if (!isNaN(Number(dmgDie))) dmgDie = Number(dmgDie);
 	if (dmgDie && isNaN(dmgDie) && Number(dmgNum) > 0) dmgNum = "+" + dmgNum;
 	var dmgTot = dmgDie === "\u2015" || dmgDie === "-" ? dmgDie : dmgDie + (dmgNum === 0 ? "" : dmgNum);
+	// The to hit total
 	var hitTot = (isDC ? "DC " : (hitNum >= 0 ? "+" : "")) + hitNum;
 
+	// Set the values to the sheet
 	Value(fldBase + "Damage", dmgTot == 0 ? "" : dmgTot);
 	if (event.target && event.target.name && (/.*Attack.*To Hit/).test(event.target.name)) {
 		event.value = fields.Range === "With melee wea" ? "" : hitTot;
@@ -6365,9 +6628,9 @@ function AddToModFld(Fld, Mod, Remove, NameEntity, Explanation) {
 
 // add a modifier to a skill
 // addMod : {type : "save", field : "all", mod : "Cha", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws."} // this can be an array of objects, all of which will be processed
-function processMods(AddRemove, NameEntity, items) {
-	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
-	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
+function processMods(AddRemove, NameEntity, items, prefix) {
+	var QI = !prefix && (!event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1);
+	if (!prefix) prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var alphaB = Who("Text.SkillsNames") === "alphabeta";
 	if (!isArray(items)) items = [items];
 	for (var i = 0; i < items.length; i++) {
@@ -8036,9 +8299,9 @@ function setCalcOrder() {
 	cFlds.push("Proficiency Bonus");
 	// saving throws
 	for (var i = 0; i < abis.length; i++) cFlds.push(abis[i]+" ST Mod");
-	// skills & initiative
+	// skills & initiative * HP
 	cFlds = cFlds.concat(skills);
-	cFlds = cFlds.concat(["Too", "Passive Perception", "Initiative bonus"]);
+	cFlds = cFlds.concat(["Too", "Passive Perception", "Initiative bonus", "HP Max"]);
 	if (!typePF) cFlds.push("Init Dex Mod");
 	// AC
 	cFlds = cFlds.concat(["AC Armor Bonus", "AC Dexterity Modifier", "AC"]);
@@ -8075,6 +8338,8 @@ function setCalcOrder() {
 		// companion skills
 		for (var i = 0; i < skills.length; i++) cFlds.push(tpl+"Comp.Use.Skills."+skills[i]+".Mod");
 		cFlds.push(tpl+"Comp.Use.Skills.Perc.Pass.Mod");
+		// companion HP
+		cFlds.push(tpl+"Comp.Use.HP.Max");
 		// companion initiative
 		cFlds.push(tpl+"Comp.Use.Combat.Init.Mod");
 		if (!typePF) cFlds.push(tpl+"Comp.Use.Combat.Init.Dex");

@@ -2,10 +2,10 @@ var Base_CreatureList = {
 	// The four elementals (for Druid Wild Shape)
 	"air elemental" : {
 		name : "Air Elemental",
+		nameAlt : ["Elemental, Air"],
 		source : [["SRD", 305], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
-		subtype : "",
 		alignment : "Neutral",
 		ac : 15,
 		hp : 90,
@@ -49,10 +49,10 @@ var Base_CreatureList = {
 	},
 	"earth elemental" : {
 		name : "Earth Elemental",
+		nameAlt : ["Elemental, Earth"],
 		source : [["SRD", 306], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
-		subtype : "",
 		alignment : "Neutral",
 		ac : 17,
 		hp : 126,
@@ -88,10 +88,10 @@ var Base_CreatureList = {
 	},
 	"fire elemental" : {
 		name : "Fire Elemental",
+		nameAlt : ["Elemental, Fire"],
 		source : [["SRD", 306], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
-		subtype : "",
 		alignment : "Neutral",
 		ac : 13,
 		hp : 102,
@@ -129,10 +129,10 @@ var Base_CreatureList = {
 	},
 	"water elemental" : {
 		name : "Water Elemental",
+		nameAlt : ["Elemental, Water"],
 		source : [["SRD", 307], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
-		subtype : "",
 		alignment : "Neutral",
 		ac : 14,
 		hp : 114,
@@ -184,7 +184,6 @@ var Base_CreatureList = {
 		source : [["SRD", 279], ["M", 79]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 68,
@@ -219,7 +218,6 @@ var Base_CreatureList = {
 		source : [["SRD", 279], ["M", 79]],
 		size : 1, //Huge
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 95,
@@ -253,10 +251,10 @@ var Base_CreatureList = {
 	},
 	"tyrannosaurus rex" : {
 		name : "Tyrannosaurus Rex",
+		nameAlt : ["T-Rex"],
 		source : [["SRD", 279], ["M", 79]],
 		size : 1, //Huge
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 136,
@@ -297,7 +295,6 @@ var Base_CreatureList = {
 		source : [["SRD", 318], ["M", 174]],
 		size : 2, //Large
 		type : "Monstrosity",
-		subtype : "",
 		companion : "steed",
 		alignment : "Unaligned",
 		ac : 12,
@@ -338,7 +335,6 @@ var Base_CreatureList = {
 		source : [["SRD", 322], ["M", 184]],
 		size : 2, //Large
 		type : "Monstrosity",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 19,
@@ -378,7 +374,6 @@ var Base_CreatureList = {
 		source : [["SRD", 336], ["M", 235]],
 		size : 2, //Large
 		type : "Fiend",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 13,
 		hp : 68,
@@ -417,7 +412,6 @@ var Base_CreatureList = {
 		source : [["SRD", 339], ["M", 249]],
 		size : 2, //Large
 		type : "Monstrosity",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 59,
@@ -457,7 +451,6 @@ var Base_CreatureList = {
 		source : [["SRD", 340], ["M", 250]],
 		size : 2, //Large
 		type : "Celestial",
-		subtype : "",
 		companion : "steed",
 		alignment : "Chaotic Good",
 		ac : 12,
@@ -489,7 +482,6 @@ var Base_CreatureList = {
 		source : [["SRD", 322], ["M", 188]],
 		size : 5,
 		type : "Construct",
-		subtype : "",
 		alignment : "Neutral",
 		ac : 13,
 		hp : 5,
@@ -575,10 +567,10 @@ var Base_CreatureList = {
 	},
 	"pseudodragon" : {
 		name : "Pseudodragon",
+		nameAlt : ["Dragon, Pseudo"],
 		source : [["SRD", 340], ["M", 254]],
 		size : 5, //Tiny
 		type : "Dragon",
-		subtype : "",
 		companion : "pact_of_the_chain",
 		alignment : "Neutral Good",
 		ac : 13,
@@ -689,7 +681,6 @@ var Base_CreatureList = {
 		source : [["SRD", 345], ["M", 271]],
 		size : 2, //Large
 		type : "Construct",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 17,
 		hp : 142,
@@ -733,7 +724,6 @@ var Base_CreatureList = {
 		source : [["SRD", 348], ["M", 283]],
 		size : 5, //Tiny
 		type : "Fey",
-		subtype : "",
 		companion : "pact_of_the_chain",
 		alignment : "Neutral Good",
 		ac : 15,
@@ -788,7 +778,6 @@ var Base_CreatureList = {
 		source : [["SRD", 311], ["M", 148]],
 		size : 3, //Medium
 		type : "Undead",
-		subtype : "",
 		alignment : "Chaotic Evil",
 		ac : 12,
 		hp : 36,
@@ -833,7 +822,6 @@ var Base_CreatureList = {
 		source : [["SRD", 312], ["M", 148]],
 		size : 3, //Medium
 		type : "Undead",
-		subtype : "",
 		alignment : "Chaotic Evil",
 		ac : 12,
 		hp : 22,
@@ -870,7 +858,6 @@ var Base_CreatureList = {
 		source : [["SRD", 333], ["M", 228]],
 		size : 3, //Medium
 		type : "Undead",
-		subtype : "",
 		alignment : "Lawful Evil",
 		ac : 11,
 		hp : 58,
@@ -921,7 +908,6 @@ var Base_CreatureList = {
 		source : [["SRD", 344], ["M", 269]],
 		size : 3, //Medium
 		type : "Undead",
-		subtype : "",
 		alignment : "chaotic evil",
 		ac : 12,
 		hp : 16,
@@ -964,12 +950,12 @@ var Base_CreatureList = {
 			description : "A target of the shadows' strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later."
 		}],
 	},
-	"skeleton" : { // "Skeleton (humanoid)" entry so that just "skeleton" also matches this entry
+	"skeleton (humanoid)" : {
 		name : "Skeleton (humanoid)",
+		nameAlt : ["Skeleton"],
 		source : [["SRD", 346], ["M", 272]],
 		size : 3, //Medium
 		type : "Undead",
-		subtype : "",
 		alignment : "lawful evil",
 		ac : 13,
 		hp : 13,
@@ -1005,7 +991,6 @@ var Base_CreatureList = {
 		source : [["SRD", 346], ["M", 273]],
 		size : 2, //Large
 		type : "Undead",
-		subtype : "",
 		alignment : "Lawful Evil",
 		ac : 13,
 		hp : 22,
@@ -1032,10 +1017,10 @@ var Base_CreatureList = {
 	},
 	"specter" : {
 		name : "Specter",
+		nameAlt : ["Spectre"],
 		source : [["SRD", 346], ["M", 279]],
 		size : 3, //Medium
 		type : "Undead",
-		subtype : "",
 		alignment : "Chaotic Evil",
 		ac : 12,
 		hp : 22,
@@ -1077,7 +1062,6 @@ var Base_CreatureList = {
 		source : [["SRD", 354], ["M", 300]],
 		size : 3, //Medium
 		type : "Undead",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 14,
 		hp : 45,
@@ -1128,7 +1112,6 @@ var Base_CreatureList = {
 		source : [["SRD", 356], ["M", 316]],
 		size : 3, //Medium
 		type : "Undead",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 8,
 		hp : 22,
@@ -1158,10 +1141,10 @@ var Base_CreatureList = {
 	},
 	"ogre zombie" : {
 		name : "Ogre Zombie",
+		nameAlt : ["Zombie, Ogre"],
 		source : [["SRD", 357], ["M", 316]],
 		size : 2, //Large
 		type : "Undead",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 8,
 		hp : 85,
@@ -1195,7 +1178,6 @@ var Base_CreatureList = {
 		source : [["SRD", 309], ["M", 138]],
 		size : 3, //Medium
 		type : "Plant",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 5,
 		hp : 13,
@@ -1226,7 +1208,6 @@ var Base_CreatureList = {
 		source : [["SRD", 309], ["M", 138]],
 		size : 3, //Medium
 		type : "Plant",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 5,
 		hp : 18,
@@ -1259,7 +1240,6 @@ var Base_CreatureList = {
 		source : [["SRD", 366], ["M", 317]],
 		size : 4, //Small
 		type : "Plant",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 9,
 		hp : 10,
@@ -1292,7 +1272,6 @@ var Base_CreatureList = {
 		source : [["SRD", 366], ["M", 317]],
 		size : 1, //Huge
 		type : "Plant",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 59,
@@ -1326,7 +1305,6 @@ var Base_CreatureList = {
 		source : [["SRD", 330], ["M", 215]],
 		size : 5, //Tiny
 		type : "Elemental",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 12,
 		hp : 17,
@@ -1379,7 +1357,6 @@ var Base_CreatureList = {
 		source : [["SRD", 331], ["M", 215]],
 		size : 4, //Small
 		type : "Elemental",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 11,
 		hp : 21,
@@ -1436,7 +1413,6 @@ var Base_CreatureList = {
 		source : [["SRD", 331], ["M", 216]],
 		size : 4, //Small
 		type : "Elemental",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 11,
 		hp : 22,
@@ -1492,7 +1468,6 @@ var Base_CreatureList = {
 		source : [["SRD", 331], ["M", 216]],
 		size : 5, //Tiny
 		type : "Elemental",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 11,
 		hp : 27,
@@ -1543,7 +1518,6 @@ var Base_CreatureList = {
 		source : [["SRD", 331], ["M", 217]],
 		size : 4, //Small
 		type : "Elemental",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 12,
 		hp : 22,
@@ -1595,7 +1569,6 @@ var Base_CreatureList = {
 		source : [["SRD", 331], ["M", 217]],
 		size : 4, //Small
 		type : "Elemental",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 10,
 		hp : 21,
@@ -1644,7 +1617,6 @@ var Base_CreatureList = {
 		source : [["SRD", 366], ["M", 317]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		companion : "companion",
 		alignment : "Unaligned",
 		ac : 12,
@@ -1682,7 +1654,6 @@ var Base_CreatureList = {
 		source : [["SRD", 366], ["M", 317]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 19,
@@ -1709,7 +1680,6 @@ var Base_CreatureList = {
 		source : [["SRD", 367], ["M", 318]],
 		size : 4, //Small
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 3,
@@ -1740,7 +1710,6 @@ var Base_CreatureList = {
 		source : [["SRD", 367], ["M", 318]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 3,
@@ -1771,7 +1740,6 @@ var Base_CreatureList = {
 		source : [["SRD", 367], ["M", 318]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 12,
@@ -1804,10 +1772,10 @@ var Base_CreatureList = {
 	},
 	"black bear" : {
 		name : "Black Bear",
+		nameAlt : ["Bear, Black"],
 		source : [["SRD", 367], ["M", 318]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		companion : "companion",
 		alignment : "Unaligned",
 		ac : 11,
@@ -1848,7 +1816,6 @@ var Base_CreatureList = {
 		source : [["SRD", 368], ["M", 318]],
 		size : 3, //Medium
 		type : "Fey",
-		subtype : "",
 		alignment : "Lawful Good",
 		ac : 13,
 		hp : 22,
@@ -1887,7 +1854,6 @@ var Base_CreatureList = {
 		source : [["SRD", 368], ["M", 319]],
 		size : 4, //Small
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 7,
@@ -1924,7 +1890,6 @@ var Base_CreatureList = {
 		source : [["SRD", 368], ["M", 319]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		companion : "companion",
 		alignment : "Unaligned",
 		ac : 11,
@@ -1956,10 +1921,10 @@ var Base_CreatureList = {
 	},
 	"brown bear" : {
 		name : "Brown Bear",
+		nameAlt : ["Bear, Brown"],
 		source : [["SRD", 369], ["M", 319]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 34,
@@ -1999,7 +1964,6 @@ var Base_CreatureList = {
 		source : [["SRD", 369], ["M", 320]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		companion : "mount",
 		alignment : "Unaligned",
 		ac : 9,
@@ -2028,7 +1992,6 @@ var Base_CreatureList = {
 		source : [["SRD", 369], ["M", 320]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 12,
@@ -2062,10 +2025,10 @@ var Base_CreatureList = {
 	},
 	"cave bear" : {
 		name : "Cave Bear",
+		nameAlt : ["Bear, Cave"],
 		source : [["SRD", 369], ["M", 334]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 42,
@@ -2105,7 +2068,6 @@ var Base_CreatureList = {
 		source : [["SRD", 369], ["M", 320]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 13,
@@ -2138,7 +2100,6 @@ var Base_CreatureList = {
 		source : [["SRD", 370], ["M", 320]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 11,
@@ -2174,7 +2135,6 @@ var Base_CreatureList = {
 		source : [["SRD", 370], ["M", 320]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 19,
@@ -2208,7 +2168,6 @@ var Base_CreatureList = {
 		source : [["SRD", 370], ["M", 321]],
 		size : 3, //Medium
 		type : "Monstrosity",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 39,
@@ -2247,7 +2206,6 @@ var Base_CreatureList = {
 		source : [["SRD", 370], ["M", 321]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 4,
@@ -2274,7 +2232,6 @@ var Base_CreatureList = {
 		source : [["SRD", 371], ["M", 321]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		companion : "steed",
 		alignment : "Unaligned",
 		ac : 14,
@@ -2313,7 +2270,6 @@ var Base_CreatureList = {
 		source : [["SRD", 371], ["M", 321]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 19,
@@ -2340,7 +2296,6 @@ var Base_CreatureList = {
 		source : [["SRD", 371], ["M", 322]],
 		size : 4, //Small
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 3,
@@ -2374,7 +2329,6 @@ var Base_CreatureList = {
 		source : [["SRD", 371], ["M", 322]],
 		size : 1, //Huge
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 76,
@@ -2411,7 +2365,6 @@ var Base_CreatureList = {
 		source : [["SRD", 372], ["M", 322]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		companion : "mount",
 		alignment : "Unaligned",
 		ac : 10,
@@ -2449,7 +2402,6 @@ var Base_CreatureList = {
 		source : [["SRD", 372], ["M", 322]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 5,
@@ -2478,10 +2430,10 @@ var Base_CreatureList = {
 	},
 	"frog" : {
 		name : "Frog",
+		nameAlt : ["Toad"],
 		source : [["SRD", 372], ["M", 322]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 11,
@@ -2503,10 +2455,10 @@ var Base_CreatureList = {
 		attacks : [],
 		traits : [{
 			name : "Amphibious",
-			description : "The frog can breathe air and water"
+			description : "The [THIS] can breathe air and water"
 		}, {
 			name : "Standing Leap",
-			description : "The frog's long jump is up to 10 ft and its high jump is up to 5 ft, with or without a running start."
+			description : "The [THIS]'s long jump is up to 10 ft and its high jump is up to 5 ft, with or without a running start."
 		}]
 	},
 	"giant ape" : {
@@ -2514,7 +2466,6 @@ var Base_CreatureList = {
 		source : [["SRD", 373], ["M", 323]],
 		size : 1, //Huge
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 157,
@@ -2551,7 +2502,6 @@ var Base_CreatureList = {
 		source : [["SRD", 373], ["M", 323]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		companion : "companion",
 		alignment : "Unaligned",
 		ac : 10,
@@ -2589,7 +2539,6 @@ var Base_CreatureList = {
 		source : [["SRD", 373], ["M", 323]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 22,
@@ -2623,7 +2572,6 @@ var Base_CreatureList = {
 		source : [["SRD", 373], ["M", 323]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 42,
@@ -2657,7 +2605,6 @@ var Base_CreatureList = {
 		source : [["SRD", 374], ["M", 323]],
 		size : 4, //Small
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 4,
@@ -2688,7 +2635,6 @@ var Base_CreatureList = {
 		source : [["SRD", 374], ["M", 324]],
 		size : 1, //Huge
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 60,
@@ -2724,7 +2670,6 @@ var Base_CreatureList = {
 		source : [["SRD", 374], ["M", 324]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 15,
 		hp : 13,
@@ -2758,7 +2703,6 @@ var Base_CreatureList = {
 		source : [["SRD", 374], ["M", 324]],
 		size : 1, //Huge
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 85,
@@ -2801,7 +2745,6 @@ var Base_CreatureList = {
 		source : [["SRD", 375], ["M", 324]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Neutral Good",
 		ac : 13,
 		hp : 26,
@@ -2841,7 +2784,6 @@ var Base_CreatureList = {
 		source : [["SRD", 375], ["M", 325]],
 		size : 1, //Huge
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 15,
 		hp : 42,
@@ -2881,7 +2823,6 @@ var Base_CreatureList = {
 		source : [["SRD", 222], ["D", 169]],
 		size : 2,
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 19,
@@ -2902,7 +2843,6 @@ var Base_CreatureList = {
 		source : [["SRD", 375], ["M", 325]],
 		size : 4, //Small
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 4,
@@ -2933,7 +2873,6 @@ var Base_CreatureList = {
 		source : [["SRD", 376], ["M", 325]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 18,
@@ -2975,7 +2914,6 @@ var Base_CreatureList = {
 		source : [["SRD", 376], ["M", 326]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 19,
@@ -3009,7 +2947,6 @@ var Base_CreatureList = {
 		source : [["SRD", 376], ["M", 326]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 45,
@@ -3043,7 +2980,6 @@ var Base_CreatureList = {
 		source : [["SRD", 377], ["M", 326]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 19,
@@ -3077,7 +3013,6 @@ var Base_CreatureList = {
 		source : [["SRD", 377], ["M", 326]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 52,
@@ -3123,7 +3058,6 @@ var Base_CreatureList = {
 		source : [["SRD", 377], ["M", 327]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Neutral",
 		ac : 12,
 		hp : 19,
@@ -3161,7 +3095,6 @@ var Base_CreatureList = {
 		source : [["SRD", 378], ["M", 327]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 11,
@@ -3191,7 +3124,6 @@ var Base_CreatureList = {
 		source : [["SRD", 378], ["M", 327]],
 		size : 4, //Small
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 7,
@@ -3225,7 +3157,6 @@ var Base_CreatureList = {
 		source : [["SRD", 378], ["M", 327]],
 		size : 4, //Small
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 7,
@@ -3256,7 +3187,6 @@ var Base_CreatureList = {
 		source : [["SRD", 378], ["M", 327]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 15,
 		hp : 52,
@@ -3293,7 +3223,6 @@ var Base_CreatureList = {
 		source : [["SRD", 378], ["M", 328]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 16,
@@ -3327,7 +3256,6 @@ var Base_CreatureList = {
 		source : [["SRD", 379], ["M", 328]],
 		size : 1, //Huge
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 126,
@@ -3364,7 +3292,6 @@ var Base_CreatureList = {
 		source : [["SRD", 379], ["M", 328]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 26,
@@ -3420,7 +3347,6 @@ var Base_CreatureList = {
 		source : [["SRD", 380], ["M", 329]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 39,
@@ -3458,7 +3384,6 @@ var Base_CreatureList = {
 		source : [["SRD", 380], ["M", 329]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 10,
 		hp : 22,
@@ -3503,7 +3428,6 @@ var Base_CreatureList = {
 		source : [["SRD", 380], ["M", 329]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 13,
@@ -3534,7 +3458,6 @@ var Base_CreatureList = {
 		source : [["SRD", 381], ["M", 329]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		companion : "companion",
 		alignment : "Unaligned",
 		ac : 13,
@@ -3570,7 +3493,6 @@ var Base_CreatureList = {
 		source : [["SRD", 381], ["M", 330]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 11,
@@ -3615,7 +3537,6 @@ var Base_CreatureList = {
 		source : [["SRD", 381], ["M", 330]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 4,
@@ -3646,10 +3567,10 @@ var Base_CreatureList = {
 	},
 	"hawk" : {
 		name : "Hawk",
-		source : [["SRD", 382], ["M", 330]],
+		nameAlt : ["Falcon"],
+		source : [["SRD", 382], ["M", 330], ["WDH", 53]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 13,
@@ -3677,7 +3598,7 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Keen Sight",
-			description : "The hawk has advantage on Wisdom (Perception) checks that rely on sight."
+			description : "The [THIS] has advantage on Wisdom (Perception) checks that rely on sight."
 		}]
 	},
 	"hunter shark" : {
@@ -3685,7 +3606,6 @@ var Base_CreatureList = {
 		source : [["SRD", 382], ["M", 330]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 45,
@@ -3722,7 +3642,6 @@ var Base_CreatureList = {
 		source : [["SRD", 382], ["M", 331]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 5,
@@ -3756,7 +3675,6 @@ var Base_CreatureList = {
 		source : [["SRD", 382], ["M", 331]],
 		size : 4, //Small
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 3,
@@ -3793,7 +3711,6 @@ var Base_CreatureList = {
 		source : [["SRD", 383], ["M", 331]],
 		size : 1, //Huge
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 90,
@@ -3833,7 +3750,6 @@ var Base_CreatureList = {
 		source : [["SRD", 383], ["M", 331]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 26,
@@ -3884,7 +3800,6 @@ var Base_CreatureList = {
 		source : [["SRD", 383], ["M", 332]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 10,
@@ -3913,7 +3828,6 @@ var Base_CreatureList = {
 		source : [["SRD", 384], ["M", 332]],
 		size : 1, //Huge
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 126,
@@ -3950,7 +3864,6 @@ var Base_CreatureList = {
 		source : [["SRD", 384], ["M", 332]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		companion : "mount",
 		alignment : "Unaligned",
 		ac : 12,
@@ -3985,7 +3898,6 @@ var Base_CreatureList = {
 		source : [["SRD", 384], ["M", 333]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		companion : "companion",
 		alignment : "Unaligned",
 		ac : 10,
@@ -4020,7 +3932,6 @@ var Base_CreatureList = {
 		source : [["SRD", 384], ["M", 333]],
 		size : 4, //Small
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 12,
@@ -4064,7 +3975,6 @@ var Base_CreatureList = {
 		source : [["SRD", 385], ["M", 333]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 11,
@@ -4104,7 +4014,6 @@ var Base_CreatureList = {
 		source : [["SRD", 385], ["M", 333]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		companion : "companion",
 		alignment : "Unaligned",
 		ac : 12,
@@ -4149,7 +4058,6 @@ var Base_CreatureList = {
 		source : [["SRD", 386], ["M", 334]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 13,
@@ -4175,10 +4083,10 @@ var Base_CreatureList = {
 	},
 	"polar bear" : {
 		name : "Polar Bear",
+		nameAlt : ["Bear, Polar"],
 		source : [["SRD", 386], ["M", 334]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 42,
@@ -4218,7 +4126,6 @@ var Base_CreatureList = {
 		source : [["SRD", 386], ["M", 335]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		companion : "mount",
 		alignment : "Unaligned",
 		ac : 10,
@@ -4246,7 +4153,6 @@ var Base_CreatureList = {
 		source : [["SRD", 387], ["M", 335]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 13,
@@ -4282,7 +4188,6 @@ var Base_CreatureList = {
 		source : [["SRD", 387], ["M", 335]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 10,
@@ -4307,15 +4212,15 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Keen Smell",
-			description : "The rat has advantage on Wisdom (Perception) checks that rely on smell."
+			description : "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell."
 		}]
 	},
 	"raven" : {
 		name : "Raven",
-		source : [["SRD", 387], ["M", 335]],
+		nameAlt : ["Crow"],
+		source : [["SRD", 387], ["M", 335], ["WDotMM", 302]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 12,
@@ -4343,7 +4248,7 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Mimicry",
-			description : "The raven can mimic simple sounds it has heard, such as a person whispering, a baby crying, or an animal chittering. A creature that hears the sounds can tell they are imitations with a successful DC 10 Wisdom (Insight) check."
+			description : "The [THIS] can mimic simple sounds it has heard, such as a person whispering, a baby crying, or an animal chittering. A creature that hears the sounds can tell they are imitations with a successful DC 10 Wisdom (Insight) check."
 		}]
 	},
 	"reef shark" : {
@@ -4351,7 +4256,6 @@ var Base_CreatureList = {
 		source : [["SRD", 387], ["M", 336]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 22,
@@ -4388,7 +4292,6 @@ var Base_CreatureList = {
 		source : [["SRD", 388], ["M", 336]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		companion : "steed",
 		alignment : "Unaligned",
 		ac : 11,
@@ -4415,12 +4318,12 @@ var Base_CreatureList = {
 			description : "If the rhinoceros moves at least 20 ft straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) bludgeoning damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone."
 		}]
 	},
-	"horse" : { // "Riding Horse" entry, so that both "horse" and "riding horse" match this creature
+	"riding horse" : {
 		name : "Riding Horse",
+		nameAlt : ["Horse"],
 		source : [["SRD", 388], ["M", 336]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 13,
@@ -4447,7 +4350,6 @@ var Base_CreatureList = {
 		source : [["SRD", 388], ["M", 336]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		companion : "steed",
 		alignment : "Unaligned",
 		ac : 12,
@@ -4494,7 +4396,6 @@ var Base_CreatureList = {
 		source : [["SRD", 388], ["M", 337]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 1,
@@ -4521,7 +4422,6 @@ var Base_CreatureList = {
 		source : [["SRD", 389], ["M", 337]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 11,
@@ -4547,7 +4447,6 @@ var Base_CreatureList = {
 		source : [["SRD", 389], ["M", 337]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 12,
@@ -4590,7 +4489,6 @@ var Base_CreatureList = {
 		source : [["SRD", 349], ["M", 284]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 14,
 		hp : 2,
@@ -4621,7 +4519,6 @@ var Base_CreatureList = {
 		source : [["SRD", 391], ["M", 339]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 37,
@@ -4662,10 +4559,10 @@ var Base_CreatureList = {
 	},
 	"vulture" : {
 		name : "Vulture",
-		source : [["SRD", 392], ["M", 339]],
+		nameAlt : ["Peacock"],
+		source : [["SRD", 392], ["M", 339], ["DiA", 195]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 5,
@@ -4691,10 +4588,10 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Keen Sight and Smell",
-			description : "The vulture has advantage on Wisdom (Perception) checks that rely on sight or smell."
+			description : "The [THIS] has advantage on Wisdom (Perception) checks that rely on sight or smell."
 		}, {
 			name : "Pack Tactics",
-			description : "The vulture has advantage on an attack roll against a creature if at least one of the vulture's allies is within 5 ft of the creature and the ally isn't incapacitated."
+			description : "The [THIS] has advantage on an attack roll against a creature if at least one of the [THIS]'s allies is within 5 ft of the creature and the ally isn't incapacitated."
 		}]
 	},
 	"warhorse" : {
@@ -4702,7 +4599,6 @@ var Base_CreatureList = {
 		source : [["SRD", 392], ["M", 340]],
 		size : 2, //Large
 		type : "Beast",
-		subtype : "",
 		companion : "mount",
 		alignment : "Unaligned",
 		ac : 11,
@@ -4734,7 +4630,6 @@ var Base_CreatureList = {
 		source : [["SRD", 392], ["M", 340]],
 		size : 5, //Tiny
 		type : "Beast",
-		subtype : "",
 		companion : "familiar",
 		alignment : "Unaligned",
 		ac : 13,
@@ -4771,7 +4666,6 @@ var Base_CreatureList = {
 		source : [["SRD", 393], ["M", 341]],
 		size : 3, //Medium
 		type : "Beast",
-		subtype : "",
 		companion : "companion",
 		alignment : "Unaligned",
 		ac : 13,
@@ -4810,7 +4704,6 @@ var Base_CreatureList = {
 		source : [["SRD", 393], ["M", 341]],
 		size : 2, //Large
 		type : "Monstrosity",
-		subtype : "",
 		alignment : "Neutral Evil",
 		ac : 13,
 		hp : 26,

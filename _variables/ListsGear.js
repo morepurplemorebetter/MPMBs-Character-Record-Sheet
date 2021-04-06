@@ -431,6 +431,8 @@ var Base_WeaponsList = {
 		range : "Melee",
 		weight : 6,
 		description : "Reach, disadvantage to attack within 5 ft, two-handed when not mounted",
+		tooltip : "Special: I have disadvantage when I use a lance to attack a target within 5 feet. Also, a lance requires two hands to wield when I'm not mounted.",
+		special : true,
 		abilitytodamage : true
 	},
 	"longsword" : {
@@ -644,6 +646,8 @@ var Base_WeaponsList = {
 		range : "5/15 ft",
 		weight : 3,
 		description : "Thrown, only 1 attack, up to large creature hit is restrained (PHB 148)",
+		tooltip : "Special: A Large or smaller creature hit by a net is restrained until it is freed. A net has no effect on creatures that are formless, or creatures that are Huge or larger. A creature can use its action to make a DC 10 Strength check, freeing itself or another creature within its reach on a success. Dealing 5 slashing damage to the net (AC 10) also frees the creature without harming it, ending the effect and destroying the net. When I use an action, bonus action, or reaction to attack with a net, I can make only one attack regardless of the number of attacks I can normally make.",
+		special : true,
 		abilitytodamage : false
 	},
 	// Improvised Weapons

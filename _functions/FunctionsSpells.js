@@ -192,8 +192,8 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 			try {
 				didChange = theFunct(theSpl, aSpell, aCast ? theCast : "", noOverrides ? true : false);
 			} catch (error) {
-				var eText = "The custom function for changing spell attributes from '" + aFunct + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
-				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				var eText = "The custom function for changing spell attributes from '" + aFunct + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
 				delete CurrentEvals.spellAdd[aFunct];
@@ -767,8 +767,8 @@ function CalcSpellScores() {
 					}
 				}
 			} catch (error) {
-				var eText = "The custom spell attack/DC (spellCalc) script from '" + spCalc + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
-				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				var eText = "The custom spell attack/DC (spellCalc) script from '" + spCalc + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
 				delete CurrentEvals.spellCalc[spCalc];
@@ -945,8 +945,8 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 					throw "Not a function";
 				}
 			} catch (error) {
-				var eText = "The custom calcChange.spellList function '" + spellListEval + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
-				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				var eText = "The custom calcChange.spellList function '" + spellListEval + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
 				delete CurrentEvals.spellList[spellListEval];

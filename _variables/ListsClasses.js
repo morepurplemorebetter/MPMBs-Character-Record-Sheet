@@ -200,9 +200,12 @@ var Base_ClassList = {
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 11,
 				description : " [DC 10 + 5 per try, per short rest]" + "\n   " + "If I drop to 0 HP while raging, I can make a DC 10 Constitution save to stay at 1 HP" + "\n   " + "The DC increases by 5 for every attempt until I finish a short or long rest",
-				recovery : "short rest",
-				usages : "",
-				usagescalc : "var FieldNmbr = parseFloat(event.target.name.slice(-2)); var usages = What('Limited Feature Used ' + FieldNmbr); var DCmod = Number(usages) * 5; event.value = (isNaN(Number(usages)) || usages === '') ? 'DC\u2003\u2003' : 'DC ' + Number(10 + DCmod);"
+				extraLimitedFeatures : [{
+					name : "Relentless Rage",
+					usages : 1,
+					recovery : "short rest",
+					usagescalc : "var FieldNmbr = parseFloat(event.target.name.slice(-2)); var usages = What('Limited Feature Used ' + FieldNmbr); var DCmod = Number(usages) * 5; event.value = (isNaN(Number(usages)) || usages === '') ? 'DC\u2003\u2003' : 'DC ' + Number(10 + DCmod);"
+				}]
 			},
 			"persistent rage" : {
 				name : "Persistent Rage",
@@ -1901,6 +1904,7 @@ var Base_ClassList = {
 					name : "Agonizing Blast",
 					description : "\n   " + "I can add my Charisma modifier to every hit with my Eldritch Blast cantrip",
 					source : [["SRD", 48], ["P", 110]],
+					submenu : "[improves Eldritch Blast]",
 					prereqeval : function(v) { return v.hasEldritchBlast; },
 					calcChanges : {
 						atkCalc : [
@@ -1944,6 +1948,7 @@ var Base_ClassList = {
 					name : "Ascendant Step",
 					description : "\n   " + "I can cast Levitate on myself at will, without using a spell slot or material components",
 					source : [["SRD", 48], ["P", 110]],
+					submenu : "[warlock level  9+]",
 					spellcastingBonus : {
 						name : "Ascendant Step",
 						spells : ["levitate"],
@@ -1982,6 +1987,7 @@ var Base_ClassList = {
 					name : "Bewitching Whispers",
 					description : "\n   " + "Once per long rest, I can cast Compulsion using a warlock spell slot",
 					source : [["SRD", 48], ["P", 110]],
+					submenu : "[warlock level  7+]",
 					usages : 1,
 					recovery : "long rest",
 					spellcastingBonus : {
@@ -2001,6 +2007,7 @@ var Base_ClassList = {
 						"I can cast my known warlock spells as rituals if they have the ritual tag"
 					]),
 					source : [["SRD", 48], ["P", 110]],
+					submenu : "[improves Pact of the Tome]",
 					eval : function() {
 						CurrentSpells['warlock-book of ancient secrets'] = {
 							name : 'Book of Ancient Secrets',
@@ -2044,6 +2051,7 @@ var Base_ClassList = {
 					name : "Chains of Carceri",
 					description : "\n   " + "I can cast Hold Monster at will if the target is a celestial, fiend, or elemental" + "\n   " + "This uses no spell slots/material comp.; I can only target an individual once per long rest",
 					source : [["SRD", 49], ["P", 110]],
+					submenu : "[improves Pact of the Chain]",
 					spellcastingBonus : {
 						name : "Chains of Carceri",
 						spells : ["hold monster"],
@@ -2070,6 +2078,7 @@ var Base_ClassList = {
 					name : "Dreadful Word",
 					description : "\n   " + "Once per long rest, I can cast Confusion using a warlock spell slot",
 					source : [["SRD", 49], ["P", 110]],
+					submenu : "[warlock level  7+]",
 					usages : 1,
 					recovery : "long rest",
 					spellcastingBonus : {
@@ -2095,6 +2104,7 @@ var Base_ClassList = {
 					name : "Eldritch Spear",
 					description : "\n   " + "My Eldritch Blast cantrip has a range of 300 ft",
 					source : [["SRD", 49], ["P", 111]],
+					submenu : "[improves Eldritch Blast]",
 					prereqeval : function(v) { return v.hasEldritchBlast; },
 					calcChanges : {
 						atkAdd : [
@@ -2144,6 +2154,7 @@ var Base_ClassList = {
 					name : "Lifedrinker",
 					description : "\n   " + "My pact weapon does extra necrotic damage equal to my Charisma modifier",
 					source : [["SRD", 49], ["P", 111]],
+					submenu : "[improves Pact of the Blade]",
 					calcChanges : {
 						atkAdd : [
 							function (fields, v) {
@@ -2174,6 +2185,7 @@ var Base_ClassList = {
 					name : "Master of Myriad Forms",
 					description : "\n   " + "I can cast Alter Self at will, without using a spell slot",
 					source : [["SRD", 49], ["P", 111]],
+					submenu : "[warlock level 15+]",
 					spellcastingBonus : {
 						name : "Mask of Myriad Forms",
 						spells : ["alter self"],
@@ -2186,6 +2198,7 @@ var Base_ClassList = {
 					name : "Minions of Chaos",
 					description : "\n   " + "Once per long rest, I can cast Conjure Elemental using a warlock spell slot",
 					source : [["SRD", 49], ["P", 111]],
+					submenu : "[warlock level  9+]",
 					usages : 1,
 					recovery : "long rest",
 					spellcastingBonus : {
@@ -2200,6 +2213,7 @@ var Base_ClassList = {
 					name : "Mire the Mind",
 					description : "\n   " + "Once per long rest, I can cast Slow using a warlock spell slot",
 					source : [["SRD", 49], ["P", 111]],
+					submenu : "[warlock level  5+]",
 					usages : 1,
 					recovery : "long rest",
 					spellcastingBonus : {
@@ -2232,6 +2246,7 @@ var Base_ClassList = {
 					name : "One with Shadows",
 					description : "\n   " + "As an action, when I'm in an area of dim light or darkness, I can become invisible" + "\n   " + "I become visible again when I move or take an action or reaction",
 					source : [["SRD", 49], ["P", 111]],
+					submenu : "[warlock level  5+]",
 					action : ["action", ""],
 					prereqeval : function(v) { return classes.known.warlock.level >= 5; }
 				},
@@ -2239,6 +2254,7 @@ var Base_ClassList = {
 					name : "Otherworldly Leap",
 					description : "\n   " + "I can cast Jump on myself at will, without using a spell slot or material components",
 					source : [["SRD", 49], ["P", 111]],
+					submenu : "[warlock level  9+]",
 					spellcastingBonus : {
 						name : "Otherworldly Leap",
 						spells : ["jump"],
@@ -2260,6 +2276,7 @@ var Base_ClassList = {
 					name : "Repelling Blast",
 					description : "\n   " + "I can have creatures hit by my Eldritch Blast cantrip be pushed 10 ft away from me",
 					source : [["SRD", 49], ["P", 111]],
+					submenu : "[improves Eldritch Blast]",
 					prereqeval : function(v) { return v.hasEldritchBlast; },
 					calcChanges : {
 						atkAdd : [
@@ -2280,6 +2297,7 @@ var Base_ClassList = {
 					name : "Sculptor of Flesh",
 					description : "\n   " + "Once per long rest, I can cast Polymorph using a warlock spell slot",
 					source : [["SRD", 50], ["P", 111]],
+					submenu : "[warlock level  7+]",
 					usages : 1,
 					recovery : "long rest",
 					spellcastingBonus : {
@@ -2294,6 +2312,7 @@ var Base_ClassList = {
 					name : "Sign of Ill Omen",
 					description : "\n   " + "Once per long rest, I can cast Bestow Curse using a warlock spell slot",
 					source : [["SRD", 50], ["P", 111]],
+					submenu : "[warlock level  5+]",
 					usages : 1,
 					recovery : "long rest",
 					spellcastingBonus : {
@@ -2321,6 +2340,7 @@ var Base_ClassList = {
 					name : "Thirsting Blade",
 					description : "\n   " + "When taking the attack action, I can attack twice with my pact weapon",
 					source : [["SRD", 50], ["P", 111]],
+					submenu : "[improves Pact of the Blade]",
 					action : ['action', 'Pact Weapon (2 attacks per action)'],
 					prereqeval : function(v) { return classes.known.warlock.level >= 5 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the blade'; }
 				},
@@ -2328,6 +2348,7 @@ var Base_ClassList = {
 					name : "Visions of Distant Realms",
 					description : "\n   " + "I can cast Arcane Eye at will, without using a spell slot",
 					source : [["SRD", 50], ["P", 111]],
+					submenu : "[warlock level 15+]",
 					spellcastingBonus : {
 						name : "Visions of Distant Realms",
 						spells : ["arcane eye"],
@@ -2340,12 +2361,14 @@ var Base_ClassList = {
 					name : "Voice of the Chain Master",
 					description : "\n   " + "While on the same plane as my familiar, I can communicate telepathically with it" + "\n   " + "Also, I can perceive through its senses and have it speak with my voice while doing so",
 					source : [["SRD", 50], ["P", 111]],
+					submenu : "[improves Pact of the Chain]",
 					prereqeval : function(v) { return classes.known.warlock.level >= 3 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'; }
 				},
 				"whispers of the grave (prereq: level 9 warlock)" : {
 					name : "Whispers of the Grave",
 					description : "\n   " + "I can cast Speak with Dead at will, without using a spell slot",
 					source : [["SRD", 50], ["P", 111]],
+					submenu : "[warlock level  9+]",
 					spellcastingBonus : {
 						name : "Whispers of the Grave",
 						spells : ["speak with dead"],
@@ -2358,6 +2381,7 @@ var Base_ClassList = {
 					name : "Witch Sight",
 					description : "\n   " + "I can see the true form of creatures (shapechangers/illusions/transmutations) within 30 ft",
 					source : [["SRD", 50], ["P", 111]],
+					submenu : "[warlock level 15+]",
 					vision : [["Witch sight", 30]],
 					prereqeval : function(v) { return classes.known.warlock.level >= 15; }
 				}
@@ -3575,8 +3599,11 @@ var Base_ClassSubList = {
 				source : [["SRD", 54], ["P", 118]],
 				minlevel : 14,
 				description : "\n   " + "When I cast a 5th-level or lower wizard spell that damages, it can deal max damage" + "\n   " + "Except the first time I do this after a long rest, I suffer 2d12 necrotic dmg per spell lvl" + "\n   " + "Every time I do it after that, before a long rest, I take another 1d12 necrotic damage" + "\n   " + "This necrotic damage surpasses my resistances/immunities; I can't overchannel cantrips",
-				recovery : "long rest",
-				usagescalc : "event.value = '1 + \u221E';"
+				extraLimitedFeatures : [{
+					name : "Overchannel",
+					recovery : "long rest",
+					usages : "1 + \u221E"
+				}]
 			}
 		}
 	}

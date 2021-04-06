@@ -64,6 +64,11 @@ function InitiateLists() {
 			AmmoList[anAmmo] = CurrentVars.extraAmmo[anAmmo];
 		}
 	}
+	if (CurrentVars.extraCreatures) {
+		for (var aCrea in CurrentVars.extraCreatures) {
+			CreatureList[aCrea] = CurrentVars.extraCreatures[aCrea];
+		}
+	}
 };
 
 // A function to generate the spell variables after running imported scripts

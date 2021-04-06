@@ -133,8 +133,8 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 				runEval(evalThing, attributeName, true);
 				return;
 			}
-			var eText = "The " + attributeName + " from '" + fObjName + (aParent ? "' of the '" + aParent : "") + "' " + type + " produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
-			for (var e in error) eText += e + ": " + error[e] + ";\n ";
+			var eText = "The " + attributeName + " from '" + fObjName + (aParent ? "' of the '" + aParent : "") + "' " + type + " produced an error! Please contact the author of the feature to correct this issue:\n " + error;
+			for (var e in error) eText += "\n " + e + ": " + error[e];
 			console.println(eText);
 			console.show();
 		}
@@ -176,6 +176,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			if (uObj.armorOptions) processArmorOptions(addIt, tipNm, uObj.armorOptions, type === "magic item");
 			if (uObj.ammoOptions) processAmmoOptions(addIt, tipNm, uObj.ammoOptions, type === "magic item");
 			if (uObj.weaponOptions) processWeaponOptions(addIt, tipNm, uObj.weaponOptions, type === "magic item");
+			if (uObj.creatureOptions) processCreatureOptions(addIt, tipNm, uObj.creatureOptions);
 		}
 
 		// run eval or removeeval first
@@ -217,7 +218,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			if (uObj.spellChanges) processSpChanges(addIt, tipNmF, uObj.spellChanges, useSpCasting);
 		}
 
-		if (addIt) addListOptions(); // add weapon/armour/ammo option(s)
+		if (addIt) addListOptions(); // add weapon/armour/ammo/creature option(s)
 
 		// --- backwards compatibility --- //
 		// armor and weapon proficiencies
@@ -241,7 +242,13 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		var skills = uObj.skills && (type != "feat" || (type == "feat" && isArray(uObj.skills))) ? uObj.skills : false;
 		if (skills || skillsTxt) processSkills(addIt, tipNmF, skills, skillsTxt);
 
-		if (!addIt) addListOptions(); // remove weapon/armour/ammo option(s)
+		// companion additions
+		if (uObj.creaturesAdd) processAddCompanions(addIt, tipNmF, uObj.creaturesAdd);
+
+		// magic item additions
+		if (uObj.magicitemsAdd) processAddMagicItems(addIt, uObj.magicitemsAdd);
+
+		if (!addIt) addListOptions(); // remove weapon/armour/ammo/creature option(s)
 	};
 
 	// set the main variables, determined by type
@@ -832,6 +839,23 @@ function processAddWeapons(AddRemove, weapons) {
 	}
 }
 
+// set magic items or remove them
+function processAddMagicItems(AddRemove, magicitems) {
+	if (!magicitems) return;
+	var aMagicItem, toOverflow;
+	if (!isArray(magicitems)) magicitems = [magicitems];
+	for (var i = 0; i < magicitems.length; i++) {
+		if (isArray(magicitems[i])) {
+			aMagicItem = magicitems[i][0];
+			toOverflow = magicitems[i][1];
+		} else if (typeof magicitems[i] === "string") {
+			aMagicItem = magicitems[i];
+			toOverflow = undefined;
+		}
+		tDoc[(AddRemove ? "Add" : "Remove") + "MagicItem"](magicitems[i], undefined, undefined, undefined, toOverflow);
+	}
+}
+
 // set or remove armour options
 function processArmorOptions(AddRemove, srcNm, itemArr, magical) {
 	if (!itemArr) return;
@@ -844,6 +868,7 @@ function processArmorOptions(AddRemove, srcNm, itemArr, magical) {
 	for (var i = 0; i < itemArr.length; i++) {
 		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
 		if (AddRemove) {
+			if (itemArr[i].defaultExcluded) itemArr[i].defaultExcluded = false;
 			itemArr[i].list = "startlist";
 			if (magical) itemArr[i].isMagicArmor = true;
 			CurrentVars.extraArmour[newName] = itemArr[i];
@@ -873,6 +898,7 @@ function processWeaponOptions(AddRemove, srcNm, itemArr, magical) {
 	for (var i = 0; i < itemArr.length; i++) {
 		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
 		if (AddRemove) {
+			if (itemArr[i].defaultExcluded) itemArr[i].defaultExcluded = false;
 			itemArr[i].list = "startlist";
 			if (magical) itemArr[i].isMagicWeapon = true;
 			CurrentVars.extraWeapons[newName] = itemArr[i];
@@ -905,6 +931,7 @@ function processAmmoOptions(AddRemove, srcNm, itemArr, magical) {
 	for (var i = 0; i < itemArr.length; i++) {
 		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
 		if (AddRemove) {
+			if (itemArr[i].defaultExcluded) itemArr[i].defaultExcluded = false;
 			itemArr[i].list = "startlist";
 			if (magical) itemArr[i].isMagicAmmo = true;
 			CurrentVars.extraAmmo[newName] = itemArr[i];
@@ -919,6 +946,43 @@ function processAmmoOptions(AddRemove, srcNm, itemArr, magical) {
 	// if removing things and the variable is now empty
 	if (!AddRemove && !ObjLength(CurrentVars.extraAmmo)) delete CurrentVars.extraAmmo;
 	UpdateDropdown("ammo"); // update the ammunition dropdown
+	SetStringifieds("vars"); // Save the new settings to a field
+}
+
+// set or remove attack options
+function processCreatureOptions(AddRemove, srcNm, creaArr) {
+	if (!creaArr) return;
+	if (!isArray(creaArr)) creaArr = [creaArr];
+
+	// if adding things but the variable doesn't exist
+	if (AddRemove && !CurrentVars.extraCreatures) CurrentVars.extraCreatures = {};
+
+	srcNm = srcNm.toLowerCase();
+	var AScompA = isTemplVis('AScomp') ? What('Template.extras.AScomp').split(',') : false;
+	for (var i = 0; i < creaArr.length; i++) {
+		var newName = srcNm + "-" + creaArr[i].name.toLowerCase();
+		if (AddRemove) {
+			if (creaArr[i].defaultExcluded) creaArr[i].defaultExcluded = false;
+			CurrentVars.extraCreatures[newName] = creaArr[i];
+			CreatureList[newName] = creaArr[i];
+		} else {
+			// remove the entries if they exist and delete any creatures like it
+			if (AScompA) {
+				for (var a = 1; a < AScompA.length; a++) {
+					var prefix = AScompA[a];
+					if (CurrentCompRace[prefix].typeFound === 'creature' && CurrentCompRace[prefix].known === newName) {
+						Value(prefix + 'Comp.Race', '');
+					}
+				}
+			}
+			if (CurrentVars.extraCreatures[newName]) delete CurrentVars.extraCreatures[newName];
+			if (CreatureList[newName]) delete CreatureList[newName];
+		}
+	}
+
+	// if removing things and the variable is now empty
+	if (!AddRemove && !ObjLength(CurrentVars.extraCreatures)) delete CurrentVars.extraCreatures;
+	SetCompDropdown(); // update the companion pages' race dropdown (not the wild shape)
 	SetStringifieds("vars"); // Save the new settings to a field
 }
 
@@ -1031,7 +1095,8 @@ function UpdateSheetDisplay() {
 			chSP : false, // spells
 			chSK : false, // skills
 			chAT : false, // attack calculations
-			chNO : false // notes additions
+			chNO : false, // notes additions
+			chCO : false // companion changes
 		};
 		if (!cDialogFld) Value("ChangesDialogSkip.Stringified", ChangesDialogSkip.toSource());
 	}
@@ -1321,6 +1386,13 @@ function UpdateSheetDisplay() {
 				[["Old HP calculation", this.oldHPtt], ["New HP calculation", Who("HP Max")]]
 			);
 		};
+	} else if (CurrentUpdates.types.indexOf("classes") !== -1 && CurrentEvals.Comp) {
+		for (var aPrefix in CurrentEvals.Comp) {
+			if (CurrentEvals.Comp[aPrefix].hp) {
+				// Update the HP for this companion page on any class/level change
+				SetHPTooltip(false, true, aPrefix);
+			}
+		}
 	}
 
 	// if the spellcasting changed
@@ -1545,7 +1617,7 @@ function UpdateSheetDisplay() {
 
 	// if an addition was done to the 3rd page Notes section or to a Notes page
 	if (CurrentUpdates.notesChanges) {
-		// get the previous atkCalc/stkAdd string
+		// get a nice list of the notes changes
 		Changes_Dialog.notesChange = "\u2022 " + CurrentUpdates.notesChanges.join("\n\u2022 ");
 		// make the attack dialog insert
 		dialogParts.push({
@@ -1566,7 +1638,7 @@ function UpdateSheetDisplay() {
 					alignment : "align_fill",
 					font : "dialog",
 					wrap_name : true,
-					name : "A text was added to the Notes section on the 3rd page and/or a separate Notes page because it didn't fit into the space originally meant for it."
+					name : "A text has been added to the Notes section on the 3rd page and/or a separate Notes page because it didn't fit into the space originally meant for it."
 				}, {
 					type : "button",
 					item_id : "bNot",
@@ -1585,6 +1657,54 @@ function UpdateSheetDisplay() {
 				["Things added to the Notes section/page", "You can always edit the text in the Notes section or Notes pages, you don't have to keep it as set by the automation.", 'Class features added to the third page can always be moved to the Class Features section on the second page, it will not interfere with the sheet\'s automation. You will still be able to remove them using the "Choose Feature" button.'],
 				[
 					["", this.notesChange]
+				],
+				true
+			);
+		};
+	}
+
+	// if an addition was done to a Companion page (or even a companion page created)
+	if (CurrentUpdates.companionChanges) {
+		// get a nice list of the companion changes
+		Changes_Dialog.companionChange = "\u2022 " + CurrentUpdates.companionChanges.join("\n\u2022 ");
+		// make the attack dialog insert
+		dialogParts.push({
+			skipType : "chCO",
+			type : "cluster",
+			align_children : "align_left",
+			alignment : "align_fill",
+			width : 500,
+			font : "heading",
+			name : "Companion Page Change(s)",
+			elements : [{
+				type : "view",
+				align_children : "align_row",
+				alignment : "align_fill",
+				elements : [{
+					type : "static_text",
+					width : 400,
+					alignment : "align_fill",
+					font : "dialog",
+					wrap_name : true,
+					name : "One or more creatures has been added or removed from one or more companion pages."
+				}, {
+					type : "button",
+					item_id : "bCom",
+					name : "See Change(s)"
+				}]
+			}, {
+				type : "check_box",
+				item_id : "chCO",
+				alignment : "align_fill",
+				font : "palette",
+				name : checkboxTxt
+			}]
+		});
+		Changes_Dialog.bCom = function (dialog) {
+			ShowCompareDialog(
+				["Things changes with the Companion page(s)", "You can always edit the companion pages how you see fit, you don't have to leave it as it has been set with the automation. You could add more companion pages, for example.", 'You can also add multiples of the same companion, just add another page and select the same companion race.'],
+				[
+					["", this.companionChange]
 				],
 				true
 			);
@@ -1916,8 +2036,8 @@ function ApplyMagicItem(input, FldNmbr) {
 				try {
 					selectMIvar = aMI.selfChoosing();
 				} catch (error) {
-					var eText = "The function in the 'selfChoosing' attribute of '" + newMI + "' produced an error! Please contact the author of the magic item code to correct this issue:\n " + error + "\n ";
-					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					var eText = "The function in the 'selfChoosing' attribute of '" + newMI + "' produced an error! Please contact the author of the magic item code to correct this issue:\n " + error;
+					for (var e in error) eText += "\n " + e + ": " + error[e];
 					console.println(eText);
 					console.show();
 				}
@@ -2021,8 +2141,8 @@ function ApplyMagicItem(input, FldNmbr) {
 				var meetsPrereq = theMI.prereqeval(gatherVars);
 			}
 		} catch (error) {
-			var eText = "The 'prereqeval' attribute for the magic item '" + theMI.name + "' produces an error and is subsequently ignored. If this is one of the built-in magic items, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the magic item.\nThe sheet reports the error as\n " + error + "\n ";
-			for (var e in error) eText += e + ": " + error[e] + ";\n ";
+			var eText = "The 'prereqeval' attribute for the magic item '" + theMI.name + "' produces an error and is subsequently ignored. If this is one of the built-in magic items, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the magic item.\nThe sheet reports the error as\n " + error;
+			for (var e in error) eText += "\n " + e + ": " + error[e];
 			console.println(eText);
 			console.show();
 			var meetsPrereq = true;
@@ -2785,6 +2905,14 @@ function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow, forceAttun
 
 // Remove a magic item from the third page or overflow page
 function RemoveMagicItem(item) {
+	// First try if this is a recognizable magic item and remove that
+	var parseItem = ParseMagicItem(item);
+	var fndItem = CurrentMagicItems.known.indexOf(parseItem[0]);
+	if (parseItem[0] && fndItem !== -1) {
+		MagicItemClear(fndItem + 1, true);
+		return;
+	}
+	// Not recognized, so try it the hard way
 	item = item.substring(0, 2) === "- " ? item.substring(2) : item;
 	var itemLower = item.toLowerCase();
 	var RegExItem = "\\b" + item.RegEscape() + "\\b";

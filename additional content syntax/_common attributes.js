@@ -409,6 +409,8 @@ weaponsAdd : ["Bite", "Longsword +2"],
 	This is an array of strings. Each string will be added to the attack section.
 	An entry will only be added if there is space left in the attack section and it isn't already present.
 	The strings will be added exactly as you write them here, capitalisation and all.
+
+	If a feature with this attribute is removed, these attack entries will be removed as well.
 */
 
 armorAdd : "Natural Armor",
@@ -419,6 +421,8 @@ armorAdd : "Natural Armor",
 	The armour will only be set if there is currently no armour selected on the 1st page, or
 	if the currently selected armour gives a lower AC total than this armour.
 	The string will be added exactly as you write it here, capitalisation and all.
+
+	If a feature with this attribute is removed, this armour will be removed as well.
 */
 
 shieldAdd : "Wooden Buckler",
@@ -445,6 +449,8 @@ shieldAdd : ["Magical Buckler", 1, 2],
 
 
 	The shield will only be added if the AC bonus is more or equal to that of the current shield.
+
+	If a feature with this attribute is removed, this shield will be removed as well.
 */
 
 ammoOptions : [{ /* AmmoList object, see "ammunition (AmmoList).js" syntax file  */ }],
@@ -786,7 +792,7 @@ spellcastingBonus : [{
 		TYPE:	number or array of numbers with 20 entries
 		USE:	how many times this entry should appear in the "Bonus Spells" section of the spell selection dialog
 
-		Setting this attribute to 1 is the same as omitting it.
+		Setting this attribute to 1 is the same as not including it.
 
 		Setting this attribute to an array signals that it varies depending on level.
 		Each entry in that array is a level, so you will most likely want to add 20 entries.
@@ -1057,6 +1063,86 @@ spellChanges : {
 */
 
 
+// >>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Companion Options >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>> //
+
+creatureOptions : [{ /* CreatureList object, see "companion, wild shape (CreatureList).js" syntax file  */ }],
+/*	creatureOptions // OPTIONAL //
+	TYPE:	array of objects (variable length)
+	USE:	adds each object in the array to the CreatureList variable
+	ADDED:	v13.0.6
+
+	The syntax of the objects is not explained here, but in the "companion, wild shape (CreatureList).js" syntax file.
+
+	This way you can have a feature add a type of creature to the automation.
+	It will also be added to the options in each companion page's Race field drop-down.
+	This will result in having the creature only available if the feature is present.
+
+	IMPORTANT!
+	Creatures added in this way are never available as a wild shape.
+	When the feature with this attribute is removed, any companion pages that these
+	creature(s) are	used on will have the race field reset (and thus the creature's stats
+	will be removed from that companion page).
+*/
+
+creaturesAdd : [
+	["Warhorse", true,
+		function (AddRemove, prefix) {
+			// Make the warhorse small
+			if (AddRemove) PickDropdown(prefix + "Comp.Desc.Size", 4);
+		}
+	],
+	["Purple Crawler"]
+],
+/*	creatureOptions // OPTIONAL //
+	TYPE:	array of arrays (variable length)
+	USE:	adds a creature to a companion page (adds companion page if none empty)
+	ADDED:	v13.0.6
+
+	Each array must contain 1, 2, or 3 entries, which are the following:
+	1) String with the name of the race to add to the companion page // REQUIRED
+		The sheet will search for the first empty companion page (or add an empty page)
+		and add this entry in the "Race" drop-down box on that page.
+		This string is added exactly as it is written here, so it is recommended to capitalize it for consistency.
+
+		If the race already exists on a companion page, it is not added.
+
+		When the parent feature is removed, any companion page with this filled out as
+		the race, will have the race reset. Thus, all stats of that race will be removed.
+
+	2) Boolean, set to true if the whole page should be removed // OPTIONAL
+		If set to true, when the parent feature is removed, any companion page with the
+		1st entry filled out as the race, will be deleted without warning.
+		Deleted pages can not be recovered, any information on them is lost.
+		
+		Setting this to false will cause the sheet to do the default action, which is to only
+		reset the race of the companion pages with the 1st entry filled out as the race.
+
+	3) Function called when the creature is added/removed // OPTIONAL
+		This function is called after the creature race in the 1st entry is added or
+		removed from a page (even if the whole page is removed, see 2) ).
+
+		This function is passed two variables:
+		3.1) AddRemove
+			A boolean that tells whether the creature was added (true) or removed (false).
+		3.2) prefix
+			A string with the page identifier for the companion page.
+			You can use this to call on fields or invoke functions for that companion page.
+
+		If the 1st entry race is already present on a companion page, no changes will be
+		made to that page and the first such page will be used for this callback function.
+
+		If you are adding a creature that is itself added using the `creatureOptions`
+		attribute, consider not using this callback function, but adding an `eval` and
+		`removeeval` to its CreatureList object instead.
+	
+	The changes dialog will list on which companion page something was added or removed.
+
+	If a feature with this attribute is removed, these creatures will be removed as well.
+*/
+
+
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 // >>> Dynamic Automation Changes >>> //
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
@@ -1070,7 +1156,7 @@ calcChanges : {
 	The attributes of this object can be "hp", "atkCalc", "atkAdd", and "spellList"
 */
 
-	hp : function (totalHD) {
+	hp : function (totalHD, HDobj, prefix) {
 		if (classes.known.sorcerer) {
 			return [classes.known.sorcerer.level, "Draconic Resilience (Sorcerer)"];
 		}
@@ -1084,12 +1170,43 @@ calcChanges : {
 		Writing a function is better as it is easier to avoid syntax errors.
 		The string option is there for backwards-compatibility and this explanation assumes you are writing a function.
 
-		The function will not be evaluated but is fed one variable:
+		The function will not be evaluated but is fed three variables:
 		1) totalHD
 			A number that represents the amount of hit dice the character has (normally equal to the character level).
 			Use this to add HP equal to the current total level.
+		2) HDobj
+			A JSON object that has all the attributes used to generate the HP tooltip text
+			and the HP average, fixed value, and maximum.
 
-		The function needs to return an array with 1, 2, or 3 entries:
+			A list of the different attributes of this variable:
+			var HDobj = {
+				conMod,	// number, Constitution modifier
+				conCorrection, // boolean, true if the die average + Con mod is less than 1
+				count, // number, the amount of hit dice (the same as totalHD)
+				dieStr, // array with strings, joined together with " + " to form
+				           the description of the HP gained from the hit dice, e.g.
+				           ["10 (1st level)", "2d10 (11)"]
+				average, // number, the total HP value when using the average of each die (e.g. 4.5 for 1d8)
+				fixed, // number, the total HP value when using the fixed value for each die (e.g. 5 for 1d8)
+				max, // number, the total HP value when using the maximum value for each die (e.g. 8 for 1d8)
+				alt, // array with numbers, empty by default but you can push a number to the end of this array,
+				        which represent an alternative HP total.
+				        Doing so will cause this number to become an option in the Set Max HP button.
+						If you do so, preferably also push a description to the end of the `altStr` array, see below.
+				altStr // array with string, empty by default but you can push a string to the end of this array,
+				          which is used as descriptive text for the alternative HP total.
+						  Only do so when also adding something to the end of the `alt` array, see above.
+						  This string shouldn't contain the total HP added to the `alt` array,
+						  nor the name of the feature, as both will be added automatically.
+			}
+		3) prefix
+			A string with the page identifier for the companion page.
+			When this function is invoked for the main character, this will always be an empty string.
+			When this function is invoked for a companion page, this is the identifier for which companion page this is for.
+
+		The function can edit the HDobj directly to affect the hit point calculation
+		and/or return an array with 1, 2, or 3 entries.
+		The returned array entries will then be used as follows:
 		1) The number of hit points to add [number] // REQUIRED
 			If this is undefined or false, the whole addition will be ignored.
 		2) The descriptive text of where the hit points come from [string] // OPTIONAL
@@ -1097,9 +1214,38 @@ calcChanges : {
 		3) Whether (true) or not (false) [boolean] // OPTIONAL
 			It this is set to true, second entry string is added as-is to the HP tooltip.
 			If this is set to false (or not set at all), the tooltip will be automatically generated from the first entry number and the second entry string.
-		
-		Normally, you would not have to add a second or third entry.
+
+		Normally, you would not have to edit the HDobj or add a second or third entry.
 		E.g. just "return [totalHD];" is enough to add 1 HP per level.
+
+		If you want to submit a completely different calculation for the hit points,
+		then push the total calculated HP to the HDobj.alt array and push the description
+		to the HDobj.altStr array.
+		Generally speaking, this functionality is reserved for creatures (CreatureList).
+		An example:
+	hp : function (totalHD, HDobj) {
+		HDobj.alt.push(totalHD * 10);
+		HDobj.altStr.push("I gain 10 hit points per level, regardless of hit dice or Constitution modifier.");
+	},
+	*/
+	hpForceRecalc : true,
+	/*	hpForceRecalc // OPTIONAL //
+		TYPE:	boolean
+		USE:	recalculate the Max HP tooltip (and value, if set to automatic) whenever anything changes
+		ADDED:	v13.0.6
+
+		Normally, the hit points tooltip/value are only recalculated whenever the
+		level or Constitution score changes.
+		Note that the Max HP value only updates if set to do so automatically, but the
+		tooltip will need to be updated whenever something changes that affects HP calculation.
+		Setting this to true will cause the tooltip for the Max HP field to be updated whenever
+		any field changes on the sheet, no just the character level or Constitution score.
+		You should use this if you add a custom `hp` function (see above) that calls on anything
+		else than just level or Constitution (e.g. adds Intelligence modifier to hit points).
+
+		This attribute will only work if you set the `hp` attribute (see above) in the same object.
+
+		Setting this attribute to false is the same as not including it.
 	*/
 
 	atkAdd : [
@@ -1429,7 +1575,7 @@ calcChanges : {
 
 addMod : [
 	{ type : "skill", field : "Init", mod : "Int", text : "I can add my Intelligence modifier to initiative rolls." },
-	{ type : "save", field : "all", mod : "Cha", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." },
+	{ type : "save", field : "all", mod : "max(Cha|1)", text : "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." },
 ],
 /*	addMod // OPTIONAL //
 	TYPE:	array of objects (variable length)
@@ -1454,6 +1600,23 @@ addMod : [
 		This can be any combination of numbers, mathematical operators,
 		and three-letter ability score abbreviations for ability score modifiers,
 		or 'Prof' for the proficiency bonus.
+
+		USABLE	RESULT
+		Str 	Strength modifier
+		Dex 	Dexterity modifier
+		Con 	Constitution modifier
+		Int 	Intelligence modifier
+		Wis 	Wisdom modifier
+		Cha 	Charisma modifier
+		HoS 	7th ability modifier, if used (Honour or Sanity)
+		Prof	Proficiency bonus
+
+		When used in a CreatureList object, you can add the lowercase letter "o"
+		in front of any of these to reference the modifier of the main character.
+		E.g. "oStr" is the Strength modifier of the main character, while just "Str" refers
+		to the Strength modifier of the companion.
+		Note that AddMod in a CreatureList object is not applied for wild shapes.
+
 		Additionally, you can use min(1|2) and max(1|2), which work like Math.min(1,2) and Math.max(1,2).
 		Note that the pipe is used instead of a comma.
 
@@ -1462,7 +1625,10 @@ addMod : [
 		Or, another example, to add 1, it would look like this:
 			mod : 1,
 		Or, another example, to add the Charisma modifier with a minimum of 1, it would look like this:
-			mod : "min(Cha|1)",
+			mod : "max(Cha|1)",
+		Or, an example for the companion page, to add the Intelligence modifier of the main
+		character with a maximum of 3, it would look like this:
+			mod : "min(oInt|3)",
 	4. text
 		This is an explanation of why the modifier was added and is used in the modifier change dialog.
 
@@ -1653,6 +1819,31 @@ toNotesPage : [{
 	*/
 }],
 
+
+magicitemsAdd : [ "Hat of Disguise", ["Staff of Power", true] ],
+/*	magicitemsAdd // OPTIONAL //
+	TYPE:	array (variable length) of strings or arrays (with a string and a boolean)
+	USE:	adds each entry in the array to one of the magic item drop-downs
+	ADDED:	v13.0.6
+
+	Each entry in the array is to add a single magic item. Each entry must consist of either:
+	1) String with the name of the magic item
+		Use this option if you want to add the magic item anywhere in the magic item section.
+
+	2) Array with two entries
+		2.1) String with the name of the magic item
+		2.2) Boolean whether to force to the overflow page (true) or not (false)
+				Setting this boolean to false is the same as using option 1).
+
+	Use option 2) if you want to add the magic item to the overflow page.
+	The magic item section on the overflow page contains more space for descriptions.
+
+	An entry will only be added if there is space left in the magic items section and the magic item isn't already present.
+
+	The strings will be added exactly as you write them here, capitalisation and all.
+
+	If a feature with this attribute is removed, these magic items will be removed as well.
+*/
 
 // >>>>>>>>>>>>>>>>>>>>>>> //
 // >>> Run Custom Code >>> //

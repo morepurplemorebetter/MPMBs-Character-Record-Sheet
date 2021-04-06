@@ -257,6 +257,33 @@ WeaponsList["sword of purple"] = {
 	This string is put on the sheet literally.
 	The sheet will look in the description for attributes such as 'finesse' to
 	determine the ability score to use.
+	Thus, be sure to include all the weapon's properties here, like 'heavy', 'light', and 'two-handed'.
+
+	One exception, you don't have to include the 'special' property, but can instead include an
+	explanation of what that special property is.
+	If you decide to do so, than don't forget to set the `special` attribute but true (see below).
+*/
+	tooltip : "Special: I have disadvantage when I use a lance to attack a target within 5 feet. Also, a lance requires two hands to wield when I'm not mounted.",
+/*	tooltip // OPTIONAL //
+	TYPE:	string
+	USE:	this will be added as a tooltip to the Description field for the attack
+
+	This string is put as a tooltip literally, without any changes.
+	The sheet will never use the tooltip for determining functionality of the weapon.
+	The tooltip is only available when the sheet is used in Adobe Acrobat,
+	it won't show up on a printed version of the sheet (also not when printed to PDF).
+*/
+	special : true,
+/*	special // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether (true) or not (false) this weapon has the 'special' property
+	ADDED:	v13.0.6
+
+	This attribute has no direct affect on a weapon entry, but it can be used by other
+	features that have specific rules for weapons with the 'special' property.
+	For example, a Kensei Weapon (XGtE 34) can't have the 'special' property.
+
+	Setting this to false is the same as not including this attribute.
 */
 	list : "melee",
 /*	type // OPTIONAL //
@@ -418,6 +445,39 @@ WeaponsList["sword of purple"] = {
 	Do not include this attribute if you want the sheet to determine if the spellcasting ability should be used or not.
 
 	Setting this to false is NOT the same as not including this attribute!
+*/
+	useSpellMod : "wizard",
+/*	useSpellMod // OPTIONAL //
+	TYPE:	string
+	USE:	the object name of a spellcasting object that this attack will use the spell attack/DC from
+	ADDED:	v13.0.6
+
+	If the attack you are adding used the spell attack (or DC) of a fixed spellcasting entity
+	(class, race, feat, or magic item), then you can use this attribute.
+	This will most likely be used as part of a `weaponOptions` or `creatureOptions` attribute,
+	when a feature adds an attack option, or creature option with attacks linked to the original feature.
+	For example, if a magic item grants an attack that uses the `fixedDC` of that magic item,
+	or a class feature grants a companion option that uses the spell attack of the class.
+
+	Make sure that the string is an object name for a spellcasting object.
+	Spellcasting objects are created when something has spells that are displayed on the spell sheet pages.
+	The spellcasting object names are identical to the originating object names.
+	For example, for a spellcasting class, this object name is their ClassList object name
+	(e.g. 'bard', 'cleric', 'druid', 'sorcerer', 'warlock', 'wizard'),
+	and for a Magic Item this is identical to the MagicItemsList object name.
+
+	If there is no corresponding spellcasting object, this attribute will be ignored.
+
+	By setting this attribute, the sheet will force the use of the spell attack
+	(or DC if the `dc` attribute is set to true) of the corresponding spellcasting entity,
+	regardless of the setting of the proficiency or ability score fields in the attack section.
+	In fact, it will force the selected ability to be the ability used by the spellcasting entity.
+
+	Be aware, that is you use this for a CreatureList object, the spell attack / DC used will
+	still be that of the main character.
+	This attribute is ignored on the Wild Shape pages.
+
+	Setting this to an empty string ("") is the same as not including this attribute.
 */
 	baseWeapon : "longsword",
 /*	baseWeapon // OPTIONAL //

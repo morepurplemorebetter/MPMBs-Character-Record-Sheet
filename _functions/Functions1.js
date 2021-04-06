@@ -1672,10 +1672,6 @@ function ParseClass(input) {
 function FindClasses(NotAtStartup, isFieldVal) {
 	if (!NotAtStartup) classes.field = What("Class and Levels"); // called from startup
 
-	// Remove starting numbers and clean the start/end of the string
-	classes.field = classes.field.replace(/^[ \-.,\\/:;\d]+|[ \-.,\\/:;]+$/g, '');
-	classes.totallevel = 0;
-
 	// Initialize some variables
 	var primeClass = "", gatherVars, deletedCurrentSpells = [];
 
@@ -1690,6 +1686,10 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			fullname : CurrentClasses[aClass].fullname
 		}
 	}
+
+	// Remove starting numbers and clean the start/end of the string
+	classes.field = classes.field.replace(/^[ \-.,\\/:;\d]+|[ \-.,\\/:;]+$/g, '');
+	classes.totallevel = 0;
 
 	// Get the different classes from the class field string
 	classes.parsed = [];
@@ -1844,8 +1844,8 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		if (!classesTemp[oClass]) {
 			// remove the class base features if removing the class
 			ApplyClassBaseAttributes(false, oClass, classes.primary == oClass);
-			// reset the tooltip of the equipment menu
-			AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
+			// reset the tooltip of the equipment menu if this was the primary class
+			if (classes.primary == oClass) AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
 			// remove the class from the CurrentSpells variable
 			delete CurrentSpells[oClass];
 		} else if (classesTemp[oClass].subclass !== classes.old[oClass].subclass) {
@@ -2080,6 +2080,9 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	calcStop();
 	thermoM(1/4); // Increment the progress bar
 
+	// Tell prompt there was a class change
+	CurrentUpdates.types.push("classes");
+
 	// Put hit dice on sheet
 	var hdChanged = false;
 	if (classes.hd.length > 0) classes.hd.sort(function (a, b) { return a - b; }); // sort by biggest HD
@@ -2090,8 +2093,8 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 		Value("HD" + (i+1) + " Level", hdLvl);
 		Value("HD" + (i+1) + " Die", hdDie);
 	}
-	// If the HD changed, prompt the user about this
-	if (hdChanged) CurrentUpdates.types.push("hp");
+	// If the HD changed, prompt the user about this and update the HP tooltip
+	if (hdChanged || CurrentEvals.hp) CurrentUpdates.types.push("hp");
 
 	thermoM(2/4); // Increment the progress bar
 
@@ -4568,8 +4571,8 @@ function ApplyFeat(input, FldNmbr) {
 				try {
 					selectFeatVar = aFeat.selfChoosing();
 				} catch (error) {
-					var eText = "The function in the 'selfChoosing' attribute of '" + newFeat + "' produced an error! Please contact the author of the feat code to correct this issue:\n " + error + "\n ";
-					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					var eText = "The function in the 'selfChoosing' attribute of '" + newFeat + "' produced an error! Please contact the author of the feat code to correct this issue:\n " + error;
+					for (var e in error) eText += "\n " + e + ": " + error[e];
 					console.println(eText);
 					console.show();
 				}
@@ -4672,8 +4675,8 @@ function ApplyFeat(input, FldNmbr) {
 				var meetsPrereq = theFeat.prereqeval(gatherVars);
 			}
 		} catch (error) {
-			var eText = "The 'prereqeval' attribute for the feat '" + theFeat.name + "' produces an error and is subsequently ignored. If this is one of the built-in feats, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the feat.\nThe sheet reports the error as\n " + error + "\n ";
-			for (var e in error) eText += e + ": " + error[e] + ";\n ";
+			var eText = "The 'prereqeval' attribute for the feat '" + theFeat.name + "' produces an error and is subsequently ignored. If this is one of the built-in feats, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the feat.\nThe sheet reports the error as\n " + error;
+			for (var e in error) eText += "\n " + e + ": " + error[e];
 			console.println(eText);
 			console.show();
 			var meetsPrereq = true;
@@ -5233,15 +5236,45 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 	// initialise some variables
 	Typeswitch = Typeswitch === undefined ? "all" : Typeswitch;
 	var thermoTxt, Fea, feaA;
+	var curLvl = newLvlForce !== undefined ? newLvlForce : What("Character Level") ? Number(What("Character Level")) : 1;
+
+	// make sure the proficiency bonus is set correctly
+	ProfBonus('Proficiency Bonus', newLvlForce);
 
 	// Start progress bar and stop calculations
 	thermoTxt = thermoM("Updating level-dependent features...");
 	calcStop();
 	thermoM(1/8); //increment the progress dialog's progress
 
+	// apply creature changeeval on companion pages (use race level to make sure to only do this on an actual level change)
+	if ((/companion|creature|all|notclass/i).test(Typeswitch) && curLvl != CurrentRace.level && isTemplVis('AScomp')) {
+		var AScompA = What('Template.extras.AScomp').split(',');
+		for (var a = 1; a < AScompA.length; a++) {
+			var prefix = AScompA[a];
+			var aComp = CurrentCompRace[AScompA[a]];
+
+			if (aComp.typeFound !== "creature" || !aComp.changeeval || typeof aComp.changeeval != 'function') continue;
+
+			//increment the progress dialog's progress
+			thermoTxt = thermoM("Updating " + aComp.name + " level-dependent features...", false);
+			thermoM((f)/AScompA.length);
+
+			try {
+				aComp.changeeval(prefix, curLvl);
+			} catch (error) {
+				var iPageNo = tDoc.getField(prefix + 'Comp.Race').page + 1;
+				var eText = "The changeeval function from '" + aComp.name + "' on page " + iPageNo + " produced an error! Please contact the author of the feature to correct this issue:\n " + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
+				console.println(eText);
+				console.show();
+				delete CurrentCompRace[prefix].changeeval;
+			}
+		}
+	}
+
 	// apply race level changes
 	var oldRaceLvl = CurrentRace.level;
-	var newRaceLvl = newLvlForce !== undefined ? newLvlForce : What("Character Level") ? Number(What("Character Level")) : 1;
+	var newRaceLvl = curLvl;
 	if (CurrentRace.known && (/race|all|notclass/i).test(Typeswitch) && newRaceLvl != oldRaceLvl) {
 		thermoTxt = thermoM("Updating " + CurrentRace.name + " features...", false);
 		thermoM(3/8); //increment the progress dialog's progress
@@ -5278,8 +5311,8 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						false // forceNonCurrent
 					);
 				} catch (error) {
-					var eText = 'The "' + propFea.name + '" feature from the "' + CurrentRace.name + '" race produced an error! Please contact the author of the feature to correct this issue:\n ' + error + "\n ";
-					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					var eText = 'The "' + propFea.name + '" feature from the "' + CurrentRace.name + '" race produced an error! Please contact the author of the feature to correct this issue:\n ' + error;
+					for (var e in error) eText += "\n " + e + ": " + error[e];
 					console.println(eText);
 					console.show();
 				}
@@ -5292,7 +5325,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 
 	// apply feat level changes
 	var oldFeatLvl = CurrentFeats.level;
-	var newFeatLvl = newRaceLvl; // would otherwise be identical to how to determine the race level
+	var newFeatLvl = curLvl;
 	if ((/feat|all|notclass/i).test(Typeswitch) && oldFeatLvl != newFeatLvl) {
 		for (var f = 0; f < CurrentFeats.known.length; f++) {
 			var aFeat = CurrentFeats.known[f];
@@ -5312,8 +5345,8 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					false // forceNonCurrent
 				);
 			} catch (error) {
-				var eText = 'The feat "' + theFeat.name + '" produced an error! Please contact the author of the feature to correct this issue:\n ' + error + "\n ";
-				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				var eText = 'The feat "' + theFeat.name + '" produced an error! Please contact the author of the feature to correct this issue:\n ' + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
 			}
@@ -5323,7 +5356,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 
 	// apply magic item level changes
 	var oldItemLvl = CurrentMagicItems.level;
-	var newItemLvl = newRaceLvl; // would otherwise be identical to how to determine the race level
+	var newItemLvl = curLvl;
 	if ((/item|all|notclass/i).test(Typeswitch) && oldItemLvl != newItemLvl) {
 		for (var f = 0; f < CurrentMagicItems.known.length; f++) {
 			var anItem = CurrentMagicItems.known[f];
@@ -5347,8 +5380,8 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					false // forceNonCurrent
 				);
 			} catch (error) {
-				var eText = 'The magic item "' + theItem.name + '" produced an error! Please contact the author of the feature to correct this issue:\n ' + error + "\n ";
-				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				var eText = 'The magic item "' + theItem.name + '" produced an error! Please contact the author of the feature to correct this issue:\n ' + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
 			}
@@ -5457,8 +5490,8 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					// keep track of the last property's header text (don't use FeaNewString, as it might include an additional or recovery)
 					LastProp = propFea.minlevel <= ClassLevelUp[aClass][2] ? FeaNewString[2] : LastProp;
 				} catch (error) {
-					var eText = 'The "' + propFea.name + '" feature from the "' + cl.fullname + '" class produced an error! Please contact the author of the feature to correct this issue:\n ' + error + "\n ";
-					for (var e in error) eText += e + ": " + error[e] + ";\n ";
+					var eText = 'The "' + propFea.name + '" feature from the "' + cl.fullname + '" class produced an error! Please contact the author of the feature to correct this issue:\n ' + error;
+					for (var e in error) eText += "\n " + e + ": " + error[e];
 					console.println(eText);
 					console.show();
 				}
@@ -5526,8 +5559,8 @@ function MakeClassMenu() {
 				theRe = toEval(gatherVars);
 			}
 		} catch (error) {
-			var eText = "The prerequisite check code (prereqeval) for '" + objNm + "' of the '" + feaNm + "' feature produced an error! Please contact the author of the feature to correct this issue:\n " + error + "\n ";
-			for (var e in error) eText += e + ": " + error[e] + ";\n ";
+			var eText = "The prerequisite check code (prereqeval) for '" + objNm + "' of the '" + feaNm + "' feature produced an error! Please contact the author of the feature to correct this issue:\n " + error;
+			for (var e in error) eText += "\n " + e + ": " + error[e];
 			console.println(eText);
 			console.show();
 		}
@@ -5546,7 +5579,7 @@ function MakeClassMenu() {
 	}
 
 	var menuLVL3 = function (menu, name, array, classNm, featureNm, extrareturn, feaObj, curSel) {
-		var temp = [];
+		var temp = [], toSub = {};
 		for (var i = 0; i < array.length; i++) {
 			var extraNm = "";
 			var feaObjNm = array[i].toLowerCase();
@@ -5571,13 +5604,38 @@ function MakeClassMenu() {
 			var removeStop = !isActive ? "add" : extrareturn ? "remove" : "stop";
 
 			// now make the menu entry
-			temp.push({
+			var mItem = {
 				cName : array[i] + extraNm + stringSource(feaObjA, "first,abbr", "\t   [", "]"),
 				cReturn : classNm + "#" + featureNm + "#" + array[i] + "#" + extrareturn + "#" + removeStop,
 				bMarked : isActive,
 				bEnabled : isEnabled
-			});
+			};
+			// test if the menu entry shouldn't be another layer deeper
+			if (feaObjA.submenu) {
+				// create entry for this submenu if it doesn't already exist
+				if (!toSub[feaObjA.submenu]) {
+					toSub[feaObjA.submenu] = [];
+					temp.push({
+						cName : feaObjA.submenu,
+						oSubMenu : []
+					})
+				}
+				toSub[feaObjA.submenu].push(mItem);
+			} else {
+				temp.push(mItem);
+			}
 		};
+		// if there are any entries in toSub, we must sort the temp array and add the submenu arrays
+		if (ObjLength(toSub)) {
+			temp.sort(function(a, b) {
+				return a.cName.localeCompare(b.cName);
+			});
+			for (var t = 0; t < temp.length; t++) {
+				if (temp[t].oSubMenu && toSub[temp[t].cName]) {
+					temp[t].oSubMenu = toSub[temp[t].cName];
+				}
+			}
+		}
 		if (temp.length && !(!extrareturn && temp.length === 1 && temp[0].bMarked)) {
 			// only add a menu item if there is actually anything to select
 			(menu.oSubMenu ? menu.oSubMenu : menu).push({
@@ -6005,8 +6063,8 @@ function CalcAC() {
 					if (acVals[aMod.type]) acVals[aMod.type][1] -= removeVal;
 				}
 			} catch (error) {
-				var eText = "The check if the AC bonus from '" + aMod.name + "' should be added or not produced an error! This check will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error + "\n ";
-				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				var eText = "The check if the AC bonus from '" + aMod.name + "' should be added or not produced an error! This check will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
 				delete aMod.stopeval;
@@ -6449,11 +6507,8 @@ function MakeMobileReady(toggle) {
 				if (SSbox.display === display.visible) SSbox.readonly = false;
 			}
 		}
-
-
-
 		// Hide the D20 warning in the corner so that it won't interfere with the bug in Acrobat Reader for iOS/Android
-		tDoc.getField("d20warning").rect = [0,0,0,0];
+		if (tDoc.getField("d20warning")) tDoc.getField("d20warning").rect = [0,0,0,0];
 	} else {
 		var totLen = CurrentVars.mobileset.readonly.length + CurrentVars.mobileset.hidden.length + 1;
 		for (var RO = 0; RO < CurrentVars.mobileset.readonly.length; RO++) {
@@ -9208,10 +9263,10 @@ function setColorThemes(reset) {
 }
 
 //calculate the proficiency bonus (field calculation)
-function ProfBonus(useTarget) {
+function ProfBonus(useTarget, newLvlForce) {
 	var thisEvent = useTarget && tDoc.getField(useTarget) ? tDoc.getField(useTarget) : event.target;
 	var QI = getTemplPre(thisEvent.name, "AScomp");
-	var lvl = What(QI === true ? "Character Level" : QI + "Comp.Use.HD.Level");
+	var lvl = newLvlForce !== undefined ? newLvlForce : Number(What(QI === true ? "Character Level" : QI + "Comp.Use.HD.Level"));
 	var ProfMod = QI === true ? What("Proficiency Bonus Modifier") : 0;
 	var useDice = tDoc.getField(QI === true ? "Proficiency Bonus Dice" : QI + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) === 1;
 	var ProfB = lvl ? ProficiencyBonusList[Math.min(lvl, ProficiencyBonusList.length) - 1] : 0;

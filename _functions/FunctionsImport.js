@@ -1424,8 +1424,8 @@ function DirectImport(consoleTrigger) {
 		tDoc.getField("Player Name").setFocus();
 	} catch (error) {
 		if (error !== "user stop") {
-			var eText = "An error occurred during importing:\n " + error + "\n ";
-			for (var e in error) eText += e + ": " + error[e] + ";\n ";
+			var eText = "An error occurred during importing:\n " + error;
+			for (var e in error) eText += "\n " + e + ": " + error[e];
 			console.println(eText);
 			console.show();
 		};
@@ -2448,7 +2448,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 			if (ScriptAtEnd.length > 0) ScriptsAtEnd = ScriptsAtEnd.concat(ScriptAtEnd);
 			if (sheetVersion < minSheetVersion[0]) {
 				var failedTestMsg = {
-					cMsg : "The script '" + scriptName + "' reports that is was made for a newer version of the sheet (v" + minSheetVersion[1] + "), and might thus not be compatible with this version of the sheet (v" + semVers + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
+					cMsg : 'The script "' + scriptName + '" says it was made for a newer version of the sheet (v' + minSheetVersion[1] + "), and might thus not be compatible with this version of the sheet (v" + semVers + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
 					nIcon : 2,
 					cTitle : "Script was made for newer version!",
 					nType : 2
@@ -2459,10 +2459,12 @@ function RunUserScript(atStartup, manualUserScripts) {
 		} catch (e) {
 			if ((/out of memory/i).test(e.toSource())) return "outOfMemory";
 			IsNotUserScript = true;
+			var forNewerVersion = sheetVersion < minSheetVersion[0];
+			var wrongVersion = forNewerVersion ? " says it was made for a newer version of the sheet (v" + minSheetVersion[1] + "; this sheet is only v" + semVers + "). That is probably why " : " is faulty, ";
 			app.alert({
-				cMsg : isManual ? "The script you entered is faulty, it returns the following error when run:\n\"" + e + "\"\n\nYour script has not been added to the sheet, please try again after fixing the error.\n\nIf you run your code from the console, it will give you a line number for where the error is. You can open this console from inside the \"Add Custom Script\" dialog." : "The script '" + scriptName + "' is faulty, it returns the following error when run:\n\"" + e + "\"\n\nThe script has been removed from this pdf.\n\nFor a more specific error, that includes the line number of the error, try running the script from the JavaScript console (with the 'JS Console' button).",
+				cMsg : isManual ? "The script you entered" + wrongVersion + "it returns the following error when run:\n\"" + e + "\"\n\nYour script has not been added to the sheet, please try again after fixing the problem.\n\nIf you run your code from the console, it will give you a line number for where the error is. You can open this console from inside the \"Add Custom Script\" dialog." : 'The script "' + scriptName + '"' + wrongVersion + "it returns the following error when run:\n\"" + e + "\"\n\nThe script has been removed from this pdf.\n\nFor a more specific error, that includes the line number of the error, try running the script from the JavaScript console (with the 'JS Console' button).",
 				nIcon : 0,
-				cTitle : "Error in running user script"
+				cTitle : forNewerVersion ? "Script was made for newer version!" : "Error in running user script"
 			});
 			return false;
 		};
@@ -2671,9 +2673,9 @@ function CreateClassFeatureVariant(clName, clFea, varName, varObj) {
 	} else {
 		return;
 	}
-	if (aFea.extrachoices || aFea.extraname) return; // this doesn't work if a feature offers extrachoices
+	if (aFea.defaultChoice || aFea.extrachoices || aFea.extraname) return; // this doesn't work if a feature offers extrachoices
 	if (!aFea.choices) {
-		// Create a new 
+		// Create a new choice system, with the 'normal' feature as a choice that is selected by default
 		var origFea = newObj(aFea[clFea]);
 		var choiceNm = "\x1B[original] " + origFea.name;
 		var choiceNmLC = choiceNm.toLowerCase();
@@ -2730,8 +2732,8 @@ function ImportUserScriptFile(filePath) {
 				iFileCont = scriptContent;
 			} catch (error) {
 /* Uncomment for testing
-				var eText = "Error importing HTML from " + knownHTML + ": " + error + "\n ";
-				for (var e in error) eText += e + ": " + error[e] + ";\n ";
+				var eText = "Error importing HTML from " + knownHTML + ": " + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
 */
