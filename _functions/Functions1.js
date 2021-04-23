@@ -1104,6 +1104,7 @@ function AdventureLeagueOptions(MenuSelection) {
 		selectionAll[thecReturn] = set;
 	};
 	if (MenuSelection[1] === "all") {
+		if (set) selectionAll.disableOptionalRules = set;
 		tDoc.getField("League Remember").submitName = set;
 		ToggleAdventureLeague(selectionAll);
 	} else {
@@ -1218,6 +1219,12 @@ function ToggleAdventureLeague(Setting) {
 		SetEncumbrance(!Setting.encumbrance);
 	};
 
+	//Disable some optional rules when changing everything to AL
+	if (Setting.disableOptionalRules) {
+		Checkbox('Proficiency Bonus Dice', false);
+		setPlayersMakeAllRolls(false);
+	}
+
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
@@ -1254,12 +1261,10 @@ function ParseArmor(input, onlyInv) {
 //Find if the armor is a known armor
 function FindArmor(input) {
 	if (input === undefined) {
-		CurrentArmour.field = What("AC Armor Description").toLowerCase();
+		CurrentArmour.field = What("AC Armor Description");
 	};
-	var tempString = CurrentArmour.field;
-	var temp = "";
-	var tempFound = false;
-	CurrentArmour.known = ParseArmor(tempString);
+	var tempString = CurrentArmour.field.toLowerCase();
+	CurrentArmour.known = ParseArmor(CurrentArmour.field);
 
 	CurrentArmour.dex = "";
 	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].dex !== undefined && !isNaN(ArmourList[CurrentArmour.known].dex)) {
@@ -1277,16 +1282,23 @@ function FindArmor(input) {
 	if (CurrentArmour.known && ArmourList[CurrentArmour.known] && ArmourList[CurrentArmour.known].addMod) {
 		// check if it is an ability score
 		for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
-			temp = AbilityScores.abbreviations[i];
-			if (tempString.indexOf(temp.toLowerCase()) !== -1) {
-				CurrentArmour.mod = temp + " Mod";
-				i = AbilityScores.abbreviations.length;
+			var temp = AbilityScores.abbreviations[i];
+			if (tempString.indexOf("("+temp.toLowerCase()+")") !== -1) {
+				CurrentArmour.mod = temp;
+				break;
 			}
 		}
 		// or perhaps it wants to add the proficiency bonus
-		if (!CurrentArmour.mod && tempString.indexOf("prof") !== -1) {
-			CurrentArmour.mod = "Proficiency Bonus";
+		if (!CurrentArmour.mod && tempString.indexOf("(prof)") !== -1) {
+			CurrentArmour.mod = "Prof";
 		}
+	}
+
+	CurrentArmour.acString = "";
+	if (CurrentArmour.known) {
+		CurrentArmour.acString = ArmourList[CurrentArmour.known].ac;
+		if (CurrentArmour.mod) CurrentArmour.acString += "+" + CurrentArmour.mod;
+		if (CurrentArmour.magic) CurrentArmour.acString += (CurrentArmour.magic < 0 ? "" : "+") + CurrentArmour.magic;
 	}
 };
 
@@ -1297,7 +1309,7 @@ function ApplyArmor(input) {
 	var thermoTxt = thermoM("Applying armor...");
 	calcStop();
 
-	CurrentArmour.field = input.toLowerCase();
+	CurrentArmour.field = input;
 	var ArmorFields = [
 		"AC Armor Bonus", //0
 		"Medium Armor", //1
@@ -1308,8 +1320,6 @@ function ApplyArmor(input) {
 	];
 	FindArmor(input);
 
-	tDoc.getField(ArmorFields[0]).setAction("Calculate", "var placeholder = \"just to keep the calculation from being done too late\";");
-
 	if (CurrentArmour.known !== undefined && ArmourList[CurrentArmour.known] !== undefined) {
 		var ArmorType = ArmourList[CurrentArmour.known].type ? ArmourList[CurrentArmour.known].type.toLowerCase() : "";
 		var ArmorStealth = (ArmorType === "medium" && What("Medium Armor Max Mod") === 3) || (/mithral|vind rune/i).test(CurrentArmour.field) ? false : ArmourList[CurrentArmour.known].stealthdis ? ArmourList[CurrentArmour.known].stealthdis : false;
@@ -1318,12 +1328,7 @@ function ApplyArmor(input) {
 		Checkbox(ArmorFields[2], ArmorType === "heavy");
 		thermoM(1/3); //increment the progress dialog's progress
 
-		if (CurrentArmour.mod) {
-			var theCalc = "event.value = " + ArmourList[CurrentArmour.known].ac + ' + Number(' + (!CurrentArmour.mod ? 0 : CurrentArmour.mod == "Proficiency Bonus" ? 'How("Proficiency Bonus")' : 'What("' + CurrentArmour.mod + '")') + ') + ' + CurrentArmour.magic;
-			tDoc.getField(ArmorFields[0]).setAction("Calculate", theCalc);
-		} else {
-			Value(ArmorFields[0], ArmourList[CurrentArmour.known].ac + CurrentArmour.magic);
-		}
+		Value(ArmorFields[0], CurrentArmour.acString);
 		thermoM(2/3); //increment the progress dialog's progress
 
 		//add weight of the armor
@@ -1352,14 +1357,13 @@ function calcMaxDexToAC() {
 	} else if (tDoc.getField("Medium Armor").isBoxChecked(0)) {
 		dexMod = Math.min(dexMod, Number(What("Medium Armor Max Mod")));
 	};
-
 	return dexMod;
 };
 
 //a function to calculate the value of the Dex field in the Armour section (returns a value)
-function calcCompMaxDexToAC(prefix, armourKey) {
-	if (!prefix || !ArmourList[armourKey]) return 0;
-	var dexMod = Number(What(prefix + "Comp.Use.Ability.Dex.Mod"));
+function calcCompMaxDexToAC(prefix, armourKey, dexMod) {
+	if (prefix === "" || !ArmourList[armourKey]) return 0;
+	if (dexMod === undefined || isNaN(dexMod)) dexMod = Number(What(prefix + "Comp.Use.Ability.Dex.Mod"));
 	var theArmour = ArmourList[armourKey];
 	if (theArmour.dex) {
 		dexMod = theArmour.dex == -10 ? 0 : Math.min(dexMod, theArmour.dex);
@@ -4048,6 +4052,7 @@ function RemoveWeapon(weapon) {
 };
 
 function AddString(field, inputstring, newline) {
+	if (!inputstring && inputstring !== 0) return;
 	var thefield = tDoc.getField(field);
 	if (!thefield) return;
 	var thestring = inputstring.replace(/\n/g, "\r");
@@ -4068,6 +4073,7 @@ function AddString(field, inputstring, newline) {
 };
 
 function RemoveString(field, toremove, newline) {
+	if (!toremove && toremove !== 0) return;
 	var thestring = toremove.replace(/\n/g, "\r");
 	var regExString = thestring.RegEscape();
 	var thefield = tDoc.getField(field);
@@ -4196,6 +4202,19 @@ function ValidateBonus(goEmpty, allowDC) {
 // Display the EvalBonus for this field, if calculated (field format)
 function DisplayBonus() {
 	if (event.value && event.target.valueCalculated !== undefined) event.value = event.target.valueCalculated;
+}
+
+// Calculate the EvalBonus for this field, if calculated (field calculation)
+function DisplayBonusCalculate() {
+	if (event.value && isNaN(event.value)) {
+		var prefix = getTemplPre(event.target.name, "AScomp", true);
+		if (prefix === "") prefix = true;
+		var evalVal = EvalBonus(event.value, prefix);
+		if (evalVal !== event.target.valueCalculated) {
+			event.target.valueCalculated = evalVal;
+			event.target.value = event.value; // so that the display is actually updated
+		}
+	}
 }
 
 // Calculate the skill modifier (field calculation)
@@ -5253,21 +5272,29 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			var prefix = AScompA[a];
 			var aComp = CurrentCompRace[AScompA[a]];
 
-			if (aComp.typeFound !== "creature" || !aComp.changeeval || typeof aComp.changeeval != 'function') continue;
-
 			//increment the progress dialog's progress
-			thermoTxt = thermoM("Updating " + aComp.name + " level-dependent features...", false);
+			var compDispName = What(prefix + "Comp.Desc.Name");
+			if (!compDispName) compDispName = aComp.name;
+
+			thermoTxt = thermoM("Updating " + compDispName + " level-dependent features...", false);
 			thermoM((f)/AScompA.length);
 
-			try {
-				aComp.changeeval(prefix, curLvl);
-			} catch (error) {
-				var iPageNo = tDoc.getField(prefix + 'Comp.Race').page + 1;
-				var eText = "The changeeval function from '" + aComp.name + "' on page " + iPageNo + " produced an error! Please contact the author of the feature to correct this issue:\n " + error;
-				for (var e in error) eText += "\n " + e + ": " + error[e];
-				console.println(eText);
-				console.show();
-				delete CurrentCompRace[prefix].changeeval;
+			// Do changeeval, but only for creatures as the RaceList will be made for the main character
+			if (aComp.typeFound === "creature" && aComp.changeeval && typeof aComp.changeeval == 'function') {
+				try {
+					aComp.changeeval(prefix, curLvl);
+				} catch (error) {
+					var iPageNo = tDoc.getField(prefix + 'Comp.Race').page + 1;
+					var eText = "The changeeval function from '" + aComp.name + "' on page " + iPageNo + " produced an error! Please contact the author of the feature to correct this issue:\n " + error;
+					for (var e in error) eText += "\n " + e + ": " + error[e];
+					console.println(eText);
+					console.show();
+					delete CurrentCompRace[prefix].changeeval;
+				}
+			}
+			// Update the proficiencyBonus to 
+			if (aComp.proficiencyBonusLinked) {
+				Value(prefix + 'Comp.Use.Proficiency Bonus', Math.max(2, How('Proficiency Bonus')));
 			}
 		}
 	}
@@ -6024,9 +6051,8 @@ function CalcAC() {
 	// Get the total AC value
 	var AC = 0;
 	for (var fld in acFlds) {
-		var ACval = /magic|misc/.test(fld) ? EvalBonus(What(acFlds[fld]), true) : Number(What(acFlds[fld]));
-		acVals[fld] = [ACval, ACval];
-		AC += ACval;
+		acVals[fld] = fld === "dex" ? Number(What(acFlds[fld])) : EvalBonus(What(acFlds[fld]), true);
+		AC += acVals[fld];
 	}
 
 	// It is possible that some of the modifiers (magic / misc) should not be added if some conditions aren't met
@@ -6060,7 +6086,7 @@ function CalcAC() {
 				if (removeMod) {
 					var removeVal = EvalBonus(aMod.mod, true);
 					AC -= removeVal;
-					if (acVals[aMod.type]) acVals[aMod.type][1] -= removeVal;
+					if (acVals[aMod.type] !== undefined) acVals[aMod.type] -= removeVal;
 				}
 			} catch (error) {
 				var eText = "The check if the AC bonus from '" + aMod.name + "' should be added or not produced an error! This check will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
@@ -6073,15 +6099,15 @@ function CalcAC() {
 	}
 	// Now update the display value for the magic and misc modifier fields
 	for (var fld in acVals) {
-		if (!(/magic|misc/).test(fld)) continue;
+		if (fld === "dex") continue;
 		var modFld = tDoc.getField(acFlds[fld]);
-		if (modFld.valueCalculated !== acVals[fld][1]) {
-			modFld.valueCalculated = acVals[fld][1];
+		if (modFld.valueCalculated !== acVals[fld]) {
+			modFld.valueCalculated = acVals[fld];
 			Value(acFlds[fld], What(acFlds[fld]));
 		}
 	}
 
-	if (!acVals.armour[0]) {
+	if (!acVals.armour) {
 		event.value = "";
 	} else if (tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0)) {
 		AC -= 12;
@@ -6093,7 +6119,8 @@ function CalcAC() {
 
 // Format the AC for when "Players Make All Rolls" is enabled (field format)
 function formatACforPMAR() {
-	if (!tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0) || !event.value || isNaN(event.value)) return;
+	DisplayBonus();
+	if (!tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0) || !event.value) return;
 	var ACmod = event.value - 12;
 	event.value = ACmod < 0 ? ACmod : "+" + ACmod;
 }
@@ -8004,7 +8031,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/(\b|-)\d+(,|\.|\/)?\d*\/?(-?\d+?(,|\.|\/)?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|(in|inch|inches|miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?|gal|gallons?|\u00B0 ?f|degrees? fahrenheit|fahrenheit)\b)/ig);
+	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|(in|inch|inches|miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?|gal|gallons?|\u00B0 ?f|degrees? fahrenheit|fahrenheit)\b)/ig);
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
@@ -8029,8 +8056,8 @@ function ConvertToMetric(inputString, rounded, exact) {
 					var resulted = theConvert(parseFloat(org), orgUnit);
 				}
 			}
-
-			var delimiter = (/-[^\d]/).test(measurements[i]) ? "-" : " ";
+	
+			var delimiter = (/.*\d+([\s- ]*?)\w/).test(measurements[i]) ? measurements[i].match(/.*\d+([\s- ]*?)\w/)[1] : " ";
 
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
@@ -8120,7 +8147,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/(\b|-)\d+(,|\.|\/)?\d*\/?(-?\d+?(,|\.|\/)?\d*)?\s?-?(m2|square meters?|square metres?|m3|cubic meters?|cubic metres?|cm|km|m|meters?|metres?|l|liters?|litres?|kg|g|kilos?|\u00B0 ?c|degrees? celcius|celcius)\b/ig);
+	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?(m2|square meters?|square metres?|m3|cubic meters?|cubic metres?|cm|km|m|meters?|metres?|l|liters?|litres?|kg|g|kilos?|\u00B0 ?c|degrees? celcius|celcius)\b/ig);
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
@@ -8134,7 +8161,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 				var resulted = theConvert(parseFloat(org), orgUnit);
 			}
 
-			var delimiter = (/-[^\d]/).test(measurements[i]) ? "-" : " ";
+			var delimiter = (/.*\d+([\s- ]*?)\w/).test(measurements[i]) ? measurements[i].match(/.*\d+([\s- ]*?)\w/)[1] : " ";
 
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
@@ -8432,11 +8459,11 @@ function SetUnitDecimals_Button() {
 			Value(FldsWeight[D], What(FldsWeight[D]));
 			thermoM((FldsGameMech.length + D)/totalInc); //increment the progress dialog's progress
 		}
-	} else if (tDoc.info.SpellsOnly && SetUnitDecimals_Dialog.bSys !== unitSys) { //do something if the unit system was changed
+	} else if (tDoc.info.SpellsOnly && (SetUnitDecimals_Dialog.bSys !== unitSys || SetUnitDecimals_Dialog.bDec !== decSep)) { //do something if it was changed
 		thermoTxt = thermoM("Converting to " + SetUnitDecimals_Dialog.bSys + "...", false); //change the progress dialog text
 		Value("Unit System", SetUnitDecimals_Dialog.bSys);
 		Value("Decimal Separator", SetUnitDecimals_Dialog.bDec);
-		//run through all the spells fields with a description and re-do the
+		//run through all the spells fields with a description and re-do them
 		for (var Sa = 0; Sa < spellsArray.length; Sa++) {
 			ApplySpell(spellsArray[Sa][0], spellsArray[Sa][1]);
 		}
@@ -8480,96 +8507,9 @@ function SetTextOptions_Button() {
 	}
 };
 
-//Make menu for the button on each Attack line and parse it to Menus.attacks
-function MakeWeaponMenu() {
-	var QI = event.target.name.indexOf("Comp.") === -1;
-	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
-
-	var menuLVL1 = function (item, array, setDisabled) {
-		for (var i = 0; i < array.length; i++) {
-			var disable = setDisabled;
-			if ((array[i] === "Move up" && itemNmbr === 1) || (array[i] === "Move down" && itemNmbr === maxItems) || (array[i] === "Insert empty attack" && (!theField || itemNmbr === maxItems))) {
-				disable = true;
-			} else if (!theField && !isEquipment && array[i] === "Copy to Adventuring Gear (page 2)") {
-				disable = true;
-			}
-			item.push({
-				cName : array[i],
-				cReturn : array[i],
-				bEnabled : !disable
-			});
-		}
-	};
-
-	var menuLVL2 = function (menu, name, array) {
-		menu.cName = name;
-		menu.oSubMenu = [];
-		var lookIt = What(prefix + "BlueText." + Q + "Attack." + itemNmbr + ".Weight Title");
-		for (var i = 0; i < array.length; i++) {
-			menu.oSubMenu.push({
-				cName : array[i].capitalize(),
-				cReturn : name + "#" + array[i],
-				bMarked : lookIt === array[i]
-			})
-		}
-	};
-
-	//make the attack menu
-	var attackMenu = [];
-	var itemNmbr = Number(event.target.name.slice(-1));
-	var maxItems = QI ? FieldNumbers.attacks : 3;
-	var theField = !CurrentVars.manual.attacks ? What(prefix + Q + "Attack." + itemNmbr + ".Weapon Selection") : What(prefix + Q + "Attack." + itemNmbr + ".Weapon");
-	var theWea = CurrentWeapons.known[itemNmbr - 1];
-	var isWeapon = QI && ((!theWea[0] && CurrentWeapons.field[itemNmbr - 1]) || (theWea[0] && WeaponsList[theWea[0]].weight));
-	var isEquipment = QI && What("BlueText.Attack." + itemNmbr + ".Weight") && (CurrentVars.manual.attacks || isWeapon) ? true : false;
-
-	//decide what items to put on there
-	var menuItems = [["Move up", "Move down"], ["-", "Copy to Adventuring Gear (page 2)"], ["-", "Insert empty attack", "Delete attack", "Clear attack"]];
-	var attackMenuItems = QI ? menuItems[0].concat(menuItems[1]).concat(menuItems[2]) : menuItems[0].concat(menuItems[2]);
-	menuLVL1(attackMenu, attackMenuItems);
-
-	if (!typePF) {
-		//make the color menu
-		var ColorMenu = {};
-		var ColorArray = ["black"]; //add a black option
-
-		//add all the colours to the tempArray, ommitting some if not using the full (bonus) version
-		for (var key in ColorList) {
-			ColorArray.push(key);
-		};
-		ColorArray.sort();
-		ColorArray.unshift("same as headers", "same as dragon heads", "-");
-		menuLVL2(ColorMenu, "Outline Color", ColorArray);
-
-		//add the colormenu to the attack menu
-		attackMenu.push({cName : "-"});
-		attackMenu.push(ColorMenu);
-	}
-
-	if (QI) menuLVL1(attackMenu, ["-", "Show what things are affecting the attack calculations"], ObjLength(CurrentEvals.atkStr) && (CurrentEvals.atkAdd || CurrentEvals.atkCalc) ? false : true);
-
-	//set the complete menu as the global variable
-	Menus.attacks = attackMenu;
-};
-
-//call the weapon menu and do something with the results
-function WeaponOptions() {
-	var MenuSelection = getMenu("attacks");
-
-	if (!MenuSelection || MenuSelection[0] == "nothing") return;
-
-	// Start progress bar and stop calculations
-	var thermoTxt = thermoM("Applying attack menu option...");
-	calcStop();
-
-	var QI = event.target.name.indexOf("Comp.") === -1;
-	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
-	var maxItems = QI ? FieldNumbers.attacks : 3;
-
-	var itemNmbr = Number(event.target.name.slice(-1));
-	var FieldNames = [
+// Make an array of all attack fields of that fieldnumber (!prefix for 1st page)
+function ReturnAttackFieldsArray(fldNmbr, prefix) {
+	var fldsBase = [
 		["", ".Weapon"], //0
 		["", ".To Hit"], //1
 		["", ".Damage"], //2
@@ -8585,85 +8525,175 @@ function WeaponOptions() {
 		["", ".Description"], //12
 		["BlueText.", ".Weight Title"], //13
 	];
-	var Fields = [], FieldsValue = [], FieldsUp = [], FieldsUpValue = [], FieldsDown = [], FieldsDownValue = [];
-
-	for (var F = 0; F < FieldNames.length; F++) {
-		Fields.push(prefix + FieldNames[F][0] + Q + "Attack." + itemNmbr + FieldNames[F][1]);
-		FieldsValue.push(What(Fields[F]));
-		if (itemNmbr !== 1) {
-			FieldsUp.push(prefix + FieldNames[F][0] + Q + "Attack." + (itemNmbr - 1) + FieldNames[F][1]);
-			FieldsUpValue.push(What(FieldsUp[F]));
-		}
-		if (itemNmbr !== maxItems) {
-			FieldsDown.push(prefix + FieldNames[F][0] + Q + "Attack." + (itemNmbr + 1) + FieldNames[F][1]);
-			FieldsDownValue.push(What(FieldsDown[F]));
-		}
+	var flds = [];
+	if (!prefix) prefix = "";
+	var Q = prefix ? "Comp.Use." : "";
+	for (var i = 0; i < fldsBase.length; i++) {
+		flds[i] = prefix + fldsBase[i][0] + Q + "Attack." + fldNmbr + fldsBase[i][1];
 	}
-	var IconFld = !typePF ? tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonGetIcon() : "";
+	return flds;
+}
+
+//Make menu for the button on each Attack line and parse it to Menus.attacks
+function MakeAttackLineMenu_AttackLineOptions(MenuSelection, itemNmbr, prefix) {
+	var attackMenu = [];
+	if (!itemNmbr) itemNmbr = Number(event.target.name.slice(-1));
+	if (prefix === undefined && event.target && event.target.name) {
+		var QI = event.target.name.indexOf("Comp.") === -1;
+		prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
+	} else {
+		if (prefix && !CurrentWeapons.compKnown[prefix]) return;
+		var QI = prefix ? false : true;
+		if (!prefix) prefix = "";
+	}
+	var Q = QI ? "" : "Comp.Use.";
+	var maxItems = QI ? FieldNumbers.attacks : 3;
+
+	var Fields = ReturnAttackFieldsArray(itemNmbr, prefix);
+	var fldsBase = [
+		["", ".Weapon"], //0
+		["", ".To Hit"], //1
+		["", ".Damage"], //2
+		["", ".Weapon Selection"], //3
+		["", ".Proficiency"], //4
+		["", ".Mod"], //5
+		["", ".Range"], //6
+		["BlueText.", ".Weight"], //7
+		["", ".Damage Type"], //8
+		["BlueText.", ".To Hit Bonus"], //9
+		["BlueText.", ".Damage Bonus"], //10
+		["BlueText.", ".Damage Die"], //11
+		["", ".Description"], //12
+		["BlueText.", ".Weight Title"], //13
+	];
+	for (var i = 0; i < fldsBase.length; i++) {
+		Fields[i] = prefix + fldsBase[i][0] + Q + "Attack." + itemNmbr + fldsBase[i][1];
+	}
+
+	var theField = What( Fields[ CurrentVars.manual.attacks ? 0 : 3] );
+	var theWea = QI ? CurrentWeapons.known[itemNmbr - 1] : CurrentWeapons.compKnown[prefix][itemNmbr - 1];
+	var weaWeight = theWea[0] && WeaponsList[theWea[0]] ? WeaponsList[theWea[0]].weight :
+		theWea[0] && QI && CurrentCompRace[prefix] && CurrentCompRace[prefix].attacks ? CurrentCompRace[prefix].attacks[theWea[0]].weight :
+		What(Fields[7]);
+	var noUp = itemNmbr === 1;
+	var noDown = itemNmbr === maxItems;
+
+	if (!MenuSelection || MenuSelection === "justMenu") {
+		var menuLVL1 = function (array) {
+			for (var i = 0; i < array.length; i++) {
+				attackMenu.push({
+					cName : array[i][0],
+					cReturn : "attack#" + array[i][1],
+					bEnabled : array[i][2] !== undefined ? array[i][2] : true 
+				});
+			}
+		};
+		menuLVL1([
+			//[name, return, enabled]
+			["Move up", "up", !noUp],
+			["Move down", "down", !noDown],
+			["-", "-"],
+			[QI ? "Copy to Adventuring Gear (page 2)" : "Copy to Equipment section", "copytoequip", weaWeight],
+			["-", "-"],
+			["Insert empty attack", "insert", theField && !noDown],
+			["Delete attack", "delete"],
+			["Clear attack", "clear"]
+		]);
+
+		var menuLVL2 = function (name, array, markThis) {
+			var temp = {
+				cName : name[0],
+				oSubMenu : []
+			}
+			for (var i = 0; i < array.length; i++) {
+				temp.oSubMenu.push({
+					cName : array[i].capitalize(),
+					cReturn : "attack#" + name[1] + "#" + array[i],
+					bMarked : array[i] === markThis
+				})
+			}
+			attackMenu.push(temp);
+		};
+
+		// Add the colour menu
+		if (!typePF) {
+			attackMenu.push({ cName : "-" });
+			var ColorArray = ["black"];
+			for (var key in ColorList) ColorArray.push(key);
+			ColorArray.sort();
+			ColorArray.unshift("same as headers", "same as dragon heads", "-");
+			menuLVL2(["Outline Color", "colour"], ColorArray, What(Fields[13]));
+		}
+
+		// Add option to show dialog with calcChanges
+		if (QI) {
+			menuLVL1([
+				//[name, return, enabled]
+				["-", "-"],
+				["Show what things are affecting the attack calculations", "showcalcs", ObjLength(CurrentEvals.atkStr) && (CurrentEvals.atkAdd || CurrentEvals.atkCalc)]
+			]);
+		}
+
+		//set the complete menu as the global variable
+		Menus.attacks = attackMenu;
+		if (MenuSelection == "justMenu") return;
+	}
+	MenuSelection = MenuSelection ? MenuSelection : getMenu("attacks");
+	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "attack") return;
+
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Applying attack menu option...");
 	var findWeaps = false;
-	switch (MenuSelection[0]) {
-	 case "move up":
-		thermoTxt = thermoM("Moving the attack up...", false); //change the progress dialog text
-		IsNotWeaponMenu = false;
-		for (var H = 0; H < FieldNames.length; H++) {
-			Value(FieldsUp[H], FieldsValue[H]);
-			Value(Fields[H], FieldsUpValue[H]);
-			if (!QI && (/description/i).test(Fields[H])) SwapTooltip(FieldsUp[H], Fields[H])
-			thermoM(H/FieldNames.length); //increment the progress dialog's progress
-		};
-		if (!typePF) {
-			var IconUp = tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr - 1)).buttonGetIcon();
-			tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr - 1)).buttonSetIcon(IconFld);
-			tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonSetIcon(IconUp);
-		}
-		IsNotWeaponMenu = true;
-		findWeaps = true;
-		break;
-	 case "move down":
-		thermoTxt = thermoM("Moving the attack down...", false); //change the progress dialog text
-		IsNotWeaponMenu = false;
-		for (var H = 0; H < FieldNames.length; H++) {
-			Value(FieldsDown[H], FieldsValue[H]);
-			Value(Fields[H], FieldsDownValue[H]);
-			if (!QI && (/description/i).test(Fields[H])) SwapTooltip(FieldsDown[H], Fields[H])
-			thermoM(H/FieldNames.length); //increment the progress dialog's progress
-		};
-		if (!typePF) {
-			var IconDown = tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr + 1)).buttonGetIcon();
-			tDoc.getField(prefix + "Image." + Q + "Attack." + (itemNmbr + 1)).buttonSetIcon(IconFld);
-			tDoc.getField(prefix + "Image." + Q + "Attack." + itemNmbr).buttonSetIcon(IconDown);
-		}
-		IsNotWeaponMenu = true;
-		findWeaps = true;
-		break;
-	 case "copy to adventuring gear (page 2)":
-		thermoTxt = thermoM("Copying the attack to the equipment on page 2...", false); //change the progress dialog text
-		AddToInv("gear", "r", FieldsValue[3], "", FieldsValue[7], "", false, false, false, true);
-		break;
-	 case "insert empty attack":
-		thermoTxt = thermoM("Inserting empty attack...", false); //change the progress dialog text
-		WeaponInsert(itemNmbr);
-		break;
-	 case "delete attack":
-		thermoTxt = thermoM("Deleting attack...", false); //change the progress dialog text
-		WeaponDelete(itemNmbr);
-		break;
-	 case "clear attack":
-		thermoTxt = thermoM("Clearing attack...", false); //change the progress dialog text
-		tDoc.resetForm(Fields);
-		if (!QI) AddTooltip(Fields[12], "Description and notes");
-		//reset the color outline
-		ApplyAttackColor(itemNmbr);
-		findWeaps = true;
-		break;
-	 case "outline color":
-		thermoTxt = thermoM("Changing the attack outline color...", false); //change the progress dialog text
-		ApplyAttackColor(itemNmbr, MenuSelection[1]);
-		break;
-	 case "show what things are affecting the attack calculations":
-		var atkCalcStr = StringEvals("atkStr");
-		if (atkCalcStr) ShowDialog("Things Affecting the Attack Calculations", atkCalcStr);
-		break;
+	calcStop();
+
+	switch (MenuSelection[1]) {
+		case "up" :
+			if (noUp) return;
+		case "down" :
+			if (MenuSelection[1] === "down" && noDown) return;
+			thermoTxt = thermoM("Moving the attack " + MenuSelection[1] + "...", false);
+			IsNotWeaponMenu = false;
+			// Get the other fields
+			var otherNmbr = MenuSelection[1] === "down" ? itemNmbr + 1 : itemNmbr - 1;
+			var FieldsOth = ReturnAttackFieldsArray(otherNmbr, prefix);
+			// Now swap all the fields
+			for (var i = 0; i < Fields.length; i++) {
+				var exclObj = {
+					userName : i !== 12, // tooltip only for description
+					submitName : i === 4, // submitname only not for proficiency
+					defaultValue : !typePF && i === 13, // weight title keep default value
+					noCalc : true
+				};
+				copyField(Fields[i], FieldsOth[i], exclObj, true);
+				thermoM(i/(Fields.length)); //increment the progress dialog's progress
+			}
+			// Re-apply the attack colour, as this could've changed
+			if (!typePF) {
+				ApplyAttackColor(itemNmbr, undefined, Q, prefix);
+				ApplyAttackColor(otherNmbr, undefined, Q, prefix);
+			}
+			IsNotWeaponMenu = true;
+			findWeaps = true;
+			break;
+		case "copytoequip" :
+			thermoTxt = thermoM("Copying to Equipment section...", false);
+			AddToInv(QI ? "gear" : prefix + "comp", QI ? "r" : "l", What(Fields[3]), "", What(Fields[7]), "", false, false, false, true);
+			break;
+		case "insert" :
+			WeaponInsert(itemNmbr, prefix);
+			break;
+		case "delete" :
+			WeaponDelete(itemNmbr, prefix);
+			break;
+		case "clear" :
+			thermoTxt = thermoM("Clearing attack...", false);
+			WeaponClear(itemNmbr, prefix)
+			findWeaps = true;
+			break;
+		case "colour" :
+			thermoTxt = thermoM("Changing attack outline color...", false);
+			ApplyAttackColor(itemNmbr, MenuSelection[2], Q, prefix);
+			break;
 	}
 
 	//re-populate the CurrentWeapons variable because of the thing that just changed
@@ -8676,147 +8706,110 @@ function WeaponOptions() {
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
+//clear a weapon field
+function WeaponClear(itemNmbr, prefix) {
+	var Fields = ReturnAttackFieldsArray(itemNmbr, prefix);
+	tDoc.resetForm(Fields);
+	if (!typePF) ApplyAttackColor(itemNmbr, undefined, prefix ? "Comp." : "", prefix);
+	// Remove the submitname from the to hit & damage modifier fields
+	AddTooltip(Fields[9], undefined, "");
+	AddTooltip(Fields[10], undefined, "");
+}
+
 //insert a weapon at the position wanted
-function WeaponInsert(itemNmbr) {
-	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
-	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
-	var maxItems = QI ? FieldNumbers.attacks : 3;
-	var theField = !CurrentVars.manual.attacks ? ".Weapon Selection" : ".Weapon";
+function WeaponInsert(itemNmbr, prefix) {
+	if (!prefix) prefix = "";
+	var Q = prefix ? "Comp.Use." : "";
+	var Fields = ReturnAttackFieldsArray(itemNmbr, prefix);
+	var theFieldI = CurrentVars.manual.attacks ? 0 : 3;
+	var maxItems = prefix ? 3 : FieldNumbers.attacks;
 
-	//stop the function if the selected slot is already empty
-	if (What(prefix + Q + "Attack." + itemNmbr + theField) === "") {
-		return;
-	}
+	// Stop the function if the selected slot is already empty
+	if (!What(Fields[theFieldI])) return;
 
-	//look for the first empty slot below the slot
-	var endslot = "";
+	// Look for the first empty slot below the slot
+	var endslot = false;
 	for (var i = itemNmbr + 1; i <= maxItems; i++) {
-		if (What(prefix + Q + "Attack." + i + theField) === "") {
+		var aFld = ReturnAttackFieldsArray(i, prefix)[theFieldI];
+		if (What(aFld) === "") {
 			endslot = i;
-			i = (maxItems + 1);
+			break;
 		}
 	}
+	if (!endslot) return; //only continue if an empty slot was found in the fields
 
-	var FieldNames = [
-		["", ".Weapon"], //0
-		["", ".To Hit"], //1
-		["", ".Damage"], //2
-		["", ".Weapon Selection"], //3
-		["", ".Proficiency"], //4
-		["", ".Mod"], //5
-		["", ".Range"], //6
-		["BlueText.", ".Weight"], //7
-		["", ".Damage Type"], //8
-		["BlueText.", ".To Hit Bonus"], //9
-		["BlueText.", ".Damage Bonus"], //10
-		["BlueText.", ".Damage Die"], //11
-		["", ".Description"], //12
-		["BlueText.", ".Weight Title"], //13
-	];
-	var Fields = [];
-	for (var F = 0; F < FieldNames.length; F++) {
-		Fields.push(prefix + FieldNames[F][0] + Q + "Attack." + itemNmbr + FieldNames[F][1]);
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Inserting empty attack...");
+	calcStop();
+	IsNotWeaponMenu = false;
+
+	// Cycle through the slots starting with the empty one and add the values of the one above
+	for (var s = endslot; s > itemNmbr; s--) {
+		var AttFldsFrom = ReturnAttackFieldsArray(s - 1);
+		var AttFldsTo = ReturnAttackFieldsArray(s);
+		for (var i = 0; i < AttFldsFrom.length; i++) {
+			var exclObj = {
+				userName : i !== 12, // tooltip only for description
+				submitName : i === 4, // submitname only not for proficiency
+				defaultValue : !typePF && i === 13, // weight title keep default value
+				noCalc : true
+			};
+			copyField(AttFldsFrom[i], AttFldsTo[i], exclObj);
+		}
+		if (!typePF) ApplyAttackColor(s, undefined, Q, prefix);
 	}
+	IsNotWeaponMenu = true;
 
-	//only continue if an empty slot was found in the fields
-	if (endslot) {
-		//cycle to the slots starting with the empty one and add the values of the one above
-		IsNotWeaponMenu = false;
-		for (var i = endslot; i > itemNmbr; i--) {
-			//move the values
-			for (var H = 0; H < FieldNames.length; H++) {
-				var fromFld = prefix + FieldNames[H][0] + Q + "Attack." + (i - 1) + FieldNames[H][1];
-				Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(fromFld), !QI && (/description/i).test(FieldNames[H][1]) ? Who(fromFld) : undefined);
-			}
-			if (!typePF) {
-				var theIcon = tDoc.getField(prefix + "Image." + Q + "Attack." + (i - 1)).buttonGetIcon();
-				tDoc.getField(prefix + "Image." + Q + "Attack." + i).buttonSetIcon(theIcon);
-			}
-		}
+	// Empty the selected slot
+	WeaponClear(itemNmbr, prefix);
 
-		//empty the selected slot
-		tDoc.resetForm(Fields);
-		if (!QI) AddTooltip(Fields[12], "Description and notes");
-		IsNotWeaponMenu = true;
-
-		//re-populate the CurrentWeapons variable because of the thing that just changed
-		if (QI) {
-			FindWeapons();
-		} else {
-			FindCompWeapons(undefined, prefix);
-		}
+	// Re-populate the CurrentWeapons variable because of the thing that just changed
+	if (prefix) {
+		FindCompWeapons(undefined, prefix);
+	} else {
+		FindWeapons();
 	}
 }
 
 //delete a weapon at the position wanted and move the rest up
-function WeaponDelete(itemNmbr) {
-	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
-	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
-	var maxItems = QI ? FieldNumbers.attacks : 3;
+function WeaponDelete(itemNmbr, prefix) {
+	if (!prefix) prefix = "";
+	var Q = prefix ? "Comp.Use." : "";
+	var maxItems = prefix ? 3 : FieldNumbers.attacks;
 
-	var FieldNames = [
-		["", ".Weapon"], //0
-		["", ".To Hit"], //1
-		["", ".Damage"], //2
-		["", ".Weapon Selection"], //3
-		["", ".Proficiency"], //4
-		["", ".Mod"], //5
-		["", ".Range"], //6
-		["BlueText.", ".Weight"], //7
-		["", ".Damage Type"], //8
-		["BlueText.", ".To Hit Bonus"], //9
-		["BlueText.", ".Damage Bonus"], //10
-		["BlueText.", ".Damage Die"], //11
-		["", ".Description"], //12
-		["BlueText.", ".Weight Title"], //13
-	];
-	var Fields = [];
-	var EndFields = [];
-	for (var F = 0; F < FieldNames.length; F++) {
-		Fields.push(prefix + FieldNames[F][0] + Q + "Attack." + itemNmbr + FieldNames[F][1]);
-		EndFields.push(prefix + FieldNames[F][0] + Q + "Attack." + maxItems + FieldNames[F][1]);
-	}
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Deleting attack...");
+	calcStop();
 
-	//delete the currently selected line so that the weapons code is removed as well
-	tDoc.resetForm(Fields);
+	// Empty the selected slot
+	WeaponClear(itemNmbr, prefix);
 
-	//move every line up one space, starting with the selected line
 	IsNotWeaponMenu = false;
-	var theColorField = "BlueText.Attack." + (maxItems - 1) + ".Weight Title"; 
-	var skipAttackColour = QI && typePF && What(theColorField) !== tDoc.getField(theColorField).defaultValue;
-	for (var i = itemNmbr; i < maxItems; i++) {
-		if (!typePF) {
-			//move the images, for every line that contains a weapon
-			theColorField = prefix + "BlueText." + Q + "Attack." + (i + 1) + ".Weight Title";
-			if (i !== (maxItems - 1) || !skipAttackColour) {
-				var theIcon = tDoc.getField(prefix + "Image." + Q + "Attack." + (i + 1)).buttonGetIcon();
-				tDoc.getField(prefix + "Image." + Q + "Attack." + i).buttonSetIcon(theIcon);
-			}
+	// Move every line up one space, starting with the selected line
+	for (var s = itemNmbr; s < maxItems; s++) {
+		var AttFldsFrom = ReturnAttackFieldsArray(s + 1);
+		var AttFldsTo = ReturnAttackFieldsArray(s);
+		for (var i = 0; i < AttFldsFrom.length; i++) {
+			var exclObj = {
+				userName : i !== 12, // tooltip only for description
+				submitName : i === 4, // submitname only not for proficiency
+				defaultValue : !typePF && i === 13, // weight title keep default value
+				noCalc : true
+			};
+			copyField(AttFldsFrom[i], AttFldsTo[i], exclObj);
 		}
-
-		//move the values
-		for (var H = 0; H < FieldNames.length; H++) {
-			if (i == (maxItems - 1) && skipAttackColour && (/Weight Title/i).test(FieldNames[H][1])) continue;
-			var fromFld = prefix + FieldNames[H][0] + Q + "Attack." + (i + 1) + FieldNames[H][1];
-			Value(prefix + FieldNames[H][0] + Q + "Attack." + i + FieldNames[H][1], What(fromFld), !QI && (/description/i).test(FieldNames[H][1]) ? Who(fromFld) : undefined);
-		};
+		if (!typePF) ApplyAttackColor(s, undefined, Q, prefix);
 	}
-
-	//delete the contents of the final line
-	tDoc.resetForm(EndFields);
-	if (!QI) AddTooltip(EndFields[12], "Description and notes");
-
-	//reset the final line's image to the default
-	ApplyAttackColor(maxItems, "");
 	IsNotWeaponMenu = true;
 
-	//re-populate the CurrentWeapons variable because of the thing that just changed
-	if (QI) {
-		FindWeapons();
-	} else {
+	// Empty the final slot
+	WeaponClear(maxItems, prefix);
+
+	// Re-populate the CurrentWeapons variable because of the thing that just changed
+	if (prefix) {
 		FindCompWeapons(undefined, prefix);
+	} else {
+		FindWeapons();
 	}
 }
 
@@ -9195,7 +9188,7 @@ function CalcCarriedLocation() {
 //make the appropriate attack field a different color, depending on the menu entry
 function ApplyAttackColor(attackNmbr, aColour, type, prefix) {
 	if (typePF) return; //don't do this function in the Printer-Friendly version
-	var QI = type ? type !== "Comp." : !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
+	var QI = type ? type.indexOf("Comp.") === -1 : !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var prefixA = [""];
 	if (!QI && event.target && event.target.name && !prefix) {
 		prefixA = [getTemplPre(event.target.name, "AScomp", true)];

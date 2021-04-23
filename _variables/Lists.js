@@ -362,8 +362,9 @@ var IsNotFeatMenu = true;
 var IsNotMagicItemMenu = true;
 var IsNotWeaponMenu = true;
 var IsNotConditionSet = true;
-var IsSetDropDowns = false;
 var IsNotUserScript = true;
+var IsNotSetCompType = true;
+var IsSetDropDowns = false;
 var IsCharLvlVal = false;
 
 var FieldsRemember = [];
@@ -1803,7 +1804,37 @@ var compString = {
 			"\n\u2022 " + "I can verbally command the beast where to move (no action)" +
 			"\n\u2022 " + "As an action, I can have the beast do an Attack, Dash, Disengage, or Help action on its turn" +
 			"\n\u2022 " + "If I don't command it to take an action, it takes the Dodge action instead",
-		actions : []
+		actions : [["action", "Command Companion"]],
+		calcChanges : {
+			hp : function (totalHD, HDobj, prefix) {
+				var classTxt = "", useLvl, totHP, strHp;
+				if (!classes.known.ranger && !classes.known["spell-less ranger"]) {
+					useLvl = Number(What("Character Level"));
+				} else {
+					classTxt = "ranger ";
+					useLvl = (classes.known.ranger ? classes.known.ranger.level : 0) + (classes.known["spell-less ranger"] ? classes.known["spell-less ranger"].level : 0);
+				}
+				var rngrCompHp = 4 * useLvl;
+				var rngrCompHpStr = " 4 \xD7 " + useLvl + " from four times my " + classTxt + "level (" + rngrCompHp + ")";
+				if (!CurrentCompRace[prefix] || CurrentCompRace[prefix].typeFound !== "creature") {
+					totHP = rngrCompHp;
+					strHp = " =" + rngrCompHpStr;
+				} else {
+					var creaHp = CurrentCompRace[prefix] && CurrentCompRace[prefix].hp ? CurrentCompRace[prefix].hp : 0;
+					var creaName = CurrentCompRace[prefix] && CurrentCompRace[prefix].name ? CurrentCompRace[prefix].name.toLowerCase() : "creature";
+					totHP = Math.max(rngrCompHp, creaHp);
+					strHp = " = the highest of either:\n I. " + creaHp + " from a " + creaName + "'s normal maximum HP\n II." + rngrCompHpStr;
+					if (HDobj.alt.length) {
+						// there are already other alternate HP calculations, so use them if higher
+						totHP = Math.max.apply(Math, HDobj.alt.concat(totHP));
+						strHp += "\n III. Other alternative hit point calculation(s) (" + totHP + ")";
+					}
+				}
+				HDobj.alt.push(totHP);
+				HDobj.altStr.push(strHp);
+			},
+			setAltHp : true
+		}
 	},
 	companionrr : {
 		featurestring : "",

@@ -1,5 +1,5 @@
 // Copy all the attributes of a field to another field (or even swap between the two)
-// excl is an object with optional attributes { userName : true, submitName : true, readonly : true, noCalc : true }
+// excl is an object with optional attributes { userName : true, submitName : true, readonly : true, noCalc : true, defaultValue : true }
 function copyField(fldFromName, fldToName, excl, swap) {
 	var fldTo = tDoc.getField(fldToName);
 	var fldFrom = tDoc.getField(fldFromName);
@@ -17,6 +17,9 @@ function copyField(fldFromName, fldToName, excl, swap) {
 			} else {
 				toObj.checkThisBox(0, fromObj.isBoxChecked(0));
 			}
+		} else if (excl.defaultValue && fromObj.value === fromObj.defaultValue) {
+			toObj.value = toObj.defaultValue;
+			if (justObj) toObj.type = "text";
 		} else {
 			toObj.value = fromObj.value;
 			if (justObj) toObj.type = "text";
@@ -1064,7 +1067,7 @@ function UpdateSheetWeapons() {
 		for (addEval in CurrentEvals.atkAdd) {
 			var evalThing = CurrentEvals.atkAdd[addEval];
 			if (typeof evalThing == 'function') evalThing = evalThing.toSource();
-			if ((/\.level/).test(evalThing)) {
+			if ((/\.level|Proficiency Bonus/).test(evalThing)) {
 				isLvlDepAtkAdd = true;
 				break;
 			}
@@ -1341,8 +1344,8 @@ function UpdateSheetDisplay() {
 		autoHP = settingsHP[3] && (/average|fixed|max/).test(settingsHP[3]);
 		var oldHPmax = What("HP Max");
 		Changes_Dialog.oldHPtt = Who("HP Max");
-		// update the HP of the main character
-		SetHPTooltip(false, false);
+		// update the HP of the main character (and companions with alternative HP calculations)
+		SetHPTooltip(false, "compAlt");
 		// make the HP dialog insert
 		var strHP = "The hit die and/or hit point maximum of the character have changed.";
 		if (autoHP) {
@@ -2786,12 +2789,12 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 		case "up" :
 			if (noUp) return;
 		case "down" :
-			if (MenuSelection[1] == "down" && noDown) return;
+			if (MenuSelection[1] === "down" && noDown) return;
 			calcStop();
 			IsNotMagicItemMenu = false;
 			thermoTxt = thermoM("Moving the magic item " + MenuSelection[1] + "...", false);
 			// Get the other fields
-			var otherNmbr = MenuSelection[1] == "down" ? itemNmbr + 1 : itemNmbr - 1;
+			var otherNmbr = MenuSelection[1] === "down" ? itemNmbr + 1 : itemNmbr - 1;
 			var MIfldsO = ReturnMagicItemFieldsArray(otherNmbr);
 			// Now swap all the fields
 			for (var i = 0; i < MIflds.length - 1; i++) {
@@ -3262,6 +3265,14 @@ function setPlayersMakeAllRolls(enable) {
 	if (!isEvent) {
 		calcStop();
 		Checkbox("BlueText.Players Make All Rolls", enable);
+	}
+	// If the state changed, we will have to re-apply the companion page AC so it displays correctly
+	if (isTemplVis("AScomp")) {
+		var AScompA = What("Template.extras.AScomp").split(",").splice(1);
+		for (var i = 0; i < AScompA.length; i++) {
+			var prefix = AScompA[i];
+			Value(prefix + "Comp.Use.AC", What(prefix + "Comp.Use.AC"));
+		}
 	}
 	// If the state of the checkbox changed, we will have to recalculate all wildshapes
 	if (isTemplVis("WSfront")) {

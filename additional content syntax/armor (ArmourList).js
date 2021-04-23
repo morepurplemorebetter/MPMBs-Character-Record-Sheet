@@ -144,9 +144,25 @@ ArmourList["purple mail"] = {
 		regExpSearch : /purple mail/i,
 */
 	ac : 12,
+	ac : "10+Wis",
 /*	ac // REQUIRED //
-	TYPE:	number
+	TYPE:	number or string (since v13.0.6)
 	USE:	the base AC the armour gives without modifiers from Dexterity or other ability scores
+
+	This can be either a:
+	1) Number
+		The number is the fixed AC bonus (excluding Dexterity)
+	2) String (since v13.0.6)
+		The string is evaluated and the outcome is used as the AC bonus (excluding Dexterity)
+	
+		This can be any combination of numbers, mathematical operators,
+		and three-letter ability score abbreviations for ability score modifiers (e.g. 'Con'),
+		or 'Prof' for the proficiency bonus.
+
+		How this works is fully explained in the description of the `addMod` attribute
+		in "_common attributes.js". See point 3 of that description.
+
+	If you use a string here, it is recommended to omit the `addMod` attribute.
 */
 	type : "heavy",
 /*	type // OPTIONAL //
@@ -212,6 +228,9 @@ ArmourList["purple mail"] = {
 	TYPE:	boolean
 	USE:	set to 'true' if the armour can have a secondary ability score modifier added to the AC
 
+	From v13.0.6 onwards, it is recommended to not use this attribute, but instead to
+	include the modifier in the `ac` attribute string, as it's easier to read and more logical for the user.
+
 	This secondary ability score is taken from the name of the armour.
 	If the name includes, in brackets the three-letter abbreviation of an ability score
 	or "Prof" for the proficiency bonus, that modifier will be added to the AC total.
@@ -231,7 +250,6 @@ ArmourList["purple mail"] = {
 
 	This attribute only has an effect for extra AC calculations and magic item selection.
 	Add this if you don't want class features and the like to add AC modifiers that shouldn't work for magical armours.
-	Also add this if you don't want this weapon to be an option for magical weapons to add their attributes to.
 
 	Armours added by magic items using the 'armorOptions' attribute will always have this attribute added and set to 'true'.
 
@@ -266,5 +284,18 @@ ArmourList["purple mail"] = {
 	the armour's weight will not be added in the equipment section.
 
 	Setting this to and empty string ("") is the same as not including this attribute.
+*/
+	affectsWildShape : true,
+/*	affectsWildShape // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether (true) or not (false) this armour can be used while in a Wild Shape
+	ADDED:	v13.0.6
+
+	This attribute only has an effect on the Wild Shape pages.
+
+	This attribute is commonly only used for alternative armour options gained from
+	class features like Unarmoured Defence.
+
+	Setting this to false is the same as not including this attribute.
 */
 }

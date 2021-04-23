@@ -180,7 +180,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	// Change some things into metric if set to do so
 	if (What("Unit System") === "metric") {
 		aSpell.description = aSpell.descriptionMetric ? aSpell.descriptionMetric : ConvertToMetric(aSpell.description, 0.5);
-		aSpell.range = ConvertToMetric(aSpell.range, 0.5);
+		aSpell.range = aSpell.rangeMetric ? aSpell.rangeMetric : ConvertToMetric(aSpell.range, 0.5);
 	}
 
 	if (CurrentEvals.spellAdd) {
@@ -255,6 +255,12 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	aSpell.tooltipSource = stringSource(aSpell, "full,page,multi");
 
 	return aSpell;
+}
+
+// under certain conditions, the range of a spell might not fit on the colourful sheet
+function fixSpellRangeOverflow(rangeStr) {
+	var testRx = typePF ? /S:\d+[,.]\d+[- /]?m (cone|cube)/i : /S:\d+[,.]?\d+[- /]?m (cone|cube)|S:\d+[,.]\d+[- /]?m rad/i;
+	return (testRx).test(rangeStr) ? rangeStr.trim().replace(/[- /]?m (con|cub)e/i, "m $1").replace(/[- /]?m rad/i, "m rad") : rangeStr;
 }
 
 // call this on validation of the hidden spell remember field, to apply something to the spell line
@@ -409,7 +415,9 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "time"), aSpell.time ? aSpell.time : emptyCell);
 
 			//set the spell range
-			Value(base.replace("remember", "range"), aSpell.range ? aSpell.range : emptyCell);
+			var spellRange = aSpell.range ? aSpell.range : emptyCell;
+			if (aSpell.range && What("Unit System") === "metric") spellRange = fixSpellRangeOverflow(spellRange);
+			Value(base.replace("remember", "range"), spellRange);
 
 			//set the spell components
 			Value(base.replace("remember", "components"), aSpell.components ? aSpell.components : emptyCell, aSpell.compMaterial ? aSpell.compMaterial : "");
@@ -2691,7 +2699,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 				var boxID = dType + ("0" + a).slice(-2);
 				if (app.viewerVersion < 15) {
 					// Doesn't support ES5, so do this with eval()
-					spDias[diaName][boxID] = eval("function (dialog) { this.search(dialog, '" + boxID + "');");
+					eval("spDias[" + diaName + "][" + boxID + "] = function (dialog) { this.search(dialog, '" + boxID + "'); };");
 				} else {
 					var doThisInFunction = function(thisID) {
 						spDias[diaName][thisID] = function(dialog) {

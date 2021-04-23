@@ -209,7 +209,8 @@ CreatureList["purple crawler"] = {
 	using the Companion Options button on the companion page for special options.
 
 	Note that you can change any creature into one of the special options using the
-	Companion Options button by first selecting a race from the drop-down and subsequently selecting the "Choose this into" option in the Companion Options menu.
+	Companion Options button by first selecting a race from the drop-down and subsequently selecting the "Change this into" option in the Companion Options menu.
+
 	Use this `companion` attribute for things that are obvious candidates for the special options.
 
 	OPTION				EXPLANATION
@@ -225,6 +226,30 @@ CreatureList["purple crawler"] = {
 	Some special companion options are not governed by this setting and list their options dynamically.
 	For example, the PHB ranger's companion includes anything that has `type` set as "Beast",
 	`size` as 3 or higher (medium or smaller), and `challengeRating` as 1/4 or lower.
+*/
+	companionApply : "companion",
+/*	companionApply // OPTIONAL //
+	TYPE:	string
+	USE:	always set this creature to be this special type of companion
+
+	Setting this to one of the below pre-defined values will make the sheet
+	automatically apply the features of that special type of companion.
+
+	Note that you can change any creature into one of the special options using the
+	Companion Options button by first selecting a race from the drop-down and subsequently selecting the "Change this into" option in the Companion Options menu.
+
+	Use this `companionApply` attribute only if the creature *always* is that kind of companion.
+
+	OPTION				TYPE OF COMPANION
+	"familiar"			Find Familiar spell
+	"pact_of_the_chain"	Pact of the Chain warlock boon
+	"mount"				Find Steed spell
+	"steed"				Find Greater Steed spell
+	"companion"			Ranger: Beast Master's Ranger's Companion feature
+	"companionrr"		2016/09/12 Unearthed Arcana: Revised Ranger's Beast Conclave feature 
+	"mechanicalserv"	2017/01/09 Unearthed Arcana: Artificer's Mechanical Servant feature
+
+	Be aware that this list is different than the one for the `companion` attribute!
 */
 	alignment : "Unaligned",
 /*	alignment // REQUIRED //
@@ -285,6 +310,22 @@ CreatureList["purple crawler"] = {
 
 	This value is put in the proficiency bonus field without any changes.
 	It is also used for determining the creature's proficiency with skills and saving throws (see below).
+*/
+	proficiencyBonusLinked : true,
+/*	proficiencyBonusLinked // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether the proficiency bonus is the same (true) as the main character or not (false)
+	ADDED:	v13.0.6
+
+	Setting this to true will cause the `proficiencyBonus` attribute above to
+	be overwritten on the Companion page with that of the main character (the 1st page),
+	and updated whenever the main character changes level.
+	Even so, setting the `proficiencyBonus` attribute is still required, as it will
+	be used to calculate skill and saving throw proficiencies and bonuses.
+
+	This attribute has no affect on the Wild Shape page.
+
+	Setting this attribute to false is the same as not including this attribute.
 */
 	challengeRating : "1/2",
 /*	challengeRating // REQUIRED //
@@ -533,8 +574,11 @@ CreatureList["purple crawler"] = {
 		hp : function (totalHD, HDobj, prefix) {
 			if (!classes.known.ranger) return;
 			var creaHP = CurrentCompRace[prefix] && CurrentCompRace[prefix].hp ? CurrentCompRace[prefix].hp : 0;
-			HDobj.alt.push(Math.max(creaHP, classes.known.ranger.level * 5));
-			HDobj.altStr.push("The ranger companion has 5 hit points per ranger level, regardless of its hit dice or Constitution modifier. If its own hit points are higher, those will be used instead.");
+			var creaName = CurrentCompRace[prefix] && CurrentCompRace[prefix].name ? CurrentCompRace[prefix].name : "the creature";
+			var rngrLvl = classes.known.ranger.level;
+			var rngrCompHp = 4 * rngrLvl;
+			HDobj.alt.push( Math.max(creaHP, rngrCompHp) );
+			HDobj.altStr.push(" = the highest of either\n \u2022 " + creaHp + " from " + creaName + "'s normal maximum HP, or\n \u2022 4 \xD7 " + rngrLvl + " from four times my ranger level (" + rngrCompHp + ")");
 		},
 	/*	hp // OPTIONAL //
 		TYPE:	function

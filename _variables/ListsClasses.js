@@ -126,13 +126,13 @@ var Base_ClassList = {
 				source : [["SRD", 8], ["P", 48]],
 				minlevel : 1,
 				description : "\n   " + "Without armor, my AC is 10 + Dexterity modifier + Constitution modifier + shield",
-				armorOptions : {
+				armorOptions : [{
 					regExpSearch : /justToAddToDropDown/,
 					name : "Unarmored Defense (Con)",
 					source : [["SRD", 8], ["P", 48]],
-					ac : 10,
-					addMod : true
-				},
+					ac : "10+Con",
+					affectsWildShape : true
+				}],
 				armorAdd : "Unarmored Defense (Con)"
 			},
 			"reckless attack" : {
@@ -800,13 +800,13 @@ var Base_ClassList = {
 				source : [["SRD", 26], ["P", 78]],
 				minlevel : 1,
 				description : "\n   " + "Without armor and no shield, my AC is 10 + Dexterity modifier + Wisdom modifier",
-				armorOptions : {
+				armorOptions : [{
 					regExpSearch : /justToAddToDropDown/,
 					name : "Unarmored Defense (Wis)",
 					source : [["SRD", 26], ["P", 78]],
-					ac : 10,
-					addMod : true
-				},
+					ac : "10+Wis",
+					affectsWildShape : true
+				}],
 				armorAdd : "Unarmored Defense (Wis)"
 			},
 			"martial arts" : {
@@ -3280,12 +3280,13 @@ var Base_ClassSubList = {
 						}
 					}
 				},
-				armorOptions : {
+				armorOptions : [{
 					regExpSearch : /^(?=.*(dragon|draconic))(?=.*(hide|skin|scales|resilience)).*$/i,
 					name : "Draconic Resilience",
 					source : [["SRD", 45], ["P", 102]],
-					ac : 13
-				},
+					ac : 13,
+					affectsWildShape : true
+				}],
 				armorAdd : "Draconic Resilience"
 			},
 			"subclassfeature6" : {

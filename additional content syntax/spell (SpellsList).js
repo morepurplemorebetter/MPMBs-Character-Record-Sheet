@@ -257,8 +257,27 @@ SpellsList["sindering purple"] = {
 		ABBREVIATION	MEANING
 		ft				feet
 		rad				radius
+		S:				Self ()
 
 	Thus, "30-feet radius" is abbreviated to "30-ft rad".
+	And, "Self (15-ft cone)" is written as "S:15-ft cone".
+*/
+	rangeMetric : "S:8-km rad",
+/*	range // REQUIRED //
+	TYPE:	string
+	USE:	the range of the spell when using the metric system
+	ADDED:	v13.0.6
+
+	This attribute works the same as the `range` attribute above,
+	but it is only used if the sheet is set to use the metric system.
+	If this attribute is present, the sheet will not try and convert the `range` attribute
+	to the metric system, but will use this attribute instead.
+
+	The sheet is good at transforming units as long as each number is followed by the unit.
+	For example "60 ft by 20 ft" will successfully be converted to "18 m by 6 m",
+	but "60 by 20 ft" will become "60 by 6 m".
+	It is only for cases like the latter that `rangeMetric` is necessary,
+	all other things can be converted by the sheet on the fly.
 */
 	components : "V,S,M",
 /*	components // OPTIONAL //
@@ -343,15 +362,15 @@ SpellsList["sindering purple"] = {
 	TYPE:	string
 	USE:	the text to be filled in the description field of the spell when the sheet is set to use the metric system
 
-	This attribute works the same as the 'description' attribute above,
+	This attribute works the same as the `description` attribute above,
 	but it is only used if the sheet is set to use the metric system.
-	If this attribute is present, the sheet will not try and convert the 'description' attribute to the metric system,
-	but will use this attribute instead.
+	If this attribute is present, the sheet will not try and convert the `description` attribute
+	to the metric system, but will use this attribute instead.
 
-	The sheet is goed at transforming units as long as each number is followed by the unit.
+	The sheet is good at transforming units as long as each number is followed by the unit.
 	For example "60 ft by 20 ft" will successfully be converted to "18 m by 6 m",
 	but "60 by 20 ft" will become "60 by 6 m".
-	It is only for cases like the latter that descriptionMetric is necessary,
+	It is only for cases like the latter that `descriptionMetric` is necessary,
 	all other things can be converted by the sheet on the fly.
 
 	// DOES NOT WORK TOGETHER WITH descriptionCantripDie //

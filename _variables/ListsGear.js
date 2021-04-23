@@ -12,7 +12,8 @@ var Base_ArmourList = {
 		name : "Mage Armor",
 		source : [["SRD", 160], ["P", 256]],
 		ac : 13,
-		list : "magic"
+		list : "magic",
+		affectsWildShape : true
 	},
 	"padded" : {
 		regExpSearch : /^(?!.*(plate|hide))(?=.*(padding|padded)).*$/i,

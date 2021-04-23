@@ -18,7 +18,7 @@
 */
 
 var iFileName = "Battlemage [Luke Arndt's work, transcribed by MPMB].js";
-RequiredSheetVersion(13);
+RequiredSheetVersion("13.0.6");
 
 SourceList["LA:BM"] = {
 	name : "Luke Arndt: Battlemage (v4.0)",
@@ -873,8 +873,8 @@ AddSubClass("battlemage", "spell dancer", {
 				regExpSearch : /justToAddToDropDown/,
 				name : "Unarmored Defense (Int)",
 				source : ["LA:BM", 7],
-				ac : 10,
-				addMod : true
+				ac : "10+Int",
+				affectsWildShape : true
 			},
 			armorAdd : "Unarmored Defense (Int)"
 		},

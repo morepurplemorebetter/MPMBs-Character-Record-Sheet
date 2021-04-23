@@ -1115,7 +1115,7 @@ creaturesAdd : [
 		If set to true, when the parent feature is removed, any companion page with the
 		1st entry filled out as the race, will be deleted without warning.
 		Deleted pages can not be recovered, any information on them is lost.
-		
+
 		Setting this to false will cause the sheet to do the default action, which is to only
 		reset the race of the companion pages with the 1st entry filled out as the race.
 

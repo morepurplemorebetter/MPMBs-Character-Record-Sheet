@@ -95,6 +95,12 @@ function setPrototypes() {
 
 		return string;
 	};
+	// if using older Adobe Acrobat, define missing prototype
+	if (!String.prototype.trim) {
+		String.prototype.trim = function () {
+			return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+		};
+	}
 	Number.prototype.capitalize = function () {
 		return this.toString().capitalize();
 	};

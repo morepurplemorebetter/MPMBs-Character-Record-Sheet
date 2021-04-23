@@ -12,7 +12,6 @@ var Base_CreatureList = {
 		hd : [12, 10],
 		speed : "fly 90 ft (hover)",
 		scores : [14, 20, 14, 6, 10, 6],
-		saves : ["", "", "", "", "", ""],
 		damage_resistances : "lightning; thunder; bludgeoning, piercing, and slashing from nonmagical weapons",
 		damage_immunities : "poison",
 		condition_immunities : "exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious",
@@ -35,7 +34,7 @@ var Base_CreatureList = {
 			range : "All in shared area",
 			dc : true,
 			description : "Str save; fail\u2015 flung 20 ft random direction, prone; success\u2015 half damage",
-			tooltip : "Each creature in the elemental's space that fails its saving throw is flung up to 20 feet away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 feet it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone."
+			tooltip : "Each creature in the elemental's space that fails its saving throw is flung up to 20 ft away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 ft it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone."
 		}],
 		traits : [{
 			name : "Air Form",
@@ -43,7 +42,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Whirlwind (Recharge 4-6)",
-			description : "See Attack. Each creature in the elemental's space that fails its saving throw is flung up to 20 feet away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 feet it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone."
+			description : "See Attack. Each creature in the elemental's space that fails its saving throw is flung up to 20 ft away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 ft it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone."
 		}],
 		wildshapeString : "Darkvision 60 ft| Knows Auran| Resistant to: lightning, thunder, and bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious| Air Form: can move through 1 inch wide space without squeezing and can move through and stop in space of hostiles| Whirlwind: see Monster Manual page 124"
 	},
@@ -59,7 +58,6 @@ var Base_CreatureList = {
 		hd : [12, 10],
 		speed : "30 ft, burrow 30 ft",
 		scores : [20, 8, 20, 5, 10, 5],
-		saves : ["", "", "", "", "", ""],
 		damage_vulnerabilities : "thunder",
 		damage_resistances : "bludgeoning, piercing, and slashing from nonmagical weapons",
 		damage_immunities : "poison",
@@ -98,7 +96,6 @@ var Base_CreatureList = {
 		hd : [12, 10],
 		speed : "50 ft",
 		scores : [10, 17, 16, 6, 10, 7],
-		saves : ["", "", "", "", "", ""],
 		damage_resistances : "bludgeoning, piercing, and slashing from nonmagical weapons",
 		damage_immunities : "fire, poison",
 		condition_immunities : "exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious",
@@ -139,7 +136,6 @@ var Base_CreatureList = {
 		hd : [12, 10],
 		speed : "30 ft, swim 90 ft",
 		scores : [18, 14, 18, 5, 10, 8],
-		saves : ["", "", "", "", "", ""],
 		damage_resistances : "acid; bludgeoning, piercing, and slashing from nonmagical weapons",
 		damage_immunities : "poison",
 		condition_immunities : "exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious",
@@ -162,7 +158,7 @@ var Base_CreatureList = {
 			damage : [2, 8, "bludgeoning"],
 			range : "All in shared area",
 			description : "Str save; fail\u2015 dmg/grappled/restrained/can't breathe until grapple ends (escape DC 14); success\u2015 no dmg/pushed out",
-			tooltip : "Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 feet of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding."
+			tooltip : "Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 ft of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding."
 		}],
 		features : [{
 			name : "Freeze",
@@ -174,7 +170,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Whelm (Recharge 4-6)",
-			description : "See attack. Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 feet of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding."
+			description : "See attack. Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 ft of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding."
 		}],
 		wildshapeString : "Darkvision 60 ft| Knows Aquan| Resistant to: acid, and bludg./piercing/slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious|  Water Form: pass through 1\" space without squeezing; move through and stop in another's space| Freeze: if taken cold damage, speed reduced to 20 ft until end of next turn| Whelm: see Monster Manual page 125"
 	},
@@ -190,14 +186,12 @@ var Base_CreatureList = {
 		hd : [8, 10],
 		speed : "20 ft, swim 40 ft",
 		scores : [18, 15, 16, 2, 12, 5],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
 		},
 		senses : "",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -224,10 +218,8 @@ var Base_CreatureList = {
 		hd : [10, 12],
 		speed : "50 ft",
 		scores : [22, 9, 17, 2, 11, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "5",
 		proficiencyBonus : 3,
 		attacksAction : 1,
@@ -261,13 +253,11 @@ var Base_CreatureList = {
 		hd : [13, 12],
 		speed : "50 ft",
 		scores : [25, 10, 19, 2, 12, 9],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
 		senses : "",
 		passivePerception : 14,
-		languages : "",
 		challengeRating : "8",
 		proficiencyBonus : 3,
 		attacksAction : 2,
@@ -302,13 +292,11 @@ var Base_CreatureList = {
 		hd : [7, 10],
 		speed : "30 ft, fly 80 ft",
 		scores : [18, 15, 16, 2, 13, 8],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 5
 		},
 		senses : "Darkvision 60 ft; Adv. on Wis (Perception) checks using sight",
 		passivePerception : 15,
-		languages : "",
 		challengeRating : "2",
 		proficiencyBonus : 2,
 		attacksAction : 2,
@@ -341,13 +329,11 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "40 ft, fly 60 ft",
 		scores : [17, 13, 13, 2, 12, 8],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 5
 		},
 		senses : "Adv. on Wis (Perception) checks using sight",
 		passivePerception : 15,
-		languages : "",
 		challengeRating : "1",
 		proficiencyBonus : 2,
 		attacksAction : 2,
@@ -380,7 +366,6 @@ var Base_CreatureList = {
 		hd : [8, 10],
 		speed : "60 ft, fly 90 ft",
 		scores : [18, 15, 16, 10, 13, 15],
-		saves : ["", "", "", "", "", ""],
 		damage_immunities : "fire",
 		senses : "",
 		passivePerception : 11,
@@ -400,11 +385,11 @@ var Base_CreatureList = {
 			description : "The nightmare can grant resistance to fire damage to anyone riding it."
 		}, {
 			name : "Illumination",
-			description : "The nightmare sheds bright light in a 10-ft radius and dim light for an additional 10 feet."
+			description : "The nightmare sheds bright light in a 10-ft radius and dim light for an additional 10 ft."
 		}],
 		actions : [{
 			name : "Ethereal Stride",
-			description : "As an action, the nightmare and up to three willing creatures within 5 feet of it magically enter the Ethereal Plane from the Material Plane, or vice versa."
+			description : "As an action, the nightmare and up to three willing creatures within 5 ft of it magically enter the Ethereal Plane from the Material Plane, or vice versa."
 		}]
 	},
 	"owlbear" : {
@@ -418,13 +403,11 @@ var Base_CreatureList = {
 		hd : [7, 10],
 		speed : "40 ft",
 		scores : [20, 12, 17, 3, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "Darkvision 60 ft; Adv. on Wis (Perception) checks using sight/smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "3",
 		proficiencyBonus : 2,
 		attacksAction : 2,
@@ -488,7 +471,6 @@ var Base_CreatureList = {
 		hd : [2, 4],
 		speed : "20 ft, fly 40 ft",
 		scores : [4, 15, 11, 10, 10, 7],
-		saves : ["", "", "", "", "", ""],
 		damage_immunities : "poison",
 		condition_immunities : "charmed, poisoned",
 		senses : "Darkvision 60 ft",
@@ -526,7 +508,6 @@ var Base_CreatureList = {
 		hd : [3, 4],
 		speed : "20 ft, fly 40 ft",
 		scores : [6, 17, 13, 11, 12, 14],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"deception" : 4,
 			"insight" : 3,
@@ -558,7 +539,7 @@ var Base_CreatureList = {
 		}],
 		variant : [{
 			name : "Variant: Familiar",
-			description : "The imp can serve another creature as a familiar, forming a telepathic bond with its willing master. While the two are bonded, the master can sense what the imp senses as long as they are within 1 mile of each other. While the imp is within 10 feet of its master, the master shares the imp's Magic Resistance trait. At any time and for any reason, the imp can end its service as a familiar, ending the telepathic bond."
+			description : "The imp can serve another creature as a familiar, forming a telepathic bond with its willing master. While the two are bonded, the master can sense what the imp senses as long as they are within 1 mile of each other. While the imp is within 10 ft of its master, the master shares the imp's Magic Resistance trait. At any time and for any reason, the imp can end its service as a familiar, ending the telepathic bond."
 		}],
 		actions : [{
 			name : "Invisibility",
@@ -578,7 +559,6 @@ var Base_CreatureList = {
 		hd : [2, 4],
 		speed : "15 ft, fly 60 ft",
 		scores : [6, 15, 13, 10, 12, 10],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
@@ -615,7 +595,7 @@ var Base_CreatureList = {
 		}],
 		variant : [{
 			name : "Variant: Familiar",
-			description : "The pseudodragon can serve another creature as a familiar, forming a magic, telepathic bond with that willing companion. While the two are bonded, the companion can sense what the pseudodragon senses as long as they are within 1 mile of each other. While the pseudodragon is within 10 feet of its companion, the companion shares the pseudodragon's Magic Resistance trait. At any time and for any reason, the pseudodragon can end its service as a familiar, ending the telepathic bond."
+			description : "The pseudodragon can serve another creature as a familiar, forming a magic, telepathic bond with that willing companion. While the two are bonded, the companion can sense what the pseudodragon senses as long as they are within 1 mile of each other. While the pseudodragon is within 10 ft of its companion, the companion shares the pseudodragon's Magic Resistance trait. At any time and for any reason, the pseudodragon can end its service as a familiar, ending the telepathic bond."
 		}]
 	},
 	"quasit" : {
@@ -631,7 +611,6 @@ var Base_CreatureList = {
 		hd : [3, 4],
 		speed : "40 ft",
 		scores : [5, 17, 10, 7, 10, 10],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 5
 		},
@@ -657,7 +636,7 @@ var Base_CreatureList = {
 			damage : ["Wis save", "", "Frightened"],
 			range : "20 ft",
 			description : "Wis save or frightened for 1 min (can save at end of each turn, disadv. if quasit is in sight)",
-			modifiers : ["", "", false],
+			abilitytodamage : false,
 			dc : true
 		}],
 		traits : [{
@@ -669,7 +648,7 @@ var Base_CreatureList = {
 		}],
 		variant : [{
 			name : "Variant: Familiar",
-			description : "The quasit can serve another creature as a familiar, forming a telepathic bond with its willing master. While the two are bonded, the master can sense what the quasit senses as long as they are within 1 mile of each other. While the quasit is within 10 feet of its master, the master shares the quasit's Magic Resistance trait. At any time and for any reason, the quasit can end its service as a familiar, ending the telepathic bond."
+			description : "The quasit can serve another creature as a familiar, forming a telepathic bond with its willing master. While the two are bonded, the master can sense what the quasit senses as long as they are within 1 mile of each other. While the quasit is within 10 ft of its master, the master shares the quasit's Magic Resistance trait. At any time and for any reason, the quasit can end its service as a familiar, ending the telepathic bond."
 		}],
 		actions : [{
 			name : "Invisibility",
@@ -687,7 +666,6 @@ var Base_CreatureList = {
 		hd : [15, 10],
 		speed : "30 ft",
 		scores : [18, 8, 18, 7, 10, 3],
-		saves : ["", "", "", "", "", ""],
 		damage_immunities : "poison",
 		condition_immunities : "charmed, exhaustion, frightened, paralyzed, poisoned",
 		senses : "Blindsight 10 ft; Darkvision 60 ft",
@@ -712,11 +690,11 @@ var Base_CreatureList = {
 		}],
 		features : [{
 			name : "Bound",
-			description : "The shield guardian is magically bound to an amulet. As long as the guardian and its amulet are on the same plane of existence, the amulet's wearer can telepathically call the guardian to travel to it, and the guardian knows the distance and direction to the amulet. If the guardian is within 60 feet of the amulet's wearer, half of any damage the wearer takes (rounded up) is transferred to the guardian."
+			description : "The shield guardian is magically bound to an amulet. As long as the guardian and its amulet are on the same plane of existence, the amulet's wearer can telepathically call the guardian to travel to it, and the guardian knows the distance and direction to the amulet. If the guardian is within 60 ft of the amulet's wearer, half of any damage the wearer takes (rounded up) is transferred to the guardian."
 		}],
 		actions : [{
 			name : "Shield",
-			description : "As a reaction, when a creature makes an attack against the wearer of the guardian's amulet, the guardian grants a +2 bonus to the wearer's AC if the guardian is within 5 feet of the wearer."
+			description : "As a reaction, when a creature makes an attack against the wearer of the guardian's amulet, the guardian grants a +2 bonus to the wearer's AC if the guardian is within 5 ft of the wearer."
 		}]
 	},
 	"sprite" : {
@@ -731,7 +709,6 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "10 ft, fly 40 ft",
 		scores : [3, 18, 10, 14, 13, 11],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 8
@@ -748,14 +725,15 @@ var Base_CreatureList = {
 			damage : [1, "", "slashing"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : ["Str", "", false]
+			modifiers : ["Str", ""],
+			abilitytodamage : false
 		}, {
 			name : "Shortbow",
 			ability : 2,
 			damage : [1, "", "piercing"],
 			range : "40/160 ft",
 			description : "",
-			modifiers : ["", "", false],
+			abilitytodamage : false,
 			description : "DC 10 Con save or poisoned 1 min; fail by 5 or more: also unconscious 1 min, until damaged or awakened",
 			tooltip : "The target hit must succeed on a DC 10 Constitution saving throw or become poisoned for 1 minute. If its saving throw result is 5 or lower, the poisoned target falls unconscious for the same duration, or until it takes damage or another creature takes an action to shake it awake."
 		}, {
@@ -764,7 +742,7 @@ var Base_CreatureList = {
 			damage : ["Cha save", "", "Reveal"],
 			range : "Touch (5 ft)",
 			description : "Cha save or sprite knows emotional state and alignment (celestial/fiend/undead auto fail the save)",
-			modifiers : ["", "", false],
+			abilitytodamage : false,
 			dc : true
 		}],
 		actions : [{
@@ -784,7 +762,6 @@ var Base_CreatureList = {
 		hd : [5, 8],
 		speed : "30 ft",
 		scores : [16, 17, 10, 11, 10, 8],
-		saves : ["", "", "", "", "", ""],
 		damage_resistances : "necrotic",
 		damage_immunities : "poison",
 		condition_immunities : "charmed, exhaustion, poisoned",
@@ -828,7 +805,6 @@ var Base_CreatureList = {
 		hd : [5, 8],
 		speed : "30 ft",
 		scores : [13, 15, 10, 7, 10, 6],
-		saves : ["", "", "", "", "", ""],
 		damage_immunities : "poison",
 		condition_immunities : "charmed, exhaustion, poisoned",
 		senses : "Darkvision 60 ft",
@@ -889,7 +865,7 @@ var Base_CreatureList = {
 			range : "60 ft",
 			description : "Wis save or frightened for 1 round; If failed by 5 or more, paralyzed as well",
 			tooltip : "Multiattack\nAs part of one Attack action, the mummy can use its Dreadful Glare and makes one attack with its rotting fist.\n\nDreadful Glare\nThe mummy targets one creature it can see within 60 ft of it. If the target can see the mummy, it must succeed on a DC 11 Wisdom saving throw against this magic or become frightened until the end of the mummy's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies (but not mummy lords) for the next 24 hours.",
-			modifiers : ["", "", false],
+			abilitytodamage : false,
 			dc : true
 		}],
 		traits : [{
@@ -914,7 +890,6 @@ var Base_CreatureList = {
 		hd : [3, 8],
 		speed : "40 ft",
 		scores : [6, 14, 13, 6, 10, 8],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 4,
 		},
@@ -924,7 +899,6 @@ var Base_CreatureList = {
 		condition_immunities : "exhaustion, frightened, grappled, paralyzed, petrified, poisoned, prone, restrained",
 		senses : "Darkvision 60 ft",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -962,7 +936,6 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "30 ft",
 		scores : [10, 14, 15, 6, 8, 5],
-		saves : ["", "", "", "", "", ""],
 		damage_vulnerabilities : "bludgeoning",
 		damage_immunities : "poison",
 		condition_immunities : "exhaustion, poisoned",
@@ -997,13 +970,11 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "60 ft",
 		scores : [18, 12, 15, 2, 8, 5],
-		saves : ["", "", "", "", "", ""],
 		damage_vulnerabilities : "bludgeoning",
 		damage_immunities : "poison",
 		condition_immunities : "exhaustion, poisoned",
 		senses : "Darkvision 60 ft",
 		passivePerception : 9,
-		languages : "",
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -1027,11 +998,10 @@ var Base_CreatureList = {
 		hd : [5, 8],
 		speed : "fly 50 ft (hover)",
 		scores : [1, 14, 11, 10, 10, 12],
-		saves : ["", "", "", "", "", ""],
 		damage_resistances : "acid; cold; fire; lightning; thunder; bludgeoning, piercing, and slashing from nonmagical weapons",
 		damage_immunities : "necrotic, poison",
 		condition_immunities : "charmed, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious",
-		senses : "Darkvision 60 ft",
+		senses : "Darkvision 60 ft; While in sunlight, disadv. on Wis (Perception) checks using sight",
 		passivePerception : 10,
 		languages : "all languages it knew in life, but can't speak",
 		challengeRating : "1",
@@ -1043,7 +1013,7 @@ var Base_CreatureList = {
 			damage : [3, 6, "necrotic"],
 			range : "Melee (5 ft)",
 			description : "DC 10 Con save or HP max reduced by same as damage taken until a long rest",
-			modifiers : ["", "", false],
+			abilitytodamage : false,
 			tooltip : "A target of the specter's life drain must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0."
 		}],
 		traits : [{
@@ -1068,7 +1038,6 @@ var Base_CreatureList = {
 		hd : [6, 8],
 		speed : "30 ft",
 		scores : [15, 14, 16, 10, 13, 15],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
@@ -1184,11 +1153,9 @@ var Base_CreatureList = {
 		hd : [3, 8],
 		speed : "0 ft",
 		scores : [1, 1, 10, 1, 3, 1],
-		saves : ["", "", "", "", "", ""],
 		condition_immunities : "blinded, deafened, frightened",
 		senses : "Blindsight 30 ft (blind beyond this radius)",
 		passivePerception : 6,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 0,
@@ -1199,7 +1166,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Shriek",
-			description : "As a reaction when bright light or a creature is within 30 feet of the shrieker, it emits a shriek audible within 300 feet of it. The shrieker continues to shriek until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward."
+			description : "As a reaction when bright light or a creature is within 30 ft of the shrieker, it emits a shriek audible within 300 ft of it. The shrieker continues to shriek until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward."
 		}],
 		wildshapeString : "\u25C6 Senses: blindsight 30 ft (blind beyond this radius).\n\u25C6 Condition Immunities: blinded, deafened, frightened.\n\u25C6 Shriek: As a reaction when bright light or a creature is within 30 ft of the shrieker, emits a shriek audible out to 300 ft. This continues until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward.\n\u25C6 False Appearance: While motionless, the shrieker is indistinguishable from an ordinary fungus."
 	},
@@ -1214,11 +1181,9 @@ var Base_CreatureList = {
 		hd : [4, 8],
 		speed : "5 ft",
 		scores : [3, 1, 10, 1, 3, 1],
-		saves : ["", "", "", "", "", ""],
 		condition_immunities : "blinded, deafened, frightened",
 		senses : "Blindsight 30 ft (blind beyond this radius)",
 		passivePerception : 6,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : "1",
@@ -1246,7 +1211,6 @@ var Base_CreatureList = {
 		hd : [3, 6],
 		speed : "20 ft",
 		scores : [3, 8, 11, 10, 10, 6],
-		saves : ["", "", "", "", "", ""],
 		damage_vulnerabilities : "fire",
 		damage_resistances : "piercing",
 		senses : "",
@@ -1278,7 +1242,6 @@ var Base_CreatureList = {
 		hd : [7, 12],
 		speed : "20 ft",
 		scores : [19, 6, 15, 10, 10, 7],
-		saves : ["", "", "", "", "", ""],
 		damage_vulnerabilities : "fire",
 		damage_resistances : "bludgeoning, piercing",
 		senses : "",
@@ -1311,7 +1274,6 @@ var Base_CreatureList = {
 		hd : [5, 6],
 		speed : "30 ft, fly 30 ft",
 		scores : [5, 14, 10, 9, 11, 10],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2,
 			"stealth" : 4
@@ -1338,7 +1300,7 @@ var Base_CreatureList = {
 			range : "15-ft cone",
 			description : "Hits all in area; Dex save or blinded for 1 min; Affected can repeat save at end of each turn",
 			dc : true,
-			modifiers : ["", "", false],
+			abilitytodamage : false,
 			tooltip : "The mephit exhales a 15-ft cone of blinding dust. Each creature in that area must succeed on a DC 10 Dexterity saving throw or be blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
 		}],
 		traits : [{
@@ -1363,7 +1325,6 @@ var Base_CreatureList = {
 		hd : [6, 6],
 		speed : "30 ft, fly 30 ft",
 		scores : [7, 13, 10, 9, 11, 12],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2,
 			"stealth" : 3
@@ -1390,7 +1351,7 @@ var Base_CreatureList = {
 			range : "15-ft cone",
 			description : "Hits all in area; Dex save, success - half damage",
 			dc : true,
-			modifiers : ["", "", false],
+			abilitytodamage : false,
 			tooltip : "The mephit exhales a 15-ft cone of cold air. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 5 (2d4) cold damage on a failed save, or half as much damage on a successful one."
 		}],
 		traits : [{
@@ -1419,7 +1380,6 @@ var Base_CreatureList = {
 		hd : [5, 6],
 		speed : "30 ft, fly 30 ft",
 		scores : [8, 12, 12, 7, 10, 10],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 3
 		},
@@ -1445,7 +1405,7 @@ var Base_CreatureList = {
 			range : "15-ft cone",
 			description : "Hits all in area; Dex save, success - half damage",
 			dc : true,
-			modifiers : ["", "", false],
+			abilitytodamage : false,
 			tooltip : "The mephit exhales a 15-ft cone of fire. Each creature in that area must make a DC 11 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one."
 		}],
 		traits : [{
@@ -1474,7 +1434,6 @@ var Base_CreatureList = {
 		hd : [6, 6],
 		speed : "20 ft, fly 20 ft, swim 20 ft",
 		scores : [8, 12, 12, 9, 11, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 3
 		},
@@ -1499,7 +1458,7 @@ var Base_CreatureList = {
 			range : "5 ft",
 			description : "Dex save or restrained for 1 min; Affected target can repeat save at the end of each of its turns",
 			dc : true,
-			modifiers : ["", "", false],
+			abilitytodamage : false,
 			tooltip : "The mephit belches viscid mud onto one creature within 5 ft of it. If the target is Medium or smaller, it must succeed on a DC 11 Dexterity saving throw or be restrained for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
 		}],
 		traits : [{
@@ -1524,7 +1483,6 @@ var Base_CreatureList = {
 		hd : [5, 6],
 		speed : "30 ft, fly 30 ft",
 		scores : [6, 14, 12, 10, 10, 11],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2,
 			"stealth" : 4
@@ -1550,7 +1508,8 @@ var Base_CreatureList = {
 			range : "15-ft cone",
 			description : "Hits all in area; Dex save or blinded until the end of the next turn",
 			dc : true,
-			modifiers : ["dc-1", "", false],
+			modifiers : [-1, ""],
+			abilitytodamage : false,
 			tooltip : "The mephit exhales a 15-ft cone of smoldering ash. Each creature in that area must succeed on a DC 10 Dexterity saving throw or be blinded until the end of the mephit's next turn."
 		}],
 		traits : [{
@@ -1575,7 +1534,6 @@ var Base_CreatureList = {
 		hd : [6, 6],
 		speed : "30 ft, fly 30 ft",
 		scores : [5, 11, 10, 11, 10, 12],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 60 ft",
 		passivePerception : 10,
 		languages : "Aquan, Ignan",
@@ -1597,7 +1555,7 @@ var Base_CreatureList = {
 			range : "15-ft cone",
 			description : "Hits all in area; Dex save, success - half damage",
 			dc : true,
-			modifiers : ["", "", false],
+			abilitytodamage : false,
 			tooltip : "The mephit exhales a 15-ft cone of scalding steam. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 4 (1d8) fire damage on a failed save, or half as much damage on a successful one."
 		}],
 		traits : [{
@@ -1624,14 +1582,12 @@ var Base_CreatureList = {
 		hd : [3, 8],
 		speed : "30 ft, climb 30 ft",
 		scores : [16, 14, 14, 6, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"athletics" : 5,
 			"perception" : 3
 		},
 		senses : "",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
 		attacksAction : 2,
@@ -1660,10 +1616,8 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "50 ft",
 		scores : [14, 12, 12, 2, 10, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -1686,10 +1640,8 @@ var Base_CreatureList = {
 		hd : [1, 6],
 		speed : "30 ft, climb 30 ft",
 		scores : [8, 14, 11, 4, 12, 6],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 11,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -1716,10 +1668,8 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "20 ft, burrow 5 ft",
 		scores : [4, 11, 12, 2, 12, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft; Adv. on Wis (Perception) checks using smell",
 		passivePerception : 11,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -1747,10 +1697,8 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "5 ft, fly 30 ft",
 		scores : [2, 15, 8, 2, 12, 4],
-		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 60 ft; Adv. on Wis (Perception) checks using hearing",
 		passivePerception : 11,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -1760,7 +1708,8 @@ var Base_CreatureList = {
 			damage : [1, "", "piercing"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : ["Str", "", false]
+			modifiers : ["Str", ""],
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Echolocation",
@@ -1783,13 +1732,11 @@ var Base_CreatureList = {
 		hd : [3, 8],
 		speed : "40 ft, climb 30 ft",
 		scores : [15, 10, 14, 2, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "Adv. on Wis (Perception) checks using smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
 		attacksAction : 2,
@@ -1822,7 +1769,6 @@ var Base_CreatureList = {
 		hd : [4, 8],
 		speed : "40 ft",
 		scores : [12, 17, 12, 10, 13, 11],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 5
@@ -1860,13 +1806,11 @@ var Base_CreatureList = {
 		hd : [2, 6],
 		speed : "10 ft, fly 60 ft",
 		scores : [6, 14, 10, 3, 14, 5],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
 		senses : "Adv. on Wis (Perception) checks using sight",
 		passivePerception : 14,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -1897,10 +1841,8 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "40 ft",
 		scores : [13, 11, 12, 2, 9, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 9,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -1931,13 +1873,11 @@ var Base_CreatureList = {
 		hd : [4, 10],
 		speed : "40 ft, climb 30 ft",
 		scores : [19, 10, 16, 2, 13, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "Adv. on Wis (Perception) checks using smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "1",
 		proficiencyBonus : 2,
 		attacksAction : 2,
@@ -1971,10 +1911,8 @@ var Base_CreatureList = {
 		hd : [2, 10],
 		speed : "50 ft",
 		scores : [16, 8, 14, 2, 8, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 9,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -1984,7 +1922,7 @@ var Base_CreatureList = {
 			damage : [1, 4, "bludgeoning"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : ["", "", false]
+			abilitytodamage : false
 		}]
 	},
 	"cat" : {
@@ -1999,14 +1937,12 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "40 ft, climb 30 ft",
 		scores : [3, 15, 10, 3, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
 		},
 		senses : "Adv. on Wis (Perception) checks using smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2016,7 +1952,8 @@ var Base_CreatureList = {
 			damage : [1, "", "slashing"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : ["Str", "", false]
+			modifiers : ["Str", ""],
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Keen Smell",
@@ -2035,13 +1972,11 @@ var Base_CreatureList = {
 		hd : [5, 10],
 		speed : "40 ft, swim 30 ft",
 		scores : [20, 10, 16, 2, 13, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "Darkvision 60 ft; Adv. on Wis (Perception) checks using smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "2",
 		proficiencyBonus : 2,
 		attacksAction : 2,
@@ -2074,10 +2009,8 @@ var Base_CreatureList = {
 		hd : [2, 10],
 		speed : "30 ft, swim 30 ft",
 		scores : [15, 14, 12, 1, 10, 3],
-		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 10 ft",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2107,13 +2040,11 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "20 ft, swim 20 ft",
 		scores : [2, 11, 10, 1, 8, 2],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 2
 		},
 		senses : "Blindsight 30 ft",
 		passivePerception : 9,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2123,7 +2054,8 @@ var Base_CreatureList = {
 			damage : [1, "", "bludgeoning"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : [2, "", false]
+			modifiers : [2, ""],
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Amphibious",
@@ -2141,13 +2073,11 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "20 ft, swim 20 ft",
 		scores : [15, 10, 13, 2, 10, 5],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 2
 		},
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2174,14 +2104,12 @@ var Base_CreatureList = {
 		hd : [6, 8],
 		speed : "40 ft",
 		scores : [15, 14, 14, 3, 13, 6],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 5,
 			"stealth" : 4
 		},
 		senses : "Darkvision 120 ft; Adv. on Wis (Perception) checks",
 		passivePerception : 15,
-		languages : "",
 		challengeRating : "1",
 		proficiencyBonus : 2,
 		attacksAction : 2,
@@ -2212,10 +2140,8 @@ var Base_CreatureList = {
 		hd : [1, 8],
 		speed : "50 ft",
 		scores : [11, 16, 11, 2, 14, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 12,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2239,14 +2165,12 @@ var Base_CreatureList = {
 		hd : [5, 10],
 		speed : "50 ft",
 		scores : [17, 15, 15, 3, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
 		},
 		senses : "Adv. on Wis (Perception) checks using hearing/smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "1",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2276,10 +2200,8 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "40 ft",
 		scores : [18, 10, 12, 2, 11, 7],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2302,13 +2224,11 @@ var Base_CreatureList = {
 		hd : [1, 6],
 		speed : "10 ft, fly 60 ft",
 		scores : [6, 15, 10, 2, 14, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
 		senses : "Adv. on Wis (Perception) checks using sight",
 		passivePerception : 14,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2335,10 +2255,8 @@ var Base_CreatureList = {
 		hd : [8, 12],
 		speed : "40 ft",
 		scores : [22, 9, 17, 3, 11, 6],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2372,10 +2290,8 @@ var Base_CreatureList = {
 		hd : [2, 10],
 		speed : "50 ft",
 		scores : [16, 10, 12, 2, 10, 6],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2408,10 +2324,8 @@ var Base_CreatureList = {
 		hd : [2, 4],
 		speed : "30 ft, fly 60 ft, swim 30 ft",
 		scores : [4, 18, 11, 2, 12, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 10 ft",
 		passivePerception : 11,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2421,7 +2335,7 @@ var Base_CreatureList = {
 			damage : [1, "", "piercing"],
 			range : "Melee (5 ft)",
 			description : "Target also takes 3d4 poison damage",
-			modifiers : ["", "", false]
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Flyby",
@@ -2441,14 +2355,12 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "20 ft, swim 20 ft",
 		scores : [1, 13, 8, 1, 8, 3],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 1,
 			"stealth" : 3
 		},
 		senses : "Darkvision 30 ft",
 		passivePerception : 11,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2472,14 +2384,12 @@ var Base_CreatureList = {
 		hd : [15, 12],
 		speed : "40 ft, climb 40 ft",
 		scores : [23, 14, 18, 7, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"athletics" : 9,
 			"perception" : 4
 		},
 		senses : "",
 		passivePerception : 14,
-		languages : "",
 		challengeRating : "7",
 		proficiencyBonus : 3,
 		attacksAction : 2,
@@ -2509,10 +2419,8 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "30 ft, burrow 10 ft",
 		scores : [13, 10, 15, 2, 12, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft; Adv. on Wis (Perception) checks using smell",
 		passivePerception : 11,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 2,
@@ -2545,10 +2453,8 @@ var Base_CreatureList = {
 		hd : [4, 10],
 		speed : "10 ft, fly 60 ft",
 		scores : [15, 16, 11, 2, 12, 6],
-		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 60 ft; Adv. on Wis (Perception) checks using hearing",
 		passivePerception : 11,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2578,10 +2484,8 @@ var Base_CreatureList = {
 		hd : [5, 10],
 		speed : "40 ft",
 		scores : [17, 10, 16, 2, 7, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 8,
-		languages : "",
 		challengeRating : "2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2611,10 +2515,8 @@ var Base_CreatureList = {
 		hd : [1, 6],
 		speed : "30 ft, climb 30 ft",
 		scores : [5, 14, 12, 1, 7, 3],
-		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 30 ft",
 		passivePerception : 8,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2641,13 +2543,11 @@ var Base_CreatureList = {
 		hd : [8, 12],
 		speed : "30 ft, swim 30 ft",
 		scores : [19, 14, 12, 1, 10, 3],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2
 		},
 		senses : "Blindsight 10 ft",
 		passivePerception : 12,
-		languages : "",
 		challengeRating : "2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2676,13 +2576,11 @@ var Base_CreatureList = {
 		hd : [3, 8],
 		speed : "30 ft, swim 30 ft",
 		scores : [13, 15, 11, 1, 9, 3],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 4
 		},
 		senses : "Blindsight 30 ft",
 		passivePerception : 9,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2709,13 +2607,11 @@ var Base_CreatureList = {
 		hd : [9, 12],
 		speed : "30 ft, swim 50 ft",
 		scores : [21, 9, 17, 2, 10, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 5
 		},
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "5",
 		proficiencyBonus : 3,
 		attacksAction : 2,
@@ -2751,7 +2647,6 @@ var Base_CreatureList = {
 		hd : [4, 10],
 		speed : "10 ft, fly 80 ft",
 		scores : [16, 17, 13, 8, 14, 10],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
@@ -2790,7 +2685,6 @@ var Base_CreatureList = {
 		hd : [5, 12],
 		speed : "60 ft",
 		scores : [19, 16, 14, 7, 14, 10],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
@@ -2829,10 +2723,8 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "30 ft, fly 60 ft",
 		scores : [14, 13, 13, 2, 10, 3],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 60 ft",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 0,
@@ -2849,10 +2741,8 @@ var Base_CreatureList = {
 		hd : [1, 6],
 		speed : "30 ft",
 		scores : [8, 10, 12, 1, 7, 3],
-		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 30 ft",
 		passivePerception : 8,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2879,14 +2769,12 @@ var Base_CreatureList = {
 		hd : [4, 8],
 		speed : "30 ft, swim 30 ft",
 		scores : [12, 13, 11, 2, 10, 3],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2,
 			"stealth" : 3
 		},
 		senses : "Darkvision 30 ft",
 		passivePerception : 12,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2920,10 +2808,8 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "40 ft",
 		scores : [17, 11, 12, 3, 12, 6],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 11,
-		languages : "",
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2953,13 +2839,11 @@ var Base_CreatureList = {
 		hd : [6, 10],
 		speed : "50 ft",
 		scores : [16, 14, 14, 2, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "1",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -2986,10 +2870,8 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "30 ft, climb 30 ft",
 		scores : [15, 12, 13, 2, 10, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3002,7 +2884,7 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Variant: Hold Breath",
-			description : "The lizard can hold its breath for 15 minutes. (A lizard that has this trait also has a swimming speed of 30 feet.)"
+			description : "The lizard can hold its breath for 15 minutes. (A lizard that has this trait also has a swimming speed of 30 ft.)"
 		}, {
 			name : "Variant: Spider Climb",
 			description : "The lizard can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
@@ -3019,14 +2901,12 @@ var Base_CreatureList = {
 		hd : [8, 10],
 		speed : "10 ft, swim 60 ft",
 		scores : [17, 13, 13, 4, 10, 4],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4,
 			"stealth" : 5
 		},
 		senses : "Darkvision 60 ft",
 		passivePerception : 14,
-		languages : "",
 		challengeRating : "1",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3064,7 +2944,6 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "5 ft, fly 60 ft",
 		scores : [13, 15, 12, 8, 13, 10],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 5,
 			"stealth" : 4
@@ -3101,13 +2980,11 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "30 ft, swim 30 ft",
 		scores : [10, 18, 13, 2, 10, 3],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2
 		},
 		senses : "Blindsight 10 ft",
 		passivePerception : 12,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3130,10 +3007,8 @@ var Base_CreatureList = {
 		hd : [2, 6],
 		speed : "30 ft",
 		scores : [7, 15, 11, 2, 10, 4],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 60 ft; Adv. on Wis (Perception) checks using smell",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3163,10 +3038,8 @@ var Base_CreatureList = {
 		hd : [2, 6],
 		speed : "30 ft",
 		scores : [7, 15, 11, 2, 10, 4],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 60 ft",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3193,10 +3066,8 @@ var Base_CreatureList = {
 		hd : [7, 10],
 		speed : "40 ft",
 		scores : [15, 13, 15, 1, 9, 3],
-		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 60 ft",
 		passivePerception : 9,
-		languages : "",
 		challengeRating : "3",
 		proficiencyBonus : 2,
 		attacksAction : 3,
@@ -3229,10 +3100,8 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "swim 40 ft",
 		scores : [12, 15, 11, 2, 12, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 11,
-		languages : "",
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3262,13 +3131,11 @@ var Base_CreatureList = {
 		hd : [11, 12],
 		speed : "swim 50 ft",
 		scores : [23, 11, 21, 1, 10, 5],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "Blindsight 60 ft",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "5",
 		proficiencyBonus : 3,
 		attacksAction : 1,
@@ -3298,13 +3165,11 @@ var Base_CreatureList = {
 		hd : [4, 10],
 		speed : "30 ft, climb 30 ft",
 		scores : [14, 16, 12, 2, 11, 4],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 7
 		},
 		senses : "Blindsight 10 ft; Darkvision 60 ft",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3320,7 +3185,7 @@ var Base_CreatureList = {
 			damage : ["\u2015", "", "Restrained"],
 			range : "30/60 ft",
 			description : "Target can escape as an action with a DC 12 Strength check, or by destroying the webbing (AC 10; 5 HP)",
-			modifiers : ["", "", false],
+			abilitytodamage : false,
 			tooltip : "On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)."
 		}],
 		traits : [{
@@ -3353,10 +3218,8 @@ var Base_CreatureList = {
 		hd : [6, 10],
 		speed : "20 ft, swim 40 ft",
 		scores : [15, 13, 13, 2, 10, 3],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3375,7 +3238,7 @@ var Base_CreatureList = {
 			description : "The toad's long jump is up to 20 ft and its high jump is up to 10 ft, with or without a running start."
 		}, {
 			name : "Swallow",
-			description : "The toad makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the toad, and it takes 10 (3d6) acid damage at the start of each of the toad's turns. The toad can have only one target swallowed at a time.\nIf the toad dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 feet of movement, exiting prone."
+			description : "The toad makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the toad, and it takes 10 (3d6) acid damage at the start of each of the toad's turns. The toad can have only one target swallowed at a time.\nIf the toad dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 ft of movement, exiting prone."
 		}],
 		wildshapeString : "Darkvision 30 ft| Amphibious: can breathe air and water| Standing Leap: can long jump up to 20 ft and high jump up to 10 ft, with or without a running start| Swallow: if a bite attack hits a Medium or smaller target that it is grappling, it is swallowed, ending the grapple. Swallowed: blinded, restrained, total cover, takes 3d6 acid damage at the start of each of the toad's turns; can have only 1 swallowed at a time."
 	},
@@ -3390,7 +3253,6 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "10 ft, fly 60 ft",
 		scores : [15, 10, 15, 6, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
@@ -3434,10 +3296,8 @@ var Base_CreatureList = {
 		hd : [3, 8],
 		speed : "10 ft, fly 50 ft, swim 50 ft",
 		scores : [10, 14, 10, 1, 10, 3],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3465,14 +3325,12 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "40 ft",
 		scores : [11, 16, 10, 4, 12, 5],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 5
 		},
 		senses : "Darkvision 60 ft; Adv. on Wis (Perception) checks using hearing/smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3499,14 +3357,12 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "40 ft, climb 40 ft",
 		scores : [12, 16, 13, 3, 12, 4],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 7
 		},
 		senses : "Blindsight 10 ft; Darkvision 60 ft",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3543,10 +3399,8 @@ var Base_CreatureList = {
 		hd : [1, 8],
 		speed : "40 ft",
 		scores : [12, 10, 11, 2, 10, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3578,13 +3432,11 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "10 ft, fly 60 ft",
 		scores : [5, 16, 8, 2, 14, 6],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
 		senses : "Adv. on Wis (Perception) checks using sight",
 		passivePerception : 14,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3594,7 +3446,7 @@ var Base_CreatureList = {
 			damage : [1, "", "slashing"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : ["", "", false]
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Keen Sight",
@@ -3612,13 +3464,11 @@ var Base_CreatureList = {
 		hd : [6, 10],
 		speed : "swim 40 ft",
 		scores : [18, 13, 15, 1, 10, 4],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2
 		},
 		senses : "Darkvision 30 ft",
 		passivePerception : 12,
-		languages : "",
 		challengeRating : "2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3648,13 +3498,11 @@ var Base_CreatureList = {
 		hd : [1, 8],
 		speed : "50 ft",
 		scores : [11, 13, 12, 2, 12, 5],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3681,13 +3529,11 @@ var Base_CreatureList = {
 		hd : [1, 6],
 		speed : "40 ft",
 		scores : [8, 15, 11, 3, 12, 6],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "Adv. on Wis (Perception) checks using hearing/smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3717,13 +3563,11 @@ var Base_CreatureList = {
 		hd : [12, 12],
 		speed : "swim 60 ft",
 		scores : [19, 10, 13, 3, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "Blindsight 120 ft; Adv. on Wis (Perception) checks using hearing",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "3",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3756,14 +3600,12 @@ var Base_CreatureList = {
 		hd : [4, 10],
 		speed : "50 ft",
 		scores : [17, 15, 13, 3, 12, 8],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 6
 		},
 		senses : "Adv. on Wis (Perception) checks using smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "1",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3807,10 +3649,8 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "20 ft, climb 20 ft",
 		scores : [2, 11, 10, 1, 8, 3],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft",
 		passivePerception : 9,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3820,7 +3660,8 @@ var Base_CreatureList = {
 			damage : [1, "", "piercing"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : [-2, "", false]
+			modifiers : [-2, ""],
+			abilitytodamage : false
 		}]
 	},
 	"mammoth" : {
@@ -3834,10 +3675,8 @@ var Base_CreatureList = {
 		hd : [11, 12],
 		speed : "40 ft",
 		scores : [24, 9, 21, 3, 11, 6],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "6",
 		proficiencyBonus : 3,
 		attacksAction : 1,
@@ -3871,13 +3710,11 @@ var Base_CreatureList = {
 		hd : [1, 8],
 		speed : "40 ft",
 		scores : [13, 14, 12, 3, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "Adv. on Wis (Perception) checks using hearing/smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3905,10 +3742,8 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "40 ft",
 		scores : [14, 10, 13, 2, 10, 5],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3939,14 +3774,12 @@ var Base_CreatureList = {
 		hd : [1, 6],
 		speed : "5 ft, swim 30 ft",
 		scores : [4, 15, 11, 3, 10, 4],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2,
 			"stealth" : 4
 		},
 		senses : "Darkvision 30 ft",
 		passivePerception : 12,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3956,7 +3789,7 @@ var Base_CreatureList = {
 			damage : [1, "", "bludgeoning"],
 			range : "Melee (5 ft)",
 			description : "Target is grappled (escape DC 10); Can't use tentacles again until grapple ends",
-			modifiers : ["", "", false]
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Hold Breath",
@@ -3982,14 +3815,12 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "5 ft, fly 60 ft",
 		scores : [3, 13, 8, 2, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 3
 		},
 		senses : "Darkvision 120 ft; Adv. on Wis (Perception) checks using hearing/sight",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -3999,7 +3830,7 @@ var Base_CreatureList = {
 			damage : [1, "", "slashing"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : ["", "", false]
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Flyby",
@@ -4021,14 +3852,12 @@ var Base_CreatureList = {
 		hd : [3, 8],
 		speed : "50 ft, climb 40 ft",
 		scores : [14, 15, 10, 3, 14, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4,
 			"stealth" : 6
 		},
 		senses : "Adv. on Wis (Perception) checks using smell",
 		passivePerception : 14,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4065,10 +3894,8 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "30 ft, swim 30 ft",
 		scores : [2, 16, 11, 1, 10, 3],
-		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 10 ft",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4078,7 +3905,7 @@ var Base_CreatureList = {
 			damage : [1, "", "piercing"],
 			range : "Melee (5 ft)",
 			description : "Target also takes 2d4 poison damage, half on a DC 10 Constitution saving throw",
-			modifiers : ["", "", false]
+			abilitytodamage : false
 		}]
 	},
 	"polar bear" : {
@@ -4093,13 +3920,11 @@ var Base_CreatureList = {
 		hd : [5, 10],
 		speed : "40 ft, swim 30 ft",
 		scores : [20, 10, 16, 2, 13, 7],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "Adv. on Wis (Perception) checks using smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "2",
 		proficiencyBonus : 2,
 		attacksAction : 2,
@@ -4133,10 +3958,8 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "40 ft",
 		scores : [15, 10, 13, 2, 11, 7],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4160,10 +3983,8 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "swim 40 ft",
 		scores : [2, 16, 9, 1, 7, 2],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 60 ft",
 		passivePerception : 8,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4173,7 +3994,7 @@ var Base_CreatureList = {
 			damage : [1, "", "piercing"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : ["", "", false]
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Blood Frenzy",
@@ -4195,10 +4016,8 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "20 ft",
 		scores : [2, 11, 9, 2, 10, 4],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 30 ft; Adv. on Wis (Perception) checks using smell",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4208,7 +4027,8 @@ var Base_CreatureList = {
 			damage : [1, "", "piercing"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : [-2, "", false]
+			modifiers : [-2, ""],
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Keen Smell",
@@ -4228,13 +4048,11 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "10 ft, fly 50 ft",
 		scores : [2, 14, 8, 2, 12, 6],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4244,7 +4062,7 @@ var Base_CreatureList = {
 			damage : [1, "", "piercing"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : ["", "", false]
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Mimicry",
@@ -4262,13 +4080,11 @@ var Base_CreatureList = {
 		hd : [4, 8],
 		speed : "swim 40 ft",
 		scores : [14, 13, 13, 1, 10, 4],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 2
 		},
 		senses : "Blindsight 30 ft",
 		passivePerception : 12,
-		languages : "",
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4299,10 +4115,8 @@ var Base_CreatureList = {
 		hd : [6, 10],
 		speed : "40 ft",
 		scores : [21, 8, 15, 2, 12, 6],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 11,
-		languages : "",
 		challengeRating : "2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4330,10 +4144,8 @@ var Base_CreatureList = {
 		hd : [2, 10],
 		speed : "60 ft",
 		scores : [16, 10, 12, 2, 11, 7],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4357,14 +4169,12 @@ var Base_CreatureList = {
 		hd : [7, 10],
 		speed : "40 ft",
 		scores : [18, 14, 15, 3, 12, 8],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 6
 		},
 		senses : "Adv. on Wis (Perception) checks using smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4402,10 +4212,8 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "10 ft",
 		scores : [2, 11, 8, 1, 8, 2],
-		saves : ["", "", "", "", "", ""],
 		senses : "Blindsight 10 ft",
 		passivePerception : 9,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4429,10 +4237,8 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "swim 20 ft",
 		scores : [1, 12, 8, 1, 10, 2],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4454,13 +4260,11 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "20 ft, climb 20 ft",
 		scores : [2, 14, 8, 1, 10, 2],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"stealth" : 4
 		},
 		senses : "Darkvision 30 ft",
 		passivePerception : 10,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4470,7 +4274,7 @@ var Base_CreatureList = {
 			damage : [1, "", "piercing"],
 			range : "Melee (5 ft)",
 			description : "Target also takes 1d4 poison damage, half on a DC 9 Constitution saving throw",
-			modifiers : ["", "", false]
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Spider Climb",
@@ -4495,10 +4299,8 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "10 ft, fly 40 ft",
 		scores : [4, 16, 11, 2, 8, 6],
-		saves : ["", "", "", "", "", ""],
 		senses : "Darkvision 60 ft",
 		passivePerception : 9,
-		languages : "",
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4511,7 +4313,7 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Blood Drain",
-			description : "While attached, the stirge doesn't attack. Instead, at the start of each of the stirge's turns, the target loses 5 (1d4 + 3) HP due to blood loss. The stirge can detach itself by spending 5 feet of its movement. It does so after it drains 10 HP of blood from the target or the target dies. A creature, including the target, can use its action to detach the stirge."
+			description : "While attached, the stirge doesn't attack. Instead, at the start of each of the stirge's turns, the target loses 5 (1d4 + 3) HP due to blood loss. The stirge can detach itself by spending 5 ft of its movement. It does so after it drains 10 HP of blood from the target or the target dies. A creature, including the target, can use its action to detach the stirge."
 		}]
 	},
 	"tiger" : {
@@ -4525,14 +4327,12 @@ var Base_CreatureList = {
 		hd : [5, 10],
 		speed : "40 ft",
 		scores : [17, 15, 14, 3, 12, 8],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 6
 		},
 		senses : "Darkvision 60 ft; Adv. on Wis (Perception) checks using smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "1",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4569,13 +4369,11 @@ var Base_CreatureList = {
 		hd : [1, 8],
 		speed : "10 ft, fly 50 ft",
 		scores : [7, 10, 13, 2, 12, 4],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3
 		},
 		senses : "Adv. on Wis (Perception) checks using sight/smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4606,10 +4404,8 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "60 ft",
 		scores : [18, 12, 13, 2, 12, 7],
-		saves : ["", "", "", "", "", ""],
 		senses : "",
 		passivePerception : 11,
-		languages : "",
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4637,14 +4433,12 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "30 ft",
 		scores : [3, 16, 8, 2, 12, 3],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 5
 		},
 		senses : "Adv. on Wis (Perception) checks using hearing/smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "0",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4654,7 +4448,7 @@ var Base_CreatureList = {
 			damage : [1, "", "piercing"],
 			range : "Melee (5 ft)",
 			description : "",
-			modifiers : ["", "", false]
+			abilitytodamage : false
 		}],
 		traits : [{
 			name : "Keen Hearing and Smell",
@@ -4673,14 +4467,12 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "40 ft",
 		scores : [12, 15, 12, 3, 12, 6],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 3,
 			"stealth" : 4
 		},
 		senses : "Adv. on Wis (Perception) checks using hearing/smell",
 		passivePerception : 13,
-		languages : "",
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
 		attacksAction : 1,
@@ -4710,7 +4502,6 @@ var Base_CreatureList = {
 		hd : [4, 10],
 		speed : "50 ft",
 		scores : [16, 13, 13, 7, 11, 8],
-		saves : ["", "", "", "", "", ""],
 		skills : {
 			"perception" : 4
 		},
