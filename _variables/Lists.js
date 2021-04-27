@@ -1809,7 +1809,7 @@ var compString = {
 			hp : function (totalHD, HDobj, prefix) {
 				var classTxt = "", useLvl, totHP, strHp;
 				if (!classes.known.ranger && !classes.known["spell-less ranger"]) {
-					useLvl = Number(What("Character Level"));
+					useLvl = classes.totallevel;
 				} else {
 					classTxt = "ranger ";
 					useLvl = (classes.known.ranger ? classes.known.ranger.level : 0) + (classes.known["spell-less ranger"] ? classes.known["spell-less ranger"].level : 0);

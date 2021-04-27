@@ -163,9 +163,9 @@ function resetCompTypes(prefix) {
 			AddWeapon(CurrentCompRace[prefix].attacks[a].name);
 		}
 	} else if (theType === "companion") {
-		UpdateRangerCompanions(0);
+		UpdateRangerCompanions(0, prefix);
 	} else if (theType === "companionrr") {
-		UpdateRevisedRangerCompanions(0);
+		UpdateRevisedRangerCompanions(0, prefix);
 	} else if (theType === "mechanicalserv") {
 		if (CurrentCompRace[prefix] && CurrentCompRace[prefix].known) {
 			Value(prefix + "Comp.Desc.MonsterType", CurrentCompRace[prefix].type);
@@ -222,7 +222,7 @@ function ApplyCompRace(newRace) {
 	var doCreatureEval = function(objCrea, type) {
 		var theEval = objCrea[type];
 		if (objCrea.typeFound !== "creature" || !theEval || typeof theEval != 'function') return;
-		var curLvl = type === "changeeval" ? undefined : What("Character Level") ? Number(What("Character Level")) : 1;
+		var curLvl = type === "changeeval" ? undefined : classes.totallevel ? classes.totallevel : What("Character Level") ? Number(What("Character Level")) : 1;
 		try {
 			theEval(prefix, curLvl);
 		} catch (error) {
@@ -686,12 +686,26 @@ function ApplyCompRace(newRace) {
 function processAddCompanions(bAddRemove, srcNm, aCreaAdds) {
 	if (!isArray(aCreaAdds)) aCreaAdds = [aCreaAdds];
 	var aChangeMsg = [];
+	var fCallBackError = false;
+	var doCallBack = function(fCallBack, prefix) {
+		if (!fCallBackError && fCallBack && typeof fCallBack == 'function') {
+			try {
+				fCallBack(bAddRemove, prefix);
+			} catch (error) {
+				var eText = 'The callback function of the creaturesAdd attribute from "' + srcNm + '" produced an error while ' + (bAddRemove ? 'adding' : 'removing') + ' the "' + sRace + '" creature! Please contact the author of the feature to correct this issue:\n '  + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
+				console.println(eText);
+				console.show();
+				fCallBackError = true;
+			}
+		}
+	}
 	for (var i = 0; i < aCreaAdds.length; i++) {
 		var aCreaAdd = !isArray(aCreaAdds[i]) ? [aCreaAdds[i]] : aCreaAdds[i];
 		var sRace = aCreaAdd[0];
 		var sRaceLow = sRace.toString().toLowerCase();
 		var bRemoveWholePage = aCreaAdd[1];
-		var fCallBack = aCreaAdd[2];
+		var aCallBack = aCreaAdd[2];
 		var AScompA = isTemplVis('AScomp') ? What('Template.extras.AScomp').split(',') : false;
 		if (bAddRemove) { // add
 			var prefix = false, stopMatch = false;
@@ -709,6 +723,7 @@ function processAddCompanions(bAddRemove, srcNm, aCreaAdds) {
 			if (!prefix) prefix = DoTemplate('AScomp', 'Add');
 			if (!stopMatch) {
 				Value(prefix + 'Comp.Race', sRace);
+				doCallBack(aCallBack, prefix);
 				aChangeMsg.push('A "' + sRace + '" has been added to the companion page at page number ' + (tDoc.getField(prefix + 'Comp.Race').page + 1));
 			}
 		} else { // remove
@@ -720,18 +735,9 @@ function processAddCompanions(bAddRemove, srcNm, aCreaAdds) {
 					} else {
 						Value(prefix + 'Comp.Race', ""); // reset the race field
 					}
+					doCallBack(aCallBack, prefix);
 					aChangeMsg.push('The companion page at page number ' + iPageNo + ' has ' + (bRemoveWholePage ? 'been removed' : 'had its race option reset') + ' as it contained the "' + sRace + '" race.');
 				}
-			}
-		}
-		if (fCallBack && typeof fCallBack == 'function') {
-			try {
-				fCallBack(bAddRemove, prefix);
-			} catch (error) {
-				var eText = 'The callback function of the creaturesAdd attribute from "' + srcNm + '" produced an error while ' + (bAddRemove ? 'adding' : 'removing') + ' the "' + sRace + '" creature! Please contact the author of the feature to correct this issue:\n '  + error;
-				for (var e in error) eText += "\n " + e + ": " + error[e];
-				console.println(eText);
-				console.show();
 			}
 		}
 	}
@@ -1933,7 +1939,7 @@ function changeCompType(inputType, prefix) {
 	if (!compString[inputType]) return;
 	inputType = inputType.toLowerCase();
 	var oldType = What(prefix + "Companion.Remember");
-	if (oldType && compString[oldType]) resetCompTypes(prefix);
+	if (oldType) resetCompTypes(prefix);
 	Value(prefix + "Companion.Remember", inputType); //set this so it can be called upon later
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Changing the companion to a predefined type...");
@@ -3991,7 +3997,7 @@ function setLifeStyle(input) {
 // update all the level-dependent features for the ranger companions on the companion pages
 function UpdateRangerCompanions(newLvl, aPrefix) {
 	if (ClassList.rangerua && !testSource("rangerua", ClassList.rangerua, "classExcl")) {
-		UpdateRevisedRangerCompanions(newLvl);
+		UpdateRevisedRangerCompanions(newLvl, aPrefix);
 		return;
 	}
 	var thermoTxt;
@@ -4020,7 +4026,7 @@ function UpdateRangerCompanions(newLvl, aPrefix) {
 		return toReturn;
 	}
 
-	newLvl = newLvl !== undefined ? newLvl : Number(What("Character Level"));
+	newLvl = newLvl !== undefined ? newLvl : classes.totallevel;
 	var deleteIt = newLvl === 0;
 	var newComp = !deleteIt && aPrefix;
 
@@ -4046,7 +4052,6 @@ function UpdateRangerCompanions(newLvl, aPrefix) {
 			var oldLvl = Number(remLvl[0]);
 			var RangerLvlOld = remLvl[1] !== undefined ? Number(remLvl[1]) : 0;
 			var oldLvlProfB = oldLvl ? ProficiencyBonusList[Math.min(oldLvl, ProficiencyBonusList.length) - 1] : 0;
-			var diff = newLvlProfB - oldLvlProfB;
 			var BlueTextArrayAdd = [];
 			var BlueTextArrayRemove = [];
 
@@ -4711,12 +4716,13 @@ function UpdateDropdown(type, weapon) {
 	 case "ammunitions" :
 		SetAmmosdropdown();
 		break;
-	 case "creature" :
-	 case "creatures" :
-	 case "wildshape" :
-	 case "wildshapes" :
+	case "creature" :
+	case "creatures" :
+	case "wildshape" :
+	case "wildshapes" :
+	case "companiononly" :
 		SetCompDropdown();
-		SetWildshapeDropdown();
+		if (type !== "companiononly") SetWildshapeDropdown();
 		break;
 	};
 	IsSetDropDowns = false;
@@ -4914,7 +4920,7 @@ function UpdateRevisedRangerCompanions(newLvl, aPrefix) {
 		return toReturn;
 	}
 
-	newLvl = newLvl !== undefined ? newLvl : Number(What("Character Level"));
+	newLvl = newLvl !== undefined ? newLvl : classes.totallevel;
 	var deleteIt = newLvl === 0;
 	var newComp = !deleteIt && aPrefix;
 

@@ -1969,6 +1969,10 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			var propAtt = fTrans[fAB[f]];
 			if (subClObj && propAtt.list === "ClassList" && subClObj.features[propAtt.name]) continue; // skip any features from the class if a subclass is known and has that same feature
 			Temps.features[propAtt.name] = tDoc[propAtt.list][propAtt.item].features[propAtt.name];
+			// set the extrachoice attribute of the feature if it is dependent on a choice
+			if (Temps.features[propAtt.name].choiceSetsExtrachoices) {
+				applyExtrachoicesOfChoice(aClass, propAtt.name, false, true);
+			}
 		}
 
 		//make fullname if not defined by subclass
@@ -5218,14 +5222,15 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice, Fe
 	return [FeaFirstLine + (Fea.extFirst ? FeaPost : ""), "\r" + FeaFirstLine + FeaOtherLines, FeaFirstLine];
 };
 
-function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld) {
+function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld, ForceExtraname) {
 	var clObj = typeof theClass == "string" ? CurrentClasses[theClass].features[theFeature] : theClass;
 	var FeaKey = clObj && clObj[extraChoice.toLowerCase()] ? clObj[extraChoice.toLowerCase()] : false;
 	if (!FeaKey || !FeaKey.name) return ["", ""];
 	var old = ForceOld ? "Old" : "";
 	if (old) Fea.source = Fea.sourceOld;
 
-	var FeaRef = " (" + clObj.extraname + stringSource(Fea, "first,abbr", ", ") + ")";
+	var extraNm = FeaKey.extraname ? FeaKey.extraname : ForceExtraname ? ForceExtraname : clObj.extraname ? clObj.extraname : clObj.name;
+	var FeaRef = " (" + extraNm + stringSource(Fea, "first,abbr", ", ") + ")";
 	var FeaUse = Fea["Use" + old] + (Fea["Use" + old] && !isNaN(Fea["Use" + old]) ? "\u00D7 per " : "") + Fea["Recov" + old] + (Fea["AltRecov" + old] ? " or " + Fea["AltRecov" + old] : "");
 	var FeaPost = "";
 	if (Fea["Add" + old] && FeaUse) {
@@ -5739,7 +5744,7 @@ function MakeClassMenu() {
 };
 
 //call the Class Features menu and do something with the results
-function ClassFeatureOptions(Input, AddRemove) {
+function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 	// first see if we have something to do
 	var MenuSelection = Input ? Input : getMenu("classfeatures");
 	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[4] == "stop") return;
@@ -5795,12 +5800,13 @@ function ClassFeatureOptions(Input, AddRemove) {
 		// do something with the text of the feature
 		var feaString = ParseClassFeatureExtra(
 			isBattleMasterManeuver ? propFea : aClass,
-			prop, choice, Fea, !addIt);
+			prop, choice, Fea, !addIt, ForceExtraname);
 
 		if (addIt) { // add the string to the third page
 			AddString("Extra.Notes", feaString[1].replace(/^(\r|\n)*/, ''), true);
 			show3rdPageNotes(); // for a Colourful sheet, show the notes section on the third page
-			var changeMsg = "The " + propFea.extraname + ' "' + propFeaCs.name + '" has been added to the Notes section on the third page' + (!typePF ? ", while the Rules section on the third page has been hidden" : "") + ". They wouldn't fit in the Class Features section if the class is taken to level 20.";
+			var extraNm = propFeaCs.extraname ? propFeaCs.extraname : ForceExtraname ? ForceExtraname : propFea.extraname ? propFea.extraname : propFea.name;
+			var changeMsg = "The " + extraNm + ' "' + propFeaCs.name + '" has been added to the Notes section on the third page' + (!typePF ? ", while the Rules section on the third page has been hidden" : "") + ". They wouldn't fit in the Class Features section if the class is taken to level 20.";
 			CurrentUpdates.types.push("notes");
 			if (!CurrentUpdates.notesChanges) {
 				CurrentUpdates.notesChanges = [changeMsg];
@@ -5867,20 +5873,18 @@ function processClassFeatureExtraChoiceDependencies(lvlA, aClass, aFeature, fObj
 	var lvlH = Math.max(lvlA[0], lvlA[1]), lvlL = Math.min(lvlA[0], lvlA[1]);
 	var theDep = fObj.autoSelectExtrachoices;
 	if (!isArray(theDep)) theDep = [theDep];
-	var saveExtraName = fObj.extraname;
 	for (var i = 0; i < theDep.length; i++) {
 		var aDep = theDep[i];
 		var minLvl = aDep.minlevel ? aDep.minlevel : fObj.minlevel;
 		// stop if nothing found or there was no level change that affected this feature
 		if (!aDep.extrachoice || !fObj[aDep.extrachoice] || !(lvlH >= minLvl && lvlL < minLvl)) continue;
-		fObj.extraname = aDep.extraname ? aDep.extraname : saveExtraName;
 		// set or remove the class feature, depending on its level
 		ClassFeatureOptions(
 			[aClass, aFeature, aDep.extrachoice, 'extra'],
-			lvlA[1] < minLvl ? 'remove' : false
+			lvlA[1] < minLvl ? 'remove' : false,
+			aDep.extraname
 		);
 	}
-	fObj.extraname = saveExtraName;
 }
 
 // The print feature button

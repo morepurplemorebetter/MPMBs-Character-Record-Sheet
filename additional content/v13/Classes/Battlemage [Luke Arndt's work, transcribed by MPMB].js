@@ -762,9 +762,9 @@ AddSubClass("battlemage", "runic bulwark", {
 					'If I include the words "Runic Weapon" in a the name of a weapon, it will be treated as a weapon I inscribed with runes. If it is a one-handed melee weapon, it gains the thrown (30/120) property. If it is a two-handed melee weapon, it scores a critical hit on a 19 or 20. If it is a ranged weapon with the ammunition property, it no longer require ammo as it can conjure that.'
 				]
 			},
-			extraname : "Runic Bulwark 3",
 			"runic weapon" : {
 				name : "Runic Weapon",
+				extraname : "Runic Bulwark 3",
 				source : ["LA:BM", 6],
 				description : desc([
 					"A weapon I inscribed with runes gains the following abilities, depending on type:",

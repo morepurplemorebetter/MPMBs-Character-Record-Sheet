@@ -403,6 +403,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	if (type == "class" && !cOnly) {
 		if (choiceA[1] && fObj.choiceDependencies) processClassFeatureChoiceDependencies(lvlA, aParent, fObjName, choiceA[1]);
 		if (fObj.autoSelectExtrachoices) processClassFeatureExtraChoiceDependencies(lvlA, aParent, fObjName, fObj);
+		if (fObj.choiceSetsExtrachoices) applyExtrachoicesOfChoice(aParent, fObjName, choiceA, false);
 	}
 
 	// return the level-dependent attributes so it doesn't have to be queried again
@@ -985,7 +986,7 @@ function processCreatureOptions(AddRemove, srcNm, creaArr) {
 
 	// if removing things and the variable is now empty
 	if (!AddRemove && !ObjLength(CurrentVars.extraCreatures)) delete CurrentVars.extraCreatures;
-	SetCompDropdown(); // update the companion pages' race dropdown (not the wild shape)
+	UpdateDropdown("companiononly"); // update the companion pages' race dropdown (not the wild shape)
 	SetStringifieds("vars"); // Save the new settings to a field
 }
 
@@ -3285,102 +3286,47 @@ function setPlayersMakeAllRolls(enable) {
 	}
 }
 
-/*
-NEW ATTRIBUTES
-	limfeaname // Optional; If defined it is used for populating the limited feature section and the action section instead of `name`
-	scorestxt // Optional; String; If defined it is used for the text in the Ability Score dialog and tooltips. If not defined, but 'scores' is defined, 'scores' will be used to generate a text
-	scoresOverride // Optional; Array; works same as scores, but are used to populate the "Magical Override" column; If you are providing both 'scores' and 'scoresOverride' you should also give a 'scorestxt', as the auto-generated tooltip text doesn't work if you have both 'scores' and 'scoresOverride'
-	calcChanges.spellList // Optional; an array with the first entry being a function, and the second entry being a descriptive text. This attribute can change the spell list created for a class / race / feat
-	calcChanges.spellCalc // Optional; an array with the first entry being a function, and the second entry being a descriptive text. This attribute can change the DC, spell attack, and number of spells to memorize
-	weaponOptions // Optional; an array of WeaponsList objects to be added to the WeaponsList (can also be a single object if only wanting to add a single weapon)
-	armorOptions // Optional; an array of ArmourList objects to be added to the ArmourList (can also be a single object if only wanting to add a single armour)
-	ammoOptions // Optional; an array of AmmoList objects to be added to the AmmoList (can also be a single object if only wanting to add a single armour)
-	extraAC // replaces AddACMisc() in eval
-	extraLimitedFeatures // replaces AddFeature() in eval
-	carryingCapacity // multiply the Carrying Capacity Multiplier with this number
-	spellcastingFactorRoundupMulti // in ClassList or ClassSublist to indicate that in case of multiclassing the spellcasting factor should be rounded up
-
-CHANGED ATTRIBUTES
-	armorProfs // Optional; Array; armor proficiencies to add [previous just 'armor']
-	weaponProfs // Optional; Array; weapon proficiencies to add [previous just 'weapons' or 'weaponprofs' depending on List]
-	armorAdd // Optional; String; name of the armor to put in the armor section (if results in higher AC) [previous 'addarmor']
-	weaponsAdd // Optional; Array; names of the weapons to put in the attack section (if there is space) [previous 'weapons']
-
-
-CHANGES TO IMPLEMENT IN LIST SCRIPTS
-
-	'primaryAbility' for CLASS(main) no longer needs line-break, bullet point, name, or trailing semicolon
-	'prereqs' for CLASS(main) no longer needs line-break, bullet point, name, or trailing semicolon
-
-
-	'improvements' for RACE/FEAT replaced with 'scorestxt' (but without name or trailing semicolon)
-	'improvements' for RACE/FEAT no longer needed if identical to changes by 'scores'
-
-	'skills' can now be an array of arrays with 2 elements each, the first element being the skill name and the second element being the application of expertise "full", "increment", or "only"
-	'skills' for FEATS/CLASS(main) is no longer used and should be replaced by 'skillstxt'
-
-	'skillstxt' no longer need line breaks, name, or trailing semicolon/period
-	'skillstxt' no longer needed if identical to changes by 'skills'
-
-	'action' can now be an array, so no need for 'AddAction' in eval
-
-	'tooltip' for racial features: make name same as tooltip (minus the parenthesis) and add limfeaname for the old name
-
-	'eval', 'removeeval', 'changeeval' can now be a function
-
-	'atkAdd[0]' & 'atkCalc[0]' can now be a function
-
-	'armor' replace with 'armorProfs'
-	'addarmor' replace with 'armorAdd'
-	'weapons' for CLASS/FEAT: replace with 'weaponProfs'
-	'weaponprofs' for RACE: replace with 'weaponProfs'
-	'weapons' for RACE: replace with 'weaponsAdd'
-
-	eval changes :
-	- Class Features Remember
-	- AddAction
-	- AddWeapon
-	- AddFeature
-	- AddACMisc
-	- ClassFeatureOptions (no longer needed in removeeval if to be removed at that level)
-
-	spellcastingBonus.firstCol (options: 'atwill', 'oncesr', 'oncelr', 'markedbox', 'checkbox', 'checkedbox')
-	REPLACE			WITH
-	atwill : true	firstCol : 'atwill'
-	oncesr : true	firstCol : 'oncesr'
-	oncelr : true	firstCol : 'oncelr'
-	prepared : true	firstCol : 'markedbox'
-
-	(atwill|oncesr|oncelr) : true		firstCol : '\1'
-
-OVERWRITTEN BY CHOICES (NOT EXTRACHOICES):
-	name
-	limfeaname // new, see above
-	additional
-	description
-	recovery
-	source
-	usages
-	usagescalc
-
-CHANGED ATTRIBUTES
-	action // can now be an array of actions
-	  // if the second entry starts with a letter character, it will be used instead of the feature name
-	  // if the second entry starts with a space or other common joining character like "-,'([{", it will be amended to the feature name
-	  // e.g. ["action", " (start/stop)"] will result in "Feature name (start/stop)"
-	  // while ["action", "start/stop"] will result in "start/stop"
-	eval // can now be a function
-	removeeval // can now be a function
-	changeeval // can now be a function
-	calcChanges.atkAdd[0] // the first entry of the array can now be a function (but has parameters!)
-	calcChanges.atkCalc[0] // the first entry of the array can now be a function (but has parameters!)
-	calcChanges.hp // can now be a function
-
-	armor // replaced with armorProfs (so it is more clear)
-	addarmor // replaced with armorAdd (notice difference in capitalisation)
-	weapons // for CLASS/FEAT: replaced with weaponProfs (so it is more clear)
-	weaponprofs // for RACE: replace with weaponProfs
-	weapons // for RACE: replace with weaponsAdd
-
-
-*/
+// if a feature choice offers extrachoices, correct the parent object to accomodate for this aChoice = [stringOldChoice, stringNewChoice] or bOnlyObject = true in FindClasses()
+function applyExtrachoicesOfChoice(sClass, sProp, aChoice, bOnlyObject) {
+	var propFea = CurrentClasses[sClass].features[sProp];
+	if (!aChoice && bOnlyObject) aChoice = [false, GetFeatureChoice("classes", sClass, sProp, false)];
+	var propChoiceOld = aChoice[0] && propFea[aChoice[0]] ? propFea[aChoice[0]] : false;
+	var propChoiceNew = aChoice[1] && propFea[aChoice[1]] ? propFea[aChoice[1]] : false;
+	var setProperty = function(objTo, objFrom, propNm) {
+		objTo[propNm] = objFrom && objFrom[propNm] ? objFrom[propNm] : objTo[propNm + "Remember"] ? objTo[propNm + "Remember"] : undefined;
+	}
+	// First do the `autoSelectExtrachoices` attribute, because it affects the next step
+	var oldAutoSelectExtrachoices = propFea.autoSelectExtrachoices ? propFea.autoSelectExtrachoices : false;
+	setProperty(propFea, propChoiceNew, 'autoSelectExtrachoices');
+	if (!bOnlyObject) {
+		var newAutoSelectExtrachoices = propFea.autoSelectExtrachoices ? propFea.autoSelectExtrachoices : false;
+		if (oldAutoSelectExtrachoices.toSource() !== newAutoSelectExtrachoices.toSource()) {
+			// remove the old autoSelectExtrachoices
+			processClassFeatureExtraChoiceDependencies([classes.known[sClass].level, 0], sClass, sProp, { autoSelectExtrachoices : oldAutoSelectExtrachoices });
+			// apply the new autoSelectExtrachoices
+			processClassFeatureExtraChoiceDependencies([0, classes.known[sClass].level], sClass, sProp, propFea);
+		}
+		// Remove any extrachoices that were related to the old choice
+		if (propChoiceOld && propChoiceOld.extrachoices && propFea.extrachoices) {
+			var curExtras = GetFeatureChoice("classes", sClass, sProp, true);
+			// Do not remove those that were added using the `autoSelectExtrachoices` attribute
+			var skipAutoExtras = propFea.autoSelectExtrachoices ? propFea.autoSelectExtrachoices.map( function (eObj) { return eObj.extrachoice; }) : [];
+			for (var i = 0; i < curExtras.length; i++) {
+				if (skipAutoExtras.indexOf(curExtras[i]) !== -1) continue;
+				ClassFeatureOptions([sClass, sProp, curExtras[i], 'extra'], "remove", propChoiceOld.extraname);
+			};
+		}
+	}
+	// Set the attributes of the main object to correspond to the new choice
+	var attrArray = ["extrachoices", "extraname", "extraTimes"];
+	for (var i = 0; i < attrArray.length; i++) {
+		setProperty(propFea, propChoiceNew, attrArray[i]);
+	};
+	if (propChoiceNew && propChoiceNew.extrachoices) {	
+		// add the extrachoices offered in the choice to the parent object
+		for (var i = 0; i < propChoiceNew.extrachoices.length; i++) {
+			var xtrStr = propChoiceNew.extrachoices[i].toLowerCase();
+			if (propChoiceNew[xtrStr]) propFea[xtrStr] = propChoiceNew[xtrStr];
+		}
+	}
+}

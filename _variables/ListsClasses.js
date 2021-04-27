@@ -860,31 +860,31 @@ var Base_ClassList = {
 				recovery : "short rest",
 				"flurry of blows" : {
 					name : "Flurry of Blows",
+					extraname : "Ki Feature",
 					source : [["SRD", 27], ["P", 78]],
 					description : " [1 ki point]" + "\n   " + "After taking the Attack action, I can make 2 unarmed attacks as a bonus action",
 					action : ["bonus action", " (after Attack action)"]
 				},
 				"patient defense" : {
 					name : "Patient Defense",
+					extraname : "Ki Feature",
 					source : [["SRD", 27], ["P", 78]],
 					description : " [1 ki point]" + "\n   " + "As a bonus action, I can take the Dodge action",
 					action : ["bonus action", ""]
 				},
 				"step of the wind" : {
 					name : "Step of the Wind",
+					extraname : "Ki Feature",
 					source : [["SRD", 27], ["P", 78]],
 					description : " [1 ki point]" + "\n   " + "As a bonus action, I can either Dash or Disengage; My jump distance doubles when I do so",
 					action : ["bonus action", ""]
 				},
 				autoSelectExtrachoices : [{
-					extrachoice : "flurry of blows",
-					extraname : "Ki Feature"
+					extrachoice : "flurry of blows"
 				}, {
-					extrachoice : "patient defense",
-					extraname : "Ki Feature"
+					extrachoice : "patient defense"
 				}, {
-					extrachoice : "step of the wind",
-					extraname : "Ki Feature"
+					extrachoice : "step of the wind"
 				}]
 			},
 			"unarmored movement" : {
@@ -926,9 +926,9 @@ var Base_ClassList = {
 				description : "\n   " + "As a reaction, I can reduce any falling damage I take by five times my monk level",
 				additional : levels.map(function (n) { return n < 4 ? "" : (n*5) + " less falling damage" }),
 				action : ["reaction", ""],
-				extraname : "Monk 5",
 				"stunning strike" : {
 					name : "Stunning Strike",
+					extraname : "Monk 5",
 					source : [["SRD", 27], ["P", 79]],
 					description : " [1 ki point]" + "\n   " + "After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
 				},
@@ -1355,6 +1355,7 @@ var Base_ClassList = {
 				"travel benefits" : {
 					name : "Favored Terrain Travel Benefits",
 					source : [["SRD", 36], ["P", 91]],
+					extraname : "Ranger 1",
 					description : desc([
 						"I can double my proficiency bonus for Int/Wis checks concerning my favored terrains",
 						"While traveling for an hour or more in a favored terrain, I gain the following benefits:",
@@ -1365,8 +1366,7 @@ var Base_ClassList = {
 					])
 				},
 				autoSelectExtrachoices : [{
-					extrachoice : "travel benefits",
-					extraname : "Ranger 1"
+					extrachoice : "travel benefits"
 				}]
 			},
 			"fighting style" : {
@@ -1434,7 +1434,7 @@ var Base_ClassList = {
 				name : "Foe Slayer",
 				source : [["SRD", 37], ["P", 92]],
 				minlevel : 20,
-				description : "\n   " + "Once per turn, I can add Wis mod to the attack or damage roll vs. favored enemy"
+				description : "\n   " + "Once per turn, I can add my Wis mod to the attack or damage roll vs. a favored enemy"
 			}
 		}
 	},
@@ -3001,9 +3001,9 @@ var Base_ClassSubList = {
 				source : [["SRD", 29], ["P", 80]],
 				minlevel : 11,
 				description : "\n   " + "After a long rest, I gain the effect of a Sanctuary spell until a next long rest",
-				extraname : "Way of the Open Hand 17",
 				"quivering palm" : {
 					name : "Quivering Palm",
+					extraname : "Way of the Open Hand 17",
 					source : [["SRD", 29], ["P", 80]],
 					description : " [3 ki points]" + "\n   " + "When I hit a creature with an unarmed strike, I can start imperceptible vibrations" + "\n   " + "Within my monk level in days, I can use an action to have the creature make a Con save" + "\n   " + "If it fails, it is reduced to 0 hit points; If it succeeds, it takes 10d10 necrotic damage"
 				},

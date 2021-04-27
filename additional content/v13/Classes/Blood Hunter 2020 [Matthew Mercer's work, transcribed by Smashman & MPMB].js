@@ -26,7 +26,7 @@
 */
 
 var iFileName = "Blood Hunter 2020 [Matthew Mercer's work, transcribed by Smashman & MPMB].js";
-RequiredSheetVersion(13);
+RequiredSheetVersion("13.0.6");
 
 SourceList["MM:BH"] = {
 	name : "Matthew Mercer: Blood Hunter Class 2020",
@@ -417,10 +417,10 @@ AddSubClass("blood hunter", "ghostslayer", {
 			removeeval : function (v) {
 				RemoveFeature('Blood Maledict', 1);
 			},
-			extraname : "Crimson Rite",
 			"primal rite of the dawn" : {
-				source : [["MM:BH", 5]],
 				name : "Rite of the Dawn",
+				extraname : "Crimson Rite",
+				source : [["MM:BH", 5]],
 				description : " [radiant damage]" + desc([
 					"While this rite is active, my weapon deals an extra hemocraft die of rite damage vs. undead",
 					"Also, my weapon sheds 20-ft radius bright light and I gain resistance to necrotic damage"
@@ -462,10 +462,10 @@ AddSubClass("blood hunter", "ghostslayer", {
 					"If I include the word 'Rite' in a weapon's name, it gets an additional hemocraft die if target is branded."
 				]
 			},
-			extraname : "Order of the Ghostslayer 15; Blood Curse",
 			"blood curse of the exorcist" : {
-				source : [["MM:BH", 11]],
 				name : "Blood Curse of the Exorcist",
+				extraname : "Order of the Ghostslayer 15; Blood Curse",
+				source : [["MM:BH", 11]],
 				description : desc([
 					"As a bonus action, I stop a target I can see in 30 ft being frightened, charmed, or possessed",
 					"\u2022 Amplify: The creature that caused the stopped condition takes 4d6 psychic damage",
@@ -735,9 +735,9 @@ AddSubClass("blood hunter", "profane soul", {
 					firstCol : "oncelr"
 				}
 			},
-			extraname : "Order of the Profane Soul 18; Blood Curse",
 			"blood curse of the souleater" : {
 				name : "Blood Curse of the Souleater",
+				extraname : "Order of the Profane Soul 18; Blood Curse",
 				source : [["MM:BH", 12]],
 				description : " [Amplify 1\xD7 per long rest]" + desc([
 					"As a reaction when a living creature (not construct/undead) is reduced to 0 HP in 30 ft,",
@@ -1013,10 +1013,10 @@ AddSubClass("blood hunter", "mutant", {
 				"Also, if it's polymorphed or has changed shape when branded or tries to do so during,",
 				"It must make a Wis save or its form reverts and it's stunned until my next turn ends"
 			]),
-			extraname : "Order of the Mutant 15; Blood Curse",
 			"blood curse of corrosion" : {
-				source : [["MM:BH", 11]],
 				name : "Blood Curse of Corrosion",
+				extraname : "Order of the Mutant 15; Blood Curse",
+				source : [["MM:BH", 11]],
 				description : desc([
 					"As a bonus action, I can have a creature within 30 ft make a Con save or become poisoned",
 					"At the end of each if its turns, the creature can make another Con save to end the curse",
@@ -1154,10 +1154,10 @@ AddSubClass("blood hunter", "lycan", {
 				"While in hybrid form, I have advantage on attacks against a creature branded by me"
 			]),
 			savetxt : { text : ["Adv. on Wis saves to control blood lust"] },
-			extraname : "Order of the Lycan 18; Blood Curse",
 			"blood curse of the howl" : {
 				source : [["MM:BH", 12]],
 				name : "Blood Curse of the Howl",
+				extraname : "Order of the Lycan 18; Blood Curse",
 				description : desc([
 					"As an action, creatures of my choice in 30 ft that can hear me howl must make a Wis save",
 					"If failed, they're frightened of me (stunned if failed by 5 or more), until my next turn ends",

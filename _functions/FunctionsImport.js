@@ -2616,22 +2616,44 @@ function AddFeatureChoice(pObj, cType, cName, cObj, force) {
 	if (!pObj[cType]) { // choice array doesn't exist
 		if (!force) return; // no choice array and not forced, so quit now
 		pObj[cType] = [];
-		if (cType == "extrachoices" && typeof force == "string") {
+		if (cType === "extrachoices" && typeof force == "string") {
+			FixAutoSelForceChoices(pObj);
 			pObj.extraname = force;
+			if (pObj.choiceSetsExtrachoices) {
+				pObj.extrachoicesRemember = [];
+			}
 		}
+	}
+	// when adding a new choice that contains extrachoices of its own
+	if (cType === "choices" && cObj.extrachoices) {
+		// copy the extrachoices for remembering the original value, if any
+		if (pObj.extrachoices && !pObj.extrachoicesRemember) {
+			pObj.extrachoicesRemember = pObj.extrachoices;
+			pObj.extranameRemember = pObj.extraname;
+			pObj.extraTimesRemember = pObj.extraTimes;
+		}
+		pObj.choiceSetsExtrachoices = true;
+	}
+	// also do something when adding autoSelectExtrachoices
+	if (cType === "choices" && cObj.autoSelectExtrachoices) {
+		if (pObj.autoSelectExtrachoices && !pObj.autoSelectExtrachoicesRemember) {
+			pObj.autoSelectExtrachoicesRemember = pObj.autoSelectExtrachoices;
+		}
+		FixAutoSelForceChoices(pObj, false, cObj);
 	}
 	// Stop if adding something that already exists, so no reason to continue
 	var cNameLC = cName.toLowerCase();
-	if (pObj[cType].indexOf(cName) != -1 && pObj[cNameLC] && pObj[cNameLC].toSource() == cObj.toSource()) return;
+	if (pObj[cNameLC] && pObj[cNameLC].toSource() == cObj.toSource()) return;
 	// See if something by its name already exists and amend it if sp
 	var useName = cName;
 	var suffix = 1;
-	while (pObj[cType].indexOf(useName) !== -1) {
+	while (pObj[cType].indexOf(useName) !== -1 || pObj[useName.toLowerCase()]) {
 		suffix += 1;
 		useName = cName + " [" + suffix + "]";
 	};
 	// Add the new (extra)choice
 	pObj[cType].push(useName);
+	if (cType === "extrachoices" && pObj.extrachoicesRemember) pObj.extrachoicesRemember.push(useName);
 	pObj[useName.toLowerCase()] = cObj;
 }
 // --- backwards compatibility --- //
@@ -2673,7 +2695,6 @@ function CreateClassFeatureVariant(clName, clFea, varName, varObj) {
 	} else {
 		return;
 	}
-	if (aFea.defaultChoice || aFea.extrachoices || aFea.extraname) return; // this doesn't work if a feature offers extrachoices
 	if (!aFea.choices) {
 		// Create a new choice system, with the 'normal' feature as a choice that is selected by default
 		var origFea = newObj(aFea[clFea]);
@@ -2685,11 +2706,43 @@ function CreateClassFeatureVariant(clName, clFea, varName, varObj) {
 			minlevel : origFea.minlevel,
 			description : '\n   Select ' + origFea.name + ' or a variant using the "Choose Feature" button above',
 			choices : [choiceNm],
-			defaultChoice : choiceNmLC
+			defaultChoice : choiceNmLC,
+			choiceSetsExtrachoices : origFea.extrachoices ? true : false
 		}
 		aFea[clFea][choiceNmLC] = origFea;
+		if (origFea.autoSelectExtrachoices) {
+			aFea[clFea].autoSelectExtrachoices = origFea.autoSelectExtrachoices;
+			FixAutoSelForceChoices(aFea[clFea], origFea.extraname, origFea);
+		}
+		if (origFea.extrachoices) {	
+			// add the extrachoices offered in the choice to the parent object
+			for (var i = 0; i < origFea.extrachoices.length; i++) {
+				var xtrStr = origFea.extrachoices[i].toLowerCase();
+				if (origFea[xtrStr]) aFea[clFea][xtrStr] = origFea[xtrStr];
+			}
+		}
 	}
 	AddFeatureChoice(aFea[clFea], false, varName, varObj);
+}
+
+// Fix autoSelectExtrachoices
+function FixAutoSelForceChoices(pObj, sExtraname, cObj) {
+	if (!pObj.autoSelectExtrachoices) return;
+	if (!isArray(pObj.autoSelectExtrachoices)) pObj.autoSelectExtrachoices = [pObj.autoSelectExtrachoices];
+	for (var i = 0; i < pObj.autoSelectExtrachoices.length; i++) {
+		var aObj = pObj.autoSelectExtrachoices[i];
+		if (!aObj || !aObj.extrachoice) continue;
+		// make sure the parent object has the extrachoice as an attribute
+		if (cObj && cObj[aObj.extrachoice] && !pObj[aObj.extrachoice]) {
+			pObj[aObj.extrachoice] = cObj[aObj.extrachoice];
+		} else if (!pObj[aObj.extrachoice]) {
+			continue;
+		}
+		// force the extraname per object, so it is never taken from the parent object
+		if (!pObj[aObj.extrachoice].extraname && !aObj.extraname) {
+			aObj.extraname = sExtraname ? sExtraname : pObj.extraname;
+		}
+	}
 }
 
 // side-loading a file and adding it to the field for safe-keeping

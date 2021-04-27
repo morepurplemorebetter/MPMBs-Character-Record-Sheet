@@ -26,7 +26,7 @@
 */
 
 var iFileName = "Paladin - Oath of Apathy [DMs Guild, transcribed by MPMB].js";
-RequiredSheetVersion(13);
+RequiredSheetVersion("13.0.6");
 
 SourceList["DDAL00-09"] = {
 	name : "Minsc & Boo's Guide to Stuff and Things",
@@ -101,9 +101,9 @@ AddSubClass("paladin", "apathy", {
 			recovery : "long rest",
 			usages : 1,
 			action : [["action", ""]],
-			extraname : "Oath of Apathy 20",
 			"avatar of apathy benefits" : {
 				name : "Avatar of Apathy Benefits",
+				extraname : "Oath of Apathy 20",
 				source : ["DDAL00-09", 14],
 				description : desc([
 					"While I'm transformed into an Avatar of Apathy, I gain the following benefits:",
