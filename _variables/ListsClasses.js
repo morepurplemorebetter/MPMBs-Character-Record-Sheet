@@ -3571,7 +3571,7 @@ var Base_ClassSubList = {
 								case "chaos bolt-uass" :
 									spellObj.description = spellObj.description.replace(" of target", "");
 								case "chromatic orb" :
-								case "chaos bolt-xgte" :
+								case "chaos bolt" :
 									lookForDie = "d8";
 									break;
 								case "melf's acid arrow" :

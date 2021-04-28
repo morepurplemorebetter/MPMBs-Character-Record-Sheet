@@ -3306,8 +3306,8 @@ function applyExtrachoicesOfChoice(sClass, sProp, aChoice, bOnlyObject) {
 			// apply the new autoSelectExtrachoices
 			processClassFeatureExtraChoiceDependencies([0, classes.known[sClass].level], sClass, sProp, propFea);
 		}
-		// Remove any extrachoices that were related to the old choice
-		if (propChoiceOld && propChoiceOld.extrachoices && propFea.extrachoices) {
+		// Remove any extrachoices that were related to the old choice if there was a change
+		if (propChoiceOld && aChoice[0] !== aChoice[1] && propChoiceOld.extrachoices && propFea.extrachoices) {
 			var curExtras = GetFeatureChoice("classes", sClass, sProp, true);
 			// Do not remove those that were added using the `autoSelectExtrachoices` attribute
 			var skipAutoExtras = propFea.autoSelectExtrachoices ? propFea.autoSelectExtrachoices.map( function (eObj) { return eObj.extrachoice; }) : [];
@@ -3322,11 +3322,18 @@ function applyExtrachoicesOfChoice(sClass, sProp, aChoice, bOnlyObject) {
 	for (var i = 0; i < attrArray.length; i++) {
 		setProperty(propFea, propChoiceNew, attrArray[i]);
 	};
-	if (propChoiceNew && propChoiceNew.extrachoices) {	
+	if (propChoiceNew && propChoiceNew.extrachoices) {
 		// add the extrachoices offered in the choice to the parent object
 		for (var i = 0; i < propChoiceNew.extrachoices.length; i++) {
 			var xtrStr = propChoiceNew.extrachoices[i].toLowerCase();
 			if (propChoiceNew[xtrStr]) propFea[xtrStr] = propChoiceNew[xtrStr];
+		}
+	}
+	if (propChoiceNew && propChoiceNew.autoSelectExtrachoices) {
+		// add the autoSelectExtrachoices offered in the choice to the parent object
+		for (var i = 0; i < propChoiceNew.autoSelectExtrachoices.length; i++) {
+			var xtrStr = propChoiceNew.autoSelectExtrachoices[i].extrachoice;
+			if (xtrStr && propChoiceNew[xtrStr]) propFea[xtrStr] = propChoiceNew[xtrStr];
 		}
 	}
 }

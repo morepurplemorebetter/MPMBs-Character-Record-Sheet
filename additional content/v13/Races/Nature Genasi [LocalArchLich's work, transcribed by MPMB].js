@@ -17,7 +17,7 @@
 */
 
 var iFileName = "Nature Genasi [LocalArchLich's work, transcribed by MPMB].js";
-RequiredSheetVersion(13);
+RequiredSheetVersion("13.0.6");
 
 SourceList["LAL:NG"] = {
 	name : "LocalArchLich: Nature Genasi",
@@ -48,7 +48,7 @@ RaceList["nature genasi"] = {
 	spellcastingAbility : 3,
 	spellcastingBonus : {
 		name : "Environmental Att.",
-		spells : ["blade ward", "chill touch", "create bonfire", "dancing lights", "druidcraft", "eldritch blast", "fire bolt", "frostbite", "guidance", "gust", "magic stone", "mending", "message", "minor illusion", "mold earth", "poison spray", "prestidigitation", "primal savagery-xgte", "produce flame", "ray of frost", "resistance", "shape water", "thaumaturgy", "thorn whip", "thunderclap", "toll the dead", "true strike", "word of radiance"],
+		spells : ["blade ward", "chill touch", "create bonfire", "dancing lights", "druidcraft", "eldritch blast", "fire bolt", "frostbite", "guidance", "gust", "magic stone", "mending", "message", "minor illusion", "mold earth", "poison spray", "prestidigitation", "primal savagery", "produce flame", "ray of frost", "resistance", "shape water", "thaumaturgy", "thorn whip", "thunderclap", "toll the dead", "true strike", "word of radiance"],
 		firstCol : 'atwill'
 	},
 	features : {

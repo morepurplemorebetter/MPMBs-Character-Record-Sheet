@@ -5640,7 +5640,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 		case "wall of light" :
 			spellObj.description = spellObj.description.replace("not blind", "no blind");
 			break;
-		case "zephyr strike-xgte" :
+		case "zephyr strike" :
 			spellObj.description = spellObj.description.replace("opportunity", "opport.");
 			break;
 	}
@@ -5655,7 +5655,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 		}
 		// If a spell has a longer duration than instantaneous or 1 round and is not just on the next weapon hit, we should only add the addition once, not to all damage rolls
 		// There are some spells for which this is true and should be done as normal (falsePositives) or spells for which this is not true, but should be done anyway (falseNegatives)
-		var falsePositives = ["delayed blast fireball", "hail of thorns", "holy weapon", "immolation", "lightning arrow", "mental prison", "mind spike", "produce flame", "storm of vengeance", "tsunami", "wall of ice", "wind wall", "zephyr strike-xgte"];
+		var falsePositives = ["delayed blast fireball", "hail of thorns", "holy weapon", "immolation", "lightning arrow", "mental prison", "mind spike", "produce flame", "storm of vengeance", "tsunami", "wall of ice", "wind wall", "zephyr strike"];
 		var falseNegatives = ["eldritch blast", "jim's magic missile", "magic missile", "scorching ray"];
 		if (falseNegatives.indexOf(spellKey) != -1 || (falsePositives.indexOf(spellKey) == -1 && !(/instant|1 rnd/i).test(spellObj.duration) && !(/Next (melee )?weapon hit \+?\d+d?\d*/i).test(spellObj.description))) {
 			var skipThis = false;

@@ -2695,7 +2695,7 @@ function CreateClassFeatureVariant(clName, clFea, varName, varObj) {
 	} else {
 		return;
 	}
-	if (!aFea.choices) {
+	if (!aFea[clFea].choices) {
 		// Create a new choice system, with the 'normal' feature as a choice that is selected by default
 		var origFea = newObj(aFea[clFea]);
 		var choiceNm = "\x1B[original] " + origFea.name;
