@@ -1010,12 +1010,12 @@ function processExtraLimitedFeatures(AddRemove, srcNm, objArr) {
 // for possible values of 'act', see the switch statement
 // each ...TxtA is [firstline, completetext]
 function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
-	if (!oldTxtA || !oldTxtA[0]) return; // no oldTxt, so we can't do anything
+	if (!oldTxtA || !oldTxtA[0]) return false; // no oldTxt, so we can't do anything
 
 	// make some regex objects
 	var oldFrstLnEsc = oldTxtA[0].replace(/^(\r|\n)*/, '').RegEscape();
 	var oldRxHead = RegExp(oldFrstLnEsc + ".*", "i");
-	var oldRx = RegExp("\\r?" + oldFrstLnEsc + "(.|\\r  )*", "i"); // everything until the first line that doesn't start with two spaces (e.g. an empty line or a new bullet point)
+	var oldRx = RegExp("\\r?" + oldFrstLnEsc + "(.|\\r\\s\\s|\\r\\w)*", "i"); // everything until the first line that doesn't start with two spaces or a letter/number (e.g. an empty line or a new bullet point)
 
 	// find the field we are supposed to update
 	var fld = fldA[0];
@@ -1028,7 +1028,7 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 		}
 	}
 	var fldTxt = What(fld);
-	if (!fldTxt) return; // empty or non-existing field, so just stop now
+	if (!fldTxt) return false; // empty or non-existing field, so just stop now
 
 	// apply the change
 	switch (act) {
@@ -1039,9 +1039,9 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 			var changeTxt = fldTxt.replace(oldRx, newTxtA[1]);
 			break;
 		case "insert" : // add the newTxt after the prevTxt
-			if (!prevTxt) return; // no prevTxt, so we can't do anything
+			if (!prevTxt) return false; // no prevTxt, so we can't do anything
 			var prevFrstLnEsc = prevTxt.replace(/^(\r|\n)*/, '').RegEscape();
-			var prevRx = RegExp("\\r?" + prevFrstLnEsc + "(.|\\r  )*", "i");
+			var prevRx = RegExp(prevFrstLnEsc + "(.|\\r\\s\\s|\\r\\w)*", "i");
 			var prevTxtFound = fldTxt.match(prevRx);
 			var changeTxt = prevTxtFound ? fldTxt.replace(prevTxtFound[0], prevTxtFound[0] + newTxtA[1]) : fldTxt;
 			break;
@@ -1049,13 +1049,16 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 			var changeTxt = fldTxt.replace(oldRx, '').replace(/^\r+/, '');
 			break;
 		default :
-			return;
+			return false;
 	}
 	if (changeTxt != fldTxt) {
 		Value(fld, changeTxt);
-	} else if (act !== "insert") {
+		return true;
+	} else if (act !== "insert" && act !== "remove") {
 		// nothing changed, so just insert the whole feature, using this same function
 		applyClassFeatureText("insert", fldA, oldTxtA, newTxtA, prevTxt);
+	} else {
+		return false;
 	}
 }
 

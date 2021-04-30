@@ -149,7 +149,7 @@ CreatureList["purple crawler"] = {
 
 	Setting this attribute to false is the same as not including this attribute.
 */
-	size : 2,
+	size : 3,
 /*	size // REQUIRED //
 	TYPE:	number
 	USE:	set the size drop-down box
@@ -293,6 +293,30 @@ CreatureList["purple crawler"] = {
 		Don't worry, the "d" will be added automatically (e.g. the 4 above will display as "d4").
 
 	The example above is for 3d4 hit dice.
+*/
+	hdLinked : ["ranger", "rangerua"],
+	hdLinked : function(prefix) { return classes.known.ranger ? classes.known.ranger.level - 3 : 0; },
+/*	hdLinked // OPTIONAL //
+	TYPE:	array with ClassList object names (variable length) or function
+	USE:	dynamically set the number of HD to a class level (array) or anything you want (function)
+	ADDED:	v13.0.6
+
+	This attribute is complimentary to the `hd` attribute, it does not replace it.
+	This attribute can only set the number of HD (the first entry in the `hd` attribute),
+	not the type of die.
+
+	This attribute can be one of two things:
+	1. an array with ClassList object names
+		The number of HD will be automatically updated to the class level of the class(es) entered here.
+		If you enter multiple ClassList object names, the highest class level will be used.
+		The ClassList object names are always written in all lower case (e.g. "wizard").
+		If none of the classes are currently selected by the main character, the sheet will default to
+		the first entry in the `hd` attribute, see above.
+	2. function that returns the number
+		The function is executed any time a class level changes.
+		It is passed one variable: a string: the prefix of the Companion page this creature was selected on.
+		If it returns false, 0, "", or anything that is not a number, the sheet will default to
+		the first entry in the `hd` attribute, see above.
 */
 	speed : "20 ft, climb 30 ft",
 /*	speed // REQUIRED //
@@ -472,15 +496,26 @@ CreatureList["purple crawler"] = {
 */
 	features : [{
 		name : "False Appearance",
-		description : "While the purple crawler remains motionless, it is indistinguishable from an ordinary purple flower."
+		description : "While the purple crawler remains motionless, it is indistinguishable from an ordinary purple flower.",
 	}],
 	actions : [{
 		name : "Invisibility",
-		description : "As an action, the purple crawler magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell)."
+		minlevel : 5,
+		description : "As an action, the purple crawler magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell).",
+		addMod : [{ type : "skill", field : "all", mod : "max(oCha|1)", text : "The purple crawler adds its master's Charisma modifier (min 1) to all its skill checks." }]
 	}],
 	traits : [{
 		name : "Keen Sight",
-		description : "The purple crawler has advantage on Wisdom (Perception) checks that rely on sight."
+		minlevel : 8,
+		description : "The purple crawler has advantage on Wisdom (Perception) checks that rely on sight. It size increases to Large.",
+		eval : function(prefix, lvl) {
+			// Increase size to Large
+			PickDropdown(prefix + "Comp.Desc.Size", 2);
+		},
+		removeeval : function(prefix, lvl) {
+			// Change size back to Medium
+			PickDropdown(prefix + "Comp.Desc.Size", 3);
+		}
 	}],
 /*	features // OPTIONAL //
 	actions  // OPTIONAL //
@@ -500,6 +535,8 @@ CreatureList["purple crawler"] = {
 	Will result in:
 		◆ Invisibility: As an action, the purple crawler magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell).
 
+	If the `description` attribute is not present, no string will be added to the field, but any 
+
 	The three different attributes, traits, features, and actions, are added to different parts of the companion page:
 
 	ATTRIBUTE		ADDED TO SECTION
@@ -514,7 +551,9 @@ CreatureList["purple crawler"] = {
 
 	The array is processed in the order it is in the code, no sorting will take place.
 
-	These text are also displayed on the wild shape page, but all together in the singular Traits & Features section.
+	These text are also displayed on the wild shape page, but all together in the singular Traits & Features section,
+	regardless of their `minlevel` attribute value.
+	Also, `eval` and `changeeval` are not executed when this creature is selected on the Wild Shape page.
 	As the wild shape pages offer limited space, it is recommended to test if all of these and
 	the other attributes together will fit.
 	If they don't fit (well), consider using the `wildshapeString` attribute, see below.
@@ -527,6 +566,64 @@ CreatureList["purple crawler"] = {
 	The below attributes won't affect anything when the creature is select as a wild shape,
 	but they will work on a Companion page.
 */
+
+/*	minlevel // OPTIONAL //
+	(Part of `features`, `traits`, or `actions` object, see above)
+	TYPE:	number
+	USE:	the level at which to add the feature, trait, or action
+	ADDED:	v13.0.6
+
+	This attribute is part of an object in the `features`, `traits`, or `actions` arrays, see above.
+	Use this if an entry in that array is only supposed to be displayed
+	once the main character (the character on the 1st page) reaches a certain level.
+	If the main character goes below this level, the entry is removed again.
+	The level checked against can be different than the main character level if the attribute
+	`minlevelLinked` exists, see below.
+
+	Setting this attribute to 1 is the same as not including it.
+*/
+
+/*	eval & removeeval & addMod // OPTIONAL //
+	(Part of `features`, `traits`, or `actions` object, see above)
+	TYPE:	variable, see the entries for `eval`, `removeeval`, or `addMod`
+	USE:	variable, see the entries for `eval`, `removeeval`, or `addMod`
+	ADDED:	v13.0.6
+
+	These attributes are part of an object in the `features`, `traits`, or `actions` arrays, see above.
+	These optional attributes function identical to those that share their name.
+	They function exactly as described for the main object, but they will only be called when the
+	`features`, `traits`, or `actions` object is processed, which can be influenced using the
+	`minlevel` attribute, see above.
+*/
+
+	minlevelLinked : ["artificer", "wizard"],
+	minlevelLinked : function(prefix) { return classes.known.warlock ? classes.known.warlock.level + 1 : 0; },
+/*	minlevelLinked // OPTIONAL //
+	TYPE:	array with ClassList object names (variable length) or function
+	USE:	dynamically select which level to use for level-dependent features
+
+	This attribute is used to determine at which level objects in the `features`, `traits`,
+	or `actions` arrays are added/removed,
+	and it is used to determine what level is passed to the `eval`, `removeeval`, and `changeeval` functions.
+
+	This attribute can be one of two things:
+	1. an array with ClassList object names
+		The level to use will be the class level of the class(es) entered here.
+		If you enter multiple ClassList object names, the highest class level will be used.
+		The ClassList object names are always written in all lower case (e.g. "wizard").
+		If none of the classes are currently selected by the main character, the sheet will default
+		to the total class level, or 1 if the level field is empty.
+	2. function that returns the number
+		The function is called upon any time a level needs to be determined for the creature,
+		be it to determine which level to pass to `changeeval` (see below),
+		or to determine which `features`, `traits`, or `actions` to add.remove (see `minlevel` above).
+		It is passed one variable: a string: the prefix of the Companion page this creature was selected on.
+		If it returns false, 0, "", or anything that is not a number, the sheet will default
+		to the total class level, or 1 if the level field is empty.
+
+	ADDED:	v13.0.6
+*/
+
 
 	header : "Summon",
 /*	header // OPTIONAL //
@@ -548,7 +645,7 @@ CreatureList["purple crawler"] = {
 */
 	addMod : [
 		{ type : "skill", field : "Init", mod : "Int", text : "The purple crawler adds its Intelligence modifier to initiative rolls." },
-		{ type : "save", field : "all", mod : "max(oCha|1)", text : "The purple crawler adds its master's Charisma modifier (min 1) to all its saving throws." },
+		{ type : "save", field : "all", mod : "max(oCha|1)", text : "The purple crawler adds its master's Charisma modifier (min 1) to all its saving throws." }
 	],
 /*	addMod // OPTIONAL //
 	TYPE:	array of objects (variable length)
@@ -600,63 +697,79 @@ CreatureList["purple crawler"] = {
 	*/
 	},
 
-	eval : function(prefix) {
+	eval : function(prefix, lvl) {
 		AddString(prefix + 'Cnote.Left', 'The purple crawler always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.', true);
 	},
 /*	eval // OPTIONAL //
 	TYPE:	function
 	USE:	runs a piece of code when the creature is selected on the Companion page
 
-	The function is passed one variable:
+	The function is passed two variables:
 	1) The first variable is a string: the prefix of the Companion page this creature was selected on
 		You can use this variable to call on fields on that page. The example above uses it to set
 		a string to the leftmost Notes section on the Companion page.
+	2) The second variable is an array with 2 numbers: the old level and the new level
+		e.g. lvl = [0,5] when the creature gets added an the character is 5th level
+		The first entry, the old level, is the level that was passed as the second entry the last time
+		this function was called.
+		The first entry will be zero (0) as this is only called when the creature is added for the first time.
+		The second entry, the new level, is the current main character level.
+		The new level passed can be different than the main character level if the attribute
+		`minlevelLinked` exists, see above.
 
 	This can be any JavaScript you want to have run whenever this creature is selected on a Companion page.
 	This attribute is processed last, after all other attributes are processed.
 */
 
-	removeeval : function(prefix) {
+	removeeval : function(prefix, lvl) {
 		RemoveString(prefix + 'Cnote.Left', 'The purple crawler always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.', true);
 	},
 /*	removeeval // OPTIONAL //
 	TYPE:	function
 	USE:	runs a piece of code when the creature is removed from the Companion page
 
-	The function is passed one variable:
+	The function is passed two variables:
 	1) The first variable is a string: the prefix of the Companion page this creature was selected on
 		You can use this variable to call on fields on that page. The example above uses it to remove
 		a string to the leftmost Notes section on the Companion page.
-
+	2) The second variable is an array with 2 numbers: the old level and the new level
+		e.g. lvl = [0,5] when the creature gets added an the character is 5th level
+		The first entry, the old level, is the level that the creature had before being removed.
+		The second entry, the new level, will be zero (0) as this is only called when the creature is being removed.
 
 	This can be any JavaScript you want to have run whenever the creature is removed from a Companion page.
 	This attribute is processed last, after all other attributes are processed.
 */
 
-	changeeval : function(prefix, newLvl) {
-		Value(prefix + "Comp.Use.HD.Level", Math.max( newLvl, 2 ) );
+	changeeval : function(prefix, lvl) {
+		Value( prefix + "Comp.Use.HD.Die", lvl[1] < 15 ? 8 : 10 );
 	},
 /*	changeeval // OPTIONAL //
 	TYPE:	function
 	USE:	runs a piece of code every time the main character's level changes
 	ADDED:	v13.0.6
 
-	Here "main character" refers to the character on the first page.
+	"Main character" refers to the character on the first page.
 	A companion doesn't have its own 'level' that is used for the automation.
 
 	The function is passed two variables:
 	1) The first variable is a string: the prefix of the Companion page this creature was selected on
 		You can use this variable to call on fields on that page. The example above uses it to set the
-		creature's HD to be equal to the character's level, or 2, whichever is higher.
-	2) The second variable is a number: the total character level of the main character
-		Use this if you want the creature to have features that scale with the main character's level.
-		If you need a specific class' level, don't use this variable, but use
-		the global `classes.known` variable (e.g. `classes.known.wizard.level`).
+		creature's hit dice size depending on the character's level (d8 or d10, if level 15 or higher).
+	2) The second variable is an array with 2 numbers: the old level and the new level
+		e.g. lvl = [0,5] when the creature gets added an the character is 5th level
+		The first entry, the old level, is the level that was passed as the second entry the last time
+		this function was called.
+		The first entry will be zero (0) if the creature is added for the first time.
+		The second entry, the new level, is the current main character level.
+		The new level will be zero (0) if the creature is being removed.
+		The new level passed can be different than the main character level if the attribute
+		`minlevelLinked` exists, see above.
 
 	This can be any JavaScript you want to have run whenever the level changes.
 	This attribute is processed last, after all other attributes have been processed.
 	It is processed both when the creature is first added to the companion page and
-	when the main character's level changes.
+	when the main character's level changes, but not when the creature is removed.
 */
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>> //

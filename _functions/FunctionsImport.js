@@ -2612,49 +2612,56 @@ function AddBackgroundVariant(background, variantName, variantObj) {
 */
 function AddFeatureChoice(pObj, cType, cName, cObj, force) {
 	if (!pObj) return; // parent object doesn't exist
+	var aObj = pObj; // the object where the (extra)choice will be added to
+	var cNameLC = cName.toLowerCase();
 	cType = cType ? "extrachoices" : "choices";
 	if (!pObj[cType]) { // choice array doesn't exist
 		if (!force) return; // no choice array and not forced, so quit now
-		pObj[cType] = [];
 		if (cType === "extrachoices" && typeof force == "string") {
 			FixAutoSelForceChoices(pObj);
-			pObj.extraname = force;
 			if (pObj.choiceSetsExtrachoices) {
 				pObj.extrachoicesRemember = [];
 			}
+			if (pObj.choices && pObj.defaultChoice) {
+				pObj.choiceSetsExtrachoices = true;
+				aObj = pObj[pObj.defaultChoice];
+			}
+			aObj.extraname = force;
 		}
-	}
-	// when adding a new choice that contains extrachoices of its own
-	if (cType === "choices" && cObj.extrachoices) {
-		// copy the extrachoices for remembering the original value, if any
-		if (pObj.extrachoices && !pObj.extrachoicesRemember) {
-			pObj.extrachoicesRemember = pObj.extrachoices;
-			pObj.extranameRemember = pObj.extraname;
-			pObj.extraTimesRemember = pObj.extraTimes;
-		}
-		pObj.choiceSetsExtrachoices = true;
-	}
-	// also do something when adding autoSelectExtrachoices
-	if (cType === "choices" && cObj.autoSelectExtrachoices) {
-		if (pObj.autoSelectExtrachoices && !pObj.autoSelectExtrachoicesRemember) {
-			pObj.autoSelectExtrachoicesRemember = pObj.autoSelectExtrachoices;
-		}
-		FixAutoSelForceChoices(pObj, false, cObj);
+		aObj[cType] = [];
 	}
 	// Stop if adding something that already exists, so no reason to continue
-	var cNameLC = cName.toLowerCase();
-	if (pObj[cNameLC] && pObj[cNameLC].toSource() == cObj.toSource()) return;
+	if (aObj[cNameLC] && aObj[cNameLC].toSource() == cObj.toSource()) return;
+	// when adding a new choice that contains extrachoices of its own
+	if (cType === "choices") {
+		if (cObj.extrachoices) {
+			// copy the extrachoices for remembering the original value, if any
+			if (pObj.extrachoices && !pObj.extrachoicesRemember) {
+				pObj.extrachoicesRemember = pObj.extrachoices;
+				pObj.extranameRemember = pObj.extraname;
+				pObj.extraTimesRemember = pObj.extraTimes;
+			}
+			pObj.choiceSetsExtrachoices = true;
+		}
+		// also do something if it contains autoSelectExtrachoices
+		if (cObj.autoSelectExtrachoices) {
+			if (pObj.autoSelectExtrachoices && !pObj.autoSelectExtrachoicesRemember) {
+				pObj.autoSelectExtrachoicesRemember = pObj.autoSelectExtrachoices;
+			}
+			FixAutoSelForceChoices(pObj, false, cObj);
+		}
+	}
 	// See if something by its name already exists and amend it if sp
 	var useName = cName;
 	var suffix = 1;
-	while (pObj[cType].indexOf(useName) !== -1 || pObj[useName.toLowerCase()]) {
+	while (aObj[cType].indexOf(useName) !== -1 || aObj[useName.toLowerCase()]) {
 		suffix += 1;
 		useName = cName + " [" + suffix + "]";
 	};
 	// Add the new (extra)choice
-	pObj[cType].push(useName);
-	if (cType === "extrachoices" && pObj.extrachoicesRemember) pObj.extrachoicesRemember.push(useName);
-	pObj[useName.toLowerCase()] = cObj;
+	aObj[cType].push(useName);
+	if (cType === "extrachoices" && aObj.extrachoicesRemember) pObj.extrachoicesRemember.push(useName);
+	aObj[useName.toLowerCase()] = cObj;
 }
 // --- backwards compatibility --- //
 function AddWarlockInvocation(invocName, invocObj) { // Add a warlock invocation

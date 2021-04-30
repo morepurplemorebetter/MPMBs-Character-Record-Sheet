@@ -4082,39 +4082,42 @@ function RemoveString(field, toremove, newline) {
 	var regExString = thestring.RegEscape();
 	var thefield = tDoc.getField(field);
 	if (!thefield) return;
-	var stringsArray = [
-		thestring + "\r",
-		"\r" + thestring,
-		", " + thestring,
-		"; " + thestring,
-		thestring + ", ",
-		thestring + "; ",
-		thestring + " ",
-		" " + thestring,
-		thestring
-	];
-	var regExStringsArray = [
-		regExString + "\\r",
-		"\\r" + regExString,
-		", " + regExString,
-		"; " + regExString,
-		regExString + ", ",
-		regExString + "; ",
-		regExString + " ",
-		" " + regExString,
-		regExString
-	];
+	var stringsArray, regExStringsArray;
 	if (newline === false) {
 		stringsArray = [thestring];
 		regExStringsArray = [regExString];
+	} else {
+		stringsArray = [
+			thestring + "\r",
+			"\r" + thestring,
+			", " + thestring,
+			"; " + thestring,
+			thestring + ", ",
+			thestring + "; ",
+			thestring + " ",
+			" " + thestring,
+			thestring
+		];
+		regExStringsArray = [
+			regExString + "\\r",
+			"\\r" + regExString,
+			", " + regExString,
+			"; " + regExString,
+			regExString + ", ",
+			regExString + "; ",
+			regExString + " ",
+			" " + regExString,
+			regExString
+		];
 	}
 	for (var i = 0; i < stringsArray.length; i++) {
-		if ((RegExp(regExStringsArray[i], "i")).test(thefield.value)) {
-			thefield.value = thefield.value.replace(RegExp(regExStringsArray[i], "i"), "");
-			i = stringsArray.length;
+		var regex = RegExp(regExStringsArray[i], "i");
+		if ((regex).test(thefield.value)) {
+			thefield.value = thefield.value.replace(regex, "");
+			break;
 		} else if (thefield.value.indexOf(stringsArray[i]) !== -1) {
 			thefield.value = thefield.value.replace(stringsArray[i], "");
-			i = stringsArray.length;
+			break;
 		}
 	}
 };
@@ -5270,37 +5273,25 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 	calcStop();
 	thermoM(1/8); //increment the progress dialog's progress
 
-	// apply creature changeeval on companion pages (use race level to make sure to only do this on an actual level change)
-	if ((/companion|creature|all|notclass/i).test(Typeswitch) && curLvl != CurrentRace.level && isTemplVis('AScomp')) {
+	// apply creature level-dependent features on companion pages (don't compare level, because the total level can stay the same while class levels change)
+	if ((/companion|creature|all|notclass/i).test(Typeswitch) && isTemplVis('AScomp')) {
 		var AScompA = What('Template.extras.AScomp').split(',');
 		for (var a = 1; a < AScompA.length; a++) {
 			var prefix = AScompA[a];
 			var aComp = CurrentCompRace[AScompA[a]];
-
+	
 			//increment the progress dialog's progress
+			thermoM(a/AScompA.length);
+
+			// Do stuff only if the companion is from the CreatureList, as the RaceList will be made for the main character
+			if (aComp.typeFound !== "creature") continue;
+
+			//update the progress dialog's text
 			var compDispName = What(prefix + "Comp.Desc.Name");
 			if (!compDispName) compDispName = aComp.name;
-
 			thermoTxt = thermoM("Updating " + compDispName + " level-dependent features...", false);
-			thermoM((f)/AScompA.length);
 
-			// Do changeeval, but only for creatures as the RaceList will be made for the main character
-			if (aComp.typeFound === "creature" && aComp.changeeval && typeof aComp.changeeval == 'function') {
-				try {
-					aComp.changeeval(prefix, curLvl);
-				} catch (error) {
-					var iPageNo = tDoc.getField(prefix + 'Comp.Race').page + 1;
-					var eText = "The changeeval function from '" + aComp.name + "' on page " + iPageNo + " produced an error! Please contact the author of the feature to correct this issue:\n " + error;
-					for (var e in error) eText += "\n " + e + ": " + error[e];
-					console.println(eText);
-					console.show();
-					delete CurrentCompRace[prefix].changeeval;
-				}
-			}
-			// Update the proficiencyBonus to 
-			if (aComp.proficiencyBonusLinked) {
-				Value(prefix + 'Comp.Use.Proficiency Bonus', Math.max(2, How('Proficiency Bonus')));
-			}
+			UpdateCompLevelFeatures(prefix, aComp);
 		}
 	}
 
@@ -5517,7 +5508,13 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						Fea.AddFea && Fea.changed && Fea.Descr === Fea.DescrOld ? "first" : // update just header after a usages/recovery/additional change
 						false;
 					// do the text change, if any
-					if (textAction) applyClassFeatureText(textAction, ["Class Features"], FeaOldString, FeaNewString, LastProp);
+					if (textAction) {
+						var doTextAction = applyClassFeatureText(textAction, ["Class Features"], FeaOldString, FeaNewString, LastProp);
+						if (doTextAction === false && textAction !== "remove") {
+							// This failed, so just add it to the end of the field
+							AddString("Class Features", FeaNewString[1], true);
+						}
+					}
 
 					// keep track of the last property's header text (don't use FeaNewString, as it might include an additional or recovery)
 					LastProp = propFea.minlevel <= ClassLevelUp[aClass][2] ? FeaNewString[2] : LastProp;
@@ -5670,7 +5667,7 @@ function MakeClassMenu() {
 		}
 		if (temp.length && !(!extrareturn && temp.length === 1 && temp[0].bMarked)) {
 			// only add a menu item if there is actually anything to select
-			(menu.oSubMenu ? menu.oSubMenu : menu).push({
+			menu.push({
 				cName : name,
 				oSubMenu : temp
 			});
@@ -5689,10 +5686,7 @@ function MakeClassMenu() {
 	for (var aClass in classes.known) {
 		var clLvl = classes.known[aClass].level;
 		var cl = CurrentClasses[aClass];
-		var tempItem = {
-			cName : cl.fullname,
-			oSubMenu : []
-		};
+		var tempItem = [];
 		for (var prop in cl.features) {
 			var propFea = cl.features[prop];
 			if (propFea.choices && !propFea.choicesNotInMenu && propFea.minlevel <= clLvl) {
@@ -5714,8 +5708,28 @@ function MakeClassMenu() {
 				menuLVL3(tempItem, propFea.extraname + toChooseStr, propFea.extrachoices, aClass, prop, "extra", propFea, toTest);
 			};
 		};
-		if (tempItem.oSubMenu.length > 0) {
-			ClassMenu.push(tempItem);
+		if (tempItem.length > 0) {
+			// Sort the submenu to be easier to read Optional features | Variants | features
+			var tempSorted = {
+				optional : [],
+				variants : [],
+				features : []
+			};
+			for (var i = 0; i < tempItem.length; i++) {
+				var iMenu = tempItem[i];
+				tempSorted[(/optional/i).test(iMenu.cName) ? "optional" : (/or a variant/i).test(iMenu.cName) ? "variants" : "features"].push(iMenu);
+			}
+			// Add dividers
+			if (tempSorted.optional.length && (tempSorted.variants.length || tempSorted.features.length)) {
+				tempSorted.optional.push({ cName : "-", cReturn : "-" });
+			}
+			if (tempSorted.variants.length && tempSorted.features.length) {
+				tempSorted.variants.push({ cName : "-", cReturn : "-" });
+			}
+			ClassMenu.push({
+				cName : cl.fullname,
+				oSubMenu : tempSorted.optional.concat(tempSorted.variants).concat(tempSorted.features)
+			});
 		};
 	};
 

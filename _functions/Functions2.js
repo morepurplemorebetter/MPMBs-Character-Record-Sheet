@@ -209,28 +209,15 @@ function ApplyCompRace(newRace) {
 
 	var prefix = getTemplPre(event.target.name, "AScomp", true);
 	var hpCalcTxt = " hit points calculation";
+	var strRaceEntry = clean(newRace).toLowerCase();
 
 	var resetDescTooltips = function() {
 		AddTooltip(prefix + "Comp.Desc.Height", "");
 		AddTooltip(prefix + "Comp.Desc.Weight", "");
-		AddTooltip(prefix + "Comp.Desc.Age", "");
+		AddTooltip(prefix + "Comp.Desc.Age", "", "");
 		// remove submitName from modifier fields
 		var clearSubmitNames = [prefix + "Comp.Use.Combat.Init.Bonus"].concat(tDoc.getField(prefix + "BlueText.Comp.Use.Ability").getArray()).concat(tDoc.getField(prefix + "BlueText.Comp.Use.Skills").getArray());
 		for (var c = 0; c < clearSubmitNames.length; c++) AddTooltip(clearSubmitNames[c], undefined, "");
-	}
-
-	var doCreatureEval = function(objCrea, type) {
-		var theEval = objCrea[type];
-		if (objCrea.typeFound !== "creature" || !theEval || typeof theEval != 'function') return;
-		var curLvl = type === "changeeval" ? undefined : classes.totallevel ? classes.totallevel : What("Character Level") ? Number(What("Character Level")) : 1;
-		try {
-			theEval(prefix, curLvl);
-		} catch (error) {
-			var eText = "The " + type + " from '" + objCrea.name + "' produced an error! Please contact the author of the feature to correct this issue:\n " + error;
-			for (var e in error) eText += "\n " + e + ": " + error[e];
-			console.println(eText);
-			console.show();
-		}
 	}
 
 	var undoCreaturePresistents = function(prefix, objCrea) {
@@ -242,8 +229,8 @@ function ApplyCompRace(newRace) {
 		if (objCrea.addMod) processMods(false, objCrea.name, objCrea.addMod, prefix);
 		// reset AC explanation
 		AddTooltip(prefix + "Comp.Use.AC", undefined, "");
-		// execute the removeeval from the previously known creature, if any
-		doCreatureEval(objCrea, "removeeval");
+		// execute the function for level-dependent features and doing the removeeval
+		UpdateCompLevelFeatures(prefix, objCrea, strRaceEntry, 0);
 	}
 
 	var compFields = [
@@ -290,7 +277,7 @@ function ApplyCompRace(newRace) {
 		var theWeight = What("Unit System") === "imperial" ? aCrea.weight : aCrea.weightMetric ? aCrea.weightMetric : aCrea.weight;
 		AddTooltip(prefix + "Comp.Desc.Height", aCrea.plural + theHeight);
 		AddTooltip(prefix + "Comp.Desc.Weight", aCrea.plural + theWeight);
-		AddTooltip(prefix + "Comp.Desc.Age", aCrea.plural + aCrea.age);
+		AddTooltip(prefix + "Comp.Desc.Age", aCrea.plural + aCrea.age, "");
 
 		thermoM(1/11); //increment the progress dialog's progress
 
@@ -506,9 +493,6 @@ function ApplyCompRace(newRace) {
 		resetDescTooltips(); //remove descriptive tooltips
 		tDoc.resetForm(compFields); //reset all the fields
 
-		// get the name written for the current race
-		var strRaceEntry = clean(newRace).toLowerCase();
-
 		//set the header (if defined)
 		if (aCrea.header) Value(prefix + "Comp.Type", aCrea.header);
 
@@ -524,11 +508,13 @@ function ApplyCompRace(newRace) {
 		Value(prefix + "Comp.Use.Senses", theSenses);
 
 		Value(prefix + "Comp.Desc.Alignment", aCrea.alignment); //set alignment
-		Value(prefix + "Comp.Use.Proficiency Bonus", aCrea.proficiencyBonusLinked ? Math.max(2, How('Proficiency Bonus')) : aCrea.proficiencyBonus); //set proficiency bonus
+		Value(prefix + "Comp.Use.Proficiency Bonus", aCrea.proficiencyBonus); //set proficiency bonus
 		Value(prefix + "Comp.Use.Attack.perAction", aCrea.attacksAction); //set attacks per action
 		Value(prefix + "Comp.Use.HP.Max", aCrea.hp); //set HP
 		Value(prefix + "Comp.Use.HD.Level", aCrea.hd[0]); //set HD #
 		Value(prefix + "Comp.Use.HD.Die", aCrea.hd[1]); //set HD die
+
+		thermoM(1/10); //increment the progress dialog's progress
 
 		//add ability scores
 		for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
@@ -547,7 +533,7 @@ function ApplyCompRace(newRace) {
 		}
 		Value(prefix + "Comp.Use.AC", aCrea.acString, undefined, acSubmitName); //set AC
 
-		thermoM(1/10); //increment the progress dialog's progress
+		thermoM(2/10); //increment the progress dialog's progress
 
 		//add speed
 		var theSpeed = What("Unit System") === "imperial" ? aCrea.speed : ConvertToMetric(aCrea.speed, 0.5);
@@ -555,14 +541,14 @@ function ApplyCompRace(newRace) {
 		if (typePF) theSpeed = theSpeed.replace(/(,|;) /g, "$1\n");
 		Value(prefix + "Comp.Use.Speed", theSpeed);
 
-		thermoM(2/10); //increment the progress dialog's progress
+		thermoM(3/10); //increment the progress dialog's progress
 
 		//add any weapons the creature possesses
 		for (var a = 0; a < aCrea.attacks.length; a++) {
 			AddWeapon(aCrea.attacks[a].name);
 		}
 
-		thermoM(3/10); //increment the progress dialog's progress
+		thermoM(4/10); //increment the progress dialog's progress
 
 		//calculate the ability score modifiers
 		var mods = [];
@@ -570,7 +556,7 @@ function ApplyCompRace(newRace) {
 			mods[i] = Math.round((aCrea.scores[i] - 10.5) * 0.5);
 		}
 
-		thermoM(4/10); //increment the progress dialog's progress
+		thermoM(5/10); //increment the progress dialog's progress
 
 		//add skill proficiencies
 		if (aCrea.skills) {
@@ -591,7 +577,7 @@ function ApplyCompRace(newRace) {
 			}
 		}
 
-		thermoM(5/10); //increment the progress dialog's progress
+		thermoM(6/10); //increment the progress dialog's progress
 
 		// Add HP calculations (only calcChanges.hp is supported)
 		if (aCrea.calcChanges) addCompEvals(aCrea.calcChanges, prefix, aCrea.name + hpCalcTxt, true);
@@ -601,7 +587,7 @@ function ApplyCompRace(newRace) {
 			processMods(true, aCrea.name, aCrea.addMod, prefix);
 		}
 
-		thermoM(6/10); //increment the progress dialog's progress
+		thermoM(7/10); //increment the progress dialog's progress
 
 		// >>>> Features section <<<<
 		var strFeatures = "";
@@ -623,55 +609,19 @@ function ApplyCompRace(newRace) {
 			strFeatures += "\n\u25C6 Languages: " + aCrea.languages + ".";
 		}
 
-		//add features
-		if (aCrea.features) {
-			for (var t = 0; t < aCrea.features.length; t++) {
-				strFeatures += "\n\u25C6 " + aCrea.features[t].name + ": " + aCrea.features[t].description;
-			}
-		}
-
-		thermoM(7/10); //increment the progress dialog's progress
-
-		// >>>> Traits section <<<<
-		var strTraits = "";
-
-		//add actions
-		if (aCrea.actions) {
-			for (var t = 0; t < aCrea.actions.length; t++) {
-				strTraits += "\n\u25C6 " + aCrea.actions[t].name + ": " + aCrea.actions[t].description;
-			}
-		}
-
-		//add traits
-		if (aCrea.traits) {
-			for (var t = 0; t < aCrea.traits.length; t++) {
-				strTraits += "\n\u25C6 " + aCrea.traits[t].name + ": " + aCrea.traits[t].description;
-			}
-		}
-
 		thermoM(8/10); //increment the progress dialog's progress
-
-		//convert to metric, if applicable
-		if (What("Unit System") === "metric") {
-			strFeatures = ConvertToMetric(strFeatures, 0.5);
-			strTraits = ConvertToMetric(strTraits, 0.5);
-		}
 
 		// Set the strings to the fields but remove starting line breaks and implement name
 		if (strFeatures) {
+			if (What("Unit System") === "metric") strFeatures = ConvertToMetric(strFeatures, 0.5);
 			strFeatures = strFeatures.replace(/^\n+|^\r+/g, "").replace(/\[THIS\]/g, strRaceEntry);
 			AddString(prefix + "Comp.Use.Features", strFeatures, true);
-		}
-		if (strTraits) {
-			strTraits = strTraits.replace(/^\n+|^\r+/g, "").replace(/\[THIS\]/g, strRaceEntry);
-			AddString(prefix + "Comp.Use.Traits", strTraits, true);
 		}
 
 		thermoM(9/10); //increment the progress dialog's progress
 
-		// execute eval
-		doCreatureEval(aCrea, "eval");
-		doCreatureEval(aCrea, "changeeval");
+		// Do the level-dependent features, as well as adding the features, traits, actions, and executing the 'eval'
+		UpdateCompLevelFeatures(prefix, aCrea, strRaceEntry);
 
 		// make it into a special type of companion, if set to do so
 		if (IsNotSetCompType && aCrea.companionApply) changeCompType(aCrea.companionApply, prefix);
@@ -679,6 +629,156 @@ function ApplyCompRace(newRace) {
 
 	SetHPTooltip(false, true);
 	thermoM(thermoTxt, true); // Stop progress bar
+}
+
+// do the eval for a creature
+function ApplyCreatureEval(prefix, objCrea, type, arrLvl, objEval) {
+	var theEval = objEval ? objEval[type] : objCrea[type];
+	if (objCrea.typeFound !== "creature" || !theEval || typeof theEval != 'function') return;
+	if (arrLvl === undefined) {
+		arrLvl = [
+			Number(How(prefix + "Comp.Desc.Age")),
+			classes.totallevel ? classes.totallevel : Math.max(1, Number(What("Character Level")))
+		];
+	}
+	try {
+		return theEval(prefix, arrLvl);
+	} catch (error) {
+		var iPageNo = tDoc.getField(prefix + 'Comp.Race').page + 1;
+		var sName = objCrea.name + (objEval ? '" feature/trait/action: "' + objEval.name : '');
+		var eText = "The " + type + ' from "' + sName + '" on page ' + iPageNo + " produced an error! Please contact the author of the feature to correct this issue:\n " + error;
+		for (var e in error) eText += "\n " + e + ": " + error[e];
+		console.println(eText);
+		console.show();
+		delete objCrea[type];
+	}
+}
+
+// do the level-dependent features for the companion page
+function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
+	/* Gather variables */
+	if (!objCrea) objCrea = CurrentCompRace[prefix];
+	if (objCrea.typeFound !== "creature") return; // only do this for CreatureList entries
+	var isMetric = What("Unit System") === "metric", arrToEval = [];
+	if (!useName) useName = What(prefix + "Comp.Race").toLowerCase();
+
+	// function to get the highest class level of an array of ClassList object names
+	var highestClassLevel = function(input, isHD) {
+		var iReturn = isHD ? objCrea.hd[0] : classes.totallevel ? classes.totallevel :
+		What("Character Level") ? Number(What("Character Level")) : 1;
+		if (typeof input === 'function') {
+			try {
+				var functReturn = input(prefix);
+			} catch (e) {}
+			if (functReturn && !isNaN(functReturn)) iReturn = functReturn;
+		} else {
+			var arrClasses = isArray(input) ? input : [input];
+			var arrClassLvls = [];
+			for (var i = 0; i < arrClasses.length; i++) {
+				if (classes.known[arrClasses[i]]) {
+					arrClassLvls.push(classes.known[arrClasses[i]].level);
+				}
+			}
+			if (arrClassLvls.length) iReturn = Math.max.apply(Math, arrClassLvls);
+		}
+		return iReturn;
+	}
+
+	/* Determine the old/new levels */
+	var oldLvl = Number(How(prefix + "Comp.Desc.Age"));
+	if (newLvl === undefined) {
+		newLvl = objCrea.minlevelLinked ? highestClassLevel(objCrea.minlevelLinked) :
+			classes.totallevel ? classes.totallevel :
+			What("Character Level") ? Number(What("Character Level")) : 1;
+	}
+	if (oldLvl === newLvl) return; // nothing changed, so stop now
+	// Save the new level for safekeeping
+	AddTooltip(prefix + "Comp.Desc.Age", undefined, newLvl);
+	var minLvl = Math.min(oldLvl, newLvl), maxLvl = Math.max(oldLvl, newLvl);
+
+	// Enqueue the main object's eval if adding the creature for the first time
+	if (oldLvl === 0 && newLvl > 0 && objCrea.eval) arrToEval.push(["eval", false]);
+
+	/* The string for the Features and Traits fields */
+	var arrProps = [
+		["features", prefix + "Comp.Use.Features"],
+		["actions", prefix + "Comp.Use.Traits"],
+		["traits", prefix + "Comp.Use.Traits"]
+	];
+	var arrCompAltStrLocs = [prefix + "Cnote.Left"];
+	if (!typePF) arrCompAltStrLocs.push(prefix + "Cnote.Right");
+	// Now loop through all the features/actions/traits
+	for (var a = 0; a < arrProps.length; a++) {
+		if (!objCrea[arrProps[a][0]] || !objCrea[arrProps[a][0]].length) continue;
+		var feaA = [].concat(objCrea[arrProps[a][0]]);
+		if (newLvl < oldLvl) feaA.reverse(); // when removing, loop through them backwards
+		var fldNm = arrProps[a][1];
+		var arrFlds = [fldNm].concat(arrCompAltStrLocs);
+		var lastProp = a === 0 || fldNm !== arrProps[a-1][1] ? What(fldNm) : lastProp;
+		for (var f = 0; f < feaA.length; f++) {
+			var prop = feaA[f];
+			var doPropTxt = prop.description !== undefined;
+			if (doPropTxt) {
+				// Create the strings for the property
+				var propFirstLine = ("\u25C6 " + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name) + ": ");
+				var propFullLine = propFirstLine + (isMetric ? ConvertToMetric(prop.description, 0.5) : prop.description);
+				// Apply the name of the creature if [THIS] is present in the strings
+				if (/\[THIS\]/.test(propFullLine)) {
+					if (addIt) {
+						propFirstLine = propFirstLine.replace(/\[THIS\]/g, useName);
+						propFullLine = propFullLine.replace(/\[THIS\]/g, useName);
+					} else {
+						propFirstLine = propFirstLine.replace(/\[THIS\][\s\S]*/, "");
+						propFullLine = propFullLine.replace(/\[THIS\][\s\S]*/, "");
+					}
+				}
+			}
+			// See if we need to do this prop
+			var propMinLvl = prop.minlevel ? prop.minlevel : 1;
+			if (minLvl < propMinLvl && maxLvl >= propMinLvl) {
+				var addIt = newLvl >= propMinLvl;
+				// Add/remove the text
+				if (doPropTxt && !lastProp && addIt) {
+					// First thing entered to an empty field, this is easy
+					Value(fldNm, propFullLine);
+				} else if (doPropTxt) {
+					// Insert or remove it after the previous entry
+					var insertResult = applyClassFeatureText(addIt ? "insert" : "remove", arrFlds, [propFirstLine, "\r" + propFullLine], [propFirstLine, "\r" + propFullLine], lastProp);
+					if (insertResult === false && addIt) AddString(fldNm, propFullLine, true);
+				}
+				// Queue the (remove)eval
+				var evalType = addIt ? "eval" : "removeeval";
+				if (prop[evalType]) arrToEval.push([evalType, prop]);
+				// Process modifiers, if any
+				if (prop.addMod) processMods(addIt, objCrea.name + ": " + prop.name, prop.addMod, prefix);
+			}
+			if (doPropTxt) lastProp = propFullLine;
+		}
+	}
+
+	/* The other level-dependent attributes, if present */
+	// Update the Proficiency Bonus, if linked
+	if (newLvl > 0 && objCrea.proficiencyBonusLinked) {
+		Value(prefix + 'Comp.Use.Proficiency Bonus', Math.max(Number(How('Proficiency Bonus')), 2));
+	}
+	// Update the Hit Dice, if linked
+	if (newLvl > 0 && objCrea.hdLinked) {
+		Value(prefix + 'Comp.Use.HD.Level', highestClassLevel(objCrea.hdLinked, true));
+	}
+
+	/* The Evals */
+	if (oldLvl > 0 && newLvl === 0 && objCrea.removeeval) {
+		// Enqueue the main object's removeeval if removing the creature
+		arrToEval.push(["removeeval", false]);
+	} else if (newLvl > 0 && objCrea.changeeval) {
+		// Enqueue the main object's changeeeval if changing level
+		arrToEval.push(["changeeval", false]);
+	}
+	// Process all the queued evals, in the order they were added
+	// This way, the main `eval` is process first, but after all the strings are in the right location
+	for (var i = 0; i < arrToEval.length; i++) {
+		ApplyCreatureEval(prefix, objCrea, arrToEval[i][0], [oldLvl, newLvl], arrToEval[i][1]);
+	}
 }
 
 // set a race on an empty companion page (or add a new page)
@@ -2831,6 +2931,14 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 			var thermoTxt = thermoM("Deleting " + removeTxt + "...");
 
 			if (GoOn || app.alert(doGoOn) === 4) {
+				// Do some extra actions before removing the page, depending on the page to be removed
+				switch (tempNm) {
+					case "AScomp" : // clear its race, so that anything affecting the other pages is also undone (does take long, unfortunately)
+						for (var i = 0; i < tempExtras.length; i++) {
+							Value(tempExtras[i] + "Comp.Race", "");
+						}
+						break;
+				}
 				for (var i = tempExtras.length - 1; i >= 0; i--) {
 					var tempFld = tempExtras[i] + BookMarkList[tempNm];
 					thermoM((i + 1) / tempExtras.length); // Increment the progress bar
@@ -2851,10 +2959,6 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 				case "AScomp" : // Remove the CurrentCompRace attributes that no longer refer to an existing page
 					for (var i = 0; i < tempExtras.length; i++) {
 						var prefix = tempExtras[i];
-						var theCurRace = CurrentCompRace[prefix];
-						if (theCurRace.typeFound == "creature" && theCurRace.removeeval && typeof theCurRace.removeeval == 'function') {
-							try { theCurRace.removeeval(); } catch (error) {};
-						}
 						delete CurrentCompRace[prefix];
 						delete CurrentWeapons.compField[prefix];
 						delete CurrentWeapons.compKnown[prefix];
