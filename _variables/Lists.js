@@ -1710,7 +1710,7 @@ var SpellPointsTable = [0, 4, 6, 14, 17, 27, 32, 38, 44, 57, 64, 73, 73, 83, 83,
 
 var compString = {
 	mount : {
-		featurestring : "\u25C6 Find Steed: If dropped to 0 HP, the steed disappears, leaving behind no physical form",
+		featurestring : "\u25C6 Find Steed: If dropped to 0 HP, the steed disappears, leaving behind no physical form.",
 		string : "Find Steed (2nd-level conjuration spell, PHB 240):" +
 				"\n\u2022 " + "Summon a spirit in the form of a steed, appearing in an unoccupied space within 30 ft" +
 				"\n   " + "It assumes a chosen form: warhorse, pony, camel, elk, or mastiff (DM can allow more forms)" +
@@ -1728,7 +1728,7 @@ var compString = {
 		actionTooltip : "the Find Steed spell"
 	},
 	steed : {
-		featurestring : "\u25C6 Find Greater Steed: If dropped to 0 HP, the steed disappears, leaving behind no physical form",
+		featurestring : "\u25C6 Find Greater Steed: If dropped to 0 HP, the steed disappears, leaving behind no physical form.",
 		string : "Find Greater Steed (4th-level conjuration spell, XGtE 156):" +
 				"\n\u2022 " + "Summon a spirit in the form of a steed, appearing in an unoccupied space within 30 ft" +
 				"\n   " + "It has the chosen form: griffon, pegasus, peryton, dire wolf, rhinoceros, or saber-toothed tiger" +
@@ -1746,7 +1746,7 @@ var compString = {
 		actionTooltip : "the Find Greater Steed spell"
 	},
 	familiar : {
-		featurestring : "\u25C6 Find Familiar: If dropped to 0 HP, the familiar disappears, leaving behind no physical form. The familiar must obey all commands of the master",
+		featurestring : "\u25C6 Find Familiar: If dropped to 0 HP, the familiar disappears, leaving behind no physical form. The familiar must obey all commands of the master.",
 		string : "Find Familiar (1st-level conjuration [ritual] spell, PHB 240):" +
 			"\n\u2022 " + "Summon a spirit that serves as a familiar, appearing in an unoccupied space within 10 ft" +
 			"\n   " + "It assumes a chosen form (can change at every casting): bat, cat, crab, frog (toad), hawk," +
@@ -1768,7 +1768,7 @@ var compString = {
 		actionTooltip : "the Find Familiar spell"
 	},
 	pact_of_the_chain : {
-		featurestring : "\u25C6 Pact of the Chain: If dropped to 0 HP, the familiar disappears, leaving behind no physical form. It must obey all commands of the master",
+		featurestring : "\u25C6 Pact of the Chain: If dropped to 0 HP, the familiar disappears, leaving behind no physical form. It must obey all commands of the master.",
 		string : "Pact of the Chain (variant of the Find Familiar 1st-level conjuration [ritual] spell, PHB 240):" +
 			"\n\u2022 " + "Summon a spirit that serves as a familiar, appearing in an unoccupied space within 10 ft" +
 			"\n   " + "It assumes a chosen form (can change at every casting): bat, cat, crab, frog (toad), hawk," +

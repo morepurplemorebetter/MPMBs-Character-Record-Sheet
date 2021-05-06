@@ -122,6 +122,7 @@ function resetCompTypes(prefix) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Resetting the companion back to its default...");
 	calcStop();
+	RunCreatureCallback(prefix, "companion", false); // run callbacks
 	RemoveString(prefix + "Cnote.Left", compString[theType].string);
 	RemoveString(prefix + "Comp.Use.Features", compString[theType].featurestring);
 	for (var i = 0; i < compString[theType].actions.length; i++) {
@@ -214,6 +215,7 @@ function ApplyCompRace(newRace) {
 	var resetDescTooltips = function() {
 		AddTooltip(prefix + "Comp.Desc.Height", "");
 		AddTooltip(prefix + "Comp.Desc.Weight", "");
+		AddTooltip(prefix + "Comp.Desc.Size", "");
 		AddTooltip(prefix + "Comp.Desc.Age", "", "");
 		// remove submitName from modifier fields
 		var clearSubmitNames = [prefix + "Comp.Use.Combat.Init.Bonus"].concat(tDoc.getField(prefix + "BlueText.Comp.Use.Ability").getArray()).concat(tDoc.getField(prefix + "BlueText.Comp.Use.Skills").getArray());
@@ -231,6 +233,8 @@ function ApplyCompRace(newRace) {
 		AddTooltip(prefix + "Comp.Use.AC", undefined, "");
 		// execute the function for level-dependent features and doing the removeeval
 		UpdateCompLevelFeatures(prefix, objCrea, strRaceEntry, 0);
+		// run callbacks
+		if (objCrea.typeFound === "creature") RunCreatureCallback(prefix, "creature", false);
 	}
 
 	var compFields = [
@@ -282,7 +286,7 @@ function ApplyCompRace(newRace) {
 		thermoM(1/11); //increment the progress dialog's progress
 
 		//set race's size
-		PickDropdown(prefix + "Comp.Desc.Size", aCrea.size);
+		SetCreatureSize(prefix, strRaceEntry.capitalize(), aCrea.size);
 
 		//set race's type
 		Value(prefix + "Comp.Desc.MonsterType", "Humanoid");
@@ -497,7 +501,7 @@ function ApplyCompRace(newRace) {
 		if (aCrea.header) Value(prefix + "Comp.Type", aCrea.header);
 
 		//add the size
-		PickDropdown(prefix + "Comp.Desc.Size", aCrea.size);
+		SetCreatureSize(prefix, strRaceEntry.capitalize(), aCrea.size);
 
 		//set race's type
 		var typeString = aCrea.subtype ? aCrea.type + " (" + aCrea.subtype + ")" : aCrea.type;
@@ -623,6 +627,9 @@ function ApplyCompRace(newRace) {
 		// Do the level-dependent features, as well as adding the features, traits, actions, and executing the 'eval'
 		UpdateCompLevelFeatures(prefix, aCrea, strRaceEntry);
 
+		// Run callback functions, if any are present
+		RunCreatureCallback(prefix, "creature", true);
+
 		// make it into a special type of companion, if set to do so
 		if (IsNotSetCompType && aCrea.companionApply) changeCompType(aCrea.companionApply, prefix);
 	}
@@ -718,6 +725,8 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 		for (var f = 0; f < feaA.length; f++) {
 			var prop = feaA[f];
 			var doPropTxt = prop.description !== undefined;
+			var propMinLvl = prop.minlevel ? prop.minlevel : 1;
+			var addIt = newLvl >= propMinLvl;
 			if (doPropTxt) {
 				// Create the strings for the property
 				var propFirstLine = ("\u25C6 " + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name) + ": ");
@@ -734,9 +743,7 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 				}
 			}
 			// See if we need to do this prop
-			var propMinLvl = prop.minlevel ? prop.minlevel : 1;
 			if (minLvl < propMinLvl && maxLvl >= propMinLvl) {
-				var addIt = newLvl >= propMinLvl;
 				// Add/remove the text
 				if (doPropTxt && !lastProp && addIt) {
 					// First thing entered to an empty field, this is easy
@@ -778,6 +785,39 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 	// This way, the main `eval` is process first, but after all the strings are in the right location
 	for (var i = 0; i < arrToEval.length; i++) {
 		ApplyCreatureEval(prefix, objCrea, arrToEval[i][0], [oldLvl, newLvl], arrToEval[i][1]);
+	}
+}
+
+// run the CurrentEvals.creatureCallback (sType == "creature") or CurrentEvals.companionCallback functions (sType == "companion") or specific function (fOverride = function) to a specific page (prefix == "prefix") or all companion pages (prefix == "all")
+function RunCreatureCallback(sPrefix, sType, bAdd, fOverride, sOverrideNm) {
+	var sEvalType = (/companion/i).test(sType) ? "companionCallback" : "creatureCallback";
+	var aPrefix = (/all/i).test(sPrefix) ? What("Template.extras.AScomp").split(",").splice(1) : [sPrefix];
+	if (bAdd === undefined) bAdd = true;
+	var prefix, oCrea, sCompType, sEval;
+	var doEval = function(evalThing, evalName) {
+		try {
+			if (typeof evalThing == 'function') evalThing(prefix, oCrea, bAdd, sCompType);
+		} catch (error) {
+			var eText = "The custom callback function (" + sEvalType + ") from '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+			for (var e in error) eText += "\n " + e + ": " + error[e];
+			console.println(eText);
+			console.show();
+			if (CurrentEvals[sEvalType] && CurrentEvals[sEvalType][evalName]) delete CurrentEvals[sEvalType][evalName];
+		}
+	}
+	for (var i = 0; i < aPrefix.length; i++) {
+		prefix = aPrefix[i];
+		oCrea = CurrentCompRace[prefix];
+		if (oCrea.typeFound !== "creature") continue;
+		sCompType = What(prefix + "Companion.Remember");
+		if (sEvalType === "companionCallback" && !sCompType) continue;
+		if (fOverride) {
+			doEval(fOverride, sOverrideNm);
+		} else {
+			for (sEval in CurrentEvals[sEvalType]) {
+				doEval(CurrentEvals[sEvalType][sEval], sEval);
+			}
+		}
 	}
 }
 
@@ -1121,7 +1161,7 @@ function ApplyWildshape() {
 	thermoM(2/10); //increment the progress dialog's progress
 
 	//add the size
-	PickDropdown(prefix + "Wildshape." + Fld + ".Size", theCrea.size);
+	SetCreatureSize([prefix, Fld], theCrea.name, theCrea.size);
 
 	//set race's type
 	var typeString = theCrea.subtype ? theCrea.type + " (" + theCrea.subtype + ")" : theCrea.type;
@@ -1816,7 +1856,7 @@ function SetCompDropdown(forceTooltips) {
 	if (theListStart.length) theListStart.sort().unshift("");
 	theListC.sort().unshift("");
 
-	var theList = theListStart.concat(theListR).concat(theListC);
+	var theList = theListStart.concat(theListC).concat(theListR);
 
 	var applyItems = tDoc.getField("Companion.Remember").submitName !== theList.toSource();
 	if (applyItems) tDoc.getField("Companion.Remember").submitName = theList.toSource();
@@ -1872,7 +1912,8 @@ function MakeCompMenu(prefix) {
 		for (var i = 0; i < array.length; i++) {
 			item.push({
 				cName : array[i][0],
-				cReturn : array[i][1] + "#" + "nothing"
+				cReturn : array[i][1] + "#" + "nothing",
+				bEnabled : array[i][2] !== undefined ? array[i][2] : true
 			});
 		}
 	};
@@ -1972,7 +2013,15 @@ function MakeCompMenu(prefix) {
 	menuLVL2(CompMenu, ["Change current creature", "change"], change);
 	CompMenu.push({cName : "-"}); //add a divider
 	menuLVL2(CompMenu, ["Change visible sections", "visible"], visOptions);
-	menuLVL1(CompMenu, [["-", "-"], ["Reset this Companion page", "reset"], ["-", "-"], ["Add extra 'Companion' page", "add page"], [(prefix ? "Remove" : "Hide") + " this 'Companion' page", "remove page"]]);
+	menuLVL1(CompMenu, [
+		["-", "-"],
+		["Reset this Companion page", "reset"],
+		["-", "-"],
+		["Add extra 'Companion' page", "add page"],
+		[(prefix ? "Remove" : "Hide") + " this 'Companion' page", "remove page"],
+		["-", "-"],
+		["Show things changing the companion automations", "showcalcs", ObjLength(CurrentEvals.creaStr) && (CurrentEvals.creatureCallback || CurrentEvals.companionCallback) ? true : false]
+	]);
 
 	Menus.companion = CompMenu;
 	return cObj;
@@ -2017,6 +2066,10 @@ function CompOptions(prefix, input, force) {
 			}
 			Value(prefix + "Companion.Layers.Remember", toShow.toSource());
 			ShowCompanionLayer(prefix);
+			break;
+		case "showcalcs" :
+			var creaCalcStr = StringEvals("creaStr");
+			if (creaCalcStr) ShowDialog("Things Affecting the Companion Automation", creaCalcStr);
 			break;
 		default:
 			if (MenuSelection[0] === "change" && MenuSelection[1] === "reset") {
@@ -2169,6 +2222,10 @@ function changeCompType(inputType, prefix) {
 			});
 		}
 	}
+
+	// Run callback functions, if any are present
+	RunCreatureCallback(prefix, "companion", true);
+
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
@@ -4326,7 +4383,7 @@ function SetHPTooltip(resetHP, onlyComp, aPrefix) {
 		var hpEvalObj = !prefix && CurrentEvals.hp ? CurrentEvals.hp :
 			(prefix && CurrentEvals.Comp && CurrentEvals.Comp[prefix] && CurrentEvals.Comp[prefix].hp ? CurrentEvals.Comp[prefix].hp : false);
 		// Skip this one if there is no hp calculation and we are not doing companion pages
-		if (!hpEvalObj && tE > 0 && onlyComp !== "compAlt") continue;
+		if (!hpEvalObj && prefix && onlyComp === false) continue;
 		if (hpEvalObj) {
 			for (var hpEval in hpEvalObj) {
 				var evalThing = hpEvalObj[hpEval];
@@ -4375,8 +4432,9 @@ function SetHPTooltip(resetHP, onlyComp, aPrefix) {
 		}
 		// Now see if the menu setting tells us that we need to change the max HP
 		extrahp = isNaN(extrahp) ? 0 : Number(extrahp);
+		var isCreature = prefix && CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound !== "race";
 		var theSetting = How(HPmaxFld).split(",").slice(0,4);
-		theSetting[0] = Math.round(HD.average + extrahp);
+		theSetting[0] = Math[isCreature ? "floor" : "round"](HD.average + extrahp);
 		theSetting[1] = HD.fixed + extrahp;
 		theSetting[2] = HD.max + extrahp;
 		if (resetHP) theSetting[3] = "nothing";
@@ -4465,7 +4523,11 @@ function MakeHPMenu_HPOptions(preSelect, prefix) {
 		ShowDialog(aName + " HP calculation", Who(theFld));
 	} else {
 		theInputs[3] = MenuSelection[1] === "auto" ? MenuSelection[3] : "nothing";
-		Value(theFld, MenuSelection[2], Who(theFld), theInputs.join());
+		if (MenuSelection[2]) {
+			Value(theFld, MenuSelection[2], undefined, theInputs.join());
+		} else {
+			AddTooltip(theFld, undefined, theInputs.join());
+		}
 	}
 };
 
@@ -5795,40 +5857,7 @@ function PatreonStatement(force) {
 function addEvals(evalObj, NameEntity, Add) {
 	if (!evalObj) return;
 
-	// remember the old attack changing strings
-	if ((evalObj.atkAdd || evalObj.atkCalc || evalObj.spellCalc) && CurrentUpdates.atkStrOld == undefined) CurrentUpdates.atkStrOld = StringEvals("atkStr");
-	if (evalObj.atkAdd) CurrentUpdates.types.push("attacksforce");
-
-	// make the changes to the CurrentEvals object for attack changes
-	var atkStr = "";
-	var atkTypes = ["atkAdd", "atkCalc", "spellCalc"];
-	for (var i = 0; i < atkTypes.length; i++) {
-		var atkT = atkTypes[i];
-		if (!evalObj[atkT]) continue;
-		var atkIsArray = isArray(evalObj[atkT]);
-		// add the descriptive text
-		if (atkIsArray && evalObj[atkT][1]) atkStr += "\n \u2022 " + evalObj[atkT][1];
-		// set the function
-		if (Add) {
-			if (!CurrentEvals[atkT]) CurrentEvals[atkT] = {};
-			CurrentEvals[atkT][NameEntity] = atkIsArray ? evalObj[atkT][0] : evalObj[atkT];
-		} else if (CurrentEvals[atkT] && CurrentEvals[atkT][NameEntity]) {
-			delete CurrentEvals[atkT][NameEntity];
-		}
-	};
-	// set the descriptive text for the attack calculations
-	if (atkStr) {
-		if (Add) {
-			if (!CurrentEvals.atkStr) CurrentEvals.atkStr = {};
-			CurrentEvals.atkStr[NameEntity] = atkStr;
-		} else if (CurrentEvals.atkStr && CurrentEvals.atkStr[NameEntity]) {
-			delete CurrentEvals.atkStr[NameEntity];
-		}
-		// as the descriptive text changed, show it in the changes dialog
-		CurrentUpdates.types.push("atkstr");
-	}
-
-	// do the stuff for the hp calculations
+	// Do the stuff affecting the hp calculations
 	if (evalObj.hp) {
 		if (Add) {
 			if (!CurrentEvals.hp) CurrentEvals.hp = {};
@@ -5847,40 +5876,55 @@ function addEvals(evalObj, NameEntity, Add) {
 		CurrentUpdates.types.push("hp");
 	};
 
-	// remember the old spell changing strings
-	if ((evalObj.spellList || evalObj.spellAdd) && CurrentUpdates.spellStrOld == undefined) CurrentUpdates.spellStrOld = StringEvals("spellStr");
-
-	// make the changes to the CurrentEvals object for spell changes
-	var spellStr = "";
-	var spellTypes = ["spellList", "spellAdd"];
-	for (var i = 0; i < spellTypes.length; i++) {
-		var spellT = spellTypes[i];
-		if (!evalObj[spellT]) continue;
-		var spellIsArray = isArray(evalObj[spellT]);
-		// add the descriptive text
-		if (spellIsArray && evalObj[spellT][1]) spellStr += "\n \u2022 " + evalObj[spellT][1];
-		// set the function
-		if (Add) {
-			if (!CurrentEvals[spellT]) CurrentEvals[spellT] = {};
-			CurrentEvals[spellT][NameEntity] = spellIsArray ? evalObj[spellT][0] : evalObj[spellT];
-		} else if (CurrentEvals[spellT] && CurrentEvals[spellT][NameEntity]) {
-			delete CurrentEvals[spellT][NameEntity];
-		}
+	// Do the rest
+	var bIsArray;
+	var objTypeStr = {
+		"atkAdd" : "atkStr",
+		"atkCalc" : "atkStr",
+		"spellCalc" : "atkStr",
+		"spellList" : "spellStr",
+		"spellAdd" : "spellStr",
+		"creatureCallback" : "creaStr",
+		"companionCallback" : "creaStr"
 	};
-	// set the descriptive text for the attack calculations
-	if (spellStr) {
+	var objSaveStr = { atkStr : "", spellStr : "", creaStr : "" };
+	// Process the eval functions
+	for (var sType in objTypeStr) {
+		if (!evalObj[sType]) continue;
+		bIsArray = isArray(evalObj[sType]);
+		// Add the descriptive text for safekeeping
+		if (bIsArray && evalObj[sType][1]) objSaveStr[objTypeStr[sType]] += "\n \u2022 " + evalObj[sType][1];
+		// Set the function
 		if (Add) {
-			if (!CurrentEvals.spellStr) CurrentEvals.spellStr = {};
-			CurrentEvals.spellStr[NameEntity] = spellStr;
-		} else if (CurrentEvals.spellStr && CurrentEvals.spellStr[NameEntity]) {
-			delete CurrentEvals.spellStr[NameEntity];
+			if (!CurrentEvals[sType]) CurrentEvals[sType] = {};
+			CurrentEvals[sType][NameEntity] = bIsArray ? evalObj[sType][0] : evalObj[sType];
+		} else if (CurrentEvals[sType] && CurrentEvals[sType][NameEntity]) {
+			delete CurrentEvals[sType][NameEntity];
 		}
-		// as the descriptive text changed, show it in the changes dialog
-		CurrentUpdates.types.push("spellstr");
+	}
+	// Process the explanatory strings
+	for (var sStr in objSaveStr) {
+		if (!objSaveStr[sStr]) continue;
+		// Remember the old strings for the changes dialog (if not done so already)
+		if (CurrentUpdates[sStr + "Old"] == undefined) CurrentUpdates[sStr + "Old"] = StringEvals(sStr);
+		if (Add) {
+			if (!CurrentEvals[sStr]) CurrentEvals[sStr] = {};
+			CurrentEvals[sStr][NameEntity] = objSaveStr[sStr];
+		} else if (CurrentEvals[sStr] && CurrentEvals[sStr][NameEntity]) {
+			delete CurrentEvals[sStr][NameEntity];
+		}
+		// As the descriptive text changed, show it in the changes dialog
+		CurrentUpdates.types.push(sStr.toLowerCase());
 	}
 
-	if (!Add) CurrentEvals = CleanObject(CurrentEvals); // remove any remaining empty objects
-	SetStringifieds("evals"); //now set this global variable to its field for safekeeping
+	// Some specifics
+	if (evalObj.atkAdd) CurrentUpdates.types.push("attacksforce");
+	if (evalObj.creatureCallback) RunCreatureCallback("all", "creature", Add, isArray(evalObj.creatureCallback) ? evalObj.creatureCallback[0] : evalObj.creatureCallback, NameEntity);
+	if (evalObj.companionCallback) RunCreatureCallback("all", "companion", Add, isArray(evalObj.companionCallback) ? evalObj.companionCallback[0] : evalObj.companionCallback, NameEntity);
+	// Remove any remaining empty objects when removing stuff
+	if (!Add) CurrentEvals = CleanObject(CurrentEvals);
+	// Finally, set this global variable to its field for safekeeping
+	SetStringifieds("evals");
 };
 
 // make a string of all the things affecting the attack calculations
@@ -6333,11 +6377,11 @@ function CalcAttackDmgHit(fldName) {
 					if (!isNaN(addSpellNo)) output.extraHit += Number(addSpellNo);
 				}
 			} catch (error) {
-				var eText = "The custom spell attack/DC (spellCalc) script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				var eText = "The custom spell attack/DC (spellCalc) script '" + spCalc + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
-				delete CurrentEvals.spellCalc[evalsToDo[i]];
+				delete CurrentEvals.spellCalc[spCalc];
 			}
 		}
 	}
@@ -6883,7 +6927,7 @@ function processActions(AddRemove, srcNm, itemArr, itemNm) {
 	};
 	for (var i = 0; i < itemArr.length; i++) {
 		var theAct = isArray(itemArr[i]) ? itemArr[i] : [itemArr[i], ""];
-		var actNm = theAct[1] && !(/^( |-|,|\(|\[|\{|'|"|\/)/).test(theAct[1]) ? theAct[1] : itemNm + theAct[1];
+		var actNm = theAct[1] && !(/^( |-|,|\(|\[|\{|'|"|\/)/).test(theAct[1]) ? theAct[1] : itemNm + (theAct[1] == undefined ? "" : theAct[1]);
 		if (AddRemove) {
 			AddAction(theAct[0], actNm, srcNm, theAct[2] ? theAct[2] : false);
 		} else if (theAct[2]) {
@@ -8033,18 +8077,19 @@ function formatMultiList(caption, elements) {
 	if (!isArray(elements)) elements = [elements];
 	var rStr = caption + "\n \u2022 " + elements[0];
 	for (var i = 1; i < elements.length; i++) {
-		rStr += ";\n \u2022 " + elements[i];
+		rStr += "\n \u2022 " + elements[i];
 	};
-	return rStr + ".";
+	return rStr;
 };
-function formatLineList(caption, elements) {
+function formatLineList(caption, elements, useOr) {
 	if (!elements || (isArray(elements) && elements.length === 0)) return "";
 	if (!isArray(elements)) elements = [elements];
+	var andOr = useOr ? " or " : " and ";
 	var rStr = (caption ? caption + " " : "") + elements[0];
 	var EL = elements.length;
 	for (var i = 1; i < EL; i++) {
 		rStr += EL > 2 ? "," : "";
-		rStr += (i === EL - 1 ? " and " : " ") + elements[i];
+		rStr += (i === EL - 1 ? andOr : " ") + elements[i];
 	};
 	return rStr;
 };
@@ -8369,6 +8414,39 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies) {
 	app.execDialog(theDialog)
 	return theDialog.choices;
 };
+
+// Ask user for size options and return the index number; prefix == false (1st page); prefix is string (companion page); prefix is array [prefix, nr] (wild shape page)
+function SetCreatureSize(prefix, sName, aSizes) {
+	if (!isArray(aSizes)) aSizes = [aSizes];
+	var sNamePl = sName;
+	if (isArray(sName)) {
+		sNamePl = sName[1];
+		sName = sName[0];
+	}
+	var sFldNm = !prefix ? "Size Category" : isArray(prefix) ? prefix[0] + "Wildshape." + prefix[1] + ".Size" : prefix + "Comp.Desc.Size";
+	var aOptions = [], oOptionsRef = {};
+	var oFld = tDoc.getField(sFldNm);
+	for (var i = 0; i < aSizes.length; i++) {
+		var sSizeName = oFld.getItemAt(aSizes[i], false);
+		aOptions.push(sSizeName);
+		oOptionsRef[sSizeName] = aSizes[i];
+	}
+	var sTooltip = sNamePl + " size " + (aOptions.length ? formatLineList(" can be ", aOptions, true) + "." : "is " + aOptions[0] + ".");
+	if(!prefix) sTooltip += "\n\nSelected size category will affect encumbrance on the second page.";
+	var bGoAsk = aSizes.length > 1;
+	if (bGoAsk) {
+		var sAsk = AskUserOptions("Select Size Category for " + sName, sNamePl + " can be multiple size categories. It is up to you to select which the sheet will use.", aOptions, "radio", true);
+		if (oOptionsRef[sAsk]) {
+			PickDropdown(sFldNm, oOptionsRef[sAsk]);
+		} else {
+			bGoAsk = false;
+		}
+	}
+	if (!bGoAsk) {
+		PickDropdown(sFldNm, isArray(aSizes) ? aSizes[0] : aSizes);
+	}
+	if (!isArray(prefix)) AddTooltip(sFldNm, sTooltip);
+}
 
 // Process a feature attribute through the AddToNotes function
 // namesArr = [tipNm, displName, fObjName, aParent]

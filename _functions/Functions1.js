@@ -2488,9 +2488,7 @@ function ApplyRace(inputracetxt, novardialog) {
 		// Add race age
 		AddTooltip("Age", CurrentRace.plural + CurrentRace.age);
 		// Add race size
-		PickDropdown("Size Category", CurrentRace.size);
-		var theSize = tDoc.getField("Size Category").getItemAt(CurrentRace.size, false);
-		AddTooltip("Size Category", CurrentRace.plural + " size is " + theSize + ".\nSelected size category will affect encumbrance on the second page.");
+		SetCreatureSize(false, [inputracetxt, CurrentRace.plural], CurrentRace.size);
 		// Add racial traits
 		var tempString = stringSource(CurrentRace, "full,page", CurrentRace.name + " is found in ", ".");
 		var theTraits = What("Unit System") === "imperial" ? CurrentRace.trait : ConvertToMetric(CurrentRace.trait, 0.5);
@@ -5721,6 +5719,7 @@ function MakeClassMenu() {
 			}
 			// Add dividers
 			if (tempSorted.optional.length && (tempSorted.variants.length || tempSorted.features.length)) {
+				tempSorted.optional.sort();
 				tempSorted.optional.push({ cName : "-", cReturn : "-" });
 			}
 			if (tempSorted.variants.length && tempSorted.features.length) {
@@ -8648,7 +8647,7 @@ function MakeAttackLineMenu_AttackLineOptions(MenuSelection, itemNmbr, prefix) {
 			menuLVL1([
 				//[name, return, enabled]
 				["-", "-"],
-				["Show what things are affecting the attack calculations", "showcalcs", ObjLength(CurrentEvals.atkStr) && (CurrentEvals.atkAdd || CurrentEvals.atkCalc)]
+				["Show things changing the attack automations", "showcalcs", ObjLength(CurrentEvals.atkStr) && (CurrentEvals.atkAdd || CurrentEvals.atkCalc) ? true : false]
 			]);
 		}
 
@@ -8711,6 +8710,10 @@ function MakeAttackLineMenu_AttackLineOptions(MenuSelection, itemNmbr, prefix) {
 		case "colour" :
 			thermoTxt = thermoM("Changing attack outline color...", false);
 			ApplyAttackColor(itemNmbr, MenuSelection[2], Q, prefix);
+			break;
+		case "showcalcs" :
+			var atkCalcStr = StringEvals("atkStr");
+			if (atkCalcStr) ShowDialog("Things Affecting the Attack Automation", atkCalcStr);
 			break;
 	}
 

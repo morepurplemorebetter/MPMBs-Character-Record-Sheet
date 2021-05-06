@@ -150,11 +150,23 @@ CreatureList["purple crawler"] = {
 	Setting this attribute to false is the same as not including this attribute.
 */
 	size : 3,
+	size : [4, 3],
 /*	size // REQUIRED //
-	TYPE:	number
-	USE:	set the size drop-down box
+	TYPE:	number or array (since v13.0.6)
+	USE:	set the size category drop-down box
 
-	Set the corresponding number to the size of the creature below:
+	This can be either a:
+	1) Number
+		The number corresponding to the size category of the creature (see table below)
+	2) Array (since v13.0.6)
+		If the creature can be several different size categories, using an array will allow the player
+		to make a choice which one to use.
+		Add the numbers corresponding to the size categories of the creature (see table below) to the array.
+		For example, if you do
+			size : [4, 3],
+		the player will be prompted to select either Small or Medium as the creature's size category.
+
+	The corresponding number to the size categories are as follows:
 		NO	SIZE
 		0	Gargantuan
 		1	Huge
@@ -246,7 +258,7 @@ CreatureList["purple crawler"] = {
 	"mount"				Find Steed spell
 	"steed"				Find Greater Steed spell
 	"companion"			Ranger: Beast Master's Ranger's Companion feature
-	"companionrr"		2016/09/12 Unearthed Arcana: Revised Ranger's Beast Conclave feature 
+	"companionrr"		2016/09/12 Unearthed Arcana: Revised Ranger's Beast Conclave feature
 	"mechanicalserv"	2017/01/09 Unearthed Arcana: Artificer's Mechanical Servant feature
 
 	Be aware that this list is different than the one for the `companion` attribute!

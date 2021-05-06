@@ -1671,9 +1671,37 @@ function UpdateSheetDisplay() {
 	}
 
 	// if an addition was done to a Companion page (or even a companion page created)
-	if (CurrentUpdates.companionChanges) {
+	var changedCompCallback = CurrentUpdates.types.indexOf("creastr") !== -1;
+	if (CurrentUpdates.companionChanges || changedCompCallback) {
 		// get a nice list of the companion changes
-		Changes_Dialog.companionChange = "\u2022 " + CurrentUpdates.companionChanges.join("\n\u2022 ");
+		var strCompanion = "";
+		if (CurrentUpdates.companionChanges) {
+			strCompanion += "One or more creatures has been added or removed from one or more companion pages.";
+			Changes_Dialog.companionChange = "\u2022 " + CurrentUpdates.companionChanges.join("\n\u2022 ");
+			Changes_Dialog.bCOa = function (dialog) {
+				ShowCompareDialog(
+					["Additions/removals on the Companion pages", "You can always edit the companion pages how you see fit, you don't have to leave it as it has been set with the automation. You could add more companion pages, for example.", 'You can also add multiples of the same companion, just add another page and select the same companion race.'],
+					[
+						["", this.companionChange]
+					],
+					true
+				);
+			};
+		}
+		if (changedCompCallback) {
+			strCompanion += (strCompanion ? "\n" : "") + "A change was detected in the callback that affects creatures added to a companion page.";
+			Changes_Dialog.oldCreaStr = CurrentUpdates.creaStrOld ? CurrentUpdates.creaStrOld : "";
+			Changes_Dialog.bCOe = function (dialog) {
+				ShowCompareDialog(
+					["Callback changes for the Companion pages", "You can always edit the companion pages how you see fit, you don't have to leave it as it has been set with the automation. You could remove or add text, for example.", 'You can always see what things are affecting the companion page automation with the Companion Options button on each companion page.'],
+					[
+						["Old callback manipulations", this.oldCreaStr],
+						["New callback manipulations", StringEvals("creaStr")]
+					],
+					true
+				);
+			};
+		}
 		// make the attack dialog insert
 		dialogParts.push({
 			skipType : "chCO",
@@ -1693,11 +1721,19 @@ function UpdateSheetDisplay() {
 					alignment : "align_fill",
 					font : "dialog",
 					wrap_name : true,
-					name : "One or more creatures has been added or removed from one or more companion pages."
+					name : strCompanion
 				}, {
-					type : "button",
-					item_id : "bCom",
-					name : "See Change(s)"
+					type : "view",
+					align_children : "align_right",
+					elements : (CurrentUpdates.companionChanges ? [{
+						type : "button",
+						item_id : "bCOa",
+						name : "See Additions/Removals"
+					}] : []).concat(changedCompCallback ? [{
+						type : "button",
+						item_id : "bCOe",
+						name : "See Callback Changes"
+					}] : [])
 				}]
 			}, {
 				type : "check_box",
@@ -1707,15 +1743,6 @@ function UpdateSheetDisplay() {
 				name : checkboxTxt
 			}]
 		});
-		Changes_Dialog.bCom = function (dialog) {
-			ShowCompareDialog(
-				["Things changes with the Companion page(s)", "You can always edit the companion pages how you see fit, you don't have to leave it as it has been set with the automation. You could add more companion pages, for example.", 'You can also add multiples of the same companion, just add another page and select the same companion race.'],
-				[
-					["", this.companionChange]
-				],
-				true
-			);
-		};
 	}
 
 	// check if any of the parts of the array should be shown

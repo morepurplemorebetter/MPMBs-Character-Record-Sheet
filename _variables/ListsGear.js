@@ -646,7 +646,7 @@ var Base_WeaponsList = {
 		damage : ["\u2015", "", "Restrained"],
 		range : "5/15 ft",
 		weight : 3,
-		description : "Thrown, only 1 attack, up to large creature hit is restrained (PHB 148)",
+		description : "Thrown, only 1 attack, up to large creature hit is restrained",
 		tooltip : "Special: A Large or smaller creature hit by a net is restrained until it is freed. A net has no effect on creatures that are formless, or creatures that are Huge or larger. A creature can use its action to make a DC 10 Strength check, freeing itself or another creature within its reach on a success. Dealing 5 slashing damage to the net (AC 10) also frees the creature without harming it, ending the effect and destroying the net. When I use an action, bonus action, or reaction to attack with a net, I can make only one attack regardless of the number of attacks I can normally make.",
 		special : true,
 		abilitytodamage : false
@@ -739,7 +739,7 @@ var Base_WeaponsList = {
 		type : "Cantrip",
 		damage : ["C", 6, "acid"],
 		range : "60 ft",
-		description : "Dex save, success - no damage; 1 or 2 creatures within 5 ft of each other (PHB 211)",
+		description : "Dex save, success - no damage; 1 or 2 creatures within 5 ft of each other",
 		abilitytodamage : false,
 		dc : true
 	},
@@ -752,7 +752,7 @@ var Base_WeaponsList = {
 		type : "Cantrip",
 		damage : ["C", 8, "necrotic"],
 		range : "120 ft",
-		description : "Target can't regain HP; Undead dis. on attacks vs. me until my next turn (PHB 221)",
+		description : "Target can't regain HP; Undead dis. on attacks vs. me until my next turn",
 		abilitytodamage : false
 	},
 	"eldritch blast" : {
@@ -764,7 +764,7 @@ var Base_WeaponsList = {
 		type : "Cantrip",
 		damage : ["C\u00D7" + 1, 10, "force"],
 		range : "120 ft",
-		description : "Each d10 is a separate beam requiring separate rolls (PHB 237)",
+		description : "Each d10 is a separate beam requiring separate rolls",
 		abilitytodamage : false
 	},
 	"fire bolt" : {
@@ -776,7 +776,7 @@ var Base_WeaponsList = {
 		type : "Cantrip",
 		damage : ["C", 10, "fire"],
 		range : "120 ft",
-		description : "Unattended flammable objects ignite (PHB 241)",
+		description : "Unattended flammable objects ignite",
 		abilitytodamage : false
 	},
 	"poison spray" : {
@@ -788,7 +788,7 @@ var Base_WeaponsList = {
 		type : "Cantrip",
 		damage : ["C", 12, "poison"],
 		range : "10 ft",
-		description : "Con save, success - no damage; 1 creature (PHB 266)",
+		description : "Con save, success - no damage; 1 creature",
 		abilitytodamage : false,
 		dc : true
 	},
@@ -801,7 +801,7 @@ var Base_WeaponsList = {
 		type : "Cantrip",
 		damage : ["C", 8, "fire"],
 		range : "30 ft",
-		description : "10-ft radius bright light and 10-ft radius dim light until thrown (PHB 269)",
+		description : "10-ft radius bright light and 10-ft radius dim light until thrown",
 		abilitytodamage : false
 	},
 	"ray of frost" : {
@@ -813,7 +813,7 @@ var Base_WeaponsList = {
 		type : "Cantrip",
 		damage : ["C", 8, "cold"],
 		range : "60 ft",
-		description : "Target -10 ft speed until start of my next turn (PHB 271)",
+		description : "Target -10 ft speed until start of my next turn",
 		abilitytodamage : false
 	},
 	"sacred flame" : {
@@ -825,7 +825,7 @@ var Base_WeaponsList = {
 		type : "Cantrip",
 		damage : ["C", 8, "radiant"],
 		range : "60 ft",
-		description : "Dex save, no bonus from cover, success - no damage; 1 creature (PHB 272)",
+		description : "Dex save, no bonus from cover, success - no damage; 1 creature",
 		abilitytodamage : false,
 		dc : true
 	},
@@ -839,7 +839,7 @@ var Base_WeaponsList = {
 		type : "Simple",
 		damage : [1, 8, "bludgeoning"],
 		range : "Melee",
-		description : "Imbued club or quarterstaff; Counts as a magical weapon (PHB 275)",
+		description : "Imbued club or quarterstaff; Counts as a magical weapon",
 		monkweapon : true,
 		abilitytodamage : true
 	},
@@ -852,7 +852,7 @@ var Base_WeaponsList = {
 		type : "Cantrip",
 		damage : ["C", 8, "lightning"],
 		range : "Melee",
-		description : "Advantage if target is wearing metal armor, target cannot take reactions until its next turn (PHB 275)",
+		description : "Advantage if target is wearing metal armor, target cannot take reactions until its next turn",
 		abilitytodamage : false
 	},
 	"vicious mockery" : {
@@ -864,7 +864,7 @@ var Base_WeaponsList = {
 		type : "Cantrip",
 		damage : ["C", 4, "psychic"],
 		range : "60 ft",
-		description : "Wis save, success - no damage, fail - also disadv. on next attack roll in next turn; 1 creature (PHB 285)",
+		description : "Wis save, success - no damage, fail - also disadv. on next attack roll in next turn; 1 creature",
 		abilitytodamage : false,
 		dc : true
 	}

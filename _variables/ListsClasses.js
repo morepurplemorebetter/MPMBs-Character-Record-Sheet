@@ -821,7 +821,7 @@ var Base_ClassList = {
 				additional : levels.map(function (n) {
 					return "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
 				}),
-				action : ["bonus action", "Unarmed Strike (with Attack action)"],
+				action : [["bonus action", "Unarmed Strike (with Attack action)"]],
 				eval : function() {
 					AddString('Extra.Notes', 'Monk features:\n\u25C6 If I wear armor/shield, I lose Unarmored Defense, Martial Arts, and Unarmored Movement', true);
 					show3rdPageNotes();
@@ -907,13 +907,19 @@ var Base_ClassList = {
 				name : "Monastic Tradition",
 				source : [["SRD", 27], ["P", 78]],
 				minlevel : 3,
-				description : "\n   " + "Choose a Monastic Tradition to commit to and put it in the \"Class\" field on page 1" + "\n   " + "Choose either Way of the Four Elements, Long Death, Open Hand, Shadow, or Sun Soul"
+				description : desc([
+					"Choose a Monastic Tradition to commit to and put it in the \"Class\" field on page 1",
+					"Choose either Way of the Four Elements, Long Death, Open Hand, Shadow, or Sun Soul"
+				])
 			},
 			"deflect missiles" : {
 				name : "Deflect Missiles",
 				source : [["SRD", 27], ["P", 78]],
 				minlevel : 3,
-				description : "\n   " + "As a reaction, I can reduce ranged weapon attack damage done to me" + "\n   " + "If the damage is negated, I catch and may throw it back (20/60 ft) as a monk weapon",
+				description : desc([
+					"As a reaction, I can reduce ranged weapon attack damage done to me",
+					"If the damage is negated, I catch and may throw it back (20/60 ft) as a monk weapon"
+				]),
 				action : ["reaction", ""],
 				additional : levels.map(function (n) {
 					return n < 3 ? "" : "1d10 + " + n + " + Dexterity modifier; 1 ki to throw";
@@ -930,7 +936,10 @@ var Base_ClassList = {
 					name : "Stunning Strike",
 					extraname : "Monk 5",
 					source : [["SRD", 27], ["P", 79]],
-					description : " [1 ki point]" + "\n   " + "After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it" + "\n   " + "It has to succeed on a Con save or be stunned until the end of my next turn"
+					description : " [1 ki point]" + desc([
+						"After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it",
+						"It has to succeed on a Con save or be stunned until the end of my next turn"
+					])
 				},
 				autoSelectExtrachoices : [{
 					extrachoice : "stunning strike",

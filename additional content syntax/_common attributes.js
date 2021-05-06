@@ -1571,6 +1571,109 @@ calcChanges : {
 		If you want to inform the player that this function changed something for a specific spell,
 		make sure that it returns true;
 	*/
+
+	creatureCallback : [function(prefix, oCrea, bAdd) {
+		if (!(/undead/i).test(oCrea.type + What(prefix + "Comp.Desc.MonsterType"))) return;
+		var aFnc = bAdd ? AddString : RemoveString;
+		aFnc(prefix + "Comp.Use.HP.Temp", 30, true);
+	},
+	"Any undead I create, using magic or otherwise, gain 30 temporary hit points."],
+	/*	creatureCallback // OPTIONAL //
+		TYPE:	array with two entries
+				1st entry:	function
+				2nd entry:	string that is used to give an explanation of what the 1st entry does
+		USE:	dynamically change the companion page after a creature was selected on it
+		ADDED:	v13.0.6
+
+		// 1st array entry //
+		This function is called whenever a creature (CreatureList) is applied/removed on the companion page.
+		This function is not called when a player race (RaceList) is applied/removed on the companion page.
+		This happens when you select a creature in the Race dropdown box on the companion page, for example.
+		Also when a feature adds/removes a creature with the `creaturesAdd` attribute (if not a player race).
+		You can use it to dynamically change something about a creature like its features, attacks, or HP.
+
+		This function is passed three variables:
+		1)	prefix, a string with the page identifier for the companion page.
+			Use this to call fields on the companion page.
+
+		2)	oCrea, the object of CreatureList or RaceList entry that is currently active on the page.
+			This is identical to the CurrentCompRace[prefix] object.
+			If nothing was recognized (i.e. no known creature or player race was selected),
+			this object will have no information.
+			Changes to this object will affect the sheet only until the next time it is opened,
+			i.e. changes will not be saved.
+
+		3)	bAdd, a boolean to indicate whether adding (true) or removing (false) the special companion type.
+			Make sure that the function removes whatever changes it does when this variable is false.
+
+		When adding a creature, this function is processed last,
+		after the creature has been fully added on the companion page.
+		When removing a creature, this function is processed first,
+		before anything else is changed on the companion page.
+
+
+		// 2nd array entry //
+		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
+		This explanation is also available under the Companion Options button on any companion page.
+	*/
+	companionCallback : [function(prefix, oCrea, bAdd, sCompType) {
+		if (sCompType !== "familiar") return;
+		var str = "\u25C6 Purple Power: The familiar's skin, hide, hair, or feathers turn purple and it gains resistance to acid damage.";
+		var aFnc = bAdd ? AddString : RemoveString;
+		aFnc(prefix + "Comp.Use.Features", str, true);
+	},
+	"The familiars I create using the Find Familiar spell turn purple and gain resistance to acid damage."],
+	/*	companionCallback // OPTIONAL //
+		TYPE:	array with two entries
+				1st entry:	function
+				2nd entry:	string that is used to give an explanation of what the 1st entry does
+		USE:	dynamically change the companion page after something has been turned into a special type of companion (e.g. Find Familiar or Ranger's Companion)
+		ADDED:	v13.0.6
+
+		// 1st array entry //
+		This function is called whenever a special companion type is applied/removed on the companion page.
+		This happens when you use the Companion Options button to add a Find Familiar option, for example.
+		And also when you use the Companion Options button to change an existing companion,
+		into another special type, like a Ranger's Companion for example,
+		or when you reset it back to normal, removing the special type.
+		You can use it to dynamically change something about a companion like its features, attacks, or HP.
+
+		This function is passed four variables:
+		1)	prefix, a string with the page identifier for the companion page.
+			Use this to call fields on the companion page.
+
+		2)	oCrea, the object of CreatureList or RaceList entry that is currently active on the page.
+			This is identical to the CurrentCompRace[prefix] object.
+			If nothing was recognized (i.e. no known creature or player race was selected),
+			this object will have no information.
+			Changes to this object will affect the sheet only until the next time it is opened,
+			i.e. changes will not be saved.
+
+		3)	bAdd, a boolean to indicate whether adding (true) or removing (false) the special companion type.
+			Make sure that the function removes whatever changes it does when this variable is false.
+
+		4)	sCompType, a string that indicates the special companion type.
+			This string is one of the predefined entries below, to help you filter on the companion type.
+
+			STRING				TYPE
+			"familiar"			Find Familiar spell
+			"pact_of_the_chain"	Pact of the Chain warlock boon
+			"mount"				Find Steed spell
+			"steed"				Find Greater Steed spell
+			"companion"			Ranger: Beast Master's Ranger's Companion feature
+			"companionrr"		2016/09/12 Unearthed Arcana: Revised Ranger's Beast Conclave feature
+			"mechanicalserv"	2017/01/09 Unearthed Arcana: Artificer's Mechanical Servant feature
+
+		When adding a special companion type, this function is processed last,
+		after all changes for the special companion type have completed.
+		When removing a special companion type, this function is processed first,
+		before all changes for the special companion type are undone.
+
+
+		// 2nd array entry //
+		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
+		This explanation is also available under the Companion Options button on any companion page.
+	*/
 },
 
 addMod : [

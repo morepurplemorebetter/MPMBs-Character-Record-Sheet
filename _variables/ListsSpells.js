@@ -21,7 +21,7 @@ var Base_spellSchoolList = {
 var Base_SpellsList = {
 	"acid splash" : {
 		name : "Acid Splash",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 114], ["P", 211]],
 		level : 0,
 		school : "Conj",
@@ -36,7 +36,7 @@ var Base_SpellsList = {
 	},
 	"aid" : {
 		name : "Aid",
-		classes : ["cleric", "paladin"],
+		classes : ["artificer", "cleric", "paladin"],
 		source : [["SRD", 114], ["P", 211]],
 		level : 2,
 		school : "Abjur",
@@ -50,7 +50,7 @@ var Base_SpellsList = {
 	},
 	"alarm" : {
 		name : "Alarm",
-		classes : ["ranger", "wizard"],
+		classes : ["artificer", "ranger", "wizard"],
 		source : [["SRD", 114], ["P", 211]],
 		ritual : true,
 		level : 1,
@@ -65,7 +65,7 @@ var Base_SpellsList = {
 	},
 	"alter self" : {
 		name : "Alter Self",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 114], ["P", 211]],
 		level : 2,
 		school : "Trans",
@@ -135,7 +135,7 @@ var Base_SpellsList = {
 	},
 	"animate objects" : {
 		name : "Animate Objects",
-		classes : ["bard", "sorcerer", "wizard"],
+		classes : ["artificer", "bard", "sorcerer", "wizard"],
 		source : [["SRD", 116], ["P", 213]],
 		level : 5,
 		school : "Trans",
@@ -190,7 +190,7 @@ var Base_SpellsList = {
 	},
 	"arcane eye" : {
 		name : "Arcane Eye",
-		classes : ["wizard"],
+		classes : ["artificer", "wizard"],
 		source : [["SRD", 118], ["P", 214]],
 		level : 4,
 		school : "Div",
@@ -204,7 +204,7 @@ var Base_SpellsList = {
 	},
 	"arcane lock" : {
 		name : "Arcane Lock",
-		classes : ["wizard"],
+		classes : ["artificer", "wizard"],
 		source : [["SRD", 118], ["P", 215]],
 		level : 2,
 		school : "Abjur",
@@ -333,7 +333,7 @@ var Base_SpellsList = {
 	"bigby's hand" : {
 		name : "Bigby's Hand",
 		nameAlt : "Arcane Hand",
-		classes : ["wizard"],
+		classes : ["artificer", "wizard"],
 		source : [["SRD", 118], ["P", 218]],
 		level : 5,
 		school : "Evoc",
@@ -404,7 +404,7 @@ var Base_SpellsList = {
 	},
 	"blink" : {
 		name : "Blink",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 122], ["P", 219]],
 		level : 3,
 		school : "Trans",
@@ -417,7 +417,7 @@ var Base_SpellsList = {
 	},
 	"blur" : {
 		name : "Blur",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 123], ["P", 219]],
 		level : 2,
 		school : "Illus",
@@ -828,7 +828,7 @@ var Base_SpellsList = {
 	},
 	"continual flame" : {
 		name : "Continual Flame",
-		classes : ["cleric", "wizard"],
+		classes : ["artificer", "cleric", "wizard"],
 		source : [["SRD", 130], ["P", 227]],
 		level : 2,
 		school : "Evoc",
@@ -884,7 +884,7 @@ var Base_SpellsList = {
 	},
 	"create food and water" : {
 		name : "Create Food and Water",
-		classes : ["cleric", "paladin"],
+		classes : ["artificer", "cleric", "paladin"],
 		source : [["SRD", 131], ["P", 229]],
 		level : 3,
 		school : "Conj",
@@ -925,7 +925,7 @@ var Base_SpellsList = {
 	},
 	"creation" : {
 		name : "Creation",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 132], ["P", 229]],
 		level : 5,
 		school : "Illus",
@@ -939,7 +939,7 @@ var Base_SpellsList = {
 	},
 	"cure wounds" : {
 		name : "Cure Wounds",
-		classes : ["bard", "cleric", "druid", "paladin", "ranger"],
+		classes : ["artificer", "bard", "cleric", "druid", "paladin", "ranger"],
 		source : [["SRD", 132], ["P", 230]],
 		level : 1,
 		school : "Evoc",
@@ -952,7 +952,7 @@ var Base_SpellsList = {
 	},
 	"dancing lights" : {
 		name : "Dancing Lights",
-		classes : ["bard", "sorcerer", "wizard"],
+		classes : ["artificer", "bard", "sorcerer", "wizard"],
 		source : [["SRD", 133], ["P", 230]],
 		level : 0,
 		school : "Evoc",
@@ -980,7 +980,7 @@ var Base_SpellsList = {
 	},
 	"darkvision" : {
 		name : "Darkvision",
-		classes : ["druid", "ranger", "sorcerer", "wizard"],
+		classes : ["artificer", "druid", "ranger", "sorcerer", "wizard"],
 		source : [["SRD", 133], ["P", 230]],
 		level : 2,
 		school : "Trans",
@@ -1061,7 +1061,7 @@ var Base_SpellsList = {
 	},
 	"detect magic" : {
 		name : "Detect Magic",
-		classes : ["bard", "cleric", "druid", "paladin", "ranger", "sorcerer", "wizard"],
+		classes : ["artificer", "bard", "cleric", "druid", "paladin", "ranger", "sorcerer", "wizard"],
 		source : [["SRD", 134], ["P", 231]],
 		ritual : true,
 		level : 1,
@@ -1119,7 +1119,7 @@ var Base_SpellsList = {
 	},
 	"disguise self" : {
 		name : "Disguise Self",
-		classes : ["bard", "sorcerer", "wizard"],
+		classes : ["artificer", "bard", "sorcerer", "wizard"],
 		source : [["SRD", 135], ["P", 233]],
 		level : 1,
 		school : "Illus",
@@ -1161,7 +1161,7 @@ var Base_SpellsList = {
 	},
 	"dispel magic" : {
 		name : "Dispel Magic",
-		classes : ["bard", "cleric", "druid", "paladin", "sorcerer", "warlock", "wizard"],
+		classes : ["artificer", "bard", "cleric", "druid", "paladin", "sorcerer", "warlock", "wizard"],
 		source : [["SRD", 136], ["P", 234]],
 		level : 3,
 		school : "Abjur",
@@ -1330,7 +1330,7 @@ var Base_SpellsList = {
 	},
 	"enhance ability" : {
 		name : "Enhance Ability",
-		classes : ["bard", "cleric", "druid", "sorcerer"],
+		classes : ["artificer", "bard", "cleric", "druid", "sorcerer"],
 		source : [["SRD", 139], ["P", 237]],
 		level : 2,
 		school : "Trans",
@@ -1344,7 +1344,7 @@ var Base_SpellsList = {
 	},
 	"enlarge/reduce" : {
 		name : "Enlarge/Reduce",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 140], ["P", 237]],
 		level : 2,
 		school : "Trans",
@@ -1416,7 +1416,7 @@ var Base_SpellsList = {
 	},
 	"expeditious retreat" : {
 		name : "Expeditious Retreat",
-		classes : ["sorcerer", "warlock", "wizard"],
+		classes : ["artificer", "sorcerer", "warlock", "wizard"],
 		source : [["SRD", 141], ["P", 238]],
 		level : 1,
 		school : "Trans",
@@ -1443,7 +1443,7 @@ var Base_SpellsList = {
 	},
 	"fabricate" : {
 		name : "Fabricate",
-		classes : ["wizard"],
+		classes : ["artificer", "wizard"],
 		source : [["SRD", 141], ["P", 239]],
 		level : 4,
 		school : "Trans",
@@ -1456,7 +1456,7 @@ var Base_SpellsList = {
 	},
 	"faerie fire" : {
 		name : "Faerie Fire",
-		classes : ["bard", "druid"],
+		classes : ["artificer", "bard", "druid"],
 		source : [["SRD", 141], ["P", 239]],
 		level : 1,
 		school : "Evoc",
@@ -1470,7 +1470,7 @@ var Base_SpellsList = {
 	},
 	"false life" : {
 		name : "False Life",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 142], ["P", 239]],
 		level : 1,
 		school : "Necro",
@@ -1499,7 +1499,7 @@ var Base_SpellsList = {
 	},
 	"feather fall" : {
 		name : "Feather Fall",
-		classes : ["bard", "sorcerer", "wizard"],
+		classes : ["artificer", "bard", "sorcerer", "wizard"],
 		source : [["SRD", 142], ["P", 239]],
 		level : 1,
 		school : "Trans",
@@ -1597,7 +1597,7 @@ var Base_SpellsList = {
 	},
 	"fire bolt" : {
 		name : "Fire Bolt",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 144], ["P", 241]],
 		level : 0,
 		school : "Evoc",
@@ -1713,7 +1713,7 @@ var Base_SpellsList = {
 	},
 	"fly" : {
 		name : "Fly",
-		classes : ["sorcerer", "warlock", "wizard"],
+		classes : ["artificer", "sorcerer", "warlock", "wizard"],
 		source : [["SRD", 146], ["P", 243]],
 		level : 3,
 		school : "Trans",
@@ -1784,7 +1784,7 @@ var Base_SpellsList = {
 	},
 	"freedom of movement" : {
 		name : "Freedom of Movement",
-		classes : ["bard", "cleric", "druid", "ranger"],
+		classes : ["artificer", "bard", "cleric", "druid", "ranger"],
 		source : [["SRD", 147], ["P", 244]],
 		level : 4,
 		school : "Abjur",
@@ -1895,7 +1895,7 @@ var Base_SpellsList = {
 	},
 	"glyph of warding" : {
 		name : "Glyph of Warding",
-		classes : ["bard", "cleric", "wizard"],
+		classes : ["artificer", "bard", "cleric", "wizard"],
 		source : [["SRD", 149], ["P", 245]],
 		level : 3,
 		school : "Abjur",
@@ -1923,7 +1923,7 @@ var Base_SpellsList = {
 	},
 	"grease" : {
 		name : "Grease",
-		classes : ["wizard"],
+		classes : ["artificer", "wizard"],
 		source : [["SRD", 150], ["P", 246]],
 		level : 1,
 		school : "Conj",
@@ -1951,7 +1951,7 @@ var Base_SpellsList = {
 	},
 	"greater restoration" : {
 		name : "Greater Restoration",
-		classes : ["bard", "cleric", "druid"],
+		classes : ["artificer", "bard", "cleric", "druid"],
 		source : [["SRD", 150], ["P", 246]],
 		level : 5,
 		school : "Abjur",
@@ -1993,7 +1993,7 @@ var Base_SpellsList = {
 	},
 	"guidance" : {
 		name : "Guidance",
-		classes : ["cleric", "druid"],
+		classes : ["artificer", "cleric", "druid"],
 		source : [["SRD", 151], ["P", 248]],
 		level : 0,
 		school : "Div",
@@ -2076,7 +2076,7 @@ var Base_SpellsList = {
 	},
 	"haste" : {
 		name : "Haste",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 153], ["P", 250]],
 		level : 3,
 		school : "Trans",
@@ -2116,7 +2116,7 @@ var Base_SpellsList = {
 	},
 	"heat metal" : {
 		name : "Heat Metal",
-		classes : ["bard", "druid"],
+		classes : ["artificer", "bard", "druid"],
 		source : [["SRD", 153], ["P", 250]],
 		level : 2,
 		school : "Trans",
@@ -2260,7 +2260,7 @@ var Base_SpellsList = {
 	},
 	"identify" : {
 		name : "Identify",
-		classes : ["bard", "wizard"],
+		classes : ["artificer", "bard", "wizard"],
 		source : [["SRD", 155], ["P", 252]],
 		ritual : true,
 		level : 1,
@@ -2347,7 +2347,7 @@ var Base_SpellsList = {
 	},
 	"invisibility" : {
 		name : "Invisibility",
-		classes : ["bard", "sorcerer", "warlock", "wizard"],
+		classes : ["artificer", "bard", "sorcerer", "warlock", "wizard"],
 		source : [["SRD", 157], ["P", 254]],
 		level : 2,
 		school : "Illus",
@@ -2361,7 +2361,7 @@ var Base_SpellsList = {
 	},
 	"jump" : {
 		name : "Jump",
-		classes : ["druid", "ranger", "sorcerer", "wizard"],
+		classes : ["artificer", "druid", "ranger", "sorcerer", "wizard"],
 		source : [["SRD", 158], ["P", 254]],
 		level : 1,
 		school : "Trans",
@@ -2403,7 +2403,7 @@ var Base_SpellsList = {
 	"leomund's secret chest" : {
 		name : "Leomund's Secret Chest",
 		nameAlt : "Secret Chest",
-		classes : ["wizard"],
+		classes : ["artificer", "wizard"],
 		source : [["SRD", 177], ["P", 254]],
 		level : 4,
 		school : "Conj",
@@ -2433,7 +2433,7 @@ var Base_SpellsList = {
 	},
 	"lesser restoration" : {
 		name : "Lesser Restoration",
-		classes : ["bard", "cleric", "druid", "paladin", "ranger"],
+		classes : ["artificer", "bard", "cleric", "druid", "paladin", "ranger"],
 		source : [["SRD", 158], ["P", 255]],
 		level : 2,
 		school : "Abjur",
@@ -2446,7 +2446,7 @@ var Base_SpellsList = {
 	},
 	"levitate" : {
 		name : "Levitate",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 158], ["P", 255]],
 		level : 2,
 		school : "Trans",
@@ -2461,7 +2461,7 @@ var Base_SpellsList = {
 	},
 	"light" : {
 		name : "Light",
-		classes : ["bard", "cleric", "sorcerer", "wizard"],
+		classes : ["artificer", "bard", "cleric", "sorcerer", "wizard"],
 		source : [["SRD", 159], ["P", 255]],
 		level : 0,
 		school : "Evoc",
@@ -2534,7 +2534,7 @@ var Base_SpellsList = {
 	},
 	"longstrider" : {
 		name : "Longstrider",
-		classes : ["bard", "druid", "ranger", "wizard"],
+		classes : ["artificer", "bard", "druid", "ranger", "wizard"],
 		source : [["SRD", 160], ["P", 256]],
 		level : 1,
 		school : "Trans",
@@ -2562,7 +2562,7 @@ var Base_SpellsList = {
 	},
 	"mage hand" : {
 		name : "Mage Hand",
-		classes : ["bard", "sorcerer", "warlock", "wizard"],
+		classes : ["artificer", "bard", "sorcerer", "warlock", "wizard"],
 		source : [["SRD", 160], ["P", 256]],
 		level : 0,
 		school : "Conj",
@@ -2616,7 +2616,7 @@ var Base_SpellsList = {
 	},
 	"magic mouth" : {
 		name : "Magic Mouth",
-		classes : ["bard", "wizard"],
+		classes : ["artificer", "bard", "wizard"],
 		source : [["SRD", 161], ["P", 257]],
 		ritual : true,
 		level : 2,
@@ -2631,7 +2631,7 @@ var Base_SpellsList = {
 	},
 	"magic weapon" : {
 		name : "Magic Weapon",
-		classes : ["paladin", "wizard"],
+		classes : ["artificer", "paladin", "wizard"],
 		source : [["SRD", 161], ["P", 257]],
 		level : 2,
 		school : "Trans",
@@ -2754,7 +2754,7 @@ var Base_SpellsList = {
 	},
 	"mending" : {
 		name : "Mending",
-		classes : ["bard", "cleric", "druid", "sorcerer", "wizard"],
+		classes : ["artificer", "bard", "cleric", "druid", "sorcerer", "wizard"],
 		source : [["SRD", 164], ["P", 259]],
 		level : 0,
 		school : "Trans",
@@ -2768,7 +2768,7 @@ var Base_SpellsList = {
 	},
 	"message" : {
 		name : "Message",
-		classes : ["bard", "sorcerer", "wizard"],
+		classes : ["artificer", "bard", "sorcerer", "wizard"],
 		source : [["SRD", 164], ["P", 259]],
 		level : 0,
 		school : "Trans",
@@ -2907,7 +2907,7 @@ var Base_SpellsList = {
 		name : "Mordenkainen's Faithful Hound",
 		nameShort : "Mor. Faithful Hound",
 		nameAlt : "Faithful Hound",
-		classes : ["wizard"],
+		classes : ["artificer", "wizard"],
 		source : [["SRD", 142], ["P", 261]],
 		level : 4,
 		school : "Conj",
@@ -2939,7 +2939,7 @@ var Base_SpellsList = {
 		name : "Mordenkainen's Private Sanctum",
 		nameShort : "Mor. Private Sanctum",
 		nameAlt : "Private Sanctum",
-		classes : ["wizard"],
+		classes : ["artificer", "wizard"],
 		source : [["SRD", 171], ["P", 262]],
 		level : 4,
 		school : "Abjur",
@@ -3028,7 +3028,7 @@ var Base_SpellsList = {
 	"otiluke's resilient sphere" : {
 		name : "Otiluke's Resilient Sphere",
 		nameAlt : "Resilient Sphere",
-		classes : ["wizard"],
+		classes : ["artificer", "wizard"],
 		source : [["SRD", 175], ["P", 264]],
 		level : 4,
 		school : "Evoc",
@@ -3170,7 +3170,7 @@ var Base_SpellsList = {
 	},
 	"poison spray" : {
 		name : "Poison Spray",
-		classes : ["druid", "sorcerer", "warlock", "wizard"],
+		classes : ["artificer", "druid", "sorcerer", "warlock", "wizard"],
 		source : [["SRD", 169], ["P", 266]],
 		level : 0,
 		school : "Conj",
@@ -3240,7 +3240,7 @@ var Base_SpellsList = {
 	},
 	"prestidigitation" : {
 		name : "Prestidigitation",
-		classes : ["bard", "sorcerer", "warlock", "wizard"],
+		classes : ["artificer", "bard", "sorcerer", "warlock", "wizard"],
 		source : [["SRD", 170], ["P", 267]],
 		level : 0,
 		school : "Trans",
@@ -3323,7 +3323,7 @@ var Base_SpellsList = {
 	},
 	"protection from energy" : {
 		name : "Protection from Energy",
-		classes : ["cleric", "druid", "ranger", "sorcerer", "wizard"],
+		classes : ["artificer", "cleric", "druid", "ranger", "sorcerer", "wizard"],
 		source : [["SRD", 173], ["P", 270]],
 		level : 3,
 		school : "Abjur",
@@ -3351,7 +3351,7 @@ var Base_SpellsList = {
 	},
 	"protection from poison" : {
 		name : "Protection from Poison",
-		classes : ["cleric", "druid", "paladin", "ranger"],
+		classes : ["artificer", "cleric", "druid", "paladin", "ranger"],
 		source : [["SRD", 173], ["P", 270]],
 		level : 2,
 		school : "Abjur",
@@ -3364,7 +3364,7 @@ var Base_SpellsList = {
 	},
 	"purify food and drink" : {
 		name : "Purify Food and Drink",
-		classes : ["cleric", "druid", "paladin"],
+		classes : ["artificer", "cleric", "druid", "paladin"],
 		source : [["SRD", 173], ["P", 270]],
 		ritual : true,
 		level : 1,
@@ -3423,7 +3423,7 @@ var Base_SpellsList = {
 	},
 	"ray of frost" : {
 		name : "Ray of Frost",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 174], ["P", 271]],
 		level : 0,
 		school : "Evoc",
@@ -3478,7 +3478,7 @@ var Base_SpellsList = {
 	},
 	"resistance" : {
 		name : "Resistance",
-		classes : ["cleric", "druid"],
+		classes : ["artificer", "cleric", "druid"],
 		source : [["SRD", 175], ["P", 272]],
 		level : 0,
 		school : "Abjur",
@@ -3521,7 +3521,7 @@ var Base_SpellsList = {
 	},
 	"revivify" : {
 		name : "Revivify",
-		classes : ["cleric", "paladin"],
+		classes : ["artificer", "cleric", "paladin"],
 		source : [["SRD", 175], ["P", 272]],
 		level : 3,
 		school : "Necro", // errata from conjuration
@@ -3535,7 +3535,7 @@ var Base_SpellsList = {
 	},
 	"rope trick" : {
 		name : "Rope Trick",
-		classes : ["wizard"],
+		classes : ["artificer", "wizard"],
 		source : [["SRD", 176], ["P", 272]],
 		level : 2,
 		school : "Trans",
@@ -3564,7 +3564,7 @@ var Base_SpellsList = {
 	},
 	"sanctuary" : {
 		name : "Sanctuary",
-		classes : ["cleric"],
+		classes : ["artificer", "cleric"],
 		source : [["SRD", 176], ["P", 272]],
 		level : 1,
 		school : "Abjur",
@@ -3607,7 +3607,7 @@ var Base_SpellsList = {
 	},
 	"see invisibility" : {
 		name : "See Invisibility",
-		classes : ["bard", "sorcerer", "wizard"],
+		classes : ["artificer", "bard", "sorcerer", "wizard"],
 		source : [["SRD", 177], ["P", 274]],
 		level : 2,
 		school : "Div",
@@ -3733,7 +3733,7 @@ var Base_SpellsList = {
 	},
 	"shocking grasp" : {
 		name : "Shocking Grasp",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 179], ["P", 275]],
 		level : 0,
 		school : "Evoc",
@@ -3833,7 +3833,7 @@ var Base_SpellsList = {
 	},
 	"spare the dying" : {
 		name : "Spare the Dying",
-		classes : ["cleric"],
+		classes : ["artificer", "cleric"],
 		source : [["SRD", 181], ["P", 277]],
 		level : 0,
 		school : "Necro",
@@ -3887,7 +3887,7 @@ var Base_SpellsList = {
 	},
 	"spider climb" : {
 		name : "Spider Climb",
-		classes : ["sorcerer", "warlock", "wizard"],
+		classes : ["artificer", "sorcerer", "warlock", "wizard"],
 		source : [["SRD", 182], ["P", 277]],
 		level : 2,
 		school : "Trans",
@@ -3958,7 +3958,7 @@ var Base_SpellsList = {
 	},
 	"stone shape" : {
 		name : "Stone Shape",
-		classes : ["cleric", "druid", "wizard"],
+		classes : ["artificer", "cleric", "druid", "wizard"],
 		source : [["SRD", 183], ["P", 278]],
 		level : 4,
 		school : "Trans",
@@ -3972,7 +3972,7 @@ var Base_SpellsList = {
 	},
 	"stoneskin" : {
 		name : "Stoneskin",
-		classes : ["druid", "ranger", "sorcerer", "wizard"],
+		classes : ["artificer", "druid", "ranger", "sorcerer", "wizard"],
 		source : [["SRD", 183], ["P", 278]],
 		level : 4,
 		school : "Abjur",
@@ -4374,7 +4374,7 @@ var Base_SpellsList = {
 	},
 	"wall of stone" : {
 		name : "Wall of Stone",
-		classes : ["druid", "sorcerer", "wizard"],
+		classes : ["artificer", "druid", "sorcerer", "wizard"],
 		source : [["SRD", 190], ["P", 287]],
 		level : 5,
 		school : "Evoc",
@@ -4419,7 +4419,7 @@ var Base_SpellsList = {
 	},
 	"water breathing" : {
 		name : "Water Breathing",
-		classes : ["druid", "ranger", "sorcerer", "wizard"],
+		classes : ["artificer", "druid", "ranger", "sorcerer", "wizard"],
 		source : [["SRD", 191], ["P", 287]],
 		ritual : true,
 		level : 3,
@@ -4434,7 +4434,7 @@ var Base_SpellsList = {
 	},
 	"water walk" : {
 		name : "Water Walk",
-		classes : ["cleric", "druid", "ranger", "sorcerer"],
+		classes : ["artificer", "cleric", "druid", "ranger", "sorcerer"],
 		source : [["SRD", 191], ["P", 287]],
 		ritual : true,
 		level : 3,
@@ -4449,7 +4449,7 @@ var Base_SpellsList = {
 	},
 	"web" : {
 		name : "Web",
-		classes : ["sorcerer", "wizard"],
+		classes : ["artificer", "sorcerer", "wizard"],
 		source : [["SRD", 192], ["P", 287]],
 		level : 2,
 		school : "Conj",
