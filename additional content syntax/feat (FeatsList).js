@@ -158,6 +158,7 @@ FeatsList["purple power"] = {
 	An explanation of the different attributes of this variable:
 	var v = {
 		isSpellcaster,  	// boolean; true if the character has spellcasting from a source other than magic items
+		isSpellcastingClass,// boolean; true if the character has spell slots from a class (i.e. the Spellcasting or Pact Magic feature)
 		characterLevel, 	// number; the total character level
 		shieldProf,     	// boolean; true if the checkbox for shield proficiency is checked
 		lightArmorProf, 	// boolean; true if the checkbox for light armour proficiency is checked

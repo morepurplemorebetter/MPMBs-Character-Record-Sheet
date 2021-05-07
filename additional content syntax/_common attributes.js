@@ -198,12 +198,29 @@ limfeaname : "Hellish Rebuke (3d10)",
 	TYPE:	string
 	USE:	value to add in the "Name" column in the "Limited Features" section instead of the feature's name
 
-	Use this attribute only if you do not want to use the feature's name in the "Limited Features" section.
-	If this attribute is present and the 'action' attribute is also present,
-	the 'limfeaname' attribute will be used instead of the feature's name for actions.
+	Use this attribute only if you do not want to use the feature`s name in the "Limited Features" section.
+	If this attribute is present and the `action` attribute is also present,
+	the `limfeaname` attribute will be used instead of the feature`s name for actions.
 
-	This attribute will do nothing if not both the 'usages' and 'recovery' attributes or the 'action' attribute
+	This attribute will do nothing if not both the `usages` and `recovery` attributes or the `action` attribute
 	are present in the same feature.
+*/
+
+limfeaAddToExisting : true,
+/*	limfeaAddToExisting // OPTIONAL //
+	TYPE:	boolean
+	USE:	set to `true` to have the number set for `usages` be added to an existing limited feature by the same name, instead of overwriting it
+	ADDED:	v13.0.6
+
+	Normally, if a limited feature is added while one with the same name already exists,
+	the usages of the newer limited feature is used, overwriting what was there before.
+	When you set this to true, the number of usages will be added together instead.
+
+	This attribute will do nothing if not both the `usages` and `recovery` attributes
+	are present in the same feature.
+	Nor will it do anything if there is no limited feature present by the same name when this feature is called.
+
+	Setting this attribute to false is the same as not including it.
 */
 
 additional : "10% chance",
@@ -240,7 +257,8 @@ extraLimitedFeatures : [{
 	usages : 8, // REQUIRED //
 	recovery : "long rest", // REQUIRED //
 	usagescalc : "event.value = Math.max(1, What('Cha Mod'));", // OPTIONAL //
-	additional : "2d8" // OPTIONAL //
+	additional : "2d8", // OPTIONAL //
+	addToExisting : true // OPTIONAL // ADDED v13.0.6
 }],
 /*	extraLimitedFeatures // OPTIONAL //
 	TYPE:	array of objects (variable length)
@@ -248,11 +266,18 @@ extraLimitedFeatures : [{
 
 	Use this attribute only if you have more than one limited feature to add and you already
 	used the default usages/recovery method described above.
-	Each object has to contain at least the 'name', 'usages', and 'recovery' attributes.
-	The 'usagescalc' and 'additional' attributes are optional.
+	Each object has to contain at least the `name`, `usages`, and `recovery` attributes.
+	The `usagescalc`, `additional`, and `addToExisting` attributes are optional.
 
-	For an explanation of how the different attributes work, see the attributes by the same names above.
-	The only exception is that the ones in this object can never be an array, they are always level-independent.
+	For an explanation of how the different attributes work, see the attributes by the same names above,
+	except for the following, which have a different name above:
+
+	ATTRIBUTE NAME		SEE NAME IN MAIN FEATURE
+	name				limfeaname
+	addToExisting		limfeaAddToExisting
+
+	The only exception is that attributes in this object can never be an array,
+	they are always level-independent.
 
 	The 'name' attribute can only be a string.
 */
@@ -1811,6 +1836,79 @@ extraAC : [{
 
 		The above example returns true when the character is wearing armour,
 		and if so the sheet will not add the modifier to the total AC.
+	*/
+}],
+
+bonusClassExtrachoices : [{
+/*	bonusClassExtrachoices // OPTIONAL //
+	TYPE:	array of objects (variable length) or just a single object
+	USE:	increase allowed number of extrachoices for another class feature
+	ADDED:	v13.0.6
+
+	Use this if you want to give access to something that is normally part of a class feature's extrachoices.
+	For example, you can grant an extra selection of the Warlock's Eldritch Invocation.
+
+	If the class feature is eligable (i.e. the character has the class in question and is high enough level),
+	the number you enter in the `bonus` attribute will be added to the total allowed that is displayed
+	in the Choose Feature menu on the 2nd page.
+	If the class feature is no eligable (i.e. the character does not have the class or is too low level),
+	the extrachoices will be displayed separately in the Choose Feature menu on the 2nd page and the player
+	can select them.
+
+	The `class`, `feature`, and `bonus` attributes have to be present in each object, the rest is optional.
+	See below for an explanation of each attribute.
+*/
+	"class" : "warlock",
+	/*	class // REQUIRED //
+		TYPE:	string
+		USE:	the ClassList object name of the class the feature belong to
+		ADDED:	v13.0.6
+
+		For the published classes, their object name is the same as their name, but all lowercase.
+		I.e. "artificer", "barbarian", "bard", "cleric", "druid", "fighter", "monk", "paladin",
+		"ranger", "sorcerer", "warlock", and "wizard".
+		
+		If the feature belongs to a subclass, make sure this is the class the subclass belongs to.
+	*/
+	"subclass" : "warlock-the fiend",
+	/*	subclass // OPTIONAL //
+		TYPE:	string
+		USE:	the ClassSubList object name of the subclass the feature belong to
+		ADDED:	v13.0.6
+
+		Only include this attribute if the feature with the extrachoices belong to a subclass.
+
+		The object name for subclasses varies greatly.
+		If you are adding a subclass using the `AddSubClass()` function, be aware that
+		the class name is added before the subclass object name with a hyphen.
+		E.g. `AddSubClass("druid", "circle of purple", {});` will result in
+		the object name "druid-circle of purple".
+		Note that these object names are always lowercase.
+		
+		Setting this attribute to an empty string ("") is the same as not including it.
+	*/
+	"feature" : "eldritch invocations",
+	/*	feature // REQUIRED //
+		TYPE:	string
+		USE:	the object name listed in the `features` attribute of the ClaasList or ClassSubList object
+		ADDED:	v13.0.6
+
+		For a feature in a subclass, the feature object names always start with "subclassfeature",
+		generally followed by their level (e.g. "subclassfeature3").
+		Note that these object names are always lowercase.
+
+		If the feature you list here doesn't have the `extrachoices` attribute, this whole object
+		will be ignored.
+	*/
+	"bonus" : 2
+	/*	bonus // REQUIRED //
+		TYPE:	number
+		USE:	positive number (minimum of 1) with the amount of extrachoices to add
+		ADDED:	v13.0.6
+
+		This determines how many (more) of the extrachoices will be displayed in the Choose Feature menu.
+
+		Setting this to zero or a negative number will result in the whole object being ignored.
 	*/
 }],
 

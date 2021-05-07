@@ -5201,7 +5201,7 @@ function SpellPointsLimFea(AddRemove) {
 				break;
 			}
 		}
-		var SpellPointsAmount = SpellPointsTable[Math.min(SpellPointsTable.length - 1, classes.spellcastlvl.default)];
+		var SpellPointsAmount = SpellPointsTable[Math.min(SpellPointsTable.length - 1, classes.spellcastlvl.spellpoints)];
 		if (!SPexists && What("Limited Feature 1") !== "" && SpellPointsAmount) LimFeaInsert(1);
 		if (SpellPointsAmount) {
 			AddFeature("Spell Points", SpellPointsAmount, "", "long rest", "Spell Point variant rules, Dungeon Master Guide page 288");
@@ -5263,9 +5263,10 @@ function isSpellUsed(spll, returnBoolean) {
 };
 
 // a way to test if the character has inherit spellcasting abilities (and if they don't just stem from magic items)
-function isSpellcaster() {
+function isSpellcaster(classOnly) {
 	for (var aCast in CurrentSpells) {
-		if (!MagicItemsList[aCast]) return true;
+		if (!classOnly && !MagicItemsList[aCast]) return true;
+		if (classOnly && ClassList[aCast] && CurrentSpells[aCast].factor) return true;
 	}
 	return false;
 }

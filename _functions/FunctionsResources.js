@@ -928,11 +928,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		getDynamicFindVariables();
 
 		// Set the visibility of the Choose Feature and Racial Options button
-		if (MakeClassMenu()) {
-			DontPrint("Class Features Menu");
-		} else {
-			Hide("Class Features Menu");
-		}
+		ClassMenuVisibility();
 		if (ParseRace(What("Race"))[2].length) {
 			DontPrint("Race Features Menu");
 		} else {

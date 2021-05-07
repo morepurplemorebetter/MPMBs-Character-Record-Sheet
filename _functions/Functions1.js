@@ -2036,7 +2036,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	classes.attacks = Math.max.apply(Math, temp);
 
 	//reset the global variable for spellcasting levels
-	classes.spellcastlvl = {default : 0, warlock : 0};
+	classes.spellcastlvl = {default : 0, warlock : 0, spellpoints : 0};
 	//loop through the classes to find the new spellcasting level totals (can't be done in previous loop, because we need to know the total amount of casters of each type, which is set in previous loop)
 	for (var aClass in classes.known) {
 		var Temps = CurrentClasses[aClass];
@@ -2056,6 +2056,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			if (classes.spellcastlvl[casterType] == undefined) classes.spellcastlvl[casterType] = 0;
 			classes.spellcastlvl[casterType] += Math[multiCaster[casterType] > 1 && !Temps.spellcastingFactorRoundupMulti ? "floor" : "ceil"](cSpells.level / casterFactor);
 		}
+		if (casterType === "default") classes.spellcastlvl.spellpoints += Math[!Temps.spellcastingFactorRoundupMulti ? "floor" : "ceil"](cSpells.level / casterFactor);
 	}
 
 	if (!NotAtStartup) { // add the current classes.known into classes.old on startup of the sheet
@@ -2159,12 +2160,17 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	// Set some visibilities dependent on class-levels
 	SetTheAbilitySaveDCs();
 	AddAttacksPerAction();
-	if (MakeClassMenu()) { // Show the option button if a class has features that offers a choice
+	ClassMenuVisibility();
+};
+
+function ClassMenuVisibility() {
+	// Show the option button if a class has features that offers a choice
+	if (MakeClassMenu()) {
 		DontPrint("Class Features Menu");
 	} else {
 		Hide("Class Features Menu");
 	}
-};
+}
 
 // a function to apply the class level depending on how it was changed
 function ApplyClassLevel(noChange) {
@@ -4384,7 +4390,7 @@ function processRecovery(recovery, additionalRecovery) {
 function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, UpdateOrReplace, Calc, additionalRecovery) {
 	tooltip = tooltip ? tooltip : "";
 	var additionaltxt = additionaltxt.indexOf(identifier) != -1 ? "" : additionaltxt && What("Unit System") === "metric" ? ConvertToMetric(additionaltxt, 0.5) : additionaltxt;
-	UpdateOrReplace = UpdateOrReplace ? UpdateOrReplace : "replace";
+	UpdateOrReplace = UpdateOrReplace || UpdateOrReplace === 0 || UpdateOrReplace === "" ? UpdateOrReplace : "replace";
 	var calculation = Calc ? Calc : "";
 	var SslotsVisible = !typePF && eval_ish(What("SpellSlotsRemember"))[0];
 	var recovery = (/^(long rest|short rest|dawn)$/).test(recovery) && !additionalRecovery ? recovery : processRecovery(recovery, additionalRecovery);
@@ -4395,20 +4401,20 @@ function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, Update
 			var usageFld = tDoc.getField("Limited Feature Max Usages " + i);
 			var recoveryFld = tDoc.getField("Limited Feature Recovery " + i);
 			if (n === 1 && featureFld.value.toLowerCase().indexOf(identifier.toLowerCase()) !== -1) { //if the feature is found
-				if (UpdateOrReplace === "replace" || (!isNaN(UpdateOrReplace) && !isNaN(usages))) {
+				if (UpdateOrReplace === "replace" || ((!recoveryFld.value || recoveryFld.value == recovery) && !isNaN(usageFld.value) && !isNaN(UpdateOrReplace) && !isNaN(usages))) {
 					featureFld.value = identifier + additionaltxt;
-					if (tooltip) featureFld.userName = "The feature \"" + identifier + "\" was gained from " + tooltip;
+					if (tooltip && featureFld.userName.indexOf(tooltip) === -1) featureFld.userName += ", " + tooltip;
 					usageFld.setAction("Calculate", calculation);
 					usageFld.submitName = calculation; //so it can be referenced later
 					recoveryFld.value = recovery;
-					if (!isNaN(UpdateOrReplace) && !isNaN(usages)) {
-						usageFld.value += usages - UpdateOrReplace;
+					if (!isNaN(usageFld.value) && !isNaN(UpdateOrReplace) && !isNaN(usages)) {
+						usageFld.value += usages - Number(UpdateOrReplace);
 					} else {
 						usageFld.value = usages;
 					}
 				} else if ((featureFld.value.toLowerCase().indexOf(additionaltxt.toLowerCase()) !== -1 || UpdateOrReplace === "bonus") && !isNaN(usages)) {
-					featureFld.userName += featureFld.userName.indexOf(tooltip) === -1 ? ", " + tooltip : "";
-					usageFld.value += usages - (!isNaN(UpdateOrReplace) ? UpdateOrReplace : 0);
+					if (tooltip && featureFld.userName.indexOf(tooltip) === -1) featureFld.userName += ", " + tooltip;
+					usageFld.value += usages - (!isNaN(UpdateOrReplace) ? Number(UpdateOrReplace) : 0);
 				} else { //UpdateOrReplace == "update" || isNaN(usages)
 					featureFld.value = identifier + additionaltxt;
 					usageFld.setAction("Calculate", calculation);
@@ -4456,6 +4462,7 @@ function RemoveFeature(identifier, usages, additionaltxt, recovery, tooltip, Upd
 				LimFeaDelete(i); //delete the limited feature at this row and move all the ones up below it
 			} else {
 				usageFld.value -= usages;
+				if (tooltip && featureFld.userName.indexOf(tooltip) !== -1) featureFld.userName = featureFld.userName.replace(tooltip, "").replace(/, *$/, "").replace(/, , /g, ", ");
 			}
 			i = FieldNumbers.limfea + 1;
 		}
@@ -5599,13 +5606,13 @@ function MakeClassMenu() {
 		if (testArray.length) {
 			var arr = choicesArray.map(function(n) { return n.toLowerCase(); });
 			for (var i = 0; i < testArray.length; i++) {
-				if (arr.indexOf(testArray[i]) != -1) cnt++;
+				if (arr.indexOf(testArray[i]) !== -1) cnt++;
 			}
 		}
 		return cnt;
 	}
 
-	var menuLVL3 = function (menu, name, array, classNm, featureNm, extrareturn, feaObj, curSel) {
+	var menuLVL3 = function (menu, name, array, classNm, featureNm, extrareturn, feaObj, curSel, moreReturn) {
 		var temp = [], toSub = {};
 		for (var i = 0; i < array.length; i++) {
 			var extraNm = "";
@@ -5626,14 +5633,14 @@ function MakeClassMenu() {
 			if (isEnabled == "skip") continue; // special failsafe for choices that return "skip" on their prepreqeval
 			if (isEnabled && !isActive && isFS && selFS[feaObjNm]) {
 				isEnabled = false;
-				extraNm = selFS[feaObjNm];
+				extraNm = selFS[feaObjNm][2];
 			}
 			var removeStop = !isActive ? "add" : extrareturn ? "remove" : "stop";
 
 			// now make the menu entry
 			var mItem = {
 				cName : array[i] + extraNm + stringSource(feaObjA, "first,abbr", "\t   [", "]"),
-				cReturn : classNm + "#" + featureNm + "#" + array[i] + "#" + extrareturn + "#" + removeStop,
+				cReturn : classNm + "#" + featureNm + "#" + array[i] + "#" + extrareturn + "#" + removeStop + (moreReturn ? moreReturn : ""),
 				bMarked : isActive,
 				bEnabled : isEnabled
 			};
@@ -5660,6 +5667,7 @@ function MakeClassMenu() {
 			for (var t = 0; t < temp.length; t++) {
 				if (temp[t].oSubMenu && toSub[temp[t].cName]) {
 					temp[t].oSubMenu = toSub[temp[t].cName];
+					temp[t].bMarked = temp[t].oSubMenu.some(function (n) { return n.bMarked; });
 				}
 			}
 		}
@@ -5672,7 +5680,7 @@ function MakeClassMenu() {
 		}
 	};
 
-	var ClassMenu = [], toTest, toTestNr, toChooseNr, toChooseStr;
+	var ClassMenu = [], aClass, cl, prop, propFea, toTest, toTestNr, toChooseNr, toChooseStr;
 	var bonusManeuvers = CurrentFeats.known.indexOf("martial adept") != -1 ? 2 : 0;
 	if (
 		(GetFeatureChoice("classes", "fighter", "fighting style", false) === "superior technique") ||
@@ -5681,12 +5689,12 @@ function MakeClassMenu() {
 		bonusManeuvers += 1;
 	}
 
-	for (var aClass in classes.known) {
+	for (aClass in classes.known) {
 		var clLvl = classes.known[aClass].level;
-		var cl = CurrentClasses[aClass];
+		cl = CurrentClasses[aClass];
 		var tempItem = [];
-		for (var prop in cl.features) {
-			var propFea = cl.features[prop];
+		for (prop in cl.features) {
+			propFea = cl.features[prop];
 			if (propFea.choices && !propFea.choicesNotInMenu && propFea.minlevel <= clLvl) {
 				isFS = (/fighting style/i).test(prop + propFea.name);
 				toTest = GetFeatureChoice("classes", aClass, prop, false);
@@ -5698,10 +5706,7 @@ function MakeClassMenu() {
 				toTestNr = nrFoundInExtraChoices(toTest, propFea.extrachoices);
 				propFea.extrachoices.sort();
 				toChooseNr = propFea.extraTimes ? propFea.extraTimes[Math.min(propFea.extraTimes.length, clLvl) - 1] : 0;
-				if (prop == "subclassfeature3.maneuvers" && bonusManeuvers && classes.known[aClass].subclass == "fighter-battle master") {
-					toChooseNr += bonusManeuvers;
-					bonusManeuvers = false;
-				}
+				toChooseNr += getBonusClassExtraChoiceNr(aClass, prop); // Add extra allowed for 'bonus' entries
 				toChooseStr = " (" + "selected " + toTestNr + (toChooseNr ? " of " + toChooseNr : "") + ")";
 				menuLVL3(tempItem, propFea.extraname + toChooseStr, propFea.extrachoices, aClass, prop, "extra", propFea, toTest);
 			};
@@ -5732,14 +5737,22 @@ function MakeClassMenu() {
 		};
 	};
 
-	// If the battle master subclass is not selected and the martial adept feat is selected, add an option to select the maneuvers
-	if (bonusManeuvers && ClassSubList['fighter-battle master']) {
-		var prop = "subclassfeature3.maneuvers";
-		var propFea = ClassSubList['fighter-battle master'].features[prop];
-		propFea.extrachoices.sort();
-		toTest = GetFeatureChoice("classes", "fighter", prop, true);
-		toChooseStr = " (selected " + toTest.length + " of " + bonusManeuvers + ")";
-		menuLVL3(ClassMenu, "Battle Master Maneuvers" + toChooseStr, propFea.extrachoices, "fighter", prop, "extra", propFea, toTest);
+	var bonusClassFeatures = getBonusClassExtraChoices();
+	if (bonusClassFeatures) {
+		ClassMenu.push({ cName : "-" }); // Add a divider
+		for (var i = 0; i < bonusClassFeatures.length; i++) {
+			var oBonus = bonusClassFeatures[i];
+			aClass = oBonus["class"];
+			cl = oBonus.subclass ? ClassSubList[oBonus.subclass] : ClassList[aClass];
+			prop = oBonus.feature;
+			propFea = cl.features[prop];
+			toTest = GetFeatureChoice("classes", aClass, prop, true);
+			toTestNr = nrFoundInExtraChoices(toTest, propFea.extrachoices);
+			var clName = !oBonus.subclass ? cl.name : cl.fullname ? cl.fullname : ClassList[aClass].name + " (" + cl.subname + ")";
+			var menuName = "Bonus " + clName + " " + propFea.extraname + " (selected " + toTestNr + " of " + oBonus.bonus + ")";
+			var sMoreReturn = "#extrabonus" + (oBonus.subclass ? "#" + oBonus.subclass : "");
+			menuLVL3(ClassMenu, menuName, propFea.extrachoices, aClass, prop, "extra", propFea, toTest, sMoreReturn);
+		}
 	}
 
 	// if no options were found, set the menu to something else and make the return false
@@ -5769,14 +5782,22 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 	var prop = MenuSelection[1];
 	var choice = MenuSelection[2];
 	var extra = !!MenuSelection[3];
-	var isBattleMasterManeuver = aClass == "fighter" && (!classes.known[aClass] || classes.known[aClass].subclass != "fighter-battle master") && prop == "subclassfeature3.maneuvers" && ClassSubList["fighter-battle master"] && ClassSubList["fighter-battle master"].features[prop] && extra;
-	var propFea = isBattleMasterManeuver ? ClassSubList["fighter-battle master"].features[prop] : CurrentClasses[aClass] ? CurrentClasses[aClass].features[prop] : false;
+	var extraBonus = MenuSelection[5] ? true : false; // a feature with bonus entries that currently isn't available
+	var sSubclass = MenuSelection[6] ? MenuSelection[6] : false;
+	var propFea = false;
+	if (extraBonus && (sSubclass || !CurrentClasses[aClass])) {
+		propFea = sSubclass ? ClassSubList[sSubclass].features[prop] : ClassList[aClass].features[prop];
+		var unknownClass = true;
+	} else if (CurrentClasses[aClass]) {
+		propFea = CurrentClasses[aClass].features[prop];
+		var unknownClass = false;
+	}
 	var propFeaCs = propFea ? propFea[choice] : false;
 	if (!propFea || !propFeaCs) return; // no objects to process, so go back
 
-	var clLvl = isBattleMasterManeuver ? 3 : classes.known[aClass].level;
-	var clLvlOld = isBattleMasterManeuver ? 3 : !triggerIsMenu && Input && classes.old[aClass] ? classes.old[aClass].classlevel : clLvl;
-	if (propFea.minlevel && Math.max(clLvl, clLvlOld) < propFea.minlevel) {
+	var clLvl = unknownClass ? propFea.minlevel : classes.known[aClass].level;
+	var clLvlOld = unknownClass ? propFea.minlevel : !triggerIsMenu && Input && classes.old[aClass] ? classes.old[aClass].classlevel : clLvl;
+	if (!unknownClass && propFea.minlevel && Math.max(clLvl, clLvlOld) < propFea.minlevel) {
 		// Trying to process a class feature for which there is no high enough level
 		if (!extra) { // If this is not an 'extrachoice', stop now
 			return;
@@ -5805,14 +5826,14 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 			[aClass, prop], // fObjName [aParent, fObjName]
 			addIt ? [0, clLvl, false] : [clLvlOld, 0, false], // lvlA [old-level, new-level, force-apply]
 			addIt ? ["", choice, "only"] : [choice, "", "only"], // choiceA [old-choice, new-choice, "only"|"change"]
-			isBattleMasterManeuver ? "fighter-battle master" : false // forceNonCurrent
+			!unknownClass ? false : sSubclass ? sSubclass : aClass // forceNonCurrent
 		);
 
 		thermoM(3/5); //increment the progress dialog's progress
 
 		// do something with the text of the feature
 		var feaString = ParseClassFeatureExtra(
-			isBattleMasterManeuver ? propFea : aClass,
+			unknownClass ? propFea : aClass,
 			prop, choice, Fea, !addIt, ForceExtraname);
 
 		if (addIt) { // add the string to the third page

@@ -251,6 +251,9 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		// magic item additions
 		if (uObj.magicitemsAdd) processAddMagicItems(addIt, uObj.magicitemsAdd);
 
+		// options for other class extrachoices
+		if (uObj.bonusClassExtrachoices) processBonusClassExtraChoices(addIt, type, uObj.bonusClassExtrachoices);
+
 		if (!addIt) addListOptions(); // remove weapon/armour/ammo/creature option(s)
 	};
 
@@ -367,13 +370,14 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	if ((CheckLVL || Fea.changed) && (Fea.UseOld || Fea.UseCalcOld || Fea.Use || Fea.UseCalc)) {
 		// remove the limited feature entry if it is no longer applicable
 		if (lvlA[0] && (!AddFea || ((Fea.UseOld || Fea.UseCalcOld) && (Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc) || (/unlimited|\u221E/i).test(Fea.Use))))) {
-			RemoveFeature(Fea.UseNameOld ? Fea.UseNameOld : Fea.UseName, lvlA[1] === 0 ? "" : Fea.UseOld, "", "", "", "", Fea.UseCalcOld);
+			RemoveFeature(Fea.UseNameOld ? Fea.UseNameOld : Fea.UseName, lvlA[1] === 0 && !fObj.limfeaAddToExisting ? "" : Fea.UseOld, "", "", tooltipName, "", Fea.UseCalcOld);
 			Fea.UseOld = 0;
 		}
 		// add the limited feature entry if it changed or added for the first time
 		if (AddFea && (Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use)) {
 			var tooltipName = choiceLimFeaTooltip ? choiceLimFeaTooltip : displName + (fObj.tooltip ? fObj.tooltip : displName !== fObj.name ? ": " + fObj.name : "");
-			AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, tooltipName, Fea.UseOld, Fea.UseCalc, Fea.AltRecov);
+			var oldUsages = !Fea.UseOld && fObj.limfeaAddToExisting ? "bonus" : Fea.UseOld;
+			AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, tooltipName, oldUsages, Fea.UseCalc, Fea.AltRecov);
 		}
 	}
 	// Then do all the level-independent attributes, only if this is mandated by the level change
@@ -524,7 +528,7 @@ function SetFeatureChoice(type, objNm, feaNm, choice, extra) {
 	choice = choice ? choice.toLowerCase() : false;
 	extra = extra ? extra.toLowerCase() : false;
 	type = GetFeatureType(type);
-	if (type == "items" || type == "feats") return;
+	if (type === "items" || type === "feats") return;
 	if (!CurrentFeatureChoices[type]) CurrentFeatureChoices[type] = {};
 	if (!choice) { // remove the choice
 		if (!CurrentFeatureChoices[type][objNm]) return;
@@ -565,6 +569,79 @@ function GetFeatureChoice(type, objNm, feaNm, extra) {
 	return theReturn;
 }
 
+// save bonus extrachoices for (other) class features
+function processBonusClassExtraChoices(bAddRemove, sType, aItems) {
+	if (!isArray(aItems)) aItems = [aItems];
+	for (var i = 0; i < aItems.length; i++) {
+		var oItem = aItems[i];
+		var sClass = oItem["class"];
+		var sFea = oItem["feature"];
+		var iBonus = oItem["bonus"];
+		var sSubclass = oItem["subclass"] ? oItem["subclass"] : "mainClass";
+		if (!sClass || !sFea || !iBonus || isNaN(iBonus) || iBonus < 0 || sSubclass === undefined) continue;
+		if (bAddRemove) {
+			// add
+			if (!CurrentFeatureChoices.bonus) CurrentFeatureChoices.bonus = {};
+			if (!CurrentFeatureChoices.bonus[sClass]) CurrentFeatureChoices.bonus[sClass] = {};
+			if (!CurrentFeatureChoices.bonus[sClass][sSubclass]) CurrentFeatureChoices.bonus[sClass][sSubclass] = {};
+			if (!CurrentFeatureChoices.bonus[sClass][sSubclass][sFea]) CurrentFeatureChoices.bonus[sClass][sSubclass][sFea] = 0;
+
+			CurrentFeatureChoices.bonus[sClass][sSubclass][sFea] += iBonus;
+		} else if (CurrentFeatureChoices.bonus && CurrentFeatureChoices.bonus[sClass] && CurrentFeatureChoices.bonus[sClass][sSubclass] && CurrentFeatureChoices.bonus[sClass][sSubclass][sFea]) {
+			// remove
+			CurrentFeatureChoices.bonus[sClass][sSubclass][sFea] -= iBonus;
+			CurrentFeatureChoices = CleanObject(CurrentFeatureChoices); // remove any remaining empty objects
+		}
+	}
+	SetStringifieds("choices");
+	// not a class feature, so set the visibility for the class menu
+	if (GetFeatureType(sType) !== "classes") ClassMenuVisibility();
+}
+
+// get the number of extra choices for a specific class feature
+function getBonusClassExtraChoiceNr(sClass, sFeaNm) {
+	var iReturn = 0;
+	if (CurrentFeatureChoices.bonus && CurrentFeatureChoices.bonus[sClass]) {
+		var oThis = CurrentFeatureChoices.bonus[sClass];
+		if (oThis.mainClass && oThis.mainClass[sFeaNm]) iReturn += oThis.mainClass[sFeaNm];
+		var sCurSubclass = classes.known[sClass] && classes.known[sClass].subclass ? classes.known[sClass].subclass : false;
+		if (oThis[sCurSubclass] && oThis[sCurSubclass][sFeaNm]) iReturn += oThis[sCurSubclass][sFeaNm];
+	}
+	return iReturn;
+}
+
+// return an object with bonus class features that are not normally accessible
+function getBonusClassExtraChoices() {
+	if (!CurrentFeatureChoices.bonus) return false;
+	var aReturn = [];
+	for (var sClass in CurrentFeatureChoices.bonus) {
+		var oClassList = ClassList[sClass];
+		if (!oClassList) continue; // class doesn't exist
+		var oClass = CurrentFeatureChoices.bonus[sClass];
+		var iClassLvl = classes.known[sClass] && classes.known[sClass].level ? classes.known[sClass].level : 0;
+		var sCurSubclass = classes.known[sClass] && classes.known[sClass].subclass ? classes.known[sClass].subclass : false;
+		for (var sSubclass in oClass) {
+			var bIsMainClass = sSubclass === "mainClass";
+			if (!bIsMainClass && !ClassSubList[sSubclass]) continue; // subclass doesn't exist
+			var oSubclass = oClass[sSubclass];
+			var bTestLvl = iClassLvl && (bIsMainClass || sSubclass === sCurSubclass) && CurrentClasses[sClass];
+			var oUseObj = bTestLvl ? CurrentClasses[sClass].features : bIsMainClass ? oClassList.features : ClassSubList[sSubclass].features;
+			for (var sFeaNm in oSubclass) {
+				// see if the feature exists and if it isn't already available for the character or if the features are not meant to be displayed in the menu
+				if (!oUseObj[sFeaNm] || !oUseObj[sFeaNm].extrachoices || oUseObj[sFeaNm].extrachoicesNotInMenu || (bTestLvl && oUseObj[sFeaNm].minlevel <= iClassLvl)) continue;
+				// feature is not available for the character, so return its object
+				aReturn.push({
+					"class" : sClass,
+					"subclass" : bIsMainClass ? false : sSubclass,
+					"feature" : sFeaNm,
+					"bonus" : oSubclass[sFeaNm]
+				});
+			}
+		}
+	}
+	return aReturn.length ? aReturn : false;
+}
+
 // a function to get all currently selected fighting styles
 function GetFightingStyleSelection() {
 	var fndObj = {};
@@ -575,10 +652,17 @@ function GetFightingStyleSelection() {
 			for (var aFea in clObj) {
 				var feaObj = clObj[aFea];
 				var feaNm = CurrentClasses[aClass] && CurrentClasses[aClass].features[aFea] ? CurrentClasses[aClass].features[aFea].name : aFea.capitalize();
-				if (typeof feaObj == "object" && feaObj.choice && (/fighting style/i).test(aFea + feaNm)) fndObj[feaObj.choice] = "\t   (selected: " + clNm + " - " + feaNm + ")";
+				if (typeof feaObj == "object" && feaObj.choice && (/fighting style/i).test(aFea + feaNm)) fndObj[feaObj.choice] = ["classes", aClass, "\t   (selected: " + clNm + " - " + feaNm + ")"];
 			}
 		}
 	}
+	for (var i = 0; i < CurrentFeats.known.length; i++) {
+		var sFeat = CurrentFeats.known[i];
+		var oFeat = FeatsList[sFeat];
+		if (!sFeat || !oFeat || !(/fighting style/i).test(oFeat.descriptionFull)) continue;
+		var sFeatChoice = CurrentFeats.choices[CurrentFeats.known.indexOf(sFeat)];
+		if (sFeatChoice) fndObj[sFeatChoice] = ["feats", sFeat, "\t   (selected: " + oFeat.name + " - " + sFeatChoice.capitalize() + ")"];
+	};
 	return fndObj;
 }
 
@@ -998,9 +1082,9 @@ function processExtraLimitedFeatures(AddRemove, srcNm, objArr) {
 	for (var i = 0; i < objArr.length; i++) {
 		var aObj = objArr[i];
 		if (AddRemove) {
-			AddFeature(aObj.name, aObj.usages ? aObj.usages : 0, aObj.additional ? " (" + aObj.additional + ")" : "", aObj.recovery ? aObj.recovery : "", srcNm, false, aObj.usagescalc, aObj.altResource);
+			AddFeature(aObj.name, aObj.usages ? aObj.usages : 0, aObj.additional ? " (" + aObj.additional + ")" : "", aObj.recovery ? aObj.recovery : "", srcNm, aObj.addToExisting ? "bonus" : false, aObj.usagescalc, aObj.altResource);
 		} else {
-			RemoveFeature(aObj.name, aObj.usages ? aObj.usages : 0, "", "", "", "", aObj.usagescalc);
+			RemoveFeature(aObj.name, aObj.usages ? aObj.usages : 0, "", "", srcNm, "", aObj.usagescalc);
 		}
 	}
 }
@@ -3253,6 +3337,7 @@ function gatherPrereqevalVars() {
 	var gObj = {
 		// general character abilities
 		isSpellcaster : isSpellcaster(),
+		isSpellcastingClass : isSpellcaster("class"),
 		characterLevel : Number(What("Character Level")),
 		// armour proficiencies
 		shieldProf : tDoc.getField("Proficiency Shields").isBoxChecked(0),
