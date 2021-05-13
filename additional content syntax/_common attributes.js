@@ -861,7 +861,8 @@ spellcastingBonus : [{
 	spellcastingAbility : 4,
 	fixedDC : 17,
 	fixedSpAttack : 9,
-	/*	spellcastingAbility & fixedDC & fixedSpAttack // OPTIONAL //
+	allowUpCasting : true, // Added v13.0.6
+	/*	spellcastingAbility & fixedDC & fixedSpAttack & allowUpCasting // OPTIONAL //
 		All of these are explained in detail below.
 
 		You can include either in a spellcastingBonus object to do the exact same thing.
@@ -952,6 +953,28 @@ fixedSpAttack : 5,
 	This attribute will overwrite the spellcasting ability score used for calculating DC/attack (if any).
 	For example, if you include this in a class feature for a wizard subclass and set it to `7`,
 	the wizard will be casting spells using a spell attack of +7 regardless of its intelligence modifier.
+*/
+
+allowUpCasting : true,
+/*	allowUpCasting // OPTIONAL //
+	TYPE:	boolean
+	USE:	do not limit spells to only be cast at their lowest level
+	ADDED:	v13.0.6
+
+	Normally, the sheet will limit spells gained from a feat, magic item, or race to be cast only at
+	its lowest level, removing any upcasting options from the short spell description.
+
+	By setting this attribute to true, you force the sheet to leave the upcasting description alone.
+	Do this for feats, magic items, and racial traits.
+
+	By setting this attribute to false, you force the sheet to remove the upcasting description.
+	Do this for class features (see note below).
+
+	This setting can be overwritten for a parent by a later feature. Only the most recent is used.
+
+	NOTE FOR CLASS FEATURES
+	Be aware that this setting will apply to all spells gained from the parent (i.e. class), not just
+	those gained by the direct parent.
 */
 
 spellcastingExtra : ["cure wounds", "guiding bolt", "flaming sphere", "lesser restoration", "daylight", "revivify", "guardian of faith", "wall of fire", "flame strike", "greater restoration"],
@@ -1858,7 +1881,7 @@ bonusClassExtrachoices : [{
 	The `class`, `feature`, and `bonus` attributes have to be present in each object, the rest is optional.
 	See below for an explanation of each attribute.
 */
-	"class" : "warlock",
+	'class' : "warlock",
 	/*	class // REQUIRED //
 		TYPE:	string
 		USE:	the ClassList object name of the class the feature belong to
@@ -1870,7 +1893,7 @@ bonusClassExtrachoices : [{
 		
 		If the feature belongs to a subclass, make sure this is the class the subclass belongs to.
 	*/
-	"subclass" : "warlock-the fiend",
+	subclass : "warlock-the fiend",
 	/*	subclass // OPTIONAL //
 		TYPE:	string
 		USE:	the ClassSubList object name of the subclass the feature belong to
@@ -1887,7 +1910,7 @@ bonusClassExtrachoices : [{
 		
 		Setting this attribute to an empty string ("") is the same as not including it.
 	*/
-	"feature" : "eldritch invocations",
+	feature : "eldritch invocations",
 	/*	feature // REQUIRED //
 		TYPE:	string
 		USE:	the object name listed in the `features` attribute of the ClaasList or ClassSubList object
@@ -1900,7 +1923,7 @@ bonusClassExtrachoices : [{
 		If the feature you list here doesn't have the `extrachoices` attribute, this whole object
 		will be ignored.
 	*/
-	"bonus" : 2
+	bonus : 2
 	/*	bonus // REQUIRED //
 		TYPE:	number
 		USE:	positive number (minimum of 1) with the amount of extrachoices to add

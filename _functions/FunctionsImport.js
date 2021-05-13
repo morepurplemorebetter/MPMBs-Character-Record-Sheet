@@ -2651,7 +2651,7 @@ function AddFeatureChoice(pObj, cType, cName, cObj, force) {
 			FixAutoSelForceChoices(pObj, false, cObj);
 		}
 	}
-	// See if something by its name already exists and amend it if sp
+	// See if something by its name already exists and amend it, if so
 	var useName = cName;
 	var suffix = 1;
 	while (aObj[cType].indexOf(useName) !== -1 || aObj[useName.toLowerCase()]) {

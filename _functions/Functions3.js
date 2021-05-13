@@ -210,9 +210,10 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 
 		// spellcasting
 		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent, objNm);
-		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform !== undefined)) {
+		if (addIt && CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform !== undefined)) {
 			CurrentUpdates.types.push("spells");
 			var aCast = CurrentSpells[useSpCasting];
+
 			if (uObj.spellFirstColTitle) aCast.firstCol = addIt ? uObj.spellFirstColTitle : false;
 
 			if (uObj.spellcastingExtra || uObj.spellcastingExtraApplyNonconform !== undefined) {
@@ -220,6 +221,18 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			}
 			if (uObj.spellChanges) processSpChanges(addIt, tipNmF, uObj.spellChanges, useSpCasting);
 		}
+		if (!uObj.spellcastingBonus && addIt && CurrentSpells[useSpCasting] && type !== "classes" && type !== "race" && (uObj.spellcastingAbility !== undefined || uObj.fixedDC || uObj.fixedSpAttack || uObj.allowUpCasting !== undefined)) {
+			// will already have been processed if uObj has `spellcastingBonus`
+			CurrentUpdates.types.push("spells");
+			var aCast = CurrentSpells[useSpCasting];
+			if (uObj.spellcastingAbility !== undefined) {
+				aCast.ability = uObj.spellcastingAbility;
+				aCast.abilityToUse = getSpellcastingAbility(useSpCasting);
+			}
+			if (uObj.fixedDC) aCast.fixedDC = Number(uObj.fixedDC);
+			if (uObj.fixedSpAttack) aCast.fixedSpAttack = Number(uObj.fixedSpAttack);
+			if (uObj.allowUpCasting !== undefined) aCast.allowUpCasting = uObj.allowUpCasting;
+		};
 
 		if (addIt) addListOptions(); // add weapon/armour/ammo/creature option(s)
 
@@ -749,10 +762,12 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
 	if (!sObj.ability) sObj.ability = fObj.spellcastingAbility ? fObj.spellcastingAbility : fObj.abilitySave ? fObj.abilitySave : 0;
 	if (!sObj.fixedDC && fObj.fixedDC) sObj.fixedDC = Number(fObj.fixedDC);
 	if (!sObj.fixedSpAttack && fObj.fixedSpAttack) sObj.fixedSpAttack = Number(fObj.fixedSpAttack);
+	if (!sObj.allowUpCasting === undefined && fObj.allowUpCasting !== undefined) sObj.allowUpCasting = fObj.allowUpCasting;
 	if (fObjP) {
 		if (!sObj.ability) sObj.ability = fObjP.spellcastingAbility ? fObjP.spellcastingAbility : fObjP.abilitySave ? fObjP.abilitySave : 0;
 		if (!sObj.fixedDC && fObjP.fixedDC) sObj.fixedDC = Number(fObjP.fixedDC);
 		if (!sObj.fixedSpAttack && fObjP.fixedSpAttack) sObj.fixedSpAttack = Number(fObjP.fixedSpAttack);
+		if (!sObj.allowUpCasting === undefined && fObjP.allowUpCasting !== undefined) sObj.allowUpCasting = fObjP.allowUpCasting;
 	}
 	if (!sObj.abilityToUse) sObj.abilityToUse = getSpellcastingAbility(fObjName);
 	return sObj;
@@ -777,17 +792,23 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice) {
 		var spAbility = !isArray(spBon) ? spBon.spellcastingAbility : false;
 		var spFixedDC = !isArray(spBon) ? spBon.fixedDC : false;
 		var spFixedSpAttack = !isArray(spBon) ? spBon.fixedSpAttack : false;
+		var spAllowUpCasting = !isArray(spBon) ? spBon.allowUpCasting : undefined;
 		if (isArray(spBon)) {
 			for (var i = 0; i < spBon.length; i++) {
 				if (!spFeatItemLvl && spBon[i].times && isArray(spBon[i].times)) spFeatItemLvl = true;
 				if (spBon[i].spellcastingAbility) spAbility = spBon[i].spellcastingAbility;
 				if (spBon[i].fixedDC) spFixedDC = spBon[i].fixedDC;
 				if (spBon[i].fixedSpAttack) spFixedSpAttack = spBon[i].fixedSpAttack;
+				if (spBon[i].allowUpCasting !== undefined) spAllowUpCasting = spBon[i].allowUpCasting;
 			}
 		}
-		if (spAbility) sObj.ability = spAbility;
+		if (spAbility) {
+			sObj.ability = spAbility;
+			sObj.abilityToUse = getSpellcastingAbility(useSpName);
+		}
 		if (spFixedDC) sObj.fixedDC = spFixedDC;
 		if (spFixedSpAttack) sObj.fixedSpAttack = spFixedSpAttack;
+		if (spAllowUpCasting !== undefined) sObj.allowUpCasting = spAllowUpCasting;
 		// if concerning a feat or item, set the level only if the spellcastingBonus needs it
 		if ((/feat|item/i).test(sObj.typeSp) && spFeatItemLvl) sObj.level = Math.max(Number(What("Character Level")), 1);
 	}
@@ -3347,11 +3368,12 @@ function gatherPrereqevalVars() {
 		// weapon proficiencies
 		simpleWeaponsProf : tDoc.getField("Proficiency Weapon Simple").isBoxChecked(0),
 		martialWeaponsProf : tDoc.getField("Proficiency Weapon Martial").isBoxChecked(0),
-		otherWeaponsProf : What("Proficiency Weapon Other Description"),
+		otherWeaponsProf : CurrentProfs.weapon.otherWea ? CurrentProfs.weapon.otherWea.finalProfs : [],
 		// other proficiencies
 		toolProfs : [moreProfs],
 		languageProfs : [moreProfs],
 		skillProfs : [],
+		skillExpertise : [],
 		// specifics
 		hasEldritchBlast : (/,eldritch blast,/i).test(CurrentWeapons.known) || isSpellUsed("eldritch blast", true)
 	};
@@ -3365,9 +3387,16 @@ function gatherPrereqevalVars() {
 	}
 	var skillsAlphaBeta = Who('Text.SkillsNames') === 'alphabeta';
 	for (var i = 0; i < SkillsList.abbreviations.length - 2; i++) {
-		var isProf = tDoc.getField(SkillsList.abbreviations[i] + " Prof").isBoxChecked(0);
-		if (isProf) gObj.skillProfs.push(SkillsList[skillsAlphaBeta ? "names" : "namesByAS"][i]);
+		var skillAbbr = SkillsList.abbreviations[i];
+		var skillNm = SkillsList[skillsAlphaBeta ? "names" : "namesByAS"][i];
+		var isProf = tDoc.getField(skillAbbr + " Prof").isBoxChecked(0);
+		if (isProf) gObj.skillProfs.push(skillNm);
+		if (isProf && tDoc.getField(skillAbbr + " Exp").isBoxChecked(0)) gObj.skillExpertise.push(skillNm);
 	}
+	var toLC = function(n) { return n.toLowerCase(); };
+	["toolProfs", "languageProfs", "skillProfs", "skillExpertise"].forEach(function (attr) {
+		gObj[attr + "LC"] = gObj[attr].map(toLC);
+	});
 	return gObj;
 }
 

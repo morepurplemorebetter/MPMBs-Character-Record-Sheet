@@ -5585,6 +5585,7 @@ function MakeClassMenu() {
 			gatherVars = gatherPrereqevalVars();
 			hasEldritchBlast = gatherVars.hasEldritchBlast;
 		}
+		gatherVars.choice = objNm;
 		var theRe = true;
 		try {
 			if (typeof toEval == 'string') {
@@ -5630,12 +5631,17 @@ function MakeClassMenu() {
 
 			// now see if we should disable this because of prerequisites
 			var isEnabled = feaObjA.prereqeval && !ignorePrereqs && !isActive ? testPrereqs(feaObjA.prereqeval, feaObjNm, featureNm) : true;
-			if (isEnabled == "skip") continue; // special failsafe for choices that return "skip" on their prepreqeval
+			if (isEnabled === "skip") continue; // special failsafe for choices that return "skip" on their prepreqeval
 			if (isEnabled && !isActive && isFS && selFS[feaObjNm]) {
 				isEnabled = false;
 				extraNm = selFS[feaObjNm][2];
 			}
 			var removeStop = !isActive ? "add" : extrareturn ? "remove" : "stop";
+
+			if (!isActive && isEnabled === "markButDisable") {
+				isActive = true;
+				isEnabled = false;
+			}
 
 			// now make the menu entry
 			var mItem = {
@@ -5681,13 +5687,6 @@ function MakeClassMenu() {
 	};
 
 	var ClassMenu = [], aClass, cl, prop, propFea, toTest, toTestNr, toChooseNr, toChooseStr;
-	var bonusManeuvers = CurrentFeats.known.indexOf("martial adept") != -1 ? 2 : 0;
-	if (
-		(GetFeatureChoice("classes", "fighter", "fighting style", false) === "superior technique") ||
-		(GetFeatureChoice("classes", "fighter", "subclassfeature10", false) === "superior technique") // Champion can select this fighting style in their level 10 feature 'Additional Fighting Style'
-	) {
-		bonusManeuvers += 1;
-	}
 
 	for (aClass in classes.known) {
 		var clLvl = classes.known[aClass].level;

@@ -119,7 +119,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 		aSpell.changesObj["Magic Item"] = "\n \u2022 Spells cast by magic items don't require any components except the magic item itself, unless otherwise specified in the magic item's description.";
 	}
 	// If this spell is gained from an item, feat, or race, remove scaling effects
-	if (aCast && ((/^(item|feat|race)$/i).test(aCast.typeSp) || (aCast.refType && (/^(item|feat|race)$/i).test(aCast.refType))) && (aSpell.level || aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
+	if (aCast && !aCast.allowUpCasting && (aCast.allowUpCasting === false || (/^(item|feat|race)$/i).test(aCast.typeSp) || (aCast.refType && (/^(item|feat|race)$/i).test(aCast.refType))) && (aSpell.level || aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
 		var removeRegex = /\+(\d+d)?\d+\/SL\b|\bSL used/ig
 		if (removeRegex.test(aSpell.description + aSpell.descriptionMetric)) {
 			aSpell.description = aSpell.description.replace("SL used", "level " + aSpell.level).replace(removeRegex, '').replace(/, within 30 ft of each other,|, each max 30 ft apart,|; \+\d+d\d+ at CL.*?17/ig, '');

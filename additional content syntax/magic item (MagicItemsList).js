@@ -283,19 +283,24 @@ MagicItemsList["staff of purple"] = {
 		heavyArmorProf, 	// boolean; true if the checkbox for heavy armour proficiency is checked
 		simpleWeaponsProf,	// boolean; true if the checkbox for simple weapon proficiency is checked
 		martialWeaponsProf,	// boolean; true if the checkbox for martial weapon proficiency is checked
-		otherWeaponsProf,	// string; the content of the other weapon proficiencies field
+		otherWeaponsProf,	// array; the WeaponsList object names of those listed in the other weapon proficiencies field (or the literal string if not a recognized weapon)
 		toolProfs,   		// array; the contents of the tool fields, one field per array entry
+		toolProfsLC,   		// array; same as toolProfs, but all lowercase
 		languageProfs,   	// array; the contents of the language fields, one field per array entry
+		languageProfsLC,   	// array; same as languageProfs, but all lowercase
 		skillProfs,     	// array; the skills the character is proficient in, one skill name per array entry
+		skillProfsLC,   	// array; same as skillProfs, but all lowercase
+		skillExpertise,    	// array; the skills the character has expertise with, one skill name per array entry
+		skillExpertiseLC,  	// array; same as skillExpertise, but all lowercase
 		hasEldritchBlast,	// boolean; true if the character has the Eldritch Blast cantrips
-		choice,      		// string; the sub-choice of this magic item (empty string if no choice)
+		choice,      		// string; the sub-choice of this feat (empty string if no choice)
 	}
 	N.B. The first entry of both the toolProfs and languageProfs arrays is the contents of the 'More Proficiency' field
 
 	Other than using the 'v' variable, this function can be any JavaScript you want.
 	Common usage examples:
 		"return CurrentRace.known.indexOf('dwarf') !== -1;" // Test if race is a dwarf
-		"return classes.known.cleric;" // Test if character has any levels in the cleric class
+		"return classes.known.cleric ? true : false;" // Test if character has any levels in the cleric class
 		"return What('Dex') >= 13;" // Test if character has a Dexterity score of 13 or more
 */
 	allowDuplicates : true,

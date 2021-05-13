@@ -3115,7 +3115,7 @@ var Base_MagicItemsList = {
 		type : "armor (medium or heavy)",
 		rarity : "uncommon",
 		magicItemTable : "B",
-		description : "Mithral is a light, flexible metal. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or has a Strength requirement, the mithral version of the armor doesn't. A mithral chain shirt or breastplate can be worn under normal clothes. ",
+		description : "Mithral is a light, flexible metal. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or has a Strength requirement, the mithral version of the armor doesn't. A mithral chain shirt or breastplate can be worn under normal clothes.",
 		descriptionFull : "Mithral is a light, flexible metal. A mithral chain shirt or breastplate can be worn under normal clothes. If the armor normally imposes disadvantage on Dexterity (Stealth) checks or has a Strength requirement, the mithral version of the armor doesn't.",
 		allowDuplicates : true,
 		chooseGear : {
@@ -4766,7 +4766,7 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "legendary",
 		magicItemTable : "I",
-		description : "This beetle-shaped medallion gives me advantage on saves against spells. If I fail a save against a necromancy spell or an effect from an undead creature, I can use my reaction to expend 1 charge and succeed on the save instead. The scarab has 12 charges and crumbles into powder when the last is used. ",
+		description : "This beetle-shaped medallion gives me advantage on saves against spells. If I fail a save against a necromancy spell or an effect from an undead creature, I can use my reaction to expend 1 charge and succeed on the save instead. The scarab has 12 charges and crumbles into powder when the last is used.",
 		descriptionFull : "If you hold this beetle-shaped medallion in your hand for 1 round, an inscription appears on its surface revealing its magical nature. It provides two benefits while it is on your person:\n \u2022 You have advantage on saving throws against spells.\n \u2022 The scarab has 12 charges. If you fail a saving throw against a necromancy spell or a harmful effect originating from an undead creature, you can use your reaction to expend 1 charge and turn the failed save into a successful one. The scarab crumbles into powder and is destroyed when its last charge is expended.",
 		attunement : true,
 		savetxt : { adv_vs : ["spells"] },
