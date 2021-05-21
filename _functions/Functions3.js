@@ -1815,7 +1815,7 @@ function UpdateSheetDisplay() {
 			alignment : "align_fill",
 			width : 500,
 			font : "heading",
-			name : "Companion Page Change(s)",
+			name : "Companions",
 			elements : [{
 				type : "view",
 				align_children : "align_row",

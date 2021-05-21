@@ -761,8 +761,9 @@ var Base_ClassList = {
 				name : "Ki",
 				source : [["SRD", 27], ["P", 78]],
 				minlevel : 2,
-				description : "\n   " + "I can spend ki to fuel special actions (see third page)" + "\n   " + "I need to meditate for at least 30 min of a short rest for that short rest to restore ki",
-				usages : ["", 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+				description : "\n   " + "I can spend ki points to fuel special actions (see third page)" + "\n   " + "I need to meditate for at least 30 min of a short rest for that short rest to restore ki",
+				limfeaname : "Ki Points",
+				usages : levels.map(function (n) { return n < 2 ? "" : n }),
 				recovery : "short rest",
 				"flurry of blows" : {
 					name : "Flurry of Blows",
@@ -844,7 +845,7 @@ var Base_ClassList = {
 					source : [["SRD", 27], ["P", 79]],
 					description : " [1 ki point]" + desc([
 						"After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it",
-						"It has to succeed on a Con save or be stunned until the end of my next turn"
+						"It has to succeed on a Constitution save or be stunned until the end of my next turn"
 					])
 				},
 				autoSelectExtrachoices : [{

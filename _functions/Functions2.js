@@ -6099,8 +6099,8 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 			// define some variables that we can check against later or with the CurrentEvals
 			var WeaponText = inputText + " " + fields.Description;
 			var isDC = (/dc/i).test(fields.To_Hit_Bonus);
-			var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText));
-			var isWeapon = !isSpell || (isSpell && theWea && !(/cantrip|spell/).test(theWea.Type));
+			var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText)) ? true : false;
+			var isWeapon = !isSpell || (isSpell && theWea && !(/cantrip|spell/i).test(theWea.type));
 			var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
 			var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 			var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
@@ -6265,8 +6265,8 @@ function CalcAttackDmgHit(fldName) {
 	var isDC = (/dc/i).test(fields.To_Hit_Bonus), spTypeShort = isDC ? "dc" : "atk", spTypeFull = isDC ? "dc" : "attack";
 
 	// Gather some information on the weapon
-	var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText));
-	var isWeapon = !isSpell || (isSpell && theWea && !(/cantrip|spell/).test(theWea.Type));
+	var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText)) ? true : false;
+	var isWeapon = !isSpell || (isSpell && theWea && !(/cantrip|spell/i).test(theWea.type));
 	var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
 	var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 	var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
