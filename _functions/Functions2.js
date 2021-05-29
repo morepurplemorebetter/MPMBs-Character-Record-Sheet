@@ -5943,7 +5943,7 @@ function isProficientWithWeapon(WeaponName, theWea) {
 		return true; // No need to check further for natural weapons, spells, and 'alwaysprof'
 	} else if ((theWea.type.toLowerCase() == "simple" && tDoc.getField("Proficiency Weapon Simple").isBoxChecked(0)) || (theWea.type.toLowerCase() == "martial" && tDoc.getField("Proficiency Weapon Martial").isBoxChecked(0))) {
 		return true; // Proficient with the relevant type (simple/martial)
-	} else if (CurrentProfs.weapon.otherWea && RegExp(";(" + CurrentProfs.weapon.otherWea.finalProfs.join("s?|").replace(/ss\?\|/g, "s?|") + ");", "i").test(";" + [WeaponName, theWea.type].concat(theWea.list ? [theWea.list] : []).concat(theWea.baseWeapon ? [theWea.baseWeapon] : []).join(";") + ";")) {
+	} else if (CurrentProfs.weapon.otherWea && RegExp(";(" + (CurrentProfs.weapon.otherWea.finalProfs.join("s?|")  + "s?").replace(/ss\?(\||$)/g, "s?$1") + ");", "i").test(";" + [WeaponName, theWea.type].concat(theWea.list ? [theWea.list] : []).concat(theWea.baseWeapon ? [theWea.baseWeapon] : []).join(";") + ";")) {
 		return true; // Proficient with the weapon through an 'other weapons' proficiency
 	}
 	return false;

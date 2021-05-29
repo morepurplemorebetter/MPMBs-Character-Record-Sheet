@@ -258,6 +258,7 @@ extraLimitedFeatures : [{
 	recovery : "long rest", // REQUIRED //
 	usagescalc : "event.value = Math.max(1, What('Cha Mod'));", // OPTIONAL //
 	additional : "2d8", // OPTIONAL //
+	altResource : "SS 5+", // OPTIONAL //
 	addToExisting : true // OPTIONAL // ADDED v13.0.6
 }],
 /*	extraLimitedFeatures // OPTIONAL //
@@ -267,7 +268,7 @@ extraLimitedFeatures : [{
 	Use this attribute only if you have more than one limited feature to add and you already
 	used the default usages/recovery method described above.
 	Each object has to contain at least the `name`, `usages`, and `recovery` attributes.
-	The `usagescalc`, `additional`, and `addToExisting` attributes are optional.
+	The `usagescalc`, `additional`,  `altResource`, and `addToExisting` attributes are optional.
 
 	For an explanation of how the different attributes work, see the attributes by the same names above,
 	except for the following, which have a different name above:

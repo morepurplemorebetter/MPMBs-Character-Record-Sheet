@@ -4332,6 +4332,11 @@ function CalcSave() {
 	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var Sabi = QI ? 4 : 21 + prefix.length;
 	var Ability = Save.substring(0, Sabi - 1).slice(-3);
+	if (prefix && CurrentCompRace[prefix] && CurrentCompRace[prefix].savesLinked) {
+		// copy the total from the first page, ignoring any modifiers on this page
+		event.value = What(Ability + " ST Mod");
+		return;
+	}
 	var Mod = What(Save.substring(0, Sabi) + "Mod");
 
 	//get the proficiency bonus if applicable
@@ -6212,7 +6217,7 @@ function SetToManual_Button(noDialog) {
 		if (SetToManual_Dialog.mCla) {
 			var classString = What("Class and Levels");
 			if (classes.parsed.length < 2 && classString.indexOf(classes.totallevel) == -1) classString += " " + classes.totallevel;
-			CurrentVars.manual.classes = What("Class and Levels");
+			CurrentVars.manual.classes = What("Class and Levels") + " ";
 			Hide("Class Features Menu");
 		} else {
 			var newClassValue = What("Class and Levels");

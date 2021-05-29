@@ -1442,7 +1442,7 @@ var Base_ClassList = {
 				name : "Sneak Attack",
 				source : [["SRD", 39], ["P", 96]],
 				minlevel : 1,
-				description : "\n   " + "Once per turn, I can add damage to finesse/ranged attack if I have adv." + "\n   " + "I don't need adv. if a conscious ally is within 5 ft of the target and I don't have disadv.",
+				description : "\n   " + "Once per turn, I can add damage to a finesse/ranged weapon attack if I have advantage" + "\n   " + "I don't need adv. if a conscious ally is within 5 ft of the target and I don't have disadv.",
 				additional : levels.map(function (n) {
 					return Math.ceil(n / 2) + "d6";
 				}),
@@ -1482,7 +1482,7 @@ var Base_ClassList = {
 				name : "Uncanny Dodge",
 				source : [["SRD", 40], ["P", 96]],
 				minlevel : 5,
-				description : "\n   " + "As a reaction, I halve the damage of an attack from an attacker that I can see",
+				description : "\n   " + "As a reaction, I can halve the damage of an attack from an attacker that I can see",
 				action : ["reaction", ""]
 			},
 			"evasion" : {
@@ -2280,24 +2280,24 @@ var Base_ClassList = {
 				description : "\n   " + "I can choose one spell from the warlock spell list of each level mentioned above" + "\n   " + "I can cast these spells each once per long rest without needing to use a spell slot",
 				additional : ["", "", "", "", "", "", "", "", "", "", "6th level", "6th level", "6th and 7th level", "6th and 7th level", "6th, 7th, and 8th level", "6th, 7th, and 8th level", "6th, 7th, 8th, and 9th level", "6th, 7th, 8th, and 9th level", "6th, 7th, 8th, and 9th level", "6th, 7th, 8th, and 9th level"],
 				spellcastingBonus : [{
-					name : "Mystic Arcanum (6)",
+					name : "Mystic Arcanum (6th-level)",
 					"class" : "warlock",
 					level : [6, 6],
 					firstCol : "oncelr"
 				}, {
-					name : "Mystic Arcanum (7)",
+					name : "Mystic Arcanum (7th-level)",
 					"class" : "warlock",
 					level : [7, 7],
 					firstCol : "oncelr",
 					times : levels.map(function (n) { return n < 13 ? 0 : 1; })
 				}, {
-					name : "Mystic Arcanum (8)",
+					name : "Mystic Arcanum (8th-level)",
 					"class" : "warlock",
 					level : [8, 8],
 					firstCol : "oncelr",
 					times : levels.map(function (n) { return n < 15 ? 0 : 1; })
 				}, {
-					name : "Mystic Arcanum (9)",
+					name : "Mystic Arcanum (9th-level)",
 					"class" : "warlock",
 					level : [9, 9],
 					firstCol : "oncelr",

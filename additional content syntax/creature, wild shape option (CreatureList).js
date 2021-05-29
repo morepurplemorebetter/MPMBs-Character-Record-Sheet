@@ -404,6 +404,25 @@ CreatureList["purple crawler"] = {
 	and determine if the creature is proficient and/or has other modifiers.
 	Then it will check the proficiency box and/or fill the modifier field, as appropriate.
 */
+	savesLinked : true,
+/*	savesLinked // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether the total save bonus is the same (true) as the main character or not (false)
+	ADDED:	v13.0.6
+
+	Setting this to true will cause the totals for saving throws on the Companion page
+	to always be identical to those of the main character (on the 1st page).
+	The proficiency checkbox and modifier fields on the Companion page will be ignored.
+
+	It will effectively cause the `saves` attribute above to be overwritten on
+	the Companion page with the totals of the main character (the 1st page).
+	Even so, setting the `saves` attribute is still functional, as it will
+	be used to calculate saving throw proficiencies on the Wild Shape page.
+
+	This attribute has no affect on the Wild Shape page.
+
+	Setting this attribute to false is the same as not including this attribute.
+*/
 	senses : "Darkvision 60 ft",
 /*	senses	// REQUIRED //
 	TYPE:	string

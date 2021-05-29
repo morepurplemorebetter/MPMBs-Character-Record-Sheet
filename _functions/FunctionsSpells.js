@@ -120,10 +120,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	}
 	// If this spell is gained from an item, feat, or race, remove scaling effects
 	if (aCast && !aCast.allowUpCasting && (aCast.allowUpCasting === false || (/^(item|feat|race)$/i).test(aCast.typeSp) || (aCast.refType && (/^(item|feat|race)$/i).test(aCast.refType))) && (aSpell.level || aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
-		var removeRegex = /\+(\d+d)?\d+\/SL\b|\bSL used/ig
-		if (removeRegex.test(aSpell.description + aSpell.descriptionMetric)) {
-			aSpell.description = aSpell.description.replace("SL used", "level " + aSpell.level).replace(removeRegex, '').replace(/, within 30 ft of each other,|, each max 30 ft apart,|; \+\d+d\d+ at CL.*?17/ig, '');
-			if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace("SL used", "level " + aSpell.level).replace(removeRegex, '');
+		if (removeSpellUpcasting(aSpell)) {
 			aSpell.changesObj["Innate Spellcasting"] = "\n \u2022 Spell cast by magic items, from feats, or from racial traits can only be cast at the spell's level, not with higher level spell slots.";
 		}
 	}
@@ -261,6 +258,17 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 function fixSpellRangeOverflow(rangeStr) {
 	var testRx = typePF ? /S:\d+[,.]\d+[- /]?m (cone|cube)/i : /S:\d+[,.]?\d+[- /]?m (cone|cube)|S:\d+[,.]\d+[- /]?m rad/i;
 	return (testRx).test(rangeStr) ? rangeStr.trim().replace(/[- /]?m (con|cub)e/i, "m $1").replace(/[- /]?m rad/i, "m rad") : rangeStr;
+}
+
+// under certain conditions, we want to remove any upcasting from the spell's short description
+function removeSpellUpcasting(oSpell) {
+	var removeRegex = /\+(\d+d)?\d+\/\d*SL\b|\bSL used/ig
+	if (removeRegex.test(oSpell.description + oSpell.descriptionMetric)) {
+		oSpell.description = oSpell.description.replace("SL used", "level " + oSpell.level).replace(removeRegex, '').replace(/, within 30 ft of each other,|, each max 30 ft apart,|; \+\d+d\d+ at CL.*?17/ig, '');
+		if (oSpell.descriptionMetric) oSpell.descriptionMetric = oSpell.descriptionMetric.replace("SL used", "level " + oSpell.level).replace(removeRegex, '');
+		return true;
+	}
+	return false;
 }
 
 // call this on validation of the hidden spell remember field, to apply something to the spell line
