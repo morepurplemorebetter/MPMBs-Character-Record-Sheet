@@ -146,6 +146,7 @@ var Menus = {
 	"inventory" : "",
 	"background" : "",
 	"classfeatures" : "",
+	"classfeatures_tempClassesKnown" : [],
 	"chooselayers" : "",
 	"gear" : "",
 	"gearline" : "",

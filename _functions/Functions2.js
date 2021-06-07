@@ -8431,7 +8431,7 @@ function SetCreatureSize(prefix, sName, aSizes) {
 		aOptions.push(sSizeName);
 		oOptionsRef[sSizeName] = aSizes[i];
 	}
-	var sTooltip = sNamePl + " size " + (aOptions.length ? formatLineList(" can be ", aOptions, true) + "." : "is " + aOptions[0] + ".");
+	var sTooltip = sNamePl + " size " + (aOptions.length > 1 ? formatLineList("can be", aOptions, true) + "." : "is " + aOptions[0] + ".");
 	if(!prefix) sTooltip += "\n\nSelected size category will affect encumbrance on the second page.";
 	var bGoAsk = aSizes.length > 1;
 	if (bGoAsk) {

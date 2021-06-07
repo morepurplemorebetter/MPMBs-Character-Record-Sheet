@@ -209,7 +209,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.scoresMaximum) processStats(addIt, type, tipNm, uObj.scoresMaximum, abiScoresTxt, "maximums");
 
 		// spellcasting
-		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent, objNm);
+		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent, objNm, forceNonCurrent ? true : false);
 		if (addIt && CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform !== undefined)) {
 			CurrentUpdates.types.push("spells");
 			var aCast = CurrentSpells[useSpCasting];
@@ -603,6 +603,7 @@ function processBonusClassExtraChoices(bAddRemove, sType, aItems) {
 		} else if (CurrentFeatureChoices.bonus && CurrentFeatureChoices.bonus[sClass] && CurrentFeatureChoices.bonus[sClass][sSubclass] && CurrentFeatureChoices.bonus[sClass][sSubclass][sFea]) {
 			// remove
 			CurrentFeatureChoices.bonus[sClass][sSubclass][sFea] -= iBonus;
+			if (CurrentFeatureChoices.bonus[sClass][sSubclass][sFea] <= 0) delete CurrentFeatureChoices.bonus[sClass][sSubclass][sFea];
 			CurrentFeatureChoices = CleanObject(CurrentFeatureChoices); // remove any remaining empty objects
 		}
 	}
@@ -694,7 +695,7 @@ function classFeaChoiceBackwardsComp() {
 }
 
 // a function to create the CurrentSpells global variable entry
-function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
+function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 	type = GetFeatureType(type);
 	var fObjP = false;
 	var setCSobj = function(oName) {
@@ -706,13 +707,14 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
 	};
 	switch (type.toLowerCase()) {
 		case "classes":
-			var fObj = CurrentClasses[fObjName];
+			var fObj = forceNonCurrent && !CurrentClasses[fObjName] ? ClassList[fObjName] : CurrentClasses[fObjName];
+			if (!fObj) return false;
 			var aClass = classes.known[fObjName].name;
 			var aSubClass = classes.known[fObjName].subclass;
 			var sObj = setCSobj(fObjName);
-			sObj.name = fObj.fullname;
 			sObj.shortname = ClassList[aClass].spellcastingFactor || !aSubClass ? ClassList[aClass].name : ClassSubList[aSubClass].fullname ? ClassSubList[aSubClass].fullname : ClassSubList[aSubClass].subname;
 			sObj.level = classes.known[fObjName].level;
+			sObj.name = !forceNonCurrent ? fObj.fullname : !aSubClass ? sObj.shortname : ClassSubList[aSubClass].fullname ? ClassSubList[aSubClass].fullname : ClassList[aClass].name + " (" + ClassSubList[aSubClass].subname + ")";
 			if (sObj.typeSp == undefined) sObj.typeSp = "";
 			sObj.refType = "class";
 			break;
@@ -774,18 +776,20 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice) {
 }
 
 // process a spellcastingBonus feature
-function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice) {
+function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, forceNonCurrent) {
 	type = GetFeatureType(type);
 	var useSpName = choice && (type === "feats" || type === "items") ? parentName + "_-_" + choice : parentName;
-	if (!AddRemove && !CurrentSpells[useSpName]) return; // nothing to remove
-	// create the spellcasting object if it doesn't yet exist
-	var sObj = CurrentSpells[useSpName] ? CurrentSpells[useSpName] : CreateCurrentSpellsEntry(type, parentName, choice);
+	var sObj = CurrentSpells[useSpName];
+	if (!AddRemove && !sObj) return; // nothing to remove
 	// do something with the spellcastingBonus object
 	if (!AddRemove) { // removing the entry
 		delete sObj.bonus[srcNm];
 		// now see if the bonus object is empty and if so, delete the whole entry
 		if (!sObj.factor && !sObj.list && ObjLength(sObj.bonus) == 0) delete CurrentSpells[useSpName];
 	} else { // adding the entry
+		// create the spellcasting object if it doesn't yet exist
+		if (!CurrentSpells[useSpName]) sObj = CreateCurrentSpellsEntry(type, parentName, choice, forceNonCurrent);
+		if (!sObj) return; // failed to create CurrentSpells entry, so stop now
 		sObj.bonus[srcNm] = spBon;
 		// see if this wants to change the spellcasting ability
 		var spFeatItemLvl = false;
@@ -3439,16 +3443,15 @@ function applyExtrachoicesOfChoice(sClass, sProp, aChoice, bOnlyObject) {
 	var setProperty = function(objTo, objFrom, propNm) {
 		objTo[propNm] = objFrom && objFrom[propNm] ? objFrom[propNm] : objTo[propNm + "Remember"] ? objTo[propNm + "Remember"] : undefined;
 	}
-	// First do the `autoSelectExtrachoices` attribute, because it affects the next step
+	// Check if the autoSelectExtrachoices changes with the new selection
 	var oldAutoSelectExtrachoices = propFea.autoSelectExtrachoices ? propFea.autoSelectExtrachoices : false;
 	setProperty(propFea, propChoiceNew, 'autoSelectExtrachoices');
+	var bChangedAutoSelectExtrachoices = bOnlyObject ? false : oldAutoSelectExtrachoices.toSource() !== (propFea.autoSelectExtrachoices ? propFea.autoSelectExtrachoices : false).toSource();
+	// First remove extrachoices and autoSelectExtrachoices from the old choice before possibly overwritting it with options from the new choice
 	if (!bOnlyObject) {
-		var newAutoSelectExtrachoices = propFea.autoSelectExtrachoices ? propFea.autoSelectExtrachoices : false;
-		if (oldAutoSelectExtrachoices.toSource() !== newAutoSelectExtrachoices.toSource()) {
-			// remove the old autoSelectExtrachoices
+		// Remove the old autoSelectExtrachoices, if changed
+		if (bChangedAutoSelectExtrachoices) {
 			processClassFeatureExtraChoiceDependencies([classes.known[sClass].level, 0], sClass, sProp, { autoSelectExtrachoices : oldAutoSelectExtrachoices });
-			// apply the new autoSelectExtrachoices
-			processClassFeatureExtraChoiceDependencies([0, classes.known[sClass].level], sClass, sProp, propFea);
 		}
 		// Remove any extrachoices that were related to the old choice if there was a change
 		if (propChoiceOld && aChoice[0] !== aChoice[1] && propChoiceOld.extrachoices && propFea.extrachoices) {
@@ -3466,18 +3469,22 @@ function applyExtrachoicesOfChoice(sClass, sProp, aChoice, bOnlyObject) {
 	for (var i = 0; i < attrArray.length; i++) {
 		setProperty(propFea, propChoiceNew, attrArray[i]);
 	};
+	// Add the extrachoices offered in the choice to the parent object
 	if (propChoiceNew && propChoiceNew.extrachoices) {
-		// add the extrachoices offered in the choice to the parent object
 		for (var i = 0; i < propChoiceNew.extrachoices.length; i++) {
 			var xtrStr = propChoiceNew.extrachoices[i].toLowerCase();
 			if (propChoiceNew[xtrStr]) propFea[xtrStr] = propChoiceNew[xtrStr];
 		}
 	}
+	// Add the autoSelectExtrachoices offered in the choice to the parent object
 	if (propChoiceNew && propChoiceNew.autoSelectExtrachoices) {
-		// add the autoSelectExtrachoices offered in the choice to the parent object
 		for (var i = 0; i < propChoiceNew.autoSelectExtrachoices.length; i++) {
 			var xtrStr = propChoiceNew.autoSelectExtrachoices[i].extrachoice;
 			if (xtrStr && propChoiceNew[xtrStr]) propFea[xtrStr] = propChoiceNew[xtrStr];
 		}
+	}
+	// If not only changing the object, now process the new autoSelectExtrachoices, if it changed
+	if (!bOnlyObject && bChangedAutoSelectExtrachoices) {
+		processClassFeatureExtraChoiceDependencies([0, classes.known[sClass].level], sClass, sProp, propFea);
 	}
 }

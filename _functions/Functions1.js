@@ -5582,8 +5582,8 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
-//Make menu for 'choose class feature' button and parse it to Menus.classfeatures
-function MakeClassMenu() {
+// Make menu for 'choose class feature' button and parse it to Menus.classfeatures
+function MakeClassMenu(bKeepTempClassesKnown) {
 	var gatherVars, hasEldritchBlast, isFS = false, selFS = GetFightingStyleSelection();
 	var testPrereqs = function(toEval, objNm, feaNm) {
 		if (!gatherVars) {
@@ -5743,6 +5743,7 @@ function MakeClassMenu() {
 
 	var bonusClassFeatures = getBonusClassExtraChoices();
 	if (bonusClassFeatures) {
+		Menus.classfeatures_tempClassesKnown = [];
 		ClassMenu.push({ cName : "-" }); // Add a divider
 		for (var i = 0; i < bonusClassFeatures.length; i++) {
 			var oBonus = bonusClassFeatures[i];
@@ -5750,12 +5751,32 @@ function MakeClassMenu() {
 			cl = oBonus.subclass ? ClassSubList[oBonus.subclass] : ClassList[aClass];
 			prop = oBonus.feature;
 			propFea = cl.features[prop];
+			propFea.extrachoices.sort();
 			toTest = GetFeatureChoice("classes", aClass, prop, true);
 			toTestNr = nrFoundInExtraChoices(toTest, propFea.extrachoices);
 			var clName = !oBonus.subclass ? cl.name : cl.fullname ? cl.fullname : ClassList[aClass].name + " (" + cl.subname + ")";
 			var menuName = "Bonus " + clName + " " + propFea.extraname + " (selected " + toTestNr + " of " + oBonus.bonus + ")";
 			var sMoreReturn = "#extrabonus" + (oBonus.subclass ? "#" + oBonus.subclass : "");
+			// temporarily add the class to classes.known, so that prereq scripts will not produce errors
+			var tempClassesKnown = false;
+			if (!classes.known[aClass]) {
+				classes.known[aClass] = {
+					name : aClass,
+					level : 0,
+					subclass : oBonus.subclass ? oBonus.subclass : ""
+				}
+				if (bKeepTempClassesKnown) {
+					Menus.classfeatures_tempClassesKnown.push(aClass);
+				} else {
+					tempClassesKnown = true;
+				}
+			} else if (oBonus.subclass && !classes.known[aClass].subclass && Menus.classfeatures_tempClassesKnown.indexOf(aClass) !== -1) {
+				classes.known[aClass].subclass = oBonus.subclass;
+			}
 			menuLVL3(ClassMenu, menuName, propFea.extrachoices, aClass, prop, "extra", propFea, toTest, sMoreReturn);
+			if (tempClassesKnown) {
+				delete classes.known[aClass];
+			}
 		}
 	}
 
@@ -5773,11 +5794,15 @@ function MakeClassMenu() {
 	}
 };
 
-//call the Class Features menu and do something with the results
+// Call the Class Features menu and do something with the results
 function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 	// first see if we have something to do
-	var MenuSelection = Input ? Input : getMenu("classfeatures");
-	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[4] == "stop") return;
+	var MenuSelection = Input;
+	if (!Input) {
+		MakeClassMenu(true);
+		MenuSelection = getMenu("classfeatures");
+	}
+	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[4] == "stop") return cleanTempClassesKnown();
 
 	// initialize some variables
 	var triggerIsMenu = event.target && event.target.name && event.target.name == "Class Features Menu";
@@ -5797,14 +5822,14 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 		var unknownClass = false;
 	}
 	var propFeaCs = propFea ? propFea[choice] : false;
-	if (!propFea || !propFeaCs) return; // no objects to process, so go back
+	if (!propFea || !propFeaCs) return cleanTempClassesKnown(); // no objects to process, so go back
 
 	var clLvl = unknownClass ? propFea.minlevel : classes.known[aClass].level;
 	var clLvlOld = unknownClass ? propFea.minlevel : !triggerIsMenu && Input && classes.old[aClass] ? classes.old[aClass].classlevel : clLvl;
 	if (!unknownClass && propFea.minlevel && Math.max(clLvl, clLvlOld) < propFea.minlevel) {
 		// Trying to process a class feature for which there is no high enough level
 		if (!extra) { // If this is not an 'extrachoice', stop now
-			return;
+			return cleanTempClassesKnown();
 		} else { // Set both current and old level to the minimal required level
 			clLvl = propFea.minlevel;
 			clLvlOld = propFea.minlevel;
@@ -5821,7 +5846,7 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 		// if removing, first check if it actually exists
 		if (!addIt && GetFeatureChoice("classes", aClass, prop, true).indexOf(choice) == -1) {
 			thermoM(thermoTxt, true); // Stop progress bar
-			return;
+			return cleanTempClassesKnown();
 		};
 
 		// apply the common attributes of the feature
@@ -5870,7 +5895,18 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 		var feaStringOld = ParseClassFeature(aClass, prop, clLvlOld, false, choiceOld, Fea, true);
 		applyClassFeatureText("replace", ["Class Features"], feaStringOld, feaString, false);
 	}
+
+	cleanTempClassesKnown();
+
 	thermoM(thermoTxt, true); // Stop progress bar
+}
+
+// Delete the temporary additions to classes.known, if any
+function cleanTempClassesKnown() {
+	for (var i = 0; i < Menus.classfeatures_tempClassesKnown.length; i++) {
+		delete classes.known[Menus.classfeatures_tempClassesKnown[i]];
+	}
+	Menus.classfeatures_tempClassesKnown = [];
 }
 
 // Set the choice for other class features dependent on the choice of this class feature
