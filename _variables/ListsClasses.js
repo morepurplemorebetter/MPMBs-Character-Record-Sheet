@@ -105,7 +105,7 @@ var Base_ClassList = {
 				additional : levels.map(function (n) {
 					return "+" + (n < 9 ? 2 : n < 16 ? 3 : 4) + " melee damage";
 				}),
-				usages : [2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, "\u221E\u00D7 per "],
+				usages : [2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, "\u221E\xD7 per "],
 				recovery : "long rest",
 				action : ["bonus action", " (start/end)"],
 				dmgres : [["Bludgeoning", "Bludgeon. (in rage)"], ["Piercing", "Piercing (in rage)"], ["Slashing", "Slashing (in rage)"]],
@@ -547,7 +547,7 @@ var Base_ClassList = {
 					" \u2022 I can choose whether equipment falls to the ground, merges, or stays worn",
 					" \u2022 I revert if out of time or unconscious; if KOd by damage, excess damage carries over"
 				]),
-				usages : [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, "\u221E\u00D7 per "],
+				usages : [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, "\u221E\xD7 per "],
 				recovery : "short rest",
 				additional : levels.map(function (n) {
 					if (n < 2) return "";
@@ -1706,7 +1706,7 @@ var Base_ClassList = {
 					var splls = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15][idx];
 					var slots = n < 2 ? 1 : n < 11 ? 2 : n < 17 ? 3 : 4;
 					var sllvl = n < 3 ? 1 : n < 5 ? 2 : n < 7 ? 3 : n < 9 ? 4 : 5;
-					return cantr + " cantrips \u0026 " + splls + " spells known; " + slots + "\u00D7 " + Base_spellLevelList[sllvl] + " spell slot";
+					return cantr + " cantrips \u0026 " + splls + " spells known; " + slots + "\xD7 " + Base_spellLevelList[sllvl] + " spell slot";
 				})
 			},
 			"subclassfeature1" : {
@@ -3342,7 +3342,7 @@ var Base_ClassSubList = {
 				calcChanges : {
 					atkCalc : [
 						function (fields, v, output) {
-							if (v.thisWeapon[4].indexOf("wizard") !== -1) {
+							if (v.thisWeapon[4].indexOf("wizard") !== -1 && SpellsList[v.thisWeapon[3]] && SpellsList[v.thisWeapon[3]].school === "Evoc") {
 								output.extraDmg += What('Int Mod');
 							};
 						},
@@ -3350,74 +3350,7 @@ var Base_ClassSubList = {
 					],
 					spellAdd : [
 						function (spellKey, spellObj, spName) {
-							if (spName.indexOf("wizard") == -1 || !What("Int Mod") || Number(What("Int Mod")) <= 0) return;
-							var lookForDie;
-							switch (spellKey) {
-								case "fire shield" :
-									spellObj.description = spellObj.description.replace(/ gives| and/ig, ";").replace("the same dmg", "same");
-								case "flame blade" :
-									spellObj.description = spellObj.description.replace("to make a ", ":");
-								case "mordenkainen's sword" :
-									spellObj.description = spellObj.description.replace(" makes melee spell attacks", ", melee spell atk");
-								case "melf's minute meteors" :
-									spellObj.description = spellObj.description.replace("casting/bns a send up to two", "cast/bns send 1-2");
-								case "crusader's mantle" :
-								case "magic missile" :
-								case "scorching ray" :
-									spellObj.description += "; +" + What("Int Mod") + " dmg once";
-									return true;
-								case "wall of light" :
-								case "wrath of nature" :
-									spellObj.description = spellObj.description.replace(/ dmg|; see B/gi, "") + "; 1\xD7 +" + What("Int Mod") + " dmg";
-									return true;
-								case "witch bolt" :
-									spellObj.description = spellObj.description.replace("Spell attack", "Spell atk").replace("Lightning", "Lightn.") + "; 1\xD7 +" + What("Int Mod") + " dmg";
-									return true;
-								case "maelstrom" :
-									spellObj.description = spellObj.description.replace("starting turn in save or", "starting save").replace(" and", ",") + "; 1\xD7 +" + What("Int Mod") + " dmg";
-									return true;
-								case "wall of fire" :
-									spellObj.description = spellObj.description.replace("and", "\u0026").replace("save halves; see B", "save half") + "; 1\xD7 +" + What("Int Mod") + " dmg";
-									return true;
-								case "whirlwind" :
-									spellObj.description = spellObj.description.replace("see book", "see B") + "; 1\xD7 +" + What("Int Mod") + " dmg";
-									return true;
-								case "crown of stars" :
-									spellObj.description = spellObj.description.replace("bonus action", "bns") + "; 1\xD7 +" + What("Int Mod") + " dmg";
-									return true;
-								case "dawn" :
-									spellObj.description = spellObj.description.replace("bns a move it", "bns move") + "; 1\xD7 +" + What("Int Mod") + " dmg";
-									return true;
-								case "maddening darkness" :
-									spellObj.description = spellObj.description.replace("save halves", "save half") + "; 1\xD7+" + What("Int Mod") + " dmg";
-									return true;
-								case "sickening radiance" :
-									spellObj.description = spellObj.description.replace("1 level of exhaustion", "1 lvl exhaust.") + "; 1\xD7+" + What("Int Mod") + " dmg";
-									return true;
-								case "blade barrier" : // doesn't fit...
-									return true;
-								case "chaos bolt-uass" :
-									spellObj.description = spellObj.description.replace(" of target", "");
-								case "chromatic orb" :
-								case "chaos bolt" :
-									lookForDie = "d8";
-									break;
-								case "melf's acid arrow" :
-								case "vitriolic sphere" :
-									lookForDie = "d4";
-									break;
-								case "holy weapon" :
-									lookForDie = "4d8";
-									break;
-								case "destructive wave" :
-									lookForDie = "5d6";
-									break;
-							}
-							if (lookForDie) {
-								spellObj.description = spellObj.description.replace(lookForDie, lookForDie + "+" + What("Int Mod"));
-								return true;
-							}
-							if (!spellObj.psionic && spellObj.school == "Evoc") return genericSpellDmgEdit(spellKey, spellObj, "\\w+\\.?", "Int", true);
+							if (spName.indexOf("wizard") !== -1 && !spellObj.psionic && spellObj.school === "Evoc") return genericSpellDmgEdit(spellKey, spellObj, "\\w+\\.?", "Int", true);
 						},
 						"I add my Intelligence modifier to a single damage roll of any wizard evocation spell I cast."
 					]

@@ -159,36 +159,38 @@ function setPrototypes() {
 	Number.prototype.toUpperCase = function () {
 		return this.toString().toUpperCase();
 	};
+	RegExp.prototype.toInnerString = function () {
+		return this.toString().replace(/^\/|\/\w*$/g, '');
+	};
 	RegExp.prototype.indexOf = function (searchValue, fromIndex) {
-		return this.toString().indexOf(searchValue, fromIndex);
+		return this.toInnerString().indexOf(searchValue, fromIndex);
 	};
 	RegExp.prototype.match = function (regexpObj) {
-		return this.toString().match(regexpObj);
+		return this.toInnerString().match(regexpObj);
 	};
 	RegExp.prototype.replace = function(oldstr, newstr) {
-		var a = this.toString();
-		return RegExp(a.replace(/^\/|\/\w*$/g, "").replace(oldstr, newstr), a.match(/\/\w*$/)[0].replace("/", ""));
+		return RegExp(this.toInnerString().replace(oldstr, newstr), this.toString().replace(/.*\/(\w*)$/, "$1"));
 	};
 	RegExp.prototype.search = function (regexpObj) {
-		return this.toString().search(regexpObj);
+		return this.toInnerString().search(regexpObj);
 	};
 	RegExp.prototype.slice = function (beginSlice, endSlice) {
-		return this.toString().slice(beginSlice, endSlice);
+		return this.toInnerString().slice(beginSlice, endSlice);
 	};
 	RegExp.prototype.split = function (separator, limit) {
-		return this.toString().split(separator, limit);
+		return this.toInnerString().split(separator, limit);
 	};
 	RegExp.prototype.substring = function (indexStart, indexEnd) {
-		return this.toString().substring(indexStart, indexEnd);
+		return this.toInnerString().substring(indexStart, indexEnd);
 	};
 	RegExp.prototype.substr = function (start, length) {
-		return this.toString().substr(start, length);
+		return this.toInnerString().substr(start, length);
 	};
 	RegExp.prototype.toLowerCase = function () {
-		return this.toString().toLowerCase();
+		return this.toInnerString().toLowerCase();
 	};
 	RegExp.prototype.toUpperCase = function () {
-		return this.toString().toUpperCase();
+		return this.toInnerString().toUpperCase();
 	};
 	Array.prototype.match = function (regexpObj) {
 		return this.toString().match(regexpObj);
@@ -252,7 +254,7 @@ function PickDropdown(field, FldValue) {
 	var thisFld = tDoc.getField(field);
 	if (!thisFld) return;
 	if (!isNaN(FldValue) && thisFld.type === "combobox") {
-		tDoc.getField(field).currentValueIndices = Number(FldValue);
+		if (FldValue >= 0) tDoc.getField(field).currentValueIndices = Number(FldValue);
 	} else {
 		Value(field, FldValue);
 	}

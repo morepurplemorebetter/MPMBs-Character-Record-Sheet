@@ -10,16 +10,22 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpeci
 	var curStat = false;
 	// Get the column object
 	for (var i = 1; i < CurrentStats.cols.length; i++) {
-		if (CurrentStats.cols[i].type == type) {
+		if (CurrentStats.cols[i].type === type) {
 			curStat = CurrentStats.cols[i];
 			break;
 		}
 	}
-	if (!curStat) return;
+	if (!curStat && type === "background") {
+		ASaddColumn("Backgr-\nound", true);
+		i = CurrentStats.cols.length - 1;
+		curStat = CurrentStats.cols[i];
+	} else if (!curStat) {
+		return;
+	}
 	var imprTxtArr = [];
 	// Set the ability score changes to the CurrentStats global variable
 	for (var s = 0; s < scoresA.length; s++) {
-		if (type == "race") curStat.scores[s] = 0;
+		if (type === "race") curStat.scores[s] = 0;
 		if (!scoresA[s]) continue;
 		if (AddRemove && !dialogTxt && s < 7) {
 			var theScoreName = s < 6 ? AbilityScores.names[s] : What("HoSRememberState");
@@ -40,11 +46,11 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpeci
 				var thisStat = CurrentStats[isSpecial][s][a];
 				if (thisStat > curStat.scores[s]) curStat.scores[s] = thisStat;
 			}
-			if (type == "maximum" && !curStat.scores[s]) curStat.scores[s] = 20;
+			if (type === "maximum" && !curStat.scores[s]) curStat.scores[s] = 20;
 		} else {
 			if (AddRemove) {
 				curStat.scores[s] += scoresA[s];
-			} else if (type != "race") {
+			} else if (type !== "race") {
 				curStat.scores[s] -= scoresA[s];
 			}
 		}
@@ -60,14 +66,19 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpeci
 	// Set the descriptive text to the CurrentStats global variable
 	var useDialogTxt = dialogTxt ? dialogTxt : formatLineList("", imprTxtArr);
 	if (AddRemove) {
-		// If the entry already exists and contains the exact text that we are about to add, this whole addition should be skipped
-		if (CurrentStats.txts[inType][NameEntity] && CurrentStats.txts[inType][NameEntity].indexOf(useDialogTxt) !== -1) {
+		// If the entry doesn't already exist or doesn't contain the text, add it
+		if (!CurrentStats.txts[inType][NameEntity] || CurrentStats.txts[inType][NameEntity].indexOf(useDialogTxt) === -1) {
+			CurrentStats.txts[inType][NameEntity] = (!dialogTxt && CurrentStats.txts[inType][NameEntity] ? CurrentStats.txts[inType][NameEntity] + "; " : "") + useDialogTxt;
+		} else if (!dialogTxt && CurrentStats.txts[inType][NameEntity].indexOf(useDialogTxt) !== -1) {
+			// If the entry already exists and contains the exact text that we are about to add, which isn't predetermined, skip it entirely
 			CurrentStats = eval(What("CurrentStats.Stringified"));
 			return;
 		}
-		CurrentStats.txts[inType][NameEntity] = (!dialogTxt && CurrentStats.txts[inType][NameEntity] ? CurrentStats.txts[inType][NameEntity] + "; " : "") + useDialogTxt;
 	} else {
 		delete CurrentStats.txts[inType][NameEntity];
+	}
+	if (!AddRemove && type === "background" && !ObjLength(CurrentStats.txts.background) && Number(curStat.scores.join("")) === 0) {
+		CurrentStats.cols.splice(i, 1);
 	}
 	SetStringifieds("stats");
 	CurrentUpdates.types.push("stats" + inType);
@@ -119,7 +130,8 @@ function initiateCurrentStats(forceIt) {
 			"race" : {},
 			"feats" : {},
 			"items" : {},
-			"magic" : {}
+			"magic" : {},
+			"background" : {}
 		},
 		"overrides" : [{},{},{},{},{},{},{}],
 		"maximums" :  [{},{},{},{},{},{},{}],
@@ -198,6 +210,11 @@ function AbilityScores_Button(onlySetTooltip) {
 			title : "Other magic ability score boosts",
 			loc : "right",
 			txt : ""
+		},
+		background : {
+			title : "Background ability score improvements",
+			loc : "left",
+			txt : ""
 		}
 	};
 
@@ -214,7 +231,7 @@ function AbilityScores_Button(onlySetTooltip) {
 		refTxt.push(clHead + primeAbi);
 		// String for ASI from class level
 		var imprLVL = Math.min(classes.known[aClass].level, tClass.improvements.length);
-		if (tClass.improvements[imprLVL - 1]) asiTxt.push(clHead + "\u00D7" + tClass.improvements[imprLVL - 1]);
+		if (tClass.improvements[imprLVL - 1]) asiTxt.push(clHead + "\xD7" + tClass.improvements[imprLVL - 1]);
 	}
 	if (refTxt.length) {
 		refTxt.sort();
@@ -1061,7 +1078,7 @@ function AbilityScores_Button(onlySetTooltip) {
 }
 
 // a function to ask the user for a new column caption and add that column
-function ASaddColumn() {
+function ASaddColumn(inputName, isBackground) {
 	var diaHead = "Give the new column an unique caption";
 	var diaText = "The field is intentionally small so that you have an idea of how big the caption can be. If something doesn't fit nicely, it will definitely not display correctly in the ability score dialog.\n\nIf you include the word 'override' in the caption, the column will be treated as an overriding column instead of an adding column. This means that a value will be used if higher than the other values added together.";
 	var diaText2 = "If you leave the above field blank, no column will be created.";
@@ -1128,12 +1145,14 @@ function ASaddColumn() {
 			}]
 		}
 	};
-	if (app.execDialog(theDialog) != "ok" || !theDialog.column) return;
-	CurrentStats.cols.push({
-		type : 'extra',
-		name : theDialog.column,
-		scores : [0,0,0,0,0,0,0]
-	});
+	var newColName = inputName ? inputName : app.execDialog(theDialog) === "ok" && theDialog.column ? theDialog.column : false;
+	if (newColName) {
+		CurrentStats.cols.push({
+			type : isBackground ? 'background' : 'extra',
+			name : newColName,
+			scores : [0,0,0,0,0,0,0]
+		});
+	}
 }
 
 // a function to ask for the user which column to remove

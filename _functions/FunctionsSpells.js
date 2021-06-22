@@ -106,6 +106,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	var foundSpell = SpellsList[theSpl];
 	var aSpell = { changesObj : {} };
 	if (!foundSpell) return aSpell;
+	var aDescrAttr = ["description", "descriptionMetric", "descriptionShorter", "descriptionShorterMetric"];
 	var aCast = theCast && CurrentSpells[theCast] ? CurrentSpells[theCast] : "";
 	for (var key in foundSpell) aSpell[key] = foundSpell[key];
 	// set the firstCol attribute so the CurrentEval can change it
@@ -114,8 +115,10 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
 		aSpell.components = "M\u0192";
 		aSpell.compMaterial = "Spells cast by magic items don't require any components other than the magic item itself.";
-		aSpell.description = aSpell.description.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
-		if (aSpell.descriptionMetric) aSpell.descriptionMetric = aSpell.descriptionMetric.replace(/ \(\d+ ?gp( cons\.?)?\)/i, '');
+		aDescrAttr.forEach (function (attr) {
+			if (!aSpell[attr]) return;
+			aSpell[attr] = aSpell[attr].replace(/ \(\d+k? ?gp( cons\.?)?\)/i, '');
+		})
 		aSpell.changesObj["Magic Item"] = "\n \u2022 Spells cast by magic items don't require any components except the magic item itself, unless otherwise specified in the magic item's description.";
 	}
 	// If this spell is gained from an item, feat, or race, remove scaling effects
@@ -136,6 +139,13 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 			aSpell[key] = theOver[key];
 		}
 	}
+
+	// Change some things into metric if set to do so
+	if (What("Unit System") === "metric") {
+		aSpell.description = aSpell.descriptionMetric ? aSpell.descriptionMetric : ConvertToMetric(aSpell.description, 0.5);
+		aSpell.range = aSpell.rangeMetric ? aSpell.rangeMetric : ConvertToMetric(aSpell.range, 0.5);
+	}
+
 	// Update the spell for the caster level of the character (if not manually added)
 	if (CurrentCasters.amendSpDescr && aCast) {
 		// apply cantrip die
@@ -174,13 +184,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 		}
 	}
 
-	// Change some things into metric if set to do so
-	if (What("Unit System") === "metric") {
-		aSpell.description = aSpell.descriptionMetric ? aSpell.descriptionMetric : ConvertToMetric(aSpell.description, 0.5);
-		aSpell.range = aSpell.rangeMetric ? aSpell.rangeMetric : ConvertToMetric(aSpell.range, 0.5);
-	}
-
-	if (CurrentEvals.spellAdd) {
+	if (CurrentEvals.spellAdd && CurrentCasters.allowSpellAdd) {
 		for (var aFunct in CurrentEvals.spellAdd) {
 			var theFunct = CurrentEvals.spellAdd[aFunct];
 			if (typeof theFunct !== 'function') continue;
@@ -230,7 +234,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 
 		if (ttSpellObj.time) spTooltip += "\n  Casting Time:  " + ttSpellObj.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
 
-		if (ttSpellObj.range) spTooltip += "\n  Range:  " + ttSpellObj.range;
+		if (ttSpellObj.range) spTooltip += "\n  Range:  " + ttSpellObj.range.replace(/s: */i, "self: ").replace(/rad\b/i, "radius");
 
 		if (ttSpellObj.components) spTooltip += "\n  Components:  " + ttSpellObj.components + (ttSpellObj.compMaterial ? " (" + ttSpellObj.compMaterial.substr(0,1).toLowerCase() + ttSpellObj.compMaterial.substr(1) + ")" : "");
 
@@ -262,13 +266,17 @@ function fixSpellRangeOverflow(rangeStr) {
 
 // under certain conditions, we want to remove any upcasting from the spell's short description
 function removeSpellUpcasting(oSpell) {
+	var bReturn = false;
 	var removeRegex = /\+(\d+d)?\d+\/\d*SL\b|\bSL used/ig
-	if (removeRegex.test(oSpell.description + oSpell.descriptionMetric)) {
-		oSpell.description = oSpell.description.replace("SL used", "level " + oSpell.level).replace(removeRegex, '').replace(/, within 30 ft of each other,|, each max 30 ft apart,|; \+\d+d\d+ at CL.*?17/ig, '');
-		if (oSpell.descriptionMetric) oSpell.descriptionMetric = oSpell.descriptionMetric.replace("SL used", "level " + oSpell.level).replace(removeRegex, '');
-		return true;
-	}
-	return false;
+	["description", "descriptionMetric", "descriptionShorter", "descriptionShorterMetric"].forEach (function (attr) {
+		if ( !oSpell[attr] || !removeRegex.test(oSpell[attr]) ) return;
+		oSpell[attr] = oSpell[attr]
+			.replace("SL used", "level " + oSpell.level)
+			.replace(removeRegex, '')
+			.replace(/, within (30 ft|10 m) of each other,?|, each max (30 ft|10 m) apart,?|; \+\d+d\d+ at CL.*?17/ig, '');
+		bReturn = true;
+	})
+	return bReturn;
 }
 
 // call this on validation of the hidden spell remember field, to apply something to the spell line
@@ -436,7 +444,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			//set the spell book name and page
 			var parseSrc = parseSource(aSpell.source);
 			var spBook = parseSrc ? parseSrc[0][0] : "";
-			if (spBook === "SRD") spBook = "R";
+			if (spBook === "SRD") spBook = "S";
 			var spPage = parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
 			Value(base.replace("remember", "book"), spBook.substr(0,1), aSpell.tooltipSource);
 			Value(base.replace("remember", "page"), spPage, aSpell.tooltipSource);
@@ -1310,7 +1318,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 		bIncL : [],
 		glossary : false,
 		dashEmptyFields : true,
-		amendSpellDescriptions : false,
+		amendSpellDescriptions : true,
 
 		initialize : function (dialog) {
 			//set the ExcLuded list
@@ -1324,7 +1332,8 @@ function DefineSpellSheetDialogs(force, formHeight) {
 				"IncL" : {},
 				"Glos" : this.glossary,
 				"Dash" : this.dashEmptyFields,
-				"Amnd" : this.amendSpellDescriptions
+				"Amnd" : this.amendSpellDescriptions,
+				"SAdd" : this.allowSpellAdd
 			});
 
 			//set the IncLuded list
@@ -1359,6 +1368,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			}
 			this.dashEmptyFields = oResult["Dash"];
 			this.amendSpellDescriptions = oResult["Amnd"];
+			this.allowSpellAdd = oResult["SAdd"];
 		},
 
 		BTRA : function (dialog) {
@@ -1608,6 +1618,10 @@ function DefineSpellSheetDialogs(force, formHeight) {
 					type : "check_box",
 					item_id : "Amnd",
 					name : "Apply character level and spellcasting ability to spell description (i.e. set cantrip damage)"
+				}, {
+					type : "check_box",
+					item_id : "SAdd",
+					name : "Allow features to dynamically change spells (e.g. allow a feature to add Charisma modifier to fire damage spells)"
 				}, {
 					type : "check_box",
 					item_id : "Dash",
@@ -3264,6 +3278,7 @@ function AskUserSpellSheet() {
 			CurrentCasters.glossary = spDias.sheetOrder.glossary;
 			CurrentCasters.emptyFields = !spDias.sheetOrder.dashEmptyFields;
 			CurrentCasters.amendSpDescr = spDias.sheetOrder.amendSpellDescriptions;
+			CurrentCasters.allowSpellAdd = spDias.sheetOrder.allowSpellAdd;
 		}
 		thermoM(0.5); //progress the progress dialog so that it looks like something is happening (don't close it yet)
 	}
@@ -3945,8 +3960,8 @@ function ParseSpellMenu() {
 		["with a Checkbox", "checkbox"],
 		["with an 'Always Prepared' Checkbox", "markedbox"],
 		["with 'At Will'", "atwill"],
-		["with '1\u00D7 Long Rest'", "oncelr"],
-		["with '1\u00D7 Short Rest'", "oncesr"],
+		["with '1\xD7 Long Rest'", "oncelr"],
+		["with '1\xD7 Short Rest'", "oncesr"],
 		["Ask me for the first column", "askuserinput"]
 	]
 	//add a menu with a changed name
@@ -4144,8 +4159,8 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		["with a Checkbox", "checkbox"],
 		["with an 'Always Prepared' Checkbox", "markedbox"],
 		["with 'At Will'", "atwill"],
-		["with '1\u00D7 Long Rest'", "oncelr"],
-		["with '1\u00D7 Short Rest'", "oncesr"],
+		["with '1\xD7 Long Rest'", "oncelr"],
+		["with '1\xD7 Short Rest'", "oncesr"],
 		["Ask me for the first column", "askuserinput"]
 	];
 	//make an array of the default options for first column
@@ -4154,8 +4169,8 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		["to a Checkbox", "checkbox"],
 		["to an 'Always Prepared' Checkbox", "markedbox"],
 		["to 'At Will'", "atwill"],
-		["to '1\u00D7 Long Rest'", "oncelr"],
-		["to '1\u00D7 Short Rest'", "oncesr"],
+		["to '1\xD7 Long Rest'", "oncelr"],
+		["to '1\xD7 Short Rest'", "oncesr"],
 		["Ask me for the first column", "askuserinput"]
 	];
 
@@ -5526,298 +5541,173 @@ function getSpellcastingAbility(theCast) {
 // dmgType has to be already escaped for use in regular expressions
 // ability has to be the three-letter abbreviation of an ability starting with a capital, a number, or dice type (e.g. '1d8'). Anything else will cause the function call to fail (nothing happens)
 function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, onlyRolls) {
+	if (!spellKey || !SpellsList[spellKey] || !spellObj || !dmgType || (spellObj.dynamicDamageBonus && spellObj.dynamicDamageBonus.doNotProcess)) return;
 	var isDieType = (/^\d*d\d+$/i).test(ability), addDieType;
 	var abiMod = isDieType ? ability.replace(/^1d(\d+)$/i, "d$1") : !isNaN(ability) ? ability : Number(What(ability + " Mod"));
-	// Stop now if there is nothing to add
+
+	// Stop now if there is nothing (positive) to add
 	if ((isNaN(ability) && abiMod < 1) || abiMod === 0) return;
-	// Some spells need to exclude something at the start of their description so the damage is added to the right part.
-	var special1stRxGrp = "( )";
-	switch (spellKey) {
-		case "holy weapon" :
-			special1stRxGrp = "(Wea .*Radiant dmg.*?)";
-			break;
+
+	// See if we should use the defined 'shorter' spell description
+	var isMetric = What("Unit System") === "metric";
+	var useSpellDescr = spellObj.description;
+	var origSpellDescr = isMetric && SpellsList[spellKey].descriptionMetric ? SpellsList[spellKey].descriptionMetric : SpellsList[spellKey].description;
+	if ( !spellObj.genericSpellDmgEdit && spellObj.description === origSpellDescr ) {
+		// This object hasn't previously passed through this function, and uses its default description, so we should see if we should use the defined 'shorter' spell description
+		if ( !isMetric && spellObj.descriptionShorter ) {
+			useSpellDescr = spellObj.descriptionShorter
+		} else if ( isMetric  && (spellObj.descriptionShorterMetric || spellObj.descriptionShorter) ) {
+			useSpellDescr = spellObj.descriptionShorterMetric ? spellObj.descriptionShorterMetric : ConvertToMetric(spellObj.descriptionShorter, 0.5);
+		}
 	}
-	// Create the matching regex with non-capturing inner groups and doesn't use "g" because match() won't work
-	var tRegex = RegExp(special1stRxGrp + "((?:\\+?\\d+d?\\d*)+)((?:\\+\\d+d?\\d*\\/(?:\\d*SL|PP|extra PP))?(?:\\+spell(?:casting)? (?:ability )?mod(?:ifier)?|(?:\\+|-)\\d+ \\(.{3}\\))? (?:" + dmgType + ") (?:dmg|damage)(?: per \\w+| each)?)", "i");
-	var tRxMatch = spellObj.description.match(tRegex);
-	// Stop now if no match or a match but not for any dice while onlyRolls == true
-	if (!tRxMatch || (onlyRolls && !(/\d+d\d+/i).test(tRxMatch[2]))) return;
-	if (isDieType) {
-		// (Fix) some variables if adding dice istead of a static value
-		if (!(/^\d+d\d+$/i).test(ability)) ability = "1" + ability;
-		addDieType = ability.match(/^(\d+)d(\d+)$/i);
-	}
-	var updateDescr = function(useMatch, onceExists) {
+
+	// Do some common replacements to save space for the very limited short description
+	var arrTxtReplace = [
+		[/ and /ig, ' \u0026 '],
+		[/(dif)ficult (ter)(rain|\.)|(dif)(ficult|\.) (ter)rain/ig, '$1. $2.'],
+		[/(crea)tures?/ig, '$1'],
+		[/(obj)ects?/ig, '$1'],
+		[/(r)ounds?/ig, '$1nd'],
+		[/(save hal)ves?/ig, '$1f'],
+		[/(see) book/ig, '$1 B']
+	];
+	for (var i = 0; i < arrTxtReplace.length; i++) {
+		useSpellDescr = useSpellDescr.replace(arrTxtReplace[i][0], arrTxtReplace[i][1]);
+	};
+
+	// The function to update the actual damage part with the new addition
+	var updateDescr = function(useMatch, onceExists, offsetMatch) {
 		if (!useMatch) return;
+		// If the first matched group is not the dice (+static modifiers), then go look for which group has this information
+		var rxDie = /^(\+?\d+d?\d*)+$/i;
+		if (!offsetMatch) offsetMatch = 0;
+		// If the first matched group is not the dice (+static modifiers), then go look for which group has this information
+		var rxDie = /^(\+?\d+d?\d*)+$/i;
+		if (!offsetMatch && !rxDie.test(useMatch[1]) ) {
+			for (var i = 2; i < useMatch.length; i++) {
+				if (rxDie.test(useMatch[i])) {
+					offsetMatch = i - 1;
+					break;
+				}
+			}
+		}
+		// Get each part of the string
+		var useMatchDie = useMatch[1 + offsetMatch];
+		var useMatchPre = useMatch.slice(1, 1 + offsetMatch);
+		var useMatchPost = useMatch.slice(2 + offsetMatch, useMatch.length);
 		// Find the same die (if isDieType) or a number being added (if !isDieType)
 		var rRegex = isDieType ? RegExp("(.*?)(\\d" + (onceExists ? "*" : "+") + ")(d" + addDieType[2] + ".*)", "i") : /(.*?[^d\d])(\d+)((?:[^d]|$).*)/;
-		var rRxMatch = useMatch[2].match(rRegex);
+		var rRxMatch = useMatchDie.match(rRegex);
 		if (rRxMatch) {
 			// We found the same die / any number being added, so add our addition to that
 			var addNr = isDieType ? Number(addDieType[1]) : abiMod;
-			var newPart = rRxMatch[1] + (Math.max(Number(rRxMatch[2]), 1) + addNr) + rRxMatch[3];
-			spellObj.description = spellObj.description.replace(useMatch[0], useMatch[1] + newPart + (useMatch[3] ? useMatch[3] : ""));
+			var oldDieAmount = isDieType && rRxMatch[2].toString() === "0" ? 0 : Math.max(Number(rRxMatch[2]), 1);
+			var newPart = rRxMatch[1] + (oldDieAmount + addNr) + rRxMatch[3];
+			useSpellDescr = useSpellDescr.replace(useMatch[0], useMatchPre + newPart + useMatchPost);
 		} else {
 			// No same die type / static number beind added, so add our addition as text
 			var addNr = "+" + (isDieType && !onceExists ? ability : abiMod);
-			spellObj.description = spellObj.description.replace(useMatch[0], useMatch[1] + useMatch[2] + addNr + (useMatch[3] ? useMatch[3] : ""));
+			useSpellDescr = useSpellDescr.replace(useMatch[0], useMatchPre + useMatchDie + addNr + useMatchPost);
 		}
 	}
-	// Some spells need some help with their description otherwise becoming too long and filter some exceptions
-	switch (spellKey) {
-	// Exceptions
-		case "create homunculus" : // You don't want to do yourself more damage do you?
-		case "enlarge/reduce" : // Not actual damage form the spell
-			return;
-	// 'save halves' to 'save half'
-		case "blade barrier" :
-		case "dust devil" :
-		case "tsunami" :
-		case "tidal wave" :
-		case "wall of fire" :
-			spellObj.description = spellObj.description.replace('save halves', 'save half');
-			break;
-	// 'see book' to 'see B'
-		case "mordenkainen's faithful hound" :
-		case "storm of vengeance" :
-		case "wall of ice" :
-			spellObj.description = spellObj.description.replace('see book', 'see B');
-			break;
-	// 'see B' to 'B'
-		case "bones of the earth" :
-			spellObj.description = spellObj.description.replace('see B', 'B');
-			break;
-	// remove '; see B'
-		case "wrath of nature" :
-			spellObj.description = spellObj.description.replace('; see B', '');
-			break;
-	// ' and ' to ' & '
-		case "immolation" :
-		case "maelstrom" :
-		case "earth tremor" :
-			spellObj.description = spellObj.description.replace(" and ", " \u0026 ");
-			break;
-	// spell-specific changes
-		case "catapult" :
-			spellObj.description = spellObj.description.replace('object', 'obj');
-			break;
-		case "evard's black tentacles" :
-			spellObj.description = spellObj.description.replace('Bludgeoning', 'Bludg.');
-			break;
-		case "hex" :
-			spellObj.description = spellObj.description.replace('on chosen', 'chosen');
-			break;
-		case "holy weapon" :
-			spellObj.description = spellObj.description.replace(" crea ", " ");
-			break;
-		case "ice knife" :
-			spellObj.description = spellObj.description.replace("Ranged atk for", "Ranged atk");
-			break;
-		case "investiture of flame" :
-			spellObj.description = spellObj.description.replace("Fire immune", "Fire im.").replace("all crea", "all");
-			break;
-		case "investiture of ice" :
-			spellObj.description = spellObj.description.replace("Cold immune; Fire resist", "Cold im.; Fire res.").replace("half speed", "half spd");
-			break;
-		case "jim's magic missile" :
-			spellObj.description = spellObj.description.replace("each spell atk for", "spell atks");
-			break;
-		case "lightning arrow" :
-			spellObj.description = spellObj.description.replace("Lightn. dmg, save", "Lightn., save");
-			break;
-		case "melf's acid arrow" :
-			spellObj.description = spellObj.description.replace("Spell attack", "Spell atk");
-			break;
-		case "mental prison" :
-			spellObj.description = spellObj.description.replace('charm effect', 'charm');
-			break;
-		case "mind spike" :
-			spellObj.description = spellObj.description.replace('no other benefits', 'nothing else');
-			break;
-		case "shadow blade" :
-			spellObj.description = spellObj.description.replace(' if target', '');
-			break;
-		case "sickening radiance" :
-			spellObj.description = spellObj.description.replace("level of exhaustion, and", "lvl exhaust. \u0026");
-			break;
-		case "storm sphere" :
-			spellObj.description = spellObj.description.replace("all crea cast/end turn", "cast/turn all");
-			break;
-		case "synaptic static" :
-			spellObj.description = spellObj.description.replace("check", "chk");
-			break;
-		case "wall of light" :
-			spellObj.description = spellObj.description.replace("not blind", "no blind");
-			break;
-		case "zephyr strike" :
-			spellObj.description = spellObj.description.replace("opportunity", "opport.");
-			break;
+
+	// Create the matching regex with non-capturing inner groups
+	var sRegex = "((?:\\+?\\d+d?\\d*)+)((?:\\+\\d+d?\\d*\\/(?:\\d*SL|PP|extra PP))?(?:\\+spell(?:casting)? (?:ability )?mod(?:ifier)?|(?:\\+|-)\\d+ \\(.{3}\\))? (?:" + dmgType + ") ?(?:dmg|damage)(?: per \\w+| each|/rnd|/turn)?)";
+
+	// If the spell has multiple damage types, we need to check if any or all of them match the dmgType we are looking for
+	var onlySomeDmgTypes = false;
+	if (spellObj.dynamicDamageBonus && spellObj.dynamicDamageBonus.multipleDmgTypes && isArray(spellObj.dynamicDamageBonus.multipleDmgTypes.dmgTypes)) {
+		var multiDmgTypes = spellObj.dynamicDamageBonus.multipleDmgTypes.dmgTypes;
+		var rxDmgType = RegExp(dmgType, "i");
+		var matchFunc = function (n) { return rxDmgType.test(n); };
+		var matchesEvery = multiDmgTypes.every(matchFunc);
+		var matchesSome = multiDmgTypes.some(matchFunc);
+		if (matchesSome && typeof spellObj.dynamicDamageBonus.multipleDmgTypes.inDescriptionAs === "string") {
+			// Matches some (maybe every) damage type, so add use special match group for the regex, because it (probably) doesn't follow the normal syntax
+			sRegex = sRegex.replace("(?:" + dmgType + ")", "(?:" + spellObj.dynamicDamageBonus.multipleDmgTypes.inDescriptionAs + ")");
+		}
+		if (!matchesEvery && matchesSome) {
+			// Matches some, but not all damage types, so we want to add a conditional statement akin to what would happen when notMultiple = true and there are multiple damage types. Thus, use that part of the code, with a small addition
+			onlySomeDmgTypes = true;
+		}
 	}
-	if (notMultiple) {
-		// testing if the once addition (1× +X) already exists
-		var oRegex = /(1\xD7 |once )((?:\+\d*d?\d+)+)/i;
-		if (oRegex.test(spellObj.description)) {
+	// Spells that have two damage types but still only a single damage roll moment shouldn't get the damage added twice
+	if (!notMultiple && spellObj.dynamicDamageBonus && spellObj.dynamicDamageBonus.allDmgTypesSingleMoment) {
+		notMultiple = true;
+	}
+	// Spells that have multiple damages, but a specific one should be augmented when it isn't allowed to add the modifier to multiple rolls
+	if (notMultiple && spellObj.dynamicDamageBonus && spellObj.dynamicDamageBonus.skipDmgGroupIfNotMultiple && typeof spellObj.dynamicDamageBonus.skipDmgGroupIfNotMultiple === "object") {
+		var possibleRegex = spellObj.dynamicDamageBonus.skipDmgGroupIfNotMultiple.toInnerString() + sRegex;
+		if (RegExp(possibleRegex, "i").test(useSpellDescr)) sRegex = possibleRegex;
+	}
+
+	var tRx = RegExp(sRegex, "i");
+	var arrRegex = [tRx];
+	var tRxMatch = useSpellDescr.match(tRx);
+	// Stop now if no match or a match but not for any dice while onlyRolls == true
+	if (!tRxMatch || (onlyRolls && !(/\d*d\d+/i).test(tRxMatch[2]))) return;
+
+	// Spells that have a secondary (or more) damage group of the same damage type that doesn't follow the syntax
+	if (spellObj.dynamicDamageBonus && spellObj.dynamicDamageBonus.extraDmgGroupsSameType && typeof spellObj.dynamicDamageBonus.extraDmgGroupsSameType === "object") {
+		var eRegex = spellObj.dynamicDamageBonus.extraDmgGroupsSameType;
+		arrRegex.push(eRegex); // add it to the array of damage group regex to modify
+		sRegex += "|" + eRegex.toInnerString(); // add to sRegex for the multi check below
+	}
+
+	// See if we have multiple damage instances that match
+	var tRxMatchMulti = useSpellDescr.match(RegExp(sRegex, "ig"));
+
+	// If adding dice instead of a static value
+	if (isDieType) {
+		if (!(/^\d+d\d+$/i).test(ability)) ability = "1" + ability;
+		addDieType = ability.match(/^(\d+)d(\d+)$/i);
+	}
+
+	if (notMultiple || onlySomeDmgTypes) {
+		// testing if the once addition (1× +X) or (+X if..) already exists
+		var oRegex = /(\(1\xD7 |\(once |\()((?:\+\d*d?\d+)+)((:? if\.\.)?\))/i;
+		if (spellObj.genericSpellDmgEdit && oRegex.test(useSpellDescr)) {
 			// Another addition already took place, so merge them with the current
-			var oRxMatch = spellObj.description.match(oRegex);
-			updateDescr(oRxMatch, true);
+			var oRxMatch = useSpellDescr.match(oRegex);
+			updateDescr(oRxMatch, true, 1);
+			spellObj.description = useSpellDescr;
 			return true; // We are done
 		}
 		// If a spell has a longer duration than instantaneous or 1 round and is not just on the next weapon hit, we should only add the addition once, not to all damage rolls
 		// There are some spells for which this is true and should be done as normal (falsePositives) or spells for which this is not true, but should be done anyway (falseNegatives)
-		var falsePositives = ["delayed blast fireball", "hail of thorns", "holy weapon", "immolation", "lightning arrow", "mental prison", "mind spike", "produce flame", "storm of vengeance", "tsunami", "wall of ice", "wind wall", "zephyr strike"];
-		var falseNegatives = ["eldritch blast", "jim's magic missile", "magic missile", "scorching ray"];
-		if (falseNegatives.indexOf(spellKey) != -1 || (falsePositives.indexOf(spellKey) == -1 && !(/instant|1 rnd/i).test(spellObj.duration) && !(/Next (melee )?weapon hit \+?\d+d?\d*/i).test(spellObj.description))) {
-			var skipThis = false;
-			// Edit the spell description of some spells so that the " (1× +X)" addition fits
-			switch (spellKey) {
-				case "blade barrier" :
-					spellObj.description = spellObj.description.replace(/(9|30) rad /, '$1\xD7').replace('(w\xD7l)', '(r\xD7w\xD7l)').replace('Slashing', 'Slash.').replace('3/4 cover', '\u00BE cover');
-					tRxMatch = spellObj.description.match(tRegex); // because abbreviated damage type
-					break;
-				case "call lightning" :
-					spellObj.description = spellObj.description.replace('under cloud', 'under it').replace('Lightning', 'Lightn.');
-					tRxMatch = spellObj.description.match(tRegex); // because abbreviated damage type
-					break;
-				case "cloudkill" :
-				case "spike growth" :
-					spellObj.description = spellObj.description.replace("difficult terrain", "dif. ter.");
-					break;
-				case "crown of stars" :
-					spellObj.description = spellObj.description.replace("bonus action", "bns a");
-					break;
-				case "enervation" :
-					spellObj.description = spellObj.description.replace("action to repeat", "1 a repeat").replace("see book", "see B");
-					break;
-				case "ensnaring strike" :
-				case "evard's black tentacles" :
-				case "phantasmal force" :
-					spellObj.description = spellObj.description.replace('that enter', 'enter').replace('dmg/rnd', 'dmg/rndHIERZO').replace('Str check to escape', 'Str chk escape').replace('Investigation', 'Invest.');
-					break;
-				case "dust devil" :
-					spellObj.description = spellObj.description.replace(" and pushed", " \u0026 pushed").replace("see book", "see B");
-					break;
-				case "flaming sphere" :
-					spellObj.description = spellObj.description.replace('all within', 'all in').replace("save halves", "save half");
-					break;
-				case "geas" :
-					spellObj.description = spellObj.description.replace("until", "till").replace("commands", "orders");
-					break;
-				case "guardian of faith" :
-					spellObj.description = spellObj.description.replace("vanishes after it deals", "gone once done");
-					break;
-				case "heat metal" :
-					spellObj.description = spellObj.description.replace('reheat obj', 'redo').replace('Fire dmg to touch', "Fire dmg to touchHIERZO");
-					break;
-				case "hex" :
-					spellObj.description = spellObj.description.replace('dis. chosen ability checks', 'dis. chosen abi chks');
-					break;
-				case "hunger of hadar" :
-					spellObj.description = spellObj.description.replace('all while', 'while');
-					break;
-				case "ice storm" :
-					spellObj.description = spellObj.description.replace("difficult", "dif.");
-					break;
-				case "incendiary cloud" :
-					spellObj.description = spellObj.description.replace("save halves", "save half").replace("heavily obscures", "heavy obsc.");
-					break;
-				case "insect plague" :
-					spellObj.description = spellObj.description.replace("save halves", "save half").replace("difficult", "dif.");
-					break;
-				case "investiture of wind" :
-					spellObj.description = spellObj.description.replace("atks dis. vs. me", "atk dis.");
-					break;
-				case "maddening darkness" :
-					spellObj.description = spellObj.description.replace("save halves", "save half").replace("starting turn in", "starting turn");
-					break;
-				case "maelstrom" :
-					spellObj.description = spellObj.description.replace("starting turn in", "start turn");
-					break;
-				case "magic stone" :
-					if (!CurrentCasters.amendSpDescr) spellObj.description = spellObj.description.replace("attacks, thrown", "atk, throw");
-					break;
-				case "maximilian's earthen grasp" :
-					spellObj.description = spellObj.description.replace("hand moves/atks", "move/atk");
-					break;
-				case "melf's minute meteors" :
-					spellObj.description = spellObj.description.replace("at casting/bns a send up to two", "at cast/bns a send up to 2");
-					break;
-				case "mordenkainen's faithful hound" :
-				case "mordenkainen's sword" :
-					spellObj.description = spellObj.description.replace(" for ", " ");
-					break;
-				case "flame blade" :
-					spellObj.description = spellObj.description.replace('all within', 'all in').replace('to make a melee spell attack', 'make melee spell atk');
-					break;
-				case "shadow of moil" :
-					spellObj.description = spellObj.description.replace("heavy obs", "hvy obs").replace("step darker", "darker");
-					break;
-				case "sunbeam" :
-					spellObj.description = spellObj.description.replace("save halves and", "save half,").replace("difficult", "dif.");
-					break;
-				case "wall of fire" :
-					spellObj.description = spellObj.description.replace('see B', 'B').replace("save halves", "save half");
-					break;
-				case "wall of thorns" :
-					spellObj.description = spellObj.description.replace("save halves", "save half").replace("see book", "see B");
-					break;
-				case "weird" :
-					spellObj.description = spellObj.description.replace("at end of each round", "each round end");
-					break;
-				case "witch bolt" :
-					spellObj.description = spellObj.description.replace("Spell attack", "Spell atk");
-					break;
-				case "wrath of nature" :
-					spellObj.description += ";HIERZO";
-					break;
-			}
-			// Now add the " (1× +X)" after the "dmg/damage"
-			if (spellObj.description.indexOf("HIERZO") == -1) {
-				spellObj.description = spellObj.description.replace(tRxMatch[0], tRxMatch[0] + " (1\xD7 +" + abiMod + ")");
+		var isFalsePositive, isFalseNegative;
+		if (spellObj.dynamicDamageBonus && spellObj.dynamicDamageBonus.multipleDmgMoments !== undefined) {
+			if (spellObj.dynamicDamageBonus.multipleDmgMoments) {
+				isFalseNegative = true;
 			} else {
-				spellObj.description = spellObj.description.replace("HIERZO", " (1\xD7 +" + abiMod + ")");
+				isFalsePositive = true;
 			}
+		}
+		var hasMultipleDmgInstances = isFalseNegative || (!isFalsePositive && !(/instant|1 r(ou)?nd/i).test(spellObj.duration) && !(/next (melee |ranged|rngd )?wea(pon)? (atk|hit) \+?\d+/i).test(useSpellDescr));
+		if (onlySomeDmgTypes || hasMultipleDmgInstances) {
+			var sOnceBonus = (notMultiple && hasMultipleDmgInstances ? " (1\xD7 +" : " (+") + abiMod + (onlySomeDmgTypes ? " if.." : "") + ")";
+			// Add the " (1× +X)" after the "dmg/damage" part, unless there are multiple damage types
+			if (tRxMatchMulti.length > 1) {
+				// Has multiple damage instances that match, so add it at the end
+				spellObj.description = useSpellDescr + sOnceBonus;
+			} else {
+				// One damage type that this can be added to once, so add it directly there
+				spellObj.description = useSpellDescr.replace(tRxMatch[0], tRxMatch[0] + sOnceBonus);
+			}
+			// This function is done
+			spellObj.genericSpellDmgEdit = true;
 			return true;
 		}
 	}
 	// Now update the damage part of the description with the new addition
-	updateDescr(tRxMatch, false);
-	if (!notMultiple) {
-		// Some spells have the same damage type twice, so make sure the second instance also has the bonus added as well
-		var eRegex = "";
-		switch (spellKey) {
-			case "booming blade" :
-				eRegex = /(next round )((?:\+?\d+d?\d*)+)/i;
-				break;
-			case "holy weapon" :
-				eRegex = /(Wea )((?:\+?\d+d?\d*)+)/i;
-				spellObj.description = spellObj.description.replace("end spell", "end");
-				break;
-			case "investiture of flame" :
-				eRegex = /(all (?:crea )?)((?:\+?\d+d?\d*)+)/i;
-				break;
-			case "immolation" :
-				eRegex = /( )((?:\+?\d+d?\d*)+)( Fire dmg\/rnd)/i;
-				break;
-			case "jim's magic missile" :
-				eRegex = /( )((?:\+?\d+d?\d*)+)( crit)/i;
-				break;
-			case "lightning arrow" :
-				eRegex = /(all )((?:\+?\d+d?\d*)+)/i;
-				break;
-			case "melf's acid arrow" :
-				eRegex = /(and |\u0026 )((?:\+?\d+d?\d*)+)/i;
-				break;
-			case "mental prison" :
-				eRegex = /(if moved: )((?:\+?\d+d?\d*)+)/i;
-				break;
-			case "vitriolic sphere" :
-				eRegex = /( )((?:\+?\d+d?\d*)+)( crea next turn end)/i;
-				break;
-		}
-		if (eRegex) {
-			var eRxMatch = spellObj.description.match(eRegex);
-			updateDescr(eRxMatch, true);
-		}
+	for (var i = 0; i < tRxMatchMulti.length; i++) {
+		if (notMultiple && i > 0) break;
+		var aRegex = arrRegex[Math.min(i, arrRegex.length - 1)];
+		updateDescr(tRxMatchMulti[i].match(aRegex), false);
 	}
-	return true;
+	if (spellObj.description !== useSpellDescr) {
+		spellObj.description = useSpellDescr;
+		spellObj.genericSpellDmgEdit = true;
+		return true;
+	}
 }

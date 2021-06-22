@@ -342,6 +342,28 @@ SpellsList["sindering purple"] = {
 	so use the Colourful sheets to test if the description fits.
 
 	If the sheet is set to use the metric system, this attribute will be converted automatically.
+
+	// IMPORTANT //
+	If the spell does damage, make sure the damage is written as "XdY+CdZ/SL [Type] dmg".
+	- Replace [Type] with the a single word, the damage type with the first letter capitalized
+	(e.g. Fire or Lightning).
+	- You can write "damage" instead of "dmg".
+	- "+CdZ/SL" represents the bonus damage die per spell slot level above the spell's level. For example,
+	  this is written as "8d6+1d6/SL fire dmg" for Fireball, which adds 1d6 to the damage for each spell slot
+	  used above 3rd-level (the level of the spell).
+	- The damage die don't necessarily have to include a bonus per spell slot level above the current level,
+	  nor be a die at all, static damage also works. E.g. "2d8 Thunder dmg" and "5 Cold dmg" are also valid.
+
+	You can shorten longer damage type names if they won't otherwise fit:
+		DAMAGE TYPE    SHORTENED
+		Bludgeoning    Bludg.
+		Lightning      Lightn.
+		Necrotic       Necro.
+		Piercing       Pierc.
+		Slashing       Slash.
+	
+	If the damage (or only some of the damage) in the description doesn't match this syntax,
+	you can use the `dynamicDamageBonus` object (see below) to tell the script how to find the damage string.
 */
 	descriptionCantripDie : "1 creature save or `CD`d12 Poison dmg",
 /*	descriptionCantripDie // OPTIONAL //
@@ -375,7 +397,8 @@ SpellsList["sindering purple"] = {
 
 	// DOES NOT WORK TOGETHER WITH descriptionCantripDie //
 	If the spell has both this attribute and the 'descriptionCantripDie' attribute,
-	the sheet will still use this attribute and disregard the 'descriptionCantripDie' attribute when set to use the metric system.
+	the sheet will still use this attribute and disregard the 'descriptionCantripDie' attribute
+	when set to use the metric system.
 */
 	descriptionFull : "This spell repairs a single break or tear in an object you touch, such as broken chain link, two halves of a broken key, a torn clack, or a leaking wineskin. As long as the break or tear is no larger than 1 foot in any dimension, you mend it, leaving no trace of the former damage." + "\n   " + "This spell can physically repair a magic item or construct, but the spell can't restore magic to such an object.",
 /*	descriptionFull // OPTIONAL //
@@ -440,4 +463,258 @@ SpellsList["sindering purple"] = {
 
 	Setting this attribute to an empty array ([]) is the same as not including this attribute, but doing so will slow the sheet down considerably.
 */
+
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> genericSpellDmgEdit >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>> //
+/*
+	These attributes are used by the `genericSpellDmgEdit` function, which is used by the common attribute
+	calcChanges.spellAdd to add a dynamic modifier to the damage of a spell.
+	For example, a class feature could let the character add their Intelligence modifier to a spell's damage.
+	The `genericSpellDmgEdit` function matches the description above for the right damage syntax.
+	Unfortunately, if the spell's description doesn't match the exact parameters or if it already fills up
+	the allotted space, the addition done by `genericSpellDmgEdit` will not work and/or cause the description
+	to overflow.
+	The attributes below are made to address these issues.
+
+	The `genericSpellDmgEdit` function can dynamically add a damage modifier/dice to the damage of a spell.
+	This can happen if the spell does a specific type of damage.
+	Most often, the damage can only be added to one die roll. If so, the `genericSpellDmgEdit` function
+	will add the damage to the first part of the description that matches.
+*/
+
+	descriptionShorter : "20-ft rad all crea 5d6+1d6/SL Psychic dmg; save half; flames in area are purple",
+/*	descriptionShorter // OPTIONAL //
+	TYPE:	string
+	USE:	shorter version of the description of the spell to be filled in the description field
+	ADDED:	v13.0.6
+
+	If the description attribute given above is too long to fit an extra bit added by the
+	`genericSpellDmgEdit` function, then you can use this attribute to present an alternative, shorter
+	description that the `genericSpellDmgEdit` function can use to alter.
+	How much shorter you should make this description depends on the addition the `genericSpellDmgEdit`
+	function will do, depending on context, see the three scenarios below.
+
+	There are four scenarios:
+	1) Single damage instance of single damage type (e.g. instantaneous spell)
+		If the spell has a duration of instant(enous), 1 r(ou)nd, or
+		includes "Next (melee/ranged) weapon at(tac)k" in the description,
+		or has multiple damages listed that fit the syntax (e.g. "1d4 Fire dmg + 1d4 Cold dmg"),
+		it will be considered a spell with a single damage instance.
+
+		The damage bonus will be added to the current damage string (e.g. "5d6+1d6/SL Psychic dmg" could
+		become "5d6+1d8+1d6/SL Psychic dmg").
+		Thus you will need to make sure "+1d8" fits in the `description` attribute and if not,
+		include a `descriptionShorter` attribute where it would fit.
+
+	2) Multiple damage instances of single damage type (e.g. spell that deals damage each round)
+		If the spell has a duration other than instant(enous), 1 r(ou)nd,
+		and doesn't include "Next (melee/ranged) weapon at(tac)k" in the description,
+		and doesn't have multiple damages listed that fit the syntax (e.g. "1d4 Fire dmg + 1d4 Cold dmg"),
+		it will be considered a spell with multiple damage instances.
+
+		If the feature only adds damage to a single roll, the damage bonus will be added at the end of the
+		description, in the format "(1× +dX)" (e.g. "(1× +d8)" or (1× +5)),
+		thus you need to make sure "(1× +d8)" fits in the `description` attribute and if not,
+		include a `descriptionShorter` attribute where it would fit.
+
+	3) Single damage instance of multiple damage type
+		Same as 1), but the spell can have different damage types (e.g. you get to choose the type).
+		>> Make sure you also use the `dynamicDamageBonus` attribute below.
+
+		If the feature only adds damage to some of the damage type options, the damage bonus will be added
+		at the end of the description, in the format "(+dX if..)" (e.g. "(+d8 if..)" or (+5 if..)),
+		thus you need to make sure "(+d8 if..)" fits in the `description` attribute and if not,
+		include a `descriptionShorter` attribute where it would fit.
+
+	4) Multiple damage instances instances of multiple damage type
+		Same as 2), but the spell can have different damage types (e.g. you get to choose the type).
+		>> Make sure you also use the `dynamicDamageBonus` attribute below.
+
+		If the feature only adds damage to some of the damage type options, the damage bonus will be added
+		at the end of the description, in the format "(1× +dX if..)" (e.g. "(1× +d8 if..)" or (1× +5 if..)),
+		thus you need to make sure "(1× +d8 if..)" fits in the `description` attribute and if not,
+		include a `descriptionShorter` attribute where it would fit.
+
+	Which scenario a spell falls into can be changed with the `dynamicDamageBonus` attribute below.
+
+	// DOES NOT WORK TOGETHER WITH descriptionCantripDie //
+	If the spell has both this attribute and the 'descriptionCantripDie' attribute,
+	the sheet will still use the 'descriptionCantripDie' attribute.
+*/
+	descriptionShorterMetric : "6-m rad all crea 5d6+1d6/SL Psychic dmg; save half; flames in area are purple",
+/*	descriptionShorterMetric // OPTIONAL //
+	TYPE:	string
+	USE:	shorter version of the description of the spell to be filled in the description field when the sheet is set to use the metric system
+	ADDED:	v13.0.6
+
+	This attribute works the same as the `descriptionShorter` attribute above,
+	but it is only used if the sheet is set to use the metric system.
+	If this attribute is present, the sheet will not try and convert the `descriptionShorter` attribute
+	to the metric system, but will use this attribute instead.
+
+	The sheet is good at transforming units as long as each number is followed by the unit.
+	For example "60 ft by 20 ft" will successfully be converted to "18 m by 6 m",
+	but "60 by 20 ft" will become "60 by 6 m".
+	It is only for cases like the latter that `descriptionShorterMetric` is necessary,
+	all other things can be converted by the sheet on the fly.
+
+	// DOES NOT WORK TOGETHER WITH descriptionCantripDie //
+	If the spell has both this attribute and the 'descriptionCantripDie' attribute,
+	the sheet will still use this attribute and disregard the 'descriptionCantripDie' attribute
+	when set to use the metric system.
+*/
+	dynamicDamageBonus : {
+/*	dynamicDamageBonus // OPTIONAL //
+	TYPE:	object (optional attributes)
+	USE:	instructions for the `genericSpellDmgEdit` function
+	ADDED:	v13.0.6
+
+	See above for an explanation what the `genericSpellDmgEdit` function does.
+	This object can have several pre-defined attributes, which are explained below.
+*/
+		doNotProcess : true,
+	/*	doNotProcess // OPTIONAL //
+		TYPE:	boolean
+		USE:	tell the `genericSpellDmgEdit` function not to process this spell
+		ADDED:	v13.0.6
+	
+		If the description of the spell as it will be displayed on the sheet includes damage,
+		the `genericSpellDmgEdit` function can dynamically edit it by adding a modifier under certain
+		conditions set by a feature.
+		If this is not desired, because the damage listed is to yourself for example, set this attribute
+		to true, to have the `genericSpellDmgEdit` function skip over this spell.
+		Other examples include summoned creatures/objects that deal damage, or spells that alter
+		something that alters their damage (e.g. the Enlarge/Reduce spell).
+
+		Setting this attribute to false is the same as not including it.
+	*/
+		multipleDmgMoments : true,
+	/*	multipleDmgMoments // OPTIONAL //
+		TYPE:	boolean
+		USE:	force the `genericSpellDmgEdit` function to treat this spell as a single damage instance (true) or as one with multiple damage instances (false)
+		ADDED:	v13.0.6
+
+		See the explanation for `descriptionShorter` above for how the `genericSpellDmgEdit` function
+		normally determines wether the spell has a single or multiple damage instances.
+		Only use this attribute if the `genericSpellDmgEdit` function yields the wrong outcome.
+
+		Set this attribute to `true` if this spell has a duration of instant(enous) or 1 r(ou)nd,
+		but still deals damage more than once.
+
+		Set this attribute to `false` if the spell has a duration longer than instant(enous) or 1 r(ou)nd,
+		but still only deals it damage once.
+
+		For example, a spell with a duration of "concentration, up to 1 minute" that can be ended to deal
+		damage, will be recognized as a spell that has multiple damage instances because of its duration.
+		For this spell, you should set this attribute to false.
+	
+		If a spell has a duration of "instantaneous" but has you make multiple attack rolls for different
+		targets, that spell doesn't have a single damage roll.
+		For this spell, you should set this attribute to true.
+	*/
+		allDmgTypesSingleMoment : true,
+	/*	allDmgTypesSingleMoment // OPTIONAL //
+		TYPE:	boolean
+		USE:	force the `genericSpellDmgEdit` function to treat multiple damage listings as a single damage instance
+		ADDED:	v13.0.6
+	
+		See the explanation for `descriptionShorter` above for how the `genericSpellDmgEdit` function
+		normally determines wether the spell has a single or multiple damage instances.
+		Only use this attribute if the `genericSpellDmgEdit` function yields the wrong outcome.
+
+		Set this attribute to `true` if this spell has multiple damages that fit the syntax,
+		but those are different damage types that are still dealt at the same time (a 'single' damage roll).
+
+		For example, a spell can deal both Radiant and Fire damage in one instance and have this listed
+		in its `description` attribute as "4d6 Fire dmg and 4d6 Radiant dmg".
+		The `genericSpellDmgEdit` function would consider this multiple damage instances.
+		For this spell, you should set this attribute to true.
+
+		Setting this attribute to false is the same as not including it.
+	*/
+		extraDmgGroupsSameType : /((?:\+?\d+d?\d*)+)( crit)/i,
+	/*	allDmgTypesSingleMoment // OPTIONAL //
+		TYPE:	regular expression
+		USE:	regex to match other damage instances in the description of the same damage type that doesn't adhere to the normal syntax
+		ADDED:	v13.0.6
+
+		This attribute tells the `genericSpellDmgEdit` function that there is another damage instance
+		in the description, but that instance does not adhere to the normal syntax of "[Dice} [Type] dmg".
+
+		This regular expression is used to match the secondary (or more) damage groups and add the damage
+		bonus there as well (if required).
+
+		The regular expression needs to include a group that matches the damage dice or static number.
+		The regular expression needs to include one or more non-optional matching groups before or after
+		the group that matches the damage dice or static number.
+
+		For the damage (die) group, this matching group is recommended: ((?:\+?\d+d?\d*)+)
+		As that matches any number of consecutive die and numbers, joined with a "+", but captures them as
+		a single group.
+
+		For example, a spell can deal both Radiant damage both when it is cast and the round after,
+		but because of space limitations, it is written in its `description` attribute as
+		"Spell attack for 4d4+1d4/SL Acid dmg and 2d4+1d4/SL next turn".
+		The "2d4+1d4/SL next turn" does not adhere to the normal way of writing the damage, as it doesn't
+		include a damage type or the word "dmg" (or "damage").
+		The `genericSpellDmgEdit` function would not see this second damage group and thus not account for it.
+		For this spell, you should set this attribute to /(and |\u0026 )((?:\+?\d+d?\d*)+)/i.
+	*/
+		multipleDmgTypes : {
+			dmgTypes : ["acid", "cold", "fire", "lightning", "thunder"],
+			inDescriptionAs : 'Acid, Cold, Fire, Lightning, or Thunder|Acid/Cold/Fire/Lightning/Thunder'
+		},
+	/*	multipleDmgTypes // OPTIONAL //
+		TYPE:	object (with exactly two attributes)
+		USE:	the damage type of the spell can be two or more different types and/or doesn't adhere to the normal syntax in the description
+		ADDED:	v13.0.6
+
+		This attribute tells the `genericSpellDmgEdit` function that the damage listed in the description
+		can be with multiple different damage types, which is chosen by the caster at the time of casting.
+		This will (most likely) cause the description to not adhere the normal syntax of "[Dice} [Type] dmg".
+
+		This object has two attributes of its own, both of which are REQUIRED:
+		1) dmgTypes, an array
+			This is the array of damage types that the spell can use.
+			Use one entry per damage type (e.g. don't do ["fire or radiant"], but ["fire", "radiant"]).
+		2) inDescriptionAs, a string
+			This tells the `genericSpellDmgEdit` function how to find this damage type,
+			as it isn't doesn't adhere to the normal syntax.
+			This string is add to a regular expression, after the group matching damage dice/numbers, and
+			before the group " (dmg|damage)".
+			Thus, if the spell's description is "1d6 Fire or Radiant dmg", this attribute would be
+			"Fire or Radiant".
+			However, if the spell's description is "damage of 1d6 Fire or Radiant", this object won't work.
+
+		See also the explanation for `descriptionShorter` above for how the `genericSpellDmgEdit` function
+		for the implications of having multiple damage types.
+	*/
+		skipDmgGroupIfNotMultiple : /(atk .*piercing dmg.*?)/i,
+	/*	skipDmgGroupIfNotMultiple // OPTIONAL //
+		TYPE:	regular expression
+		USE:	the spell has multiple damage instances and/or types and if the bonus should only be added to a single roll the `genericSpellDmgEdit` function, skip one or more damage instances before adding the bonus
+		ADDED:	v13.0.6
+
+		This attribute only does something if the `genericSpellDmgEdit` function is initialised to only
+		add the damage bonus to one roll and this spell's description lists multiple that adhere
+		to the syntax of "[Dice} [Type] dmg".
+
+		Normally, the `genericSpellDmgEdit` function will add the bonus to the first damage instance that
+		matches its input.
+		With this object, it can skip one or more damage instances before adding the bonus.
+
+		This regular expression that matches the groups to be skipped, up to the group where the bonus
+		should be added.
+		Make sure that this regular expression is a single capturing group for the whole of
+		the expression (e.g. not /atk.*(piercing dmg).*?/i or /(atk.*)?(piercing dmg.*?)/i).
+		You can use non-capturing groups, as long as they are within the capturing group
+		(e.g. /((?:atk.*)?piercing dmg.*?)/i)
+
+		Note that if the call for the `genericSpellDmgEdit` function was for a specific damage type
+		that doesn't match the preferred group, but does match this first group that should be skipped,
+		the function is still going to add the damage to the first group, effectively ignoring this attribute.
+	*/
+	},
 }

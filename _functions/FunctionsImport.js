@@ -2500,7 +2500,9 @@ function RunUserScript(atStartup, manualUserScripts) {
 		var functionErrors = [];
 		IsNotUserScript = false;
 		for (var i = 0; i < ScriptsAtEnd.length; i++) {
-			try { ScriptsAtEnd[i](); } catch (err) { functionErrors.push(err); };
+			try { ScriptsAtEnd[i](); } catch (err) {
+				functionErrors.push('The function starting with "' + ScriptsAtEnd[i].toString().slice(0,100) + '"\ngave the error:' + err);
+			};
 		};
 		IsNotUserScript = true;
 		if (!atStartup && functionErrors.length > 0) {

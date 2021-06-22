@@ -762,7 +762,7 @@ var Base_WeaponsList = {
 		list : "spell",
 		ability : 6,
 		type : "Cantrip",
-		damage : ["C\u00D7" + 1, 10, "force"],
+		damage : ["C\xD7" + 1, 10, "force"],
 		range : "120 ft",
 		description : "Each d10 is a separate beam requiring separate rolls",
 		abilitytodamage : false

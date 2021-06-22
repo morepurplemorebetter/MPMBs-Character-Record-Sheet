@@ -430,7 +430,7 @@ function ApplyCompRace(newRace) {
 				var aTool = aCrea.toolProfs[l];
 				if (isArray(aTool)) {
 					if (!isNaN(aTool[1]) && Number(aTool[1]) > 1) {
-						theTools.push(aTool[1] + " \u00d7 " + aTool[0]);
+						theTools.push(aTool[1] + " \xD7 " + aTool[0]);
 					} else {
 						theTools.push(aTool[0]);
 					};
@@ -2316,7 +2316,7 @@ function WildshapeUpdate(inputArray) {
 		var wlvl = inputArray[0];
 		var wUses = inputArray[1];
 		var wRec = inputArray[2];
-		var useString = isNaN(wUses) && (wUses.indexOf("\u221E") !== -1 || wUses.toLowerCase().indexOf("unlimited") !== -1) ? "Unlimited" : wUses + (!isNaN(wUses) ? "\u00D7" : "") + " per " + wRec;
+		var useString = isNaN(wUses) && (wUses.indexOf("\u221E") !== -1 || wUses.toLowerCase().indexOf("unlimited") !== -1) ? "Unlimited" : wUses + (!isNaN(wUses) ? "\xD7" : "") + " per " + wRec;
 		var wLimit = inputArray[3].match(/CR.+;/i);
 		wLimit = wLimit ? "max " + wLimit[0].replace(";", "") : "";
 		var wDur = inputArray[3].match(/(\d+) h(our)?s?/i);
@@ -4420,8 +4420,8 @@ function SetHPTooltip(resetHP, onlyComp, aPrefix) {
 		}
 		// Create the tooltip string
 		var tooltip = "The total hit points (with averages" + (prefix ? ")" : " and max for 1st level)") +
-			"\n = " + (HD.count ? HD.dieStr.join(" + ") : "level \u00D7 hit dice (0)") +
-			"\n + " + (HD.count ? HD.count : "level") + " \u00D7 " + HD.conMod + " from Constitution (" + (HD.count * HD.conMod) + ")" +
+			"\n = " + (HD.count ? HD.dieStr.join(" + ") : "level \xD7 hit dice (0)") +
+			"\n + " + (HD.count ? HD.count : "level") + " \xD7 " + HD.conMod + " from Constitution (" + (HD.count * HD.conMod) + ")" +
 			extrastring + "\n" +
 			"\n \u2022 " + toUni(HD.average + extrahp) + " is the total average HP" +
 			"\n \u2022 " + toUni(HD.fixed + extrahp) + " is the total HP when using fixed values" +
@@ -7885,7 +7885,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		for (var spMod in set.allModes) {
 			var theVal = set.allModes[spMod];
 			if (!theVal) continue;
-			if (!isNaN(theVal) || !(/[xX\*\u00d7\/:]/).test(theVal[0])) theVal += " ft";
+			if (!isNaN(theVal) || !(/[xX\*\xD7\/:]/).test(theVal[0])) theVal += " ft";
 			if (metric) theVal = ConvertToMetric(theVal, 0.5);
 			modArray.push(spMod + " [" + theVal + "]");
 		};
@@ -7901,7 +7901,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					if (!theVal) continue;
 					if (theVal === "walk") {
 						theVal = "as walking speed";
-					} else if (!isNaN(theVal) || !(/[xX\*\u00d7\/:]/).test(theVal[0])) {
+					} else if (!isNaN(theVal) || !(/[xX\*\xD7\/:]/).test(theVal[0])) {
 						theVal += " ft";
 					};
 					if (metric) theVal = ConvertToMetric(theVal, 0.5);
@@ -7997,7 +7997,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		// Make the new tooltip
 		var sourcesArray = [];
 		for (var srcs in set) {
-			sourcesArray.push(srcs + ": \u00D7" + set[srcs]);
+			sourcesArray.push(srcs + ": \xD7" + set[srcs]);
 		}
 		var ttText = toUni("Carrying Capacity Multiplier") + "\nThe number you type in here will be used to multiply the carrying capacity with. This must be a positive number.\n\nWhen you set this value to zero, all the encumbrance calculations will be halted and the encumbrance fields will be left empty." + formatMultiList("\n\nThe following features have changed this multiplier:", sourcesArray);
 		// Set the new field value
@@ -8154,7 +8154,7 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, with
 						case "x" :
 						case "X" :
 						case "*" :
-						case "\u00d7" :
+						case "\xD7" :
 							tValue *= aValue;
 							break;
 						case "/" :

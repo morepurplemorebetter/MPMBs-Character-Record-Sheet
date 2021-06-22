@@ -1202,7 +1202,7 @@ calcChanges : {
 	USE:	change how certain automation works: attacks, hit points, and spell list
 			This will only affect attacks and hit points for the main character, not for its companions or wild shapes
 
-	The attributes of this object can be "hp", "atkCalc", "atkAdd", and "spellList"
+	This object can have several pre-defined attributes, which are explained below.
 */
 
 	hp : function (totalHD, HDobj, prefix) {
@@ -1611,6 +1611,9 @@ calcChanges : {
 
 		This function is processed after the 'spellChanges' attribute.
 		If you need to change only spells for one spellcasting source, use the 'spellChanges' attribute above.
+
+		This function will only be processed if the checkbox "Allow features to dynamically change spells"
+		in the final spell selection dialog is checked.
 
 		// 2nd array entry //
 		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
