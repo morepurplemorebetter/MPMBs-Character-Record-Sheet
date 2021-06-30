@@ -164,23 +164,11 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 			aSpell.description = newCantripDieDescr.replace(/\b0d\d+/g, "0");
 		}
 		// apply ability score modifier or check
-		if (aCast.ability) {
-			var castAbi = isNaN(aCast.ability) && aCast.abilityToUse ? aCast.abilityToUse[0] : aCast.ability;
-			var theAbi = AbilityScores.abbreviations[castAbi - 1];
-			if (theAbi) {
-				var theAbiMod = Number(What(theAbi + " Mod"));
-				if (/spell(casting)? (ability )?mod(ifier)?/i.test(aSpell.description)) { // modifier
-					aSpell.description = aSpell.description.replace(/\+? ?(my )?spell(casting)? (ability )?mod(ifier)?/i, (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + " (" + theAbi + ")");
-				} else if (/spell(casting)? (ability )?check/i.test(aSpell.description)) { // check
-					var theAbiName = AbilityScores.names[castAbi -1];
-					// Bonus from Jack of All Trades and/or Remarkable Athlete
-					var jackOf = tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1;
-					var remAth = tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1 && ["Str", "Dex", "Con"].indexOf(theAbi) !== -1;
-					var profB = Number(How("Proficiency Bonus"));
-					theAbiMod += remAth ? Math.ceil(profB/2) : jackOf ? Math.floor(profB/2) : 0;
-					aSpell.description = aSpell.description.replace(/spell(casting)? (ability )?check/i, theAbiName + " check (" + (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + ")");
-				}
-			}
+		var spellAbiDescr = applySpellcastingAbility(aSpell, aCast);
+		if (spellAbiDescr) {
+			aSpell.descriptionBeforeamendSpDescr = aSpell.description;
+			aSpell.amendSpDescrCaster = theCast;
+			aSpell.description = spellAbiDescr;
 		}
 	}
 
@@ -193,7 +181,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 			try {
 				didChange = theFunct(theSpl, aSpell, aCast ? theCast : "", noOverrides ? true : false);
 			} catch (error) {
-				var eText = "The custom function for changing spell attributes from '" + aFunct + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				var eText = "The custom function for changing spell attributes from '" + aFunct + "' produced an error while processing the spell '" + theSpl + "'. The custom function will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
@@ -218,6 +206,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 		if (ttSpellObj.school) {
 			spTooltip += " \u2014 ";
 			var spSchoolNm = spellSchoolList[ttSpellObj.school] ? spellSchoolList[ttSpellObj.school] : ttSpellObj.school;
+			if (spSchoolNm && ttSpellObj.subSchool) spSchoolNm += " (" + ttSpellObj.subSchool + ")";
 			if (ttSpellObj.psionic) {
 				var spLevelNm = spellLevelList[ttSpellObj.level + 10].replace(/s\b/, '');
 				spTooltip += ttSpellObj.level == 0 ?
@@ -267,7 +256,7 @@ function fixSpellRangeOverflow(rangeStr) {
 // under certain conditions, we want to remove any upcasting from the spell's short description
 function removeSpellUpcasting(oSpell) {
 	var bReturn = false;
-	var removeRegex = /\+(\d+d)?\d+\/\d*SL\b|\bSL used/ig
+	var removeRegex = /\+\d+d?\d*\/\d*SL\b|\bSL used/ig
 	["description", "descriptionMetric", "descriptionShorter", "descriptionShorterMetric"].forEach (function (attr) {
 		if ( !oSpell[attr] || !removeRegex.test(oSpell[attr]) ) return;
 		oSpell[attr] = oSpell[attr]
@@ -276,7 +265,32 @@ function removeSpellUpcasting(oSpell) {
 			.replace(/, within (30 ft|10 m) of each other,?|, each max (30 ft|10 m) apart,?|; \+\d+d\d+ at CL.*?17/ig, '');
 		bReturn = true;
 	})
+	oSpell.noSpellUpcasting = true;
 	return bReturn;
+}
+
+// apply spellcasting ability modifier to spell description
+function applySpellcastingAbility(oSpell, oCast) {
+	if (!oCast && oSpell.amendSpDescrCaster) oCast = CurrentSpells[oSpell.amendSpDescrCaster];
+	if (!oCast || !oCast.ability) return false;
+	var castAbi = isNaN(oCast.ability) && oCast.abilityToUse ? oCast.abilityToUse[0] : oCast.ability;
+	var theAbi = AbilityScores.abbreviations[castAbi - 1];
+	if (theAbi) {
+		var theAbiMod = Number(What(theAbi + " Mod"));
+		var newSpellDescr = oSpell.description;
+		if (/spell(casting)? (ability )?mod(ifier)?/i.test(newSpellDescr)) { // modifier
+			newSpellDescr = newSpellDescr.replace(/\+? ?(my )?spell(casting)? (ability )?mod(ifier)?/i, (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + " (" + theAbi + ")");
+		} else if (/spell(casting)? (ability )?check/i.test(newSpellDescr)) { // check
+			var theAbiName = AbilityScores.names[castAbi -1];
+			// Bonus from Jack of All Trades and/or Remarkable Athlete
+			var jackOf = tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1;
+			var remAth = tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1 && ["Str", "Dex", "Con"].indexOf(theAbi) !== -1;
+			var profB = Number(How("Proficiency Bonus"));
+			theAbiMod += remAth ? Math.ceil(profB/2) : jackOf ? Math.floor(profB/2) : 0;
+			newSpellDescr = newSpellDescr.replace(/spell(casting)? (ability )?check/i, theAbiName + " check (" + (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + ")");
+		}
+		return newSpellDescr !== oSpell.description ? newSpellDescr : false;
+	}
 }
 
 // call this on validation of the hidden spell remember field, to apply something to the spell line
@@ -444,7 +458,6 @@ function ApplySpell(FldValue, rememberFldName) {
 			//set the spell book name and page
 			var parseSrc = parseSource(aSpell.source);
 			var spBook = parseSrc ? parseSrc[0][0] : "";
-			if (spBook === "SRD") spBook = "S";
 			var spPage = parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
 			Value(base.replace("remember", "book"), spBook.substr(0,1), aSpell.tooltipSource);
 			Value(base.replace("remember", "page"), spPage, aSpell.tooltipSource);
@@ -1319,6 +1332,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 		glossary : false,
 		dashEmptyFields : true,
 		amendSpellDescriptions : true,
+		allowSpellAdd : true,
 
 		initialize : function (dialog) {
 			//set the ExcLuded list
@@ -3253,7 +3267,8 @@ function AskUserSpellSheet() {
 		spDias.sheetOrder.bIncL = inclNames;
 		spDias.sheetOrder.glossary = CurrentCasters.glossary;
 		spDias.sheetOrder.dashEmptyFields = CurrentCasters.emptyFields ? false : true;
-		spDias.sheetOrder.amendSpellDescriptions = CurrentCasters.amendSpDescr;
+		spDias.sheetOrder.amendSpellDescriptions = CurrentCasters.amendSpDescr || CurrentCasters.amendSpDescr === undefined ? true : false;
+		spDias.sheetOrder.allowSpellAdd = CurrentCasters.allowSpellAdd || CurrentCasters.allowSpellAdd === undefined ? true : false;
 		if (app.execDialog(spDias.sheetOrder) !== "ok") {
 			toReturn = "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 		} else {
@@ -5540,47 +5555,125 @@ function getSpellcastingAbility(theCast) {
 // A generic function to call from a calcChanges.spellAdd object to add a certain ability score
 // dmgType has to be already escaped for use in regular expressions
 // ability has to be the three-letter abbreviation of an ability starting with a capital, a number, or dice type (e.g. '1d8'). Anything else will cause the function call to fail (nothing happens)
-function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, onlyRolls) {
+function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, onlyRolls, maximizeRolls) {
 	if (!spellKey || !SpellsList[spellKey] || !spellObj || !dmgType || (spellObj.dynamicDamageBonus && spellObj.dynamicDamageBonus.doNotProcess)) return;
 	var isDieType = (/^\d*d\d+$/i).test(ability), addDieType;
-	var abiMod = isDieType ? ability.replace(/^1d(\d+)$/i, "d$1") : !isNaN(ability) ? ability : Number(What(ability + " Mod"));
+	var abiMod = isDieType ? ability.replace(/^1d(\d+)$/i, "d$1") : !isNaN(ability) ? ability : tDoc.getField(ability + " Mod") ? Number(What(ability + " Mod")) : ability;
+	var abiIsStr = !isDieType && isNaN(abiMod);
+	var abiIfUpcasting = abiIsStr && /\/(\d*SL|PP|extra PP)/i.test(abiMod);
 
-	// Stop now if there is nothing (positive) to add
-	if ((isNaN(ability) && abiMod < 1) || abiMod === 0) return;
+	// Stop now if there is nothing (positive) to add or nothing to maximize
+	if (!maximizeRolls && ((isNaN(ability) && abiMod < 1) || abiMod === 0 || (abiIfUpcasting && spellObj.noSpellUpcasting))) return;
 
-	// See if we should use the defined 'shorter' spell description
-	var isMetric = What("Unit System") === "metric";
-	var useSpellDescr = spellObj.description;
-	var origSpellDescr = isMetric && SpellsList[spellKey].descriptionMetric ? SpellsList[spellKey].descriptionMetric : SpellsList[spellKey].description;
-	if ( !spellObj.genericSpellDmgEdit && spellObj.description === origSpellDescr ) {
-		// This object hasn't previously passed through this function, and uses its default description, so we should see if we should use the defined 'shorter' spell description
-		if ( !isMetric && spellObj.descriptionShorter ) {
-			useSpellDescr = spellObj.descriptionShorter
-		} else if ( isMetric  && (spellObj.descriptionShorterMetric || spellObj.descriptionShorter) ) {
-			useSpellDescr = spellObj.descriptionShorterMetric ? spellObj.descriptionShorterMetric : ConvertToMetric(spellObj.descriptionShorter, 0.5);
+	// Get the spell description to use, the 'shorter' spell description, if defined
+	var useSpellDescr = spellObj.genericSpellDmgEdit ? spellObj.description : getSpellShortDescription(spellKey, spellObj);
+
+	// If this spell has been previous processed and had its dice maximized, the onlyRolls parameter should not be applicable anymore
+	if (onlyRolls && spellObj.genericSpellDmgEdit && spellObj.genericSpellDmgEditMaximizedDice) onlyRolls = false;
+
+	// The function to maximize all dice in a string
+	var maximizeDice = function(strDice) {
+		var dMatch = strDice.match(/\d+d\d+/ig);
+		if (!dMatch) return; // no dice to maximize
+		var strReplace = strDice;
+		// Replace each dice with their maximum
+		for (var d = 0; d < dMatch.length; d++) {
+			var iAmount = Number(dMatch[d].replace(/(\d+)d\d+/i, "$1"));
+			var iDie = Number(dMatch[d].replace(/\d+d(\d+)/i, "$1"));
+			strReplace = strReplace.replace(dMatch[d], iAmount * iDie);
 		}
+		// Replace numbers in brackes with their total (for /SL stuff)
+		var bRx = /\([\+\-]?\d+([\+\-]\d+)+\)/i;
+		while (bRx.test(strReplace)) {
+			var bMatch = strReplace.match(bRx)[0];
+			var bTotal = bMatch.match(/[\+\-]?\d+/g).reduce((a, b) => a + Number(b), 0);
+			strReplace = strReplace.replace(bMatch, bTotal);
+		}
+		// Add consecutive bonuses (per group 'X/SL' and not 'X/SL')
+		var qRx = /(([\+\-]?\d+)(\/\d*SL|\/PP|\/extra PP)?)+( \((Str|Dex|Con|Int|Wis|Cha)\))?/i;
+		if (qRx.test(strReplace)) {
+			var qMatch = strReplace.match(qRx)[0];
+			var qParts = qMatch.match(/[\+\-]?\d+(\/\d*SL|\/PP|\/extra PP)?/ig);
+			var qObj = { nr : 0 };
+			for (var q = 0; q < qParts.length; q++) {
+				if (!isNaN(qParts[q])) {
+					qObj.nr += Number(qParts[q]);
+				} else {
+					var qPerMatch = qParts[q].match(qRx);
+					if (!qPerMatch[3]) continue;
+					qObj[qPerMatch[3]] = (qObj[qPerMatch[3]] ? qObj[qPerMatch[3]] : 0) + Number(qPerMatch[2]);
+				}
+			}
+			var qStrReplace = "";
+			for (var qType in qObj) {
+				var qStr = qObj[qType];
+				if (!qStr) continue;
+				qStrReplace += (qStrReplace && qStr > 0 ? "+" : "") + qStr + (qType !== "nr" ? qType : "");
+			}
+			if (qStrReplace) strReplace = strReplace.replace(qMatch, qStrReplace);
+		}
+		spellObj.genericSpellDmgEditMaximizedDice = true;
+		useSpellDescr = useSpellDescr.replace(strDice, strReplace);
 	}
-
-	// Do some common replacements to save space for the very limited short description
-	var arrTxtReplace = [
-		[/ and /ig, ' \u0026 '],
-		[/(dif)ficult (ter)(rain|\.)|(dif)(ficult|\.) (ter)rain/ig, '$1. $2.'],
-		[/(crea)tures?/ig, '$1'],
-		[/(obj)ects?/ig, '$1'],
-		[/(r)ounds?/ig, '$1nd'],
-		[/(save hal)ves?/ig, '$1f'],
-		[/(see) book/ig, '$1 B']
-	];
-	for (var i = 0; i < arrTxtReplace.length; i++) {
-		useSpellDescr = useSpellDescr.replace(arrTxtReplace[i][0], arrTxtReplace[i][1]);
-	};
-
+	// The function to fix a string of multiple X/SL+Y/SL to (X+Y)/SL
+	var fixMultiPerSL = function(strSl) {
+		var slMatch = strSl.match(/(\+?)(\d+d?\d*)(\/\d*SL|\/PP|\/extra PP)\+(\d+d?\d*|\(.*?\))(\3)/i);
+		if (!slMatch) return strSl;
+		var aVals = [slMatch[2], slMatch[4]]; // Make an array of just the numerical/dice parts
+		if ((/\(.*?\)/).test(aVals[1])) {
+			// The second group is already a joined group, untangle it to just its numerical/dice parts
+			var justNums = aVals[1].match(/\d+d?\d*/ig);;
+			if (justNums) aVals = [slMatch[2]].concat(justNums);
+		}
+		// Add up the different type of dice and fixed numbers
+		var oVal = { nr : 0 }, aDice = [];
+		for (var i = 0; i < aVals.length; i++) {
+			iVal = aVals[i];
+			if (!isNaN(iVal)) {
+				oVal.nr += Number(iVal);
+			} else if (/\d+d\d+/i.test(iVal)) {
+				var iValMatch = iVal.match(/(\d+)d(\d+)/i);
+				var theDie = Number(iValMatch[2]);
+				var theAmnt = Number(iValMatch[1]);
+				if (aDice.indexOf(theDie) === -1) aDice.push(theDie);
+				oVal[theDie] = (oVal[theDie] ? oVal[theDie] : 0) + theAmnt;
+			}
+		}
+		// Create a new string to return
+		aDice.sort((a,b)=>a-b); // sort the dice by size
+		aDice.push("nr"); // add the default number at the end
+		var strSlRe = "";
+		for (var i = 0; i < aDice.length; i++) {
+			var iDie = aDice[i];
+			if (oVal[iDie]) strSlRe += (i > 0 && oVal[iDie] > 0 ? "+" : "") + oVal[iDie] + (iDie === "nr" ? "" : "d" + iDie);
+		}
+		if (aDice.length > 1) strSlRe = "(" + strSlRe + ")";
+		return strSl.replace(slMatch[0], slMatch[1] + strSlRe + slMatch[3]);
+	}
+	// The function to fix a string of multiple constants not being added together
+	var fixMultiConstants = function(strSl) {
+		var qRx = /([\+\-]?\b\d+\b)(?![)/])(?: \((?:Str|Dex|Con|Int|Wis|Cha)\))?/ig;
+		var qExec = qRx.exec(strSl);
+		if (qExec) {
+			var qMatch = strSl.match(qRx);
+			var qTotal = qMatch.reduce((a, b) => a + Number(b.match(/[\+\-]?\d+/)[0]), 0);
+			// remove all the matches from their string (but use exec, as we could easily get false positives)
+			var isStart = !isNaN(qExec[0][0])
+			var qInsertIdx = [];
+			do {
+				qInsertIdx.push([qExec.index, qExec[0].length, qExec[0][0]]);
+			} while ((qExec = qRx.exec(strSl)) != null)
+			for (var q = qInsertIdx.length - 1; q >= 0; q--) {
+				var qLoc = qInsertIdx[q];
+				strSl = strSl.substr(0, qLoc[0]) + strSl.substr(qLoc[0] + qLoc[1]);
+			}
+			strSl = strSl.substr(0, qInsertIdx[0][0]) + (qTotal > 0 && !isStart ? "+" : "") + qTotal + strSl.substr(qInsertIdx[0][0]);
+		}
+		return strSl;
+	}
 	// The function to update the actual damage part with the new addition
 	var updateDescr = function(useMatch, onceExists, offsetMatch) {
-		if (!useMatch) return;
-		// If the first matched group is not the dice (+static modifiers), then go look for which group has this information
-		var rxDie = /^(\+?\d+d?\d*)+$/i;
-		if (!offsetMatch) offsetMatch = 0;
+		if (!useMatch || !ability) return useMatch[0];
 		// If the first matched group is not the dice (+static modifiers), then go look for which group has this information
 		var rxDie = /^(\+?\d+d?\d*)+$/i;
 		if (!offsetMatch && !rxDie.test(useMatch[1]) ) {
@@ -5596,23 +5689,28 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 		var useMatchPre = useMatch.slice(1, 1 + offsetMatch);
 		var useMatchPost = useMatch.slice(2 + offsetMatch, useMatch.length);
 		// Find the same die (if isDieType) or a number being added (if !isDieType)
-		var rRegex = isDieType ? RegExp("(.*?)(\\d" + (onceExists ? "*" : "+") + ")(d" + addDieType[2] + ".*)", "i") : /(.*?[^d\d])(\d+)((?:[^d]|$).*)/;
+		var rRegex = isDieType ? RegExp("(.*?)(\\d" + (onceExists ? "*" : "+") + ")(d" + addDieType[2] + ".*)", "i") : /(.*[\+\-]|^)(\d+)([^d].*|$)/;
 		var rRxMatch = useMatchDie.match(rRegex);
-		if (rRxMatch) {
+		var strReplace = "";
+		if (rRxMatch && !abiIsStr) {
 			// We found the same die / any number being added, so add our addition to that
 			var addNr = isDieType ? Number(addDieType[1]) : abiMod;
 			var oldDieAmount = isDieType && rRxMatch[2].toString() === "0" ? 0 : Math.max(Number(rRxMatch[2]), 1);
-			var newPart = rRxMatch[1] + (oldDieAmount + addNr) + rRxMatch[3];
-			useSpellDescr = useSpellDescr.replace(useMatch[0], useMatchPre + newPart + useMatchPost);
+			var newPart = [rRxMatch[1], (oldDieAmount + addNr), rRxMatch[3]].join("");
+			strReplace = useMatchPre + newPart + useMatchPost;
 		} else {
 			// No same die type / static number beind added, so add our addition as text
 			var addNr = "+" + (isDieType && !onceExists ? ability : abiMod);
-			useSpellDescr = useSpellDescr.replace(useMatch[0], useMatchPre + useMatchDie + addNr + useMatchPost);
+			strReplace = useMatchPre + useMatchDie + addNr + useMatchPost;
 		}
+		strReplace = fixMultiConstants(fixMultiPerSL(strReplace));
+		useSpellDescr = useSpellDescr.replace(useMatch[0], strReplace);
+		return strReplace;
 	}
 
 	// Create the matching regex with non-capturing inner groups
-	var sRegex = "((?:\\+?\\d+d?\\d*)+)((?:\\+\\d+d?\\d*\\/(?:\\d*SL|PP|extra PP))?(?:\\+spell(?:casting)? (?:ability )?mod(?:ifier)?|(?:\\+|-)\\d+ \\(.{3}\\))? (?:" + dmgType + ") ?(?:dmg|damage)(?: per \\w+| each|/rnd|/turn)?)";
+	var isHealing = /heal|\bhp\b|restore/.test(dmgType);
+	var sRegex = (isHealing ? "(heals? |to life with )" : "") + "((?:\\+?\\d+d?\\d*)+)((?:\\+(?:\\((?:\\+?\\d+d?\\d*)+\\)|\\d+d?\\d*)\\/(?:\\d*SL|PP|extra PP))*(?:\\+ ?(?:my )?spell(?:casting)? (?:ability )?mod(?:ifier)?|(?:\\+|-)\\d+ \\(.{3}\\))? (?:" + (isHealing ? "" : dmgType) + ") ?(?:" + (isHealing ? "hp|hit points?" : "dmg|damage") + ")(?: per \\w+| each|/rnd|/turn)?)";
 
 	// If the spell has multiple damage types, we need to check if any or all of them match the dmgType we are looking for
 	var onlySomeDmgTypes = false;
@@ -5645,7 +5743,8 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 	var arrRegex = [tRx];
 	var tRxMatch = useSpellDescr.match(tRx);
 	// Stop now if no match or a match but not for any dice while onlyRolls == true
-	if (!tRxMatch || (onlyRolls && !(/\d*d\d+/i).test(tRxMatch[2]))) return;
+	var bRollMatch = tRxMatch && (/\d*d\d+/i).test(tRxMatch[2]);
+	if (!tRxMatch || (onlyRolls && !bRollMatch) || (maximizeRolls && !bRollMatch && !ability)) return;
 
 	// Spells that have a secondary (or more) damage group of the same damage type that doesn't follow the syntax
 	if (spellObj.dynamicDamageBonus && spellObj.dynamicDamageBonus.extraDmgGroupsSameType && typeof spellObj.dynamicDamageBonus.extraDmgGroupsSameType === "object") {
@@ -5664,8 +5763,9 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 	}
 
 	if (notMultiple || onlySomeDmgTypes) {
+		if (maximizeRolls) maximizeDice(tRxMatch[0]);
 		// testing if the once addition (1× +X) or (+X if..) already exists
-		var oRegex = /(\(1\xD7 |\(once |\()((?:\+\d*d?\d+)+)((:? if\.\.)?\))/i;
+		var oRegex = /(\(1\xD7 |\(once |\()((?:\+\d*d?\d+)+)((?: if\.\.)?\))/i;
 		if (spellObj.genericSpellDmgEdit && oRegex.test(useSpellDescr)) {
 			// Another addition already took place, so merge them with the current
 			var oRxMatch = useSpellDescr.match(oRegex);
@@ -5703,11 +5803,49 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 	for (var i = 0; i < tRxMatchMulti.length; i++) {
 		if (notMultiple && i > 0) break;
 		var aRegex = arrRegex[Math.min(i, arrRegex.length - 1)];
-		updateDescr(tRxMatchMulti[i].match(aRegex), false);
+		var aRxMatch = tRxMatchMulti[i].match(aRegex);
+		if (!aRxMatch) continue;
+		var strNewPart = updateDescr(aRxMatch, false, 0);
+		if (maximizeRolls) maximizeDice(strNewPart);
 	}
 	if (spellObj.description !== useSpellDescr) {
 		spellObj.description = useSpellDescr;
 		spellObj.genericSpellDmgEdit = true;
 		return true;
 	}
+}
+
+// A function to return the shorter spell description, if defined, and if the current description matches the original description
+function getSpellShortDescription(spellKey, spellObj) {
+	var useSpellDescr = spellObj.description;
+	if (!SpellsList[spellKey]) return useSpellDescr;
+	var isMetric = What("Unit System") === "metric";
+	var origSpellDescr = isMetric && SpellsList[spellKey].descriptionMetric ? SpellsList[spellKey].descriptionMetric : isMetric ? ConvertToMetric(SpellsList[spellKey].description, 0.5) : SpellsList[spellKey].description;
+	var curSpellDescr = spellObj.descriptionBeforeamendSpDescr ? spellObj.descriptionBeforeamendSpDescr : spellObj.description;
+	if ( curSpellDescr === origSpellDescr && (spellObj.descriptionShorter || (isMetric && spellObj.descriptionShorterMetric)) ) {
+		// This object uses its default description, and has a defined shorter description, so use that
+		useSpellDescr = isMetric && spellObj.descriptionShorterMetric ? spellObj.descriptionShorterMetric : isMetric ? ConvertToMetric(spellObj.descriptionShorter, 0.5) : spellObj.descriptionShorter;
+		// If the description of this spell was changed to use spellcasting ability, do so again with the shorter version
+		if (CurrentCasters.amendSpDescr && spellObj.descriptionBeforeamendSpDescr && spellObj.amendSpDescrCaster) {
+			var editSpellDescr = applySpellcastingAbility({
+				description : useSpellDescr,
+				amendSpDescrCaster : spellObj.amendSpDescrCaster
+			});
+			if (editSpellDescr) useSpellDescr = editSpellDescr;
+		}
+	}
+	// Do some common replacements to save space for the very limited short description
+	var arrTxtReplace = [
+		[/ and /ig, ' \u0026 '],
+		[/(dif)ficult (ter)(rain|\.)|(dif)(ficult|\.) (ter)rain/ig, '$1. $2.'],
+		[/(crea)tures?/ig, '$1'],
+		[/(obj)ects?/ig, '$1'],
+		[/(r)ounds?/ig, '$1nd'],
+		[/(save hal)ves?/ig, '$1f'],
+		[/(see) book/ig, '$1 B']
+	];
+	for (var i = 0; i < arrTxtReplace.length; i++) {
+		useSpellDescr = useSpellDescr.replace(arrTxtReplace[i][0], arrTxtReplace[i][1]);
+	};
+	return useSpellDescr;
 }

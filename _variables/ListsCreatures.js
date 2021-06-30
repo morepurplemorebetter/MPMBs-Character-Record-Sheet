@@ -1,8 +1,8 @@
 var Base_CreatureList = {
 	// The four elementals (for Druid Wild Shape)
 	"air elemental" : {
-		name : "Air Elemental",
-		nameAlt : ["Elemental, Air"],
+		name : "Elemental, Air",
+		nameAlt : ["Air Elemental"],
 		source : [["SRD", 305], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
@@ -47,8 +47,8 @@ var Base_CreatureList = {
 		wildshapeString : "Darkvision 60 ft| Knows Auran| Resistant to: lightning, thunder, and bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious| Air Form: can move through 1 inch wide space without squeezing and can move through and stop in space of hostiles| Whirlwind: see Monster Manual page 124"
 	},
 	"earth elemental" : {
-		name : "Earth Elemental",
-		nameAlt : ["Elemental, Earth"],
+		name : "Elemental, Earth",
+		nameAlt : ["Earth Elemental"],
 		source : [["SRD", 306], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
@@ -85,8 +85,8 @@ var Base_CreatureList = {
 		wildshapeString : "Darkvision 60 ft; Tremorsense 60 ft| Knows Terran| Vulnerable to: thunder| Resistant to: bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, paralyzed, petrified, poisoned, unconscious| Earth Glide: can burrow through nonmagical, unworked earth and stone without disturbing the material| Siege Monster: does double damage to objects and structures"
 	},
 	"fire elemental" : {
-		name : "Fire Elemental",
-		nameAlt : ["Elemental, Fire"],
+		name : "Elemental, Fire",
+		nameAlt : ["Fire Elemental"],
 		source : [["SRD", 306], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
@@ -125,8 +125,8 @@ var Base_CreatureList = {
 		wildshapeString : "Darkvision 60 ft| Knows Ignan| Resistant to: bludg./ piercing/slashing from nonmagical weapons| Immune to: fire/poison/exhaustion/grappled/paralyzed/petrified/ poisoned/prone/restrained/unconscious| Sheds 30-ft bright/dim light| 1 cold dmg per gallon of or 5ft moved through water| Fire Form: pass through 1\" space no squeezing; move through/stop in another's space; do 1d10 fire dmg to melee attackers; MM, p125"
 	},
 	"water elemental" : {
-		name : "Water Elemental",
-		nameAlt : ["Elemental, Water"],
+		name : "Elemental, Water",
+		nameAlt : ["Water Elemental"],
 		source : [["SRD", 307], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
@@ -2280,6 +2280,7 @@ var Base_CreatureList = {
 	},
 	"elk" : {
 		name : "Elk",
+		nameAlt : ["Reindeer"],
 		source : [["SRD", 372], ["M", 322]],
 		size : 2, //Large
 		type : "Beast",
@@ -2310,7 +2311,7 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Charge",
-			description : "If the elk moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone."
+			description : "If the [THIS] moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone."
 		}]
 	},
 	"flying snake" : {
@@ -2363,7 +2364,7 @@ var Base_CreatureList = {
 		passivePerception : 11,
 		challengeRating : "0",
 		proficiencyBonus : 2,
-		attacksAction : 1,
+		attacksAction : 0,
 		attacks : [],
 		traits : [{
 			name : "Amphibious",
@@ -2799,6 +2800,7 @@ var Base_CreatureList = {
 	},
 	"giant goat" : {
 		name : "Giant Goat",
+		nameAlt : ["Moose"],
 		source : [["SRD", 376], ["M", 326]],
 		size : 2, //Large
 		type : "Beast",
@@ -2822,10 +2824,10 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Charge",
-			description : "If the goat hits with a ram attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 2d4 bludgeoning damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone."
+			description : "If the [THIS] hits with a ram attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 2d4 bludgeoning damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone."
 		}, {
 			name : "Sure-Footed",
-			description : "The goat has advantage on Strength and Dexterity saving throws made against effects that would knock it prone."
+			description : "The [THIS] has advantage on Strength and Dexterity saving throws made against effects that would knock it prone."
 		}]
 	},
 	"giant hyena" : {
@@ -4241,7 +4243,7 @@ var Base_CreatureList = {
 		passivePerception : 10,
 		challengeRating : "0",
 		proficiencyBonus : 2,
-		attacksAction : 1,
+		attacksAction : 0,
 		attacks : [],
 		traits : [{
 			name : "Water Breathing",

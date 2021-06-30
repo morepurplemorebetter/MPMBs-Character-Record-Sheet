@@ -762,6 +762,11 @@ function DirectImport(consoleTrigger) {
 		ProfBonus("Proficiency Bonus"); //make sure the proficiency bonus is updated
 
 		//set the race
+		if (!fromBefore13 && global.docFrom.CurrentVars.oldRace) {
+			global.docTo.CurrentVars.oldRace = global.docFrom.CurrentVars.oldRace;
+			global.docTo.CurrentVars.oldRaceAmendRemember = global.docFrom.CurrentVars.oldRaceAmendRemember;
+			global.docTo.SetStringifieds("vars");
+		}
 		ImportField("Race", {notTooltip: true, notSubmitName: true});
 		if (ImportField("Race Remember")) ApplyRace(What("Race Remember"));
 

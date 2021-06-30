@@ -1563,13 +1563,16 @@ calcChanges : {
 
 	spellAdd : [
 		function (spellKey, spellObj, spName, isDuplicate) {
-			var testRegex = /(d\d+)((\+\d+d\d+\/\d?SL)? poison (dmg|damage))/i;
-			if ((testRegex).test(spellObj.description)) {
-				spellObj.description = spellObj.description.replace(testRegex, "$1+" + What("Cha Mod") + "$2");
+			if ((/heals/).test(spellObj.description) && spellObj.range === "touch") {
+				// healing spells have a range of 60 ft instead of touch
+				spellObj.range = What("Unit System") === "metric" ? ConvertToMetric("60 ft", 0.5) : "60 ft";
 				return true;
-			};
+			} else {
+				// add Charisma modifier to spells that deal poison damage
+				return genericSpellDmgEdit(spellKey, spellObj, "poison", "Cha");
+			}
 		},
-		"Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."
+		"Healing spells that have a range of touch, have a range of 60 ft instead. Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."
 	],
 	/*	spellAdd // OPTIONAL //
 		TYPE:	array with two entries
@@ -1609,8 +1612,53 @@ calcChanges : {
 		By changing the attributes of the spellObj, you change what is put in the fields.
 		Changing that object has no affect on the original SpellsList entry.
 
+		You can call on the `genericSpellDmgEdit()` function to automatically increase the damage or healing
+		of a spell. This function dynamically adds an ability modifier, value, or die to the damage
+		or healing displayed in the short description on the spell sheet.
+
+		genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, onlyRolls, maximizeRolls)
+		  This function requires 7 parameters (the first 4 are required), which are as follows:
+		1)	spellKey, a string, same as the one above
+
+		2)	spellObj, the object of the spell entry, same as the one above
+
+		3)	dmgType, a string that will be used to create the regular expression, or "heal"
+			If you set this to "heal", the function will only look at healing spells
+			This string can be a damage type, or multiple, separated with a pipe character (which
+			functions as 'or' in regular expression).
+			For example, use "fire|radiant" to match both fire and radiant spells.
+			The match has to be for the whole word, but some damage types can be abbreviated, see below.
+			Thus, if you want to match a spell that deals lightning damage, enter "lightning|lightn.".
+			IMPORTANT: do not use capturing groups!
+
+		4)	ability, a string or number, which will be added to the damage/healing
+			This can be the three-letter abbreviation for an ability score (Str, Dex, Con, Int, Wis, or Cha),
+			a die (e.g. "1d6"), a number, or anything you'd want to add to the damage (e.g "2/SL").
+			Make sure the abbreviation has its first letter capitalized.
+
+		5)	notMultiple, boolean whether to add the bonus to only one instance (true) or multiple (false)
+			This parameter is optional, if you don't set it, it will assume `false`.
+
+		6)	onlyRolls, boolean whether to add the bonus to only rolls (true) or also fixed values (false)
+			This parameter is optional, if you don't set it, it will assume `false`.
+
+		7)	maximizeRolls, boolean whether to replace all dice with their maximum value (true) or not (false)
+			This parameter is optional, if you don't set it, it will assume `false`.
+
+		Some longer damage type names can be shortened in the spell short descriptions:
+			DAMAGE TYPE    SHORTENED
+			Bludgeoning    Bludg.
+			Lightning      Lightn.
+			Necrotic       Necro.
+			Piercing       Pierc.
+			Slashing       Slash.
+
 		This function is processed after the 'spellChanges' attribute.
 		If you need to change only spells for one spellcasting source, use the 'spellChanges' attribute above.
+
+		If the sheet is set to use the metric system, the conversion to metric will be done before
+		this function is processed.
+		Thus, if your manipulation includes imperial units, make sure to convert them to metric.
 
 		This function will only be processed if the checkbox "Allow features to dynamically change spells"
 		in the final spell selection dialog is checked.

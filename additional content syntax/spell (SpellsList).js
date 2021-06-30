@@ -345,14 +345,19 @@ SpellsList["sindering purple"] = {
 
 	// IMPORTANT //
 	If the spell does damage, make sure the damage is written as "XdY+CdZ/SL [Type] dmg".
-	- Replace [Type] with the a single word, the damage type with the first letter capitalized
-	(e.g. Fire or Lightning).
-	- You can write "damage" instead of "dmg".
-	- "+CdZ/SL" represents the bonus damage die per spell slot level above the spell's level. For example,
-	  this is written as "8d6+1d6/SL fire dmg" for Fireball, which adds 1d6 to the damage for each spell slot
-	  used above 3rd-level (the level of the spell).
-	- The damage die don't necessarily have to include a bonus per spell slot level above the current level,
-	  nor be a die at all, static damage also works. E.g. "2d8 Thunder dmg" and "5 Cold dmg" are also valid.
+		- Replace [Type] with the a single word, the damage type with the first letter capitalized
+		  (e.g. Fire or Lightning).
+		- You can write "damage" instead of "dmg".
+		- "+CdZ/SL" represents the bonus damage die per spell slot level above the spell's level. For example,
+		  this is written as "8d6+1d6/SL fire dmg" for Fireball, which adds 1d6 to the damage for each spell 
+		  slot used above 3rd-level (the level of the spell).
+		- The damage die don't necessarily have to include a bonus per spell slot level above current level,
+		  nor be a die at all, static damage also works. E.g. "2d8 Thunder dmg" and "5 Cold dmg" are valid.
+	If the spell heals hit points, make sure it is written as "heal XdY+CdZ/SL HP"
+		- "heal" can also be replaces with "heals" or "to life with" (e.g. Raise Dead).
+		- "HP" can also be replaces with "hit point" or "hit points".
+		- "+CdZ/SL" works the same as explained above in the damage example.
+		- The healing and bonus per spell slot level can also be static (e.g. "heals 100 HP" is valid).
 
 	You can shorten longer damage type names if they won't otherwise fit:
 		DAMAGE TYPE    SHORTENED
@@ -488,7 +493,7 @@ SpellsList["sindering purple"] = {
 /*	descriptionShorter // OPTIONAL //
 	TYPE:	string
 	USE:	shorter version of the description of the spell to be filled in the description field
-	ADDED:	v13.0.6
+	ADDED:	v13.0.7
 
 	If the description attribute given above is too long to fit an extra bit added by the
 	`genericSpellDmgEdit` function, then you can use this attribute to present an alternative, shorter
@@ -547,7 +552,7 @@ SpellsList["sindering purple"] = {
 /*	descriptionShorterMetric // OPTIONAL //
 	TYPE:	string
 	USE:	shorter version of the description of the spell to be filled in the description field when the sheet is set to use the metric system
-	ADDED:	v13.0.6
+	ADDED:	v13.0.7
 
 	This attribute works the same as the `descriptionShorter` attribute above,
 	but it is only used if the sheet is set to use the metric system.
@@ -569,7 +574,7 @@ SpellsList["sindering purple"] = {
 /*	dynamicDamageBonus // OPTIONAL //
 	TYPE:	object (optional attributes)
 	USE:	instructions for the `genericSpellDmgEdit` function
-	ADDED:	v13.0.6
+	ADDED:	v13.0.7
 
 	See above for an explanation what the `genericSpellDmgEdit` function does.
 	This object can have several pre-defined attributes, which are explained below.
@@ -578,7 +583,6 @@ SpellsList["sindering purple"] = {
 	/*	doNotProcess // OPTIONAL //
 		TYPE:	boolean
 		USE:	tell the `genericSpellDmgEdit` function not to process this spell
-		ADDED:	v13.0.6
 	
 		If the description of the spell as it will be displayed on the sheet includes damage,
 		the `genericSpellDmgEdit` function can dynamically edit it by adding a modifier under certain
@@ -594,7 +598,6 @@ SpellsList["sindering purple"] = {
 	/*	multipleDmgMoments // OPTIONAL //
 		TYPE:	boolean
 		USE:	force the `genericSpellDmgEdit` function to treat this spell as a single damage instance (true) or as one with multiple damage instances (false)
-		ADDED:	v13.0.6
 
 		See the explanation for `descriptionShorter` above for how the `genericSpellDmgEdit` function
 		normally determines wether the spell has a single or multiple damage instances.
@@ -618,7 +621,6 @@ SpellsList["sindering purple"] = {
 	/*	allDmgTypesSingleMoment // OPTIONAL //
 		TYPE:	boolean
 		USE:	force the `genericSpellDmgEdit` function to treat multiple damage listings as a single damage instance
-		ADDED:	v13.0.6
 	
 		See the explanation for `descriptionShorter` above for how the `genericSpellDmgEdit` function
 		normally determines wether the spell has a single or multiple damage instances.
@@ -638,7 +640,6 @@ SpellsList["sindering purple"] = {
 	/*	allDmgTypesSingleMoment // OPTIONAL //
 		TYPE:	regular expression
 		USE:	regex to match other damage instances in the description of the same damage type that doesn't adhere to the normal syntax
-		ADDED:	v13.0.6
 
 		This attribute tells the `genericSpellDmgEdit` function that there is another damage instance
 		in the description, but that instance does not adhere to the normal syntax of "[Dice} [Type] dmg".
@@ -669,7 +670,6 @@ SpellsList["sindering purple"] = {
 	/*	multipleDmgTypes // OPTIONAL //
 		TYPE:	object (with exactly two attributes)
 		USE:	the damage type of the spell can be two or more different types and/or doesn't adhere to the normal syntax in the description
-		ADDED:	v13.0.6
 
 		This attribute tells the `genericSpellDmgEdit` function that the damage listed in the description
 		can be with multiple different damage types, which is chosen by the caster at the time of casting.
@@ -695,7 +695,6 @@ SpellsList["sindering purple"] = {
 	/*	skipDmgGroupIfNotMultiple // OPTIONAL //
 		TYPE:	regular expression
 		USE:	the spell has multiple damage instances and/or types and if the bonus should only be added to a single roll the `genericSpellDmgEdit` function, skip one or more damage instances before adding the bonus
-		ADDED:	v13.0.6
 
 		This attribute only does something if the `genericSpellDmgEdit` function is initialised to only
 		add the damage bonus to one roll and this spell's description lists multiple that adhere

@@ -892,7 +892,7 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "S",
 		duration : "Instantaneous",
-		description : "Stop a spell being cast; make DC 10+SL spellcasting ability check if above the spell slot lvl used",
+		description : "Stop a spell being cast; if above SL of this spell, make DC 10+SL spellcasting ability check",
 		descriptionFull : "You attempt to interrupt a creature in the process of casting a spell. If the creature is casting a spell of 3rd level or lower, its spell fails and has no effect. If it is casting a spell of 4th level or higher, make an ability check using your spellcasting ability. The DC equals 10 + the spell's level. On a success, the creature's spell fails and has no effect." + "\n   " + "At Higher Level. When you cast this spell using a spell slot of 4th level or higher, the interrupted spell has no effect if its level is less than or equal to the level of the spell slot you used."
 	},
 	"create food and water" : {
@@ -1183,7 +1183,7 @@ var Base_SpellsList = {
 		range : "120 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "Dispel all magical effects on crea or object; make DC 10+SL spellcasting ability check if above SL used",
+		description : "Dispel all magical effects on crea or object; if above this SL, DC 10+SL spellcasting ability check",
 		descriptionFull : "Choose one creature, object, or magical effect within range. Any spell of 3rd level or lower on the target ends. For each spell of 4th level or higher on the target, make an ability check using your spellcasting ability. The DC equals 10 + the spell's level. On a successful check, the spell ends." + AtHigherLevels + "When you cast this spell using a spell slot of 4th level or higher, you automatically end the effects of a spell on the target if the spell's level is equal to or less than the level of the spell slot you used."
 	},
 	"divination" : {
@@ -1957,7 +1957,8 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A sprig of mistletoe",
 		duration : "Instantaneous",
-		description : "Create 10 berries; 1 a to eat 1 berry for 1 HP and nourishment for 1 day; berries lose potency after 24h",
+		description : "Create 10 berries; 1 a to eat 1 berry: heal 1 HP, nourishment for 1 day; berries lose potency after 24h",
+		descriptionShorter : "Create 10 berries; 1 a to eat 1 berry: heal 1 HP, nourishment for 1 day; lose potency after 24h",
 		descriptionFull : "Up to ten berries appear in your hand and are infused with magic for the duration. A creature can use its action to eat one berry. Eating a berry restores 1 hit point, and the berry provides enough nourishment to sustain a creature for one day." + "\n   " + "The berries lose their potency if they have not been consumed within 24 hours of the casting of this spell."
 	},
 	"grease" : {
@@ -2139,6 +2140,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Instantaneous",
 		description : "1 living creature heals 70+10/SL HP and is cured of blindness, deafness, and all diseases",
+		descriptionShorter : "1 living creature heals 70+10/SL HP and is cured of blindness, deafness, all diseases",
 		descriptionFull : "Choose a creature that you can see within range. A surge of positive energy washes through the creature, causing it to regain 70 hit points. The spell also ends blindness, deafness, and any diseases affecting the target. This spell has no effect on constructs or undead." + AtHigherLevels + "When you cast this spell using a spell slot of 7th level or higher, the amount of healing increases by 10 for each slot level above 6th."
 	},
 	"healing word" : {
@@ -2724,7 +2726,8 @@ var Base_SpellsList = {
 		range : "60 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "Split 700 HP of healing over creatures in range; also cured of blindness, deafness, and all diseases",
+		description : "Heal 700 HP split over any crea in range; each healed is cured of blindness, deafness, and all diseases",
+		descriptionShorter : "Heal 700 HP split over any crea in range; each healed cured of blindness, deafness, diseases",
 		descriptionFull : "A flood of healing energy flows from you into injured creatures around you. You restore up to 700 hit points, divided as you choose among any number of creatures that you can see within range. Creatures healed by this spell are also cured of all diseases and any effect making them blinded or deafened. This spell has no effect on undead or constructs."
 	},
 	"mass healing word" : {
@@ -3523,8 +3526,13 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A prayer wheel and holy water",
 		duration : "1 h",
-		description : "1 crea heals 4d8+15 HP and 1 HP/rnd for rest of duration; restores lost body parts in 2 min",
-		descriptionFull : "You touch a creature and stimulate its natural healing ability. The target regains 4d8 + 15 hit points. For the duration of the spell, the target regains 1 hit point at the start of each of its turns (10 hit points each minute)." + "\n   " + "The target's severed body members (fingers, legs, tails, and so on), if any, are restored after 2 minutes. If you have the severed part and hold it to the stump, the spell instantaneously causes the limb to knit to the stump."
+		description : "1 crea heals 4d8+15 HP now and 1 HP/rnd for rest of duration; restores lost body parts in 2 min",
+		descriptionShorter : "1 crea heals 4d8+15 HP and 1 HP/rnd for the duration; restores lost body parts in 2 min",
+		descriptionFull : "You touch a creature and stimulate its natural healing ability. The target regains 4d8 + 15 hit points. For the duration of the spell, the target regains 1 hit point at the start of each of its turns (10 hit points each minute)." + "\n   " + "The target's severed body members (fingers, legs, tails, and so on), if any, are restored after 2 minutes. If you have the severed part and hold it to the stump, the spell instantaneously causes the limb to knit to the stump.",
+		dynamicDamageBonus : {
+			multipleDmgMoments : false,
+			extraDmgGroupsSameType : /(and |\u0026 )((?:\+?\d+d?\d*)+)( HP\/rnd)/i
+		}
 	},
 	"reincarnate" : {
 		name : "Reincarnate",
@@ -3578,7 +3586,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u2020",
 		compMaterial : "A diamond worth at least 1,000 gp, which the spell consumes",
 		duration : "Instantaneous",
-		description : "Resurrects a creature, that has died in the last century, with whole body; see book (1000gp cons.)",
+		description : "Resurrects a crea that died in the last century to life with whole body and full HP; see B (1000gp cons.)",
 		descriptionFull : "You touch a dead creature that has been dead for no more than a century, that didn't die of old age, and that isn't undead. If its soul is free and willing, the target returns to life with all its hit points." + "\n   " + "This spell neutralizes any poisons and cures normal diseases afflicting the creature when it died. It doesn't, however, remove magical diseases, curses, and the like, if such affects aren't removed prior to casting the spell, they afflict the target on its return to life." + "\n   " + "This spell closes all mortal wounds and restores any missing body parts." + "\n   " + "Coming back from the dead is an ordeal. The target takes a -4 penalty to all attack rolls, saving throws, and ability checks. Every time the target finishes a long rest, the penalty is reduced by 1 until it disappears." + "\n   " + "Casting this spell to restore life to a creature that has been dead for one year or longer taxes you greatly. Until you finish a long rest, you can't cast spells again, and you have disadvantage on all attack rolls, ability checks, and saving throws."
 	},
 	"reverse gravity" : {
@@ -3807,7 +3815,8 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "Mistletoe, a shamrock leaf, and a club or quarterstaff",
 		duration : "1 min",
-		description : "Club/quarterstaff I hold does 1d8 dmg and uses my spellcasting ability modifier instead of Str",
+		description : "Club/quarterstaff I hold does 1d8 Bludg. dmg and uses my spellcasting ability modifier instead of Str",
+		descriptionShorter : "Club/quarterstaff I hold does 1d8 Bludg. dmg \u0026 uses my spellcasting modifier instead of Str",
 		descriptionFull : "The wood of a club or quarterstaff you are holding is imbued with nature's power. For the duration, you can use your spellcasting ability instead of Strength for the attack and damage rolls of melee attacks using that weapon, and the weapon's damage die becomes a d8. The weapon also becomes magical, if it isn't already. The spell ends if you cast it again or if you let go of the weapon."
 	},
 	"shocking grasp" : {
@@ -4345,7 +4354,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u2020",
 		compMaterial : "A sprinkle of holy water and diamonds worth at least 25,000 gp, which the spell consumes",
 		duration : "Instantaneous",
-		description : "Resurrects a creature, that has died in last 200 years, with new body; see book (25000gp cons.)",
+		description : "Resurrects a crea that died in the last 200 years to life with new body and full HP; see B (25k gp cons.)",
 		descriptionFull : "You touch a creature that has been dead for no longer than 200 years and that died for any reason except old age. If the creature's soul is free and willing, the creature is restored to life with all its hit points." + "\n   " + "This spell closes all wounds, neutralizes any poison, cures all diseases, and lifts any curses affecting the creature when it died. The spell replaces damaged or missing organs and limbs. If the creature was undead, it is restored to its non-undead form." + "\n   " + "The spell can even provide a new body if the original no longer exists, in which case you must speak the creature's name. The creature then appears in an unoccupied space you choose within 10 feet of you."
 	},
 	"true seeing" : {

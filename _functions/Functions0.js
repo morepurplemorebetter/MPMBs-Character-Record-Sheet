@@ -72,16 +72,18 @@ function Checkbox(field, FldValue, tooltip, submitNm) {
 	if (submitNm !== undefined) tDoc.getField(field).submitName = submitNm;
 };
 
-function desc(arr) {
-	return "\n   " + arr.join("\n   ");
+function desc(arr, joinStr) {
+	joinStr = joinStr ? joinStr : "\n   ";
+	return joinStr + arr.join(joinStr);
 };
 
 // Call all the prototypes within their own function so we can call it again when importing, forcing the latest version
 function setPrototypes() {
 	//adding a way of capitalizing every first letter of every word in a string
 	String.prototype.capitalize = function () {
-		var string = this.toLowerCase().replace(/(?:^|\s|\(|\[)\w/g, function (m) {
-			return m.toUpperCase();
+		var string = this.replace(/(^|\s|\(|\[)[a-zA-Z\u00C0-\u017F\-]{3,}/g, function (m) {
+			var offset = /\s|\(|\[/.test(m[0]) ? 2 : 1;
+			return m.substr(0, offset).toUpperCase() + m.substr(offset).toLowerCase();
 		});
 
 		// Certain minor words should be left lowercase unless

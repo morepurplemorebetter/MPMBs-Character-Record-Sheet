@@ -3451,7 +3451,7 @@ function applyExtrachoicesOfChoice(sClass, sProp, aChoice, bOnlyObject) {
 	if (!bOnlyObject) {
 		// Remove the old autoSelectExtrachoices, if changed
 		if (bChangedAutoSelectExtrachoices) {
-			processClassFeatureExtraChoiceDependencies([classes.known[sClass].level, 0], sClass, sProp, { autoSelectExtrachoices : oldAutoSelectExtrachoices });
+			processClassFeatureExtraChoiceDependencies([classes.known[sClass].level, 0], sClass, sProp, { autoSelectExtrachoices : oldAutoSelectExtrachoices, minlevel : propFea.minlevel }, true);
 		}
 		// Remove any extrachoices that were related to the old choice if there was a change
 		if (propChoiceOld && aChoice[0] !== aChoice[1] && propChoiceOld.extrachoices && propFea.extrachoices) {

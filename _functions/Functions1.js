@@ -2369,13 +2369,22 @@ function ParseRace(input) {
 };
 
 //detects race entered and put information to global CurrentRace variable
-function FindRace(inputracetxt, novardialog) {
+function FindRace(inputracetxt, novardialog, aOldRace) {
 	var tempString = inputracetxt === undefined ? What("Race Remember") : inputracetxt;
 	var tempFound = ParseRace(tempString);
+	if (!aOldRace && CurrentVars.oldRace) {
+		aOldRace = CurrentVars.oldRace;
+	} else if (IsNotImport && aOldRace && (!CurrentVars.oldRace || CurrentVars.oldRace[0] !== aOldRace[0])) {
+		// only change if the known is new or changes, not just the variant
+		CurrentVars.oldRace = aOldRace;
+		SetStringifieds("vars");
+	}
 
 	CurrentRace = {
 		known : tempFound[0],
+		knownOld : aOldRace ? aOldRace[0] : "",
 		variant : tempFound[1],
+		variantOld : aOldRace ? aOldRace[1] : "",
 		variants : tempFound[2],
 		level : 0,
 		name : "", //must exist
@@ -2421,14 +2430,14 @@ function FindRace(inputracetxt, novardialog) {
 	if (CurrentRace.known) {
 		// the properties of the main race
 		for (var prop in RaceList[CurrentRace.known]) {
-			if ((/^(known|variants?|level)$/i).test(prop)) continue;
+			if ((/^(known(Old)?|variants?(Old)?|level)$/i).test(prop)) continue;
 			CurrentRace[prop] = RaceList[CurrentRace.known][prop];
 		}
 		// the properties of the variant (overriding anything from the main)
 		if (CurrentRace.variant) {
 			var subrace = CurrentRace.known + "-" + CurrentRace.variant;
 			for (var prop in RaceSubList[subrace]) {
-				if ((/^(known|variants?|level)$/i).test(prop)) continue;
+				if ((/^(known(Old)?|variants?(Old)?|level)$/i).test(prop)) continue;
 				CurrentRace[prop] = RaceSubList[subrace][prop];
 			}
 			// --- backwards compatibility --- //
@@ -2436,9 +2445,14 @@ function FindRace(inputracetxt, novardialog) {
 			var backwardsAttr = [["improvements", "scorestxt"], ["armor", "armorProfs"], ["addarmor", "armorAdd"], ["weaponprofs", "weaponProfs"], ["weapons", "weaponsAdd"]];
 			for (var i = 0; i < backwardsAttr.length; i++) {
 				var aBW = backwardsAttr[i];
-				if (RaceSubList[subrace][aBW[0]] && RaceSubList[subrace][aBW[1]] == undefined && RaceList[CurrentRace.known][aBW[1]]) delete CurrentRace[aBW[1]];
+				if (RaceSubList[subrace][aBW[0]] && RaceSubList[subrace][aBW[1]] == undefined && RaceList[CurrentRace.known][aBW[1]]) CurrentRace[aBW[1]] = RaceSubList[subrace][aBW[0]];
 			}
-
+		}
+		// the properties from a previous race (overriding anything from the main) (inputracetxt === undefined at startup)
+		if (CurrentRace.useFromPreviousRace) {
+			CurrentRace = newObj(CurrentRace);
+			var bSkipDialogAndForce = inputracetxt && IsNotImport ? undefined : CurrentVars.oldRaceAmendRemember ? true : false;
+			AmendOldToNewRace(CurrentRace.useFromPreviousRace, bSkipDialogAndForce);
 		}
 	}
 
@@ -2448,7 +2462,7 @@ function FindRace(inputracetxt, novardialog) {
 
 //apply the effect of the player's race
 function ApplyRace(inputracetxt, novardialog) {
-	if (IsSetDropDowns) return; // when just changing the dropdowns or race is set to manual, don't do anything
+	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 
 	if (CurrentVars.manual.race) { // if race is set to manual, just put the text in the Race Remember
 		var newRace = ParseRace(inputracetxt);
@@ -2477,7 +2491,7 @@ function ApplyRace(inputracetxt, novardialog) {
 			// Remove the common attributes from the CurrentRace object and remove the CurrentRace features
 			UpdateLevelFeatures("race", 0);
 		}
-		FindRace(inputracetxt, novardialog);
+		FindRace(inputracetxt, novardialog, oldRace);
 		Value("Race Remember", CurrentRace.known + (CurrentRace.variant ? "-" + CurrentRace.variant : ""));
 	}
 
@@ -2515,6 +2529,151 @@ function ApplyRace(inputracetxt, novardialog) {
 
 	thermoM(thermoTxt, true); // Stop progress bar
 };
+
+// Use parts of the old race to amend to the newrace, using CurrentRace.known(Old) and CurrentRace.variant(Old)
+function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
+	// If the knownOld race doesn't exist, fix the variable
+	if (CurrentRace.knownOld && !RaceList[CurrentRace.knownOld]) {
+		CurrentRace.knownOld = "";
+		CurrentRace.variantOld = "";
+	}
+	var iAskUser = 3; // No
+	var oOldRace = RaceList[CurrentRace.knownOld];
+	var oOldVariant = RaceSubList[CurrentRace.knownOld + "-" + CurrentRace.variantOld];
+	// Check if there is a new and old race known and they aren't identical
+	if (!CurrentRace.known || !CurrentRace.knownOld || CurrentRace.known === CurrentRace.knownOld) {
+		// Show a message for how this type of race works
+		if (bSkipDialogAndForce === undefined && !CurrentRace.knownOld) {
+			app.alert({
+				nIcon : 3, // Status
+				cTitle : "Tip for using the " + CurrentRace.name + " race",
+				cMsg : "The " + CurrentRace.name + " race has the option to use some specific traits from another race, its 'base race'. To use this option, first select a race as normal, and then change it to " + CurrentRace.name + ". If you do that, you will be prompted wheter or not you want to use the race you had selected first as the base race." + (oInstr.message ? "\n\n" + oInstr.message : "")
+			})
+		}
+	} else if (bSkipDialogAndForce === undefined) {
+		// Ask the user if they want to use the previous race as a base for the new race
+		var sOldRaceName = oOldVariant && oOldVariant.name ? oOldVariant.name : oOldRace.name;
+		iAskUser = app.alert({
+			nIcon : 2, // Question
+			nType : 2, // Yes (return = 4), No (return = 3)
+			cTitle : "Use traits from " + sOldRaceName + " for " + CurrentRace.name,
+			cMsg : "The " + CurrentRace.name + " race has the option to use some specific traits from another race. As you had previously selected " + sOldRaceName + " as the race, would you want to use its features?\n\n" + toUni("Press 'Yes' to use traits from " + sOldRaceName + " or\npress 'No' to use the default traits for " + CurrentRace.name + ".") + (oInstr.message ? "\n\n" + oInstr.message : "")
+		});
+		CurrentVars.oldRaceAmendRemember = iAskUser === 4;
+		SetStringifieds("vars");
+	} else if (bSkipDialogAndForce) {
+		iAskUser = 4; // Yes
+	}
+	if (iAskUser === 4) { // Use the traits fromt he previous race
+		// First make the base race combined object
+		var oBaseRace = newObj(oOldRace);
+		if (oOldVariant) {
+			oOldVariant = newObj(oOldVariant);
+			for (var prop in oOldVariant) {
+				oBaseRace[prop] = oOldVariant[prop];
+			}
+			// --- backwards compatibility --- //
+			// if an old attribute exists in the racial variant, but the RaceList object uses the new attribute name, make sure the variant's version is used
+			var backwardsAttr = [["improvements", "scorestxt"], ["armor", "armorProfs"], ["addarmor", "armorAdd"], ["weaponprofs", "weaponProfs"], ["weapons", "weaponsAdd"]];
+			for (var i = 0; i < backwardsAttr.length; i++) {
+				var aBW = backwardsAttr[i];
+				if (oOldVariant[aBW[0]] && oOldVariant[aBW[1]] == undefined && oBaseRace[aBW[1]]) oBaseRace[aBW[1]] = oOldVariant[aBW[0]];
+			}
+		}
+		// Merge the source
+		if (oBaseRace.source) CurrentRace.source = CurrentRace.source.concat(oBaseRace.source);
+		// Merge the name in the trait
+		if (oInstr.replaceNameInTrait && CurrentRace.trait && oBaseRace.name) {
+			var sReplace = oInstr.replaceNameInTrait[0], sReplaceWith;
+			switch (oInstr.replaceNameInTrait[1] ? oInstr.replaceNameInTrait[1].toLowerCase() : "") {
+				case "replace" :
+					sReplaceWith = oBaseRace.name;
+					break;
+				case "prefix" :
+					sReplaceWith = oBaseRace.name.capitalize() + " " + sReplace;
+					break;
+				case "insert" :
+					sReplaceWith = sReplace + " " + oBaseRace.name + (oInstr.replaceNameInTrait[2] ? " " + oInstr.replaceNameInTrait[2] : "");
+					break;
+				case "suffix" :
+				default :
+					sReplaceWith = sReplace + " " + oBaseRace.name;
+			}
+			CurrentRace.trait = CurrentRace.trait.replace(sReplace, sReplaceWith)
+		}
+		// Define a function to handle the merging
+		var mergeAttr = function(aProp, oFrom, oTo) {
+			var oBaseRef = oFrom;
+			var oCurRef = oTo;
+			var oCurRefCreated;
+			for (var p = 0; p < aProp.length; p++) {
+				var sProp = aProp[p];
+				if (oBaseRef[sProp]) {
+					if (p === (aProp.length - 1)) { // last in the array
+						oCurRef[sProp] = oBaseRef[sProp];
+						return true;
+					} else if (typeof oBaseRef[sProp] === "object") {
+						// move the reference objects one step deeper
+						oBaseRef = newObj(oBaseRef[sProp]);
+						if (!oCurRef[sProp]) {
+							oCurRef[sProp] = {};
+							if (!oCurRefCreated) oCurRefCreated = aProp[0];
+						}
+						oCurRef = oCurRef[sProp];
+					}
+				} else {
+					// This (sub)property doesn't exist, so skip this whole entry in the gainTraits array, but first delete any stuff we created from the CurrentRace as its an empty object
+					if (oCurRefCreated && CurrentRace[oCurRefCreated]) {
+						var toClean = CleanObject(CurrentRace[oCurRefCreated]);
+						if (!ObjLength(CurrentRace[oCurRefCreated])) delete CurrentRace[oCurRefCreated];
+					}
+					return false;
+				}
+			}
+		}
+		// Now have the CurrenRace object inheret the traits as needed
+		for (var i = 0; i < oInstr.gainTraits.length; i ++) {
+			aProp = oInstr.gainTraits[i].split(".");
+			if ((/^(known(Old)?|variants?(Old)?|level|name|features|trait)$/i).test(aProp[0])) continue;
+			// Merge the attribute of the base race
+			mergeAttr(aProp, oBaseRace, CurrentRace);
+			// Merge the traits in the features, if any
+			if (!oBaseRace.features) continue;
+			for (var sFea in oBaseRace.features) {
+				var oFea = oBaseRace.features[sFea];
+				var oTemp = {
+					name : oFea.name,
+					minlevel : oFea.minlevel,
+					limfeaname : oFea.limfeaname,
+					usages : oFea.usages,
+					recovery : oFea.recovery,
+					action : oFea.action,
+					source : CurrentRace.source
+				};
+				if (mergeAttr(aProp, oFea, oTemp)) {
+					if (!CurrentRace.features) CurrentRace.features = {};
+					var sAttrName = sFea;
+					while (CurrentRace.features[sAttrName]) {
+						sAttrName += " bonus";
+					}
+					CurrentRace.features[sAttrName] = oTemp;
+				}
+			}
+		}
+	} else if (oInstr.defaultTraits) { // Use the defaultTraits
+		for (var prop in oInstr.defaultTraits) {
+			if ((/^(known(Old)?|variants?(Old)?|level|name|plural|source)$/i).test(prop)) continue;
+			if (prop === "features") { // merge instead of replace
+				if (!CurrentRace.features) CurrentRace.features = {};
+				for (var fea in oInstr.defaultTraits.features) {
+					CurrentRace.features = oInstr.defaultTraits.features[fea];
+				}
+				continue;
+			}
+			CurrentRace[prop] = oInstr.defaultTraits[prop];
+		}
+	}
+}
 
 //search the string for possible weapon
 function ParseWeapon(input, onlyInv) {
@@ -5943,7 +6102,7 @@ function processClassFeatureChoiceDependencies(lvlA, aClass, aFeature, fChoice) 
 	minlevel : 5, // OPTIONAL //
 	extraname : "Ki Feature" // OPTIONAL //
 }] */
-function processClassFeatureExtraChoiceDependencies(lvlA, aClass, aFeature, fObj) {
+function processClassFeatureExtraChoiceDependencies(lvlA, aClass, aFeature, fObj, bSkipDepCheck) {
 	var lvlH = Math.max(lvlA[0], lvlA[1]), lvlL = Math.min(lvlA[0], lvlA[1]);
 	var theDep = fObj.autoSelectExtrachoices;
 	if (!isArray(theDep)) theDep = [theDep];
@@ -5951,7 +6110,7 @@ function processClassFeatureExtraChoiceDependencies(lvlA, aClass, aFeature, fObj
 		var aDep = theDep[i];
 		var minLvl = aDep.minlevel ? aDep.minlevel : fObj.minlevel;
 		// stop if nothing found or there was no level change that affected this feature
-		if (!aDep.extrachoice || !fObj[aDep.extrachoice] || !(lvlH >= minLvl && lvlL < minLvl)) continue;
+		if (!aDep.extrachoice || (!bSkipDepCheck && !fObj[aDep.extrachoice]) || !(lvlH >= minLvl && lvlL < minLvl)) continue;
 		// set or remove the class feature, depending on its level
 		ClassFeatureOptions(
 			[aClass, aFeature, aDep.extrachoice, 'extra'],
