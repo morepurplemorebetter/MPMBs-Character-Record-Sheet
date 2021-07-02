@@ -108,7 +108,10 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	if (!foundSpell) return aSpell;
 	var aDescrAttr = ["description", "descriptionMetric", "descriptionShorter", "descriptionShorterMetric"];
 	var aCast = theCast && CurrentSpells[theCast] ? CurrentSpells[theCast] : "";
-	for (var key in foundSpell) aSpell[key] = foundSpell[key];
+	for (var key in foundSpell) {
+		if (key === 'allowUpCasting') continue;
+		aSpell[key] = foundSpell[key];
+	}
 	// set the firstCol attribute so the CurrentEval can change it
 	aSpell.firstCol = firstCol ? firstCol : aSpell.firstCol ? aSpell.firstCol : "";
 	// If this spell is gained from an item, remove components
@@ -139,6 +142,8 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 			aSpell[key] = theOver[key];
 		}
 	}
+	// If this set the spell to not allow upcasting, apply this now
+	if (aSpell.allowUpCasting === false) removeSpellUpcasting(aSpell);
 
 	// Change some things into metric if set to do so
 	if (What("Unit System") === "metric") {
@@ -223,7 +228,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 
 		if (ttSpellObj.time) spTooltip += "\n  Casting Time:  " + ttSpellObj.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
 
-		if (ttSpellObj.range) spTooltip += "\n  Range:  " + ttSpellObj.range.replace(/s: */i, "self: ").replace(/rad\b/i, "radius");
+		if (ttSpellObj.range) spTooltip += "\n  Range:  " + ttSpellObj.range.replace(/s: *(.*)/i, "Self ($1)").replace(/rad\b/i, "radius").replace(/(\d+)(ft|m)/i, "$1-$2");
 
 		if (ttSpellObj.components) spTooltip += "\n  Components:  " + ttSpellObj.components + (ttSpellObj.compMaterial ? " (" + ttSpellObj.compMaterial.substr(0,1).toLowerCase() + ttSpellObj.compMaterial.substr(1) + ")" : "");
 
@@ -256,7 +261,7 @@ function fixSpellRangeOverflow(rangeStr) {
 // under certain conditions, we want to remove any upcasting from the spell's short description
 function removeSpellUpcasting(oSpell) {
 	var bReturn = false;
-	var removeRegex = /\+\d+d?\d*\/\d*SL\b|\bSL used/ig
+	var removeRegex = /\+\d+d?\d*\/(\d*SL|PP)\b|\bSL used/ig;
 	["description", "descriptionMetric", "descriptionShorter", "descriptionShorterMetric"].forEach (function (attr) {
 		if ( !oSpell[attr] || !removeRegex.test(oSpell[attr]) ) return;
 		oSpell[attr] = oSpell[attr]
@@ -5560,7 +5565,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 	var isDieType = (/^\d*d\d+$/i).test(ability), addDieType;
 	var abiMod = isDieType ? ability.replace(/^1d(\d+)$/i, "d$1") : !isNaN(ability) ? ability : tDoc.getField(ability + " Mod") ? Number(What(ability + " Mod")) : ability;
 	var abiIsStr = !isDieType && isNaN(abiMod);
-	var abiIfUpcasting = abiIsStr && /\/(\d*SL|PP|extra PP)/i.test(abiMod);
+	var abiIfUpcasting = abiIsStr && /\/(\d*SL|PP|extra \w+)/i.test(abiMod);
 
 	// Stop now if there is nothing (positive) to add or nothing to maximize
 	if (!maximizeRolls && ((isNaN(ability) && abiMod < 1) || abiMod === 0 || (abiIfUpcasting && spellObj.noSpellUpcasting))) return;
@@ -5590,10 +5595,10 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 			strReplace = strReplace.replace(bMatch, bTotal);
 		}
 		// Add consecutive bonuses (per group 'X/SL' and not 'X/SL')
-		var qRx = /(([\+\-]?\d+)(\/\d*SL|\/PP|\/extra PP)?)+( \((Str|Dex|Con|Int|Wis|Cha)\))?/i;
+		var qRx = /(([\+\-]?\d+)(\/\d*SL|\/PP|\/extra \w+)?)+( \((Str|Dex|Con|Int|Wis|Cha)\))?/i;
 		if (qRx.test(strReplace)) {
 			var qMatch = strReplace.match(qRx)[0];
-			var qParts = qMatch.match(/[\+\-]?\d+(\/\d*SL|\/PP|\/extra PP)?/ig);
+			var qParts = qMatch.match(/[\+\-]?\d+(\/\d*SL|\/PP|\/extra \w+)?/ig);
 			var qObj = { nr : 0 };
 			for (var q = 0; q < qParts.length; q++) {
 				if (!isNaN(qParts[q])) {
@@ -5617,7 +5622,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 	}
 	// The function to fix a string of multiple X/SL+Y/SL to (X+Y)/SL
 	var fixMultiPerSL = function(strSl) {
-		var slMatch = strSl.match(/(\+?)(\d+d?\d*)(\/\d*SL|\/PP|\/extra PP)\+(\d+d?\d*|\(.*?\))(\3)/i);
+		var slMatch = strSl.match(/(\+?)(\d+d?\d*)(\/\d*SL|\/PP|\/extra \w+)\+(\d+d?\d*|\(.*?\))(\3)/i);
 		if (!slMatch) return strSl;
 		var aVals = [slMatch[2], slMatch[4]]; // Make an array of just the numerical/dice parts
 		if ((/\(.*?\)/).test(aVals[1])) {
@@ -5710,7 +5715,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 
 	// Create the matching regex with non-capturing inner groups
 	var isHealing = /heal|\bhp\b|restore/.test(dmgType);
-	var sRegex = (isHealing ? "(heals? |to life with )" : "") + "((?:\\+?\\d+d?\\d*)+)((?:\\+(?:\\((?:\\+?\\d+d?\\d*)+\\)|\\d+d?\\d*)\\/(?:\\d*SL|PP|extra PP))*(?:\\+ ?(?:my )?spell(?:casting)? (?:ability )?mod(?:ifier)?|(?:\\+|-)\\d+ \\(.{3}\\))? (?:" + (isHealing ? "" : dmgType) + ") ?(?:" + (isHealing ? "hp|hit points?" : "dmg|damage") + ")(?: per \\w+| each|/rnd|/turn)?)";
+	var sRegex = (isHealing ? "(heals? |to life with )" : "") + "((?:\\+?\\d+d?\\d*)+)((?:\\+(?:\\((?:\\+?\\d+d?\\d*)+\\)|\\d+d?\\d*)\\/(?:\\d*SL|PP|extra \\w+))*(?:\\+ ?(?:my )?spell(?:casting)? (?:ability )?mod(?:ifier)?|(?:\\+|-)\\d+ \\(.{3}\\))? (?:" + (isHealing ? "" : dmgType) + ") ?(?:" + (isHealing ? "hp|hit points?" : "dmg|damage") + ")(?: per \\w+| each|/rnd|/turn)?)";
 
 	// If the spell has multiple damage types, we need to check if any or all of them match the dmgType we are looking for
 	var onlySomeDmgTypes = false;

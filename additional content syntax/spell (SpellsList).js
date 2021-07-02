@@ -38,7 +38,7 @@
 				If you want attack cantrips or spells to be added to the attack section,
 				use the syntax for adding a weapon (as well), see "weapon (WeaponsList).js".
 
-	Sheet:		v13.0.6 and newer
+	Sheet:		v13.0.7 and newer
 
 */
 
@@ -467,6 +467,23 @@ SpellsList["sindering purple"] = {
 	those spells added as a result of this attribute.
 
 	Setting this attribute to an empty array ([]) is the same as not including this attribute, but doing so will slow the sheet down considerably.
+*/
+	allowUpCasting : false,
+/*	allowUpCasting // OPTIONAL //
+	TYPE:	boolean
+	USE:	limit spell to only be cast at their lowest level
+	ADDED:	v13.0.7
+
+	IMPORTANT
+	This attribute is only useful as part of a `spellChanges` object (see "_common attributes.js").
+	It is ignored if part of a SpellsList object, because you can just not include upcasting in
+	the description.
+
+	By setting this attribute to false, you force the sheet to remove the upcasting from the spell's 
+	description.
+	Normally, the sheet will limit spells gained from a feat, magic item, or race to be cast only at
+	its lowest level, removing any upcasting options from the short spell description.
+	Use this attribute with the `spellChanges` attribute, if a class feature doesn't allow upcasting.
 */
 
 

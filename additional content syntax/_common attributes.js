@@ -48,7 +48,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v13.0.6 and newer
+	Sheet:		v13.0.7 and newer
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -1612,8 +1612,9 @@ calcChanges : {
 		By changing the attributes of the spellObj, you change what is put in the fields.
 		Changing that object has no affect on the original SpellsList entry.
 
-		You can call on the `genericSpellDmgEdit()` function to automatically increase the damage or healing
-		of a spell. This function dynamically adds an ability modifier, value, or die to the damage
+		Since v13.0.7 you can call on the `genericSpellDmgEdit()` function to automatically increase
+		the damage or healing of a spell.
+		This function dynamically adds an ability modifier, value, or die to the damage
 		or healing displayed in the short description on the spell sheet.
 
 		genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, onlyRolls, maximizeRolls)

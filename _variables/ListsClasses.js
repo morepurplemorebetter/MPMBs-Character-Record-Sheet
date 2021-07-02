@@ -2117,6 +2117,8 @@ var Base_ClassList = {
 					spellChanges : {
 						"eldritch blast" : {
 							description : "Spell attack beam 1d10 Force damage \u0026 push 10 ft; beams can be combined; +1 beam at CL5,11,17",
+							descriptionShorter : "Spell atk beam 1d10 Force damage \u0026 push 10 ft; can combine beams; +1 beam at CL5,11,17",
+							descriptionCantripDie : "Spell atk for `CD` beam(s), each 1d10 Force damage \u0026 push 10 ft; can combine/split beams",
 							changes : "When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
 						}
 					}
@@ -2560,7 +2562,7 @@ var Base_ClassSubList = {
 								};
 								var alwaysOthers = ["life transference", "raise dead", "revivify", "resurrection", "true resurrection"];
 								var strPart = alwaysOthers.indexOf(spellKey) === -1 ? "; if other, I heal " : "; I heal ";
-								var strAdd = spellObj.level < 9 ? strPart + (spellObj.level + 2) + "+1/SL HP" : strPart + "11 HP";
+								var strAdd = spellObj.level < 9 ? strPart + (spellObj.level + 2) + (spellObj.noSpellUpcasting ? "" : "+1/SL") + " HP" : strPart + "11 HP";
 								spellObj.description = useSpellDescr + strAdd;
 								return true;
 							}

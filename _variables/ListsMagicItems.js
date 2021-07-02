@@ -3158,7 +3158,7 @@ var Base_MagicItemsList = {
 		fixedDC : 15,
 		spellChanges : {
 			"fireball" : {
-				description : "20-ft rad all crea 8d6 (+1d6/extra bead) Fire dmg; save halves; unattended flammable objects ignite",
+				description : "20-ft rad all crea 8d6+1d6/extra bead Fire dmg; save halves; unattended flammable objects ignite",
 				components : "M\u2020",
 				compMaterial : "Using the Necklace of Fireballs to cast Fireball requires removing and destorying one or more of the beads from it.",
 				changes : "Using the Necklace of Fireballs to cast Fireball requires removing and destorying one or more of the beads from it. The damage is that of a Fireball cast a 3rd-level, +1 level per bead thrown as part of the same action beyond the first."
@@ -4309,6 +4309,7 @@ var Base_MagicItemsList = {
 				duration : "Conc, 1 min",
 				save : "Dex",
 				description : "1-4 spheres; bns a move all 30 ft; 1st crea in 5 ft save or Lightning dmg (1:4d12, 2:5d4, 3:2d6, 4:2d4)",
+				descriptionShorter : false,
 				descriptionFull : "You can expend 2 charges from the ring of shooting starts as an action to create one to four 3-foot-diameter spheres of lightning. The more spheres you create, the less powerful each sphere is individually.\n   Each sphere appears in an unoccupied space you can see within 120 feet of you. The spheres last as long as you concentrate (as if concentrating on a spell), up to 1 minute. Each sphere sheds dim light in a 30-foot radius.\n   As a bonus action, you can move each sphere up to 30 feet, but no farther than 120 feet away from you. When a creature other than you comes within 5 feet of a sphere, the sphere discharges lightning at that creature and disappears. That creature must make a DC 15 Dexterity saving throw. On a failed save, the creature takes lightning damage based on the number of spheres you created (4 spheres = 2d4, 3 spheres = 2d6, 2 spheres = 5d4, 1 sphere = 4d12).",
 				completeRewrite : true, // indicates that the changes here even overwrite the tooltip
 				changes : "The listing of 'Flaming Sphere' has been completely changed to reflect the 'Ball Lightning' ability of the Ring of Shooting Stars. Even the information above is changed."
@@ -5225,7 +5226,8 @@ var Base_MagicItemsList = {
 		}],
 		spellChanges : {
 			"cure wounds" : {
-				description : "1 living creature heals 1d8+spellcasting ability modifier HP, +1d8 per charge spend after the 1st",
+				noSpellUpcasting : false,
+				description : "1 living creature heals 1d8+1d8/SL+spell mod HP; +1 SL/extra charge",
 				changes : "The spell level Cure Wounds is cast at depends on the amount of charges spend, 1 charge per spell slot level."
 			}
 		}
@@ -6131,7 +6133,7 @@ var Base_MagicItemsList = {
 		},
 		spellChanges : {
 			"fireball" : {
-				description : "20-ft rad all crea 8d6 Fire dmg (+1d6/extra charge); save halves; unattended flammable objects ignite",
+				description : "20-ft rad all crea 8d6+1d6/extra charge Fire dmg; save halves; unattended flammable objects ignite",
 				changes : "For 1 charge, it is cast as the 3rd-level version of the spell, but I can increase the spell slot level by one for each additional charge expended."
 			}
 		}
@@ -6161,7 +6163,7 @@ var Base_MagicItemsList = {
 		},
 		spellChanges : {
 			"lightning bolt" : {
-				description : "100-ft long 5-ft wide all 8d6 Lightn. dmg (+1d6/extra charge); save halves; unattended objects ignite",
+				description : "100-ft long 5-ft wide all 8d6+1d6/extra charge Lightn. dmg; save halves; unattended objects ignite",
 				changes : "For 1 charge, it is cast as the 3rd-level version of the spell, but I can increase the spell slot level by one for each additional charge expended."
 			}
 		}
