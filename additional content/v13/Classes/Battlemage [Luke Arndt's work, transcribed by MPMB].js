@@ -683,7 +683,7 @@ AddSubClass("battlemage", "psychic warrior", {
 			calcChanges : {
 				atkAdd : [
 					function (fields, v) {
-						if ((/^(?=.*\bmage\b)(?=.*\bhand\b).*$/i).test(v.WeaponText) && fields.Mod === 1) {
+						if ((/^(?=.*\bmage\b)(?=.*\bhand\b).*$/i).test(v.WeaponTextName) && fields.Mod === 1) {
 							fields.Mod = 4;
 						}
 					},
@@ -746,7 +746,7 @@ AddSubClass("battlemage", "runic bulwark", {
 			calcChanges : {
 				atkAdd : [
 					function (fields, v) {
-						if ((/^(?=.*runic)(?=.*weapon).*$/i).test(v.WeaponText)) {
+						if ((/^(?=.*runic)(?=.*weapon).*$/i).test(v.WeaponTextName)) {
 							if (v.isMeleeWeapon && (/(\bversatile|((^|[^+-]\b)2|\btwo).?hand(ed)?s?)\b/i).test(fields.Description)) {
 								if (v.CritChance) return;
 								v.CritChance = 19;
@@ -814,7 +814,7 @@ AddSubClass("battlemage", "runic bulwark", {
 			calcChanges : {
 				atkCalc : [
 					function (fields, v, output) {
-						if ((/^(?=.*runic)(?=.*weapon).*$/i).test(v.WeaponText)) {
+						if ((/^(?=.*runic)(?=.*weapon).*$/i).test(v.WeaponTextName)) {
 							output.extraDmg += What('Int Mod');
 						}
 					},

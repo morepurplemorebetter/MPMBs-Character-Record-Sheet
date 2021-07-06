@@ -248,7 +248,7 @@ ClassList["blood hunter"] = {
 			calcChanges : {
 				atkAdd : [
 					function (fields, v) {
-						if (!v.isSpell && (/\brite\b/i).test(v.WeaponText)) {
+						if (!v.isSpell && (/\brite\b/i).test(v.WeaponTextName)) {
 							fields.Description += (fields.Description ? '; ' : '') + '+' + BHhemocraftDie(classes.known['blood hunter'].level) + ' rite damage';
 						}
 					},
@@ -455,7 +455,7 @@ AddSubClass("blood hunter", "ghostslayer", {
 			calcChanges : {
 				atkAdd : [
 					function (fields, v) {
-						if (!v.isSpell && (/\brite\b/i).test(v.WeaponText)) {
+						if (!v.isSpell && (/\brite\b/i).test(v.WeaponTextName)) {
 							fields.Description += (fields.Description ? '; ' : '') + '+' + BHhemocraftDie(classes.known['blood hunter'].level) + ' rite damage vs. branded creature';
 						}
 					},
