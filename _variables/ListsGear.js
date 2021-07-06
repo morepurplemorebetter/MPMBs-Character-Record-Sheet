@@ -1112,6 +1112,12 @@ var Base_GearList = {
 		amount : "",
 		weight : 1
 	},
+	"animal feed (1 day)" : {
+		infoname : "Animal feed (1 day) [5 cp]",
+		name : "Animal feed, days of",
+		amount : 1,
+		weight : 10
+	},
 	"arrows (20)" : {
 		infoname : "Arrows (20) [1 gp]",
 		name : "Arrows",

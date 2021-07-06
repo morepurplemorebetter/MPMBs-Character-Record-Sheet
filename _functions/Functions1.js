@@ -5808,8 +5808,9 @@ function MakeClassMenu(bKeepTempClassesKnown) {
 			}
 
 			// now make the menu entry
+			var oSrc = { source : feaObjA.source ? feaObjA.source : feaObj.source };
 			var mItem = {
-				cName : array[i] + extraNm + stringSource(feaObjA, "first,abbr", "\t   [", "]"),
+				cName : array[i] + extraNm + stringSource(oSrc, "first,abbr", "\t   [", "]"),
 				cReturn : classNm + "#" + featureNm + "#" + array[i] + "#" + extrareturn + "#" + removeStop + (moreReturn ? moreReturn : ""),
 				bMarked : isActive,
 				bEnabled : isEnabled

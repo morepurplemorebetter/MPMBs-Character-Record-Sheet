@@ -8190,7 +8190,7 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, with
 
 // open a dialog with a number of lines of choices and return the choices in an array; if knownOpt === "radio", show radio buttons instead, and return the entry selected
 // if notProficiencies is set to true, the optType will serve as the dialog header, and optSrc will serve as the multline explanatory text
-function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies) {
+function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sBottomMsg) {
 	if (!IsNotImport) return optSubj;
 	//first make the entry lines
 	var selectionLines = [];
@@ -8400,7 +8400,7 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies) {
 					alignment : "align_fill",
 					item_id : "txtL",
 					wrap_name : true,
-					name : "You can always change what you set here at a later time by editing the corresponding field on the sheet. What you select here is not permanent.",
+					name : sBottomMsg ? sBottomMsg : "You can always change what you set here at a later time by editing the corresponding field on the sheet. What you select here is not permanent.",
 					char_width : 40
 				}, {
 					type : "ok"
@@ -8432,7 +8432,7 @@ function SetCreatureSize(prefix, sName, aSizes) {
 		oOptionsRef[sSizeName] = aSizes[i];
 	}
 	var sTooltip = sNamePl + " size " + (aOptions.length > 1 ? formatLineList("can be", aOptions, true) + "." : "is " + aOptions[0] + ".");
-	if(!prefix) sTooltip += "\n\nSelected size category will affect encumbrance on the second page.";
+	if (!prefix) sTooltip += "\n\nSelected size category will affect encumbrance on the second page.";
 	var bGoAsk = aSizes.length > 1;
 	if (bGoAsk) {
 		var sAsk = AskUserOptions("Select Size Category for " + sName, sNamePl + " can be multiple size categories. It is up to you to select which the sheet will use.", aOptions, "radio", true);
@@ -8466,7 +8466,9 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 			break;
 		case "race":
 			fallback.alertType = "Racial Traits section";
-			fallback.noteOrig = namesArr[1];
+			fallback.noteOrig = namesArr[1].capitalize();
+			if (mainObj.minlevel) fallback.noteOrig += " " + mainObj.minlevel;
+			if (!fallback.noteSrc) fallback.noteSrc = stringSource(CurrentRace, "first,abbr", ", ");
 			break;
 		case "background":
 			fallback.alertType = "Background Feature description";

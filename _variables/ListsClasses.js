@@ -113,11 +113,11 @@ var Base_ClassList = {
 				calcChanges : {
 					atkCalc : [
 						function (fields, v, output) {
-							if (v.isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level && (/\brage\b/i).test(v.WeaponText)) {
+							if (v.isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level && (/\brage\b/i).test(v.WeaponTextName)) {
 								output.extraDmg += classes.known.barbarian.level < 9 ? 2 : classes.known.barbarian.level < 16 ? 3 : 4;
 							}
 						},
-						"If I include the word 'Rage' in a melee weapon's name or description, the calculation will add my Rage's bonus damage to it."
+						"If I include the word 'Rage' in a melee weapon's name, the calculation will add my Rage's bonus damage to it."
 					]
 				}
 			},
@@ -1986,13 +1986,13 @@ var Base_ClassList = {
 					calcChanges : {
 						atkAdd : [
 							function (fields, v) {
-								if (v.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponText))) fields.Description += (fields.Description ? '; ' : '') + '+Cha mod necrotic damage (included above)';
+								if (v.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponTextName))) fields.Description += (fields.Description ? '; ' : '') + '+Cha mod necrotic damage (included above)';
 							},
-							"If I include the word 'Pact' in a melee or magic weapon's name or description, the calculation will add my Charisma modifier to its damage. However, it won't say in the damage box that this added damage is of the necrotic type, as it can only display a single damage type."
+							"If I include the word 'Pact' in a melee or magic weapon's name, the calculation will add my Charisma modifier to its damage. However, it won't say in the damage box that this added damage is of the necrotic type, as it can only display a single damage type."
 						],
 						atkCalc : [
 							function (fields, v, output) {
-								if (v.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponText))) output.extraDmg += What('Cha Mod');
+								if (v.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponTextName))) output.extraDmg += What('Cha Mod');
 							}, ""
 						]
 					},
@@ -2236,14 +2236,14 @@ var Base_ClassList = {
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
-								if (v.theWea.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponText))) {
+								if (v.theWea.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponTextName))) {
 									v.pactWeapon = true;
 								}
 							}, ""
 						],
 						atkAdd : [
 							function (fields, v) {
-								if (v.pactWeapon || v.theWea.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponText))) {
+								if (v.pactWeapon || v.theWea.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponTextName))) {
 									v.pactWeapon = true;
 									fields.Proficiency = true;
 									if (!v.theWea.isMagicWeapon && !v.thisWeapon[1] && !(/counts as( a)? magical/i).test(fields.Description)) fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
@@ -2828,11 +2828,11 @@ var Base_ClassSubList = {
 				calcChanges : {
 					atkCalc : [
 						function (fields, v, output) {
-							if (classes.known.paladin && classes.known.paladin.level > 2 && !v.isSpell && (/^(?=.*sacred)(?=.*weapon).*$/i).test(v.WeaponText)) {
+							if (classes.known.paladin && classes.known.paladin.level > 2 && !v.isSpell && (/^(?=.*sacred)(?=.*weapon).*$/i).test(v.WeaponTextName)) {
 								output.extraHit += What('Cha Mod');
 							};
 						},
-						"If I include the words 'Sacred Weapon' in the name or description of a weapon, it gets my Charisma modifier added to its To Hit."
+						"If I include the words 'Sacred Weapon' in the name of a weapon, it gets my Charisma modifier added to its To Hit."
 					]
 				},
 				spellcastingExtra : ["protection from evil and good", "sanctuary", "lesser restoration", "zone of truth", "beacon of hope", "dispel magic", "freedom of movement", "guardian of faith", "commune", "flame strike"]

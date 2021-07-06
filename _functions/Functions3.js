@@ -226,7 +226,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			CurrentUpdates.types.push("spells");
 			var aCast = CurrentSpells[useSpCasting];
 			if (uObj.spellcastingAbility !== undefined) {
-				aCast.ability = uObj.spellcastingAbility;
+				aCast.ability = ReturnSpellcastingAbility(useSpCasting, uObj.spellcastingAbility);
 				aCast.abilityToUse = getSpellcastingAbility(useSpCasting);
 			}
 			if (uObj.fixedDC) aCast.fixedDC = Number(uObj.fixedDC);
@@ -694,6 +694,30 @@ function classFeaChoiceBackwardsComp() {
 	return returnStr;
 }
 
+// a function to return the spellcasting ability, ask the user which to use if it is an array
+function ReturnSpellcastingAbility(sCast, vAbility) {
+	if (vAbility === undefined) return 0;
+	if (!isArray(vAbility)) return !isNaN(vAbility) || /^(class|race)$/i.test(vAbility) ? vAbility : 0;
+	var sCastName = CurrentSpells[sCast] ? CurrentSpells[sCast].name : sCast;
+	var aAbiOptions = [], oAbiRef = {};
+	vAbility.sort();
+	for (var i = 0; i < vAbility.length; i++) {
+		if (isNaN(vAbility[i]) && !/^(class|race)$/i.test(vAbility[i])) continue;
+		var sAbiTxt = !isNaN(vAbility[i]) ? AbilityScores.names[vAbility[i] - 1] : vAbility[i].toLowerCase() === "race" ? "Race: the same as the racial spellcasting ability score." : "Class: the same as the highest class spellcasting ability score.";
+		if (aAbiOptions.indexOf(sAbiTxt) === -1) {
+			aAbiOptions.push(sAbiTxt);
+			oAbiRef[sAbiTxt] = vAbility[i];
+		}
+	}
+	if (aAbiOptions.length < 2) return aAbiOptions.length ? aAbiOptions[0] : 0;
+	var sAsk = AskUserOptions("Select Spellcasting Ability Score for " + sCastName, "The spellcasting ability for " + sCastName + " can be one of multiple options. It is up to you to select which the sheet will use from now on.", aAbiOptions, "radio", true, 'You can always change the spellcasting ability for ' + sCastName + ' on the spell sheet once you generate the spell sheet. What you select here is the \"default\" spellcasting ability.');
+	if (oAbiRef[sAsk]) {
+		return oAbiRef[sAsk];
+	} else {
+		return oAbiRef[aAbiOptions[0]];
+	}
+}
+
 // a function to create the CurrentSpells global variable entry
 function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 	type = GetFeatureType(type);
@@ -720,7 +744,7 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 			break;
 		case "race":
 			var fObj = CurrentRace;
-			var sObj = setCSobj(CurrentRace.known);
+			var sObj = setCSobj(fObjName);
 			sObj.name = fObj.name;
 			sObj.typeSp = "race";
 			sObj.level = fObj.level;
@@ -761,12 +785,12 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 			}
 		}
 	}
-	if (!sObj.ability) sObj.ability = fObj.spellcastingAbility ? fObj.spellcastingAbility : fObj.abilitySave ? fObj.abilitySave : 0;
+	if (!sObj.ability) sObj.ability = ReturnSpellcastingAbility(fObjName, fObj.spellcastingAbility ? fObj.spellcastingAbility : fObj.abilitySave ? fObj.abilitySave : 0);
 	if (!sObj.fixedDC && fObj.fixedDC) sObj.fixedDC = Number(fObj.fixedDC);
 	if (!sObj.fixedSpAttack && fObj.fixedSpAttack) sObj.fixedSpAttack = Number(fObj.fixedSpAttack);
 	if (!sObj.allowUpCasting === undefined && fObj.allowUpCasting !== undefined) sObj.allowUpCasting = fObj.allowUpCasting;
 	if (fObjP) {
-		if (!sObj.ability) sObj.ability = fObjP.spellcastingAbility ? fObjP.spellcastingAbility : fObjP.abilitySave ? fObjP.abilitySave : 0;
+		if (!sObj.ability) sObj.ability = ReturnSpellcastingAbility(fObjName, fObjP.spellcastingAbility ? fObjP.spellcastingAbility : fObjP.abilitySave ? fObjP.abilitySave : 0);
 		if (!sObj.fixedDC && fObjP.fixedDC) sObj.fixedDC = Number(fObjP.fixedDC);
 		if (!sObj.fixedSpAttack && fObjP.fixedSpAttack) sObj.fixedSpAttack = Number(fObjP.fixedSpAttack);
 		if (!sObj.allowUpCasting === undefined && fObjP.allowUpCasting !== undefined) sObj.allowUpCasting = fObjP.allowUpCasting;
@@ -807,7 +831,7 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, force
 			}
 		}
 		if (spAbility) {
-			sObj.ability = spAbility;
+			sObj.ability = ReturnSpellcastingAbility(useSpName, spAbility);
 			sObj.abilityToUse = getSpellcastingAbility(useSpName);
 		}
 		if (spFixedDC) sObj.fixedDC = spFixedDC;
@@ -1202,9 +1226,9 @@ function UpdateSheetDisplay() {
 		return;
 	}
 
-	if (!ChangesDialogSkip) {
+	if (ChangesDialogSkip.chXP === undefined) {
 		var cDialogFld = What("ChangesDialogSkip.Stringified");
-		ChangesDialogSkip = cDialogFld ? eval(cDialogFld) : {
+		ChangesDialogSkip = cDialogFld !== "({})" ? eval(cDialogFld) : {
 			chXP : false, // experience points
 			chAS : false, // ability scores
 			chHP : false, // hit points

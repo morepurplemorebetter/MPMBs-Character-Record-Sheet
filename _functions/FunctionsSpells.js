@@ -3250,12 +3250,6 @@ function AskUserSpellSheet() {
 				if (CurrentCasters.incl.indexOf(classesArray[i]) === -1 && CurrentCasters.excl.indexOf(classesArray[i]) === -1) CurrentCasters.incl.push(classesArray[i]);
 			}
 		}
-		//now see if anything has been defined for adding a glossary or not
-		if (CurrentCasters.glossary === undefined) CurrentCasters.glossary = false;
-		//now see if anything has been defined for putting a EM dash in empty fields or not
-		if (CurrentCasters.emptyFields === undefined) CurrentCasters.emptyFields = false;
-		//now see if anything has been defined for showing the full or applied version of cantrip/spell descriptions (i.e. never for full lists or manually added spells)
-		if (CurrentCasters.amendSpDescr === undefined) CurrentCasters.amendSpDescr = false;
 
 		//convert the incl and excl CurrentSpells arrays to their named counterparts
 		var exclNames = [];
@@ -3270,7 +3264,7 @@ function AskUserSpellSheet() {
 		//now add them to the dialog and let the user make a decision
 		spDias.sheetOrder.bExcL = exclNames;
 		spDias.sheetOrder.bIncL = inclNames;
-		spDias.sheetOrder.glossary = CurrentCasters.glossary;
+		spDias.sheetOrder.glossary = CurrentCasters.glossary ? true : false;
 		spDias.sheetOrder.dashEmptyFields = CurrentCasters.emptyFields ? false : true;
 		spDias.sheetOrder.amendSpellDescriptions = CurrentCasters.amendSpDescr || CurrentCasters.amendSpDescr === undefined ? true : false;
 		spDias.sheetOrder.allowSpellAdd = CurrentCasters.allowSpellAdd || CurrentCasters.allowSpellAdd === undefined ? true : false;
@@ -4859,29 +4853,36 @@ function HideSpellSheetElement(theTarget) {
 // When changing the spellcasting ability of a manual header, save it to the remember field so that the element can be recreated when inserting/deleting rows (field blur)
 // If this is a header linked to a CurrentSpells object, change its spellcasting ability and offer to re-generate the sheet
 function SaveSpellcastingAbility() {
-	var base = event.target && event.target.name ? event.target.name : "";
+	if (!event.target) return;
+	var base = event.target.name;
 	var caster = What(base.replace("ability", "class"));
 	var selAbi = event.target.currentValueIndices;
-	if (caster && CurrentSpells[caster] && !CurrentSpells[caster].fixedDC) {
+	if (caster && CurrentSpells[caster] && !(CurrentSpells[caster].fixedDC && !CurrentSpells[caster].ability)) {
 		var spCast = CurrentSpells[caster];
-		if (selAbi) {
-			spCast.abilityBackup = spCast.ability;
-			spCast.ability = selAbi;
-			spCast.abilityToUse = getSpellcastingAbility(caster);
-		} else if (spCast.abilityBackup) {
+		if (!selAbi && spCast.abilityBackup) {
 			spCast.ability = spCast.abilityBackup;
-			delete spCast.abilityBackup;
 			spCast.abilityToUse = getSpellcastingAbility(caster);
 			PickDropdown(base, spCast.abilityToUse[0]);
+		} else if (selAbi && spCast.ability != selAbi) {
+			if (!spCast.abilityBackup) spCast.abilityBackup = spCast.ability;
+			spCast.ability = selAbi;
+			spCast.abilityToUse = getSpellcastingAbility(caster);
+			var origSpAbi = !isNaN(spCast.abilityBackup) ? AbilityScores.names[spCast.abilityBackup - 1] : spCast.abilityBackup.toLowerCase() === "race" ? "the same as the race" : "the same as a class, highest score if multiple eligible";
+			// Warn the user that to update the spellcasting ability requires regenerating the spells sheets
+			var redosheets = app.alert({
+				cMsg : "Please know that you can reset the spellcasting ability to its original (" + origSpAbi + ") by selecting the first (empty) option in the dropdown box." + (CurrentCasters.amendSpDescr ? "\n\nYou will need to regenerate the spell sheets if you want this change in spellcasting ability to be applied to the spells. If you have no spells that incorporate your spellcasting ability, than there is no reason the regenerate the spell sheets.\n\nDo you want to generate new spell sheets now?" : ""),
+				cTitle : "Spellcasting Ability Changed",
+				nIcon : 3,
+				nType : CurrentCasters.amendSpDescr ? 2 : 0 // 0: OK; 2: Yes-No
+			});
+			if (redosheets === 4) {
+				SetStringifieds("spells");
+				GenerateSpellSheet();
+				return;
+			}
 		}
-		// Warn the user that to update the spellcasting ability requires regenerating the spells sheets
-		var redosheets = app.alert({
-			cMsg : "Please know that you can reset the spellcasting ability to its original by selecting the first (empty) option in the dropdown box." + (CurrentCasters.amendSpDescr ? "\n\nYou will need to regenerate the spell sheets if you want this change in spellcasting ability to be applied to the spells. If you have no spells that incorporate your spellcasting ability, than there is no reason the regenerate the spell sheets.\n\nDo you want to generate new spell sheets now?" : ""),
-			cTitle : "Spellcasting Ability Changed",
-			nIcon : 3,
-			nType : CurrentCasters.amendSpDescr ? 2 : 0 // 0: OK; 2: Yes-No
-		});
-		if (redosheets === 4) GenerateSpellSheet();
+		SetStringifieds("spells");
+		tDoc.calculateNow();
 	} else if (!caster || !CurrentSpells[caster]) {
 		var prefix = base.substring(0, base.indexOf("spells"));
 		var SSfrontPrefix = What("Template.extras.SSfront").split(",")[1];
@@ -5518,7 +5519,7 @@ function getSpellcastingAbility(theCast) {
 	var curAbiScore = 0;
 	var spObj = CurrentSpells[theCast];
 	var casterArray = [];
-	var testFixedDC = false;
+	var testFixedDC = (/race|class/i).test(spObj.abilityBackup);
 	if (spObj && spObj.ability && !isNaN(spObj.ability)) {
 		spAbility = Number(spObj.ability);
 	} else if (spObj && spObj.ability == "class") {

@@ -873,10 +873,13 @@ spellcastingBonus : [{
 }],
 
 spellcastingAbility : 6,
+spellcastingAbility : [4, 5, 6],
 /*	spellcastingAbility // OPTIONAL //
 	TYPE:	number corresponding to the ability score (1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
 			or "class" or "race"
+			or an array of any of the above
 	USE:	set the ability score used for spellcasting abilities
+	CHANGE:	v13.0.7 (added option for array)
 
 	If you set this to "class", the sheet will use the highest spellcasting ability score of
 	the spellcasting class(es) the character has.
@@ -886,6 +889,10 @@ spellcastingAbility : 6,
 	the sheet will assume there is a +0 bonus (spell DC 8, spell attack +0).
 
 	Setting this to 0 or false is the same as not including this attribute.
+
+	Since v13.0.7, you can set this to be an array consisting of numbers 1-6, "class", "race", or
+	any combination thereof.
+	If this attribute is an array, the player will be prompted to select one of the options in the array.
 
 	NOTE FOR CLASS AND RACIAL FEATURES
 	This attribute will do nothing when included in a class or racial feature.
