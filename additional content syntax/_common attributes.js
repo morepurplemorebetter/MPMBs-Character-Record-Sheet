@@ -1441,7 +1441,7 @@ calcChanges : {
 				bHit, // string, the value of the modifier field for To Hit, identical to fields.To_Hit_Bonus
 				bDmg, // string, the value of the modifier field for Damage, identical to fields.Damage_Bonus
 				extraDmg, // number, amount of bonus damage to add
-				extraHit // number, amount of bonus damage to add
+				extraHit // number, amount to add to attack roll ("roll To Hit")
 			};
 
 			Note that this variable, output, can be changed by consecutive calcChanges.atkCalc functions
