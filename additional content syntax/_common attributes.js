@@ -1441,7 +1441,7 @@ calcChanges : {
 				bHit, // string, the value of the modifier field for To Hit, identical to fields.To_Hit_Bonus
 				bDmg, // string, the value of the modifier field for Damage, identical to fields.Damage_Bonus
 				extraDmg, // number, amount of bonus damage to add
-				extraHit // number, amount to add to attack roll ("roll To Hit")
+				extraHit // number, amount of bonus damage to add
 			};
 
 			Note that this variable, output, can be changed by consecutive calcChanges.atkCalc functions
@@ -1491,7 +1491,7 @@ calcChanges : {
 
 			Check against this if you only want to add a number to the spell save DC if a certain spellcasting class is present.
 			For example, if you only want the spell DC of the cleric to be 3 higher:
-				if (type == "dc" && (/cleric/).test(spellcasters)) return 3;
+				if (type == "dc" && spellcasters.indexOf("cleric") != -1) return 3;
 
 		3)	ability, a number of the ability score being used.
 			This can be one of seven numbers:
