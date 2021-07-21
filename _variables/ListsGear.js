@@ -1609,7 +1609,7 @@ var Base_GearList = {
 	"rations (1 day)" : {
 		infoname : "Rations (1 day) [5 sp]",
 		name : "Rations, days of",
-		amount : "",
+		amount : 1,
 		weight : 2
 	},
 	"robes" : {

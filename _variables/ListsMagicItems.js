@@ -1038,18 +1038,18 @@ var Base_MagicItemsList = {
 		attunement : true,
 		weight : 3,
 		allowDuplicates : true,
-		fixedDC : 17,
-		spellcastingBonus : {
-			name : "DC 17",
-			spells : ["scrying"],
-			selection : ["scrying"],
-			firstCol : "atwill"
-		},
 		choices : ["Crystal Ball  ", "Crystal Ball of Mind Reading", "Crystal Ball of Telepathy", "Crystal Ball of True Seeing"],
 		"crystal ball  " : {
 			name : "Crystal Ball  ",
 			rarity : "very rare",
-			magicItemTable : "H"
+			magicItemTable : "H",
+			fixedDC : 17,
+			spellcastingBonus : {
+				name : "DC 17",
+				spells : ["scrying"],
+				selection : ["scrying"],
+				firstCol : "atwill"
+			}
 		},
 		"crystal ball of mind reading" : {
 			name : "Crystal Ball of Mind Reading",
@@ -1057,11 +1057,13 @@ var Base_MagicItemsList = {
 			magicItemTable : "I",
 			description : "I can cast Scrying (DC 17) at will while touching this crystal ball of 6\" diameter. While scrying, I can cast Detect Thoughts (DC 17) to target creatures I can see within 30 ft of the spell's sensor. I don't need to concentrate on this Detect Thoughts, but it ends when the scrying ends.",
 			descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   You can use an action to cast the Detect Thoughts spell (save DC 17) while you are Scrying with the crystal ball, targeting creatures you can see within 30 feet of the spell's sensor. You don't need to concentrate on this Detect Thoughts to maintain it during its duration, but it ends if Scrying ends.",
+			fixedDC : 17,
 			spellcastingBonus : {
 				name : "DC 17",
-				spells : ["detect thoughts"],
-				selection : ["detect thoughts"],
-				firstCol : "atwill"
+				spells : ["scrying", "detect thoughts"],
+				selection : ["scrying", "detect thoughts"],
+				firstCol : "atwill",
+				times : 2
 			},
 			spellChanges : {
 				"detect thoughts" : {
@@ -1076,12 +1078,18 @@ var Base_MagicItemsList = {
 			magicItemTable : "I",
 			description : "I can cast Scrying (DC 17) while touching this 6\" crystal ball. While scrying, I can communicate telepathically with creatures within 30 ft of the spell's sensor and can cast Suggestion (DC 17) once per dawn on one of them. I don't need to concentrate on this Suggestion, but it ends when the scrying ends.",
 			descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   While Scrying with the crystal ball, you can communicate telepathically with creatures you can see within 30 feet of the spell's sensor. You can also use an action to cast the Suggestion spell (save DC 17) through the sensor on one of those creatures. You don't need to concentrate on this suggestion to maintain it during its duration, but it ends if Scrying ends. Once used, the suggestion power of the crystal ball can't be used again until the next dawn.",
-			spellcastingBonus : {
-				name : "DC 17",
+			fixedDC : 17,
+			spellcastingBonus : [{
+				name : "At will, DC 17",
+				spells : ["scrying"],
+				selection : ["scrying"],
+				firstCol : "atwill"
+			}, {
+				name : "1\xD7 per long rest, DC 17",
 				spells : ["suggestion"],
 				selection : ["suggestion"],
 				firstCol : "oncelr"
-			},
+			}],
 			limfeaname : "Suggestion through Crystal Ball",
 			usages : 1,
 			recovery : "dawn",
@@ -1102,6 +1110,13 @@ var Base_MagicItemsList = {
 			magicItemTable : "I",
 			description : "I can cast Scrying (save DC 17) at will while touching this ball of about 6 inches in diameter. While scrying, I can see out from the spell's sensor with truesight out to 120 ft.",
 			descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   While Scrying with the crystal ball, you have truesight with a radius of 120 feet centered on the spell's sensor.",
+			fixedDC : 17,
+			spellcastingBonus : {
+				name : "DC 17",
+				spells : ["scrying"],
+				selection : ["scrying"],
+				firstCol : "atwill"
+			},
 			spellChanges : {
 				"scrying" : {
 					description : "1 crea save or sensor follows it around; or sensor in familiar location; truesight 120 ft on sensor; see B",
@@ -2437,7 +2452,7 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		description : "While wearing this helm, I can cast Detect Thoughts (DC 13). As a bonus action, I can send a telepathic message to a creature that I'm focussing on with Detect Thoughts, which can reply as a bonus action. Once between each dawn, I can cast Suggestion (DC 13) on a creature I'm focussing on with Detect Thoughts.",
+		description : "While wearing this helm, I can cast Detect Thoughts (DC 13). As a bonus action, I can send a telepathic message to a creature that I'm focusing on with Detect Thoughts, which can reply as a bonus action. Once between each dawn, I can cast Suggestion (DC 13) on a creature I'm focusing on with Detect Thoughts.",
 		descriptionFull : "While wearing this helm, you can use an action to cast the Detect Thoughts spell (save DC 13) from it. As long as you maintain concentration on the spell, you can use a bonus action to send a telepathic message to a creature you are focused on. It can reply\u2014using a bonus action to do so\u2014while your focus on it continues.\n   While focusing on a creature with Detect Thoughts, you can use an action to cast the Suggestion spell (save DC 13) from the helm on that creature. Once used, the suggestion property can't be used again until the next dawn.",
 		attunement : true,
 		limfeaname : "Helm of Telepathy: Suggestion",
@@ -3450,8 +3465,8 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "D",
-		description : "As an action, I can unfold this black cloth, 6 ft in diameter, and place it on a solid surface, whereupon it creates a 10-ft deep extradimensional hole. It can be used to create passages. The space is always the same, so I can store things and creatures in there. Removing it and folding it back takes an action.",
-		descriptionLong : "As an action, I can unfold this circular black cloth, 6 ft in diameter, and place it on a solid surface, whereupon it creates a 10-ft deep extradimensional hole. It can be used to create passages. Removing it and folding it back takes an action. The space created is always the same, so I can store things and creatures in there. The hole always weighs next to nothing. Creatures inside the folded up hole can breathe for 10 min and can escape as an action with a DC 10 Strength check, appearing next to me of they do. Placing the hole in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
+		description : "As an action, I can unfold this black cloth, 6 ft in diameter, and place it on a solid surface, whereupon it creates a 10-ft deep extradimensional hole. It can't be used to create passages. The space is always the same, so I can store things and creatures in there. Removing it and folding it back takes an action.",
+		descriptionLong : "As an action, I can unfold this circular black cloth, 6 ft in diameter, and place it on a solid surface, whereupon it creates a 10-ft deep extradimensional hole. It can't be used to create passages. Removing it and folding it back takes an action. The space created is always the same, so I can store things and creatures in there. The hole always weighs next to nothing. Creatures inside the folded up hole can breathe for 10 min and can escape as an action with a DC 10 Strength check, appearing next to me if they do. Placing the hole in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
 		descriptionFull : "This fine black cloth, soft as silk, is folded up to the dimensions of a handkerchief. It unfolds into a circular sheet 6 feet in diameter.\n   You can use an action to unfold a portable hole and place it on or against a solid surface, whereupon the portable hole creates an extradimensional hole 10 feet deep. The cylindrical space within the hole exists on a different plane, so it can't be used to create open passages. Any creature inside an open portable hole can exit the hole by climbing out of it.\n   You can use an action to close a portable hole by taking hold of the edges of the cloth and folding it up. Folding the cloth closes the hole, and any creatures or objects within remain in the extradimensional space. No matter what's in it, the hole weighs next to nothing.\n   If the hole is folded up, a creature within the hole's extradimensional space can use an action to make a DC 10 Strength check. On a successful check, the creature forces its way out and appears within 5 feet of the portable hole or the creature carrying it. A breathing creature within a closed portable hole can survive for up to 10 minutes, after which time it begins to suffocate.\n   Placing a portable hole inside an extradimensional space created by a bag of holding, Heward's handy haversack, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10 feet of the gate is sucked through it and deposited in a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
 		action : [["action", " (place/fold)"]]
 	},
@@ -4898,7 +4913,7 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [0,0],
 				psionic : false,
-				times : 16,
+				times : 20,
 				firstCol : "checkbox"
 			}
 		},
@@ -4913,7 +4928,7 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [1,1],
 				psionic : false,
-				times : 16,
+				times : 20,
 				firstCol : "checkbox"
 			}
 		},
@@ -4928,7 +4943,7 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [2,2],
 				psionic : false,
-				times : 16,
+				times : 20,
 				firstCol : "checkbox"
 			}
 		},
@@ -4943,7 +4958,7 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [3,3],
 				psionic : false,
-				times : 16,
+				times : 20,
 				firstCol : "checkbox"
 			}
 		},
@@ -4958,7 +4973,7 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [4,4],
 				psionic : false,
-				times : 16,
+				times : 20,
 				firstCol : "checkbox"
 			}
 		},
@@ -4973,7 +4988,7 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [5,5],
 				psionic : false,
-				times : 16,
+				times : 20,
 				firstCol : "checkbox"
 			}
 		},
@@ -4987,7 +5002,7 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [6,6],
 				psionic : false,
-				times : 16,
+				times : 20,
 				firstCol : "checkbox"
 			}
 		},
@@ -5001,7 +5016,7 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [7,7],
 				psionic : false,
-				times : 16,
+				times : 20,
 				firstCol : "checkbox"
 			}
 		},
@@ -5015,7 +5030,7 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [8,8],
 				psionic : false,
-				times : 16,
+				times : 20,
 				firstCol : "checkbox"
 			}
 		},
@@ -5029,7 +5044,7 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [9,9],
 				psionic : false,
-				times : 16,
+				times : 20,
 				firstCol : "checkbox"
 			}
 		},
@@ -5039,7 +5054,7 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [0,9],
 				psionic : false,
-				times : 16
+				times : 20
 			},
 			calcChanges : {
 				spellAdd : [

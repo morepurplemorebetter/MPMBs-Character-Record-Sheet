@@ -148,7 +148,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	var useAttr = function(uObj, addIt, skipEval, objNm) {
 		var uniqueObjNm = objNm == undefined ? fObjName : fObjName + objNm; // has to be unique
 		var tipNm = displName;
-		var useSpCasting = objNm && (type === "feat" || type === "magic item") ? aParent + "_-_" + objNm : aParent;
+		var useSpCasting = objNm && (type === "feat" || type === "magic item") && !CurrentSpells[aParent] ? aParent + "_-_" + objNm : aParent;
 		if (cnt > 1) {
 			tipNm += " (" + cnt + ")";
 			if (cntCh > 1) uniqueObjNm += " (" + cntCh + ")";
