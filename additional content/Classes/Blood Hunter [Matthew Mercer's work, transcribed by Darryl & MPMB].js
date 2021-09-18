@@ -79,83 +79,17 @@ ClassList["blood hunter"] = {
 				"From 11th level, I can take rite damage for adv. on Wis (Insight) or Cha (Intimidation)"
 			])
 		},
-		"crimson rite" : {
-			name : "Crimson Rite",
-			source : ["MM:BH", 3],
-			minlevel : 1,
-			description : desc([
-				"I can imbue my weapons with Crimson Rites; Use the \"Choose Features\" button above",
-				"As a bonus action, I imbue a weapon, which than adds the rite damage to its damage",
-				"It can hold only one rite, lasting until my next short/long rest or it leaves my hand",
-				"When activated, I take my character level in damage and lower my max HP the same"
-			]),
-			additional : levels.map(function (n) {
-				var die = "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
-				var rite = (n < 6 ? 1 : n < 11 ? 2 : 3) + " primal rite" + (n < 6 ? "" : "s") + (n < 14 ? "" : " \u0026 1 esoteric rite") + " known";
-				return die + "; " + rite;
-			}),
-			action : ["bonus action", ""],
-			extraname : "Crimson Rite",
-			extrachoices : ["Flame (Primal Rite)", "Frozen (Primal Rite)", "Storm (Primal Rite)", "Roar (Esoteric Rite)", "Oracle (Esoteric Rite)", "Dead (Esoteric Rite)"],
-			"flame (primal rite)" : {
-				source : ["MM:BH", 3],
-				name : "Rite of the Flame",
-				description : "\n   " + "I can select fire as the damage type for my crimson rite damage die"
-			},
-			"frozen (primal rite)" : {
-				source : ["MM:BH", 3],
-				name : "Rite of the Frozen",
-				description : "\n   " + "I can select cold as the damage type for my crimson rite damage die"
-			},
-			"storm (primal rite)" : {
-				source : ["MM:BH", 3],
-				name : "Rite of the Storm",
-				description : "\n   " + "I can select lightning as the damage type for my crimson rite damage die"
-			},
-			"roar (esoteric rite)" : {
-				source : ["MM:BH", 3],
-				name : "Rite of the Roar",
-				description : "\n   " + "I can select thunder as the damage type for my crimson rite damage die",
-				prereqeval : "classes.known['blood hunter'].level >= 14"
-			},
-			"oracle (esoteric rite)" : {
-				source : ["MM:BH", 3],
-				name : "Rite of the Oracle",
-				description : "\n   " + "I can select psychic as the damage type for my crimson rite damage die",
-				prereqeval : "classes.known['blood hunter'].level >= 14"
-			},
-			"dead (esoteric rite)" : {
-				source : ["MM:BH", 3],
-				name : "Rite of the Dead",
-				description : "\n   " + "I can select necrotic as the damage type for my crimson rite damage die",
-				prereqeval : "classes.known['blood hunter'].level >= 14"
-			},
-			calcChanges : {
-				atkAdd : ["if (classes.known['blood hunter'] && !isSpell && (/\\brite\\b/i).test(inputText)) {fields.Description += (fields.Description ? '; ' : '') + '+1d' + (classes.known['blood hunter'].level < 6 ? 4 : classes.known['blood hunter'].level < 11 ? 6 : classes.known['blood hunter'].level < 16 ? 8 : 10) + ' rite damage'; }; ", "If I include the word 'Rite' in a weapon's name, it gets my crimson rite damage die added in its description."]
-			}
-		},
-		"fighting style" : {
-			name : "Fighting Style",
-			source : ["MM:BH", 3],
-			minlevel : 2,
-			description : "\n   " + "Choose a Fighting Style using the \"Choose Feature\" button above",
-			choices : ["Archery", "Dueling", "Great Weapon Fighting", "Two-Weapon Fighting"],
-			"archery" : FightingStyles.archery,
-			"dueling" : FightingStyles.dueling,
-			"great weapon fighting" : FightingStyles.great_weapon,
-			"two-weapon fighting" : FightingStyles.two_weapon
-		},
 		"blood maledict" : {
 			name : "Blood Maledict",
 			source : ["MM:BH", 3],
-			minlevel : 2,
+			minlevel : 1,
 			description : desc([
 				"I can use a Blood Curse on targets with blood; Use the \"Choose Features\" button above",
 				"I can amplify its effect by taking damage equal to my Crimson Rite damage die",
 				"Whenever I learn a new Blood Curse, I can replace one I know with a new one as well"
 			]),
-			additional : levels.map(function (n) { return n < 2 ? "" : (n < 5 ? 1 : n < 9 ? 2 : n < 13 ? 3 : n < 17 ? 4 : n < 20 ? 5 : 6) + " curse" + (n < 5 ? "" : "s"); }),
-			usages : levels.map(function (n) { return n < 2 ? "" : n < 6 ? 1 : n < 11 ? 2 : n < 17 ? 3 : 4; }),
+			additional : levels.map(function (n) { return (n < 5 ? 1 : n < 9 ? 2 : n < 13 ? 3 : n < 17 ? 4 : n < 20 ? 5 : 6) + " curse" + (n < 5 ? "" : "s"); }),
+			usages : levels.map(function (n) { return n < 6 ? 1 : n < 11 ? 2 : n < 17 ? 3 : 4; }),
 			recovery : "short rest",
 			extraname : "Blood Curse",
 			extrachoices : ["Blood Curse of Binding", "Blood Curse of the Eyeless", "Blood Curse of the Fallen Puppet", "Blood Curse of the Fending Rite", "Blood Curse of the Marked", "Blood Curse of Mutual Suffering", "Blood Curse of Purgation", "Blood Curse of Spell Sunder"],
@@ -238,6 +172,72 @@ ClassList["blood hunter"] = {
 				]),
 				action : [" reaction ", " "]
 			}
+		},
+		"crimson rite" : {
+			name : "Crimson Rite",
+			source : ["MM:BH", 3],
+			minlevel : 2,
+			description : desc([
+				"I can imbue my weapons with Crimson Rites; Use the \"Choose Features\" button above",
+				"As a bonus action, I imbue a weapon, which than adds the rite damage to its damage",
+				"It can hold only one rite, lasting until my next short/long rest or it leaves my hand",
+				"When activated, I take my character level in damage and lower my max HP the same"
+			]),
+			additional : levels.map(function (n) {
+				var die = "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
+				var rite = (n < 6 ? 1 : n < 11 ? 2 : 3) + " primal rite" + (n < 6 ? "" : "s") + (n < 14 ? "" : " \u0026 1 esoteric rite") + " known";
+				return die + "; " + rite;
+			}),
+			action : ["bonus action", ""],
+			extraname : "Crimson Rite",
+			extrachoices : ["Flame (Primal Rite)", "Frozen (Primal Rite)", "Storm (Primal Rite)", "Roar (Esoteric Rite)", "Oracle (Esoteric Rite)", "Dead (Esoteric Rite)"],
+			"flame (primal rite)" : {
+				source : ["MM:BH", 3],
+				name : "Rite of the Flame",
+				description : "\n   " + "I can select fire as the damage type for my crimson rite damage die"
+			},
+			"frozen (primal rite)" : {
+				source : ["MM:BH", 3],
+				name : "Rite of the Frozen",
+				description : "\n   " + "I can select cold as the damage type for my crimson rite damage die"
+			},
+			"storm (primal rite)" : {
+				source : ["MM:BH", 3],
+				name : "Rite of the Storm",
+				description : "\n   " + "I can select lightning as the damage type for my crimson rite damage die"
+			},
+			"roar (esoteric rite)" : {
+				source : ["MM:BH", 3],
+				name : "Rite of the Roar",
+				description : "\n   " + "I can select thunder as the damage type for my crimson rite damage die",
+				prereqeval : "classes.known['blood hunter'].level >= 14"
+			},
+			"oracle (esoteric rite)" : {
+				source : ["MM:BH", 3],
+				name : "Rite of the Oracle",
+				description : "\n   " + "I can select psychic as the damage type for my crimson rite damage die",
+				prereqeval : "classes.known['blood hunter'].level >= 14"
+			},
+			"dead (esoteric rite)" : {
+				source : ["MM:BH", 3],
+				name : "Rite of the Dead",
+				description : "\n   " + "I can select necrotic as the damage type for my crimson rite damage die",
+				prereqeval : "classes.known['blood hunter'].level >= 14"
+			},
+			calcChanges : {
+				atkAdd : ["if (classes.known['blood hunter'] && !isSpell && (/\\brite\\b/i).test(inputText)) {fields.Description += (fields.Description ? '; ' : '') + '+1d' + (classes.known['blood hunter'].level < 6 ? 4 : classes.known['blood hunter'].level < 11 ? 6 : classes.known['blood hunter'].level < 16 ? 8 : 10) + ' rite damage'; }; ", "If I include the word 'Rite' in a weapon's name, it gets my crimson rite damage die added in its description."]
+			}
+		},
+		"fighting style" : {
+			name : "Fighting Style",
+			source : ["MM:BH", 3],
+			minlevel : 2,
+			description : "\n   " + "Choose a Fighting Style using the \"Choose Feature\" button above",
+			choices : ["Archery", "Dueling", "Great Weapon Fighting", "Two-Weapon Fighting"],
+			"archery" : FightingStyles.archery,
+			"dueling" : FightingStyles.dueling,
+			"great weapon fighting" : FightingStyles.great_weapon,
+			"two-weapon fighting" : FightingStyles.two_weapon
 		},
 		"subclassfeature3" : {
 			name : "Blood Hunter Order",
