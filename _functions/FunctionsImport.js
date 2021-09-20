@@ -841,7 +841,7 @@ function DirectImport(consoleTrigger) {
 		}
 
 		// if from version >= 13, do magic items before setting the rest of the fields
-		if (FromVersion >= semVersToNmbr(13)) importMagicItems();
+		if (!fromBefore13) importMagicItems();
 
 		//set the ability scores and associated fields
 		for (var a = 0; a < abiScoreFlds.length; a++) {
@@ -891,7 +891,7 @@ function DirectImport(consoleTrigger) {
 			}
 		};
 		// copy the "manualClick" entries from the imported CurrentProfs.skill
-		if (FromVersion >= semVersToNmbr(13) && CurrentProfsFrom && CurrentProfsFrom.skill) {
+		if (!fromBefore13 && CurrentProfsFrom && CurrentProfsFrom.skill) {
 			for (var anEntry in CurrentProfsFrom.skill) {
 				if (anEntry == "descrTxt") continue;
 				if (anEntry.indexOf("_Exp") !== -1) {
@@ -2633,7 +2633,7 @@ function AddFeatureChoice(pObj, cType, cName, cObj, force) {
 				pObj.choiceSetsExtrachoices = true;
 				aObj = pObj[pObj.defaultChoice];
 			}
-			aObj.extraname = force;
+			if (!aObj.extraname) aObj.extraname = force;
 		}
 		aObj[cType] = [];
 	}

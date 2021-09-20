@@ -795,6 +795,7 @@ function RunCreatureCallback(sPrefix, sType, bAdd, fOverride, sOverrideNm) {
 	if (bAdd === undefined) bAdd = true;
 	var prefix, oCrea, sCompType, sEval;
 	var doEval = function(evalThing, evalName) {
+		if (!evalThing) return;
 		try {
 			if (typeof evalThing == 'function') evalThing(prefix, oCrea, bAdd, sCompType);
 		} catch (error) {
@@ -802,7 +803,11 @@ function RunCreatureCallback(sPrefix, sType, bAdd, fOverride, sOverrideNm) {
 			for (var e in error) eText += "\n " + e + ": " + error[e];
 			console.println(eText);
 			console.show();
-			if (CurrentEvals[sEvalType] && CurrentEvals[sEvalType][evalName]) delete CurrentEvals[sEvalType][evalName];
+			if (CurrentEvals[sEvalType] && CurrentEvals[sEvalType][evalName]) {
+				delete CurrentEvals[sEvalType][evalName];
+				CurrentEvals[sEvalType + "Order"].splice(i, 1);
+				return "error";
+			}
 		}
 	}
 	for (var i = 0; i < aPrefix.length; i++) {
@@ -813,9 +818,11 @@ function RunCreatureCallback(sPrefix, sType, bAdd, fOverride, sOverrideNm) {
 		if (sEvalType === "companionCallback" && !sCompType) continue;
 		if (fOverride) {
 			doEval(fOverride, sOverrideNm);
-		} else {
-			for (sEval in CurrentEvals[sEvalType]) {
-				doEval(CurrentEvals[sEvalType][sEval], sEval);
+		} else if (CurrentEvals[sEvalType + "Order"]) {
+			for (var j = 0; j < CurrentEvals[sEvalType + "Order"].length; j++) {
+				var evalName = CurrentEvals[sEvalType + "Order"][j][1];
+				var evalThing = CurrentEvals[sEvalType][evalName];
+				if (doEval(evalThing, evalName) === "error") e--;
 			}
 		}
 	}
@@ -5854,13 +5861,39 @@ function PatreonStatement(force) {
 
 //a way to change the calculations of the sheet; The input is an object with the "atkDmg", "atkHit", "atkAdd", and/or "hp" attributes;
 // Add === true to add something, or Add === false to remove something;
-function addEvals(evalObj, NameEntity, Add) {
+function addEvals(evalObj, NameEntity, Add, type, level) {
 	if (!evalObj) return;
+
+	// Calculate the priority
+	var priority = level ? level : 0;
+	switch (GetFeatureType(type)) {
+		case "magic":
+			priority += 100;
+			break;
+		case "items":
+			priority += 200;
+			break;
+		case "feats":
+			priority += 300;
+			break;
+		case "background":
+			priority += 400;
+			break;
+		case "race":
+			priority += 500;
+			break;
+		case "classes":
+			priority += 600;
+			break;
+	}
+
+	// Function to sort
+	var fSortArray = function(a, b) { return a[0] - b[0]; };
 
 	// Do the stuff affecting the hp calculations
 	if (evalObj.hp) {
+		if (!CurrentEvals.hp) CurrentEvals.hp = {};
 		if (Add) {
-			if (!CurrentEvals.hp) CurrentEvals.hp = {};
 			CurrentEvals.hp[NameEntity] = evalObj.hp;
 		} else if (CurrentEvals.hp && CurrentEvals.hp[NameEntity]) {
 			delete CurrentEvals.hp[NameEntity];
@@ -5881,32 +5914,43 @@ function addEvals(evalObj, NameEntity, Add) {
 	var objTypeStr = {
 		"atkAdd" : "atkStr",
 		"atkCalc" : "atkStr",
-		"spellCalc" : "atkStr",
+		"spellCalc" : "spellAtkStr",
 		"spellList" : "spellStr",
 		"spellAdd" : "spellStr",
 		"creatureCallback" : "creaStr",
 		"companionCallback" : "creaStr"
 	};
-	var objSaveStr = { atkStr : "", spellStr : "", creaStr : "" };
+	var objSaveStr = { atkStr : "", spellAtkStr : "", spellStr : "", creaStr : "" };
 	// Process the eval functions
 	for (var sType in objTypeStr) {
 		if (!evalObj[sType]) continue;
 		bIsArray = isArray(evalObj[sType]);
+		var aPrio = [
+			bIsArray && evalObj[sType][2] !== undefined && !isNaN(evalObj[sType][2]) ? evalObj[sType][2] : priority,
+			NameEntity
+		];
 		// Add the descriptive text for safekeeping
 		if (bIsArray && evalObj[sType][1]) objSaveStr[objTypeStr[sType]] += "\n \u2022 " + evalObj[sType][1];
 		// Set the function
+		if (!CurrentEvals[sType]) CurrentEvals[sType] = {};
+		if (!CurrentEvals[sType+"Order"]) CurrentEvals[sType+"Order"] = [];
 		if (Add) {
-			if (!CurrentEvals[sType]) CurrentEvals[sType] = {};
 			CurrentEvals[sType][NameEntity] = bIsArray ? evalObj[sType][0] : evalObj[sType];
-		} else if (CurrentEvals[sType] && CurrentEvals[sType][NameEntity]) {
-			delete CurrentEvals[sType][NameEntity];
+			CurrentEvals[sType+"Order"].push(aPrio);
+		} else {
+			if (CurrentEvals[sType] && CurrentEvals[sType][NameEntity]) delete CurrentEvals[sType][NameEntity];
+			CurrentEvals[sType+"Order"].delete(aPrio);
 		}
+		CurrentEvals[sType+"Order"].sort(fSortArray);
 	}
 	// Process the explanatory strings
 	for (var sStr in objSaveStr) {
 		if (!objSaveStr[sStr]) continue;
 		// Remember the old strings for the changes dialog (if not done so already)
-		if (CurrentUpdates[sStr + "Old"] == undefined) CurrentUpdates[sStr + "Old"] = StringEvals(sStr);
+		var sStrMain = sStr.replace("spellAtkStr", "atkStr");
+		if (CurrentUpdates[sStrMain + "Old"] == undefined) {
+			CurrentUpdates[sStrMain + "Old"] = StringEvals(/atkStr/i.test(sStr) ? ["atkStr", "spellAtkStr"] : sStr === "spellStr" ? ["spellStr", "spellAtkStr"] : [sStr]);
+		}
 		if (Add) {
 			if (!CurrentEvals[sStr]) CurrentEvals[sStr] = {};
 			CurrentEvals[sStr][NameEntity] = objSaveStr[sStr];
@@ -5914,7 +5958,7 @@ function addEvals(evalObj, NameEntity, Add) {
 			delete CurrentEvals[sStr][NameEntity];
 		}
 		// As the descriptive text changed, show it in the changes dialog
-		CurrentUpdates.types.push(sStr.toLowerCase());
+		CurrentUpdates.types.push(sStrMain.toLowerCase());
 	}
 
 	// Some specifics
@@ -5928,11 +5972,15 @@ function addEvals(evalObj, NameEntity, Add) {
 };
 
 // make a string of all the things affecting the attack calculations
-function StringEvals(type) {
-	if (!type || !CurrentEvals[type]) return "";
+function StringEvals(aType) {
+	if (!isArray(aType)) aType = [aType];
 	var txt = [];
-	for (var str in CurrentEvals[type]) {
-		txt.push(toUni(str) + CurrentEvals[type][str]);
+	for (var i = 0; i < aType.length; i++) {
+		var sType = aType[i];
+		if (!CurrentEvals[sType]) continue;
+		for (var str in CurrentEvals[sType]) {
+			txt.push(toUni(str) + CurrentEvals[sType][str]);
+		}
 	}
 	return txt.join("\n\n");
 }
@@ -6121,13 +6169,10 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 				thisWeapon : thisWeapon
 			}
 
-			var evalsToDo = [[], [], []]; // [0] magic items, [1] feats, [2] others
-			for (var anEval in CurrentEvals.atkAdd) {
-				evalsToDo[anEval.indexOf("(magic item)") != -1 ? 0 : anEval.indexOf("(feat)") != -1 ? 1 : 2].push(anEval);
-			}
-			evalsToDo = evalsToDo[0].concat(evalsToDo[1]).concat(evalsToDo[2]);
-			for (var i = 0; i < evalsToDo.length; i++) {
-				var evalThing = CurrentEvals.atkAdd[evalsToDo[i]];
+			for (var i = 0; i < CurrentEvals.atkAddOrder.length; i++) {
+				var evalName = CurrentEvals.atkAddOrder[i][1];
+				var evalThing = CurrentEvals.atkAdd[evalName];
+				if (!evalThing) continue;
 				try {
 					if (typeof evalThing == 'string') {
 						eval(evalThing);
@@ -6135,11 +6180,13 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 						evalThing(fields, gatherVars);
 					}
 				} catch (error) {
-					var eText = "The custom ApplyWeapon/atkAdd script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+					var eText = "The custom ApplyWeapon/atkAdd script '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
 					for (var e in error) eText += "\n " + e + ": " + error[e];
 					console.println(eText);
 					console.show();
-					delete CurrentEvals.atkAdd[evalsToDo[i]];
+					delete CurrentEvals.atkAdd[evalName];
+					CurrentEvals.atkAddOrder.splice(i, 1);
+					i--;
 				}
 			}
 		};
@@ -6299,13 +6346,10 @@ function CalcAttackDmgHit(fldName) {
 			isOffHand : isOffHand
 		}
 
-		var evalsToDo = [[], [], []]; // [0] magic items, [1] feats, [2] others
-		for (var anEval in CurrentEvals.atkCalc) {
-			evalsToDo[anEval.indexOf("(magic item)") != -1 ? 0 : anEval.indexOf("(feat)") != -1 ? 1 : 2].push(anEval);
-		}
-		evalsToDo = evalsToDo[0].concat(evalsToDo[1]).concat(evalsToDo[2]);
-		for (var i = 0; i < evalsToDo.length; i++) {
-			var evalThing = CurrentEvals.atkCalc[evalsToDo[i]];
+		for (var i = 0; i < CurrentEvals.atkCalcOrder.length; i++) {
+			var evalName = CurrentEvals.atkCalcOrder[i][1];
+			var evalThing = CurrentEvals.atkCalc[evalName];
+			if (!evalThing) continue;
 			try {
 				if (typeof evalThing == 'string') {
 					eval(evalThing);
@@ -6313,11 +6357,12 @@ function CalcAttackDmgHit(fldName) {
 					evalThing(fields, gatherVars, output);
 				}
 			} catch (error) {
-				var eText = "The custom CalcAttackDmgHit/atkCalc script '" + evalsToDo[i] + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				var eText = "The custom CalcAttackDmgHit/atkCalc script '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
-				delete CurrentEvals.atkCalc[evalsToDo[i]];
+				CurrentEvals.atkCalcOrder.splice(i, 1);
+				i--;
 			}
 		}
 	};
@@ -6369,19 +6414,21 @@ function CalcAttackDmgHit(fldName) {
 			return CurrentSpells[sClass] && CurrentSpells[sClass].ability == abiScoreNo ? sClass : "";
 		});
 
-		for (var spCalc in CurrentEvals.spellCalc) { // the iteration order doesn't matter
-			var evalThing = CurrentEvals.spellCalc[spCalc];
+		for (var i = 0; i < CurrentEvals.spellCalcOrder.length; i++) {
+			var evalName = CurrentEvals.spellCalcOrder[i][1];
+			var evalThing = CurrentEvals.spellCalc[evalName];
+			if (!evalThing || typeof evalThing !== 'function') continue;
 			try {
-				if (typeof evalThing == 'function') {
-					var addSpellNo = evalThing(spTypeFull, spCasters, abiScoreNo);
-					if (!isNaN(addSpellNo)) output.extraHit += Number(addSpellNo);
-				}
+				var addSpellNo = evalThing(spTypeFull, spCasters, abiScoreNo);
+				if (!isNaN(addSpellNo)) output.extraHit += Number(addSpellNo);
 			} catch (error) {
-				var eText = "The custom spell attack/DC (spellCalc) script '" + spCalc + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				var eText = "The custom spell attack/DC (spellCalc) script '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
-				delete CurrentEvals.spellCalc[spCalc];
+				delete CurrentEvals.spellCalc[evalName];
+				CurrentEvals.spellCalcOrder.splice(i, 1);
+				i--;
 			}
 		}
 	}
@@ -8094,6 +8141,47 @@ function formatLineList(caption, elements, useOr) {
 	return rStr;
 };
 
+// a function to add an array of modifications to a total value
+function processModifiers(iTot, aMods) {
+	// first do substractions and additions, then multiplications and divisions
+	for (n = 1; n <= 2; n++) {
+		for (var i = 0; i < aMods.length; i++) {
+			var aMod = aMods[i];
+			var sOperator = aMod.substring(0,1);
+			var iValue = Number(aMod.substring(1));
+			if (isNaN(iValue)) continue;
+			if (n === 1) {
+				switch (sOperator) {
+					case "+" :
+						iTot += iValue;
+						break;
+					case "-" :
+					case "\u2015" :
+						iTot -= iValue;
+						break;
+					case "_" :
+						iTot = iTot ? iTot + iValue : iTot;
+						break;
+				};
+			} else {
+				switch (sOperator) {
+					case "x" :
+					case "X" :
+					case "*" :
+					case "\xD7" :
+						iTot *= iValue;
+						break;
+					case "/" :
+					case ":" :
+						iTot /= iValue;
+						break;
+				};
+			};
+		};
+	};
+	return iTot;
+};
+
 //a way to condense an array of numbers down to the highest and modifiers
 function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, withCleanValue) {
 	var values = [0];
@@ -8128,49 +8216,11 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, with
 	recurProcess(nmbrObj);
 	//process the values
 	var tValue = Math.max.apply(Math, values);
-	//process the modifications
-	var processModifiers = function(modA) {
-		for (n = 1; n <= 2; n++) { // first do substractions and additions, then multiplications and divisions
-			for (var i = 0; i < modA.length; i++) {
-				var aMod = modA[i];
-				var aOperator = aMod.substring(0,1);
-				var aValue = Number(aMod.substring(1));
-				if (isNaN(aValue)) continue;
-				if (n === 1) {
-					switch (aOperator) {
-						case "+" :
-							tValue += aValue;
-							break;
-						case "-" :
-						case "\u2015" :
-							tValue -= aValue;
-							break;
-						case "_" :
-							tValue = tValue ? tValue + aValue : tValue;
-							break;
-					};
-				} else {
-					switch (aOperator) {
-						case "x" :
-						case "X" :
-						case "*" :
-						case "\xD7" :
-							tValue *= aValue;
-							break;
-						case "/" :
-						case ":" :
-							tValue /= aValue;
-							break;
-					};
-				};
-			};
-		};
-	};
-	if (tValue && modifications.length) processModifiers(modifications);
+	if (tValue && modifications.length) tValue = processModifiers(tValue, modifications);
 	if (tValue && extraMods && !(replaceWalk && noModsIfWalks && tValue === replaceWalk)) {
 		modifications = [];
 		recurProcess(extraMods);
-		if (modifications.length) processModifiers(modifications);
+		if (modifications.length) tValue = processModifiers(tValue, modifications);
 	};
 	if (fixedVals.length > 1) {
 		tValue = Math.max.apply(Math, fixedVals.concat([tValue]));
@@ -8189,7 +8239,7 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, with
 };
 
 // open a dialog with a number of lines of choices and return the choices in an array; if knownOpt === "radio", show radio buttons instead, and return the entry selected
-// if notProficiencies is set to true, the optType will serve as the dialog header, and optSrc will serve as the multline explanatory text
+// if notProficiencies is set to true, the optType will serve as the dialog header, and optSrc will serve as the multiline explanatory text
 function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sBottomMsg) {
 	if (!IsNotImport) return optSubj;
 	//first make the entry lines
@@ -8485,7 +8535,7 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 	};
 	for (var i = 0; i < items.length; i++) {
 		var noteObj = items[i];
-		var alertTxt = noteObj.popupName ? noteObj.popupName : noteObj.name;
+		var alertTxt = noteObj.popupName ? noteObj.popupName : noteObj.name + ' from "' + namesArr[0] + '"';
 		var noteSrc = noteObj.source ? stringSource(noteObj, "first,abbr", ", ") : fallback.noteSrc;
 		var noteDesc = (isArray(noteObj.note) ? desc(noteObj.note) : noteObj.note).replace(/\n/g, "\r");
 		if (What("Unit System") === "metric") noteDesc = ConvertToMetric(noteDesc, 0.5);
@@ -8494,7 +8544,7 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 			if (AddRemove) {
 				AddString('Extra.Notes', noteStr, true);
 				show3rdPageNotes(); // for a Colourful sheet, show the notes section on the third page
-				var changeMsg = alertTxt + " has been added to the Notes section on the third page" + (!typePF ? ", while the Rules section on the third page has been hidden" : "") + ". They wouldn't fit in the " + fallback.alertType + ".";
+				var changeMsg = alertTxt + ' has been added to the Notes section on the third page' + (!typePF ? ", while the Rules section on the third page has been hidden" : "") + ". They wouldn't fit in the " + fallback.alertType + ".";
 				CurrentUpdates.types.push("notes");
 				if (!CurrentUpdates.notesChanges) {
 					CurrentUpdates.notesChanges = [changeMsg];

@@ -720,8 +720,8 @@ scores : [0, 1, 0, 0, 2, 0],
 
 	Where exactly the numbers will be added in the Ability Scores dialog depends on the parent feature.
 
-	The array will also be used to generate a textual description of the improvement for the dialog and tooltips,
-	but only if the attribute 'scorestxt' is not present in the same feature, see below.
+	The array will also be used to generate a textual description of the improvement for the dialog
+	and tooltips, but only if the attribute 'scorestxt' is not present in the same feature, see below.
 
 	Note that if a feature gives you a choice in which ability score to improve,
 	you should put that information in the 'scorestxt' attribute and not include the improvement here.
@@ -752,10 +752,11 @@ scoresOverride : [0, 0, 0, 19, 0, 0],
 	but only if the attribute 'scorestxt' is not present in the same feature.
 */
 
-scoresMaximum : [24, 0, 24, 0, 0, 0],
+scoresMaximum : [24, 0, 24, 0, "+2", 0],
 /*	scores // OPTIONAL //
-	TYPE:	array of six numbers
+	TYPE:	array of six numbers or strings
 	USE:	change ability score maximum in the Ability Scores dialog
+	CHANGE:	v13.0.8 (allow modifiers "+2" as well as fixed numbers)
 
 	By default, the ability score increases can never increase an ability score above 20.
 	Using this attribute, you can change that maximum.
@@ -765,11 +766,47 @@ scoresMaximum : [24, 0, 24, 0, 0, 0],
 	The entries are: [Str, Dex, Con, Int, Wis, Cha].
 	You should put a 0 for an ability score that gets no change in maximum.
 
-	You can enter a lower maximum (1-19), the default of 20 will only be used if no maximum is set by anything.
+	You can enter a lower maximum (1-19), the default of 20 will only be used if nothing sets a maximum.
 	If multiple things change the maximum, the highest of those will be used.
 
-	The array will also be used to generate a textual description of the improvement for the dialog and tooltips,
-	but only if the attribute 'scorestxt' is not present in the same feature.
+	Alternatively, you can enter a string that reads as a mathematical modifier that adds "+X" or
+	subtracts "-Y". For example, you could set it to "+2" to increase the maximum by 2.
+	These modifiers will be applied to the highest maximum for the score set by other features, or 20,
+	if no other features set a maximum. (e.g. the "+2" will result in a maximum of 22).
+
+	If the maximum has a requirement, because the feature only increases the maximum if the total
+	goes over 20, then take a look at the `scoresMaxLimited` attribute below.
+
+	The array will also be used to generate a textual description of the improvement for the dialog
+	and tooltips, but only if the attribute 'scorestxt' is not present in the same feature.
+*/
+
+scoresMaxLimited : true,
+/*	scores // OPTIONAL //
+	TYPE:	boolean
+	USE:	wether to apply the ability score maximum increase only if that maximum is reached (true) or always (false)
+	ADDED:	v13.0.8
+
+	By default, the ability score increases can never increase an ability score above 20.
+	Using the `scoresMaximum` attribute above, you can change that maximum to a higher value.
+	However, some features only allow the maximum to increase if the new total reaches that maximum.
+
+	This attribute only works if the same object also includes both the `scores` and the `scoresMaximum`
+	attributes.
+
+	For example, a magic item might read: "Your Constitution score increases by 2, up to a maximum of 22."
+	Thus, if the score is currently 18, it is increased to 20, but its maximum should stay 20.
+	If the feature is worded like that, set this attribute to true and set `scores` and `scoresMaximum` 
+	attributes to the respective bonuses. The result will then look like this:
+		scores : [0, 0, 2, 0, 0, 0],
+		scoresMaximum : [0, 0, 22, 0, 0, 0],
+		scoresMaxLimited : true
+
+	// IMPORTANT //
+	When setting this attribute to `true`, the `scoresMaximum` can't have modifiers (e.g. "+2"), but can
+	only exists of numbers.
+
+	Setting this attribute to false is the same as not including this attribute.
 */
 
 
@@ -863,10 +900,14 @@ spellcastingBonus : [{
 	fixedDC : 17,
 	fixedSpAttack : 9,
 	allowUpCasting : true, // Added v13.0.6
-	/*	spellcastingAbility & fixedDC & fixedSpAttack & allowUpCasting // OPTIONAL //
+	magicItemComponents : true, // Added v13.0.8
+	/*	spellcastingAbility & fixedDC & fixedSpAttack & allowUpCasting & magicItemComponents // OPTIONAL //
 		All of these are explained in detail below.
 
-		You can include either in a spellcastingBonus object to do the exact same thing.
+		You can include each in a spellcastingBonus object to do the exact same thing as explained below.
+		You will only have to include it into a single array item of the spellcastingBonus attribute.
+		If you include it in multiple array items, only the last one will be used.
+
 		Only do this if the spellcastingBonus object is not part of the parent,
 		for example if the spellcastingBonus object is part of a (feat/item) choice or (class/race) feature.
 	*/
@@ -878,15 +919,29 @@ spellcastingAbility : [4, 5, 6],
 	TYPE:	number corresponding to the ability score (1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
 			or "class" or "race"
 			or an array of any of the above
+			or the exact object name of another spellcasting source (see below)
 	USE:	set the ability score used for spellcasting abilities
 	CHANGE:	v13.0.7 (added option for array)
+	       	v13.0.8 (added option for a specific object name)
 
+	CLASS or RACE
 	If you set this to "class", the sheet will use the highest spellcasting ability score of
 	the spellcasting class(es) the character has.
 	If you set this to "race", the sheet will use the spellcasting ability of the race, if any.
-
 	When set to "class" or "race", but nothing is found (i.e. no spellcasting class/race),
 	the sheet will assume there is a +0 bonus (spell DC 8, spell attack +0).
+
+	OBJECT NAME
+	If you want the spellcasting ability to be linked to another spellcasting feature
+	(e.g. to a class' spellcasting), then set this attribute to the object name of that spellcasting feature.
+	Note that these object names are all lowercase and identical to their ClassList, RaceList, FeatsList,
+	or MagicItemsList entries of their source object.
+	When you want to link it to an object name, this can't be an array.
+	If that specific object name isn't found, the sheet will treat this as if it said "class".
+	If you link it to another spellcasting entry, the automation will also apply any dynamic bonuses for that
+	entry to this entry (e.g. bonus to warlock DCs if this is set to "warlock").
+	Use this only if the thing clearly says it becomes part of class/race spellcasting and not just has
+	the same spellcasting ability or spell list.
 
 	Setting this to 0 or false is the same as not including this attribute.
 
@@ -983,6 +1038,30 @@ allowUpCasting : true,
 	NOTE FOR CLASS FEATURES
 	Be aware that this setting will apply to all spells gained from the parent (i.e. class), not just
 	those gained by the direct parent.
+*/
+
+magicItemComponents : true,
+/*	magicItemComponents // OPTIONAL //
+	TYPE:	boolean
+	USE:	change all spell components on the spell sheet to "Mƒ" (only a magic item)
+	ADDED:	v13.0.8
+
+	Normally, spells cast by magic items don't require any components other than the magic item itself.
+
+	By setting this attribute to true, you force the sheet to remove all spell components of any spell on
+	the spell sheet for the parent and replace them with just "Mƒ".
+	Also, all price for the component will be removed from the short description.
+	Lastly, the tooltip will no longer have the material component listed, but will rather point out that
+	only the magic item is needed to cast the spell.
+
+	For a magic item, this attribute is assumed to be true by default. You only need to include it,
+	if you want to set it to 'false', forcing the normal use of components.
+
+	Be aware that setting this to true will affect all spells of the parent. It is impossible to affect
+	just a single spells. To accomplish that, use `calcChanges.spellAdd` or `spellChanges`.
+
+	Setting this attribute to true for magic items is the same as not including it.
+	Setting this attribute to false for anything other than magic items is the same as not including it.
 */
 
 spellcastingExtra : ["cure wounds", "guiding bolt", "flaming sphere", "lesser restoration", "daylight", "revivify", "guardian of faith", "wall of fire", "flame strike", "greater restoration"],
@@ -1085,8 +1164,9 @@ spellChanges : {
 	TYPE:	object with objects
 	USE:	change aspects of spells when generating a spell sheet of the parent object
 
-	The object names in this must correspond with the object names of the spells as they appear in the SpellsList.
-	The possible attributes in that sub-object are the same as those for a SpellsList entry, see the syntax file "spells (SpellsList).js".
+	The object names in this must correspond with the object names as used in the SpellsList object.
+	The possible attributes in that sub-object are the same as those for a SpellsList entry,
+	see the syntax file "spells (SpellsList).js".
 	Any attributes you add there will override the ones found in the SpellsList object.
 
 	// IMPORTANT: 'changes' attribute (string) //
@@ -1095,14 +1175,13 @@ spellChanges : {
 	Use it to make clear how the spell now differs from the original version.
 
 	// NOT ALL SpellsList ATTRIBUTES SUPPORTED //
-	As these attributes are only looked into when the fields on the sheet are filled with the spell's attributes,
-	there is no point in using this to change the 'classes', 'level', or 'source' attribute of a SpellsList entry.
+	As these attributes are only looked into when the fields on the sheet are filled with the
+	spell's attributes, there is no point in using this to change the 'classes', 'level', or
+	'source' attribute of a SpellsList entry.
 
 	// MAGIC ITEMS & SPELL COMPONENTS //
-	Normally, spells cast through magic items don't require any components.
-	Because of that, spells gained from magic items always have their 'components' and 'compMaterial' attributes removed.
-	If the magic items still requires components, you will have to manually set the 'components' and
-	'compMaterial' attributes using this 'spellChanges' object.
+	Normally, spells cast through magic items don't require any components, so these components are
+	removed by default. See the `magicItemComponents` attribute above.
 
 	For example, you can use this attribute in a cleric class feature to change the casting time and range
 	of the Spare the Dying cantrip. This is what the above example does.
@@ -1118,6 +1197,94 @@ spellChanges : {
 	This attribute will do nothing if the parent object does not grant spellcasting in one way or another.
 */
 
+spellcastingBonusElsewhere : {
+/*	spellcastingBonusElsewhere // OPTIONAL //
+	TYPE:	object with specific attributes (see below)
+	USE:	add spells to a spellcasting feature other than the parent object
+	ADDED:	v13.0.8
+	
+	Normally, the automation will only influence spells known for spellcasting gained from the parent object.
+	With this attribute, you can add known and/or bonus spells to another spellcasting source.
+	For example, you could have a magic item spellbook add spells to the spellbook of a wizard. That way
+	they aren't displayed in their own header on the spell sheet pages, but as part of the wizard's spells.
+
+	To do this, the object must contain the `addTo` attribute and either or both the `spellcastingBonus`
+	and `addToKnown` attributes.
+	These attributes are discussed individually below.
+
+	Note that you should not use this if you want to add bonus spells to spellcasting from a parent object.
+	For example, don't use this for a subclass feature that adds a bonus spell for that class', instead
+	use `spellcastingBonus`, see above.
+*/
+	addTo : "wizard",
+	/*	addTo // REQUIRED //
+		TYPE:	string
+		USE:	to what the bonus spells should be added
+
+		This string can be one of the following things:
+		1) an exact or partial match for a CurrentSpells object entry or its `name` attribute
+			CurrentSpells object entries are the same as the ClassList, RaceList, FeatsList,
+			and MagicItemsList object entries.
+			For example, if you set this to "ranger", it will only add something
+			If this is an exact match for a CurrentSpells object, then the sheet will not look for
+			partial matches or `name` attribute matches.
+		2) a type of CurrentSpells entry
+			This can be either "class", "race", "feat", "magic item", or "background".
+			
+		If the above produces multiple matches, the sheet will prompt the player to select which to use.
+	*/
+
+	spellcastingBonus : [],
+	/*	spellcastingBonus // OPTIONAL //
+		This entry works identical to the `spellcastingBonus` above. See there how this entry works.
+
+		Be aware that this spellcastingBonus will be added to the spellcasting defined in `addTo` above.
+		Be careful, because you could overwrite somethings like which spellcasting ability is used.
+
+		The `spellcastingBonusElsewhere` object requires to have either or both the `spellcastingBonus`
+		or `addToKnown` attribute to be present.
+	*/
+
+	addToKnown : [],
+	/*	spellcastingBonus // OPTIONAL //
+		TYPE:	array (variable length) of spell object names as used in the SpellsList object
+		USE:	which spells should be added to the spells known / spellbook
+
+		Unlike the `spellcastingBonus` attribute above, the spells listed here will be directly added
+		to the known cantrips/spells.
+		This comes with the following limitations/considerations:
+		  * Only spellscasting classes have known spells, feats, magic items, and races only have
+			'bonus' spells. To add spells to those kind of entries, use the `spellcastingBonus` attribute.
+		  * Spellcasting classes that always know all their spells (e.g. cleric, druid, paladin), can't
+			have spells added this way to their known spells (cantrips will still work).
+			For those kind of classes, use `calcChanges.spellList`.
+		  * The sheet only has space for 20 cantrips and 20 spells known. If the spellcaster already has
+			known spells and this list would increase the number above 20, the access spells will be lost.
+			This limitation does not apply to classes that use a spellbook, as a spellbook can have an
+			unlimited number of spells.
+			Every class can still only have a maximum of 20 known cantrips, though.
+		  * These added spells must still adhere to the normal restrictions of the spell list available for
+			the class. If you want to go beyond that (for example, add a wizard spell to a cleric),
+			you'll also have to change the available spell list using `calcChanges.spellList`.
+
+		The `spellcastingBonusElsewhere` object requires to have either or both the `spellcastingBonus`
+		or `addToKnown` attribute to be present.
+	*/
+
+	countsTowardsKnown : true
+	/*	spellcastingBonus // OPTIONAL //
+		TYPE:	boolean
+		USE:	whether to count the spells added by `addToKnown` towards the maximum number allowed (true)
+				or not (false)
+
+		If you exclude this attribute or set it to false, any spells and cantrips added by the
+		`addToKnown` attribute above will be considered extra spells that do not count towards the
+		maximum number of spells known.
+
+		Including this attribute is only useful if you also include the `addToKnown` attribute.
+		Setting this attribute to false is the same as not including this attribute.
+	*/
+},
 
 // >>>>>>>>>>>>>>>>>>>>>>>>> //
 // >>> Companion Options >>> //
@@ -1315,13 +1482,15 @@ calcChanges : {
 		"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
 	],
 	/*	atkAdd // OPTIONAL //
-		TYPE:	array with two entries:
+		TYPE:	array with three entries:
 				1st entry:	function or, for backwards-compatibility, string that is evaluated using eval()
-				2nd entry:	string that is used to give an explanation of what the 1st entry does
+				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
+				3rd entry:	optional number used to determine the order in which to run the functions
 		USE:	dynamically change what is put in the fields of an attack entry
 				Note that this is only run for attacks that are recognized, not manually added
+		CHANGE:	v13.0.8 (priority, 3rd array entry)
 
-		// 1st array entry //
+		// 1st array entry // REQUIRED //
 		Both examples do the exact same thing, just one is a string and the other is a function.
 		Writing a function is better as it is easier to avoid syntax errors and will run faster.
 		The string option is there for backwards-compatibility and this explanation assumes you are writing a function.
@@ -1367,12 +1536,39 @@ calcChanges : {
 				thisWeapon // array, the entry in the CurrentWeapons.known array
 			}
 
-		// 2nd array entry //
+		// 2nd array entry // OPTIONAL //
 		This has to be a string and will be used to populate the "Things affecting the attack calculations" dialog.
 		It you already have either atkCalc or spellCalc in the same feature,
 		it is better to fill only one of the second entries and leaving the others at "".
 		Filling only one of the explanation strings will result in only a single entry
 		for the feature in the "Things affecting the attack calculations" dialog instead of two.
+
+		// 3rd array entry // OPTIONAL //
+		This has to be a positive number that will be used to prioritise the order in which the functions
+		are processed. The lowest number gets processed first.
+		Functions with identical numbers are processed alphabetically.
+		You do not have to provide this number, by default a value is given by the parent, as follows:
+
+		VALUE   	PARENT
+		100  		Magic (placeholder for possible future feature)
+		200  		Magic Items
+		300  		Feats
+		400  		Background
+		500 + lvl	Race (level only added for features with a `minlevel` attribute)
+		600 + lvl	Class (level only added for features with a `minlevel` attribute)
+
+		If you do want to give a number to make sure it is processed in the right order, take a look at the
+		recommended values below:
+
+		VALUE	REASON
+		1-10 	When changing the damage die to something else (e.g. Monk's Martial Arts)
+		17-20	When changing the critical range to something else (e.g. 18 is used for Fighter (Champion)'s
+				Superior Critical)
+		200< 	(199 or less) Something that is best changed before any script is run
+		700-899	When dependent on an attribute of the weapon that could be changed by 
+				another feature (e.g. the Rogue's Sneak Attack, because something could theoretically
+				add the Finesse property)
+		900+ 	When using the damage die for something in the description (e.g. Half-orc's Savage Attacks)
 	*/
 
 	atkCalc : [
@@ -1388,13 +1584,15 @@ calcChanges : {
 		"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage."
 	],
 	/*	atkCalc // OPTIONAL //
-		TYPE:	array with two entries
+		TYPE:	array with three entries
 				1st entry:	function or, for backwards-compatibility, string that is evaluated using eval()
-				2nd entry:	string that is used to give an explanation of what the 1st entry does
+				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
+				3rd entry:	optional number used to determine the order in which to run the functions
 		USE:	dynamically change how the To Hit and Damage of attacks are calculated
 				Note that this is only run for attacks that are recognized, not manually added
+		CHANGE:	v13.0.8 (priority, 3rd array entry)
 
-		// 1st array entry //
+		// 1st array entry // REQUIRED //
 		Both examples do the exact same thing, just one is a string and the other is a function.
 		Writing a function is better as it is easier to avoid syntax errors and will run faster.
 		The string option is there for backwards-compatibility and this explanation assumes you are writing a function.
@@ -1447,12 +1645,18 @@ calcChanges : {
 			Note that this variable, output, can be changed by consecutive calcChanges.atkCalc functions
 			You can even save new attributes to it that you can use by calcChanges.atkCalc functions gained from other features
 
-		// 2nd array entry //
+		// 2nd array entry // OPTIONAL //
 		This has to be a string and will be used to populate the "Things affecting the attack calculations" dialog.
 		It you already have either atkAdd or spellCalc in the same feature,
 		it is better to fill only one of the second entries and leaving the others at "".
 		Filling only one of the explanation strings will result in only a single entry
 		for the feature in the "Things affecting the attack calculations" dialog instead of two.
+
+		// 3rd array entry // OPTIONAL //
+		This has to be a positive number that will be used to prioritise the order in which the functions
+		are processed. The lowest number gets processed first.
+		Functions with identical numbers are processed alphabetically.
+		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
 
 	spellCalc : [
@@ -1462,16 +1666,18 @@ calcChanges : {
 		"I add +1 to all the saving throw DCs of my spells."
 	],
 	/*	spellCalc // OPTIONAL //
-		TYPE:	array with two entries
+		TYPE:	array with three entries
 				1st entry:	function
-				2nd entry:	string that is used to give an explanation of what the 1st entry does
+				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
+				3rd entry:	optional number used to determine the order in which to run the functions
 		USE:	dynamically change how spell attacks, spell save DC, and/or number of spells prepared are calculated
+		CHANGE:	v13.0.8 (priority, 3rd array entry)
 
 		This attribute is used both in the attacks section and on spell sheet pages,
 		but not for the 'Ability Save DC' on the 1st page.
 		For the attacks section, this is only run for cantrips/spells that are recognized, not manually added.
 
-		// 1st array entry //
+		// 1st array entry // REQUIRED //
 		The function should return the number it wishes to add/remove as a number.
 		The function will not be evaluated but is fed three variables:
 		1)	type, a string with the type of the thing being processed.
@@ -1501,12 +1707,18 @@ calcChanges : {
 			For example, if you want to add 1 to the spell attacks done with Charisma:
 				if (type == "attack" && ability == 6) return 1;
 
-		// 2nd array entry //
+		// 2nd array entry // OPTIONAL //
 		This has to be a string and will be used to populate the "Things affecting the attack calculations" dialog.
 		It you already have either atkAdd or atkCalc in the same feature,
 		it is better to fill only one of the second entries and leaving the others at "".
 		Filling only one of the explanation strings will result in only a single entry
 		for the feature in the "Things affecting the attack calculations" dialog instead of two.
+
+		// 3rd array entry // OPTIONAL //
+		This has to be a positive number that will be used to prioritise the order in which the functions
+		are processed. The lowest number gets processed first.
+		Functions with identical numbers are processed alphabetically.
+		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
 
 	spellList : [
@@ -1521,14 +1733,16 @@ calcChanges : {
 		"My background adds extra spells to the spell list(s) of my spellcasting class(es): Acid Splash, Druidcraft, Detect Poison and Disease, Expeditious Retreat, Jump, Alter Self, Enhance Ability, Enlarge/reduce, Gaseous Form, Water Breathing, Wind Wall, Freedom of Movement, Polymorph, and Creation."
 	],
 	/*	spellList // OPTIONAL //
-		TYPE:	array with two entries
+		TYPE:	array with three entries
 				1st entry:	function
-				2nd entry:	string that is used to give an explanation of what the 1st entry does
+				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
+				3rd entry:	optional number used to determine the order in which to run the functions
 		USE:	dynamically change what is included and excluded from the spell list of a class (or other spellcasting source)
 				Note that this is only run for spell sheets generated using the spell selection dialog,
 				it isn't used for 'complete' spell sheets.
+		CHANGE:	v13.0.8 (priority, 3rd array entry)
 
-		// 1st array entry //
+		// 1st array entry // REQUIRED //
 		The function is fed three variables:
 		1)	spList, an object that determines how the spell list will be generated.
 			You can change this object to affect which spells are available.
@@ -1563,9 +1777,15 @@ calcChanges : {
 			It can also have de suffix "-bonus" added to one of the above if generating the list for
 			something gained through the spellcastingBonus attribute.
 
-		// 2nd array entry //
+		// 2nd array entry // OPTIONAL //
 		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
 		This explanation will also be available any time a change requires the re-generation of spell sheets.
+
+		// 3rd array entry // OPTIONAL //
+		This has to be a positive number that will be used to prioritise the order in which the functions
+		are processed. The lowest number gets processed first.
+		Functions with identical numbers are processed alphabetically.
+		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
 
 	spellAdd : [
@@ -1582,10 +1802,12 @@ calcChanges : {
 		"Healing spells that have a range of touch, have a range of 60 ft instead. Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage."
 	],
 	/*	spellAdd // OPTIONAL //
-		TYPE:	array with two entries
+		TYPE:	array with three entries
 				1st entry:	function
 				2nd entry:	string that is used to give an explanation of what the 1st entry does
+				3rd entry:	optional number used to determine the order in which to run the functions
 		USE:	dynamically change aspects of spells when it is added on the spell sheet
+		CHANGE:	v13.0.8 (priority, 3rd array entry)
 
 		// 1st array entry //
 		This function is called whenever a spell is added to the spell sheet,
@@ -1671,13 +1893,19 @@ calcChanges : {
 		This function will only be processed if the checkbox "Allow features to dynamically change spells"
 		in the final spell selection dialog is checked.
 
-		// 2nd array entry //
-		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
-		This explanation will also be available any time a change requires the re-generation of spell sheets.
-
 		// return //
 		If you want to inform the player that this function changed something for a specific spell,
 		make sure that it returns true;
+
+		// 2nd array entry // OPTIONAL //
+		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
+		This explanation will also be available any time a change requires the re-generation of spell sheets.
+
+		// 3rd array entry // OPTIONAL //
+		This has to be a positive number that will be used to prioritise the order in which the functions
+		are processed. The lowest number gets processed first.
+		Functions with identical numbers are processed alphabetically.
+		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
 
 	creatureCallback : [function(prefix, oCrea, bAdd) {
@@ -1687,13 +1915,15 @@ calcChanges : {
 	},
 	"Any undead I create, using magic or otherwise, gain 30 temporary hit points."],
 	/*	creatureCallback // OPTIONAL //
-		TYPE:	array with two entries
+		TYPE:	array with three entries
 				1st entry:	function
-				2nd entry:	string that is used to give an explanation of what the 1st entry does
+				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
+				3rd entry:	optional number used to determine the order in which to run the functions
 		USE:	dynamically change the companion page after a creature was selected on it
 		ADDED:	v13.0.6
+		CHANGE:	v13.0.8 (priority, 3rd array entry)
 
-		// 1st array entry //
+		// 1st array entry // REQUIRED //
 		This function is called whenever a creature (CreatureList) is applied/removed on the companion page.
 		This function is not called when a player race (RaceList) is applied/removed on the companion page.
 		This happens when you select a creature in the Race dropdown box on the companion page, for example.
@@ -1720,9 +1950,15 @@ calcChanges : {
 		before anything else is changed on the companion page.
 
 
-		// 2nd array entry //
+		// 2nd array entry // OPTIONAL //
 		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
 		This explanation is also available under the Companion Options button on any companion page.
+
+		// 3rd array entry // OPTIONAL //
+		This has to be a positive number that will be used to prioritise the order in which the functions
+		are processed. The lowest number gets processed first.
+		Functions with identical numbers are processed alphabetically.
+		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
 	companionCallback : [function(prefix, oCrea, bAdd, sCompType) {
 		if (sCompType !== "familiar") return;
@@ -1732,13 +1968,15 @@ calcChanges : {
 	},
 	"The familiars I create using the Find Familiar spell turn purple and gain resistance to acid damage."],
 	/*	companionCallback // OPTIONAL //
-		TYPE:	array with two entries
+		TYPE:	array with three entries
 				1st entry:	function
-				2nd entry:	string that is used to give an explanation of what the 1st entry does
+				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
+				3rd entry:	optional number used to determine the order in which to run the functions
 		USE:	dynamically change the companion page after something has been turned into a special type of companion (e.g. Find Familiar or Ranger's Companion)
 		ADDED:	v13.0.6
+		CHANGE:	v13.0.8 (priority, 3rd array entry)
 
-		// 1st array entry //
+		// 1st array entry // REQUIRED //
 		This function is called whenever a special companion type is applied/removed on the companion page.
 		This happens when you use the Companion Options button to add a Find Familiar option, for example.
 		And also when you use the Companion Options button to change an existing companion,
@@ -1778,9 +2016,15 @@ calcChanges : {
 		before all changes for the special companion type are undone.
 
 
-		// 2nd array entry //
+		// 2nd array entry // OPTIONAL //
 		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
 		This explanation is also available under the Companion Options button on any companion page.
+
+		// 3rd array entry // OPTIONAL //
+		This has to be a positive number that will be used to prioritise the order in which the functions
+		are processed. The lowest number gets processed first.
+		Functions with identical numbers are processed alphabetically.
+		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
 },
 
@@ -2020,7 +2264,12 @@ toNotesPage : [{
 		USE:	the name of the feature to add to the notes section
 
 		This string will be preceded by a diamond-shaped bullet.
-		If no 'popupName' attribute is present, see below, the name will also be used for the informational pop-up dialog.
+
+		If no 'popupName' attribute is present, see below,
+		the name will also be used for the informational "changes" pop-up dialog.
+		For this pop-up dialog, the name of the parent object will be added to this name,
+		so that it will read, in this example:
+			Wild Magic Surge Table from "Wild Mage"
 	*/
 	note : "\n   Various strange things can happen whenever I cast a spell.",
 	note : [
@@ -2051,9 +2300,10 @@ toNotesPage : [{
 	popupName : "Wild Mage's Wild Magic Surge Table, part 1",
 	/*	popupName // OPTIONAL //
 		TYPE:	string
-		USE:	the text used in the informational pop-up dialog to show the player on what page the text was added
+		USE:	the text used in the informational "changes" pop-up dialog to show the player what and on what page the text was added
 
-		If this attribute is not present, the 'name' attribute will also be used for the informational pop-up dialog.
+		If this attribute is not present, the 'name' attribute plus the name of the parent
+		will also be used for the informational "changes" pop-up dialog.
 	*/
 	source : ["P", 104],
 	/*	source // OPTIONAL //

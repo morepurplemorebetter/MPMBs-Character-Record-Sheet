@@ -156,7 +156,6 @@ var Base_MagicItemsList = {
 		weight : 500,
 		toNotesPage : [{
 			name : "Statistics \u0026 Lever Operation Details",
-			popupName : "Apparatus of Kwalish Statistics \u0026 Lever Operation Details",
 			note : [
 				"This item first appears to be a Large sealed iron barrel weighing 500 pounds. The barrel has a hidden catch, which can be found with a successful DC 20 Intelligence (Investigation) check. Releasing the catch unlocks a hatch at one end of the barrel, allowing two Medium or smaller creatures to crawl inside. Ten levers are set in a row at the far end, each in a neutral position, able to move either up or down. When certain levers are used, the apparatus transforms to resemble a giant lobster.",
 				"The apparatus of Kwalish is a Large object with the following statistics:",
@@ -268,51 +267,61 @@ var Base_MagicItemsList = {
 		choices : ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
 		"acid" : {
 			name : "Armor of Acid Resistance",
+			sortname : "Armor of Resistance, Acid",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to acid damage.",
 			dmgres : ["Acid"]
 		},
 		"cold" : {
 			name : "Armor of Cold Resistance",
+			sortname : "Armor of Resistance, Cold",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to cold damage.",
 			dmgres : ["Cold"]
 		},
 		"fire" : {
 			name : "Armor of Fire Resistance",
+			sortname : "Armor of Resistance, Fire",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to fire damage.",
 			dmgres : ["Fire"]
 		},
 		"force" : {
 			name : "Armor of Force Resistance",
+			sortname : "Armor of Resistance, Force",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to force damage.",
 			dmgres : ["Force"]
 		},
 		"lightning" : {
 			name : "Armor of Lightning Resistance",
+			sortname : "Armor of Resistance, Lightning",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to lightning damage.",
 			dmgres : ["Lightning"]
 		},
 		"necrotic" : {
 			name : "Armor of Necrotic Resistance",
+			sortname : "Armor of Resistance, Necrotic",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to necrotic damage.",
 			dmgres : ["Necrotic"]
 		},
 		"poison" : {
 			name : "Armor of Poison Resistance",
+			sortname : "Armor of Resistance, Poison",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to poison damage.",
 			dmgres : ["Poison"]
 		},
 		"psychic" : {
 			name : "Armor of Psychic Resistance",
+			sortname : "Armor of Resistance, Psychic",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to psychic damage.",
 			dmgres : ["Psychic"]
 		},
 		"radiant" : {
 			name : "Armor of Radiant Resistance",
+			sortname : "Armor of Resistance, Radiant",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to radiant damage.",
 			dmgres : ["Radiant"]
 		},
 		"thunder" : {
 			name : "Armor of Thunder Resistance",
+			sortname : "Armor of Resistance, Thunder",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to thunder damage.",
 			dmgres : ["Thunder"]
 		}
@@ -409,8 +418,8 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "D",
-		description : "This bag is a feeding orifice for an extradimensional creature, which is closed if it is turned inside out. It devours all editable matter placed inside. Creatures partially inside get pulled in 50% of the time. Escaping (Str DC 15) or pulling another out (Str DC 20) is an action. Creatures starting their turn inside are devoured.",
-		descriptionLong : "Resembling a Bag of Holding, this bag is a feeding orifice for an extradimensional creature. The orifice is closed if the bag is turned inside out. It devours all vegetable and animal matter placed inside. Creatures partially inside get pulled in 50% of the time. Escaping (Str DC 15) or pulling another out (Str DC 20) takes an action. Creatures starting their turn inside are devoured, their body destroyed. Up to 1 cu ft of inanimate objects can be stored inside, but once each day they are swallowed by the creature and spat out on a random plane. Of the bag is pierced or torn, it is destroyed and its content lost.",
+		description : "This bag is a feeding orifice for an extradimensional creature, which is closed if it is turned inside out. It devours all edible matter placed inside. Creatures partially inside get pulled in 50% of the time. Escaping (Str DC 15) or pulling another out (Str DC 20) is an action. Creatures starting their turn inside are devoured.",
+		descriptionLong : "Resembling a Bag of Holding, this bag is a feeding orifice for an extradimensional creature. The orifice is closed if the bag is turned inside out. It devours all vegetable and animal matter placed inside. Creatures partially inside get pulled in 50% of the time. Escaping (Str DC 15) or pulling another out (Str DC 20) takes an action. Creatures starting their turn inside are devoured, their body destroyed. Up to 1 cu ft of inanimate objects can be stored inside, but once each day they are swallowed by the creature and spat out on a random plane. If the bag is pierced or torn, it is destroyed and its content lost.",
 		descriptionFull : "This bag superficially resembles a bag of holding but is a feeding orifice for a gigantic extradimensional creature. Turning the bag inside out closes the orifice.\n   The extradimensional creature attached to the bag can sense whatever is placed inside the bag. Animal or vegetable matter placed wholly in the bag is devoured and lost forever. When part of a living creature is placed in the bag, as happens when someone reaches inside it, there is a 50% chance that the creature is pulled inside the bag. A creature inside the bag can use its action to try to escape with a successful DC 15 Strength check. Another creature can use its action to reach into the bag to pull a creature out, doing so with a successful DC 20 Strength check (provided it isn't pulled inside the bag first). Any creature that starts its turn inside the bag is devoured, its body destroyed.\n   Inanimate objects can be stored in the bag, which can hold a cubic foot of such material. However, once each day, the bag swallows any objects inside it and spits them out into another plane of existence. The DM determines the time and plane.\n   If the bag is pierced or torn, it is destroyed, and anything contained within it is transported to a random location on the Astral Plane.",
 		weight : 0.5
 	},
@@ -442,18 +451,21 @@ var Base_MagicItemsList = {
 		choices : ["Gray", "Rust", "Tan"],
 		"gray" : {
 			name: "Gray Bag of Tricks",
+			sortname: "Bag of Tricks, Gray",
 			description: "As an action, 3 times per dawn, I can pull an object from this bag and throw it 20 ft. It transforms into a random creature when it lands (d8): 1-weasel, 2-giant rat, 3-badger, 4-boar, 5-panther, 6-giant badger, 7-dire wolf, 8-giant elk. It follows my commands, acts on my turn, and vanishes at dawn or if reduced to 0 HP.",
 			descriptionLong: "As an action, I can pull a fuzzy object from this bag and throw it 20 ft. It transforms into a creature when it lands, determined randomly (d8): 1-weasel, 2-giant rat, 3-badger, 4-boar, 5-panther, 6-giant badger, 7-dire wolf, 8-giant elk. The creature is friendly, acts on my turn, and vanishes at the next dawn or when it is reduced to 0 HP. As a bonus action, I can command it how to move and what action to take on its next turn, or give it general orders (e.g. attack my enemies). Without orders, it acts as it normally would. Once three fuzzy objects have been pulled from the bag, it can't be used again until the next dawn.",
 			descriptionFull: "This ordinary bag, made from gray cloth, appears empty. Reaching inside the bag, however, reveals the presence of a small, fuzzy object. The bag weighs \u00BD pound.\n   You can use an action to pull the fuzzy object from the bag and throw it up to 20 feet. When the object lands, it transforms into a creature you determine by rolling a d8 and consulting the table. The creature vanishes at the next dawn or when it is reduced to 0 hit points.\n   The creature is friendly to you and your companions, and it acts on your turn. You can use a bonus action to command how the creature moves and what action it takes on its next turn, or to give it general orders, such as to attack your enemies. In the absence of such orders, the creature acts in a fashion appropriate to its nature.\n   Once three fuzzy objects have been pulled from the bag, the bag can't be used again until the next dawn.\n\n" + toUni("d8\tCreature") + "\n 1\tWeasel\n 2\tGiant rat\n 3\tBadger\n 4\tBoar\n 5\tPanther\n 6\tGiant badger\n 7\tDire wolf\n 8\tGiant elk"
 		},
 		"rust" : {
 			name: "Rust Bag of Tricks",
+			sortname: "Bag of Tricks, Rust",
 			description: "As an action, 3 times per dawn, I can pull an object from this bag and throw it 20 ft. It transforms into a random creature when it lands (d8): 1-rat, 2-owl, 3-mastiff, 4-goat, 5-giant goat, 6-giant boar, 7-lion, 8-brown bear. It follows my commands, acts on my turn, and vanishes at dawn or if reduced to 0 HP.",
 			descriptionLong: "As an action, I can pull a fuzzy object from this bag and throw it 20 ft. It transforms into a creature when it lands, determined randomly (d8): 1-rat, 2-owl, 3-mastiff, 4-goat, 5-giant goat, 6-giant boar, 7-lion, 8-brown bear. The creature is friendly, acts on my turn, and vanishes at the next dawn or when it is reduced to 0 HP. As a bonus action, I can command it how to move and what action to take on its next turn, or give it general orders (e.g. attack my enemies). Without orders, it acts as it normally would. Once three fuzzy objects have been pulled from the bag, it can't be used again until the next dawn.",
 			descriptionFull: "This ordinary bag, made from rust-colored cloth, appears empty. Reaching inside the bag, however, reveals the presence of a small, fuzzy object. The bag weighs \u00BD pound.\n   You can use an action to pull the fuzzy object from the bag and throw it up to 20 feet. When the object lands, it transforms into a creature you determine by rolling a d8 and consulting the table. The creature vanishes at the next dawn or when it is reduced to 0 hit points.\n   The creature is friendly to you and your companions, and it acts on your turn. You can use a bonus action to command how the creature moves and what action it takes on its next turn, or to give it general orders, such as to attack your enemies. In the absence of such orders, the creature acts in a fashion appropriate to its nature.\n   Once three fuzzy objects have been pulled from the bag, the bag can't be used again until the next dawn.\n\n" + toUni("d8\tCreature") + "\n 1\tRat\n 2\tOwl\n 3\tMastiff\n 4\tGoat\n 5\tGiant goat\n 6\tGiant boar\n 7\tLion\n 8\tBrown bear"
 		},
 		"tan" : {
 			name: "Tan Bag of Tricks",
+			sortname: "Bag of Tricks, Tan",
 			description: "As an action, 3 times per dawn, I can pull an object from this bag and throw it 20 ft. It transforms into a random creature when it lands (d8): 1-jackal, 2-ape, 3-baboon, 4-axe beak, 5-black bear, 6-giant weasel, 7-giant hyena, 8-tiger. It follows my commands, acts on my turn, and vanishes at dawn or if reduced to 0 HP.",
 			descriptionLong: "As an action, I can pull a fuzzy object from this bag and throw it 20 ft. It transforms into a creature when it lands, determined randomly (d8): 1-jackal, 2-ape, 3-baboon, 4-axe beak, 5-black bear, 6-giant weasel, 7-giant hyena, 8-tiger. The creature is friendly, acts on my turn, and vanishes at the next dawn or when it is reduced to 0 HP. As a bonus action, I can command it how to move and what action to take on its next turn, or give it general orders (e.g. attack my enemies). Without orders, it acts as it normally would. Once three fuzzy objects have been pulled from the bag, it can't be used again until the next dawn.",
 			descriptionFull: "This ordinary bag, made from tan cloth, appears empty. Reaching inside the bag, however, reveals the presence of a small, fuzzy object. The bag weighs \u00BD pound.\n   You can use an action to pull the fuzzy object from the bag and throw it up to 20 feet. When the object lands, it transforms into a creature you determine by rolling a d8 and consulting the table. The creature vanishes at the next dawn or when it is reduced to 0 hit points.\n   The creature is friendly to you and your companions, and it acts on your turn. You can use a bonus action to command how the creature moves and what action it takes on its next turn, or to give it general orders, such as to attack your enemies. In the absence of such orders, the creature acts in a fashion appropriate to its nature.\n   Once three fuzzy objects have been pulled from the bag, the bag can't be used again until the next dawn.\n\n" + toUni("d8\tCreature") + "\n 1\tJackal\n 2\tApe\n 3\tBaboon\n 4\tAxe beak\n 5\tBlack bear\n 6\tGiant weasel\n 7\tGiant hyena\n 8\tTiger"
@@ -490,12 +502,13 @@ var Base_MagicItemsList = {
 		source : [["SRD", 211], ["D", 155]],
 		type : "wondrous item",
 		description : "Set the type of giant using the button in this line. While wearing this belt, my Strength score changes to a certain number depending on the type of giant the belt is associated with, provided that my Strength is not already that amount or higher.",
-		descriptionFull : "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt’s score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The belt of stone giant strength and the belt of frost giant strength look different, but they have the same effect.\n\n" + toUni("Type\t\tStr\tRarity") + "\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant   \t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
+		descriptionFull : "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt's score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The belt of stone giant strength and the belt of frost giant strength look different, but they have the same effect.\n\n" + toUni("Type\t\tStr\tRarity") + "\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant   \t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
 		attunement : true,
 		allowDuplicates : true,
 		choices : ["Hill (Str 21, rare)", "Frost (Str 23, very rare)", "Stone (Str 23, very rare)", "Fire (Str 25, very rare)", "Cloud (Str 27, legendary)", "Storm (Str 29, legendary)"],
 		"hill (str 21, rare)" : {
 			name : "Belt of Hill Giant Strength",
+			sortname : "Belt of Giant Strength, Hill (Str 21)",
 			rarity : "rare",
 			magicItemTable : "G",
 			description : "My Strength score is 21 while I'm wearing this belt, provided that my Strength is not already 21 or higher.",
@@ -503,6 +516,7 @@ var Base_MagicItemsList = {
 		},
 		"frost (str 23, very rare)" : {
 			name : "Belt of Frost Giant Strength",
+			sortname : "Belt of Giant Strength, Frost (Str 23)",
 			rarity : "very rare",
 			magicItemTable : "H",
 			description : "My Strength score is 23 while I'm wearing this belt, provided that my Strength is not already 23 or higher.",
@@ -510,6 +524,7 @@ var Base_MagicItemsList = {
 		},
 		"stone (str 23, very rare)" : {
 			name : "Belt of Stone Giant Strength",
+			sortname : "Belt of Giant Strength, Stone (Str 25)",
 			rarity : "very rare",
 			magicItemTable : "H",
 			description : "My Strength score is 23 while I'm wearing this belt, provided that my Strength is not already 23 or higher.",
@@ -517,6 +532,7 @@ var Base_MagicItemsList = {
 		},
 		"fire (str 25, very rare)" : {
 			name : "Belt of Fire Giant Strength",
+			sortname : "Belt of Giant Strength, Fire (Str 25)",
 			rarity : "very rare",
 			magicItemTable : "H",
 			description : "My Strength score is 25 while I'm wearing this belt, provided that my Strength is not already 25 or higher.",
@@ -524,6 +540,7 @@ var Base_MagicItemsList = {
 		},
 		"cloud (str 27, legendary)" : {
 			name : "Belt of Cloud Giant Strength",
+			sortname : "Belt of Giant Strength, Cloud (Str 27)",
 			rarity : "legendary",
 			magicItemTable : "I",
 			description : "My Strength score is 27 while I'm wearing this belt, provided that my Strength is not already 27 or higher.",
@@ -531,6 +548,7 @@ var Base_MagicItemsList = {
 		},
 		"storm (str 29, legendary)" : {
 			name : "Belt of Storm Giant Strength",
+			sortname : "Belt of Giant Strength, Storm (Str 29)",
 			rarity : "legendary",
 			magicItemTable : "I",
 			description : "My Strength score is 29 while I'm wearing this belt, provided that my Strength is not already 29 or higher.",
@@ -615,6 +633,8 @@ var Base_MagicItemsList = {
 		spellChanges : {
 			"levitate" : {
 				range : "Self",
+				save : "",
+				description : "I rise vertically, up to 20 ft; I can move up or down 20 ft as part of my move during my turn",
 				changes : "The spell can only affect the wearer."
 			}
 		}
@@ -766,7 +786,7 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		description : "With the command word, this broom hovers and can either be ridden in the air or send alone up to 1 mile by naming a familiar location. It has a flying speed of 50 ft, holds up to 400 lb, but only has 30 ft speed if over 200 lb. It stops hovering when I land. With another command word, it flies to me if within 1 mile.",
+		description : "With the command word, this broom hovers and can either be ridden in the air or sent alone up to 1 mile by naming a familiar location. It has a flying speed of 50 ft, holds up to 400 lb, but only has 30 ft speed if over 200 lb. It stops hovering when I land. With another command word, it flies to me if within 1 mile.",
 		descriptionFull : "This wooden broom, which weighs 3 pounds, functions like a mundane broom until you stand astride it and speak its command word. It then hovers beneath you and can be ridden in the air. It has a flying speed of 50 feet. It can carry up to 400 pounds, but its flying speed becomes 30 feet while carrying over 200 pounds. The broom stops hovering when you land.\n   You can send the broom to travel alone to a destination within 1 mile of you if you speak the command word, name the location, and are familiar with that place. The broom comes back to you when you speak another command word, provided that the broom is still within 1 mile of you.",
 		weight : 3
 	},
@@ -1036,7 +1056,7 @@ var Base_MagicItemsList = {
 		description : "I can cast Scrying (DC 17) at will while touching this ball of about 6 inches in diameter.",
 		descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.",
 		attunement : true,
-		weight : 3,
+		weight : 3, // As orb arcane focus
 		allowDuplicates : true,
 		choices : ["Crystal Ball  ", "Crystal Ball of Mind Reading", "Crystal Ball of Telepathy", "Crystal Ball of True Seeing"],
 		"crystal ball  " : {
@@ -1566,6 +1586,7 @@ var Base_MagicItemsList = {
 		choices : ["Black (acid)", "Blue (lightning)", "Brass (fire)", "Bronze (lightning)", "Copper (acid)", "Gold (fire)", "Green (poison)", "Red (fire)", "Silver (cold)", "White (cold)"],
 		"black (acid)" : {
 			name : "Black Dragon Scale Mail",
+			sortname : "Dragon Scale Mail, Black",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to acid damage. As an action, I can magically discern the distance and direction to the closest black dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Black Dragon Scale Mail",
 			dmgres: ["Acid"],
@@ -1574,6 +1595,7 @@ var Base_MagicItemsList = {
 		},
 		"blue (lightning)" : {
 			name : "Blue Dragon Scale Mail",
+			sortname : "Dragon Scale Mail, Blue",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to lightning damage. As an action, I can magically discern the distance and direction to the closest blue dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Blue Dragon Scale Mail",
 			dmgres: ["Lightning"],
@@ -1582,6 +1604,7 @@ var Base_MagicItemsList = {
 		},
 		"brass (fire)" : {
 			name : "Brass Dragon Scale Mail",
+			sortname : "Dragon Scale Mail, Brass",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest brass dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Brass Dragon Scale Mail",
 			dmgres: ["Fire"],
@@ -1590,6 +1613,7 @@ var Base_MagicItemsList = {
 		},
 		"bronze (lightning)" : {
 			name : "Bronze Dragon Scale Mail",
+			sortname : "Dragon Scale Mail, Bronze",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to lightning damage. As an action, I can magically discern the distance and direction to the closest bronze dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Bronze Dragon Scale Mail",
 			dmgres: ["Lightning"],
@@ -1598,6 +1622,7 @@ var Base_MagicItemsList = {
 		},
 		"copper (acid)" : {
 			name : "Copper Dragon Scale Mail",
+			sortname : "Dragon Scale Mail, Copper",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to acid damage. As an action, I can magically discern the distance and direction to the closest copper dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Copper Dragon Scale Mail",
 			dmgres: ["Acid"],
@@ -1606,6 +1631,7 @@ var Base_MagicItemsList = {
 		},
 		"gold (fire)" : {
 			name : "Gold Dragon Scale Mail",
+			sortname : "Dragon Scale Mail, Gold",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest gold dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Gold Dragon Scale Mail",
 			dmgres: ["Fire"],
@@ -1614,6 +1640,7 @@ var Base_MagicItemsList = {
 		},
 		"green (poison)" : {
 			name : "Green Dragon Scale Mail",
+			sortname : "Dragon Scale Mail, Green",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to poison damage. As an action, I can magically discern the distance and direction to the closest green dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Green Dragon Scale Mail",
 			dmgres: ["Poison"],
@@ -1622,6 +1649,7 @@ var Base_MagicItemsList = {
 		},
 		"red (fire)" : {
 			name : "Red Dragon Scale Mail",
+			sortname : "Dragon Scale Mail, Red",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest red dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Red Dragon Scale Mail",
 			dmgres: ["Fire"],
@@ -1630,6 +1658,7 @@ var Base_MagicItemsList = {
 		},
 		"silver (cold)" : {
 			name : "Silver Dragon Scale Mail",
+			sortname : "Dragon Scale Mail, Silver",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to cold damage. As an action, I can magically discern the distance and direction to the closest silver dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Silver Dragon Scale Mail",
 			dmgres: ["Cold"],
@@ -1638,6 +1667,7 @@ var Base_MagicItemsList = {
 		},
 		"white (cold)" : {
 			name : "White Dragon Scale Mail",
+			sortname : "Dragon Scale Mail, White",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to cold damage. As an action, I can magically discern the distance and direction to the closest white dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "White Dragon Scale Mail",
 			dmgres: ["Cold"],
@@ -1948,8 +1978,8 @@ var Base_MagicItemsList = {
 		"golden lions" : {
 			rarity : "rare",
 			magicItemTable : "G",
-			description: "As an action, I can speak the command word and throw one or both of these gold statuettes to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use the command word again, or it reaches 0 hp. They are friendly, understands my languages, and obeys my commands.",
-			descriptionLong: "As an action, I can speak the command word and throw one or both of these gold statuette of a lion to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use an action to repeat the command word, or it reaches 0 hp. They are friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
+			description: "As an action, I can speak the command word and throw one or both of these gold statuettes to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use the command word again, or it reaches 0 hp. They are friendly, understand my languages, and obey my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw one or both of these gold statuette of a lion to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use an action to repeat the command word, or it reaches 0 hp. They are friendly to me and my allies, understand my languages, and obey my spoken commands. If I issue no commands, they defend themselves but takes no other actions. When a lion reverts back to a figurine, that figurine can't be used again until 7 days have passed.",
 			descriptionFull : "This figurine of wondrous power is a pair of gold statuette of lions, small enough to fit in a pocket. If you use an action to speak the command word and throw one or both of the figurine to a point on the ground within 60 feet of you, each figurine becomes a living lion. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 1 hour. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
 			usages : 2,
 			recovery : "7 days"
@@ -1958,7 +1988,7 @@ var Base_MagicItemsList = {
 			rarity : "rare",
 			magicItemTable : "G",
 			description: "As an action, I can speak the command word and throw one or more of these 3 ivory statuettes to an unoccupied space within 60 ft, where each becomes a creature, until I use the command word again, or it reaches 0 hp. They are friendly, understands my languages, and obeys my commands. See Notes page.",
-			descriptionLong: "As an action, I can speak the command word and throw one or more of these three ivory statuette of a lion to an unoccupied space within 60 ft, where each becomes a creature, until I use an action to repeat the command word, or it reaches 0 hp. They are friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until a certain amount of time has passed. See Notes page for details about each of the statuettes.",
+			descriptionLong: "As an action, I can speak the command word and throw one or more of these three ivory statuettes of goats to an unoccupied space within 60 ft, where each becomes a creature, until I use an action to repeat the command word, or it reaches 0 hp. They are friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until a certain amount of time has passed. See Notes page for details about each of the statuettes.",
 			descriptionFull: "This figurine of wondrous power is three ivory statuettes of goats, small enough to fit in a pocket. Each goat looks unique and functions differently from the others. If you use an action to speak the command word and throw one or more of the figurines to a point on the ground within 60 feet of you, each figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description." +
 			"\n \u2022 The goat of traveling can become a Large goat with the same statistics as a riding horse. It has 24 charges, and each hour or portion thereof it spends in beast form costs 1 charge. While it has charges, you can use it as often as you wish. When it runs out of charges, it reverts to a figurine and can't be used again until 7 days have passed, when it regains all its charges." +
 			"\n \u2022 The goat of travail becomes a giant goat for up to 3 hours. Once it has been used, it can't be used again until 30 days have passed." +
@@ -2420,7 +2450,6 @@ var Base_MagicItemsList = {
 		},
 		toNotesPage : [{
 			name : "Special Properties",
-			popupName : "Helm of Brilliance's Special Properties",
 			note : [
 				"This dazzling helm is set with 1d10 diamonds, 2d10 rubies, 3d10 fire opals, and 4d10 opals. Any gem pried from the helm crumbles to dust. When all the gems are removed or destroyed, the helm loses its magic.",
 				"As an action, I can cast one of the following spells (save DC 18), using one of the helm's gems of the specified type as a component: Daylight (opal), Fireball (fire opal), Prismatic Spray (diamond), or Wall of Fire (ruby). The gem is destroyed when the spell is cast and disappears from the helm.",
@@ -2552,8 +2581,8 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "C",
-		description : "This backpack weighs 5 lb, regardless of its contents. It has two side pouches that hold 20 lb (2 cu ft) each and a central pouch that holds 80 lb (8 cu ft). Retrieving an item from it requires an action. If it's overloaded, pierced, or torn, it and its content are destroyed. If turned inside out, all its contents spill forth.",
-		descriptionLong : "This backpack weighs 5 lb, regardless of its contents. It has two side pouches that hold up to 20 lb (2 cu ft) each and a central pouch that holds up to 80 lb (8 cu ft). Retrieving an item from it requires an action. When I reach in the bag for a specific item, the item is always magically on top. If it's overloaded, pierced, or torn, it and its content are destroyed. If turned inside out, all its contents spill forth. A creature placed inside the bag can survive for 10 minutes before starting to suffocate. Placing the haversack in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
+		description : "This backpack weighs 5 lb, regardless of its contents. It has two side pouches that hold 20 lb (2 cu ft) each and a central pouch that holds 80 lb (8 cu ft). Retrieving an item from it requires an action. If it's overloaded, pierced, or torn, it and its contents are destroyed. If turned inside out, all its contents spill forth.",
+		descriptionLong : "This backpack weighs 5 lb, regardless of its contents. It has two side pouches that hold up to 20 lb (2 cu ft) each and a central pouch that holds up to 80 lb (8 cu ft). Retrieving an item from it requires an action. When I reach in the bag for a specific item, the item is always magically on top. If it's overloaded, pierced, or torn, it and its contents are destroyed. If turned inside out, all its contents spill forth. A creature placed inside the bag can survive for 10 minutes before starting to suffocate. Placing the haversack in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
 		descriptionFull : "This backpack has a central pouch and two side pouches, each of which is an extradimensional space. Each side pouch can hold up to 20 pounds of material, not exceeding a volume of 2 cubic feet. The large central pouch can hold up to 8 cubic feet or 80 pounds of material. The backpack always weighs 5 pounds, regardless of its contents.\n   Placing an object in the haversack follows the normal rules for interacting with objects. Retrieving an item from the haversack requires you to use an action. When you reach into the haversack for a specific item, the item is always magically on top.\n   The haversack has a few limitations. If it is overloaded, or if a sharp object pierces it or tears it, the haversack ruptures and is destroyed. If the haversack is destroyed, its contents are lost forever, although an artifact always turns up again somewhere. If the haversack is turned inside out, its contents spill forth, unharmed, and the haversack must be put right before it can be used again. If a breathing creature is placed within the haversack, the creature can survive for up to 10 minutes, after which time it begins to suffocate.\n   Placing the haversack inside an extradimensional space created by a bag of holding, portable hole, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10-feet of the gate is sucked through it and deposited in a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
 		weight : 5,
 		action : [["action", " (retrieve item)"]]
@@ -2966,7 +2995,7 @@ var Base_MagicItemsList = {
 		description : "This book contains health and diet tips, and its words are charged with magic. If I spend 48 hours within 6 days to study its contents and practicing its guidelines, my Constitution score increases by 2, as does my maximum for that score. The manual then loses its magic, but regains it in a century.",
 		descriptionFull : "This book contains health and diet tips, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Constitution score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight : 5,
-		applyStatBonus : function(itemName, statName) {
+		applyStatBonus : function(itemName, statName, statBonus) {
 			// a function for all the manuals/tomes
 			if (!IsNotReset) return;
 			initiateCurrentStats();
@@ -2976,7 +3005,7 @@ var Base_MagicItemsList = {
 				nIcon : 2,
 				nType : 2,
 				nTitle : "Apply " + itemName + "?",
-				cMsg : "Do you want to apply the +2 bonus to the " + statName + " score and maximum from the " + itemName + " permanently? This increase will stay even after you remove this magic item, but will not be applied if you select 'No', even if you keep the magic item selected.\n\n" + (alreadyAppliedBefore ? "It seems you have applied this item before. If you click 'No', you will be prompted to remove all ability score increases from " + itemName : "If you want to remove this ability score increase at a later time, just add the item again and you will be prompted to remove the ability score increase then.")
+				cMsg : "Do you want to apply the +" + statBonus + " bonus to the " + statName + " score and maximum from the " + itemName + " permanently? This increase will stay even after you remove this magic item.\nIf you select 'No' below, this increase will not be applied, even if you keep the magic item selected.\n\n" + (alreadyAppliedBefore ? "It seems you have applied this item before. If you click 'No', you will be prompted to remove all ability score increases from " + itemName : "If you want to remove this ability score increase at a later time, just add the item again and you will be prompted to remove the ability score increase then.")
 			});
 			if (applyChange == 3) {
 				if (alreadyAppliedBefore) {
@@ -2992,7 +3021,7 @@ var Base_MagicItemsList = {
 				}
 			}
 			var baseAdd = [0,0,0,0,0,0];
-			baseAdd[statIndx] = 2;
+			baseAdd[statIndx] = statBonus;
 			if (alreadyAppliedBefore) {
 				baseAdd = [].concat(CurrentStats.maximumsLinked[itemName]);
 				// remove the old version
@@ -3002,15 +3031,15 @@ var Base_MagicItemsList = {
 					processStats(false, "magic", itemName, baseAdd, false, "maximums");
 					return;
 				}
-				baseAdd[statIndx] += 2;
+				baseAdd[statIndx] += statBonus;
 			}
 			processStats(true, "magic", itemName, baseAdd, false, false, true);
 			var maxAdd = [0,0,0,0,0,0];
-			maxAdd[statIndx] = 20 + baseAdd[statIndx];
+			maxAdd[statIndx] = "+" + baseAdd[statIndx];
 			processStats(true, "magic", itemName, maxAdd, false, "maximums");
 		},
 		eval : function() {
-			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Bodily Health", "Constitution");
+			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Bodily Health", "Constitution", 2);
 		}
 	},
 	"manual of gainful exercise" : {
@@ -3023,7 +3052,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "This book describes fitness exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Strength score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight : 5,
 		eval : function() {
-			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Gainful Exercise", "Strength");
+			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Gainful Exercise", "Strength", 2);
 		}
 	},
 	"manual of golems" : { // contains contributions by Larry Hoy
@@ -3041,24 +3070,28 @@ var Base_MagicItemsList = {
 		choices : ["Clay", "Flesh", "Iron", "Stone"],
 		"clay" : {
 			name : "Manual of Clay Golems",
+			sortname : "Manual of Golems, Clay",
 			description : "Only spellcasters with two 5th-level spell slots can use this tome. Creating a clay golem requires 65000 gp of supplies, 30 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionLong : "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a clay golem requires 65000 gp of supplies, 30 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a clay golem, you must spend 30 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 65,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands."
 		},
 		"flesh" : {
 			name : "Manual of Flesh Golems",
+			sortname : "Manual of Golems, Flesh",
 			description : "Only spellcasters with two 5th-level spell slots can use this tome. Creating a flesh golem requires 50000 gp of supplies, 60 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionLong : "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a flesh golem requires 50000 gp of supplies, 60 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a flesh golem, you must spend 60 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 50,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands."
 		},
 		"iron" : {
 			name : "Manual of Iron Golems",
+			sortname : "Manual of Golems, Iron",
 			description : "Only spellcasters with two 5th-level spell slots can use this tome. Creating a iron golem requires 100000 gp of supplies, 120 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionLong : "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a iron golem requires 100000 gp of supplies, 120 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create an iron golem, you must spend 120 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 100,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands."
 		},
 		"stone" : {
 			name : "Manual of Stone Golems",
+			sortname : "Manual of Golems, Stone",
 			description : "Only spellcasters with two 5th-level spell slots can use this tome. Creating a stone golem requires 80000 gp of supplies, 90 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionLong : "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a stone golem requires 80000 gp of supplies, 90 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionFull : "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a stone golem, you must spend 90 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 80,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands."
@@ -3074,7 +3107,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "This book contains coordination and balance exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Dexterity score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight : 5,
 		eval : function() {
-			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Quickness of Action", "Dexterity");
+			MagicItemsList["manual of bodily health"].applyStatBonus("Manual of Quickness of Action", "Dexterity", 2);
 		}
 	},
 	"medallion of thoughts" : {
@@ -3111,7 +3144,6 @@ var Base_MagicItemsList = {
 		action : [["action", ""]],
 		toNotesPage : [{
 			name : "Workings of the Mirror",
-			popupName : "Workings of the Mirror of Life Trapping",
 			note : [
 				"When this 4-ft-tall mirror is viewed indirectly, its surface shows faint images of creatures. The mirror weighs 50 lb, has AC 11, 10 HP, and vulnerability to bludgeoning damage. It shatters and is destroyed when reduced to 0 hit points.",
 				"If the mirror is hanging on a vertical surface and I am within 5 ft of it, I can use an action to speak its command word and activate it. It remains activated until I use an action to speak the command word again.",
@@ -3203,16 +3235,18 @@ var Base_MagicItemsList = {
 		calcChanges : {
 			spellAdd : [
 				function (spellKey, spellObj, spName) {
-					if ((/necklace of prayer beads/i).test(spName) && spellObj.time !== "1 bns") {
+					if ((/necklace of prayer beads/i).test(spName)) {
+						var toReturn = spellObj.time !== "1 bns";
 						spellObj.time = "1 bns";
-						if (spellKey == "cure wounds") {
-							spellObj.description = "1 living creature heals 2d8+spellcasting ability modifier HP";
-							return "Using the Necklace of Prayer Beads Cure Wounds is cast as a 2nd-level spell and only takes a bonus action.";
-						} else {
-							return "The casting time is only a bonus action.";
+						spellObj.firstCol = "checkbox";
+						if (spellKey === "cure wounds") {
+							spellObj.name += " (2nd level)";
+							spellObj.description = "1 living creature heals 2d8 + spellcasting ability modifier HP";
 						}
+						return toReturn;
 					}
-				}
+				},
+				"Using the Necklace of Prayer Beads, the casting time is only a bonus action. Also, Cure Wounds is cast as a 2nd-level spell."
 			]
 		}
 	},
@@ -3275,7 +3309,7 @@ var Base_MagicItemsList = {
 		rarity : "very rare",
 		magicItemTable : "H",
 		description : "When I attack with this longbow and say its command phrase, I make the target my sworn enemy if I don't have one already for 7 days or until it dies. Attacks with this bow vs. it get adv, +3d6 damage, ignore cover (not full), and suffer no disadv. from long range. While it lives, I have disadv. when I use other weapons.",
-		descriptionLong : "When I use this weapon to make a ranged attack and say its command phrase \"Swift death to you who have wronged me.\", the target of that attack becomes me sworn enemy until it dies or until dawn seven days later. I can have only one such sworn enemy at a time and when it dies, I can choose a new one after the next dawn. My ranged attack rolls with this weapon against me sworn enemy have advantage, do +3d6 piercing damage, ignore all cover except full, and don't suffer disadvantage due to long range. While my sworn enemy lives, I have disadvantage on attack rolls with all other weapons.",
+		descriptionLong : "When I use this weapon to make a ranged attack and say its command phrase \"Swift death to you who have wronged me.\", the target of that attack becomes my sworn enemy until it dies or until dawn seven days later. I can have only one such sworn enemy at a time and when it dies, I can choose a new one after the next dawn. My ranged attack rolls with this weapon against me sworn enemy have advantage, do +3d6 piercing damage, ignore all cover except full, and don't suffer disadvantage due to long range. While my sworn enemy lives, I have disadvantage on attack rolls with all other weapons.",
 		descriptionFull : 'When you nock an arrow on this bow, it whispers in Elvish, "Swift defeat to my enemies." When you use this weapon to make a ranged attack, you can, as a command phrase, say, "Swift death to you who have wronged me." The target of your attack becomes your sworn enemy until it dies or until dawn seven days later. You can have only one such sworn enemy at a time. When your sworn enemy dies, you can choose a new one after the next dawn.\n   When you make a ranged attack roll with this weapon against your sworn enemy, you have advantage on the roll. In addition, your target gains no benefit from cover, other than total cover, and you suffer no disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 piercing damage.\n   While your sworn enemy lives, you have disadvantage on attack rolls with all other weapons.',
 		attunement : true,
 		weight : 2,
@@ -3380,11 +3414,11 @@ var Base_MagicItemsList = {
 	"pipes of haunting" : { // contains contributions by Soilentbrad
 		name : "Pipes of Haunting",
 		source : [["SRD", 232], ["D", 185]],
-		type : "wondrous item",
+		type : "wondrous item (instrument)",
 		rarity : "uncommon",
 		magicItemTable : "F",
-		description : "These pipes have 3 charges. As an action, I can use 1 charge to play them and have each (non-hostile) creature in 30 ft that can hear them make a DC 15 Wis save or be frightened of me for 1 minute. A target can repeat the save at the end of each of their turns. The pipes regain 1d3 expended charges daily at dawn.",
-		descriptionLong : "These pipes have 3 charges. As an action, I can expand 1 charge to create an eerie, spellbinding tune. Each creature within 30 ft of me that can hear the pipes must make a DC 15 Wisdom saving throw or become frightened of me for 1 minute.  If you wish, all creatures in the area that aren't hostile toward me automatically succeed on the saving throw. An affected creature can repeat the save at the end of each of its turns, ending the effect on itself on a success. A creature that succeeds on its saving throw is immune to the effect of these pipes for 24 hours. The pipes regain 1d3 expended charges daily at dawn.",
+		description : "These pipes have 3 charges and regain 1d3 expended charges daily at dawn. As an action, I can use 1 charge to play them and have each (or only hostile) creature in 30 ft that can hear them make a DC 15 Wis save or be frightened of me for 1 minute. A target can repeat the save at the end of each of their turns.",
+		descriptionLong : "These pipes have 3 charges. As an action, I can expend 1 charge to create an eerie, spellbinding tune. Each creature within 30 ft of me that can hear the pipes must make a DC 15 Wisdom saving throw or become frightened of me for 1 minute. If I wish, all creatures in the area that aren't hostile toward me automatically succeed on their saving throw. An affected creature can repeat the save at the end of each of its turns, ending the effect on itself on a success. A creature that succeeds on its saving throw is immune to the effect of these pipes for 24 hours. The pipes regain 1d3 expended charges daily at dawn.",
 		descriptionFull : "You must be proficient with wind instruments to use these pipes. They have 3 charges. You can use an action to play them and expend 1 charge to create an eerie, spellbinding tune. Each creature within 30 feet of you that hears you play must succeed on a DC 15 Wisdom saving throw or become frightened of you for 1 minute. If you wish, all creatures in the area that aren't hostile toward you automatically succeed on the saving throw. A creature that fails the saving throw can repeat it at the end of each of its turns, ending the effect on itself on a success. A creature that succeeds on its saving throw is immune to the effect of these pipes for 24 hours. The pipes regain 1d3 expended charges daily at dawn.",
 		weight : 2,
 		action : [["action", ""]],
@@ -3401,7 +3435,7 @@ var Base_MagicItemsList = {
 	"pipes of the sewers" : { // contains contributions by Soilentbrad
 		name : "Pipes of the Sewers",
 		source : [["SRD", 232], ["D", 185]],
-		type : "wondrous item",
+		type : "wondrous item (instrument)",
 		rarity : "uncommon",
 		magicItemTable : "F",
 		description : "The pipes have 3 charges, regain 1d3 at dawn, and cause rats to be indifferent toward me unless threatened. As an action, I can play them, then use a bonus action to summon rats in 0.5 miles to form 1 swarm per charge spend. While playing, rat swarms in 30 ft make a Wis check vs. my Cha check or obey my commands.",
@@ -3545,6 +3579,7 @@ var Base_MagicItemsList = {
 		choices : ["Hill (Str 21, uncommon)", "Frost (Str 23, rare)", "Stone (Str 23, rare)", "Fire (Str 25, rare)", "Cloud (Str 27, very rare)", "Storm (Str 29, legendary)"],
 		"hill (str 21, uncommon)" : {
 			name : "Potion of Hill Giant Strength",
+			sortname : "Potion of Giant Strength, Hill",
 			rarity : "uncommon",
 			magicItemTable : "B",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 21 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a hill giant.",
@@ -3552,6 +3587,7 @@ var Base_MagicItemsList = {
 		},
 		"frost (str 23, rare)" : {
 			name : "Potion of Frost Giant Strength",
+			sortname : "Potion of Giant Strength, Frost",
 			rarity : "rare",
 			magicItemTable : "C",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 23 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a frost giant.",
@@ -3559,6 +3595,7 @@ var Base_MagicItemsList = {
 		},
 		"stone (str 23, rare)" : {
 			name : "Potion of Stone Giant Strength",
+			sortname : "Potion of Giant Strength, Stone",
 			rarity : "rare",
 			magicItemTable : "C",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 23 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a stone giant.",
@@ -3566,6 +3603,7 @@ var Base_MagicItemsList = {
 		},
 		"fire (str 25, rare)" : {
 			name : "Potion of Fire Giant Strength",
+			sortname : "Potion of Giant Strength, Fire",
 			rarity : "rare",
 			magicItemTable : "C",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 25 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a fire giant.",
@@ -3573,6 +3611,7 @@ var Base_MagicItemsList = {
 		},
 		"cloud (str 27, very rare)" : {
 			name : "Potion of Cloud Giant Strength",
+			sortname : "Potion of Giant Strength, Cloud",
 			rarity : "very rare",
 			magicItemTable : "D",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 27 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a cloud giant.",
@@ -3580,6 +3619,7 @@ var Base_MagicItemsList = {
 		},
 		"storm (str 29, legendary)" : {
 			name : "Potion of Storm Giant Strength",
+			sortname : "Potion of Giant Strength, Storm",
 			rarity : "legendary",
 			magicItemTable : "E",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 29 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a storm giant.",
@@ -3616,6 +3656,7 @@ var Base_MagicItemsList = {
 		},
 		"greater healing (4d4+4, uncommon)" : {
 			name : "Potion of Greater Healing",
+			sortname : "Potion of Healing, Greater",
 			rarity : "uncommon",
 			magicItemTable : ["A", "B"],
 			description : "Once as an action, I can drink this potion or administer it to another to regain 4d4+4 hit points. This potion's red liquid glimmers when agitated.",
@@ -3624,6 +3665,7 @@ var Base_MagicItemsList = {
 		},
 		"superior healing (8d4+8, rare)" : {
 			name : "Potion of Superior Healing",
+			sortname : "Potion of Healing, Superior",
 			rarity : "rare",
 			magicItemTable : "C",
 			description : "Once as an action, I can drink this potion or administer it to another to regain 8d4+8 hit points. This potion's red liquid glimmers when agitated.",
@@ -3632,6 +3674,7 @@ var Base_MagicItemsList = {
 		},
 		"supreme healing (10d4+20, very rare)" : {
 			name : "Potion of Supreme Healing",
+			sortname : "Potion of Healing, Supreme",
 			rarity : "very rare",
 			magicItemTable : ["D", "E"],
 			description : "Once as an action, I can drink this potion or administer it to another to regain 10d4+20 hit points. This potion's red liquid glimmers when agitated.",
@@ -3694,42 +3737,52 @@ var Base_MagicItemsList = {
 		choices : ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
 		"acid" : {
 			name : "Potion of Acid Resistance",
+			sortname : "Potion of Resistance, Acid",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to acid damage for 1 hour."
 		},
 		"cold" : {
 			name : "Potion of Cold Resistance",
+			sortname : "Potion of Resistance, Cold",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to cold damage for 1 hour."
 		},
 		"fire" : {
 			name : "Potion of Fire Resistance",
+			sortname : "Potion of Resistance, Fire",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to fire damage for 1 hour."
 		},
 		"force" : {
 			name : "Potion of Force Resistance",
+			sortname : "Potion of Resistance, Force",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to force damage for 1 hour."
 		},
 		"lightning" : {
 			name : "Potion of Lightning Resistance",
+			sortname : "Potion of Resistance, Lightning",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to lightning damage for 1 hour."
 		},
 		"necrotic" : {
 			name : "Potion of Necrotic Resistance",
+			sortname : "Potion of Resistance, Necrotic",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to necrotic damage for 1 hour."
 		},
 		"poison" : {
 			name : "Potion of Poison Resistance",
+			sortname : "Potion of Resistance, Poison",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to poison damage for 1 hour."
 		},
 		"psychic" : {
 			name : "Potion of Psychic Resistance",
+			sortname : "Potion of Resistance, Psychic",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to psychic damage for 1 hour."
 		},
 		"radiant" : {
 			name : "Potion of Radiant Resistance",
+			sortname : "Potion of Resistance, Radiant",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to radiant damage for 1 hour."
 		},
 		"thunder" : {
 			name : "Potion of Thunder Resistance",
+			sortname : "Potion of Resistance, Thunder",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to thunder damage for 1 hour."
 		}
 	},
@@ -3865,6 +3918,7 @@ var Base_MagicItemsList = {
 		choices : ["Air", "Air (help kill air elemental while attuned)", "Earth", "Earth (help kill earth elemental while attuned)", "Fire", "Fire (help kill fire elemental while attuned)", "Water", "Water (help kill water elemental while attuned)"],
 		"air" : {
 			name : "Ring of Air Elemental Command",
+			sortname : "Ring of Elemental Command, Air",
 			description : "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Air and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster on an air elemental. When I fall, I descend 60 ft per round and take no falling damage. I also know Auran.",
 			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Air, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Air.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an air elemental. In addition, when you fall, you descend 60 feet per round and take no damage from falling. You can also speak and understand Auran.\n   If you help slay an air elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to lightning damage.\n \u2022 You have a flying speed equal to your walking speed and can hover.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Chain Lightning (3 charges), Gust of Wind (2 charges), or Wind Wall (1 charge).",
 			languageProfs : ["Auran"],
@@ -3919,6 +3973,7 @@ var Base_MagicItemsList = {
 		},
 		"earth" : {
 			name : "Ring of Earth Elemental Command",
+			sortname : "Ring of Elemental Command, Earth",
 			description : "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Earth and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster on an earth elemental. I move normally in difficult terrain of rubble, rocks, or dirt. I also know Terran.",
 			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Earth and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Earth.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an earth elemental. In addition, you can move in difficult terrain that is composed of rubble, rocks, or dirt as if it were normal terrain. You can also speak and understand Terran.\n   If you help slay an earth elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to acid damage.\n \u2022 You can move through solid earth or rock as if those areas were difficult terrain. If you end your turn there, you are shunted out to the nearest unoccupied space you last occupied.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Stone Shape (2 charges), Stoneskin (3 charges), or Wall of Stone (3 charges).",
 			languageProfs : ["Terran"],
@@ -3968,6 +4023,7 @@ var Base_MagicItemsList = {
 		},
 		"fire" : {
 			name : "Ring of Fire Elemental Command",
+			sortname : "Ring of Elemental Command, Fire",
 			description : "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Fire and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster (DC 17) on a fire elemental. I have resistance to fire damage and can speak and understand Ignan.",
 			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Fire and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Fire.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a fire elemental. In addition, you have resistance to fire damage. You can also speak and understand Ignan.\n   If you help slay a fire elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You are immune to fire damage.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Burning Hands (1 charge), Fireball (2 charges), and Wall of Fire (3 charges).",
 			languageProfs : ["Ignan"],
@@ -4022,6 +4078,7 @@ var Base_MagicItemsList = {
 		},
 		"water" : {
 			name : "Ring of Water Elemental Command",
+			sortname : "Ring of Elemental Command, Water",
 			description : "This ring has 5 charges, regaining 1d4+1 at dawn. It grants me adv. on attacks vs. elementals from the Plane of Water and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster on a water elemental. I can stand on and walk across liquid surfaces as if they were solid ground. I know Aquan.",
 			descriptionFull : "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Water and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Water.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a water elemental. In addition, you can stand on and walk across liquid surfaces as if they were solid ground. You can also speak and understand Aquan.\n   If you help slay a water elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You can breathe underwater and have a swimming speed equal to your walking speed.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Create or Destroy Water (1 charge), Control Water (3 charges), Ice Storm (2 charges), or Wall of Ice (3 charges).",
 			languageProfs : ["Aquan"],
@@ -4202,51 +4259,61 @@ var Base_MagicItemsList = {
 		choices : ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
 		"acid" : {
 			name : "Ring of Acid Resistance",
+			sortname : "Ring of Resistance, Acid",
 			description : "While I'm wearing this ring set with a pearl and I'm attuned to it, I have resistance to acid damage.",
 			dmgres : ["Acid"]
 		},
 		"cold" : {
 			name : "Ring of Cold Resistance",
+			sortname : "Ring of Resistance, Cold",
 			description : "While I'm wearing this ring set with a tourmaline and I'm attuned to it, I have resistance to cold damage.",
 			dmgres : ["Cold"]
 		},
 		"fire" : {
 			name : "Ring of Fire Resistance",
+			sortname : "Ring of Resistance, Fire",
 			description : "While I'm wearing this ring set with a garnet and I'm attuned to it, I have resistance to fire damage.",
 			dmgres : ["Fire"]
 		},
 		"force" : {
 			name : "Ring of Force Resistance",
+			sortname : "Ring of Resistance, Force",
 			description : "While I'm wearing this ring set with a sapphire and I'm attuned to it, I have resistance to force damage.",
 			dmgres : ["Force"]
 		},
 		"lightning" : {
 			name : "Ring of Lightning Resistance",
+			sortname : "Ring of Resistance, Lightning",
 			description : "While I'm wearing this ring set with a citrine and I'm attuned to it, I have resistance to lightning damage.",
 			dmgres : ["Lightning"]
 		},
 		"necrotic" : {
 			name : "Ring of Necrotic Resistance",
+			sortname : "Ring of Resistance, Necrotic",
 			description : "While I'm wearing this ring set with jet and I'm attuned to it, I have resistance to necrotic damage.",
 			dmgres : ["Necrotic"]
 		},
 		"poison" : {
 			name : "Ring of Poison Resistance",
+			sortname : "Ring of Resistance, Poison",
 			description : "While I'm wearing this ring set with an amethyst and I'm attuned to it, I have resistance to poison damage.",
 			dmgres : ["Poison"]
 		},
 		"psychic" : {
 			name : "Ring of Psychic Resistance",
+			sortname : "Ring of Resistance, Psychic",
 			description : "While I'm wearing this ring set with jade and I'm attuned to it, I have resistance to psychic damage.",
 			dmgres : ["Psychic"]
 		},
 		"radiant" : {
 			name : "Ring of Radiant Resistance",
+			sortname : "Ring of Resistance, Radiant",
 			description : "While I'm wearing this ring set with a topaz and I'm attuned to it, I have resistance to radiant damage.",
 			dmgres : ["Radiant"]
 		},
 		"thunder" : {
 			name : "Ring of Thunder Resistance",
+			sortname : "Ring of Resistance, Thunder",
 			description : "While I'm wearing this ring set with a spinel and I'm attuned to it, I have resistance to thunder damage.",
 			dmgres : ["Thunder"]
 		}
@@ -4262,7 +4329,6 @@ var Base_MagicItemsList = {
 		attunement : true,
 		toNotesPage : [{
 			name : "Ball Lightning",
-			popupName : "Ball Lightning function of Ring of Shooting Stars",
 			page3notes : true,
 			additional : "2 charges",
 			note : [
@@ -4275,7 +4341,6 @@ var Base_MagicItemsList = {
 			]
 		}, {
 			name : "Shooting Stars",
-			popupName : "Shooting Stars function of Ring of Shooting Stars",
 			page3notes : true,
 			additional : "1-3 charges",
 			note : [
@@ -4682,7 +4747,6 @@ var Base_MagicItemsList = {
 		}],
 		toNotesPage : [{
 			name : "Buttons and Other Functions",
-			popupName : "Rod of Lordly Might's functions",
 			note : [
 				"The rod of lordly might has a flanged head, and it functions as a magic mace that grants a +3 bonus to attack and damage roll made with it.",
 				"As a bonus action, I can press one of the six different buttons that are set in a row along the haft of the rod. A button's effect lasts until a different button is pushed, or until the same button is pushed again, whereupon it reverts to its normal form.",
@@ -4888,7 +4952,7 @@ var Base_MagicItemsList = {
 		source : [["SRD", 242], ["D", 200]],
 		type : "scroll",
 		description : "If the spell on this scroll is on my class' spell list(s), I can cast it with its normal casting time, but have the scroll crumble to dust. If the spell is of a higher level than I can cast, I need to make an ability check using my spellcasting ability. The DC for this, the spell save, and its attack modifier depend on its level.",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10 + the spell's level. On a failed check, the spell disappears from the scroll with no other effect.\n   The level of the spell on the scroll determines the spell's saving throw DC and attack bonus, as well as the scroll's rarity, as shown below.\n\n" + toUni("Level\tRarity\t\tDC\tTo hit") + [
+		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10 + the spell's level. On a failed check, the spell disappears from the scroll with no other effect.\n   The level of the spell on the scroll determines the spell's saving throw DC and attack bonus, as well as the scroll's rarity, as shown below.\n\n" + toUni("Level\tRarity\t\tDC\tTo hit") + [
 			"\nCantrip\tCommon  \t13\t+5",
 			"1st  \tCommon  \t13\t+5",
 			"2nd  \tUncommon\t13\t+5",
@@ -4901,12 +4965,32 @@ var Base_MagicItemsList = {
 			"9th  \tLegendary  \t19\t+11"
 		].join("\n") + "\n\nA wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on an Intelligence (Arcana) check with a DC equal to 10 + the spell's level. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		allowDuplicates : true,
-		choices : ["Cantrip", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level", "mixed levels"],
-		"cantrip" : {
+		calcChanges : {
+			spellAdd : [
+				function (spellKey, spellObj, spName) {
+					if ((/^spell scroll/i).test(spName)) {
+						if (!spellObj.components) spellObj.components = "";
+						spellObj.components = (spellObj.components.replace(/,?[RM][\u0192\u2020]?/ig, '') + ",M\u0192").replace(/^,+/, '');
+						spellObj.compMaterial = "Spells cast from a spell scroll don't require any material components other than the spell scroll itself.";
+						spellObj.ritual = false;
+						["description", "descriptionMetric", "descriptionShorter", "descriptionShorterMetric"].forEach (function (attr) {
+							if (!spellObj[attr]) return;
+							spellObj[attr] = spellObj[attr].replace(/ \(\d+k? ?gp( cons\.?)?\)/i, '');
+						});
+						return true;
+					}
+				},
+				"When casting a spell using a Spell Scroll, no material components are needed other than the spell scroll itself. They also can't be cast as a ritual."
+			]
+		},
+		choices : ["\x1bCantrip", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level", "mixed levels"],
+		"\x1bcantrip" : {
+			name : "Spell Scroll (cantrip)",
+			sortname : "Spell Scroll  (cantrip)",
 			rarity : "common",
 			magicItemTable : "A",
 			description : "If the cantrip on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If I can't cast any cantrips, I need to make a DC 10 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The cantrips is cast with DC 13 and a +5 attack modifier.",
-			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.",
 			extraTooltip : "AL: can always be bought for 25 gp",
 			fixedDC : 13,
 			spellFirstColTitle : "Us", // used
@@ -4914,14 +4998,15 @@ var Base_MagicItemsList = {
 				level : [0,0],
 				psionic : false,
 				times : 20,
-				firstCol : "checkbox"
+				firstCol : "checkbox",
+				magicItemComponents : false
 			}
 		},
 		"1st-level" : {
 			rarity : "common",
 			magicItemTable : "A",
 			description : "If the 1st-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 11 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 13 and a +5 attack modifier.",
-			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 11. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 11 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 11. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 11 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			extraTooltip : "AL: can always be bought for 75 gp",
 			fixedDC : 13,
 			spellFirstColTitle : "Us", // used
@@ -4929,14 +5014,15 @@ var Base_MagicItemsList = {
 				level : [1,1],
 				psionic : false,
 				times : 20,
-				firstCol : "checkbox"
+				firstCol : "checkbox",
+				magicItemComponents : false
 			}
 		},
 		"2nd-level" : {
 			rarity : "uncommon",
 			magicItemTable : ["A", "B"],
 			description : "If the 2nd-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 12 check with my spellcasting ability to use this scroll or destroy it if I fail. The spell is cast with DC 13 and a +5 attack modifier.",
-			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 12. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 12 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 12. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 12 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			extraTooltip : "AL: can always be bought for 150 gp",
 			fixedDC : 13,
 			spellFirstColTitle : "Us", // used
@@ -4944,14 +5030,15 @@ var Base_MagicItemsList = {
 				level : [2,2],
 				psionic : false,
 				times : 20,
-				firstCol : "checkbox"
+				firstCol : "checkbox",
+				magicItemComponents : false
 			}
 		},
 		"3rd-level" : {
 			rarity : "uncommon",
 			magicItemTable : "B",
 			description : "If the 3rd-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 13 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 15 and a +7 attack modifier.",
-			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 13. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 13 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 13. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 13 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			extraTooltip : "AL: can always be bought for 300 gp",
 			fixedDC : 15,
 			spellFirstColTitle : "Us", // used
@@ -4959,14 +5046,15 @@ var Base_MagicItemsList = {
 				level : [3,3],
 				psionic : false,
 				times : 20,
-				firstCol : "checkbox"
+				firstCol : "checkbox",
+				magicItemComponents : false
 			}
 		},
 		"4th-level" : {
 			rarity : "rare",
 			magicItemTable : "C",
 			description : "If the 4th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 14 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 15 and a +7 attack modifier.",
-			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 14. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 14 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 14. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 14 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			extraTooltip : "AL: can always be bought for 500 gp",
 			fixedDC : 15,
 			spellFirstColTitle : "Us", // used
@@ -4974,14 +5062,15 @@ var Base_MagicItemsList = {
 				level : [4,4],
 				psionic : false,
 				times : 20,
-				firstCol : "checkbox"
+				firstCol : "checkbox",
+				magicItemComponents : false
 			}
 		},
 		"5th-level" : {
 			rarity : "rare",
 			magicItemTable : "C",
 			description : "If the 5th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 15 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 17 and a +9 attack modifier.",
-			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 15. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 15 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 15. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 15 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			extraTooltip : "AL: can always be bought for 1000 gp",
 			fixedDC : 17,
 			spellFirstColTitle : "Us", // used
@@ -4989,63 +5078,68 @@ var Base_MagicItemsList = {
 				level : [5,5],
 				psionic : false,
 				times : 20,
-				firstCol : "checkbox"
+				firstCol : "checkbox",
+				magicItemComponents : false
 			}
 		},
 		"6th-level" : {
 			rarity : "very rare",
 			magicItemTable : "D",
 			description : "If the 6th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 16 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 17 and a +9 attack modifier.",
-			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 16. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 16 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 16. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 16 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			fixedDC : 17,
 			spellFirstColTitle : "Us", // used
 			spellcastingBonus : {
 				level : [6,6],
 				psionic : false,
 				times : 20,
-				firstCol : "checkbox"
+				firstCol : "checkbox",
+				magicItemComponents : false
 			}
 		},
 		"7th-level" : {
 			rarity : "very rare",
 			magicItemTable : "D",
 			description : "If the 7th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 17 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 18 and a +10 attack modifier.",
-			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 17. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 17 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 17. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 17 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			fixedDC : 18,
 			spellFirstColTitle : "Us", // used
 			spellcastingBonus : {
 				level : [7,7],
 				psionic : false,
 				times : 20,
-				firstCol : "checkbox"
+				firstCol : "checkbox",
+				magicItemComponents : false
 			}
 		},
 		"8th-level" : {
 			rarity : "very rare",
 			magicItemTable : ["D", "E"],
 			description : "If the 8th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 18 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 18 and a +10 attack modifier.",
-			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 18. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 18 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 18. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 18 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			fixedDC : 18,
 			spellFirstColTitle : "Us", // used
 			spellcastingBonus : {
 				level : [8,8],
 				psionic : false,
 				times : 20,
-				firstCol : "checkbox"
+				firstCol : "checkbox",
+				magicItemComponents : false
 			}
 		},
 		"9th-level" : {
 			rarity : "legendary",
 			magicItemTable : "E",
 			description : "If the 9th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 19 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 19 and a +11 attack modifier.",
-			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 19. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 19 and an attack bonus of +11.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 19 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 19. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 19 and an attack bonus of +11.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 19 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			fixedDC : 19,
 			spellFirstColTitle : "Us", // used
 			spellcastingBonus : {
 				level : [9,9],
 				psionic : false,
 				times : 20,
-				firstCol : "checkbox"
+				firstCol : "checkbox",
+				magicItemComponents : false
 			}
 		},
 		"mixed levels" : {
@@ -5054,7 +5148,8 @@ var Base_MagicItemsList = {
 			spellcastingBonus : {
 				level : [0,9],
 				psionic : false,
-				times : 20
+				times : 20,
+				magicItemComponents : false
 			},
 			calcChanges : {
 				spellAdd : [
@@ -5092,7 +5187,6 @@ var Base_MagicItemsList = {
 		action : [["action", ""]],
 		toNotesPage : [{
 			name : "Special Properties",
-			popupName : "Sphere of Annihilation's Special Properties",
 			note : [
 				"This 2-ft-diameter black sphere is a hole in the multiverse, hovering in space and stabilized by a magical field surrounding it. It obliterates all matter it passes through and all matter that passes through it. Artifacts are the exception. Unless an artifact is susceptible to damage from a sphere of annihilation, it passes through the sphere unscathed. Anything else that touches the sphere but isn't wholly engulfed and obliterated by it takes 4d10 force damage.",
 				"The sphere is stationary until someone controls it. If I am within 60 ft of an uncontrolled sphere, I can use an action to make a DC 25 Intelligence (Arcana) check. On a success, the sphere levitates in one direction of my choice, up to 5 ft \xD7 my Intelligence modifier (minimum 5 ft). On a failure, the sphere moves 10 ft toward me. A creature whose space the sphere enters must succeed on a DC 13 Dexterity saving throw or be touched by it, taking 4d10 force damage.",
@@ -5456,33 +5550,14 @@ var Base_MagicItemsList = {
 			selection : ["flaming sphere", "invisibility", "knock", "web"],
 			firstCol : 2,
 			times : 4
+		}, {
+			name : "0 charges",
+			spells : ["light", "mage hand", "arcane lock", "detect magic", "enlarge/reduce", "protection from evil and good"],
+			selection : ["light", "mage hand", "arcane lock", "detect magic", "enlarge/reduce", "protection from evil and good"],
+			firstCol : "atwill",
+			times : 6
 		}],
-		eval : function () {
-			// get the CurrentSpells object or create it if it didn't exists yet.
-			var spObj = CreateCurrentSpellsEntry("items", "staff of the magi");
-			// now set some of the attributes for it, adding the 3 spells that didn't fit as spellcastingBonus
-			spObj.typeSp = "known";
-			spObj.known = { cantrips : 2, spells : 4 };
-			spObj.list = { spells : ["light", "mage hand", "arcane lock", "detect magic", "enlarge/reduce", "protection from evil and good"] };
-			spObj.selectCa = ["light", "mage hand"];
-			spObj.selectSp = ["arcane lock", "detect magic", "enlarge/reduce", "protection from evil and good"];
-			spObj.typeList = 2;
-		},
-		removeeval : function () {
-			if (CurrentSpells["staff of the magi"]) {
-				// delete the CurrentSpells object
-				delete CurrentSpells["staff of the magi"];
-				SetStringifieds('spells');
-				CurrentUpdates.types.push("spells");
-			}
-		},
 		spellChanges : {
-			"light" : { firstCol : "atwill" },
-			"mage hand" : { firstCol : "atwill" },
-			"arcane lock" : { firstCol : "atwill" },
-			"detect magic" : { firstCol : "atwill" },
-			"enlarge/reduce" : { firstCol : "atwill" },
-			"protection from evil and good" : { firstCol : "atwill" },
 			"fireball" : {
 				nameShort : "Fireball (7th level)",
 				description : "20-ft rad all crea 12d6 Fire dmg; save halves; unattended flammable objects ignite",
@@ -5631,7 +5706,6 @@ var Base_MagicItemsList = {
 		}],
 		toNotesPage : [{
 			name : "Special Properties",
-			popupName : "Staff of Thunder and Lightning's Special Properties",
 			note : [
 				"\n   This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. It also has the following additional properties. When one of these properties is used, it can't be used again until the next dawn.",
 				" \u2022 Lightning. When I hit with a melee attack using the staff, I can cause the target to take an extra 2d6 lightning damage.",
@@ -5909,7 +5983,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "This book contains memory and logic exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Intelligence score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight : 5,
 		eval : function() {
-			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Clear Thought", "Intelligence");
+			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Clear Thought", "Intelligence", 2);
 		}
 	},
 	"tome of leadership and influence" : {
@@ -5922,7 +5996,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "This book contains guidelines for influencing and charming others, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Charisma score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight : 5,
 		eval : function() {
-			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Leadership and Influence", "Charisma");
+			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Leadership and Influence", "Charisma", 2);
 		}
 	},
 	"tome of understanding" : {
@@ -5935,7 +6009,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "This book contains intuition and insight exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Wisdom score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight : 5,
 		eval : function() {
-			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Understanding", "Wisdom");
+			MagicItemsList["manual of bodily health"].applyStatBonus("Tome of Understanding", "Wisdom", 2);
 		}
 	},
 	"trident of fish command" : {
@@ -5999,7 +6073,7 @@ var Base_MagicItemsList = {
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && (/vicious/i).test(v.WeaponTextName)) {
+					if (!v.isSpell && !v.theWea.isMagicWeapon && (/vicious/i).test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +7 damage';
@@ -6101,8 +6175,8 @@ var Base_MagicItemsList = {
 		rarity : "rare",
 		magicItemTable : "G",
 		description : "This wand has 7 charges, regaining 1d6+1 at dawn, which I can use to cast Command (1 charge), or as an action have all in a 60-ft cone (2 charges) make a DC 15 Wis save or be frightened and move away from me for 1 min (save end of each turn). When using the last charge, 5% chance the wand is destroyed.",
-		descriptionLong : "This wand has 7 charges, regaining 1d6+1 charges at dawn. As an action, I can expend 1 charge to cast Command, but only to use \"flee\" or \"grovel\". I can also use an action to expend 2 charges, causing the wand's tip to emit a 60-ft cone of amber light. All within the cone must make a DC 15 Wis save or be frightened of me for 1 minute. While frightened, a target moves away from me as fast as possible, can only use the Dash action, and is unwilling to move within 30 ft of me, but can repeat thesave at the end of each of its turn. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
-		descriptionFull : "This wand has 7 charges for the following properties. It regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.\n   " + toUni("Command") + ". While holding the wand, you can use an action to expend 1 charge and command another creature to flee or grovel, as with the Command spell (save DC 15).\n   " + toUni("Cone of Fear") + ". While holding the wand, you can use an action to expend 2 charges, 	. Each creature in the cone must succeed on a DC 15 Wisdom saving throw or become frightened of you for 1 minute. While it is frightened in this way, a creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevent it from moving. If it has nowhere it can move, the creature can use the Dodge action. At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.",
+		descriptionLong : "This wand has 7 charges, regaining 1d6+1 charges at dawn. As an action, I can expend 1 charge to cast Command, but only to use \"flee\" or \"grovel\". I can also use an action to expend 2 charges, causing the wand's tip to emit a 60-ft cone of amber light. All within the cone must make a DC 15 Wis save or be frightened of me for 1 minute. While frightened, a target moves away from me as fast as possible, can only use the Dash action, and is unwilling to move within 30 ft of me, but can repeat the save at the end of each of its turn. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
+		descriptionFull : "This wand has 7 charges for the following properties. It regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.\n   " + toUni("Command") + ". While holding the wand, you can use an action to expend 1 charge and command another creature to flee or grovel, as with the Command spell (save DC 15).\n   " + toUni("Cone of Fear") + ". While holding the wand, you can use an action to expend 2 charges, causing the wand's tip to emit a 60-foot cone of amber light. Each creature in the cone must succeed on a DC 15 Wisdom saving throw or become frightened of you for 1 minute. While it is frightened in this way, a creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevent it from moving. If it has nowhere it can move, the creature can use the Dodge action. At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.",
 		attunement : true,
 		weight : 1,
 		usages : 7,
@@ -6407,7 +6481,6 @@ var Base_MagicItemsList = {
 		additional : "regains 1d6+1",
 		toNotesPage : [{
 			name : "Table of Effects",
-			popupName : "Wand of Wonder's Table of Effects",
 			note : [
 				"As an action I can expend 1 of the wand's 7 charges and choose a target within 120 ft of me. The target can be a creature, an object, or a point in space. Roll a d100 and consult the effect below to discover what happens.",
 				"If the effect causes me to cast a spell from the wand, the spell's save DC is 15. If the spell normally has a range expressed in feet, its range becomes 120 ft if it isn't already.",

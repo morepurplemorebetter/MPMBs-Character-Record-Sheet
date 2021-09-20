@@ -40,7 +40,7 @@ var Base_RaceList = {
 					return (n < 6 ? 2 : n < 11 ? 3 : n < 16 ? 4 : 5) + 'd6';
 				}),
 				recovery : "short rest",
-				action : ["action", ""],
+				action : [["action", ""]],
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
@@ -52,7 +52,9 @@ var Base_RaceList = {
 									fields.Range = (/black|blue|brass|bronze|copper/i).test(CurrentRace.variant) ? '5-ft \xD7 30-ft line' : '15-ft cone';
 								}
 							};
-						}
+						},
+						"",
+						1
 					]
 				}
 			}
@@ -228,7 +230,8 @@ var Base_RaceList = {
 								}
 							}
 						},
-						"My melee weapon attacks roll 1 additional dice on a critical hit."
+						"My melee weapon attacks roll 1 additional dice on a critical hit.",
+						900
 					]
 				}
 			}

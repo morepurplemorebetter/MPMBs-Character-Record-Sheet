@@ -39,7 +39,7 @@
 				You will also need the syntax for adding a source if you want the magic item
 				to have a source that doesn't yet exist in the sheet.
 
-	Sheet:		v13.0.6 and newer
+	Sheet:		v13.0.8 and newer
 
 */
 
@@ -93,6 +93,15 @@ MagicItemsList["staff of purple"] = {
 
 	This name will be used to recognize what is selected in the magic item drop-down.
 	If you want more options for the magic item to be recognized as, see 'nameAlt' and 'nameTest' below.
+*/
+	sortname : "Staff, Purple",
+/*	name // OPTIONAL //
+	TYPE:	string
+	USE:	name of the magic item as it will be shown in the menu for selecting magic items
+	ADDED:	v13.0.8
+
+	This name will only be used to display the item in the menu.
+	This attribute is not used to recognize the item or fill the field on the sheet.
 */
 	nameAlt : "Staff of Colour Magic",
 /*	nameAlt // OPTIONAL //

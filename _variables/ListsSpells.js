@@ -1831,7 +1831,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A leather strap, bound around the arm or a similar appendage",
 		duration : "1 h",
-		description : "1 willing crea; magic cannot reduce speed, paralyze, restrain; use 5 ft to escape nonmagical restrains",
+		description : "1 willing crea; magic cannot reduce speed, paralyze, restrain; use 5 ft to escape nonmagical restraints",
 		descriptionFull : "You touch a willing creature. For the duration, the target's movement is unaffected by difficult terrain, and spells and other magical effects can neither reduce the target's speed nor cause the target to be paralyzed or restrained." + "\n   " + "The target can also spend 5 feet of movement to automatically escape from nonmagical restraints, such as manacles or a creature that has it grappled. Finally, being underwater imposes no penalties on the target's movement or attacks."
 	},
 	"gaseous form" : {
@@ -3107,8 +3107,7 @@ var Base_SpellsList = {
 		range : "30 ft",
 		components : "V",
 		duration : "Conc, 1 min",
-		save : "Dex",
-		description : "1 crea dances in place, can't move, dis. on attacks/saves, adv. on atks vs. target; Wis save each rnd",
+		description : "1 crea dances in place, can't move, dis. on atks/Dex saves, adv. on atks vs. target; 1 a Wis save to end",
 		descriptionFull : "Choose one creature that you can see within range. The target begins a comic dance in place - shuffling, tapping its feet, and capering for the duration. Creatures that can't be charmed are immune to this spell." + "\n   " + "A dancing creature must use all its movement to dance without leaving its space and has disadvantage on Dexterity saving throws and attack rolls. While the target is affected by this spell, other creatures have advantage on attack rolls against it. As an action, a dancing creature makes a Wisdom saving throw to regain control of itself. On a successful save, the spell ends."
 	},
 	"pass without trace" : {

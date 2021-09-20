@@ -142,11 +142,13 @@ spellcastingList : {
 
 	psionic : true,
 	/*	psionic // OPTIONAL //
-		TYPE:	boolean
+		TYPE:	boolean or string
 		USE:	include/exclude spells based on if they are psionic or not
+		CHANGE:	v13.0.8 (default changed from 'all' to `false`)
 
-		If set to 'true', only includes spells that are psionic.
-		If set to 'false', only includes spells that are not psionic.
+		If set to `true`, only includes spells that are psionic.
+		If set to 'all', includes both spells that are psionic and are not psionic.
+		If not set or set to `false`, only includes spells that are not psionic.
 	*/
 }
 

@@ -99,7 +99,8 @@ var UnitsList = {
 		volume : 0.03,
 		surface : 0.1,
 		distance : 1.6,
-		liquid : 4
+		liquid : 4,
+		liquidQuart : 1
 	},
 	metricExact : {
 		mass : 0.45359237,
@@ -108,7 +109,8 @@ var UnitsList = {
 		volume : 0.028316846592,
 		surface : 0.09290304,
 		distance : 1.609344,
-		liquid : 3.785411784
+		liquid : 3.785411784,
+		liquidQuart : 0.94635295
 	}
 }
 

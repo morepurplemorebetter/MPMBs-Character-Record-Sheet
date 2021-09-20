@@ -46,12 +46,12 @@ function copyField(fldFromName, fldToName, excl, swap) {
 }
 
 // a function to get the different versions of names used
-function GetFeatureType(type) {
-	var theReturn = "classes";
+function GetFeatureType(type, bNoDefaultReturn, bSingularReturn) {
+	var theReturn = bNoDefaultReturn ? false : bSingularReturn ? "class" : "classes";
 	switch (type.toLowerCase()) {
 		case "classes":
 		case "class":
-			theReturn = "classes";
+			theReturn = bSingularReturn ? "class" : "classes";
 			break;
 		case "backgrounds":
 		case "background":
@@ -63,7 +63,7 @@ function GetFeatureType(type) {
 			break;
 		case "feats":
 		case "feat":
-			theReturn = "feats";
+			theReturn = bSingularReturn ? "feat" : "feats";
 			break;
 		case "magicitems":
 		case "magicitem":
@@ -71,7 +71,7 @@ function GetFeatureType(type) {
 		case "magic items":
 		case "items":
 		case "item":
-			theReturn = "items";
+			theReturn = bSingularReturn ? "item" : "items";
 			break;
 		case "magic":
 			theReturn = "magic";
@@ -186,7 +186,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		var evalType = addIt ? "eval" : "removeeval";
 		if (!skipEval && uObj[evalType]) runEval(uObj[evalType], evalType);
 
-		if (uObj.calcChanges) addEvals(uObj.calcChanges, tipNmF, addIt);
+		if (uObj.calcChanges) addEvals(uObj.calcChanges, tipNmF, addIt, type);
 		if (uObj.savetxt) SetProf("savetxt", addIt, uObj.savetxt, tipNmF);
 		if (uObj.speed) SetProf("speed", addIt, uObj.speed, tipNmF);
 		if (uObj.addMod) processMods(addIt, tipNmF, uObj.addMod);
@@ -204,9 +204,12 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 
 		// --- backwards compatibility --- //
 		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false;
-		if (uObj.scores || abiScoresTxt) processStats(addIt, type, tipNm, uObj.scores, abiScoresTxt, false, uObj.scoresMaximum);
+		if (uObj.scores || abiScoresTxt) {
+			processStats(addIt, type, tipNm, uObj.scores, abiScoresTxt, false, uObj.scoresMaximum, uObj.scoresMaxLimited);
+		} else if (uObj.scoresMaximum) {
+			processStats(addIt, type, tipNm, uObj.scoresMaximum, abiScoresTxt, "maximums");
+		}
 		if (uObj.scoresOverride) processStats(addIt, type, tipNm, uObj.scoresOverride, abiScoresTxt, "overrides");
-		if (uObj.scoresMaximum) processStats(addIt, type, tipNm, uObj.scoresMaximum, abiScoresTxt, "maximums");
 
 		// spellcasting
 		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent, objNm, forceNonCurrent ? true : false);
@@ -221,7 +224,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			}
 			if (uObj.spellChanges) processSpChanges(addIt, tipNmF, uObj.spellChanges, useSpCasting);
 		}
-		if (!uObj.spellcastingBonus && addIt && CurrentSpells[useSpCasting] && type !== "classes" && type !== "race" && (uObj.spellcastingAbility !== undefined || uObj.fixedDC || uObj.fixedSpAttack || uObj.allowUpCasting !== undefined)) {
+		if (!uObj.spellcastingBonus && addIt && CurrentSpells[useSpCasting] && type !== "classes" && type !== "race" && (uObj.spellcastingAbility !== undefined || uObj.fixedDC || uObj.fixedSpAttack || uObj.allowUpCasting !== undefined || uObj.magicItemComponents !== undefined)) {
 			// will already have been processed if uObj has `spellcastingBonus`
 			CurrentUpdates.types.push("spells");
 			var aCast = CurrentSpells[useSpCasting];
@@ -232,7 +235,9 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			if (uObj.fixedDC) aCast.fixedDC = Number(uObj.fixedDC);
 			if (uObj.fixedSpAttack) aCast.fixedSpAttack = Number(uObj.fixedSpAttack);
 			if (uObj.allowUpCasting !== undefined) aCast.allowUpCasting = uObj.allowUpCasting;
+			if (uObj.magicItemComponents !== undefined) aCast.magicItemComponents = uObj.magicItemComponents;
 		};
+		if (uObj.spellcastingBonusElsewhere) processSpellcastingBonusElsewhere(addIt, type, tipNm, uniqueObjNm, uObj.spellcastingBonusElsewhere);
 
 		if (addIt) addListOptions(); // add weapon/armour/ammo/creature option(s)
 
@@ -721,6 +726,7 @@ function ReturnSpellcastingAbility(sCast, vAbility) {
 // a function to create the CurrentSpells global variable entry
 function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 	type = GetFeatureType(type);
+	var sTypeSingular = GetFeatureType(type, false, true);
 	var fObjP = false;
 	var setCSobj = function(oName) {
 		if (!CurrentSpells[oName]) {
@@ -740,15 +746,15 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 			sObj.level = classes.known[fObjName].level;
 			sObj.name = !forceNonCurrent ? fObj.fullname : !aSubClass ? sObj.shortname : ClassSubList[aSubClass].fullname ? ClassSubList[aSubClass].fullname : ClassList[aClass].name + " (" + ClassSubList[aSubClass].subname + ")";
 			if (sObj.typeSp == undefined) sObj.typeSp = "";
-			sObj.refType = "class";
+			sObj.refType = sTypeSingular;
 			break;
 		case "race":
 			var fObj = CurrentRace;
 			var sObj = setCSobj(fObjName);
 			sObj.name = fObj.name;
-			sObj.typeSp = "race";
+			sObj.typeSp = sTypeSingular;
 			sObj.level = fObj.level;
-			sObj.refType = "race";
+			sObj.refType = sTypeSingular;
 			break;
 		case "feats":
 			var fObj = FeatsList[fObjName];
@@ -759,8 +765,8 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 			}
 			var sObj = setCSobj(fObjName);
 			sObj.name = fObj.name + " (feat)";
-			sObj.typeSp = "feat";
-			sObj.refType = "feat";
+			sObj.typeSp = sTypeSingular;
+			sObj.refType = sTypeSingular;
 			break;
 		case "items":
 			var fObj = MagicItemsList[fObjName];
@@ -771,8 +777,8 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 			}
 			var sObj = setCSobj(fObjName);
 			sObj.name = MagicItemGetShortestName(fObj) + " (item)";
-			sObj.typeSp = "item";
-			sObj.refType = "item";
+			sObj.typeSp = sTypeSingular;
+			sObj.refType = sTypeSingular;
 			break;
 		default:
 			return false;
@@ -789,20 +795,22 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 	if (!sObj.fixedDC && fObj.fixedDC) sObj.fixedDC = Number(fObj.fixedDC);
 	if (!sObj.fixedSpAttack && fObj.fixedSpAttack) sObj.fixedSpAttack = Number(fObj.fixedSpAttack);
 	if (!sObj.allowUpCasting === undefined && fObj.allowUpCasting !== undefined) sObj.allowUpCasting = fObj.allowUpCasting;
+	if (!sObj.magicItemComponents === undefined && fObj.magicItemComponents !== undefined) sObj.magicItemComponents = fObj.magicItemComponents;
 	if (fObjP) {
 		if (!sObj.ability) sObj.ability = ReturnSpellcastingAbility(fObjName, fObjP.spellcastingAbility ? fObjP.spellcastingAbility : fObjP.abilitySave ? fObjP.abilitySave : 0);
 		if (!sObj.fixedDC && fObjP.fixedDC) sObj.fixedDC = Number(fObjP.fixedDC);
 		if (!sObj.fixedSpAttack && fObjP.fixedSpAttack) sObj.fixedSpAttack = Number(fObjP.fixedSpAttack);
 		if (!sObj.allowUpCasting === undefined && fObjP.allowUpCasting !== undefined) sObj.allowUpCasting = fObjP.allowUpCasting;
+		if (!sObj.magicItemComponents === undefined && fObjP.magicItemComponents !== undefined) sObj.magicItemComponents = fObjP.magicItemComponents;
 	}
 	if (!sObj.abilityToUse) sObj.abilityToUse = getSpellcastingAbility(fObjName);
 	return sObj;
 }
 
 // process a spellcastingBonus feature
-function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, forceNonCurrent) {
+function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, forceNonCurrent, forceUseSpName) {
 	type = GetFeatureType(type);
-	var useSpName = choice && (type === "feats" || type === "items") ? parentName + "_-_" + choice : parentName;
+	var useSpName = forceUseSpName ? forceUseSpName : choice && (type === "feats" || type === "items") ? parentName + "_-_" + choice : parentName;
 	var sObj = CurrentSpells[useSpName];
 	if (!AddRemove && !sObj) return; // nothing to remove
 	// do something with the spellcastingBonus object
@@ -821,6 +829,7 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, force
 		var spFixedDC = !isArray(spBon) ? spBon.fixedDC : false;
 		var spFixedSpAttack = !isArray(spBon) ? spBon.fixedSpAttack : false;
 		var spAllowUpCasting = !isArray(spBon) ? spBon.allowUpCasting : undefined;
+		var spMagicItemComponents = !isArray(spBon) ? spBon.magicItemComponents : undefined;
 		if (isArray(spBon)) {
 			for (var i = 0; i < spBon.length; i++) {
 				if (!spFeatItemLvl && spBon[i].times && isArray(spBon[i].times)) spFeatItemLvl = true;
@@ -828,6 +837,7 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, force
 				if (spBon[i].fixedDC) spFixedDC = spBon[i].fixedDC;
 				if (spBon[i].fixedSpAttack) spFixedSpAttack = spBon[i].fixedSpAttack;
 				if (spBon[i].allowUpCasting !== undefined) spAllowUpCasting = spBon[i].allowUpCasting;
+				if (spBon[i].magicItemComponents !== undefined) spMagicItemComponents = spBon[i].magicItemComponents;
 			}
 		}
 		if (spAbility) {
@@ -837,6 +847,7 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, force
 		if (spFixedDC) sObj.fixedDC = spFixedDC;
 		if (spFixedSpAttack) sObj.fixedSpAttack = spFixedSpAttack;
 		if (spAllowUpCasting !== undefined) sObj.allowUpCasting = spAllowUpCasting;
+		if (spMagicItemComponents !== undefined) sObj.magicItemComponents = spMagicItemComponents;
 		// if concerning a feat or item, set the level only if the spellcastingBonus needs it
 		if ((/feat|item/i).test(sObj.typeSp) && spFeatItemLvl) sObj.level = Math.max(Number(What("Character Level")), 1);
 	}
@@ -908,6 +919,192 @@ function processSpellcastingExtra(AddRemove, spObjName, lvl, name, spExtra, spNo
 		aCast[useNm] = aCast[remNm][keysArrSort[0]];
 	}
 	CurrentUpdates.types.push("spells");
+}
+
+// Allow something to add a bonus spell to another spellcasting feature (e.g. magic item adds spells to spellbook of the wizard)
+/*
+var a = {spellcastingBonusElsewhere : {
+	addTo : "wizard", // Exact CurrentSpells match (e.g. class/race name), partial match (e.g. subclass/feat/magic item name), or type "class(es)", "race", "feat", "magic item"
+	spellcastingBonus : [], // regular spellcastingBonus attribute
+	addToKnown : [], // array of SpellsList entries to add to known spells or spellbook
+	// addToKnown must adhere to the normal restrictions of the spell list available. if you want to go beyond that you'll also have to change the spell list with calcChanges.spellList
+	countsTowardsKnown : true // set to true if the spells added should be subtracted from the total spells known
+}
+}
+*/
+function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrcNm, oSpElse) {
+	if (!oSpElse.addTo || typeof oSpElse.addTo !== "string" || (!oSpElse.spellcastingBonus && !oSpElse.addToKnown)) return;
+	sType = GetFeatureType(sType);
+	oSpElse.addTo = oSpElse.addTo.toLowerCase();
+	// First find which CurrentSpells object we should add this to
+	var sSpMain = oSpElse.addTo;
+	if (bAddRemove) {
+		// When adding the 
+		if (!CurrentSpells[sSpMain]) {
+			// Not a perfect match for an existing CurrentSpells entry name
+			var aMatches = [];
+			// See if it is defined as a broad type (e.g. "class", "race", "feat")
+			var sTypeAddTo = GetFeatureType(oSpElse.addTo, true, true);
+			// Otherwise we'll test against the (object) name of the CurrentSpells entry
+			var rxAddTo = RegExp(oSpElse.addTo, "i");
+			// Iterate through the CurrentSpells entries to see which match
+			for (var sCast in CurrentSpells) {
+				var oCast = CurrentSpells[sCast];
+				// Test if the type or the name are a match
+				// And even if it is a match, ignore if doing `addToKnown`, as that will only work for spellcasting with known spells or a spellbook (e.g. not only bonus spells)
+				if ((oCast.refType === sTypeAddTo || (!sTypeAddTo && rxAddTo.test(sCast + oCast.name))) && (!oSpElse.addToKnown || oCast.typeSp !== sTypeAddTo)) {
+					aMatches.push(sCast);
+				}
+			}
+			if (aMatches.length === 1) {
+				// Only a single match, so use that one
+				sSpMain = aMatches[0];
+			} else if (aMatches.length > 1) {
+				// Multiple matches, ask the player which to use
+				var oRefCasts = {}, aCastNames = [];
+				for (var i = 0; i < aMatches.length; i++) {
+					var sCastName = CurrentSpells[aMatches[i]].name;
+					if (oSpElse.addToKnown && CurrentSpells[aMatches[i]].typeSp === "list") sCastName += " (will add only cantrips to known spells)";
+					aCastNames.push(sCastName);
+					oRefCasts[aMatches[i]] = sCastName;
+				}
+				var sUserSelect = AskUserOptions(
+					"Which spellcasting to add " + sSrcNm + " spells to",
+					'The spells gained from "' + sSrcNm + '" are meant to be automatically added to a "'  + oSpElse.addTo + '" spellcasting entry. Several entries are a match, thus it is up to you to decide which of these to add the spells to.',
+					aCastNames, "radio", true,
+					"You can't change what you select here other than by removing " + sSrcNm + ", and then selecting it again.");
+				sSpMain = oRefCasts[sUserSelect];
+			}
+		}
+		if (!CurrentSpells[sSpMain]) {
+			// Still no match was found. Alert the player that this item doesn't do anything and a spellcasting thing needs to be added first for it work, then end this function
+			app.alert({
+				nIcon : 1,
+				cTitle : sSrcNm + " spells have not been added to " + oSpElse.addTo,
+				cMsg : 'The spells gained from "' + sSrcNm + '" are meant to be automatically added to a "'  + oSpElse.addTo + '" spellcasting entry. No entry for this was found, thus no spells have been added anywhere.\n\nTo get the spells from "' + sSrcNm + '" added to the automation, first remove ' + sSrcNm + ' and make sure there is a spellcasting entry for a '  + oSpElse.addTo + '. Then, add ' + sSrcNm + ' again.'
+			});
+			return;
+		}
+		if (oSpElse.spellcastingBonus) { // If adding to bonus spells
+			// simply use processSpBonus
+			processSpBonus(true, sUniqueSrcNm, oSpElse.spellcastingBonus, sType, "", "", false, sSpMain);
+		}
+		var oSpMain = CurrentSpells[sSpMain];
+		if (oSpElse.addToKnown && oSpMain.list && oSpMain.known) { // If adding to known spells / spellbook
+			// Create a reference object for when we want to remove this later
+			if (!oSpMain.bonusElsewhere) oSpMain.bonusElsewhere = {};
+			oSpMain.bonusElsewhere[sUniqueSrcNm] = [];
+			// Get a list of all the known spells
+			var aCurrentSelectCa = [].concat(oSpMain.selectCa ? oSpMain.selectCa : []);
+			var aCurrentSelectSp = [].concat(oSpMain.selectSp ? oSpMain.selectSp : [])
+				.concat(oSpMain.selectSpSB ? oSpMain.selectSpSB : []);
+			var aCurrentSelectAll = aCurrentSelectCa.concat(aCurrentSelectSp);
+			var aNewSelectSp = [].concat(aCurrentSelectSp);
+			var iMaxLengthSp = oSpMain.typeSp === 'list' ? 0 : oSpMain.typeSp === 'known' ? 20 : 9999;
+			// Loop through the spells to add them in the right spot, if not already known
+			for (var i = 0; i < oSpElse.addToKnown.length; i++) {
+				var sSpell = oSpElse.addToKnown[i];
+				var oSpell = SpellsList[sSpell];
+				// Stop if spell doesn't exist or is already known
+				if (!oSpell || aCurrentSelectAll.indexOf(sSpell) !== -1) continue;
+				// Add the spell, dending on if its a cantrip or a spell
+				if (oSpell.level === 0 && oSpMain.known.cantrips && (!oSpMain.selectCa || oSpMain.selectCa.length < 21)) {
+					// If a cantrip, add it to the known cantrips array
+					if (!oSpMain.selectCa) oSpMain.selectCa = [];
+					oSpMain.selectCa.push(sSpell);
+					// Add spell to remember array
+					oSpMain.bonusElsewhere[sUniqueSrcNm].push(sSpell);
+					// Increment the offset
+					if (!oSpElse.countsTowardsKnown) oSpMain.offsetCa = (oSpMain.offsetCa ? oSpMain.offsetCa : 0) + 1;
+				} else if (oSpell.level > 0 && aNewSelectSp.length < iMaxLengthSp) {
+					// If there is still space to add more spells, add them to array
+					aNewSelectSp.push(sSpell);
+					oSpMain.bonusElsewhere[sUniqueSrcNm].push(sSpell);
+					// Increment the offset of spells known (i.e. not with a spellbook)
+					if (!oSpElse.countsTowardsKnown && oSpMain.typeSp !== 'book') oSpMain.offsetSp = (oSpMain.offsetSp ? oSpMain.offsetSp : 0) + 1;
+				}
+			}
+			// If there is a cantrip array, sort it for good order
+			if (oSpMain.selectCa) oSpMain.selectCa.sort();
+			// If any new spells were added, add them to the CurrentSpells object the right way
+			if (aNewSelectSp.length) {
+				// Order the spells by level and name, because that looks nicer
+				var aTotalSelectSp = OrderSpells(aNewSelectSp, "single");
+				// Set the selectSp to the first 20 of the array (or if not a spellbook, this will be all the spells added)
+				oSpMain.selectSp = aTotalSelectSp.slice(0, 20);
+				// If this concerns a spellbook, we add the rest to selectSpSB
+				if (oSpMain.typeSp === 'book' && aTotalSelectSp.length > 20) {
+					oSpMain.selectSpSB = aTotalSelectSp.slice(20);
+				} else {
+					// If not a spellbook or not enough spells, delete this attribute
+					delete oSpMain.selectSpSB;
+				};
+			}
+			// If any new spells were added, make sure the changes dialog prompts to regenerate
+			if (oSpMain.bonusElsewhere[sUniqueSrcNm].length) {
+				CurrentUpdates.types.push("spells");
+				if (!CurrentUpdates.remarks) CurrentUpdates.remarks = [];
+				var sRemark = sSrcNm + " added the following spells to the known spells of " + oSpMain.name + ":" + oSpMain.bonusElsewhere[sUniqueSrcNm].map(function (n) {
+					return "\n    \u25E6 " + SpellsList[n].name;
+				}).join("");
+				if (oSpElse.addToKnown.length > oSpMain.bonusElsewhere[sUniqueSrcNm].length) {
+					sRemark += "\n   There were more spells to add, but they didn't fit or they were already present. The spells that haven't been added are:" + oSpElse.addToKnown.map(function (n) {
+						return oSpMain.bonusElsewhere[sUniqueSrcNm].indexOf(n) !== -1 || !SpellsList[n] ? "" : "\n    \u25E6 " + SpellsList[n].name;
+					}).join("");
+				}
+				CurrentUpdates.remarks.push(sRemark);
+			}
+		}
+	} else {
+		// When removing the entry, loop through the CurrentSpells and see which one has this added
+		var bDoBonus = oSpElse.spellcastingBonus ? true : false;
+		var bDoAddToKnown = oSpElse.addToKnown ? true : false;
+		for (var sCast in CurrentSpells) {
+			var oCast = CurrentSpells[sCast];
+			if (bDoBonus && oCast.bonus && oCast.bonus[sUniqueSrcNm]) {
+				// A regular spellcastingBonus object can be processed as usual
+				processSpBonus(false, sUniqueSrcNm, oSpElse.spellcastingBonus, sType, "", "", false, sSpMain);
+				bDoBonus = false;
+			}
+			if (bDoAddToKnown && oCast.bonusElsewhere && oCast.bonusElsewhere[sUniqueSrcNm]) {
+				// Manually added spells to known/spellbook have to be removed manually as well
+				for (var i = 0; i < oCast.bonusElsewhere[sUniqueSrcNm].length; i++) {
+					var sSpell = oCast.bonusElsewhere[sUniqueSrcNm][i];
+					if (oCast.selectCa && oCast.selectCa.indexOf(sSpell) !== -1) {
+						oCast.selectCa.delete(sSpell);
+					} else if (oCast.selectSp && oCast.selectSp.indexOf(sSpell) !== -1) {
+						oCast.selectSp.delete(sSpell);
+					} else if (oCast.selectSpSB && oCast.selectSpSB.indexOf(sSpell) !== -1) {
+						oCast.selectSpSB.delete(sSpell);
+					}
+				}
+				// Reorder the spellbook, as we probably won't have the right array sizes anymore
+				if (oCast.selectSpSB) {
+					// Order the spells by level and name, because that looks nicer
+					var aTotalSelectSp = OrderSpells([].concat(oCast.selectSp).concat(oCast.selectSpSB), "single");
+					// Set the selectSp to the first 20 of the array
+					oCast.selectSp = aTotalSelectSp.slice(0, 20);
+					// Add the rest to selectSpSB
+					if (aTotalSelectSp.length > 20) {
+						oCast.selectSpSB = aTotalSelectSp.slice(20);
+					} else {
+						// If not a spellbook or not enough spells, delete this attribute
+						delete oCast.selectSpSB;
+					};
+				}
+				bDoAddToKnown = false;
+				// Add this as a remark to the Changes dialog
+				CurrentUpdates.types.push("spells");
+				if (!CurrentUpdates.remarks) CurrentUpdates.remarks = [];
+				CurrentUpdates.remarks.push('Because "' + sSrcNm + '" has been removed, the following known spells that were added by it to "' + oCast.name + '" have been removed as well:' + oCast.bonusElsewhere[sUniqueSrcNm].map(function (n) {
+					return "\n    \u25E6 " + SpellsList[n].name;
+				}).join(""));
+				// Delete the bonusElsewhere entry
+				delete oCast.bonusElsewhere[sUniqueSrcNm];
+			}
+			if (!bDoBonus && !bDoAddToKnown) break; // Stop the loop if both are false
+		}
+	}
 }
 
 // set the armour (if more AC than current armour) or remove the armour
@@ -1748,7 +1945,7 @@ function UpdateSheetDisplay() {
 				["Things affecting attack/DC calculations", "You can always see what things are affecting the attack calculations with the small buttons in front of each attack entry on the first page.", "Be aware that things affecting spell attacks and spell save DCs are applied in the attack section and on the spell sheet pages, but not to the 'Ability Save DC' on the first page."],
 				[
 					["Old attack/DC manipulations", this.oldAtkStr],
-					["New attack/DC manipulations", StringEvals("atkStr")]
+					["New attack/DC manipulations", StringEvals(["atkStr", "spellAtkStr"])]
 				],
 				true
 			);
@@ -1756,9 +1953,13 @@ function UpdateSheetDisplay() {
 	}
 
 	// if an addition was done to the 3rd page Notes section or to a Notes page
-	if (CurrentUpdates.notesChanges) {
+	if (CurrentUpdates.notesChanges || CurrentUpdates.remarks) {
 		// get a nice list of the notes changes
-		Changes_Dialog.notesChange = "\u2022 " + CurrentUpdates.notesChanges.join("\n\u2022 ");
+		Changes_Dialog.notesChange = (
+			(CurrentUpdates.remarks ? (CurrentUpdates.notesChanges ? "REMARKS" : "") + desc(CurrentUpdates.remarks, "\n\u2022 ") : "")+
+			(CurrentUpdates.notesChanges ? (CurrentUpdates.remarks ? "\n\nNOTEs ADDITIONS" : "") + desc(CurrentUpdates.notesChanges, "\n\u2022 ") : "")
+		).replace(/^\n+/, "");
+		var sRemarksNoteTitle = (CurrentUpdates.notesChanges && CurrentUpdates.remarks) ? "Remarks and Notes Additions" : CurrentUpdates.remarks ? "Remarks" : "Notes Additions";
 		// make the attack dialog insert
 		dialogParts.push({
 			skipType : "chNO",
@@ -1767,22 +1968,22 @@ function UpdateSheetDisplay() {
 			alignment : "align_fill",
 			width : 500,
 			font : "heading",
-			name : "Notes Addition",
+			name : sRemarksNoteTitle,
 			elements : [{
 				type : "view",
 				align_children : "align_row",
 				alignment : "align_fill",
 				elements : [{
 					type : "static_text",
-					width : 400,
+					width : 410,
 					alignment : "align_fill",
 					font : "dialog",
 					wrap_name : true,
-					name : "A text has been added to the Notes section on the 3rd page and/or a separate Notes page because it didn't fit into the space originally meant for it."
+					name : (CurrentUpdates.remarks ? "An important remark was added by the sheet, click the button to see it.\n" : "") + (CurrentUpdates.notesChanges ? "A text has been added to the Notes section on the 3rd page and/or a separate Notes page because it didn't fit into the space originally meant for it." : "")
 				}, {
 					type : "button",
 					item_id : "bNot",
-					name : "See Addition(s)"
+					name : "See " + sRemarksNoteTitle.replace("and", "&&")
 				}]
 			}, {
 				type : "check_box",
@@ -1794,7 +1995,11 @@ function UpdateSheetDisplay() {
 		});
 		Changes_Dialog.bNot = function (dialog) {
 			ShowCompareDialog(
-				["Things added to the Notes section/page", "You can always edit the text in the Notes section or Notes pages, you don't have to keep it as set by the automation.", 'Class features added to the third page can always be moved to the Class Features section on the second page, it will not interfere with the sheet\'s automation. You will still be able to remove them using the "Choose Feature" button.'],
+				[
+					(CurrentUpdates.notesChanges && CurrentUpdates.remarks) ? "Important Remarks and Things added to Notes section(s)" : CurrentUpdates.remarks ? "ImportantRemarks" : "Things added to Notes section(s)",
+					CurrentUpdates.notesChanges ? "You can always edit the text in the Notes section or Notes pages, you don't have to keep it as set by the automation." : "",
+					CurrentUpdates.notesChanges ? 'Class features added to the third page can always be moved to the Class Features section on the second page, it will not interfere with the sheet\'s automation. You will still be able to remove them using the "Choose Feature" button.' : ""
+				],
 				[
 					["", this.notesChange]
 				],
@@ -1835,7 +2040,7 @@ function UpdateSheetDisplay() {
 				);
 			};
 		}
-		// make the attack dialog insert
+		// make the companion dialog insert
 		dialogParts.push({
 			skipType : "chCO",
 			type : "cluster",
@@ -2626,11 +2831,13 @@ function ParseMagicItemMenu() {
 		},
 		type : {
 			"Armor, shield, AC bonus" : [],
+			Instrument : [],
 			Potion : [],
 			Ring : [],
 			Rod : [],
 			Scroll : [],
 			Staff : [],
+			Tattoo : [],
 			Wand : [],
 			"Wondrous item" : [],
 			Weapon : []
@@ -2642,7 +2849,8 @@ function ParseMagicItemMenu() {
 			"Resistances or immunities" : [],
 			Skills : [],
 			Spells : [],
-			Vision : [],
+			"Spellcasting improvement" : [],
+			Vision : []
 		},
 		source : { namesArr : [] },
 		ref : {}
@@ -2661,11 +2869,12 @@ function ParseMagicItemMenu() {
 			for (var attr in sObj) tObj[attr] = sObj[attr];
 		}
 		var iSrc = tObj.source ? stringSource(tObj, "first,abbr", "(", ")") : false;
-		var itemName = amendSrc(RemoveZeroWidths(!sObj ? iObj.name : sObj.name ? sObj.name : iObj.name + " [" + subItem + "]"), iSrc);
+		var sMainItemName = iObj.sortname ? iObj.sortname : iObj.name;
+		var itemName = amendSrc(RemoveZeroWidths(!sObj ? sMainItemName : sObj.sortname ? sObj.sortname : sObj.name ? sObj.name : sMainItemName + " [" + subItem + "]"), iSrc);
 		var firstLetter = itemName[0].toUpperCase();
 		// If this is a subitem and it has the exact same name as a previously added subitem, we have to make sure it 
 		if (sObj && sObj.name && iMenus.ref[itemName]) {
-			itemName = amendSrc(RemoveZeroWidths(iObj.name + " [" + subItem + "]"), iSrc);
+			itemName = amendSrc(RemoveZeroWidths(sMainItemName + " [" + subItem + "]"), iSrc);
 			firstLetter = itemName[0].toUpperCase();
 		}
 		iMenus.ref[itemName] = subItem ? mainItem + "#" + subItem : mainItem;
@@ -2698,14 +2907,16 @@ function ParseMagicItemMenu() {
 			if ((/weapon|armor|shield/i).test(aType)) continue;
 			if (searchType.indexOf(aType.toLowerCase()) !== -1) {
 				iMenus.type[aType].push(itemName);
-				break;
 			}
 		}
 		if (tObj.scores || tObj.scorestxt || tObj.scoresOverride) {
 			iMenus.special["Ability score increase"].push(itemName);
 		}
-		if (tObj.calcChanges && tObj.calcChanges.hp) {
-			iMenus.special["Hit points"].push(itemName);
+		if (tObj.calcChanges) {
+			if (tObj.calcChanges.hp) iMenus.special["Hit points"].push(itemName);
+			if (tObj.calcChanges.spellAdd || tObj.calcChanges.spellCalc) {
+				iMenus.special["Spellcasting improvement"].push(itemName);
+			}
 		}
 		if (tObj.speed || (/(flying|climbing|burrowing|swimming|walking) speed/i).test(tObj.descriptionFull) || (/of (flying|climbing|burrowing|swimming)/i).test(tObj.name)) {
 			iMenus.special.Movement.push(itemName);
@@ -2716,7 +2927,7 @@ function ParseMagicItemMenu() {
 		if (tObj.skills || tObj.skillstxt || tObj.advantage) {
 			iMenus.special.Skills.push(itemName);
 		}
-		if (tObj.spellcastingBonus || tObj.spellChanges || (tObj.calcChanges && tObj.calcChanges.spellList)) {
+		if (tObj.spellcastingBonus || tObj.spellcastingBonusElsewhere || tObj.spellChanges || (tObj.calcChanges && tObj.calcChanges.spellList)) {
 			iMenus.special.Spells.push(itemName);
 		}
 		if (tObj.vision) {

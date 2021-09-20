@@ -416,7 +416,7 @@ function ToggleWhiteout(toggle) {
 
 function ResetAll(GoOn, noTempl, deleteImports) {
 	var oCk = {
-		cMsg : "Also delete all imported scripts, both files and manual input, as well as the source selection",
+		cMsg : "Also delete all imported scripts, both files and manual input (i.e. permanently delete everything but the SRD content)",
 		bInitialValue : false,
 		bAfterValue : false
 	};
@@ -8202,65 +8202,45 @@ function ConvertToMetric(inputString, rounded, exact) {
 	var rounding = rounded ? rounded : 1;
 	var ratio = exact ? "metricExact" : "metric";
 	var fraction;
-	var INtoCM = function (unit) {
-		return unit * UnitsList[ratio].lengthInch;
-	}
-	var FTtoM = function (unit) {
-		return unit * UnitsList[ratio].length;
-	}
-	var MILEtoKM = function (unit) {
-		return unit * UnitsList[ratio].distance;
-	}
-	var CUFTtoM = function (unit) {
-		return unit * UnitsList[ratio].volume;
-	}
-	var SQFTtoM = function (unit) {
-		return unit * UnitsList[ratio].surface;
-	}
-	var LBtoKG = function (unit) {
-		return unit * UnitsList[ratio].mass;
-	}
-	var GALtoL = function (unit) {
-		return unit * UnitsList[ratio].liquid;
-	}
-	var FtoC = function (unit) {
-		return (unit - 32) * 5/9;
-	}
 
 	var theConvert = function (amount, units) {
 		amount = Number(amount);
 		var total, unit, isRounded;
 		switch (units){
 		 case "mile" : case "miles" :
-			total = MILEtoKM(amount);
+			total = amount * UnitsList[ratio].distance;
 			unit = "km";
 			break;
 		 case "ft" : case "foot" : case "feet" : case "'" :
-			total = FTtoM(amount);
+			total = amount * UnitsList[ratio].length;
 			unit = "m";
 			break;
 		 case "in" : case "inch" : case "inches" : case '"' :
-			total = INtoCM(amount);
+			total = amount * UnitsList[ratio].lengthInch;
 			unit = "cm";
 			break;
 		 case "cu ft" : case "cubic foot" : case "cubic feet" :
-			total = CUFTtoM(amount);
+			total = amount * UnitsList[ratio].volume;
 			unit = "m3";
 			break;
 		 case "sq ft" : case "square foot" : case "square feet" :
-			total = SQFTtoM(amount);
+			total = amount * UnitsList[ratio].surface;
 			unit = "m2";
 			break;
 		 case "lb" : case "lbs" : case "pound" : case "pounds" :
-			total = LBtoKG(amount);
+			total = amount * UnitsList[ratio].mass;
 			unit = "kg";
 			break;
 		 case "gal" : case "gallon" : case "gallons" :
-			total = GALtoL(amount);
+			total = amount * UnitsList[ratio].liquid;
+			unit = "L";
+			break;
+		 case "qt" : case "qts" : case "quart" : case "quarts" :
+			total = amount * UnitsList[ratio].liquidQuart;
 			unit = "L";
 			break;
 		 case "\u00B0 f" : case "\u00B0f" : case "degree fahrenheit" : case "degrees fahrenheit" : case "fahrenheit" :
-			total = RoundTo(FtoC(amount), exact ? 0.01 : 1, false, true);
+			total = RoundTo((amount - 32) * 5/9, exact ? 0.01 : 1, false, true);
 			unit = "\u00B0C";
 			isRounded = true;
 			break;
@@ -8269,7 +8249,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|(in|inch|inches|miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?|gal|gallons?|\u00B0 ?f|degrees? fahrenheit|fahrenheit)\b)/ig);
+	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|(in|inch|inches|miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?|gal|gallons?|qts?|quarts?|\u00B0 ?f|degrees? fahrenheit|fahrenheit)\b)/ig);
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
@@ -8314,28 +8294,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 	var rounding = rounded ? rounded : 1;
 	var fraction;
 	var INofCM = function (unit) {
-		return unit / UnitsList[ratio].lengthInch;
-	}
-	var FTofM = function (unit) {
-		return unit / UnitsList[ratio].length;
-	}
-	var MILEofKM = function (unit) {
-		return unit / UnitsList[ratio].distance;
-	}
-	var CUFTofM = function (unit) {
-		return unit / UnitsList[ratio].volume;
-	}
-	var SQFTofM = function (unit) {
-		return unit / UnitsList[ratio].surface;
-	}
-	var LBofKG = function (unit) {
-		return unit / UnitsList[ratio].mass;
-	}
-	var LofGAL = function (unit) {
-		return unit / UnitsList[ratio].liquid;
-	}
-	var CofF = function (unit) {
-		return (unit * 9/5) + 32;
+		return unit;
 	}
 
 	var theConvert = function (amount, units) {
@@ -8344,39 +8303,44 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 		switch (units){
 		 case "cm" :
 			if (amount < 30) {
-				total = INofCM(amount);
+				total = amount / UnitsList[ratio].lengthInch;
 				unit = "in";
 				break;
 			}
 			amount = amount / 100;
 		 case "m" : case "meter" : case "meters" : case "metre" : case "metres" :
-			total = FTofM(amount);
+			total = amount / UnitsList[ratio].length;
 			unit = "ft";
 			break;
 		 case "km" :
-			total = MILEofKM(amount);
+			total = amount / UnitsList[ratio].distance;
 			unit = total === 1 ? "mile" : "miles";
 			break;
 		 case "m3" : case "cubic meter" : case "cubic meters" : case "cubic metre" : case "cubic metres" :
-			total = CUFTofM(amount);
+			total = amount / UnitsList[ratio].volume;
 			unit = "cu ft";
 			break;
 		 case "m2" : case "square metre" : case "square metres" : case "square meter" : case "square meters" :
-			total = SQFTofM(amount);
+			total = amount / UnitsList[ratio].surface;
 			unit = "sq ft";
 			break;
 		 case "g" :
 			amount = amount / 1000;
 		 case "kg" : case "kilo" : case "kilos" :
-			total = LBofKG(amount);
+			total = amount / UnitsList[ratio].mass;
 			unit = "lb";
 			break;
 		 case "l" : case "liter" : case "liters" : case "litre" : case "litres" :
-			total = LofGAL(amount);
+			if (amount <= 3) {
+				total = amount / UnitsList[ratio].liquidQuart;
+				unit = "qt";
+				break;
+			}
+			total = amount / UnitsList[ratio].liquid;
 			unit = "gal";
 			break;
 		 case "\u00B0 c" : case "\u00B0c" : case "degree celcius" : case "degrees celcius" : case "celcius" :
-			total = RoundTo(CofF(amount), exact ? 0.01 : 1, false, true);
+			total = RoundTo((amount * 9/5) + 32, exact ? 0.01 : 1, false, true);
 			unit = "\u00B0F";
 			isRounded = true;
 			break;
@@ -8933,7 +8897,7 @@ function MakeAttackLineMenu_AttackLineOptions(MenuSelection, itemNmbr, prefix) {
 			ApplyAttackColor(itemNmbr, MenuSelection[2], Q, prefix);
 			break;
 		case "showcalcs" :
-			var atkCalcStr = StringEvals("atkStr");
+			var atkCalcStr = StringEvals(["atkStr", "spellAtkStr"]);
 			if (atkCalcStr) ShowDialog("Things Affecting the Attack Automation", atkCalcStr);
 			break;
 	}

@@ -115,7 +115,8 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	// set the firstCol attribute so the CurrentEval can change it
 	aSpell.firstCol = firstCol ? firstCol : aSpell.firstCol ? aSpell.firstCol : "";
 	// If this spell is gained from an item, remove components
-	if (aCast && (aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
+	var bIsMagicItemComponent = aCast && (aCast.typeSp === "item" || (aCast.refType && aCast.refType === "item")) && aCast.magicItemComponents === undefined ? true : false;
+	if (bIsMagicItemComponent || (aCast && aCast.magicItemComponents)) {
 		aSpell.components = "M\u0192";
 		aSpell.compMaterial = "Spells cast by magic items don't require any components other than the magic item itself.";
 		aDescrAttr.forEach (function (attr) {
@@ -178,26 +179,29 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	}
 
 	if (CurrentEvals.spellAdd && CurrentCasters.allowSpellAdd) {
-		for (var aFunct in CurrentEvals.spellAdd) {
-			var theFunct = CurrentEvals.spellAdd[aFunct];
-			if (typeof theFunct !== 'function') continue;
+		for (var i = 0; i < CurrentEvals.spellAddOrder.length; i++) {
+			var evalName = CurrentEvals.spellAddOrder[i][1];
+			var evalThing = CurrentEvals.spellAdd[evalName];
+			if (!evalThing || typeof evalThing !== 'function') continue;
 			var didChange = false;
-			var changeHead = "Changes by " + aFunct;
+			var changeHead = "Changes by " + evalName;
 			try {
-				didChange = theFunct(theSpl, aSpell, aCast ? theCast : "", noOverrides ? true : false);
+				didChange = evalThing(theSpl, aSpell, aCast ? theCast : "", noOverrides ? true : false);
 			} catch (error) {
-				var eText = "The custom function for changing spell attributes from '" + aFunct + "' produced an error while processing the spell '" + theSpl + "'. The custom function will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				var eText = "The custom function for changing spell attributes from '" + evalName + "' produced an error while processing the spell '" + theSpl + "'. The custom function will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
-				delete CurrentEvals.spellAdd[aFunct];
+				delete CurrentEvals.spellAdd[evalName];
+				CurrentEvals.spellAddOrder.splice(i, 1);
+				i--;
 				didChange = false;
 			}
-			if (didChange && CurrentEvals.spellStr && CurrentEvals.spellStr[aFunct]) {
+			if (didChange && CurrentEvals.spellStr && CurrentEvals.spellStr[evalName]) {
 				if (!aSpell.changesObj[changeHead]) {
-					aSpell.changesObj[changeHead] = CurrentEvals.spellStr[aFunct];
+					aSpell.changesObj[changeHead] = CurrentEvals.spellStr[evalName];
 				} else {
-					aSpell.changesObj[changeHead] += CurrentEvals.spellStr[aFunct];
+					aSpell.changesObj[changeHead] += CurrentEvals.spellStr[evalName];
 				}
 			}
 		}
@@ -797,23 +801,26 @@ function CalcSpellScores() {
 	if (CurrentEvals.spellCalc) {
 		var abiScoreNo = tDoc.getField(modFldName).currentValueIndices;
 		var classArray = cSpells ? [aClass] : [];
+		if (cSpells && cSpells.ability && isNaN(cSpells.ability) && CurrentSpells[cSpells.ability]) classArray.push(cSpells.ability);
 
-		for (var spCalc in CurrentEvals.spellCalc) {
-			var evalThing = CurrentEvals.spellCalc[spCalc];
+		for (var i = 0; i < CurrentEvals.spellCalcOrder.length; i++) {
+			var evalName = CurrentEvals.spellCalcOrder[i][1];
+			var evalThing = CurrentEvals.spellCalc[evalName];
+			if (!evalThing || typeof evalThing !== 'function') continue;
 			try {
-				if (typeof evalThing == 'function') {
-					for (var aType in theResult) {
-						if ((fixedDC && aType != "prepare") || (aType == "prepare" && !isPrepareVis)) continue;
-						var addSpellNo = evalThing(aType, classArray, abiScoreNo);
-						if (!isNaN(addSpellNo)) theResult[aType] += Number(addSpellNo);
-					}
+				for (var aType in theResult) {
+					if ((fixedDC && aType != "prepare") || (aType == "prepare" && !isPrepareVis)) continue;
+					var addSpellNo = evalThing(aType, classArray, abiScoreNo);
+					if (!isNaN(addSpellNo)) theResult[aType] += Number(addSpellNo);
 				}
 			} catch (error) {
-				var eText = "The custom spell attack/DC (spellCalc) script from '" + spCalc + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				var eText = "The custom spell attack/DC (spellCalc) script from '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
-				delete CurrentEvals.spellCalc[spCalc];
+				delete CurrentEvals.spellCalc[evalName];
+				CurrentEvals.spellCalcOrder.splice(i, 1);
+				i--;
 			}
 		}
 	}
@@ -974,24 +981,25 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 	}
 	inputObject = newObj(inputObject);
 	if (!inputObject.extraspells) inputObject.extraspells = [];
+	inputObject.psionic = inputObject.psionic === undefined ? false : typeof inputObject.psionic === "string" ? inputObject.psionic.toLowerCase() : inputObject.psionic;
 	if (extraArray) inputObject.extraspells = inputObject.extraspells.concat(extraArray);
 
 	//first run the custom code injected by a feature
 	if (CurrentEvals.spellList && objName !== undefined && objType !== undefined) {
-		for (var spellListEval in CurrentEvals.spellList) {
-			var evalThing = CurrentEvals.spellList[spellListEval];
+		for (var i = 0; i < CurrentEvals.spellListOrder.length; i++) {
+			var evalName = CurrentEvals.spellListOrder[i][1];
+			var evalThing = CurrentEvals.spellList[evalName];
+			if (!evalThing || typeof evalThing !== 'function') continue;
 			try {
-				if (typeof evalThing == 'function') {
-					evalThing(inputObject, objName, objType);
-				} else {
-					throw "Not a function";
-				}
+				evalThing(inputObject, objName, objType);
 			} catch (error) {
-				var eText = "The custom calcChange.spellList function '" + spellListEval + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				var eText = "The custom calcChange.spellList function '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();
-				delete CurrentEvals.spellList[spellListEval];
+				delete CurrentEvals.spellList[evalName];
+				CurrentEvals.spellListOrder.splice(i, 1);
+				i--;
 			}
 		}
 	}
@@ -1055,7 +1063,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 		if (addSp && inputObject.ritual !== undefined) {
 			addSp = aSpell.ritual ? aSpell.ritual == inputObject.ritual : !inputObject.ritual;
 		}
-		if (addSp && inputObject.psionic !== undefined) {
+		if (addSp && inputObject.psionic !== "all") {
 			addSp = aSpell.psionic ? aSpell.psionic == inputObject.psionic : !inputObject.psionic;
 		}
 		if (addSp) {
@@ -3712,6 +3720,15 @@ function MakeSpellMenu() {
 		}]);
 	}
 
+	// An option to see the CurrentEvals explanations
+	spellsMenu = spellsMenu.concat([{
+		cName : "-"
+	}, {
+		cName : "Show things changing the spell automations",
+		cReturn : "ssheet#showcalcs",
+		bEnabled : ObjLength(CurrentEvals.spellStr) ? true : false
+	}]);
+
 	Menus.spells = spellsMenu;
 };
 
@@ -3806,6 +3823,10 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 		break;
 	 case "spellpoints" :
 		ToggleSpellPoints();
+		break;
+	 case "showcalcs" :
+		var sSpellEvals = StringEvals(["spellStr", "spellAtkStr"]);
+		if (sSpellEvals) ShowDialog("Things Affecting the Spell Automation", sSpellEvals);
 		break;
 	};
 };
@@ -5372,7 +5393,7 @@ function setSpellVariables(reDoAll) {
 		AllPsionicClasses = false;
 		AllCasterClasses = false;
 	};
-	var spellListAll = CreateSpellList({class : "any"}, true, false, false, undefined, undefined, true);
+	var spellListAll = CreateSpellList({class : "any", psionic : "all"}, true, false, false, undefined, undefined, true);
 	AllSpellsArray = spellListAll[0];
 	AllSpellsObject = CreateSpellObject(spellListAll);
 	AllPsionicsArray = CreateSpellList({class : "any", psionic : true}, true);
@@ -5520,9 +5541,21 @@ function getSpellcastingAbility(theCast) {
 	var spObj = CurrentSpells[theCast];
 	var casterArray = [];
 	var testFixedDC = (/race|class/i).test(spObj.abilityBackup);
+	var bContinueAsClass = false;
+	if (spObj && spObj.ability && isNaN(spObj.ability) && !(/race|class/i).test(spObj.ability) && spObj.ability !== theCast) {
+		// It is a string, but not "race" or "class", so it must be made to match another
+		// Make sure it doesn't match this CurrentSpells entry name to avoid recursion
+		if (CurrentSpells[spObj.ability] && CurrentSpells[spObj.ability].ability && CurrentSpells[spObj.ability].ability !== theCast) {
+			return !isNaN(CurrentSpells[spObj.ability].ability) ? [CurrentSpells[spObj.ability].ability, [spObj.ability]] : getSpellcastingAbility(spObj.ability);
+		} else {
+			// No match found, so continue as if it would've said "class"
+			testFixedDC = true;
+			bContinueAsClass = true;
+		}
+	}
 	if (spObj && spObj.ability && !isNaN(spObj.ability)) {
 		spAbility = Number(spObj.ability);
-	} else if (spObj && spObj.ability == "class") {
+	} else if (spObj && (spObj.ability == "class" || bContinueAsClass)) {
 		var abiModArr = ["", "Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
 		for (aCast in CurrentSpells) {
 			// Test if this CurrentSpells entry is a class with spellcasting abilities

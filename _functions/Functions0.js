@@ -201,7 +201,11 @@ function setPrototypes() {
 		return this.toString().replace(regexp_substr, newSubStr_function);
 	};
 	Array.prototype.search = function (regexpObj) {
-		return this.toString().search(regexpObj);
+		if (regexpObj instanceof RegExp !== true) regexpObj = regexpObj.toString().RegEscape();
+		for (var i = 0; i < this.length; i++) {
+			if (this[i].toString().search(regexpObj) !== -1) return i;
+		}
+		return -1;
 	};
 	Array.prototype.split = function (separator, limit) {
 		return this.toString().split(separator, limit);
@@ -228,6 +232,10 @@ function setPrototypes() {
 			}
 		}
 		return index;
+	};
+	Array.prototype.delete = function (del) {
+		var iIndx = this.search(del);
+		return iIndx === -1 ? -1 : this.splice(iIndx, 1);
 	};
 };
 setPrototypes();

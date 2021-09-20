@@ -190,7 +190,8 @@ var Base_ClassList = {
 								}
 							}
 						},
-						"I can roll one additional damage die for the extra damage on a critical hit with a melee weapon attack. This increased to 2 additional dice as a 13th-level barbarian, and to 3 additional dice as a 17th-level barbarian."
+						"I can roll one additional damage die for the extra damage on a critical hit with a melee weapon attack. This increased to 2 additional dice as a 13th-level barbarian, and to 3 additional dice as a 17th-level barbarian.",
+						900
 					]
 				}
 			},
@@ -739,6 +740,7 @@ var Base_ClassList = {
 					atkAdd : [
 						function (fields, v) {
 							if (classes.known.monk && classes.known.monk.level && (v.theWea.monkweapon || v.baseWeaponName == "unarmed strike" || v.baseWeaponName == "shortsword" || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/heavy|((^|[^+-]\b)2|\btwo).?hand(ed)?s?/i).test(fields.Description)))) {
+								v.theWea.monkweapon = true;
 								var aMonkDie = function (n) { return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10; }(classes.known.monk.level);
 								try {
 									var curDie = eval_ish(fields.Damage_Die.replace('d', '*'));
@@ -753,7 +755,8 @@ var Base_ClassList = {
 								}
 							};
 						},
-						"I can use either Strength or Dexterity and my Martial Arts damage die in place of the normal damage die for any 'Monk Weapons', which include unarmed strike, shortsword, and any simple melee weapon that is not two-handed or heavy."
+						"I can use either Strength or Dexterity and my Martial Arts damage die in place of the normal damage die for any 'Monk Weapons', which include unarmed strike, shortsword, and any simple melee weapon that is not two-handed or heavy.",
+						5
 					]
 				}
 			},
@@ -1454,7 +1457,8 @@ var Base_ClassList = {
 								fields.Description += (fields.Description ? '; ' : '') + 'Sneak attack ' + v.sneakAtk + 'd6';
 							};
 						},
-						"Once per turn, when I attack with a ranged or finesse weapon while I have advantage or an conscious ally is within 5 ft of the target, I can add my sneak attack damage to the attack."
+						"Once per turn, when I attack with a ranged or finesse weapon while I have advantage or an conscious ally is within 5 ft of the target, I can add my sneak attack damage to the attack.",
+						700
 					]
 				}
 			},
@@ -1839,7 +1843,7 @@ var Base_ClassList = {
 					eval : function() {
 						CurrentSpells['warlock-book of ancient secrets'] = {
 							name : 'Book of Ancient Secrets',
-							ability : 6,
+							ability : 'warlock',
 							list : {class : 'any', ritual : true},
 							known : {spells : 'book'},
 							refType : "feat"
@@ -2239,7 +2243,8 @@ var Base_ClassList = {
 								if (v.theWea.pactWeapon || ((v.isMeleeWeapon || v.theWea.isMagicWeapon || v.thisWeapon[1]) && (/\bpact\b/i).test(v.WeaponTextName))) {
 									v.pactWeapon = true;
 								}
-							}, ""
+							}, "",
+							90
 						],
 						atkAdd : [
 							function (fields, v) {
@@ -2249,7 +2254,8 @@ var Base_ClassList = {
 									if (!v.theWea.isMagicWeapon && !v.thisWeapon[1] && !(/counts as( a)? magical/i).test(fields.Description)) fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
 								};
 							},
-							"If I include the word 'Pact' in a melee or magic weapon's name, it gets treated as my Pact Weapon."
+							"If I include the word 'Pact' in a melee or magic weapon's name, it gets treated as my Pact Weapon.",
+							290
 						]
 					}
 				},
@@ -2721,7 +2727,8 @@ var Base_ClassSubList = {
 								v.CritChance = 19;
 							};
 						},
-						"My weapon attacks score a critical on a to hit roll of both 19 and 20."
+						"My weapon attacks score a critical on a to hit roll of both 19 and 20.",
+						19
 					]
 				}
 			},
@@ -2758,7 +2765,8 @@ var Base_ClassSubList = {
 								v.CritChance = 18;
 							};
 						},
-						"My weapon attacks also score a critical on a to hit roll of 18."
+						"My weapon attacks also score a critical on a to hit roll of 18.",
+						18
 					]
 				}
 			},

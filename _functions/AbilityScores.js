@@ -1,6 +1,8 @@
 // a function to set ability scores to the global variable
-function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpecial, alsoHasMax) {
-	if (!scoresA) scoresA = [];
+function processStats(AddRemove, inType, NameEntity, inScoresA, dialogTxt, isSpecial, inAlsoHasMax, maxIsLimitToNow) {
+	// Redo the arrays, so that they are no longer a reference
+	var scoresA = inScoresA && isArray(inScoresA) ? [].concat(inScoresA) : [];
+	var alsoHasMax = inAlsoHasMax && isArray(inAlsoHasMax) ? [].concat(inAlsoHasMax) : false;
 	// initialize some variables
 	initiateCurrentStats();
 	if (isSpecial && !CurrentStats[isSpecial]) return; // the special type doesn't exist
@@ -22,9 +24,27 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpeci
 	} else if (!curStat) {
 		return;
 	}
-	var imprTxtArr = [];
+	var imprTxtArr = [], saveMaximumsLimited;
 	// Set the ability score changes to the CurrentStats global variable
 	for (var s = 0; s < scoresA.length; s++) {
+		if (AddRemove && maxIsLimitToNow && alsoHasMax && scoresA[s] && alsoHasMax[s]) {
+			/* Only add the bonus up to the maximum listed, or less if possible
+			e.g. the text reads "score increases by 2, to a maximum of 22", thus:
+				- if the score is now 18 or less, add 2 but add no maximum
+				- if the score is now 19, add 2, and set the max to 21
+				- if the score is now 20 or more, add 2 and set the max to 22 (no change)
+			Save this addition to an object and use that object to remove the addition when the time comes.
+			*/
+			var iCurScore = Number(What(AbilityScores.abbreviations[s]));
+			if (iCurScore + scoresA[s] < alsoHasMax[s]) {
+				alsoHasMax[s] = iCurScore + scoresA[s] > 20 ? iCurScore + scoresA[s] : 0;
+				saveMaximumsLimited = "save";
+			}
+		} else if (s === 0 && !AddRemove && maxIsLimitToNow && alsoHasMax && CurrentStats.maximumsLimited && CurrentStats.maximumsLimited[NameEntity]) {
+			// When removing, on the first stat, if a reference was saved, update the array with the saved values and signal to delete the save later
+			alsoHasMax = [].concat(CurrentStats.maximumsLimited[NameEntity]);
+			saveMaximumsLimited = "remove";
+		}
 		if (type === "race") curStat.scores[s] = 0;
 		if (!scoresA[s]) continue;
 		if (AddRemove && !dialogTxt && s < 7) {
@@ -42,11 +62,17 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpeci
 			}
 			// now set the new highest override/maximum
 			curStat.scores[s] = 0;
+			var aMods = [];
 			for (var a in CurrentStats[isSpecial][s]) {
 				var thisStat = CurrentStats[isSpecial][s][a];
-				if (thisStat > curStat.scores[s]) curStat.scores[s] = thisStat;
+				if (isNaN(thisStat.substring(0,1)) && !isNaN(thisStat.substring(1))) {
+					aMods.push(thisStat);
+				} else if (!isNaN(thisStat) && thisStat > curStat.scores[s]) {
+					curStat.scores[s] = Number(thisStat);
+				}
 			}
 			if (type === "maximum" && !curStat.scores[s]) curStat.scores[s] = 20;
+			if (aMods.length) curStat.scores[s] = processModifiers(curStat.scores[s], aMods);
 		} else {
 			if (AddRemove) {
 				curStat.scores[s] += scoresA[s];
@@ -55,33 +81,46 @@ function processStats(AddRemove, inType, NameEntity, scoresA, dialogTxt, isSpeci
 			}
 		}
 	}
-	// remember the ability score change for those items that also change the maximum
-	if (alsoHasMax) {
-		if (AddRemove) {
-			CurrentStats.maximumsLinked[NameEntity] = scoresA;
-		} else {
-			delete CurrentStats.maximumsLinked[NameEntity];
-		}
+	// If we changed the input scores or scoresMaximum arrays, save it to a safe place
+	if (saveMaximumsLimited === "save") {
+		// in case the object was imported from older version
+		if (!CurrentStats.maximumsLimited) CurrentStats.maximumsLimited = {};
+		CurrentStats.maximumsLimited[NameEntity] = alsoHasMax;
+	} else if (saveMaximumsLimited === "remove") {
+		delete CurrentStats.maximumsLimited[NameEntity];
 	}
+	// Perhaps there is no maximum to proceed with anymore. If so, flag it as false
+	if (alsoHasMax && alsoHasMax.reduce(function(acc, val) { return acc + val; }, 0) === 0) alsoHasMax = false;
 	// Set the descriptive text to the CurrentStats global variable
-	var useDialogTxt = dialogTxt ? dialogTxt : formatLineList("", imprTxtArr);
 	if (AddRemove) {
+		var useDialogTxt = dialogTxt ? dialogTxt : formatLineList("", imprTxtArr);
 		// If the entry doesn't already exist or doesn't contain the text, add it
 		if (!CurrentStats.txts[inType][NameEntity] || CurrentStats.txts[inType][NameEntity].indexOf(useDialogTxt) === -1) {
 			CurrentStats.txts[inType][NameEntity] = (!dialogTxt && CurrentStats.txts[inType][NameEntity] ? CurrentStats.txts[inType][NameEntity] + "; " : "") + useDialogTxt;
-		} else if (!dialogTxt && CurrentStats.txts[inType][NameEntity].indexOf(useDialogTxt) !== -1) {
+		} else if (!dialogTxt && !alsoHasMax && CurrentStats.txts[inType][NameEntity].indexOf(useDialogTxt) !== -1) {
 			// If the entry already exists and contains the exact text that we are about to add, which isn't predetermined, skip it entirely
 			CurrentStats = eval(What("CurrentStats.Stringified"));
 			return;
 		}
 	} else {
 		delete CurrentStats.txts[inType][NameEntity];
+		if (type === "background" && !ObjLength(CurrentStats.txts.background) && Number(curStat.scores.join("")) === 0) {
+			CurrentStats.cols.splice(i, 1);
+		}
 	}
-	if (!AddRemove && type === "background" && !ObjLength(CurrentStats.txts.background) && Number(curStat.scores.join("")) === 0) {
-		CurrentStats.cols.splice(i, 1);
+	// Remember the ability score change for those items that also change the maximum and do their maximum change now as well
+	if (alsoHasMax) {
+		if (AddRemove) {
+			CurrentStats.maximumsLinked[NameEntity] = scoresA;
+		} else {
+			delete CurrentStats.maximumsLinked[NameEntity];
+		}
+		processStats(AddRemove, inType, NameEntity, alsoHasMax, dialogTxt, "maximums", false);
+	} else {
+		// Only do this once, either now or with the above processStats call if there are also maximums
+		SetStringifieds("stats");
+		CurrentUpdates.types.push("stats" + inType);
 	}
-	SetStringifieds("stats");
-	CurrentUpdates.types.push("stats" + inType);
 }
 
 // a function to initiate the global variable if it doesn't yet exist
@@ -135,7 +174,8 @@ function initiateCurrentStats(forceIt) {
 		},
 		"overrides" : [{},{},{},{},{},{},{}],
 		"maximums" :  [{},{},{},{},{},{},{}],
-		"maximumsLinked" : {}
+		"maximumsLinked" : {},
+		"maximumsLimited" : {}
 	}
 	SetStringifieds("stats");
 }
@@ -506,46 +546,61 @@ function AbilityScores_Button(onlySetTooltip) {
 						if (thisCol.type == "items") fromItems += itsVal;
 					}
 				}
-				var theOverrides = Math.max.apply(Math, theOverrides);
+				var theOverride = Math.max.apply(Math, theOverrides);
 				var toSet = 0;
 				if (!fromItems) {
 					// no magic items involved that both add stats and have an override
-					toSet = theOverrides >= theTotal ? theOverrides : Math.min(theMax, theTotal);
+					toSet = theOverride >= theTotal ? theOverride : Math.min(theMax, theTotal);
 				} else {
-					// see what magic item bonuses we should stack with the overrides
+					// See what magic item bonuses we should stack with the overrides
 					var itemRef = fromItems;
 					var refObj = { lists : [] };
 					var otherMaxes = [];
 					var alsoAddTheMax = true;
+
+					// Loop through all the maximums by name for this stat
 					for (var aMax in CurrentStats.maximums[indx]) {
 						var thisMax = CurrentStats.maximums[indx][aMax];
+						// If this maximum is a modifier, just use the total maximum
+						if (isNaN(thisMax.substring(0,1)) && !isNaN(thisMax.substring(1))) thisMax = theMax;
 						if (!CurrentStats.txts.items[aMax]) {
+							// Not a magic item, so add it to maximums from other sources
 							otherMaxes.push(thisMax);
 							continue;
 						}
+						// If the item added both a max and a bonus for this stat, remove its bonus from the itemRef and save a reference to it for later
 						var thisMaxAddition = CurrentStats.maximumsLinked[aMax];
 						if (!thisMaxAddition || !thisMaxAddition[indx]) continue;
 						var thisMaxName = ("0" + thisMax).slice(-2) + aMax;
-						refObj.lists.push(thisMaxName);
+						refObj.lists.push(thisMaxName); // So we can sort it by size later
 						refObj[thisMaxName] = [thisMaxAddition[indx], thisMax];
 						itemRef -= thisMaxAddition[indx];
 						if (alsoAddTheMax && thisMax === theMax) alsoAddTheMax = false;
 					}
+					// If there are maximums from other sources, recalculate the max we should use going forward
 					if (alsoAddTheMax) otherMaxes.push(theMax);
 					if (otherMaxes.length) theMax = Math.max.apply(Math, otherMaxes);
-					// now create the base as we removed all the magic item bonuses that bring it above 20
-					var baseRef = Math.min(theTotal - fromItems, theMax);
-					var baseWithItems = Math.min(baseRef + itemRef, 20);
+
+					// Now create the base as we removed all the magic item bonuses that bring it above 20
+					// use the highest of the baseRef (no items) and the baseWithItems (items that didn't increase the max)
+					var baseRef = Math.min(theTotal - fromItems, theMax); 
+					var baseWithItems = Math.min(baseRef + itemRef, 20); // items that didn't set a max, can only increase up to 20
 					if (baseWithItems > baseRef) baseRef = baseWithItems;
-					var overRef = Math.min(theOverrides + itemRef, Math.max(alsoAddTheMax ? theMax : 20, theOverrides));
-					var baseNew = baseRef;
-					// next iterate through all the ones that increase the maximum, starting with the lowest maximum
+					// the 'override' value to start with, considering that magic item bonuses stack with magic item overrides
+					var overRef = Math.min(theOverride + itemRef, Math.max(alsoAddTheMax ? theMax : 20, theOverride));
+
+					// Next iterate through all the ones that increase the maximum, starting with the lowest maximum
+					// Only adding the bonus for this magic item, if the other 
 					refObj.lists.sort();
+					var baseNew = baseRef;
 					for (var s = 0; s < refObj.lists.length; s++) {
 						var sAdd = refObj[refObj.lists[s]];
+						// Increase the base with its own bonus up to its own maximum
 						baseNew = Math.max(baseRef, Math.min(baseNew + sAdd[0], sAdd[1]));
-						overRef = Math.min(overRef + sAdd[0], Math.max(sAdd[1], theOverrides));
+						// Get the overRef by getting the lowest of the override + this magic item bonus compared with (its own maximum or the total override, whichever is higher)
+						overRef = Math.min(overRef + sAdd[0], Math.max(sAdd[1], theOverride));
 					}
+					// The total to set is the highest of the base and the override
 					toSet = Math.max(baseNew, overRef);
 				}
 				var totalLoad = {};
