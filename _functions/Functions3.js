@@ -794,14 +794,14 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 	if (!sObj.ability) sObj.ability = ReturnSpellcastingAbility(fObjName, fObj.spellcastingAbility ? fObj.spellcastingAbility : fObj.abilitySave ? fObj.abilitySave : 0);
 	if (!sObj.fixedDC && fObj.fixedDC) sObj.fixedDC = Number(fObj.fixedDC);
 	if (!sObj.fixedSpAttack && fObj.fixedSpAttack) sObj.fixedSpAttack = Number(fObj.fixedSpAttack);
-	if (!sObj.allowUpCasting === undefined && fObj.allowUpCasting !== undefined) sObj.allowUpCasting = fObj.allowUpCasting;
-	if (!sObj.magicItemComponents === undefined && fObj.magicItemComponents !== undefined) sObj.magicItemComponents = fObj.magicItemComponents;
+	if (sObj.allowUpCasting === undefined && fObj.allowUpCasting !== undefined) sObj.allowUpCasting = fObj.allowUpCasting;
+	if (sObj.magicItemComponents === undefined && fObj.magicItemComponents !== undefined) sObj.magicItemComponents = fObj.magicItemComponents;
 	if (fObjP) {
 		if (!sObj.ability) sObj.ability = ReturnSpellcastingAbility(fObjName, fObjP.spellcastingAbility ? fObjP.spellcastingAbility : fObjP.abilitySave ? fObjP.abilitySave : 0);
 		if (!sObj.fixedDC && fObjP.fixedDC) sObj.fixedDC = Number(fObjP.fixedDC);
 		if (!sObj.fixedSpAttack && fObjP.fixedSpAttack) sObj.fixedSpAttack = Number(fObjP.fixedSpAttack);
-		if (!sObj.allowUpCasting === undefined && fObjP.allowUpCasting !== undefined) sObj.allowUpCasting = fObjP.allowUpCasting;
-		if (!sObj.magicItemComponents === undefined && fObjP.magicItemComponents !== undefined) sObj.magicItemComponents = fObjP.magicItemComponents;
+		if (sObj.allowUpCasting === undefined && fObjP.allowUpCasting !== undefined) sObj.allowUpCasting = fObjP.allowUpCasting;
+		if (sObj.magicItemComponents === undefined && fObjP.magicItemComponents !== undefined) sObj.magicItemComponents = fObjP.magicItemComponents;
 	}
 	if (!sObj.abilityToUse) sObj.abilityToUse = getSpellcastingAbility(fObjName);
 	return sObj;

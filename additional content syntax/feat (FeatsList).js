@@ -231,7 +231,7 @@ FeatsList["purple power"] = {
 	the character level and Charisma Modifier.
 
 	If this attribute is present, the 'description' attribute will be useless.
-	Remember that the 'description' attribute is still requires, so you might just want to set it to an empty string:
+	Remember that the 'description' attribute is still required, so you might just want to set it to an empty string:
 		description : "",
 */
 

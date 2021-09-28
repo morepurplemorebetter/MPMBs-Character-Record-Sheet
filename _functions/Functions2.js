@@ -4061,8 +4061,8 @@ function updateVersionBkmrk() {
 function Publish(version, preRelease, build, forPatreon) {
 	if (app.viewerType !== "Reader") {
 		tDoc.info.SheetVersion = version;
-		tDoc.info.SheetVersionType = preRelease ? preRelease : undefined;
-		tDoc.info.SheetVersionBuild = build ? build : undefined;
+		tDoc.info.SheetVersionType = preRelease;
+		tDoc.info.SheetVersionBuild = build;
 	}
 	semVers = getSemVers(version, preRelease, build);
 	sheetVersion = semVersToNmbr(semVers);
@@ -6365,6 +6365,9 @@ function CalcAttackDmgHit(fldName) {
 				i--;
 			}
 		}
+
+		// The useSpellMod might've been changed
+		fixedCaster = theWea.useSpellMod && CurrentSpells[theWea.useSpellMod] ? CurrentSpells[theWea.useSpellMod] : false;
 	};
 
 	// Add the BlueText field value of the corresponding spellcasting class
@@ -6881,22 +6884,38 @@ function AddToModFld(Fld, Mod, Remove, NameEntity, Explanation) {
 	if (!tDoc.getField(Fld)) return;
 	var aFld = What(Fld);
 	var setFld = "";
-	if (!isNaN(Mod)) {
+	var bContinueWithString = true;
+	if (!isNaN(Mod)) { // a static number
 		Mod = Remove ? -1 * Mod : Number(Mod);
 		var noRegEx = /((^|\+|[^*/]-)\d+)(?:($|\+|-))/;
 		if (!isNaN(aFld)) {
 			setFld = Number(aFld) + Mod;
-		} else if ((noRegEx).test(aFld)) {
+		} else if (noRegEx.test(aFld)) {
 			var FldNum = Number(aFld.match(noRegEx)[1]);
 			var FldNumNew = FldNum + Mod;
 			setFld = aFld.replace(noRegEx, (FldNumNew < 0 ? "" : "+") + FldNumNew + "$3");
 		} else {
 			setFld = aFld + (Mod < 0 ? "" : "+") + Mod;
 		};
-	} else if (Remove) { // remove string
-		setFld = aFld.replace(RegExp("\\+?" + Mod.RegEscape(), "i"), "");
-	} else { // add string
-		setFld = (aFld ? aFld : "") + (Mod.substr(0, 1) === "-" ? "" : "+") + Mod
+		bContinueWithString = false;
+	} else if (/^\d*d\d+$/i.test(Mod)) { // a die
+		var sDieSize = Mod.replace(/^\d*(d\d+)$/i, "$1");
+		var sDieNo = /^1?d\d+$/i.test(Mod) ? 1 : Number(Mod.replace(/^(\d+)d\d+$/i, "$1"));
+		var rDieSize = RegExp("\\+?(-?\\d*)" + sDieSize, "i");
+		var mFldDice = aFld.match(rDieSize);
+		if (mFldDice) { // if not a match, continue later with adding as a string
+			var sDieNewNo = Remove ? Number(mFldDice[1]) - sDieNo : Number(mFldDice[1]) + sDieNo;
+			var sDieNewFull = sDieNewNo === 0 ? "" : (sDieNewNo > -1 ? "+" : "") + sDieNewNo + sDieSize;
+			setFld = aFld.replace(mFldDice[0], sDieNewFull);
+			bContinueWithString = false;
+		}
+	}
+	if (bContinueWithString) {
+		if (Remove) { // remove string
+			setFld = aFld.replace(RegExp("\\+?" + Mod.RegEscape(), "i"), "");
+		} else { // add string
+			setFld = (aFld ? aFld : "") + (Mod.substr(0, 1) === "-" ? "" : "+") + Mod;
+		};
 	};
 	// remove zeroes
 	setFld = setFld.replace(/[\+-/*]0([\+-/*]|$)/g, "$1");

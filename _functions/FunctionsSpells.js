@@ -466,8 +466,10 @@ function ApplySpell(FldValue, rememberFldName) {
 
 			//set the spell book name and page
 			var parseSrc = parseSource(aSpell.source);
+			// Only use the first letter of the source, as there is no more space
 			var spBook = parseSrc ? parseSrc[0][0] : "";
-			var spPage = parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
+			// Get the page number, unless it is Unearthed Arcana, then get the abbreviation (the first three characters after the colon)
+			var spPage = spBook && SourceList[spBook].group === "Unearthed Arcana" ? spBook.replace("UA:", "").substr(0,3) : parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
 			Value(base.replace("remember", "book"), spBook.substr(0,1), aSpell.tooltipSource);
 			Value(base.replace("remember", "page"), spPage, aSpell.tooltipSource);
 
@@ -650,6 +652,10 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, forceT
 			var isPsionics = spCast.factor && (/psionic/i).test(spCast.factor[1]);
 			var casterName = forceTxt ? forceTxt : spCast.name.replace(/book of /i, "").replace(/ (\(|\[).+?(\)|\])/g, "");
 			if (!forceTxt) casterName = casterName + (casterName.length >= testLength || (/\b(spells|powers|psionics)\b/i).test(casterName) ? "" : isPsionics ? " Psionics" : " Spells");
+			//set the variable to true to later hide the prepared fields if not concerning a list or book
+			if (!spCast.level || spCast.typeSp === "known" || !spCast.known || !spCast.known.prepared || spCast.typeList === 3) {
+				hidePrepared = true;
+			}
 			if (What(headerArray[2]) !== caster) { //if the header was not already set to the class
 				Value(headerArray[1], casterName); //set the name of the header
 				Value(headerArray[2], caster); //set the name of the class
@@ -661,10 +667,6 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, forceT
 					Value(headerArray[8], spCast.blueTxt.atk ? spCast.blueTxt.atk : 0); //set the bluetext for attack
 					Value(headerArray[9], spCast.blueTxt.dc ? spCast.blueTxt.dc : 0); //set the bluetext for dc
 				};
-				//set the variable to true to later hide the prepared fields if not concerning a list or book
-				if (!spCast.level || spCast.typeSp === "known" || !spCast.known || !spCast.known.prepared || spCast.typeList === 3) {
-					hidePrepared = true;
-				}
 			} else if (What(headerArray[1]) === "") {
 				Value(headerArray[1], casterName);
 			}

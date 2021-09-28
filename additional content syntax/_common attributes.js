@@ -533,7 +533,7 @@ dmgres : [
 	1. A string of the damage type that resistance is gained against.
 	2. An array of 2 strings:
 		2.1	The first string is the damage type that resistance is gained against.
-		2.2	The second string is the condition that the resistance works with.
+		2.2	The second string also contains the condition that the resistance works with.
 			If the same resistance is gained from multiple sources,
 			but one source has a condition and another doesn't,
 			only the version without a condition is shown.
@@ -2084,6 +2084,13 @@ addMod : [
 		Or, an example for the companion page, to add the Intelligence modifier of the main
 		character with a maximum of 3, it would look like this:
 			mod : "min(oInt|3)",
+
+		When using this to add something to the Damage Die modifier field, it is also
+		possible to use dice notation (e.g. "1d6"). [ADDED v13.0.8]
+		Dice notation can't be combined with 'max' or 'min'.
+		Normally this should only be used on the companion page as scaling damage die for the main
+		character should be handled by adding a `calcChanges.atkAdd` attribute.
+
 	4. text
 		This is an explanation of why the modifier was added and is used in the modifier change dialog.
 

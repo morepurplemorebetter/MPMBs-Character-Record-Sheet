@@ -218,9 +218,10 @@ WeaponsList["sword of purple"] = {
 		The first entry is the amount of damage die.
 		For example, for 2d6 damage, this first entry would be '2'.
 		Another example, for 1d8 damage, this first entry would be '1'.
-		You can also use the letter 'C' or 'B' (capitalized!) for the cantrip die.
+		You can also use the letter 'C', 'B', or 'Q' (capitalized!) for the cantrip die.
 		The 'C' is replaced with the cantrip die for the current level (e.g. 3 at level 11-16).
-		The 'B' is replaced with only less than the cantrip die for the current level (e.g. 2 at level 11-16).
+		The 'B' is replaced with one less than the cantrip die for the current level (e.g. 2 at level 11-16).
+		The 'Q' is replaced with one more than the cantrip die for the current level (e.g. 4 at level 11-16).
 	2. number
 		The second entry is the type of die.
 		For example for 2d6 damage, this second entry would be '6'.

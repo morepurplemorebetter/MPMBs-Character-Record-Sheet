@@ -177,7 +177,7 @@ function MakeButtons() {
 function OpeningStatement() {
 	var reminders = Number(tDoc.getField("Opening Remember").submitName);
 	if (!app.viewerVersion || !reminders || (app.viewerVersion < 15 && reminders <= 3)) {
-		CurrentSources.globalExcl = ["UA:TMC"];
+		CurrentSources.globalExcl = ["UA:RR", "UA:TMC"];
 		var oldVerAlert = app.alert({
 			nIcon : 0,
 			cTitle : "Please update your Adobe Acrobat",
@@ -193,7 +193,7 @@ function OpeningStatement() {
 	};
 	if (What("Opening Remember") === "No") {
 		tDoc.dirty = false;
-		tDoc.pane = "bookmarks"; //open the bookmarks so that on the first opening people can see its existance
+		tDoc.pane = "bookmarks"; //open the bookmarks so that on the first opening people can see its existence
 		var sheetTitle = "MorePurpleMoreBetter's " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " (" + tDoc.info.SheetType + ") v" + semVers;
 		var Text = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
 		Text += "Welcome to " + toUni(sheetTitle);
