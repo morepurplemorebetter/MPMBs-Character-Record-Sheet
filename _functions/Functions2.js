@@ -4965,6 +4965,8 @@ function ChangeToCompleteAdvLogSheet(FAQpath) {
 		"this.getTemplate('blank').hidden = true;",
 		"this.info.AdvLogOnly = true;",
 		'this.info.SheetVersion = "' + tDoc.info.SheetVersion + '";',
+		tDoc.info.SheetVersionType ? 'this.info.SheetVersionType = "' + tDoc.info.SheetVersionType + '";' : '',
+		tDoc.info.SheetVersionBuild ? 'this.info.SheetVersionBuild = "' + tDoc.info.SheetVersionBuild + '";' : '',
 		'this.info.SheetType = "' + tDoc.info.SheetType + '";',
 		'this.info.Keywords = "' + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + '";',
 		'this.info.Subject = "D&D 5e; Character Sheet; Adventurers League; Adventure Logsheet";',
@@ -4978,7 +4980,7 @@ function ChangeToCompleteAdvLogSheet(FAQpath) {
 		'app.execMenuItem("GeneralInfo");'
 	];
 	console.clear();
-	console.println(forConsole.join("\n"));
+	console.println(forConsole.join("\n").replace(/\n{2,}/g, "\n"));
 	console.show();
 	tDoc.dirty = false;
 }

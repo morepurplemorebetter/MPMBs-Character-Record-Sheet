@@ -1212,7 +1212,13 @@ var SetUnitDecimals_Dialog = {
 					font : "dialog",
 					wrap_name : true,
 					width : 480,
-					name : " \u2022 Distances in game mechanics are converted by assuming 1 ft is 30 cm;\n \u2022 Weights used in game mechanics are converted by assuming 2 lb is 1 kg;\n \u2022 Liquid volumes used in game mechanics are converted by assuming 1 gallon is 4 liters;\n \u2022 All converted units used in game mechanics are rounded to the nearest half;\n \u2022 Equipment weight is calculated to three decimals accuracy;\n \u2022 The Character's Height and Weight fields are converted with more accuracy;\n \u2022 Units you added manually might not be converted as not all unit conversions are supported."
+					name : " \u2022 Distances in game mechanics are converted as if 1 ft is 30 cm"+
+					"\n \u2022 Weights in game mechanics are converted as if 2 lb is 1 kg"+
+					"\n \u2022 Liquid volumes in game mechanics are converted as if 1 gallon is 4 liters"+
+					"\n \u2022 Converted units in game mechanics are rounded to the nearest half"+
+					"\n \u2022 Equipment weight is calculated to three decimals accuracy"+
+					"\n \u2022 The Character's Height and Weight fields are converted with more accuracy"+
+					"\n \u2022 Units you added manually might not be converted as not all unit conversions are supported"
 				}, {
 					type : "static_text",
 					item_id : "txt2",

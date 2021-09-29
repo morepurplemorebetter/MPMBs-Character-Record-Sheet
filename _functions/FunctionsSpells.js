@@ -469,7 +469,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			// Only use the first letter of the source, as there is no more space
 			var spBook = parseSrc ? parseSrc[0][0] : "";
 			// Get the page number, unless it is Unearthed Arcana, then get the abbreviation (the first three characters after the colon)
-			var spPage = spBook && SourceList[spBook].group === "Unearthed Arcana" ? spBook.replace("UA:", "").substr(0,3) : parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
+			var spPage = spBook && spBook !== "UA:TMC" && SourceList[spBook].group === "Unearthed Arcana" ? spBook.replace("UA:", "").substr(0,3) : parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
 			Value(base.replace("remember", "book"), spBook.substr(0,1), aSpell.tooltipSource);
 			Value(base.replace("remember", "page"), spPage, aSpell.tooltipSource);
 
@@ -5148,6 +5148,8 @@ function ChangeToCompleteSpellSheet(thisClass, FAQpath) {
 		"this.getTemplate('blank').hidden = true;",
 		"this.info.SpellsOnly = '" + thisClass + "';",
 		'this.info.SheetVersion = "' + tDoc.info.SheetVersion + '";',
+		tDoc.info.SheetVersionType ? 'this.info.SheetVersionType = "' + tDoc.info.SheetVersionType + '";' : '',
+		tDoc.info.SheetVersionBuild ? 'this.info.SheetVersionBuild = "' + tDoc.info.SheetVersionBuild + '";' : '',
 		'this.info.SheetType = "' + tDoc.info.SheetType + '";',
 		'this.info.Keywords = "' + (!typePF ? keyCF : (tDoc.info.SheetType === "Printer Friendly" ? keyPF : keyPFR)) + '";',
 		'this.info.ContactEmail = "' + tDoc.info.ContactEmail + '";',
@@ -5161,7 +5163,7 @@ function ChangeToCompleteSpellSheet(thisClass, FAQpath) {
 		"app.execMenuItem('GeneralInfo');"
 	];
 	console.clear();
-	console.println(forConsole.join("\n"));
+	console.println(forConsole.join("\n").replace(/\n{2,}/g, "\n"));
 	console.show();
 	tDoc.dirty = false;
 }
