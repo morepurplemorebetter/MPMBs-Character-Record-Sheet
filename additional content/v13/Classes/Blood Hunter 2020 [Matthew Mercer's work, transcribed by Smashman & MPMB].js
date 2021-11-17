@@ -31,7 +31,7 @@ RequiredSheetVersion("13.0.6");
 SourceList["MM:BH"] = {
 	name : "Matthew Mercer: Blood Hunter Class 2020",
 	abbreviation : "MM:BH",
-	group : "Dungeon Master's Guild",
+	group : "Dungeon Masters Guild",
 	url : "https://www.dmsguild.com/product/301641/",
 	date : "2020/02/11"
 };

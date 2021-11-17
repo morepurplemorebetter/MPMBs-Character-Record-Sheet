@@ -31,14 +31,14 @@ RequiredSheetVersion(12.999);
 SourceList["MM:BH"] = {
 	name : "Matthew Mercer: Blood Hunter Class v2.1",
 	abbreviation : "MM:BH",
-	group : "Dungeon Masters Guild",
+	group : "Dungeon Master's Guild",
 	url : "https://www.dmsguild.com/product/170777/",
 	date : "2018/06/07"
 };
 SourceList["MM:OotL"] = {
 	name : "Matthew Mercer: Order of the Lycan for Blood Hunters v1.5",
 	abbreviation : "MM:OotL",
-	group : "Dungeon Masters Guild",
+	group : "Dungeon Master's Guild",
 	url : "https://www.dmsguild.com/product/175606/",
 	date : "2017/12/27"
 };
@@ -411,22 +411,22 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			"the archfey" : {
 				name : "Otherwordly Patron: the Archfey",
 				description : "\n   " + "When I do rite damage, the target loses invisibility, 1/2 \u0026 3/4 cover until my next turn",
-				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the archfey']; if (classes.known['blood hunter'].level >= 7 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
+				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the archfey']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"the fiend" : {
 				name : "Otherwordly Patron: the Fiend",
 				description : "\n   " + "When using the Rite of the Flame I may reroll a 1 on the rite damage die, once",
-				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the fiend']; if (classes.known['blood hunter'].level >= 7 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
+				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the fiend']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"the great old one" : {
 				name : "Otherwordly Patron: the Great Old One",
 				description : "\n   " + "When I do a critical hit, the target Wis save or frightened of me until my next turn end",
-				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the great old one']; if (classes.known['blood hunter'].level >= 7 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
+				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the great old one']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"the undying" : {
 				name : "Otherwordly Patron: the Undying",
 				description : "\n   " + "When I kill a hostile with a weapon attack, I regain HP equal to my rite damage die",
-				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the undying']; if (classes.known['blood hunter'].level >= 7 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
+				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the undying']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"the celestial" : {
 				name : "Otherwordly Patron: the Celestial",
@@ -436,12 +436,12 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 					return n < 3 ? "" : "heal " + die + " + Wisdom modifier";
 				}),
 				action : ["bonus action", ""],
-				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the celestial']; if (classes.known['blood hunter'].level >= 7 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
+				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the celestial']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"the hexblade" : {
 				name : "Otherwordly Patron: the Hexblade",
 				description : "\n   " + "My next attack vs. a creature I target with a blood curse, is a critical hit on a 19 or 20",
-				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the hexblade']; if (classes.known['blood hunter'].level >= 7 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && this.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
+				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the hexblade']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			}
 		},
 		"subclassfeature3.1" : {
