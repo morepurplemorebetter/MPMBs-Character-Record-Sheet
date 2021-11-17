@@ -31,14 +31,14 @@ RequiredSheetVersion(12.999);
 SourceList["MM:BH"] = {
 	name : "Matthew Mercer: Blood Hunter Class v2.1",
 	abbreviation : "MM:BH",
-	group : "Dungeon Master's Guild",
+	group : "Dungeon Masters Guild",
 	url : "https://www.dmsguild.com/product/170777/",
 	date : "2018/06/07"
 };
 SourceList["MM:OotL"] = {
 	name : "Matthew Mercer: Order of the Lycan for Blood Hunters v1.5",
 	abbreviation : "MM:OotL",
-	group : "Dungeon Master's Guild",
+	group : "Dungeon Masters Guild",
 	url : "https://www.dmsguild.com/product/175606/",
 	date : "2017/12/27"
 };
