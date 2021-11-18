@@ -1517,6 +1517,9 @@ function MakeSourceMenu_SourceOptions() {
 		cName : "Adventurers League",
 		oSubMenu : []
 	}, {
+		cName : "Extra Life",
+		oSubMenu : []
+	}, {
 		cName : "Unearthed Arcana",
 		oSubMenu : []
 	}];
@@ -1525,7 +1528,8 @@ function MakeSourceMenu_SourceOptions() {
 		"primary sources" : 2,
 		"adventure books" : 3,
 		"adventurers league" : 4,
-		"unearthed arcana" : 5
+		"extra life" : 5,
+		"unearthed arcana" : 6
 	};
 
 	var abbrObj = { arr : [], obj : {}, lowObj : {} };

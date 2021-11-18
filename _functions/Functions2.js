@@ -6947,6 +6947,7 @@ function processMods(AddRemove, NameEntity, items, prefix) {
 	if (!prefix) prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var alphaB = Who("Text.SkillsNames") === "alphabeta";
 	if (!isArray(items)) items = [items];
+	var doSaveDcUpdate = false;
 	for (var i = 0; i < items.length; i++) {
 		var type = items[i].type.toLowerCase();
 		var Fld = items[i].field;
@@ -6973,10 +6974,22 @@ function processMods(AddRemove, NameEntity, items, prefix) {
 				break;
 			case "save" :
 				var matchSv = QI ? /.*(Str|Dex|Con|Int|Wis|Cha|HoS|All).*/i : /.*(Str|Dex|Con|Int|Wis|Cha|All).*/i;
-				if (!(matchSv).test(Fld)) continue;
+				if (!matchSv.test(Fld)) continue;
 				var save = Fld.replace(matchSv, "$1").capitalize();
 				if (save === "Hos") save = "HoS";
 				Fld = QI ? save + " ST Bonus" : prefix + "BlueText.Comp.Use.Ability." + save + ".ST.Bonus";
+				break;
+			case "dc" :
+				var rxAbi = /.*(Str|Dex|Con|Int|Wis|Cha|HoS).*/i;
+				if (!QI || !rxAbi.test(Fld)) continue; // doesn't work on companion pages
+				var sAbi = Fld.replace(rxAbi, "$1").capitalize();
+				for (var i = 1; i <= 2; i++) {
+					if (What("Spell DC " + i + " Mod").indexOf(sAbi) !== -1) {
+						Fld = "Spell DC " + i + " Bonus";
+						doSaveDcUpdate = true;
+						continue;
+					}
+				}
 				break;
 			default :
 				Fld = prefix + Fld;
@@ -6984,6 +6997,7 @@ function processMods(AddRemove, NameEntity, items, prefix) {
 		};
 		AddToModFld(Fld, Mod, !AddRemove, NameEntity, Explanation);
 	};
+	if (doSaveDcUpdate) SaveTheAbilitySaveDCsBonuses();
 };
 
 // a way to pass an array of action strings or arrays to be processed by the Add/RemoveAction functions

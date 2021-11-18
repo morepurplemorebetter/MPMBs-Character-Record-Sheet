@@ -255,6 +255,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		var anArmorAdd = uObj.armorAdd ? uObj.armorAdd : uObj.addarmor ? uObj.addarmor : false;
 		if (anArmorAdd) processAddArmour(addIt, anArmorAdd);
 		if (uObj.shieldAdd) processAddShield(addIt, uObj.shieldAdd, uObj.weight);
+		if (uObj.ammoAdd) processAddAmmo(addIt, uObj.ammoAdd);
 
 		// --- backwards compatibility --- //
 		// skills additions
@@ -1170,6 +1171,17 @@ function processAddWeapons(AddRemove, weapons) {
 	if (!isArray(weapons)) weapons = [weapons];
 	for (var w = 0; w < weapons.length; w++) {
 		tDoc[(AddRemove ? "Add" : "Remove") + "Weapon"](weapons[w]);
+	}
+}
+
+// set ammuntion or remove the ammuntion
+function processAddAmmo(AddRemove, ammos) {
+	if (!ammos) return;
+	if (!isArray(ammos) || (ammos.length === 2 && isNaN(ammos[1]))) {
+		ammos = [ammos];
+	}
+	for (var a = 0; a < ammos.length; a++) {
+		tDoc[(AddRemove ? "Add" : "Remove") + "Ammo"](ammos[a][0], ammos[a][1] && !isNaN(ammos[a][1]) ? ammos[a][1] : 1);
 	}
 }
 
@@ -2263,7 +2275,7 @@ function ReturnMagicItemFieldsArray(fldNmbr) {
 }
 
 // Lookup the name of a Magic Item and if it exists in the MagicItemsList
-function ParseMagicItem(input) {
+function ParseMagicItem(input, bForInventory) {
 	var found = "";
 	var subFound = "";
 	if (!input) return [found, subFound, []];
@@ -2283,6 +2295,9 @@ function ParseMagicItem(input) {
 
 		// test if the magic item or its source isn't excluded
 		if (testSource(key, kObj, "magicitemExcl")) continue;
+
+		// If looking for something in the inventory, only process those with a weight
+		if (bForInventory && !kObj.choices && !kObj.weight) continue;
 
 		isMatch = false;
 		if (input.indexOf(kObj.name.toLowerCase()) !== -1) {
@@ -2308,7 +2323,10 @@ function ParseMagicItem(input) {
 			for (var i = 0; i < kObj.choices.length; i++) {
 				var keySub = kObj.choices[i].toLowerCase();
 				var sObj = kObj[keySub];
+				// Continue if choice doesn't exist or source is excluded
 				if (!sObj || testSource(key + "-" + keySub, sObj, "magicitemExcl")) continue;
+				// If looking for something in the inventory, only process those with a weight
+				if (bForInventory && !sObj.weight) continue;
 				varArr.push(kObj.choices[i]);
 				isMatchSub = false;
 				if (sObj.name) {
@@ -2356,7 +2374,7 @@ function ParseMagicItem(input) {
 		foundLen = isMatchLen;
 		foundDat = tempDate;
 	}
-	return [found, subFound, subOptionArr];
+	return [found, subFound, bForInventory ? foundLen : subOptionArr];
 };
 
 // Check all Magic Items fields and parse the once known into the global variable
@@ -2821,6 +2839,7 @@ function SetMagicItemsDropdown(forceTooltips) {
 function ParseMagicItemMenu() {
 	var iMenus = {
 		alphabetical : {},
+		wondrousAlphabetical : {},
 		rarity : {
 			common : [],
 			uncommon : [],
@@ -2895,16 +2914,20 @@ function ParseMagicItemMenu() {
 		if (tObj.rarity && iMenus.rarity[tObj.rarity.toLowerCase()]) {
 			iMenus.rarity[tObj.rarity.toLowerCase()].push(itemName);
 		}
-		if ((/weapon/i).test(tObj.type) || tObj.weaponsAdd || tObj.weaponOptions || (tObj.chooseGear && (/weapon|ammo/i).test(tObj.chooseGear.type))) {
+		if (/weapon/i.test(tObj.type) || tObj.weaponsAdd || tObj.weaponOptions || (tObj.chooseGear && /weapon|ammo/i.test(tObj.chooseGear.type))) {
 			iMenus.type.Weapon.push(itemName);
 		}
-		if ((/armor|shield/i).test(tObj.type) || tObj.armorAdd || tObj.shieldAdd || tObj.armorOptions || tObj.extraAC || (tObj.chooseGear && tObj.chooseGear.type == "armor")) {
+		if (/armor|shield/i.test(tObj.type) || tObj.armorAdd || tObj.shieldAdd || tObj.armorOptions || tObj.extraAC || (tObj.chooseGear && tObj.chooseGear.type == "armor")) {
 			iMenus.type["Armor, shield, AC bonus"].push(itemName);
+		}
+		if (/wondrous item/i.test(tObj.type)) {
+			if (!iMenus.wondrousAlphabetical[firstLetter]) iMenus.wondrousAlphabetical[firstLetter] = [];
+			iMenus.wondrousAlphabetical[firstLetter].push(itemName);
 		}
 		var searchType = tObj.type ? tObj.type.toLowerCase() : false;
 		for (var aType in iMenus.type) {
 			if (!searchType) break;
-			if ((/weapon|armor|shield/i).test(aType)) continue;
+			if ((/weapon|armor|shield|wondrous item/i).test(aType)) continue;
 			if (searchType.indexOf(aType.toLowerCase()) !== -1) {
 				iMenus.type[aType].push(itemName);
 			}
@@ -2938,7 +2961,7 @@ function ParseMagicItemMenu() {
 		var anItem = MagicItemsList[item];
 		if (anItem.source && testSource(item, anItem, "magicitemExcl")) continue;
 		var justDoMainItem = true;
-		if (anItem.choices && !anItem.selfChoosing) {
+		if (anItem.choices && !anItem.selfChoosing && !anItem.choicesNotInMenu) {
 			for (var c = 0; c < anItem.choices.length; c++) {
 				var aChL = anItem.choices[c].toLowerCase();
 				var aSubItem = anItem[aChL];
@@ -2954,12 +2977,14 @@ function ParseMagicItemMenu() {
 		}
 		if (justDoMainItem) sortItem(item);
 	}
-	// First add the alphabetical listing of all the magic items
-	var tempMenu = [], alphabetaArr = [];
+	// First add the alphabetical listing of all the magic items (and Wondrous items)
+	var tempMenu = [], alphabetaArr = [], woundrousAlphabetaArr = [];
 	for (var letter in iMenus.alphabetical) alphabetaArr.push(letter);
-	alphabetaArr.sort();
+	for (var letter in iMenus.wondrousAlphabetical) woundrousAlphabetaArr.push(letter);
+	alphabetaArr.sort(); woundrousAlphabetaArr.sort();
 	for (var i = 0; i < alphabetaArr.length; i++) {
-		var tempMenu2 = iMenus.alphabetical[alphabetaArr[i]];
+		var sLetter = alphabetaArr[i];
+		var tempMenu2 = iMenus.alphabetical[sLetter];
 		tempMenu2.sort();
 		for (var a = 0; a < tempMenu2.length; a++) {
 			tempMenu2[a] = {
@@ -2967,12 +2992,25 @@ function ParseMagicItemMenu() {
 				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
 			}
 		}
-		tempMenu.push({ cName : alphabetaArr[i], oSubMenu : [].concat(tempMenu2) });
+		tempMenu.push({ cName : sLetter, oSubMenu : [].concat(tempMenu2) });
 	}
 	AddMagicItemsMenu = [{
 		cName : "Alphabetically",
 		oSubMenu : [].concat(tempMenu)
 	}]
+	for (var i = 0; i < woundrousAlphabetaArr.length; i++) {
+		var sLetter = woundrousAlphabetaArr[i];
+		var tempMenu2 = iMenus.wondrousAlphabetical[sLetter];
+		tempMenu2.sort();
+		for (var a = 0; a < tempMenu2.length; a++) {
+			tempMenu2[a] = {
+				cName : tempMenu2[a],
+				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+			}
+		}
+		iMenus.type["Wondrous item"].push({ cName : sLetter, oSubMenu : [].concat(tempMenu2) });
+	}
+	// Also parse the wondrous items
 	// Then a menu per rarity
 	var tempMenu = [];
 	for (var entry in iMenus.rarity) {
@@ -3015,11 +3053,13 @@ function ParseMagicItemMenu() {
 	for (var entry in iMenus.type) {
 		var tempMenu2 = iMenus.type[entry];
 		if (!tempMenu2.length) continue;
-		tempMenu2.sort();
-		for (var a = 0; a < tempMenu2.length; a++) {
-			tempMenu2[a] = {
-				cName : tempMenu2[a],
-				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+		if (entry !== "Wondrous item") {
+			tempMenu2.sort();
+			for (var a = 0; a < tempMenu2.length; a++) {
+				tempMenu2[a] = {
+					cName : tempMenu2[a],
+					cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+				}
 			}
 		}
 		AddMagicItemsMenu.push({ cName : entry, oSubMenu : [].concat(tempMenu2) });
@@ -3459,12 +3499,16 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	var createString = function(type, addition, fixed) {
 		switch (type ? type.toLowerCase() : "") {
 			default:
+			case "between":
+				if (isArray(fixed) && fixed.length > 1) {
+					return fixed[0] + " " + addition + " " + fixed[1];
+				}
 			case "prefix":
-				return addition + " " + fixed;
+				return addition + " " + fixed.toString();
 			case "suffix":
-				return fixed + " " + addition;
+				return fixed.toString() + " " + addition;
 			case "brackets":
-				return fixed + " (" + addition.replace(/ ?\(.+\)/, '') + ")";
+				return fixed.toString() + " (" + addition.replace(/ ?\(.+\)/, '') + ")";
 		}
 	}
 	var MIflds = ReturnMagicItemFieldsArray(FldNmbr);
@@ -3515,7 +3559,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			// some type-dependent filters
 			if (typeNm == "armor" && (!kObj.type || kObj.isMagicArmor)) {
 				continue;
-			} else if (typeNm == "weapon" && ((/natural|spell|cantrip|improvised/i).test(kObj.type) || kObj.isMagicWeapon)) {
+			} else if (typeNm == "weapon" && (kObj.isMagicWeapon) || (/natural|spell|cantrip|improvised/i).test(kObj.type + kObj.list)) {
 				continue;
 			} else if (typeNm == "ammunition" && (kObj.isMagicAmmo || WeaponsList[key])) {
 				continue;
@@ -3547,16 +3591,17 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 		if (selectedItem) selectedItem = selectedItem.substr(0, selectedItem.length - 1);
 	}
 	// get the new name of the magic item
-	var newMIname = selectedItem ? createString(typeObj.prefixOrSuffix, selectedItem, useName) : useVal;
+	var theItemNameCap = theItemName.capitalize();
+	var newMIname = selectedItem ? createString(typeObj.prefixOrSuffix, theItemNameCap, useName) : useVal;
 	// See if there is a special string set for how the item should appear on the 1st page
 	if (typeObj.itemName1stPage) {
-		itemToProcess = createString(typeObj.itemName1stPage[0], baseList[isItem].name, typeObj.itemName1stPage[1]);
+		itemToProcess = createString(typeObj.itemName1stPage[0], theItemNameCap, typeObj.itemName1stPage.slice(1));
 	}
 	// Apply the item to the sheet
 	if (!correctingDescrLong) {
 		switch (typeNm) {
 			case "ammunition":
-				tDoc[AddRemove ? 'AddAmmo' : 'RemoveAmmo'](itemToProcess ? itemToProcess : newMIname.replace(/ammunition (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"), 1);
+				processAddAmmo(AddRemove, [itemToProcess ? itemToProcess : newMIname.replace(/ammunition (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"), typeObj.ammoAmount && !isNaN(typeObj.ammoAmount) ? typeObj.ammoAmount : 1]);
 				break;
 			case "weapon":
 				processAddWeapons(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/weapon (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"));

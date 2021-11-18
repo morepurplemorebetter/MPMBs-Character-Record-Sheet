@@ -3034,7 +3034,12 @@ function SetGearWeightOnBlur() {
 		var theGear = ParseGear(theValue);
 		if (theGear) {
 			var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
-			var theWeight = RoundTo(tDoc[theGear[0]][theGear[1]].weight * massMod, 0.001, true);
+			if (theGear[0] === "MagicItemsList") {
+				var theWeight = theGear[2] && MagicItemsList[theGear[1]][theGear[2]].weight ? MagicItemsList[theGear[1]][theGear[2]].weight : MagicItemsList[theGear[1]].weight;
+			} else {
+				var theWeight = tDoc[theGear[0]][theGear[1]].weight;
+			}
+			theWeight = RoundTo(theWeight * massMod, 0.001, true);
 			var weightCurrent = What(weightFld);
 			var setWeight = false;
 			if (weightCurrent && event.target.temp) {
@@ -3059,15 +3064,25 @@ function ParseGear(input) {
 	var tempString = removeDiacritics(input.toLowerCase());
 	var tempStrLen = tempString.length;
 
+	//see if it is a magic item
+	var findMagicItem = ParseMagicItem(tempString, true)
+	if (findMagicItem[0]) {
+		foundLen = findMagicItem[2];
+		result = ["MagicItemsList", findMagicItem[0], findMagicItem[1]];
+	};
+
 	//see if it is an armour
 	var findArmor = ParseArmor(tempString, true);
 	if (findArmor) {
-		foundLen = Math.min(
+		testLen = Math.min(
 			findArmor.length,
 			tempStrLen,
 			tempString.match(ArmourList[findArmor].regExpSearch)[0].length
 		);
-		result = ["ArmourList", findArmor];
+		if (testLen > foundLen) {
+			foundLen = testLen;
+			result = ["ArmourList", findArmor];
+		};
 	};
 
 	//see if it is a weapon
@@ -6548,7 +6563,7 @@ function CalcAbilityDC() {
 				}
 			}
 		}
-		var DCtot = useSSDC ? Math.min.apply(Math, foundSSDC) + ExtraBonus - (modIpvDC ? 8 : 0) : (modIpvDC ? 0 : 8) + Number(How("Proficiency Bonus")) + Number(What(What("Spell DC " + Nmbr + " Mod"))) + ExtraBonus;
+		var DCtot = useSSDC ? Math.min.apply(Math, foundSSDC) - (modIpvDC ? 8 : 0) : (modIpvDC ? 0 : 8) + Number(How("Proficiency Bonus")) + Number(What(What("Spell DC " + Nmbr + " Mod"))) + ExtraBonus;
 		event.value = modIpvDC && DCtot >= 0 ? "+" + DCtot : DCtot;
 	} else {
 		event.value = "";
@@ -8096,32 +8111,53 @@ function ColoryOptions(input) {
 	};
 };
 
+//see if text contains a background
+function ParseBackgroundFeature(input) {
+	var strResult = "";
+	if (!input) return strResult;
+
+	input = removeDiacritics(input).toLowerCase();
+	var foundLen = 0;
+	var foundDat = 0;
+
+	for (var key in BackgroundFeatureList) {
+		var kObj = BackgroundFeatureList[key];
+
+		if (input.indexOf(key) === -1 // see if the input contains the feature
+			|| testSource(key, kObj, "backFeaExcl") // test if the feature or its source isn't excluded
+		) continue;
+
+		// only go on with this entry if:
+		// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
+		// or if we are not using the search length, just look at the newest source date
+		var tempDate = sourceDate(kObj.source);
+		if ((!ignoreSearchLength && key.length < foundLen) || (!ignoreSearchLength && key.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
+
+		// we have a match, set the values
+		strResult = key;
+		foundLen = key.length;
+		foundDat = tempDate;
+	}
+	return strResult;
+};
+
 //Add the text of the feature selected
 function ApplyBackgroundFeature(input) {
 	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
 	if (event.target && event.target.name === "Background Feature" && input.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
 
-	var TheInput = input.toLowerCase();
-	var TempFound = false;
-	var tempString = stringSource(CurrentBackground, "full,page", "The \"" + CurrentBackground.name + "\" background is found in ", ".\n");
+	var sFldNm = "Background Feature Description";
+	var sTooltip = stringSource(CurrentBackground, "full,page", "The \"" + CurrentBackground.name + "\" background is found in ", ".\n");
+	var sNewDescr = input === "" ? "" : What(sFldNm);
+	var sParseFeature = ParseBackgroundFeature(input);
 
-	if (input === "") {
-		Value("Background Feature Description", "", "");
-	} else {
-		for (var feature in BackgroundFeatureList) {
-			if (TheInput.indexOf(feature) !== -1) {
-				if (testSource(feature, BackgroundFeatureList[feature], "backFeaExcl")) continue; // test if the background feature or its source isn't excluded
-				var FeaName = feature.capitalize();
-				var theBfea = BackgroundFeatureList[feature];
-				tempString += stringSource(theBfea, "full,page", "The \"" + FeaName + "\" background is found in ", ".");
-
-				var theDesc = What("Unit System") === "imperial" ? BackgroundFeatureList[feature].description : ConvertToMetric(BackgroundFeatureList[feature].description, 0.5);
-				Value("Background Feature Description", theDesc, tempString);
-
-				return;
-			};
-		};
-	};
+	if (sParseFeature) {
+		var sFeaCap = sParseFeature.capitalize();
+		var oBackFea = BackgroundFeatureList[sParseFeature];
+		var sNewDescr = What("Unit System") === "imperial" ? oBackFea.description : ConvertToMetric(oBackFea.description, 0.5);
+		sTooltip += stringSource(oBackFea, "full,page", "The \"" + sFeaCap + "\" background feature is found in ", ".");
+	}
+	Value("Background Feature Description", sNewDescr, sTooltip);
 };
 
 //set the dropdown box options for the background features
@@ -9086,47 +9122,95 @@ function HideInvLocationColumn(type, currentstate) {
 
 //put the ability save DC right, and show both if more than one race/class with ability save DC
 function SetTheAbilitySaveDCs() {
-	var aSaveA = [];
-	CurrentAbilitySaveDCs = {};
+	// Reset the global variable
+	CurrentAbilitySaveDCs = { bonus : CurrentVars.AbilitySaveDcBonus ? CurrentVars.AbilitySaveDcBonus : {}, priority : {}, order : [] };
 
-	//check all the classes
-	for (var aClass in classes.known) {
-		var aSave = CurrentClasses[aClass].abilitySave;
-		if (aSave && aSaveA.indexOf(aSave) === -1) {
-			aSaveA.push(aSave);
+	// Update the bonus part of the global variable with what's currently on the sheet
+	SaveTheAbilitySaveDCsBonuses();
+
+	// The main thing to do as a function to be called later
+	var processAbility = function(sType, sName, obj) {
+		var sSave = obj.abilitySave;
+		var sAbiNm = "abi" + sSave;
+		if (!CurrentAbilitySaveDCs[sAbiNm]) {
+			CurrentAbilitySaveDCs[sAbiNm] = [];
+			CurrentAbilitySaveDCs.priority[sAbiNm] = [];
 		}
-		if (aSave) {
-			var abiNm = "abi" + aSave;
-			if (!CurrentAbilitySaveDCs[abiNm]) CurrentAbilitySaveDCs[abiNm] = [];
-			CurrentAbilitySaveDCs[abiNm].push(aClass);
+		CurrentAbilitySaveDCs[sAbiNm].push(sName);
+		/* Now get the priority, which should result in a list of the abilities from:
+			 1	Classes without spellcasting progression (i.e. spellcastingBonus is ignored)
+			 2	Race without spellcasting
+			 3	Classes with spellcasting
+			 4	Race with spellcasting
+			Spellcasting will already be visible on the spell sheet pages
+			For the classes, the primary class will get the highest priority and the rest in the order they are entered
+		*/
+		var iPrio = sType === "class" ? 21 : 20; // class before race
+		// remove 10 priority if the save DC also appears on the spell sheet pages
+		if (obj.spellcastingAbility && obj.spellcastingAbility === sSave) {
+			iPrio -= 10;
+		} else if (CurrentSpells[sName] && // is a spellcasting entry, and
+			(sType !== "class" || CurrentSpells[sName].known) && // is either not a class or has spellcasting progression, and
+			(
+				(CurrentSpells[sName].abilityToUse && CurrentSpells[sName].abilityToUse[0] === sSave) || // has abilityToUse defined and it is the same, or
+				(!isNaN(CurrentSpells[sName].ability) && CurrentSpells[sName].ability === sSave) // has a number as ability and it is the same
+			)
+		) {
+			iPrio -= 10;
+		}
+		// Add 1 if this is the primary class
+		if (sType === "class" && classes.primary === sName) iPrio += 1;
+		CurrentAbilitySaveDCs.priority[sAbiNm].push(iPrio);
+	}
+
+	// Do all the classes
+	for (var sClass in classes.known) {
+		if (CurrentClasses[sClass].abilitySave) processAbility("class", sClass, CurrentClasses[sClass]);
+	}
+	// Do the race
+	if (CurrentRace.abilitySave) processAbility("race", CurrentRace.known, CurrentRace);
+
+	// See which ability has the highest priority
+	var aPriorities = [];
+	for (var sAbiNm in CurrentAbilitySaveDCs.priority) {
+		var iAbiPrio = Math.max.apply(Math, CurrentAbilitySaveDCs.priority[sAbiNm]);
+		aPriorities.push(iAbiPrio + sAbiNm);
+	}
+	CurrentAbilitySaveDCs.order = aPriorities.sort().reverse();
+
+	// Now apply the first two of those (i.e. the 2 with the highest priority)
+	for (var i = 0; i < 2; i++) {
+		var iAbiPick = 0;
+		var aAbiBon = [0, ""];
+		if (aPriorities[i]) {
+			iAbiPick = Number(aPriorities[i].substr(-1))
+			var sAbiNm = aPriorities[i].substr(2);
+			if (CurrentAbilitySaveDCs.bonus[sAbiNm]) {
+				aAbiBon = CurrentAbilitySaveDCs.bonus[sAbiNm];
+			}
+		}
+		PickDropdown("Spell DC " + (i+1) + " Mod", iAbiPick);
+		Value("Spell DC " + (i+1) + " Bonus", aAbiBon[0], undefined, aAbiBon[1]);
+		if (i === 1) Toggle2ndAbilityDC(iAbiPick ? "show" : "hide");
+	}
+}
+function SaveTheAbilitySaveDCsBonuses() {
+	if (!CurrentAbilitySaveDCs.bonus) CurrentAbilitySaveDCs.bonus = CurrentVars.AbilitySaveDcBonus ? CurrentVars.AbilitySaveDcBonus : {};
+	// Save the current bonuses to the variable (thus overwriting the ones in there now, if any)
+	for (var i = 1; i <= 2; i++) {
+		var sFldAbi = tDoc.getField("Spell DC " + i + " Mod").currentValueIndices;
+		var sBonusFld = "Spell DC " + i + " Bonus";
+		var sBonusVal = What(sBonusFld);
+		var sBonusExpl = How(sBonusFld);
+		if (sFldAbi && (sBonusVal || sBonusExpl)) {
+			var sAbiNm = "abi" + sFldAbi;
+			CurrentAbilitySaveDCs.bonus[sAbiNm] = [sBonusVal, sBonusExpl];
+			continue;
 		}
 	}
-
-	//check the race
-	var aSave = CurrentRace.abilitySave;
-	if (aSave && aSaveA.indexOf(aSave) === -1) {
-		aSaveA.push(aSave);
-	}
-	if (aSave) {
-		var abiNm = "abi" + aSave;
-		if (!CurrentAbilitySaveDCs[abiNm]) CurrentAbilitySaveDCs[abiNm] = [];
-		CurrentAbilitySaveDCs[abiNm].push(CurrentRace.known);
-	}
-
-	//put the ability save DC right, and show both if more than one class with ability save DC
-	if (aSaveA[0]) {
-		PickDropdown("Spell DC 1 Mod", aSaveA[0]);
-	} else {
-		PickDropdown("Spell DC 1 Mod", 0);
-	}
-
-	if (aSaveA[1]) {
-		Toggle2ndAbilityDC("show");
-		PickDropdown("Spell DC 2 Mod", aSaveA[1]);
-	} else {
-		PickDropdown("Spell DC 2 Mod", 0);
-		Toggle2ndAbilityDC("hide");
-	}
+	// Now save it back to the global CurrentVars variable and save that for later use/import
+	CurrentVars.AbilitySaveDcBonus = CurrentAbilitySaveDCs.bonus;
+	SetStringifieds("vars");
 }
 
 //remove the item at the line number, and move all things below it up so that no empty line is left

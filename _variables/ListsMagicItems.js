@@ -265,63 +265,54 @@ var Base_MagicItemsList = {
 			prefixOrSuffix : "prefix"
 		},
 		choices : ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
+		choicesNotInMenu : true,
 		"acid" : {
 			name : "Armor of Acid Resistance",
-			sortname : "Armor of Resistance, Acid",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to acid damage.",
 			dmgres : ["Acid"]
 		},
 		"cold" : {
 			name : "Armor of Cold Resistance",
-			sortname : "Armor of Resistance, Cold",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to cold damage.",
 			dmgres : ["Cold"]
 		},
 		"fire" : {
 			name : "Armor of Fire Resistance",
-			sortname : "Armor of Resistance, Fire",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to fire damage.",
 			dmgres : ["Fire"]
 		},
 		"force" : {
 			name : "Armor of Force Resistance",
-			sortname : "Armor of Resistance, Force",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to force damage.",
 			dmgres : ["Force"]
 		},
 		"lightning" : {
 			name : "Armor of Lightning Resistance",
-			sortname : "Armor of Resistance, Lightning",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to lightning damage.",
 			dmgres : ["Lightning"]
 		},
 		"necrotic" : {
 			name : "Armor of Necrotic Resistance",
-			sortname : "Armor of Resistance, Necrotic",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to necrotic damage.",
 			dmgres : ["Necrotic"]
 		},
 		"poison" : {
 			name : "Armor of Poison Resistance",
-			sortname : "Armor of Resistance, Poison",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to poison damage.",
 			dmgres : ["Poison"]
 		},
 		"psychic" : {
 			name : "Armor of Psychic Resistance",
-			sortname : "Armor of Resistance, Psychic",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to psychic damage.",
 			dmgres : ["Psychic"]
 		},
 		"radiant" : {
 			name : "Armor of Radiant Resistance",
-			sortname : "Armor of Resistance, Radiant",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to radiant damage.",
 			dmgres : ["Radiant"]
 		},
 		"thunder" : {
 			name : "Armor of Thunder Resistance",
-			sortname : "Armor of Resistance, Thunder",
 			description : "While I'm wearing this armor and I'm attuned to it, I have resistance to thunder damage.",
 			dmgres : ["Thunder"]
 		}
@@ -350,6 +341,7 @@ var Base_MagicItemsList = {
 			strReq : 15
 		},
 		choices : ["Bludgeoning", "Piercing", "Slashing"],
+		choicesNotInMenu : true,
 		"bludgeoning" : {
 			description: "While wearing this armor, I have resistance to bludgeoning damage. Additionally, I have vulnerability to piercing and slashing damage until I am targeted by a Remove Curse spell.",
 			dmgres : ["Bludgeoning"],
@@ -524,7 +516,7 @@ var Base_MagicItemsList = {
 		},
 		"stone (str 23, very rare)" : {
 			name : "Belt of Stone Giant Strength",
-			sortname : "Belt of Giant Strength, Stone (Str 25)",
+			sortname : "Belt of Giant Strength, Stone (Str 23)",
 			rarity : "very rare",
 			magicItemTable : "H",
 			description : "My Strength score is 23 while I'm wearing this belt, provided that my Strength is not already 23 or higher.",
@@ -810,6 +802,7 @@ var Base_MagicItemsList = {
 		},
 		action : [["action", " (light)"]],
 		choices : ["Chaotic Evil", "Chaotic Neutral", "Chaotic Good", "Neutral Evil", "Neutral", "Neutral Good", "Lawful Evil", "Lawful Neutral", "Lawful Good"],
+		choicesNotInMenu : true,
 		"chaotic evil" : {
 			description : "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are chaotic evil have adv. on attacks, saves, and checks, while CE clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently."
 		},
@@ -865,6 +858,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   Four sizes of carpet of flying exist. The DM chooses the size of a given carpet or determines it randomly.\n\n" + toUni("d100\tSize\tCapacity\tFlying Speed") + "\n01-20\t3 \xD7 5 ft.\t  200 lb.\t  80 feet\n21-55\t4 \xD7 6 ft.\t  400 lb.\t  60 feet\n56-80\t5 \xD7 7 ft.\t  600 lb.\t  40 feet\n81-100\t6 \xD7 9 ft.\t  800 lb.\t  30 feet\n\nA carpet can carry up to twice the weight shown on the table, but it flies at half speed if it carries more than its normal capacity.",
 		action : [["action", ""]],
 		choices : ["3 \xD7 5 ft (fly 80 ft, 200 lb)", "4 \xD7 6 ft (fly 60 ft, 400 lb)", "5 \xD7 7 ft (fly 40 ft, 600 lb)", "6 \xD7 9 ft (fly 30 ft, 800 lb)"],
+		choicesNotInMenu : true,
 		"3 \xD7 5 ft (fly 80 ft, 200 lb)" : {
 			name : "Carpet of Flying, 3 ft \xD7 5 ft",
 			nameTest : "Carpet of Flying, 1 m \xD7 1,5 m",
@@ -953,9 +947,10 @@ var Base_MagicItemsList = {
 		description : "This cloak grants me resistance to poison damage, climbing speed equal to my walking speed, even along vertical surfaces and upside down while keeping my hands free, freedom from being caught in webs, the ability to move through webs as if just difficult terrain, and the ability to cast Web once per dawn.",
 		descriptionFull : "This fine garment is made of black silk interwoven with faint silvery threads. While wearing it, you gain the following benefits:\n \u2022 You have resistance to poison damage.\n \u2022 You have a climbing speed equal to your walking speed.\n \u2022 You can move up, down, and across vertical surfaces and upside down along ceilings, while leaving your hands free.\n \u2022 You can't be caught in webs of any sort and can move through webs as if they were difficult terrain.\n \u2022 You can use an action to cast the Web spell (save DC 13). The web created by the spell fills twice its normal area. Once used, this property of the cloak can't be used again until the next dawn.",
 		attunement : true,
+		dmgres : ["Poison"],
 		usages : 1,
 		recovery : "dawn",
-		additional : "cast web",
+		additional : "cast Web",
 		fixedDC : 13,
 		speed : { climb : { spd : "walk", enc : "walk" } },
 		spellcastingBonus : {
@@ -965,7 +960,7 @@ var Base_MagicItemsList = {
 			firstCol : "oncelr"
 		},
 		spellChanges : {
-			"web": {
+			"web" : {
 				description : "2\xD7 20-ft cubes, anchored, all save or restrained; dif. ter.; lightly obscures; Str check vs. DC 13 to free"
 			}
 		}
@@ -1147,7 +1142,7 @@ var Base_MagicItemsList = {
 	},
 	"cube of force" : { // contains contributions by Larry Hoy
 		name : "Cube of Force",
-		source : [["S	RD", 215], ["D", 159]],
+		source : [["SRD", 215], ["D", 159]],
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "G",
@@ -1166,8 +1161,8 @@ var Base_MagicItemsList = {
 				"If my movement causes the barrier to come into contact with a solid object that can't pass through the cube, I can't move any closer to that object as long as the barrier remains.",
 				"FACE\tCHARGES\tEFFECT",
 				"   1\t      1\tGases, wind, and fog can't pass through the barrier.",
-				"   2\t      2\tNonliving matter can't pass through the barrier.",
-				"   3\t      3\tLiving matter can't pass through the barrier.*",
+				"   2\t      2\tNonliving matter can't pass through the barrier.*",
+				"   3\t      3\tLiving matter can't pass through the barrier.",
 				"   4\t      4\tSpell effects can't pass through the barrier.",
 				"   5\t      5\tNothing can pass through the barrier.*",
 				"   6\t      0\tThe barrier deactivates.\n" +
@@ -1584,9 +1579,9 @@ var Base_MagicItemsList = {
 			weight : 45
 		},
 		choices : ["Black (acid)", "Blue (lightning)", "Brass (fire)", "Bronze (lightning)", "Copper (acid)", "Gold (fire)", "Green (poison)", "Red (fire)", "Silver (cold)", "White (cold)"],
+		choicesNotInMenu : true,
 		"black (acid)" : {
 			name : "Black Dragon Scale Mail",
-			sortname : "Dragon Scale Mail, Black",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to acid damage. As an action, I can magically discern the distance and direction to the closest black dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Black Dragon Scale Mail",
 			dmgres: ["Acid"],
@@ -1595,7 +1590,6 @@ var Base_MagicItemsList = {
 		},
 		"blue (lightning)" : {
 			name : "Blue Dragon Scale Mail",
-			sortname : "Dragon Scale Mail, Blue",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to lightning damage. As an action, I can magically discern the distance and direction to the closest blue dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Blue Dragon Scale Mail",
 			dmgres: ["Lightning"],
@@ -1604,7 +1598,6 @@ var Base_MagicItemsList = {
 		},
 		"brass (fire)" : {
 			name : "Brass Dragon Scale Mail",
-			sortname : "Dragon Scale Mail, Brass",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest brass dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Brass Dragon Scale Mail",
 			dmgres: ["Fire"],
@@ -1613,7 +1606,6 @@ var Base_MagicItemsList = {
 		},
 		"bronze (lightning)" : {
 			name : "Bronze Dragon Scale Mail",
-			sortname : "Dragon Scale Mail, Bronze",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to lightning damage. As an action, I can magically discern the distance and direction to the closest bronze dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Bronze Dragon Scale Mail",
 			dmgres: ["Lightning"],
@@ -1622,7 +1614,6 @@ var Base_MagicItemsList = {
 		},
 		"copper (acid)" : {
 			name : "Copper Dragon Scale Mail",
-			sortname : "Dragon Scale Mail, Copper",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to acid damage. As an action, I can magically discern the distance and direction to the closest copper dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Copper Dragon Scale Mail",
 			dmgres: ["Acid"],
@@ -1631,7 +1622,6 @@ var Base_MagicItemsList = {
 		},
 		"gold (fire)" : {
 			name : "Gold Dragon Scale Mail",
-			sortname : "Dragon Scale Mail, Gold",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest gold dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Gold Dragon Scale Mail",
 			dmgres: ["Fire"],
@@ -1640,7 +1630,6 @@ var Base_MagicItemsList = {
 		},
 		"green (poison)" : {
 			name : "Green Dragon Scale Mail",
-			sortname : "Dragon Scale Mail, Green",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to poison damage. As an action, I can magically discern the distance and direction to the closest green dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Green Dragon Scale Mail",
 			dmgres: ["Poison"],
@@ -1649,7 +1638,6 @@ var Base_MagicItemsList = {
 		},
 		"red (fire)" : {
 			name : "Red Dragon Scale Mail",
-			sortname : "Dragon Scale Mail, Red",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest red dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Red Dragon Scale Mail",
 			dmgres: ["Fire"],
@@ -1658,7 +1646,6 @@ var Base_MagicItemsList = {
 		},
 		"silver (cold)" : {
 			name : "Silver Dragon Scale Mail",
-			sortname : "Dragon Scale Mail, Silver",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to cold damage. As an action, I can magically discern the distance and direction to the closest silver dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "Silver Dragon Scale Mail",
 			dmgres: ["Cold"],
@@ -1667,7 +1654,6 @@ var Base_MagicItemsList = {
 		},
 		"white (cold)" : {
 			name : "White Dragon Scale Mail",
-			sortname : "Dragon Scale Mail, White",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to cold damage. As an action, I can magically discern the distance and direction to the closest white dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
 			armorAdd : "White Dragon Scale Mail",
 			dmgres: ["Cold"],
@@ -1960,8 +1946,8 @@ var Base_MagicItemsList = {
 		"bronze griffon" : {
 			rarity : "rare",
 			magicItemTable : "G",
-			description: "As an action, I can speak the command word and throw this bronze statuette to an unoccupied space within 60 ft, where it becomes a griffon for up to 6 hours, until I use the command word again, or it reaches 0 hp. It is friendly, understands my languages, and obeys my commands.",
-			descriptionLong: "As an action, I can speak the command word and throw this bronze statuette of a griffon rampant to an unoccupied space within 60 ft, where it becomes a griffon for up to 6 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 5 days have passed.",
+			description: "As an action, I can speak the command word and throw this bronze statuette to an unoccupied space within 60 ft, where it becomes a griffon for up to 6 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, and obeys my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw this bronze statuette of a griffon rampant to an unoccupied space within 60 ft, where it becomes a griffon for up to 6 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 5 days have passed.",
 			descriptionFull: "This figurine of wondrous power is a bronze statuette of a griffon rampant, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living griffon. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 6 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 5 days have passed.",
 			usages : 1,
 			recovery : "5 days"
@@ -1969,8 +1955,8 @@ var Base_MagicItemsList = {
 		"ebony fly" : {
 			rarity: "rare",
 			magicItemTable : "G",
-			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a giant fly for up to 12 hours, until I use the command word again, or it reaches 0 hp. It is friendly, understands my languages, obeys my commands, and can be ridden as a mount.",
-			descriptionLong: "As an action, I can speak the command word and throw this ebony statuette of a horsefly to an unoccupied space within 60 ft, where it becomes a giant fly for up to 12 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, obeys my spoken commands, and can be ridden as a mount. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
+			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a giant fly for up to 12 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, obeys my commands, and can be ridden as a mount.",
+			descriptionLong: "As an action, I can speak the command word and throw this ebony statuette of a horsefly to an unoccupied space within 60 ft, where it becomes a giant fly for up to 12 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, obeys my spoken commands, and can be ridden as a mount. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
 			descriptionFull : "This figurine of wondrous power is an ebony statuette carved in the likeness of a horsefly, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living giant fly and can be ridden as a mount. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 12 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.",
 			usages : 1,
 			recovery : "2 days"
@@ -1978,8 +1964,8 @@ var Base_MagicItemsList = {
 		"golden lions" : {
 			rarity : "rare",
 			magicItemTable : "G",
-			description: "As an action, I can speak the command word and throw one or both of these gold statuettes to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use the command word again, or it reaches 0 hp. They are friendly, understand my languages, and obey my commands.",
-			descriptionLong: "As an action, I can speak the command word and throw one or both of these gold statuettes of a lion to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use an action to repeat the command word, or it reaches 0 hp. They are friendly to me and my allies, understand my languages, and obey my spoken commands. If I issue no commands, they defend themselves but takes no other actions. When a lion reverts back to a figurine, that figurine can't be used again until 7 days have passed.",
+			description: "As an action, I can speak the command word and throw one or both of these gold statuettes to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use the command word again, or it reaches 0 HP. They are friendly, understand my languages, and obey my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw one or both of these gold statuettes of a lion to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use an action to repeat the command word, or it reaches 0 HP. They are friendly to me and my allies, understand my languages, and obey my spoken commands. If I issue no commands, they defend themselves but takes no other actions. When a lion reverts back to a figurine, that figurine can't be used again until 7 days have passed.",
 			descriptionFull : "This figurine of wondrous power is a pair of gold statuettes of lions, small enough to fit in a pocket. If you use an action to speak the command word and throw one or both of the figurines to a point on the ground within 60 feet of you, each figurine becomes a living lion. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 1 hour. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
 			usages : 2,
 			recovery : "7 days"
@@ -1987,8 +1973,8 @@ var Base_MagicItemsList = {
 		"ivory goats" : {
 			rarity : "rare",
 			magicItemTable : "G",
-			description: "As an action, I can speak the command word and throw one or more of these 3 ivory statuettes to an unoccupied space within 60 ft, where each becomes a creature, until I use the command word again, or it reaches 0 hp. They are friendly, understands my languages, and obeys my commands. See Notes page.",
-			descriptionLong: "As an action, I can speak the command word and throw one or more of these three ivory statuettes of goats to an unoccupied space within 60 ft, where each becomes a creature, until I use an action to repeat the command word, or it reaches 0 hp. They are friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until a certain amount of time has passed. See Notes page for details about each of the statuettes.",
+			description: "As an action, I can speak the command word and throw one or more of these 3 ivory statuettes to an unoccupied space within 60 ft, where each becomes a creature, until I use the command word again, or it reaches 0 HP. They are friendly, understands my languages, and obeys my commands. See Notes page.",
+			descriptionLong: "As an action, I can speak the command word and throw one or more of these three ivory statuettes of goats to an unoccupied space within 60 ft, where each becomes a creature, until I use an action to repeat the command word, or it reaches 0 HP. They are friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until a certain amount of time has passed. See Notes page for details about each of the statuettes.",
 			descriptionFull: "This figurine of wondrous power is three ivory statuettes of goats, small enough to fit in a pocket. Each goat looks unique and functions differently from the others. If you use an action to speak the command word and throw one or more of the figurines to a point on the ground within 60 feet of you, each figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description." +
 			"\n \u2022 The goat of traveling can become a Large goat with the same statistics as a riding horse. It has 24 charges, and each hour or portion thereof it spends in beast form costs 1 charge. While it has charges, you can use it as often as you wish. When it runs out of charges, it reverts to a figurine and can't be used again until 7 days have passed, when it regains all its charges." +
 			"\n \u2022 The goat of travail becomes a giant goat for up to 3 hours. Once it has been used, it can't be used again until 30 days have passed." +
@@ -2030,8 +2016,8 @@ var Base_MagicItemsList = {
 		"marble elephant" : {
 			rarity : "rare",
 			magicItemTable : "G",
-			description: "As an action, I can speak the command word and throw this marble statuette to an unoccupied space within 60 ft, where it becomes a elephant for up to 24 hours, until I use the command word again, or it reaches 0 hp. It is friendly, understands my languages, and obeys my commands.",
-			descriptionLong: "As an action, I can speak the command word and throw this marble statuette of about 4 inches high and long to an unoccupied space within 60 ft, where it becomes a elephant for up to 24 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
+			description: "As an action, I can speak the command word and throw this marble statuette to an unoccupied space within 60 ft, where it becomes a elephant for up to 24 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, and obeys my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw this marble statuette of about 4 inches high and long to an unoccupied space within 60 ft, where it becomes a elephant for up to 24 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
 			descriptionFull: "This figurine of wondrous power is a marble statuette of about 4 inches high and long, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living elephant. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 24 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
 			usages : 1,
 			recovery : "7 days"
@@ -2039,8 +2025,8 @@ var Base_MagicItemsList = {
 		"obsidian steed" : {
 			rarity : "very rare",
 			magicItemTable : "H",
-			description: "As an action, I can speak the command word and throw this obsidian statuette to an unoccupied space within 60 ft, where it becomes a nightmare for up to 24 hours, until it reaches 0 hp, or I use the command word again. It is friendly, understands my languages, and obeys my commands. See Notes page.",
-			descriptionLong: "As an action, I can speak the command word and throw this polished obsidian statuette of an horse to an unoccupied space within 60 ft, where it becomes a nightmare for up to 24 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. It only fights to defend itself. When it reverts back to a figurine, it can't be used again until 5 days have passed. See Notes page for more details.",
+			description: "As an action, I can speak the command word and throw this obsidian statuette to an unoccupied space within 60 ft, where it becomes a nightmare for up to 24 hours, until it reaches 0 HP, or I use the command word again. It is friendly, understands my languages, and obeys my commands. See Notes page.",
+			descriptionLong: "As an action, I can speak the command word and throw this polished obsidian statuette of an horse to an unoccupied space within 60 ft, where it becomes a nightmare for up to 24 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. It only fights to defend itself. When it reverts back to a figurine, it can't be used again until 5 days have passed. See Notes page for more details.",
 			descriptionFull: "This figurine of wondrous power is a polished obsidian statuette of a horse, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living nightmare. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 24 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 5 days have passed." +
 			"\n   The nightmare fights only to defend itself.\n   If you have a good alignment, the figurine has a 10% chance each time you use it to ignore your orders, including a command to revert to figurine form. If you mount the nightmare while it is ignoring your orders, you and the nightmare are instantly transported to a random location on the plane of Hades, where the nightmare reverts to figurine form.",
 			usages : 1,
@@ -2053,8 +2039,8 @@ var Base_MagicItemsList = {
 		"onyx dog" : {
 			rarity : "rare",
 			magicItemTable : "G",
-			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a mastiff for up to 6 hours, until I use the command word again, or it reaches 0 hp. It has 60 ft darkvision, see invisible out to 60 ft, is friendly, understands me, and obeys my commands.",
-			descriptionLong: "As an action, I can speak the command word and throw this onyx statuette to an unoccupied space within 60 ft, where it becomes a mastiff for up to 6 hours, until I use an action to repeat the command word, or it reaches 0 hp. It has Intelligence 8, speaks common, darkvision out to 60 ft and can see invisible creatures and objects out to that same range. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
+			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a mastiff for up to 6 hours, until I use the command word again, or it reaches 0 HP. It has 60 ft darkvision, see invisible out to 60 ft, is friendly, understands me, and obeys my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw this onyx statuette to an unoccupied space within 60 ft, where it becomes a mastiff for up to 6 hours, until I use an action to repeat the command word, or it reaches 0 HP. It has Intelligence 8, speaks common, darkvision out to 60 ft and can see invisible creatures and objects out to that same range. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
 			descriptionFull: "This figurine of wondrous power is an onyx statuette of a dog, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living mastiff. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The mastiff has an Intelligence of 8 and can speak Common. It also has darkvision out to a range of 60 feet and can see invisible creatures and objects within that range. It is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 6 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
 			usages : 1,
 			recovery : "7 days"
@@ -2062,8 +2048,8 @@ var Base_MagicItemsList = {
 		"serpentine owl" : {
 			rarity : "rare",
 			magicItemTable : "G",
-			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a giant owl for up to 8 hours, until I use the command word again, or it reaches 0 hp. It is friendly, can convers telepathically with me, understands my languages, and obeys my commands.",
-			descriptionLong: "As an action, I can speak the command word and throw this serpentine statuette to an unoccupied space within 60 ft, where it becomes a giant owl for up to 8 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. As long as it is on the same plane of existence, it can communicate telepathically with me. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
+			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a giant owl for up to 8 hours, until I use the command word again, or it reaches 0 HP. It is friendly, can convers telepathically with me, understands my languages, and obeys my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw this serpentine statuette to an unoccupied space within 60 ft, where it becomes a giant owl for up to 8 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. As long as it is on the same plane of existence, it can communicate telepathically with me. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
 			descriptionFull: "This figurine of wondrous power is a serpentine statuette of an owl, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living giant owl. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. It can telepathically communicate with you at any range if you and it are on the same plane of existence. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 8 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.",
 			usages : 1,
 			recovery : "2 days"
@@ -2071,8 +2057,8 @@ var Base_MagicItemsList = {
 		"silver raven" : {
 			rarity : "uncommon",
 			magicItemTable : "F",
-			description: "As an action, I can speak the command word and throw this silver statuette to an unoccupied space within 60 ft, where it becomes a raven for up to 12 hours, until I use the command word again, or it reaches 0 hp. It is friendly, understands my languages, and obeys my commands.",
-			descriptionLong: "As an action, I can speak the command word and throw this silver statuette to an unoccupied space within 60 ft, where it becomes a raven for up to 12 hours, until I use an action to repeat the command word, or it reaches 0 hp. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. While in raven form, the figurine allows me to cast Animal Messenger on it at will. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
+			description: "As an action, I can speak the command word and throw this silver statuette to an unoccupied space within 60 ft, where it becomes a raven for up to 12 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, and obeys my commands.",
+			descriptionLong: "As an action, I can speak the command word and throw this silver statuette to an unoccupied space within 60 ft, where it becomes a raven for up to 12 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. While in raven form, the figurine allows me to cast Animal Messenger on it at will. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
 			descriptionFull: "This figurine of wondrous power is as sliver statuette of a raven, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living raven. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 12 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.\n   While in raven form, the figurine allows you to cast the Animal Messenger spell on it at will.",
 			usages : 1,
 			recovery : "2 days",
@@ -2603,7 +2589,7 @@ var Base_MagicItemsList = {
 		name : "Horn of Valhalla",
 		source : [["SRD", 226], ["D", 175]],
 		type : "wondrous item",
-		description : "As an action once per 7 days, I can blow this horn to summon warrior spirits from Ysgard within 60 ft me. These have the statistics of a berserker and return after 1 hour or when they drop to 0 hp. The number and how they respond depends on the type of material the horn is made of.",
+		description : "As an action once per 7 days, I can blow this horn to summon warrior spirits from Ysgard within 60 ft me. These have the statistics of a berserker and return after 1 hour or when they drop to 0 HP. The number and how they respond depends on the type of material the horn is made of.",
 		descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n Four types of Horn of Valhalla are known to exist, each made of a different metal. The horn's type determines how many berserkers answer it summons, as well as the requirement for its use. The DM chooses the horn's type or determines it randomly.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands.",
 		weight : 2,
 		usages : 1,
@@ -2613,30 +2599,34 @@ var Base_MagicItemsList = {
 		choices : ["Silver (rare; 2d4+2 berserkers)", "Brass (rare; 3d4+3 berserkers; prereq: simple weapons prof.)", "Bronze (very rare; 4d4+4 berserkers; prereq: medium armor prof.)", "Iron (very rare; 5d4+5 berserkers; prereq: martial weapons prof.)"],
 		"silver (rare; 2d4+2 berserkers)" : {
 			name : "Silver Horn of Valhalla",
+			sortname : "Horn of Valhalla, Silver",
 			rarity : "rare",
 			magicItemTable : "G",
-			description : "As an action once per 7 days, I can blow this horn to summon 2d4+2 warrior spirits from Ysgard within 60 ft me. These have the statistics of a berserker and return after 1 hour or when they drop to 0 hp. They are friendly to me and my companions and follow my commands.",
+			description : "As an action once per 7 days, I can blow this horn to summon 2d4+2 warrior spirits from Ysgard within 60 ft me. These have the statistics of a berserker and return after 1 hour or when they drop to 0 HP. They are friendly to me and my companions and follow my commands.",
 			descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   The silver horn summons 2d4+2 berserkers.\n   The berserkers are friendly to you and your companions and follow your commands."
 		},
 		"brass (rare; 3d4+3 berserkers; prereq: simple weapons prof.)" : {
 			name : "Brass Horn of Valhalla",
+			sortname : "Horn of Valhalla, Brass",
 			rarity : "rare",
 			magicItemTable : "G",
-			description : "As an action once per 7 days, I can blow this horn to summon 3d4+3 warrior spirits from Ysgard within 60 ft. These berserkers return after 1 hour or when they drop to 0 hp. If I'm proficient with all simple weapons, they follow my commands and are friendly to me and my companions. Otherwise, they attack me.",
+			description : "As an action once per 7 days, I can blow this horn to summon 3d4+3 warrior spirits from Ysgard within 60 ft. These berserkers return after 1 hour or when they drop to 0 HP. If I'm proficient with all simple weapons, they follow my commands and are friendly to me and my companions. Otherwise, they attack me.",
 			descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   A brass horn summons 3d4+3 berserkers. To use the brass horn, you must be proficient with all simple weapons.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands."
 		},
 		"bronze (very rare; 4d4+4 berserkers; prereq: medium armor prof.)" : {
 			name : "Bronze Horn of Valhalla",
+			sortname : "Horn of Valhalla, Bronze",
 			rarity : "very rare",
 			magicItemTable : "H",
-			description : "As an action once per 7 days, I can blow this horn to summon 4d4+4 warrior spirits from Ysgard within 60 ft. These berserkers return after 1 hour or when they drop to 0 hp. If I'm proficient with medium armor, they follow my commands and are friendly to me and my companions. Otherwise, they attack me.",
+			description : "As an action once per 7 days, I can blow this horn to summon 4d4+4 warrior spirits from Ysgard within 60 ft. These berserkers return after 1 hour or when they drop to 0 HP. If I'm proficient with medium armor, they follow my commands and are friendly to me and my companions. Otherwise, they attack me.",
 			descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   A bronze horn summons 4d4+4 berserkers. To use the bronze horn, you must be proficient with medium armor.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands."
 		},
 		"iron (very rare; 5d4+5 berserkers; prereq: martial weapons prof.)" : {
 			name : "Iron Horn of Valhalla",
+			sortname : "Horn of Valhalla, Iron",
 			rarity : "legendary",
 			magicItemTable : "I",
-			description : "As an action once per 7 days, I can blow this horn to summon 5d4+5 warrior spirits from Ysgard within 60 ft. These berserkers return after 1 hour or when they drop to 0 hp. If I'm proficient with all martial weapons, they follow my commands and are friendly to me and my companions. Otherwise, they attack me.",
+			description : "As an action once per 7 days, I can blow this horn to summon 5d4+5 warrior spirits from Ysgard within 60 ft. These berserkers return after 1 hour or when they drop to 0 HP. If I'm proficient with all martial weapons, they follow my commands and are friendly to me and my companions. Otherwise, they attack me.",
 			descriptionFull : "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n   The iron horn summons 5d4+5 berserkers. To use the iron horn, you must be proficient with all martial weapons.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands."
 		}
 	},
@@ -2931,7 +2921,7 @@ var Base_MagicItemsList = {
 			regExpSearch : /^(?=.*mace)(?=.*disruption).*$/i,
 			name : "Mace of Disruption",
 			source : [["SRD", 229], ["D", 179]],
-			description : "Fiend/undead +2d6 radiant damage, frightened until my next turn ends, and if hp<26, DC 15 Wis save or die"
+			description : "Fiend/undead +2d6 radiant damage, frightened until my next turn ends, and if HP<26, DC 15 Wis save or die"
 		}
 	},
 	"mace of smiting" : {
@@ -2949,7 +2939,7 @@ var Base_MagicItemsList = {
 			regExpSearch : /^(?=.*mace)(?=.*smiting).*$/i,
 			name : "Mace of Smiting",
 			source : [["SRD", 229], ["D", 179]],
-			description : "+2 to hit/damage vs. constructs; On 20 to hit: +7 damage (+14 vs. constructs); Constructs hp<26 destroyed",
+			description : "+2 to hit/damage vs. constructs; On 20 to hit: +7 damage (+14 vs. constructs); Constructs HP<26 destroyed",
 			modifiers : [1,1]
 		}
 	},
@@ -3022,20 +3012,22 @@ var Base_MagicItemsList = {
 			}
 			var baseAdd = [0,0,0,0,0,0];
 			baseAdd[statIndx] = statBonus;
+			var maxAdd = [0,0,0,0,0,0];
+			maxAdd[statIndx] = "+" + baseAdd[statIndx];
 			if (alreadyAppliedBefore) {
 				baseAdd = [].concat(CurrentStats.maximumsLinked[itemName]);
 				// remove the old version
-				processStats(false, "magic", itemName, baseAdd, false, false, true);
+				processStats(false, "magic", itemName, baseAdd, false, false, maxAdd);
 				if (removeAll) {
 					// also remove the maximum
-					processStats(false, "magic", itemName, baseAdd, false, "maximums");
+					processStats(false, "magic", itemName, maxAdd, false, "maximums");
 					return;
 				}
+				// now increase the gains to include the item again
 				baseAdd[statIndx] += statBonus;
+				maxAdd[statIndx] = "+" + baseAdd[statIndx];
 			}
-			processStats(true, "magic", itemName, baseAdd, false, false, true);
-			var maxAdd = [0,0,0,0,0,0];
-			maxAdd[statIndx] = "+" + baseAdd[statIndx];
+			processStats(true, "magic", itemName, baseAdd, false, false, maxAdd);
 			processStats(true, "magic", itemName, maxAdd, false, "maximums");
 		},
 		eval : function() {
@@ -3579,7 +3571,7 @@ var Base_MagicItemsList = {
 		choices : ["Hill (Str 21, uncommon)", "Frost (Str 23, rare)", "Stone (Str 23, rare)", "Fire (Str 25, rare)", "Cloud (Str 27, very rare)", "Storm (Str 29, legendary)"],
 		"hill (str 21, uncommon)" : {
 			name : "Potion of Hill Giant Strength",
-			sortname : "Potion of Giant Strength, Hill",
+			sortname : "Potion of Giant Strength, Hill (Str 21)",
 			rarity : "uncommon",
 			magicItemTable : "B",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 21 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a hill giant.",
@@ -3587,7 +3579,7 @@ var Base_MagicItemsList = {
 		},
 		"frost (str 23, rare)" : {
 			name : "Potion of Frost Giant Strength",
-			sortname : "Potion of Giant Strength, Frost",
+			sortname : "Potion of Giant Strength, Frost (Str 23)",
 			rarity : "rare",
 			magicItemTable : "C",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 23 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a frost giant.",
@@ -3595,7 +3587,7 @@ var Base_MagicItemsList = {
 		},
 		"stone (str 23, rare)" : {
 			name : "Potion of Stone Giant Strength",
-			sortname : "Potion of Giant Strength, Stone",
+			sortname : "Potion of Giant Strength, Stone (Str 23)",
 			rarity : "rare",
 			magicItemTable : "C",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 23 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a stone giant.",
@@ -3603,7 +3595,7 @@ var Base_MagicItemsList = {
 		},
 		"fire (str 25, rare)" : {
 			name : "Potion of Fire Giant Strength",
-			sortname : "Potion of Giant Strength, Fire",
+			sortname : "Potion of Giant Strength, Fire (Str 25)",
 			rarity : "rare",
 			magicItemTable : "C",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 25 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a fire giant.",
@@ -3611,7 +3603,7 @@ var Base_MagicItemsList = {
 		},
 		"cloud (str 27, very rare)" : {
 			name : "Potion of Cloud Giant Strength",
-			sortname : "Potion of Giant Strength, Cloud",
+			sortname : "Potion of Giant Strength, Cloud (Str 27)",
 			rarity : "very rare",
 			magicItemTable : "D",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 27 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a cloud giant.",
@@ -3619,7 +3611,7 @@ var Base_MagicItemsList = {
 		},
 		"storm (str 29, legendary)" : {
 			name : "Potion of Storm Giant Strength",
-			sortname : "Potion of Giant Strength, Storm",
+			sortname : "Potion of Giant Strength, Storm (Str 29)",
 			rarity : "legendary",
 			magicItemTable : "E",
 			description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score to 29 for 1 hour. This potion has no effect if the consumer's Strength score is already equal or higher. This potion's transparent liquid has floating in it a sliver of fingernail from a storm giant.",
@@ -3735,54 +3727,45 @@ var Base_MagicItemsList = {
 		weight : 0.5,
 		allowDuplicates : true,
 		choices : ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
+		choicesNotInMenu : true,
 		"acid" : {
 			name : "Potion of Acid Resistance",
-			sortname : "Potion of Resistance, Acid",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to acid damage for 1 hour."
 		},
 		"cold" : {
 			name : "Potion of Cold Resistance",
-			sortname : "Potion of Resistance, Cold",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to cold damage for 1 hour."
 		},
 		"fire" : {
 			name : "Potion of Fire Resistance",
-			sortname : "Potion of Resistance, Fire",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to fire damage for 1 hour."
 		},
 		"force" : {
 			name : "Potion of Force Resistance",
-			sortname : "Potion of Resistance, Force",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to force damage for 1 hour."
 		},
 		"lightning" : {
 			name : "Potion of Lightning Resistance",
-			sortname : "Potion of Resistance, Lightning",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to lightning damage for 1 hour."
 		},
 		"necrotic" : {
 			name : "Potion of Necrotic Resistance",
-			sortname : "Potion of Resistance, Necrotic",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to necrotic damage for 1 hour."
 		},
 		"poison" : {
 			name : "Potion of Poison Resistance",
-			sortname : "Potion of Resistance, Poison",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to poison damage for 1 hour."
 		},
 		"psychic" : {
 			name : "Potion of Psychic Resistance",
-			sortname : "Potion of Resistance, Psychic",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to psychic damage for 1 hour."
 		},
 		"radiant" : {
 			name : "Potion of Radiant Resistance",
-			sortname : "Potion of Resistance, Radiant",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to radiant damage for 1 hour."
 		},
 		"thunder" : {
 			name : "Potion of Thunder Resistance",
-			sortname : "Potion of Resistance, Thunder",
 			description : "Once as an action, I can drink this potion or administer it to another to gain resistance to thunder damage for 1 hour."
 		}
 	},
@@ -4257,63 +4240,54 @@ var Base_MagicItemsList = {
 		"\n 10\tThunder\t\tSpinel",
 		attunement : true,
 		choices : ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
+		choicesNotInMenu : true,
 		"acid" : {
 			name : "Ring of Acid Resistance",
-			sortname : "Ring of Resistance, Acid",
 			description : "While I'm wearing this ring set with a pearl and I'm attuned to it, I have resistance to acid damage.",
 			dmgres : ["Acid"]
 		},
 		"cold" : {
 			name : "Ring of Cold Resistance",
-			sortname : "Ring of Resistance, Cold",
 			description : "While I'm wearing this ring set with a tourmaline and I'm attuned to it, I have resistance to cold damage.",
 			dmgres : ["Cold"]
 		},
 		"fire" : {
 			name : "Ring of Fire Resistance",
-			sortname : "Ring of Resistance, Fire",
 			description : "While I'm wearing this ring set with a garnet and I'm attuned to it, I have resistance to fire damage.",
 			dmgres : ["Fire"]
 		},
 		"force" : {
 			name : "Ring of Force Resistance",
-			sortname : "Ring of Resistance, Force",
 			description : "While I'm wearing this ring set with a sapphire and I'm attuned to it, I have resistance to force damage.",
 			dmgres : ["Force"]
 		},
 		"lightning" : {
 			name : "Ring of Lightning Resistance",
-			sortname : "Ring of Resistance, Lightning",
 			description : "While I'm wearing this ring set with a citrine and I'm attuned to it, I have resistance to lightning damage.",
 			dmgres : ["Lightning"]
 		},
 		"necrotic" : {
 			name : "Ring of Necrotic Resistance",
-			sortname : "Ring of Resistance, Necrotic",
 			description : "While I'm wearing this ring set with jet and I'm attuned to it, I have resistance to necrotic damage.",
 			dmgres : ["Necrotic"]
 		},
 		"poison" : {
 			name : "Ring of Poison Resistance",
-			sortname : "Ring of Resistance, Poison",
 			description : "While I'm wearing this ring set with an amethyst and I'm attuned to it, I have resistance to poison damage.",
 			dmgres : ["Poison"]
 		},
 		"psychic" : {
 			name : "Ring of Psychic Resistance",
-			sortname : "Ring of Resistance, Psychic",
 			description : "While I'm wearing this ring set with jade and I'm attuned to it, I have resistance to psychic damage.",
 			dmgres : ["Psychic"]
 		},
 		"radiant" : {
 			name : "Ring of Radiant Resistance",
-			sortname : "Ring of Resistance, Radiant",
 			description : "While I'm wearing this ring set with a topaz and I'm attuned to it, I have resistance to radiant damage.",
 			dmgres : ["Radiant"]
 		},
 		"thunder" : {
 			name : "Ring of Thunder Resistance",
-			sortname : "Ring of Resistance, Thunder",
 			description : "While I'm wearing this ring set with a spinel and I'm attuned to it, I have resistance to thunder damage.",
 			dmgres : ["Thunder"]
 		}
@@ -4629,6 +4603,7 @@ var Base_MagicItemsList = {
 			weight : 4
 		},
 		choices : ["Good", "Neutral", "Evil"],
+		choicesNotInMenu : true,
 		"good" : {
 			description : "While wearing this elegant robe made from exquisite white cloth adorned with silvery runes, I have advantage on saves against spells and magical effects and add +2 to both my spell save DC and spell attack rolls. Also, if I'm not wearing armor, it makes my base AC 15 + my Dexterity modifier.",
 			prerequisite : "Requires attunement by a good sorcerer, warlock, or wizard",
@@ -4983,8 +4958,8 @@ var Base_MagicItemsList = {
 				"When casting a spell using a Spell Scroll, no material components are needed other than the spell scroll itself. They also can't be cast as a ritual."
 			]
 		},
-		choices : ["\x1bCantrip", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level", "mixed levels"],
-		"\x1bcantrip" : {
+		choices : ["Cantrip", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level", "mixed levels"],
+		"cantrip" : {
 			name : "Spell Scroll (cantrip)",
 			sortname : "Spell Scroll  (cantrip)",
 			rarity : "common",

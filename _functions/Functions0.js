@@ -79,24 +79,44 @@ function desc(arr, joinStr) {
 
 // Call all the prototypes within their own function so we can call it again when importing, forcing the latest version
 function setPrototypes() {
-	//adding a way of capitalizing every first letter of every word in a string
+	// Adding a way of capitalizing every first letter of every word in a string
 	String.prototype.capitalize = function () {
-		var string = this.replace(/(^|\s|\(|\[)[a-zA-Z\u00C0-\u017F\-]{3,}/g, function (m) {
-			var offset = /\s|\(|\[/.test(m[0]) ? 2 : 1;
-			return m.substr(0, offset).toUpperCase() + m.substr(offset).toLowerCase();
-		});
+		// Based on https://github.com/blakeembrey/change-case/tree/master/packages/title-case
+		var SMALL_WORDS = /\b(an?d?|a[st]|because|but|by|en|for|i[fn]|neither|nor|o[fnr]|only|over|per|so|some|tha[tn]|the|to|up|upon|vs?|versus|via|when|with|without|yet)\b/i;
+		var TOKENS = /[^\s:]+|./g;
+		var WHITESPACE = /\s/;
+		var IS_MANUAL_CASE = /.(?=[A-Z]|\..)/;
+		var ALPHANUMERIC_PATTERN = /[A-Za-z0-9\u00C0-\u017F]/;
+		var input = this;
+		var result = "";
+		var m = TOKENS.exec(input);
 
-		// Certain minor words should be left lowercase unless
-		// they are the first or last words in the string
-		lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At',
-		'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
-		for (var Ca = 0; Ca < lowers.length; Ca++)
-		string = string.replace(new RegExp('\\W' + lowers[Ca] + '\\W', 'g'), function(txt) {
-			return txt.toLowerCase();
-		});
+		while (m !== null) {
+			var token = m[0];
+			var index = m.index;
+			if (
+				// Ignore already capitalized words.
+				!IS_MANUAL_CASE.test(token) &&
+				// Ignore small words except at beginning or end.
+				(!SMALL_WORDS.test(token) ||
+					index === 0 ||
+					index + token.length === input.length) &&
+				// Ignore URLs.
+				(input.charAt(index + token.length) !== ":" ||
+					WHITESPACE.test(input.charAt(index + token.length + 1)))
+				) {
+				// Find and uppercase first word character, skips over *modifiers*.
+				result += token.replace(ALPHANUMERIC_PATTERN, function(m) {
+					return m.toUpperCase()
+				});
+			} else {
+				result += token;
+			}
+			m = TOKENS.exec(input);
+		}
 
-		return string;
-	};
+		return result;
+	}
 	// if using older Adobe Acrobat, define missing prototype
 	if (!String.prototype.trim) {
 		String.prototype.trim = function () {

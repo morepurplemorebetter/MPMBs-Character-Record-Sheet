@@ -19,10 +19,17 @@ var Base_SourceList = {
 		abbreviation : "Homebrew",
 		group : "default"
 	},
-	"ALbackground" : {
+	"ALbackground" : { // For backwards-compatibility, but this source has been superseded by the "All AL-legal backgrounds/races" source below
 		name : "All official WotC backgrounds",
 		abbreviation : "WotC",
 		group : "Adventurers League",
 		url : "https://flapkan.com/faq#What-is-the-source-All-official-WotC-backgrounds-and-how-does-it-work"
+	},
+	// Source for all official WotC backgrounds & races that are legal in Adventurers League play, so that they are easier to use with the PHB +1 rule
+	"AL-legal" : {
+		name : "All AL-legal backgrounds/races",
+		abbreviation : "WotC",
+		group : "Adventurers League",
+		url : "https://flapkan.com/faq#What-is-the-source-All-AL-legal-backgrounds-races-and-how-does-it-work"
 	}
 };

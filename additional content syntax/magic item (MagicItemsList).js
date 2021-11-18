@@ -39,7 +39,7 @@
 				You will also need the syntax for adding a source if you want the magic item
 				to have a source that doesn't yet exist in the sheet.
 
-	Sheet:		v13.0.8 and newer
+	Sheet:		v13.0.9 and newer
 
 */
 
@@ -458,7 +458,6 @@ MagicItemsList["staff of purple"] = {
 			Common uses include "armor", "weapon", and "ammunition".
 			Only the first instance of the 2nd array entry in the magic item's description will be replaced/amended.
 
-
 		If this attribute is not present, the sheet will determine it automatically:
 		1. How the selected name will be amended will be identical to the 'prefixOrSuffix' attribute.
 			If the 'prefixOrSuffix' attribute is not present, it will use "prefix".
@@ -469,6 +468,7 @@ MagicItemsList["staff of purple"] = {
 	/*	itemName1stPage // OPTIONAL //
 		TYPE:	array
 		USE:	how the name added to the 1st page should look like
+		CHANGE: v13.0.9 (added "between" option)
 
 		The resulting name is used to populate the 1st page.
 		If this attribute is not present, the sheet will use the name as it
@@ -476,12 +476,28 @@ MagicItemsList["staff of purple"] = {
 
 		This array must always have 2 entries, each of which is a strings:
 		1. The first string determines how the name of the selected gear is added the 2nd array entry.
-			This can be one of three options:
+			This can be one of four options:
 			1.1 "prefix"	// Add the name of selected gear before the 2nd array entry
 			1.2 "suffix"	// Add the name of selected gear after the 2nd array entry
 			1.3 "brackets"	// Add the name of selected gear in brackets after the 2nd array entry
+			1.4 "between"	// Add the name of selected gear between the 2nd and 3rd array entries
 		2. The second string is the string that selected gear will be amended to.
 			Use something that makes clear what magic item this concerns.
+		3. The third string is the string that will be used if the first entry is set to "between".
+			The result will then be "[2nd entry] [weapon name] [3rd entry]".
+		
+		The automation will add the spaces between the text.
+	*/
+		ammoAmount : 20,
+	/*	ammoAmount // OPTIONAL //
+		TYPE:	number
+		USE:	set the amount of ammunition to add to the first page (if `type` = "ammo")
+		ADDED:	v13.0.9
+
+		This attribute can only be used if the `chooseGear.type` attribute above is set to "ammo".
+
+		If this attribute is not included, the sheet will default to adding 1 of the magic
+		ammunition in the ammunition section.
 	*/
 	},
 /*
@@ -540,6 +556,26 @@ MagicItemsList["staff of purple"] = {
 	This function doesn't get passed any variables.
 	This attribute will be ignored if the 'choices' attribute is not present.
 	Even with this attribute present, the player can always change the 'choice' using the button on the sheet.
+*/
+	choicesNotInMenu : true,
+/*	choicesNotInMenu // OPTIONAL //
+	TYPE:	boolean
+	USE:	omit the choices from the item menu (i.e. only list the main item's name)
+	ADDED:	v13.0.9
+
+	If this attribute is set to true and the magic item has the `choices` attribute,
+	the magic item will only be listed by the given `name` in the menu.
+	Normally, a magic item with the `choices` attribute will have each choice listed
+	separately in the magic item menu if any of these choices contain anything mechanically
+	different than the main item (e.g. anything more than a name or description attribute).
+	If so, the main name is not listed at all, just the choices.
+	If you want to be sure only the main item is listed, regardless of the choices and their
+	attributes, set this attribute to true.
+
+	Also, if an item has the `selfChoosing` attribute, only the main item will be listed.
+
+	This attribute has no effect if the parent object has no `choices` attribute.
+	Setting this attribute to false is the same as not including this attribute.
 */
 
 	"fire" : {

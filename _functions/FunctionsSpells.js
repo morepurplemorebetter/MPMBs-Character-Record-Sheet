@@ -155,17 +155,15 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	// Update the spell for the caster level of the character (if not manually added)
 	if (CurrentCasters.amendSpDescr && aCast) {
 		// apply cantrip die
-		var cDie = cantripDie[Math.min(CurrentFeats.level, cantripDie.length) - 1];
 		if (aSpell.descriptionCantripDie) {
+			var cDie = cantripDie[Math.min(CurrentFeats.level, cantripDie.length) - 1];
 			var newCantripDieDescr = aSpell.descriptionCantripDie;
-			while ((/`CD(-|\+|\*)?\d*`/).test(newCantripDieDescr)) {
-				var aDie = cDie;
-				if ((/`CD(-|\+)\d+`/).test(newCantripDieDescr)) {
-					aDie = cDie + Number(newCantripDieDescr.replace(/.*`CD((-|\+)\d+)`.*/, "$1"));
-				} else if ((/`CD\*\d+`/).test(newCantripDieDescr)) {
-					aDie = cDie * Number(newCantripDieDescr.replace(/.*`CD\*(\d+)`.*/, "$1"));
-				}
-				newCantripDieDescr = newCantripDieDescr.replace(/`CD(-|\+|\*)?\d*`/, aDie);
+			var rxCanDie = /`CD([\-+*]*\d*)`/;
+			var execCanDie = rxCanDie.exec(newCantripDieDescr);
+			while (execCanDie !== null) {
+				var aDie = execCanDie[1].indexOf("*") !== -1 ? cDie * Number(execCanDie[1].replace("*","")) : cDie + Number(execCanDie[1]);
+				newCantripDieDescr = newCantripDieDescr.replace(execCanDie[0], aDie);
+				execCanDie = rxCanDie.exec(newCantripDieDescr);
 			}
 			aSpell.description = newCantripDieDescr.replace(/\b0d\d+/g, "0");
 		}

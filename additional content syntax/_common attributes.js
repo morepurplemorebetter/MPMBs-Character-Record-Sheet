@@ -48,7 +48,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v13.0.7 and newer
+	Sheet:		v13.0.9 and newer
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -477,6 +477,27 @@ shieldAdd : ["Magical Buckler", 1, 2],
 	The shield will only be added if the AC bonus is more or equal to that of the current shield.
 
 	If a feature with this attribute is removed, this shield will be removed as well.
+*/
+
+ammoAdd : [["Green Arrows", 12], ["Smoke Bombs", 5]],
+/*	ammoAdd // OPTIONAL //
+	TYPE:	array (variable length) of arrays with 2 entries
+	USE:	adds each entry in the array to one of the ammunition drop-downs on the 1st page
+	ADDED:	v13.0.9
+
+	This attribute has to be an array of arrays that have one or two entries each:
+	1)	string
+		The first entry of each sub-array is the literal text that has to be set for the
+		ammunition drop-down box on the 1st page.
+	2)	number
+		This sets what should be entered for the "amount" part of the ammunition on the 1st page.
+		If this entry is omitted, the sheet will set the amount to 1.
+
+	An entry will only be added if there is space left in the ammunition section and
+	it isn't already present.
+	The strings will be added exactly as you write them here, capitalisation and all.
+
+	If a feature with this attribute is removed, these ammunition entries will be removed as well.
 */
 
 ammoOptions : [{ /* AmmoList object, see "ammunition (AmmoList).js" syntax file  */ }],
@@ -2038,19 +2059,29 @@ addMod : [
 
 	You can have any number of objects in this array, each object must have the same four attributes, all of which are strings:
 	1. type
-		Can be "skill" or "save", but can also be left empty "".
+		Can be "skill", "save", or "dc", but can also be left empty "".
 	2. field
 		What to add here depends on the type-
+
 		a)	for "skill" it can be the name of a skill (e.g. "Acrobatics"),
 			or "Init" for initiative,
 			or "Too" for the optional tool/skill for which you can change the name,
 			or "All" for the all skills modifier.
+
 		b)	for "save" it can be the three-letter abbreviation of an ability score,
 			or "All" for the all saves modifier.
-		c)	for "" it has to be the exact name of the field as used in the PDF.
+
+		c)	for "dc" it can be the three-letter abbreviation of an ability score.
+			In this context, "dc" refers to the Ability Save DC on the front page.
+			This option is not available for a CreatureList object, as the companion page
+			doesn't have a separate space for Ability Save DC.
+			Do NOT use this to increase Spell Save DCs, use calcChanges.spellCalc instead.
+
+		d)	for "" it has to be the exact name of the field as used in the PDF.
 			common ones include:
 			"Proficiency Bonus Modifier",	// modifier field for proficiency bonus
 			"Passive Perception Bonus",		// modifier field for passive perception (not normal perception)
+
 	3. mod
 		This can be any combination of numbers, mathematical operators,
 		and three-letter ability score abbreviations for ability score modifiers,
@@ -2094,8 +2125,9 @@ addMod : [
 	4. text
 		This is an explanation of why the modifier was added and is used in the modifier change dialog.
 
-	NOTE: for modifiers to attacks, use calcChanges.
-	NOTE: for modifiers to AC, use extraAC.
+	NOTE: for modifiers to attacks, use calcChanges.atkCalc
+	NOTE: for modifiers to AC, use extraAC
+	NOTE: for modifiers to spell save DCs, use calcChanges.spellCalc
 */
 
 extraAC : [{

@@ -650,7 +650,7 @@ function DirectImport(consoleTrigger) {
 		//set the order of the skills
 		if (global.docFrom.getField("Text.SkillsNames")) MakeSkillsMenu_SkillsOptions(["go", global.docFrom.Who("Text.SkillsNames")]);
 
-		//set the visiblity of Honor/Sanity
+		//set the visibility of Honor/Sanity
 		if (ImportField("HoSRememberState")) ShowHonorSanity();
 
 		//set the location columns in the equipment sections
@@ -854,6 +854,10 @@ function DirectImport(consoleTrigger) {
 			ImportField(abiS + " ST Dis", {doReadOnly: true});
 		};
 		ImportField("All ST Bonus", {notTooltip: true, notSubmitName: true});
+		if (global.docFrom.CurrentVars.AbilitySaveDcBonus) {
+			global.docTo.CurrentVars.AbilitySaveDcBonus = global.docFrom.CurrentVars.AbilitySaveDcBonus;
+			global.docTo.SetStringifieds("vars");
+		}
 
 		//set the ability save DC
 		ImportField("Spell DC 1 Mod", {notTooltip: true}); ImportField("Spell DC 1 Bonus", {notTooltip: true, notSubmitName: true});
@@ -2518,6 +2522,10 @@ function RunUserScript(atStartup, manualUserScripts) {
 			});
 		};
 	};
+
+	// fix wrong reference (common mistake when adding classes)
+	deleteUnknownReferences();
+
 	// when run at startup and one of the script fails, update all the dropdowns
 	if (manualScriptResult == "outOfMemory" || runIScript == "outOfMemory") {
 		outOfMemoryErrorHandling(atStartup);
@@ -2529,6 +2537,32 @@ function RunUserScript(atStartup, manualUserScripts) {
 		return scriptsResult;
 	};
 };
+
+// Fix a common mistake in adding classes, having subclass references that don't work
+function deleteUnknownReferences() {
+	// Loop through all classes
+	for (var sClass in ClassList) {
+		var oClass = ClassList[sClass];
+		// If the subclasses attribute doesn't exist or is malformed, fix it
+		if (!oClass.subclasses || !isArray(oClass.subclasses) || !isArray(oClass.subclasses[1])) {
+			oClass.subclasses = [
+				oClass.subclasses[0] && typeof oClass.subclasses[0] === "string" ? oClass.subclasses[0] : "Archetype",
+				[]
+			];
+			continue;
+		}
+		// Loop through all the subclasses from end to start and delete any that don't exist in the ClassSubList object and any duplicates
+		var arrDupl = [];
+		for (var i = oClass.subclasses[1].length - 1; i >= 0; i--) {
+			var sSubcl = oClass.subclasses[1][i];
+			if (!ClassSubList[sSubcl] || arrDupl.indexOf(sSubcl) !== -1) {
+				oClass.subclasses[1].splice(i, 1);
+			} else {
+				arrDupl.push(sSubcl);
+			}
+		}
+	}
+}
 
 // Define some custom import script functions as document-level functions so custom scripts including these can still be run from console
 function RequiredSheetVersion(inNumber) {
@@ -2616,8 +2650,11 @@ function AddBackgroundVariant(background, variantName, variantObj) {
 	cObj    the choice object
 	force   if != false, force creation of the (extra)choices array
 	        if cType == true, use the force string for the extraname
+	bSort	if != false sort the array after the choice was added
+			Not for class features, where (extra)choices arrays are sorted before displaying the menu,
+			but good for magic items, where the arrays are never sorted automatically.
 */
-function AddFeatureChoice(pObj, cType, cName, cObj, force) {
+function AddFeatureChoice(pObj, cType, cName, cObj, force, bSort) {
 	if (!pObj) return; // parent object doesn't exist
 	var aObj = pObj; // the object where the (extra)choice will be added to
 	var cNameLC = cName.toLowerCase();
@@ -2667,6 +2704,7 @@ function AddFeatureChoice(pObj, cType, cName, cObj, force) {
 	};
 	// Add the new (extra)choice
 	aObj[cType].push(useName);
+	if (bSort) aObj[cType].sort();
 	if (cType === "extrachoices" && aObj.extrachoicesRemember) pObj.extrachoicesRemember.push(useName);
 	aObj[useName.toLowerCase()] = cObj;
 }
