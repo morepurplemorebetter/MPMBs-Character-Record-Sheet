@@ -114,7 +114,7 @@ SourceList["BoP"] = {
 	TYPE:	string
 	USE:	date of the source
 
-	The date has use the syntax yyyy/mm/dd,
+	The date uses the ISO syntax yyyy/mm/dd,
 	thus year, month, day, with leading zeroes for the month and day.
 
 	When present, this date is used by the sheet to see what source is newer.
@@ -136,13 +136,14 @@ SourceList["BoP"] = {
 	then the source will appear as "Book of Purple" in the group "MPMB" in the Source Materials dialog.
 
 	Common groups are:
-	 "Primary Sources"			// WotC publications like the Players Handbook
-	 "Adventure Books"			// WotC adventures like the Curse of Strahd
-	 "Adventurers League"		// AL specific publications like the Tortle Package
-	 "Unearthed Arcana"			// Unearthed Arcana articles
-	 "Dungeon Masters Guild"	// Homebrew found on the Dungeon Masters Guild website
-	 "Reddit/r/UnearthedArcana"	// Homebrew found on the /r/UnearthedArcana subreddit
-	 "D&D Beyond"				// Homebrew found on the D&D Beyond website
+	 "Primary Sources"          // WotC publications like the Players Handbook
+	 "Adventure Books"          // WotC adventures like the Curse of Strahd
+	 "Adventurers League"       // AL specific publications like the AL Player's Guide v9.1
+	 "Unearthed Arcana"         // Unearthed Arcana articles
+	 "Extra Life"               // Content from an Extra Life fundraising event
+	 "Dungeon Masters Guild"    // Homebrew found on the Dungeon Masters Guild website
+	 "Reddit/r/UnearthedArcana" // Homebrew found on the /r/UnearthedArcana subreddit
+	 "D&D Beyond"               // Homebrew found on the D&D Beyond website
 */
 	url : "https://nonexisting-website.com/Book_of_Purple.pdf",
 /*	url // OPTIONAL //
