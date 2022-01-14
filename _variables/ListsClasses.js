@@ -2736,7 +2736,7 @@ var Base_ClassSubList = {
 				name : "Remarkable Athlete",
 				source : [["SRD", 25], ["P", 72]],
 				minlevel : 7,
-				description : "\n   " + "I add half my proficiency bonus to Str/Dex/Con checks if I would otherwise add none" + "\n   " + "When making running jumps, I add my Strength modifier to the distance in feet",
+				description : "\n   " + "I add half my proficiency bonus to Str/Dex/Con checks if I would otherwise add none" + "\n   " + "When making running long jumps, I add my Strength modifier to the distance in feet",
 				eval : function() { Checkbox('Remarkable Athlete', true); },
 				removeeval : function() { Checkbox('Remarkable Athlete', false); }
 			},

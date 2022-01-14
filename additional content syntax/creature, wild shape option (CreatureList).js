@@ -42,7 +42,7 @@
 	        	You will also need the syntax for common attributes if you want to use a
 	        	custom calculation for hit points (calcChanges.hp).
 
-	Sheet:		v13.0.6 and newer
+	Sheet:		v13.1.0 and newer
 
 */
 
@@ -176,11 +176,19 @@ CreatureList["purple crawler"] = {
 		5	Tiny
 */
 	type : "Fiend",
+	type : ["Celestial", "Fey", "Fiend"],
 /*	type // REQUIRED //
-	TYPE:	string
+	TYPE:	string or array (since v13.1.0)
 	USE:	set the type drop-down box
 
-	This can be anything you like, but is usually one of the known creature types:
+	This can be either a:
+	1) String
+		The name of the creature type
+	2) Array (since v13.1.0)
+		If the creature can be several different creature types, using an array will prompt the player
+		to make a choice which one to use.
+
+	You can put here anything you like, but is usually one of the known creature types:
 		Aberration
 		Beast
 		Celestial
@@ -200,68 +208,92 @@ CreatureList["purple crawler"] = {
 	thus it is recommended to capitalize it for consistency.
 */
 	subtype : "devil",
+	subtype : ["demon", "devil"],
 /*	subtype // OPTIONAL //
-	TYPE:	string
+	TYPE:	string or array (since v13.1.0)
 	USE:	add the subtype in the type drop-down box
+
+	This can be either a:
+	1) String
+		The name of the creature subtype
+	2) Array (since v13.1.0)
+		If the creature can be several different creature subtypes, using an array will prompt the player
+		to make a choice which one to use.
 
 	This can be anything you like. It will be added to the string of the `type` attribute
 	in brackets, and together will be set in the type drop-down box.
-	In this example, it will end up reading as "Fiend (devil)".
+	In the first example, it will end up reading as "Fiend (devil)".
 
 	This value is put in the type drop-down box of the sheet without any changes,
-	only with added brackets around it,
-	thus it is recommended to have it all lowercase for consistency.
+	only with added brackets around it,	thus it is recommended to have it all lowercase for consistency.
 */
 	companion : "familiar",
+	companion : ["familiar_not_al", "pact_of_the_chain"],
 /*	companion // OPTIONAL //
-	TYPE:	string
+	TYPE:	string or array of strings
 	USE:	list this creature as an option for a special type of companion
+	CHANGE:	v13.1.0
 
-	Setting this to one of the below pre-defined values makes this creature selectable
-	using the Companion Options button on the companion page for special options.
+	This attribute is either a key corresponding to a CompanionList object name, or an array
+	of those keys.
+	Doing so makes this creature selectable as that type of special companion,
+	using the Companion Options button on the companion page.
 
-	Note that you can change any creature into one of the special options using the
-	Companion Options button by first selecting a race from the drop-down and subsequently selecting the "Change this into" option in the Companion Options menu.
+	Some CompanionList objects have their own filter for determining which creatures are 
+	applicable.
+	However, if you set this attribute to match the CompanionList object key,
+	they will always be available for that CompanionList entry, regardless of its filter.
+
+	Note that you can change any creature into one of the special options by first selecting
+	a race from the drop-down and selecting	"Change current creature into a ..." with
+	the Companion Options button.
 
 	Use this `companion` attribute for things that are obvious candidates for the special options.
 
-	OPTION				EXPLANATION
-	"familiar"			Find Familiar spell and Pact of the Chain warlock boon
-	"pact_of_the_chain"	Pact of the Chain warlock boon (but not Find Familiar spell)
-	"familiar_not_al"	Same as "familiar", but with the added description "(if DM approves)"
-	                 	However, this creature will not be shown for either Find Familiar 
-	                 	or Pact of the Chain when the DCI field is visible (i.e. Adventurers League)
-	"mount"				Find Steed spell
-	"steed"				Find Greater Steed spell
-	"companion"			Unearthed Arcana: Revised Ranger's Beast Conclave feature
-
-	Some special companion options are not governed by this setting and list their options dynamically.
-	For example, the PHB ranger's companion includes anything that has `type` set as "Beast",
-	`size` as 3 or higher (medium or smaller), and `challengeRating` as 1/4 or lower.
+	OPTION                 EXPLANATION
+	"familiar"             Find Familiar spell and Pact of the Chain warlock boon
+	"pact_of_the_chain"    Pact of the Chain warlock boon (but not Find Familiar spell)
+	"familiar_not_al"      Same as "familiar", but with the added description "(if DM approves)"
+                           However, this creature will not be shown for either Find Familiar 
+                           or Pact of the Chain when the DCI field is visible (i.e. Adventurers League).
+	"mount"                Find Steed spell
+	"steed"                Find Greater Steed spell
+	"companion"            Ranger's Companion (Beast Master feature)
+	                       Has its own filter, so normally you don't need this option.
+						   Filter: any Beast, Medium or smaller, and CR of 1/4 or lower
+	"companionrr"          2016/09/12 Unearthed Arcana: Revised Ranger's Beast Conclave feature
+	"strixhaven_mascot"    Strixhaven Mascot familiar (Strixhaven Mascot feat), but not Find Familiar spell
 */
 	companionApply : "companion",
 /*	companionApply // OPTIONAL //
 	TYPE:	string
 	USE:	always set this creature to be this special type of companion
 
-	Setting this to one of the below pre-defined values will make the sheet
-	automatically apply the features of that special type of companion.
+	Setting this to a key in the CompanionList object will make the sheet
+	automatically apply the features of that special companion type.
 
-	Note that you can change any creature into one of the special options using the
-	Companion Options button by first selecting a race from the drop-down and subsequently selecting the "Change this into" option in the Companion Options menu.
+	Note that you can change any creature into one of the special options by first selecting
+	a race from the drop-down and selecting	"Change current creature into a ..." with
+	the Companion Options button.
 
 	Use this `companionApply` attribute only if the creature *always* is that kind of companion.
 
-	OPTION				TYPE OF COMPANION
-	"familiar"			Find Familiar spell
-	"pact_of_the_chain"	Pact of the Chain warlock boon
-	"mount"				Find Steed spell
-	"steed"				Find Greater Steed spell
-	"companion"			Ranger: Beast Master's Ranger's Companion feature
-	"companionrr"		2016/09/12 Unearthed Arcana: Revised Ranger's Beast Conclave feature
-	"mechanicalserv"	2017/01/09 Unearthed Arcana: Artificer's Mechanical Servant feature
+	Import scripts can add things to the CompanionList object, but generally these
+	options should be available (if the applicable scripts are imported if they're not SRD):
 
-	Be aware that this list is different than the one for the `companion` attribute!
+	SRD   OBJECT KEY             EXPLANATION
+	 V    "familiar"             Find Familiar spell
+	 V    "pact_of_the_chain"    Pact of the Chain familiar (Warlock 3rd-level boon)
+	 V    "mount"                Find Steed spell
+	 -    "steed"                Find Greater Steed spell
+	 -    "companion"            Ranger's Companion (Ranger: Beast Master feature)
+	 -    "strixhaven_mascot"    Strixhaven Mascot familiar (Strixhaven Mascot feat)
+	 -    "companionrr"          Animal Companion (2016/09/12 Unearthed Arcana:
+		                                           Revised Ranger's Beast Conclave feature)
+	 -    "mechanicalserv"       Mechanical Servant (2017/01/09 Unearthed Arcana: 
+		                                             Artificer's Mechanical Servant feature)
+
+	Be aware that this list is slightly different than the one for the `companion` attribute!
 */
 	alignment : "Unaligned",
 /*	alignment // REQUIRED //
@@ -528,6 +560,7 @@ CreatureList["purple crawler"] = {
 	features : [{
 		name : "False Appearance",
 		description : "While the purple crawler remains motionless, it is indistinguishable from an ordinary purple flower.",
+		joinString : "\n   "
 	}],
 	actions : [{
 		name : "Invisibility",
@@ -553,11 +586,21 @@ CreatureList["purple crawler"] = {
 	traits   // OPTIONAL //
 	TYPE:	array (variable length) with objects
 	USE:	add text to the Traits and Features sections on the Companion page
+	CHANGE:	v13.1.0 (added `joinString` attribute)
 
 	Each of these three attributes work in the same way.
 	Each is an array with objects that have at least two attributes, `name` and `description`, that each contain a string.
 
-	Each name is preceded by a bullet point and followed by a colon and the description when
+	Each object can also have the following optional attributes:
+		ATTRIBUTE   EXPLANATION
+		minlevel    determines at which level the feature is added 
+		addMod      add custom modifiers to calculated values
+		eval        run a function when added (useful combined with minlevel)
+		removeeval  run a function when removed (useful combined with minlevel)
+	For a more detailed explanation of these attributes, see below in the
+	Companion Page Only section.
+
+	Each name is preceded by a bullet point and, by default, followed by a colon and the description when
 	added to the right section, for example:
 		{
 			name : "Invisibility",
@@ -565,8 +608,20 @@ CreatureList["purple crawler"] = {
 		}
 	Will result in:
 		◆ Invisibility: As an action, the purple crawler magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell).
+	
+	If you want something else than a colon, you can change it to anything you like by adding the
+	`joinString` attribute. For example:
+		{
+			name : "False Appearance",
+			description : "While the purple crawler remains motionless, it is indistinguishable from an ordinary purple flower.",
+			joinString : "\n   "
+		}
+	Will result in:
+		◆ False Appearance
+		   While the purple crawler remains motionless, it is indistinguishable from an ordinary purple flower.
 
-	If the `description` attribute is not present, no string will be added to the field, but any 
+	If the `description` attribute is not present, no string will be added to the field.
+	Any description will do, even an empty string (e.g. description : "").
 
 	The three different attributes, traits, features, and actions, are added to different parts of the companion page:
 
@@ -585,8 +640,8 @@ CreatureList["purple crawler"] = {
 	These text are also displayed on the wild shape page, but all together in the singular Traits & Features section,
 	regardless of their `minlevel` attribute value.
 	Also, `eval` and `changeeval` are not executed when this creature is selected on the Wild Shape page.
-	As the wild shape pages offer limited space, it is recommended to test if all of these and
-	the other attributes together will fit.
+	As the wild shape pages offer limited space, it is recommended to test if all of
+	these and the other attributes together will fit.
 	If they don't fit (well), consider using the `wildshapeString` attribute, see below.
 */
 
@@ -608,8 +663,8 @@ CreatureList["purple crawler"] = {
 	Use this if an entry in that array is only supposed to be displayed
 	once the main character (the character on the 1st page) reaches a certain level.
 	If the main character goes below this level, the entry is removed again.
-	The level checked against can be different than the main character level if the attribute
-	`minlevelLinked` exists, see below.
+	The level checked against can be different than the main character level if the
+	attribute `minlevelLinked` exists, see below.
 
 	Setting this attribute to 1 is the same as not including it.
 */
@@ -654,7 +709,6 @@ CreatureList["purple crawler"] = {
 
 	ADDED:	v13.0.6
 */
-
 
 	header : "Summon",
 /*	header // OPTIONAL //
@@ -740,7 +794,7 @@ CreatureList["purple crawler"] = {
 		You can use this variable to call on fields on that page. The example above uses it to set
 		a string to the leftmost Notes section on the Companion page.
 	2) The second variable is an array with 2 numbers: the old level and the new level
-		e.g. lvl = [0,5] when the creature gets added an the character is 5th level
+		e.g. lvl = [0,5] when the creature gets added and the character is 5th level
 		The first entry, the old level, is the level that was passed as the second entry the last time
 		this function was called.
 		The first entry will be zero (0) as this is only called when the creature is added for the first time.
@@ -764,7 +818,7 @@ CreatureList["purple crawler"] = {
 		You can use this variable to call on fields on that page. The example above uses it to remove
 		a string to the leftmost Notes section on the Companion page.
 	2) The second variable is an array with 2 numbers: the old level and the new level
-		e.g. lvl = [0,5] when the creature gets added an the character is 5th level
+		e.g. lvl = [0,5] when the creature gets added and the character is 5th level
 		The first entry, the old level, is the level that the creature had before being removed.
 		The second entry, the new level, will be zero (0) as this is only called when the creature is being removed.
 
@@ -788,7 +842,7 @@ CreatureList["purple crawler"] = {
 		You can use this variable to call on fields on that page. The example above uses it to set the
 		creature's hit dice size depending on the character's level (d8 or d10, if level 15 or higher).
 	2) The second variable is an array with 2 numbers: the old level and the new level
-		e.g. lvl = [0,5] when the creature gets added an the character is 5th level
+		e.g. lvl = [0,5] when the creature gets added and the character is 5th level
 		The first entry, the old level, is the level that was passed as the second entry the last time
 		this function was called.
 		The first entry will be zero (0) if the creature is added for the first time.

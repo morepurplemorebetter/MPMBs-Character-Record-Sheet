@@ -3,6 +3,7 @@ var Base_SourceList = {
 	"SRD" : {
 		name : "System Reference Document 5.1",
 		abbreviation : "SRD",
+		abbreviationSpellsheet : "SR",
 		group : "Primary Sources",
 		url : "https://media.wizards.com/2016/downloads/DND/SRD-OGL_V5.1.pdf",
 		date : "2016/05/04"
@@ -17,6 +18,7 @@ var Base_SourceList = {
 	"HB" : {
 		name : "Homebrew",
 		abbreviation : "Homebrew",
+		abbreviationSpellsheet : "HB",
 		group : "default"
 	},
 	"ALbackground" : { // For backwards-compatibility, but this source has been superseded by the "All AL-legal backgrounds/races" source below

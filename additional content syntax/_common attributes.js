@@ -43,12 +43,13 @@
 				Race main attributes
 				Race features
 				Background main attributes
+				Background Features main attributes
 				Feat main attributes
 				Feat choices
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v13.0.9 and newer
+	Sheet:		v13.1.0 and newer
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -578,26 +579,42 @@ savetxt : {
 		Each string in the array is added to the 1st page, exactly as given here.
 	*/
 
-	immune : ["poison", "disease"],
+	immune : ["poison", "disease", "paralyzed (by magic)"],
 	/*	immune // OPTIONAL //
 		TYPE:	array of strings
 		USE:	add strings to the "Immune to" text on the 1st page
+		CHANGE:	v13.1.0 (conditional added)
 
 		Each string in the array is added to the list of "Immune to" things in the 1st page "Saving Throws" section.
 		Immunities from all sources are combined and listed alphabetically.
-		In this example it would result in "Immune to disease and poison".
+		In this example it would result in "Immune to disease, paralyzed (by magic), and poison".
 		If a damage resistance is present while immunity for the same is also present,
 		then the damage resistance will be hidden as long as the immunity is present.
+
+		CONDITIONAL (since v13.1.0)
+		If the string contains something between brackets, then whatever is between those brackets is seen
+		as "conditional". This means that if another feature adds the same thing without brackets, only the
+		version without brackets will be shown.
+		Thus, using the example above, if something else adds "paralyzed", the entry "paralyzed (by magic)"
+		will be ignored.
 	*/
 
-	adv_vs : ["traps", "charmed"]
+	adv_vs : ["traps", "charmed", "sleep (by magic)"]
 	/*	adv_vs // OPTIONAL //
 		TYPE:	array of strings
 		USE:	add strings to the "Adv. on saves vs." text on the 1st page
+		CHANGE:	v13.1.0 (conditional added)
 
 		Each string in the array is added to the list of "Adv. on saves vs." things in the 1st page "Saving Throws" section.
 		Saving throw advantages from all sources are combined and listed alphabetically.
-		In this example it would result in "Adv. on saves vs. charmed and traps".
+		In this example it would result in "Adv. on saves vs. charmed, sleep (by magic), and traps".
+
+		CONDITIONAL (since v13.1.0)
+		If the string contains something between brackets, then whatever is between those brackets is seen
+		as "conditional". This means that if another feature adds the same thing without brackets, only the
+		version without brackets will be shown.
+		Thus, using the example above, if something else adds "sleep", the entry "sleep (by magic)"
+		will be ignored.
 	*/
 },
 
@@ -1337,14 +1354,16 @@ creaturesAdd : [
 			if (AddRemove) PickDropdown(prefix + "Comp.Desc.Size", 4);
 		}
 	],
-	["Purple Crawler"]
+	["Purple Crawler"],
+	["Cat", false, false, "familiar"]
 ],
 /*	creatureOptions // OPTIONAL //
 	TYPE:	array of arrays (variable length)
 	USE:	adds a creature to a companion page (adds companion page if none empty)
 	ADDED:	v13.0.6
+	CHANGE:	v13.0.10 (added 4th array entry)
 
-	Each array must contain 1, 2, or 3 entries, which are the following:
+	Each array must contain 1, 2, 3, or 4 entries, which are the following:
 	1) String with the name of the race to add to the companion page // REQUIRED
 		The sheet will search for the first empty companion page (or add an empty page)
 		and add this entry in the "Race" drop-down box on that page.
@@ -1380,7 +1399,29 @@ creaturesAdd : [
 		If you are adding a creature that is itself added using the `creatureOptions`
 		attribute, consider not using this callback function, but adding an `eval` and
 		`removeeval` to its CreatureList object instead.
-	
+
+	4) String of the special companion type that should be applied // OPTIONAL
+		This string has to be a key in the CompanionList object.
+		This companion type will be applied before the callback function above
+		(3rd array entry) is called.
+
+		Import scripts can add things to the CompanionList object, but generally these
+		options should be available (if the applicable scripts are imported if they're not SRD):
+
+		SRD   OBJECT KEY             EXPLANATION
+		 V    "familiar"             Find Familiar spell
+		 V    "pact_of_the_chain"    Pact of the Chain familiar (Warlock 3rd-level boon)
+		 V    "mount"                Find Steed spell
+		 -    "steed"                Find Greater Steed spell
+		 -    "companion"            Ranger's Companion (Ranger: Beast Master feature)
+		 -    "strixhaven_mascot"    Strixhaven Mascot familiar (Strixhaven Mascot feat)
+		 -    "companionrr"          Animal Companion (2016/09/12 Unearthed Arcana:
+			                                           Revised Ranger's Beast Conclave feature)
+		 -    "mechanicalserv"       Mechanical Servant (2017/01/09 Unearthed Arcana: 
+			                                             Artificer's Mechanical Servant feature)
+
+		If the string doesn't match a CompanionList object key, nothing will happen.
+
 	The changes dialog will list on which companion page something was added or removed.
 
 	If a feature with this attribute is removed, these creatures will be removed as well.
@@ -1975,6 +2016,7 @@ calcChanges : {
 		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
 		This explanation is also available under the Companion Options button on any companion page.
 
+
 		// 3rd array entry // OPTIONAL //
 		This has to be a positive number that will be used to prioritise the order in which the functions
 		are processed. The lowest number gets processed first.
@@ -2019,17 +2061,22 @@ calcChanges : {
 		3)	bAdd, a boolean to indicate whether adding (true) or removing (false) the special companion type.
 			Make sure that the function removes whatever changes it does when this variable is false.
 
-		4)	sCompType, a string that indicates the special companion type.
-			This string is one of the predefined entries below, to help you filter on the companion type.
+		4)	sCompType, a string to indicate the special companion type (key in the CompanionList object).
 
-			STRING				TYPE
-			"familiar"			Find Familiar spell
-			"pact_of_the_chain"	Pact of the Chain warlock boon
-			"mount"				Find Steed spell
-			"steed"				Find Greater Steed spell
-			"companion"			Ranger: Beast Master's Ranger's Companion feature
-			"companionrr"		2016/09/12 Unearthed Arcana: Revised Ranger's Beast Conclave feature
-			"mechanicalserv"	2017/01/09 Unearthed Arcana: Artificer's Mechanical Servant feature
+			Import scripts can add things to the CompanionList object, but generally these
+			options should be available (if the applicable scripts are imported if they're not SRD):
+
+			SRD   OBJECT KEY             EXPLANATION
+			 V    "familiar"             Find Familiar spell
+			 V    "pact_of_the_chain"    Pact of the Chain familiar (Warlock 3rd-level boon)
+			 V    "mount"                Find Steed spell
+			 -    "steed"                Find Greater Steed spell
+			 -    "companion"            Ranger's Companion (Ranger: Beast Master feature)
+			 -    "strixhaven_mascot"    Strixhaven Mascot familiar (Strixhaven Mascot feat)
+			 -    "companionrr"          Animal Companion (2016/09/12 Unearthed Arcana:
+														Revised Ranger's Beast Conclave feature)
+			 -    "mechanicalserv"       Mechanical Servant (2017/01/09 Unearthed Arcana: 
+															Artificer's Mechanical Servant feature)
 
 		When adding a special companion type, this function is processed last,
 		after all changes for the special companion type have completed.

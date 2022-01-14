@@ -31,14 +31,14 @@ function ReturnSpellFieldsContentArray(underscores, psionic) {
 		"",
 		underscores ? Array(21 + (typePF ? 6 : 0)).join("_") : psionic ? "PSIONIC POWER" : "SPELL",
 		underscores ? Array(84 + (typePF ? 25: 0)).join("_") : "DESCRIPTION",
-		underscores ? Array( 4 + (typePF ? 1 : 0)).join("_") : "SAVE",
+		underscores ? Array( 5).join("_") : "SAVE",
 		underscores ? Array( 7 + (typePF ? 1 : 0)).join("_") : psionic ? " ORDER" : "SCHOOL",
 		underscores ? Array( 7 + (typePF ? 1 : 0)).join("_") : "TIME",
 		underscores ? Array(10 + (typePF ? 2 : 0)).join("_") : "RANGE",
-		underscores ? Array(7).join("_") : "COMP",
+		underscores ? Array( 7).join("_") : "COMP",
 		underscores ? Array(12 + (typePF ? 3 : 0)).join("_") : "DURATION",
-		underscores ? Array( 2 + (typePF ? 1 : 0)).join("_") : "B",
-		underscores ? Array(4).join("_") : "PG."
+		underscores ? Array( 3).join("_") : "B",
+		underscores ? Array( 4).join("_") : "PG."
 	];
 };
 
@@ -228,7 +228,11 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 			if (ttSpellObj.ritual) spTooltip += " (ritual)";
 		}
 
-		if (ttSpellObj.time) spTooltip += "\n  Casting Time:  " + ttSpellObj.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
+		if (ttSpellObj.timeFull) {
+			spTooltip += "\n  Casting Time:  " + ttSpellObj.timeFull;
+		} else if (ttSpellObj.time) {
+			spTooltip += "\n  Casting Time:  " + ttSpellObj.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
+		}
 
 		if (ttSpellObj.range) spTooltip += "\n  Range:  " + ttSpellObj.range.replace(/s: *(.*)/i, "Self ($1)").replace(/rad\b/i, "radius").replace(/(\d+)(ft|m)/i, "$1-$2");
 
@@ -464,11 +468,13 @@ function ApplySpell(FldValue, rememberFldName) {
 
 			//set the spell book name and page
 			var parseSrc = parseSource(aSpell.source);
-			// Only use the first letter of the source, as there is no more space
+			// Only use the first source, as there is no more space
 			var spBook = parseSrc ? parseSrc[0][0] : "";
+			var spBookAbbr = spBook && SourceList[spBook].abbreviationSpellsheet ? SourceList[spBook].abbreviationSpellsheet : spBook.substr(0,1);
 			// Get the page number, unless it is Unearthed Arcana, then get the abbreviation (the first three characters after the colon)
 			var spPage = spBook && spBook !== "UA:TMC" && SourceList[spBook].group === "Unearthed Arcana" ? spBook.replace("UA:", "").substr(0,3) : parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
-			Value(base.replace("remember", "book"), spBook.substr(0,1), aSpell.tooltipSource);
+			// Add them to the sheet
+			Value(base.replace("remember", "book"), spBookAbbr, aSpell.tooltipSource);
 			Value(base.replace("remember", "page"), spPage, aSpell.tooltipSource);
 
 			input[1] = aSpell.firstCol; // use the firstCol, as the CurrentEval could have changed it
@@ -3410,7 +3416,12 @@ function GenerateSpellSheet(GoOn) {
 		//now add the general list, if chosen to do the full class list or if this is a 'list' spellcaster that didn't chose to only do the prepared spells
 		if (spCast.typeList === 4 || (spCast.typeSp === "list" && spCast.typeList !== 3)) {
 			var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
-			spCast.list.level = [spCast.typeList === 4 ? 0 : 1, spCast.factor && spCast.factor[1] == "warlock" ? 9 : spListLevel ? spListLevel[1] : 9]; //set the list level to generate
+			// Set the list level to generate
+			var iLowestLevel = spListLevel ? spListLevel[0] : 0;
+			spCast.list.level = [
+				spCast.typeList === 4 ? iLowestLevel : Math.max(iLowestLevel, 1),
+				spCast.factor && spCast.factor[1] == "warlock" ? 9 : spListLevel ? spListLevel[1] : 9
+			];
 
 			//add the full spell list of the class
 			var fullClassSpellList = CreateSpellList(spCast.list, false, false, false, CurrentCasters.incl[i], spCast.typeSp);
@@ -5131,10 +5142,10 @@ function ChangeToCompleteSpellSheet(thisClass, FAQpath) {
 
 	//move the pages that we want to extract to a new instance, by running code from a console
 	var forConsole = [
-		"Execute the following:\nFirst:",
+		"Execute the following:\n\tFirst:",
 		"tDoc.extractPages({nStart: 0, nEnd: 4});",
-		"\nAnd in the newly created document:",
-		"var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsMagicItems', 'ListsRaces'];",
+		"\n\tAnd in the newly created document:",
+		"var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsCompanions', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsMagicItems', 'ListsRaces'];",
 		"for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};",
 		"this.createTemplate({cName:'SSfront', nPage:1 });",
 		"this.createTemplate({cName:'SSmore', nPage:2 });",

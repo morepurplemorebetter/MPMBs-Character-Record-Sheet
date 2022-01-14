@@ -1186,21 +1186,23 @@ function DirectImport(consoleTrigger) {
 			if (ImportField(prefixTo + "Companion.Layers.Remember", {notTooltip: true, notSubmitName: true}, prefixFrom + "Companion.Layers.Remember")) ShowCompanionLayer(prefixTo);
 			doChildren("Whiteout.Cnote", prefixFrom, prefixTo, false, true);
 
-			//set the race
-			ImportField(prefixTo + "Comp.Race", {notTooltip: true, notSubmitName: true}, prefixFrom + "Comp.Race");
+			//get and apply the race and companion type
+			var compRaceFldFrom = global.docFrom.getField(prefixFrom + "Comp.Race");
+			var compRaceFldTo = global.docFrom.getField(prefixFrom + "Comp.Race");
+			if (compRaceFldFrom.value) {
+				if (compRaceFldFrom.submitName) compRaceFldTo.submitName = compRaceFldFrom.submitName;
+				var compTypeFldFrom = global.docFrom.getField(prefixFrom + "Companion.Remember");
+				global.docTo.ApplyCompRace(compRaceFldFrom.value, prefixTo, compTypeFldFrom ? compTypeFldFrom.value : "");
+			}
 
-			//set companion ability scores and modifiers now, for coming automation might require it
+			//set companion ability scores and modifiers
 			for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
 				var abiS = AbilityScores.abbreviations[a];
 				ImportField(prefixTo+"Comp.Use.Ability."+abiS+".Score", {notTooltip: true, notSubmitName: true}, prefixFrom+"Comp.Use.Ability."+abiS+".Score");
 				Value(prefixTo+"Comp.Use.Ability."+abiS+".Mod", Math.round((What(prefixTo+"Comp.Use.Ability."+abiS+".Score") - 10.5) * 0.5));
 			}
 
-			//set the type, if any
-			var compTypeFrom = global.docFrom.getField(prefixFrom + "Companion.Remember");
-			if (compTypeFrom && compTypeFrom.value) changeCompType(compTypeFrom.value, prefixTo);
-
-			//Set some one-off fields
+			//set some one-off fields
 			ImportField(prefixTo + "Comp.Type", {notTooltip: true, notSubmitName: true}, prefixFrom + "Comp.Type");
 
 			//do the description fields
@@ -2855,12 +2857,18 @@ function ImportUserScriptFile(filePath) {
 		}
 	};
 	var iFileName = iFileCont.match(/iFileName ?= ?("|')(.*?[^\\])\1/);
-	var useFileName = iFileName ? util.printd("yyyy/mm/dd", new Date()) + " - " + iFileName[2].replace(/\\/g, "") : util.printd("yyyy/mm/dd HH:mm", new Date()) + " - " + "no iFileName";
+	if (iFileName) {
+		iFileName = iFileName[2].replace(/\\/g, "");
+		var iFileNameLC = iFileName.toLowerCase();
+		var useFileName = util.printd("yyyy/mm/dd", new Date()) + " - " + iFileName
+	} else {
+		var useFileName = util.printd("yyyy/mm/dd HH:mm", new Date()) + " - " + "no iFileName";
+	}
 	var iFileNameMatch = false;
 	if (iFileName) {
 		for (var aFileName in CurrentScriptFiles) {
 			var endFileName = aFileName.replace(/\d+\/\d+\/\d+ - /, "");
-			if (endFileName.toLowerCase() === iFileName.toLowerCase()) {
+			if (endFileName.toLowerCase() === iFileNameLC) {
 				iFileNameMatch = aFileName;
 				break;
 			};

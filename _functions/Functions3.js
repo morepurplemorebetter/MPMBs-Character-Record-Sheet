@@ -57,6 +57,10 @@ function GetFeatureType(type, bNoDefaultReturn, bSingularReturn) {
 		case "background":
 			theReturn = "background";
 			break;
+		case "background features":
+		case "background feature":
+			theReturn = "background feature";
+			break;
 		case "races":
 		case "race":
 			theReturn = "race";
@@ -136,7 +140,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 				runEval(evalThing, attributeName, true);
 				return;
 			}
-			var eText = "The " + attributeName + " from '" + fObjName + (aParent ? "' of the '" + aParent : "") + "' " + type + " produced an error! Please contact the author of the feature to correct this issue:\n " + error;
+			var eText = "The " + attributeName + " from '" + fObjName + (aParent ? "' of the '" + aParent : "") + "' " + type + " produced an error! Please contact the author of the feature to correct this issue and please include this error message:\n " + error;
 			for (var e in error) eText += "\n " + e + ": " + error[e];
 			console.println(eText);
 			console.show();
@@ -309,6 +313,13 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			type = "background";
 			var fObj = forceNonCurrent && BackgroundList[fObjName] ? BackgroundList[fObjName] : CurrentBackground;
 			var displName = fObj.name;
+			tipNmExtra = "(background)";
+			break;
+		case "background feature":
+			type = "background feature";
+			var fObj = BackgroundFeatureList[fObjName];
+			var displName = fObjName.capitalize();
+			tipNmExtra = "(background feature)";
 			break;
 		case "feats":
 			type = "feat";
@@ -1355,9 +1366,15 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 	if (!oldTxtA || !oldTxtA[0]) return false; // no oldTxt, so we can't do anything
 
 	// make some regex objects
-	var oldFrstLnEsc = oldTxtA[0].replace(/^(\r|\n)*/, '').RegEscape();
-	var oldRxHead = RegExp(oldFrstLnEsc + ".*", "i");
-	var oldRx = RegExp("\\r?" + oldFrstLnEsc + "(.|\\r\\s\\s|\\r\\w)*", "i"); // everything until the first line that doesn't start with two spaces or a letter/number (e.g. an empty line or a new bullet point)
+	var fReplaceLinebreaks = function(str) {
+		var sEscaped = str.replace(/\n/g, '\r').replace(/^\r+/, '').RegEscape();
+		var sJustLine = RegExp(sEscaped + ".*", "i");
+		var sFullSection = RegExp("\\r?" + sEscaped + "(.|\\r\\s\\s|\\r\\w)*", "i"); // everything until the first line that doesn't start with two spaces or a letter/number (e.g. an empty line or a new bullet point)
+		return [sJustLine, sFullSection];
+	}
+	var oldFrstLnRx = fReplaceLinebreaks(oldTxtA[0]);
+	var oldRxHead = oldFrstLnRx[0];
+	var oldRx = oldFrstLnRx[1];
 
 	// find the field we are supposed to update
 	var fld = fldA[0];
@@ -1382,9 +1399,8 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 			break;
 		case "insert" : // add the newTxt after the prevTxt
 			if (!prevTxt) return false; // no prevTxt, so we can't do anything
-			var prevFrstLnEsc = prevTxt.replace(/^(\r|\n)*/, '').RegEscape();
-			var prevRx = RegExp(prevFrstLnEsc + "(.|\\r\\s\\s|\\r\\w)*", "i");
-			var prevTxtFound = fldTxt.match(prevRx);
+			var prevFrstLnRx = fReplaceLinebreaks(prevTxt);
+			var prevTxtFound = fldTxt.match(prevFrstLnRx[1]);
 			var changeTxt = prevTxtFound ? fldTxt.replace(prevTxtFound[0], prevTxtFound[0] + newTxtA[1]) : fldTxt;
 			break;
 		case "remove" : // remove the oldTxt
@@ -1435,9 +1451,9 @@ function UpdateSheetDisplay() {
 		return;
 	}
 
-	if (ChangesDialogSkip.chXP === undefined) {
+	if (!ChangesDialogSkip || ChangesDialogSkip.chXP === undefined) {
 		var cDialogFld = What("ChangesDialogSkip.Stringified");
-		ChangesDialogSkip = cDialogFld !== "({})" ? eval(cDialogFld) : {
+		ChangesDialogSkip = cDialogFld && cDialogFld !== "({})" ? eval_ish(cDialogFld) : {
 			chXP : false, // experience points
 			chAS : false, // ability scores
 			chHP : false, // hit points
@@ -3279,6 +3295,16 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 
 // Add a magic item to the third page or overflow page
 function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow, forceAttunedVisible) {
+	// Check if the item is recognized and if that is already known to be present
+	var aParsedItem = ParseMagicItem(item);
+	if (aParsedItem[0] && !MagicItemsList[aParsedItem[0]].allowDuplicates && CurrentMagicItems.known.indexOf(MagicItemsList[0]) !== -1) {
+		return;
+	} else if (aParsedItem[0]) {
+		for (var i = 0; i < CurrentMagicItems.known.length; i++) {
+			if (CurrentMagicItems.known[i] === aParsedItem[0] && CurrentMagicItems.choices[i] === aParsedItem[1]) return;
+		}
+	}
+	// Item is not recognized and/or not present exactly, so do a manual check
 	item = item.substring(0, 2) === "- " ? item.substring(2) : item;
 	var itemLower = item.toLowerCase();
 	var RegExItem = "\\b" + item.RegEscape() + "\\b";
@@ -3323,13 +3349,22 @@ function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow, forceAttun
 
 // Remove a magic item from the third page or overflow page
 function RemoveMagicItem(item) {
-	// First try if this is a recognizable magic item and remove that
-	var parseItem = ParseMagicItem(item);
-	var fndItem = CurrentMagicItems.known.indexOf(parseItem[0]);
-	if (parseItem[0] && fndItem !== -1) {
-		MagicItemClear(fndItem + 1, true);
-		return;
-	}
+	// First try if this is a recognizable feat and remove that
+	var aParsedItem = ParseMagicItem(item);
+	var iItemKnwn = CurrentMagicItems.known.indexOf(aParsedItem[0]);
+	if (aParsedItem[0] && iItemKnwn !== -1) {
+		if (!MagicItemsList[aParsedItem[0]].allowDuplicates) {
+			MagicItemClear(iItemKnwn + 1, true);
+			return;
+		} else {
+			for (var i = 0; i < CurrentMagicItems.known.length; i++) {
+				if (CurrentMagicItems.known[i] === aParsedItem[0] && CurrentMagicItems.choices[i] === aParsedItem[1]) {
+					MagicItemClear(i + 1, true);
+					return;
+				}
+			}
+		}
+	} 
 	// Not recognized, so try it the hard way
 	item = item.substring(0, 2) === "- " ? item.substring(2) : item;
 	var itemLower = item.toLowerCase();

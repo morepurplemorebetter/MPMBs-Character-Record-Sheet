@@ -282,6 +282,10 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 		exclObj : "creaExcl",
 		name : "Creatures",
 		listObj : "CreatureList"
+	}, {
+		exclObj : "compExcl",
+		name : "Companion Options",
+		listObj : "CompanionList"
 	}];
 	if (tDoc.info.SpellsOnly) {
 		resourceOptions = [{
@@ -339,7 +343,7 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 				var subKey = subObjs[c].toLowerCase();
 				if (opt.exclObj == "racesExcl") subKey = key + "-" + subKey;
 				var subObj = optSubObj[subKey];
-				if (subObj.defaultExcluded) {
+				if (subObj && subObj.defaultExcluded) {
 					var subID = subKey;
 					var subName = mainObjName + ": " + (
 						opt.subListObjName && subObj[opt.subListObjName] ? subObj[opt.subListObjName] :
@@ -371,20 +375,27 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	var isFirstTime = atReset ? atReset : CurrentSources.firstTime;
 	var spellSources = [];
 	if (tDoc.info.SpellsOnly) {
+		var fAddToSpellSources = function(aRawSource) {
+			var aSources = parseSource(aRawSource);
+			if (!aSources) return;
+			for (var i = 0; i < aSources.length; i++) {
+				if (spellSources.indexOf(aSources[i][0]) === -1) spellSources.push(aSources[i][0]);
+			};
+		}
 		// If this is a spell sheet, only use sources that have spells or spellcasting classes associated with them
-		for (var u in SpellsList) {
-			var sSource = parseSource(SpellsList[u].source);
-			if (!sSource) continue;
-			for (var i = 0; i < sSource.length; i++) {
-				if (spellSources.indexOf(sSource[i][0]) === -1) spellSources.push(sSource[i][0]);
-			};
-		};
-		for (var aClass in ClassList) {
-			var sSource = parseSource(ClassList[aClass].source);
-			if (!sSource || !ClassList[aClass].spellcastingFactor || aClass === "rangerua") continue;
-			for (var i = 0; i < sSource.length; i++) {
-				if (spellSources.indexOf(sSource[i][0]) === -1) spellSources.push(sSource[i][0]);
-			};
+		for (var u in SpellsList) fAddToSpellSources(SpellsList[u].source);
+		for (var sClass in ClassList) {
+			var objClass = ClassList[sClass];
+			if (objClass.spellcastingFactor && sClass !== "rangerua") {
+				fAddToSpellSources(objClass.source);
+			}
+			if (objClass.subclasses && isArray(objClass.subclasses[1])) {
+				for (var i = 0; i < objClass.subclasses[1].length; i++) {
+					var objSubClass = ClassSubList[objClass.subclasses[1][i]]
+					if (objSubClass && objSubClass.spellcastingFactor)
+						fAddToSpellSources(objSubClass.source);
+				};
+			}
 		};
 	};
 
@@ -605,6 +616,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		bBac : function (dialog) {resourceSelectionDialog("background"); this.updateDefExcl(dialog);},
 		bBaF : function (dialog) {resourceSelectionDialog("background feature"); this.updateDefExcl(dialog);},
 		bCre : function (dialog) {resourceSelectionDialog("creature"); this.updateDefExcl(dialog);},
+		bCom : function (dialog) {resourceSelectionDialog("companion"); this.updateDefExcl(dialog);},
 		bAtk : function (dialog) {resourceSelectionDialog("weapon"); this.updateDefExcl(dialog);},
 		bArm : function (dialog) {resourceSelectionDialog("armor"); this.updateDefExcl(dialog);},
 		bAmm : function (dialog) {resourceSelectionDialog("ammo"); this.updateDefExcl(dialog);},
@@ -809,6 +821,12 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 									bold : true,
 									item_id : "bSpe",
 									name : "Spells/Psionics"
+								}, {
+									type : "button",
+									font : "dialog",
+									bold : true,
+									item_id : "bCom",
+									name : "Companion Options"
 								}]
 							}, {
 								type : "view",
@@ -1169,6 +1187,22 @@ function resourceSelectionDialog(type) {
 				exclObj[uGroup][uName] = -1;
 			} else {
 				inclObj[uGroup][uName] = -1;
+			}
+		};
+		break;
+	 case "companion" :
+		var theName = "Special Companion Options";
+		var CSatt = "compExcl";
+		for (var u in CompanionList) {
+			var oEntry = CompanionList[u];
+			var uName = amendSource(oEntry.nameMenu ? oEntry.nameMenu : oEntry.name, oEntry);
+			var uTest = testSource(u, oEntry, CSatt, true);
+			if (uTest === "source") continue;
+			refObj[uName] = u;
+			if (uTest) {
+				exclObj[uName] = -1;
+			} else {
+				inclObj[uName] = -1;
 			}
 		};
 		break;

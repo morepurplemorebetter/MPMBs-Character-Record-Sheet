@@ -2204,9 +2204,6 @@ function levelFieldVal() {
 
 	UpdateLevelFeatures("all", Math.max(1,lvl)); // update all level features and use the set level
 
-	// the following should change to be part UpdateLevelFeatures() once custom companions can be imported
-	UpdateRangerCompanions(lvl); // update level-dependent things for any ranger companions
-
 	IsCharLvlVal = false; // reset global variable
 
 	// make sure to update the experience points (or similar system) and alert the user
@@ -4194,10 +4191,10 @@ function RemoveLanguage(language, tooltip) { RemoveLangTool("language", language
 function AddTool(tool, toolstooltip, replaceThis) { AddLangTool("tool", tool, toolstooltip, false, replaceThis) };
 function RemoveTool(tool, toolstooltip) { RemoveLangTool("tool", tool) };
 
-function AddWeapon(weapon, partialReplace) {
-	var QI = !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
+function AddWeapon(weapon, partialReplace, prefix) {
+	if (!prefix && event.target && event.target.name) prefix = getTemplPre(event.target.name, "AScomp", true);
+	var QI = prefix ? false : !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
-	var prefix = QI ? "" : getTemplPre(event.target.name, "AScomp", true);
 	var maxItems = QI ? FieldNumbers.attacks : 3;
 
 	var makeWordBoundryRegex = function (inStr) {
@@ -5219,6 +5216,68 @@ function FeatDelete(itemNmbr) {
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
+// Add a feat to the second/third page or overflow page
+function AddFeat(sFeat) {
+	if (!sFeat) return;
+	// Check if this feat is recognized and if so, quit if it already exists
+	var aParsedFeat = ParseFeat(sFeat);
+	if (aParsedFeat[0] && CurrentFeats.known.indexOf(aParsedFeat[0]) !== -1 && !FeatsList[aParsedFeat[0]].allowDuplicates && !FeatsList[aParsedFeat[0]].choices) {
+		return;
+	} else if (aParsedFeat[0]) {
+		for (var i = 0; i < CurrentFeats.known.length; i++) {
+			if (CurrentFeats.known[i] === aParsedFeat[0] && CurrentFeats.choices[i] === aParsedFeat[1]) return;
+		}
+	}
+	// Then check if the string isn't already in one of the feat name fields and if not, add it
+	var sFeatLC = sFeat.toLowerCase();
+	var RegExFeat = RegExp("\\b" + sFeat.RegEscape() + "\\b", "i");
+	for (var n = 1; n <= 2; n++) {
+		for (var i = 1; i <= FieldNumbers.feats; i++) {
+			var sFldNm = "Feat Name " + i;
+			var sCurFeat = What(sFldNm);
+			if (n === 1 && (RegExFeat.test(sCurFeat) || sCurFeat.toLowerCase() === sFeatLC)) {
+				return; // the feat already exists
+			} else if (n === 2 && sCurFeat === "") {
+				// if the next empty field on the overflow page and the overflow page is hidden, show it
+				if (i > FieldNumbers.featsD && !tDoc.getField(BookMarkList["Overflow sheet"])) DoTemplate("ASoverflow", "Add");
+				Value(sFldNm, sFeat);
+				return; // feat was successfully added
+			}
+		}
+	}
+}
+
+// Remove a feat from the second/third page or overflow page
+function RemoveFeat(sFeat) {
+	// First try if this is a recognizable feat and remove that
+	var aParsedFeat = ParseFeat(sFeat);
+	var iFeatKnwn = CurrentFeats.known.indexOf(aParsedFeat[0]);
+	if (aParsedFeat[0] && iFeatKnwn !== -1) {
+		if (!FeatsList[aParsedFeat[0]].allowDuplicates && !FeatsList[aParsedFeat[0]].choices) {
+			FeatClear(iFeatKnwn + 1, true);
+			return;
+		} else {
+			for (var i = 0; i < CurrentFeats.known.length; i++) {
+				if (CurrentFeats.known[i] === aParsedFeat[0] && CurrentFeats.choices[i] === aParsedFeat[1]) {
+					FeatClear(i + 1, true);
+					return;
+				}
+			}
+		}
+	}
+	// Not recognized, so try it the hard way
+	var sFeatLC = sFeat.toLowerCase();
+	var RegExFeat = RegExp("\\b" + sFeat.RegEscape() + "\\b", "i");
+	for (var i = 1; i <= FieldNumbers.feats; i++) {
+		var sFldNm = "Feat Name " + i;
+		var sCurFeat = What(sFldNm);
+		if (RegExFeat.test(sCurFeat) || sCurFeat.toLowerCase() === sFeatLC) {
+			FeatClear(i, true);
+			break;
+		}
+	}
+}
+
 // Clear a feat at the position given
 function FeatClear(itemNmbr, doAutomation) {
 	var Fflds = ReturnFeatFieldsArray(itemNmbr);
@@ -5639,16 +5698,16 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			thermoTxt = thermoM("Updating " + cl.fullname + " features...", false);
 			thermoM(1/5);
 
-			// process the class header
-			if (newClassLvl[aClass] == 0) { // remove the header
+			// process the class heading
+			if (newClassLvl[aClass] == 0) { // remove the heading
 				var oldHeaderString = cl.fullname + ", level " + oldClassLvl[aClass] + ":";
 				if (What("Class Features").indexOf("\r\r" + oldHeaderString) !== -1) oldHeaderString = "\r\r" + oldHeaderString;
 				RemoveString("Class Features", oldHeaderString, false);
-			} else if (oldClassLvl[aClass] == 0) { // add the header
+			} else if (oldClassLvl[aClass] == 0) { // add the heading
 				var newHeaderString = cl.fullname + ", level " + newClassLvl[aClass] + ":";
 				if (What("Class Features")) newHeaderString = "\r\r" + newHeaderString;
 				AddString("Class Features", newHeaderString, false);
-			} else { // update the header
+			} else { // update the heading
 				var newHeaderString = cl.fullname + ", level " + newClassLvl[aClass] + ":";
 				var oldHeaderString = !classes.old[aClass] ? "" : classes.old[aClass].fullname.RegEscape() + ".*, level \\d+:";
 				ReplaceString("Class Features", newHeaderString, false, oldHeaderString, true);
@@ -6389,6 +6448,7 @@ function formatACdescr() {
 
 function SetToManual_Button(noDialog) {
 	var BackgroundFld = !!CurrentVars.manual.background;
+	var BackgroundFeatureFld = !!CurrentVars.manual.backgroundFeature;
 	var ClassFld = !!CurrentVars.manual.classes;
 	var FeatFld = !!CurrentVars.manual.feats;
 	var ItemFld = !!CurrentVars.manual.items;
@@ -6398,6 +6458,7 @@ function SetToManual_Button(noDialog) {
 		//set the checkboxes in the dialog to starting position
 		SetToManual_Dialog.mAtt = CurrentVars.manual.attacks;
 		SetToManual_Dialog.mBac = BackgroundFld;
+		SetToManual_Dialog.mBFe = BackgroundFeatureFld;
 		SetToManual_Dialog.mCla = ClassFld;
 		SetToManual_Dialog.mFea = FeatFld;
 		SetToManual_Dialog.mMag = ItemFld;
@@ -6420,6 +6481,16 @@ function SetToManual_Button(noDialog) {
 			CurrentVars.manual.background = false;
 			DontPrint("Background Menu");
 			ApplyBackground(What("Background"));
+		}
+	}
+
+	//do something with the results of background feature checkbox
+	if (SetToManual_Dialog.mBFe !== BackgroundFeatureFld) {
+		if (SetToManual_Dialog.mBFe) {
+			CurrentVars.manual.backgroundFeature = What("Background Feature") + " ";
+		} else {
+			CurrentVars.manual.backgroundFeature = false;
+			ApplyBackgroundFeature(What("Background Feature"), CurrentVars.manual.backgroundFeature);
 		}
 	}
 
@@ -8142,28 +8213,52 @@ function ParseBackgroundFeature(input) {
 };
 
 //Add the text of the feature selected
-function ApplyBackgroundFeature(input) {
-	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
-	if (event.target && event.target.name === "Background Feature" && input.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+function ApplyBackgroundFeature(input, inputForceOld) {
+	if (IsSetDropDowns || CurrentVars.manual.backgroundFeature) return; // when just changing the dropdowns, don't do anything
+
+	var sCurSel = ParseBackgroundFeature(inputForceOld ? inputForceOld : What("Background Feature"));
+	var sParseFeature = ParseBackgroundFeature(input);
+	if (sParseFeature === sCurSel) return; // No changes were made, so stop now
+
+	var thermoTxt = thermoM("Applying background feature...");
+	calcStop();
 
 	var sFldNm = "Background Feature Description";
 	var sTooltip = stringSource(CurrentBackground, "full,page", "The \"" + CurrentBackground.name + "\" background is found in ", ".\n");
 	var sNewDescr = input === "" ? "" : What(sFldNm);
-	var sParseFeature = ParseBackgroundFeature(input);
 
+	if (sCurSel) {
+		// Remove the old background feature common attributes
+		var Fea = ApplyFeatureAttributes(
+			"background feature", // type
+			sCurSel, // fObjName [aParent, fObjName]
+			[1, 0, false], // lvlA [old-level, new-level, force-apply]
+			false, // choiceA [old-choice, new-choice, "only"|"change"]
+			false // forceNonCurrent
+		);
+	}
 	if (sParseFeature) {
+		// Add the new background feature common attributes
+		var Fea = ApplyFeatureAttributes(
+			"background feature", // type
+			sParseFeature, // fObjName [aParent, fObjName]
+			[0, 1, false], // lvlA [old-level, new-level, force-apply]
+			false, // choiceA [old-choice, new-choice, "only"|"change"]
+			false // forceNonCurrent
+		);
 		var sFeaCap = sParseFeature.capitalize();
 		var oBackFea = BackgroundFeatureList[sParseFeature];
 		var sNewDescr = What("Unit System") === "imperial" ? oBackFea.description : ConvertToMetric(oBackFea.description, 0.5);
 		sTooltip += stringSource(oBackFea, "full,page", "The \"" + sFeaCap + "\" background feature is found in ", ".");
 	}
 	Value("Background Feature Description", sNewDescr, sTooltip);
+	thermoM(thermoTxt, true); // Stop progress bar
 };
 
 //set the dropdown box options for the background features
 function SetBackgroundFeaturesdropdown(forceTooltips) {
 	var tempArray = [""];
-	var tempString = "Select or type in the background feature you want to use and its text will be filled out below automatically.\n\n" + toUni("Background selection") + "\nThe relevant background feature is automatically selected upon selecting a background on the first page. Doing that will always override whatever you wrote here. So, please first fill out a background before you select a alternative feature here.";
+	var tempString = "Select or type in the background feature you want to use and its text will be filled out below automatically.\n\n" + toUni("Background selection") + "\nThe relevant background feature is automatically selected upon selecting a background on the first page. Doing that will always override whatever you wrote here. So, please first fill out a background before you select an alternative feature here.";
 
 	for (var feature in BackgroundFeatureList) {
 		if (testSource(feature, BackgroundFeatureList[feature], "backFeaExcl")) continue;

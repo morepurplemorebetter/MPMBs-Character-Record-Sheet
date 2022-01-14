@@ -39,7 +39,7 @@ function ParseCreature(input) {
 		foundDat = tempDate;
 	}
 	return found;
-};
+}
 
 // Detects race entered and put information to global CurrentCompRace variable
 function FindCompRace(inputCreaTxt, aPrefix) {
@@ -102,7 +102,7 @@ function setCurrentCompRace(prefix, type, found) {
 	}
 	// set the properties of the CurrentCompRace[prefix] object
 	for (var prop in fObj) {
-		if ((/^(known|variants?|level)$/i).test(prop)) continue;
+		if ((/^(typeFound|known|variants?|level|typeCompanion)$/i).test(prop)) continue;
 		CurrentCompRace[prefix][prop] = fObj[prop];
 	}
 	if (type === "race" && found[1]) {
@@ -113,104 +113,66 @@ function setCurrentCompRace(prefix, type, found) {
 			CurrentCompRace[prefix][prop] = RaceSubList[subrace][prop];
 		}
 	}
-}
-
-//a function to remove the strings added to teh companion page when making a familiar/mount/etc
-function resetCompTypes(prefix) {
-	var theType = What(prefix + "Companion.Remember");
-	if (!theType || !compString[theType]) return;
-	// Start progress bar and stop calculations
-	var thermoTxt = thermoM("Resetting the companion back to its default...");
-	calcStop();
-	RunCreatureCallback(prefix, "companion", false); // run callbacks
-	RemoveString(prefix + "Cnote.Left", compString[theType].string);
-	RemoveString(prefix + "Comp.Use.Features", compString[theType].featurestring);
-	for (var i = 0; i < compString[theType].actions.length; i++) {
-		RemoveAction(compString[theType].actions[i][0], compString[theType].actions[i][1], compString[theType].actionTooltip);
-	}
-
-	if (theType === "mount" || theType === "mechanicalserv") {
-		//reset the languages
-		var removeLangs = What(prefix + "Comp.Use.Features").match(/\u25C6 languages:.*/i);
-		if (CurrentCompRace[prefix] && CurrentCompRace[prefix].known && removeLangs && CurrentCompRace[prefix].languages) {
-			removeLangs = removeLangs[0];
-			if (CurrentCompRace[prefix].typeFound === "race") {
-				//make a string of the languages known to the features
-				var languageString = "\u25C6 " + "Languages: ";
-				var theEnd = CurrentCompRace[prefix].languages.length - 1;
-				for (var l = 0; l <= theEnd; l++) {
-					var divider = l === 0 ? "" : l === theEnd ? " and " : ", ";
-					languageString += divider + CurrentCompRace[prefix].languages[l];
-					languageString += l === theEnd ? "." : "";
+	// Make sure these objects are no references
+	CurrentCompRace[prefix] = newObj(CurrentCompRace[prefix]);
+	// set the properties from the companion modification, if any
+	var sCompType = What(prefix + "Companion.Remember");
+	if (sCompType) {
+		CurrentCompRace[prefix].typeCompanion = sCompType;
+		var oComp = CompanionList[sCompType];
+		// process the attributesAdd
+		if (oComp && oComp.attributesAdd) {
+			for (var prop in oComp.attributesAdd) {
+				if (/^(name|nameAlt|source|scores|saves|skills|eval|removeeval|changeeval|companionApply)$/i.test(prop)) continue;
+				var tProp = oComp.attributesAdd[prop];
+				if (!CurrentCompRace[prefix][prop]) {
+					CurrentCompRace[prefix][prop] = newObj(tProp);
+				} else if (/^(challengeRating|header|type|subtype)$/i.test(prop)) {
+					// things that should be replaced instead of amended to
+					CurrentCompRace[prefix][prop] = tProp;
+				} else if (isArray(CurrentCompRace[prefix][prop])) {
+					CurrentCompRace[prefix][prop] = CurrentCompRace[prefix][prop].concat(tProp);
+				} else if (typeof CurrentCompRace[prefix][prop] === "string" && typeof tProp === "string") {
+					var sCoupler = CurrentCompRace[prefix][prop].indexOf(";") !== -1 ? "; " : ", ";
+					CurrentCompRace[prefix][prop] = CurrentCompRace[prefix][prop].replace(/\.$/, "") + sCoupler + tProp;
+				} else {
+					// the rest we just overwrite
+					CurrentCompRace[prefix][prop] = newObj(tProp);
 				}
-			} else if (CurrentCompRace[prefix].typeFound === "creature") {
-				var languageString = "\u25C6 Languages: " + CurrentCompRace[prefix].languages + ".";
 			}
-			ReplaceString(prefix + "Comp.Use.Features", languageString, true, removeLangs, true);
-		} else if (removeLangs) {
-			RemoveString(prefix + "Comp.Use.Features", removeLangs[0]);
+		}
+		// process the attributesChange
+		if (oComp && oComp.attributesChange) {
+			try {
+				oComp.attributesChange(type === "creature" ? CurrentCompRace[prefix].known : false, CurrentCompRace[prefix]);
+			} catch (e) {
+				delete CompanionList[sCompType].attributesChange;
+				var eText = "The `attributesChange` attribute from the '" + sCompType + "' companion produced an error! Please contact the author of the feature to correct this issue and please include this error message:\n " + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
+				console.println(eText);
+				console.show();
+			}
 		}
 	}
-
-	if (CurrentCompRace[prefix] && CurrentCompRace[prefix].known && theType === "mount") {
-		//reset the intelligence if the original creature had less than 6
-		if (CurrentCompRace[prefix].typeFound === "creature" && CurrentCompRace[prefix].scores[3] < 6) {
-			Value(prefix + "Comp.Use.Ability.Int.Score", CurrentCompRace[prefix].scores[3])
-		}
-	} else if (theType === "familiar" && CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound === "creature" && CurrentCompRace[prefix].attacks) {
-		Value(prefix + "Comp.Use.Attack.perAction", CurrentCompRace[prefix].attacksAction); //set attacks per action
-		//add any weapons the creature possesses
-		for (var a = 0; a < CurrentCompRace[prefix].attacks.length; a++) {
-			AddWeapon(CurrentCompRace[prefix].attacks[a].name);
-		}
-	} else if (theType === "companion") {
-		UpdateRangerCompanions(0, prefix);
-	} else if (theType === "companionrr") {
-		UpdateRevisedRangerCompanions(0, prefix);
-	} else if (theType === "mechanicalserv") {
-		if (CurrentCompRace[prefix] && CurrentCompRace[prefix].known) {
-			Value(prefix + "Comp.Desc.MonsterType", CurrentCompRace[prefix].type);
-		};
-
-		var removeDamI = What(prefix + "Comp.Use.Features").match(/\u25C6 damage immunities:.*/i);
-		if (removeDamI && CurrentCompRace[prefix] && CurrentCompRace[prefix].known && CurrentCompRace[prefix].damage_immunities) {
-			ReplaceString(prefix + "Comp.Use.Features", "\u25C6 Damage Immunities: " + CurrentCompRace[prefix].damage_immunities + ".", true, removeDamI[0], true);
-		} else if (removeDamI) {
-			RemoveString(prefix + "Comp.Use.Features", removeDamI[0]);
-		};
-
-		var removeConI = What(prefix + "Comp.Use.Features").match(/\u25C6 condition immunities:.*/i);
-		if (removeConI && CurrentCompRace[prefix] && CurrentCompRace[prefix].known && CurrentCompRace[prefix].condition_immunities) {
-			ReplaceString(prefix + "Comp.Use.Features", "\u25C6 Damage Immunities: " + CurrentCompRace[prefix].condition_immunities + ".", true, removeConI[0], true);
-		} else if (removeConI) {
-			RemoveString(prefix + "Comp.Use.Features", removeConI[0]);
-		};
-
-		var removeDarkv = What(prefix + "Comp.Use.Senses").match(/darkvision \d+.?\d*.?(ft|m)/i);
-		if (removeDarkv && CurrentCompRace[prefix] && CurrentCompRace[prefix].known && (/darkvision \d+.?\d*.?ft/i).test(CurrentCompRace[prefix].vision + CurrentCompRace[prefix].senses)) {
-			var creaDarkv = (CurrentCompRace[prefix].vision + CurrentCompRace[prefix].senses).match(/darkvision \d+.?\d*.?ft/i)[0];
-			if (What("Unit System") === "metric") creaDarkv = ConvertToMetric(creaDarkv, 0.5);
-			ReplaceString(prefix + "Comp.Use.Senses", creaDarkv, ";", removeDarkv[0], true);
-		} else if (removeDarkv) {
-			RemoveString(prefix + "Comp.Use.Senses", removeDarkv[0], ";");
-		};
-	}
-	Value(prefix + "Companion.Remember", "", "");
-	thermoM(thermoTxt, true); // Stop progress bar
 }
 
 //add a creature to the companion page
-function ApplyCompRace(newRace) {
+function ApplyCompRace(newRace, prefix, sCompType) {
 	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
-	if (event.target && event.target.name.indexOf("Comp.Race") !== -1 && newRace.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+	var bIsRaceFld = event.target && event.target.name.indexOf("Comp.Race") !== -1;
+	if (bIsRaceFld && newRace.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying companion race...");
 	calcStop();
 
-	var prefix = getTemplPre(event.target.name, "AScomp", true);
+	if (!prefix) prefix = getTemplPre(event.target.name, "AScomp", true);
 	var hpCalcTxt = " hit points calculation";
 	var strRaceEntry = clean(newRace).toLowerCase();
+	var strRaceEntryCap = strRaceEntry.capitalize()
+	var sCurrentCompType = What(prefix + "Companion.Remember");
+	var iPageNo = tDoc.getField(prefix + 'Comp.Race').page + 1;
+	if (!sCompType) sCompType = "";
 
 	var resetDescTooltips = function() {
 		AddTooltip(prefix + "Comp.Desc.Height", "");
@@ -223,14 +185,19 @@ function ApplyCompRace(newRace) {
 	}
 
 	var undoCreaturePresistents = function(prefix, objCrea) {
-		// remove strings
-		resetCompTypes(prefix);
+		// remove special companion type
+		ApplyCompanionType(false, prefix); // also empties Companion.Remember field
 		// undo calcChanges (just calcChanges.hp)
 		if (objCrea.calcChanges) addCompEvals(objCrea.calcChanges, prefix, objCrea.name + hpCalcTxt, false);
 		// undo modifiers
 		if (objCrea.addMod) processMods(false, objCrea.name, objCrea.addMod, prefix);
 		// reset AC explanation
 		AddTooltip(prefix + "Comp.Use.AC", undefined, "");
+		// reset HP automation to default
+		var sHPfld = prefix + "Comp.Use.HP.Max";
+		var aHPsets = How(sHPfld).split(",");
+		aHPsets[3] = "nothing";
+		AddTooltip(sHPfld, undefined, aHPsets.join());
 		// execute the function for level-dependent features and doing the removeeval
 		UpdateCompLevelFeatures(prefix, objCrea, strRaceEntry, 0);
 		// run callbacks
@@ -259,8 +226,16 @@ function ApplyCompRace(newRace) {
 		return; //don't do the rest of the function
 	}
 
+	// If this is not called by using the drop-down field, change the field to show the right name
+	if (!bIsRaceFld && newRace !== What(prefix + "Comp.Race")) {
+		IsSetDropDowns = true;
+		Value(prefix + "Comp.Race", newRace);
+		IsSetDropDowns = false;
+	}
+
 	var fndObj = FindCompRace(newRace, prefix);
-	if (!fndObj.new) { // No (new) race was found, so stop here
+	if (!fndObj.new && sCurrentCompType === sCompType) {
+		// No (new) race was found and no change was made to the compantion type, so stop here
 		thermoM(thermoTxt, true); // Stop progress bar
 		return; //don't do the rest of the function
 	}
@@ -268,9 +243,16 @@ function ApplyCompRace(newRace) {
 	// Undo things from a previous race, if any
 	undoCreaturePresistents(prefix, oldCrea);
 
-	// fill the global variable with the newly found race
+	// save the companion type
+	if (sCompType && CompanionList[sCompType]) {
+		Value(prefix + "Companion.Remember", sCompType);
+	} else if (sCompType !== "reset" && fndObj.type === "creature" && CreatureList[fndObj.found].companionApply) {
+		Value(prefix + "Companion.Remember", CreatureList[fndObj.found].companionApply);
+	}
+	// fill the global variable with the newly found race (and companion type)
 	setCurrentCompRace(prefix, fndObj.type, fndObj.found);
 	var aCrea = CurrentCompRace[prefix];
+	var oComp = CompanionList[aCrea.typeCompanion];
 
 	if (aCrea.typeFound === "race") {// do the following if a race was found
 		tDoc.resetForm(compFields); //reset all the fields
@@ -286,7 +268,7 @@ function ApplyCompRace(newRace) {
 		thermoM(1/11); //increment the progress dialog's progress
 
 		//set race's size
-		SetCreatureSize(prefix, strRaceEntry.capitalize(), aCrea.size);
+		SetCreatureSize(prefix, strRaceEntryCap, aCrea.size);
 
 		//set race's type
 		Value(prefix + "Comp.Desc.MonsterType", "Humanoid");
@@ -299,7 +281,9 @@ function ApplyCompRace(newRace) {
 
 		//set speed
 		var raceSpeed = aCrea.speed;
-		if (isArray(raceSpeed)) { //legacy
+		if (typeof raceSpeed === "string") { //CompanionList change
+			var theSpeed = raceSpeed;
+		} else if (isArray(raceSpeed)) { //legacy
 			var theSpeed = isNaN(raceSpeed[0]) ? raceSpeed[0] : raceSpeed[0] + " ft";
 		} else {
 			var theSpeed = raceSpeed.walk && raceSpeed.walk.spd ? raceSpeed.walk.spd + " ft" : "";
@@ -457,7 +441,7 @@ function ApplyCompRace(newRace) {
 					var doSkill = aSk;
 					var doExp = false;
 				}
-				var skillName = AddSkillProf(doSkill, true, doExp, true);
+				var skillName = AddSkillProf(doSkill, true, doExp, true, undefined, prefix);
 				if (skillName) skillsNameArr.push(skillName);
 			}
 			skillsTxt = formatLineList("\u25C6 Skill Proficiencies:", skillsNameArr);
@@ -476,7 +460,7 @@ function ApplyCompRace(newRace) {
 		var weaponAdd = aCrea.weaponsAdd ? aCrea.weaponsAdd : aCrea.weapons ? aCrea.weapons : [];
 		if (!isArray(weaponAdd)) weaponAdd = [weaponAdd];
 		for (i = 0; i < weaponAdd.length; i++) {
-			AddWeapon(weaponAdd[i]);
+			AddWeapon(weaponAdd[i], undefined, prefix);
 		}
 
 		//add armour
@@ -501,11 +485,17 @@ function ApplyCompRace(newRace) {
 		if (aCrea.header) Value(prefix + "Comp.Type", aCrea.header);
 
 		//add the size
-		SetCreatureSize(prefix, strRaceEntry.capitalize(), aCrea.size);
+		SetCreatureSize(prefix, strRaceEntryCap, aCrea.size);
 
 		//set race's type
-		var typeString = aCrea.subtype ? aCrea.type + " (" + aCrea.subtype + ")" : aCrea.type;
-		Value(prefix + "Comp.Desc.MonsterType", typeString);
+		var sCompExplStr = oComp ? ", a special companion (" + oComp.name.toLowerCase() + "), " : "";
+		var aCreaTypeDialogTxt = [
+			"Select creature type for the " + strRaceEntry + " on page " + iPageNo, // title
+			"The " + strRaceEntry + sCompExplStr + " on page " + iPageNo + " can be one of multiple creature types. It is up to you to choose which type will now be input in the dropdown on the companion page." // description
+		]
+		var sCreaType = isArray(aCrea.type) ? AskUserOptions(aCreaTypeDialogTxt[0], aCreaTypeDialogTxt[1], aCrea.type, "radio", true) : aCrea.type;
+		var sCreaSubtype = aCrea.subtype ? " (" + (isArray(aCrea.subtype) ? AskUserOptions(aCreaTypeDialogTxt[0].replace("type", "subtype"), aCreaTypeDialogTxt[1].replace(/type/ig, "subtype"), aCrea.subtype, "radio", true) : aCrea.subtype) + ")" : "";
+		Value(prefix + "Comp.Desc.MonsterType", sCreaType + sCreaSubtype);
 
 		//set senses
 		var theSenses = What("Unit System") === "imperial" ? aCrea.senses : ConvertToMetric(aCrea.senses, 0.5);
@@ -549,7 +539,7 @@ function ApplyCompRace(newRace) {
 
 		//add any weapons the creature possesses
 		for (var a = 0; a < aCrea.attacks.length; a++) {
-			AddWeapon(aCrea.attacks[a].name);
+			AddWeapon(aCrea.attacks[a].name, undefined, prefix);
 		}
 
 		thermoM(4/10); //increment the progress dialog's progress
@@ -566,7 +556,7 @@ function ApplyCompRace(newRace) {
 		if (aCrea.skills) {
 			for (var aSkill in aCrea.skills) {
 				var profSkill = CompSkillRefer(aSkill, aCrea.skills[aSkill], aCrea.scores, aCrea.proficiencyBonus);
-				AddSkillProf(profSkill[0], profSkill[1] !== "nothing", profSkill[1] === "expertise", false, profSkill[2]); //set the proficiency
+				AddSkillProf(profSkill[0], profSkill[1] !== "nothing", profSkill[1] === "expertise", false, profSkill[2], prefix); //set the proficiency
 			}
 		}
 
@@ -629,19 +619,306 @@ function ApplyCompRace(newRace) {
 
 		// Run callback functions, if any are present
 		RunCreatureCallback(prefix, "creature", true);
-
-		// make it into a special type of companion, if set to do so
-		if (IsNotSetCompType && aCrea.companionApply) changeCompType(aCrea.companionApply, prefix);
 	}
+
+	// Apply the special companion type (if any)
+	ApplyCompanionType(true, prefix);
 
 	SetHPTooltip(false, true);
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
+// Make menu for the button on the companion page and do something with the result
+function MakeCompMenu_CompOptions(prefix, MenuSelection, force) {
+	if (!prefix) prefix = getTemplPre(event.target.name, "AScomp", true);
+	var aVisLayers = eval_ish(What(prefix + "Companion.Layers.Remember"));
+	var creaCalcStr = StringEvals("creaStr");
+	if (!MenuSelection || MenuSelection === "justMenu" || MenuSelection === "justCompanions") {
+		// function for adding a menu; array = [cName, cReturn, bMarked, bEnabled]
+		var menuLVL1 = function (aMenu, aMain) {
+			for (var i = 0; i < aMain.length; i++) {
+				aMenu.push({
+					cName : aMain[i][0],
+					cReturn : "companion#" + aMain[i][1],
+					bMarked : aMain[i][2] !== undefined ? aMain[i][2] : false,
+					bEnabled : aMain[i][3] !== undefined ? aMain[i][3] : true
+				});
+			}
+		};
+		var menuLVL2 = function (aMenu, aMain, aSub) {
+			var aSubmenu = [];
+			for (var i = 0; i < aSub.length; i++) {
+				aSubmenu.push({
+					cName : aSub[i][0],
+					cReturn : "companion#" + aMain[1] + "#" + aSub[i][1],
+					bMarked : aSub[i][2] !== undefined ? aSub[i][2] : false,
+					bEnabled : aSub[i][3] !== undefined ? aSub[i][3] : true
+				})
+			}
+			aMenu.push({
+				cName : aMain[0],
+				oSubMenu : aSubmenu,
+				bMarked : aMain[2] !== undefined ? aMain[2] : false,
+				bEnabled : aMain[3] !== undefined ? aMain[3] : true
+			})
+		}
+
+		var aCompMenu = [], bAddMenuDivider = false;
+		if (CurrentSources.globalExcl.indexOf("SRD") !== -1 && (!SourceList.M || (SourceList.M && CurrentSources.globalExcl.indexOf("M") !== -1))) {
+			// If the SRD is excluded (and the MM if it exists), add a warning here
+			aCompMenu = [{
+				cName : "Be aware: the SRD " + (SourceList.M ? "and Monster Manual are" : "is") + " excluded from the sources!",
+				cReturn : "-",
+				bEnabled : false
+			}, {
+				cName : "-",
+				cReturn : "-"
+			}];
+		}
+		var sCurrentCompType = What(prefix + "Companion.Remember");
+		var sCurrentCompRaceLC = What(prefix + "Comp.Race").toLowerCase();
+	// Menu options for creating special companions
+		// First get a list of all the companion options that should be available
+		var oCompanions = {};
+		for (var sComp in CompanionList) {
+			if (testSource(sComp, CompanionList[sComp], "compExcl")) continue;
+			oCompanions[sComp] = [];
+		}
+		// Loop through the creatures and see which one are applicable for which companion options
+		for (var sCrea in CreatureList) {
+			var oCrea = CreatureList[sCrea];
+			var iCreaCR = eval_ish(oCrea.challengeRating);
+			// test if the creature or its source isn't excluded or if it was added as part of a feature
+			if (testSource(sCrea, oCrea, "creaExcl") || (CurrentVars.extraCreatures && CurrentVars.extraCreatures[sCrea])) continue;
+			var objToAdd = {}; // the list of all companion types this creature should be added to (if any)
+			if (oCrea.companion) {
+				// Add any matching companions
+				var arrCreaComps = isArray(oCrea.companion) ? oCrea.companion : [oCrea.companion];
+				for (var i = 0; i < arrCreaComps.length; i++) {
+					if (oCompanions[arrCreaComps[i]]) objToAdd[arrCreaComps[i]] = "";
+				}
+			}
+			// Now test for each companion type with the includeCheck attribute if this creature should be added
+			for (var sComp in oCompanions) {
+				if (CompanionList[sComp].includeCheck && typeof CompanionList[sComp].includeCheck === "function") {
+					try {
+						var returnStr = CompanionList[sComp].includeCheck(sCrea, oCrea, iCreaCR);
+						if (returnStr !== false && returnStr !== undefined) {
+							objToAdd[sComp] = typeof returnStr === "string" ? returnStr : "";
+						}
+					} catch (e) {
+						delete CompanionList[sComp].includeCheck;
+						var eText = "The `includeCheck` attribute from the '" + sComp + "' companion produced an error! Please contact the author of the feature to correct this issue and please include this error message:\n " + error;
+						for (var e in error) eText += "\n " + e + ": " + error[e];
+						console.println(eText);
+						console.show();
+					}
+				}
+			}
+			// Now add the creature to any of the companion types found to be applicable, if any
+			if (!ObjLength(objToAdd)) continue;
+			// First get an array of all possible names for the creature
+			var aCreaNames = [oCrea.name];
+			var sCreaSrc = stringSource(oCrea, "first,abbr", "\t   [", "]");
+			if (oCrea.nameAlt) aCreaNames = aCreaNames.concat(isArray(oCrea.nameAlt) ? oCrea.nameAlt : [oCrea.nameAlt]);
+			// Then loop through all the found companion options, and add the full array of names (with extension string, if any)
+			for (var sComp in objToAdd) {
+				for (var i = 0; i < aCreaNames.length; i++) {
+					oCompanions[sComp].push([aCreaNames[i], sCrea, objToAdd[sComp] + sCreaSrc]);
+				}
+			}
+		}
+		// If we only want the object with the companions sorted
+		if (MenuSelection === "justCompanions") return oCompanions;
+		// Now loop through the companions and add a menu item for each
+		for (var sComp in oCompanions) {
+			if (!oCompanions[sComp].length) continue; // no familiar options
+			var oComp = CompanionList[sComp];
+			var sCompSrc = stringSource(oComp, "first,abbr", "\t   [", "]");
+			var bIsCompType = sCurrentCompType === sComp;
+			var aSubInstructions = [];
+			oCompanions[sComp].sort();
+			for (var i = 0; i < oCompanions[sComp].length; i++) {
+				var aCompOption = oCompanions[sComp][i];
+				aSubInstructions.push([
+					aCompOption[0] + (aCompOption[2] ? aCompOption[2] : ""), // cName
+					aCompOption[0] + "#" + aCompOption[1], // cReturn
+					bIsCompType && CurrentCompRace[prefix].known === aCompOption[1] && sCurrentCompRaceLC.indexOf(aCompOption[0].toLowerCase()) !== -1 // bMarked
+				]);
+			}
+			menuLVL2(aCompMenu, [
+				"Create " + oComp.nameMenu + sCompSrc, // cName
+				"add_comp#" + sComp, // cReturn
+				bIsCompType // bMarked
+			], aSubInstructions);
+			bAddMenuDivider = true;
+		}
+	// Menu options for changing the current creature to a special companion option
+		if (bAddMenuDivider) menuLVL1(aCompMenu, [["-", "-"]]);
+		if (CurrentCompRace[prefix].typeFound === "creature") {
+			var aSubInstructions = [];
+			for (var sComp in oCompanions) {
+				var oComp = CompanionList[sComp];
+				var sCompSrc = stringSource(oComp, "first,abbr", "\t   [", "]");
+				aSubInstructions.push([
+					oComp.nameMenu + sCompSrc, // cName
+					sComp, // cReturn
+					sCurrentCompType === sComp // bMarked
+				]);
+			}
+			aSubInstructions.push(["-", "-"], [
+				"Reset to normal", // cName
+				"reset", // cReturn
+				undefined, // bMarked
+				sCurrentCompType ? true : false // bEnabled
+			]);
+			menuLVL2(aCompMenu,	[
+				"Change current creature into a ... (resets creature)",
+				"change",
+				false,
+				CurrentCompRace[prefix].typeFound === "creature"
+			], aSubInstructions);
+		} else if (sCurrentCompType) {
+			// Not a creature but has a companion type, so only allow reset
+			menuLVL1(aCompMenu, [["Reset current creature to normal (remove " + CompanionList[sCurrentCompType].name + ")", "change#reset"]]);
+		} else {
+			// Not a creature and no companion type, so disable this menu option
+			menuLVL1(aCompMenu, [["Change current creature into a ... (resets creature)", "-", false, false]]);
+		}
+	// Change visible sections
+		menuLVL1(aCompMenu, [["-", "-"]]); // add a divider
+		menuLVL2(
+			aCompMenu,
+			["Change visible sections", "visible"],
+			[
+				["Show box for Companion's Appearance", "comp.img", aVisLayers[0]],
+				["Show Equipment section", "comp.eqp", aVisLayers[1]]
+			]
+		);
+	// Reset companion page, add/remove page, show calculations
+		menuLVL1(aCompMenu, [
+			["-", "-"],
+			["Reset this companion page", "reset_page"],
+			["-", "-"],
+			["Add extra companion page", "add_page"],
+			["Remove this companion page", "remove_page"],
+			["-", "-"],
+			["Show things changing the companion automations", "showcalcs", undefined, creaCalcStr ? true : false]
+		]);
+	// Save this menu in the global variable
+		Menus.companion = aCompMenu;
+	}
+	var MenuSelection = MenuSelection ? MenuSelection : getMenu("companion");
+	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "companion") return;
+
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Applying companion menu option...");
+	calcStop();
+
+	switch (MenuSelection[1]) {
+		case "add_comp" :
+			var sRaceName = MenuSelection[3] ? MenuSelection[3].capitalize() : CreatureList[MenuSelection[4]].name;
+		case "change" :
+			if (MenuSelection[1] === "change") var sRaceName = What(prefix + "Comp.Race");
+			ApplyCompRace(sRaceName, prefix, MenuSelection[2]);
+			break;
+		case "reset_page":
+			thermoTxt = thermoM("Resetting the companion page...", false); // Change the progress bar text
+	
+			tDoc.resetForm([prefix + "Comp", prefix + "Text.Comp", prefix + "BlueText.Comp", prefix + "Cnote", prefix + "Companion"]); //reset all the fields
+	
+			thermoM(0.5); // Increment the progress bar
+	
+			ApplyAttackColor("", "", "Comp.", prefix); //reset the colour of the attack boxes
+			SetHPTooltip("reset", true);
+			ShowCompanionLayer(prefix);
+			ClearIcons(prefix + "Comp.img.Portrait", true); //reset the appearance image
+	
+			thermoTxt = thermoM("Applying...", false); // Change the progress bar text
+			break;
+		case "add_page":
+			DoTemplate("AScomp", "Add");
+			break;
+		case "remove_page":
+			DoTemplate("AScomp", "Remove", prefix);
+			break;
+		case "visible":
+			if (MenuSelection[2].indexOf("comp.img") !== -1) {
+				aVisLayers[0] = force !== undefined ? force : !aVisLayers[0];
+			}
+			if (MenuSelection[2].indexOf("comp.eqp") !== -1) {
+				aVisLayers[1] = force !== undefined ? force : !aVisLayers[1];
+			}
+			Value(prefix + "Companion.Layers.Remember", aVisLayers.toSource());
+			ShowCompanionLayer(prefix);
+			break;
+		case "showcalcs" :
+			ShowDialog("Things Affecting the Companion Automation", creaCalcStr);
+			break;
+	}
+	thermoM(thermoTxt, true); // Stop progress bar
+}
+
+// Apply the CompanionList selection set in the Companion.Remember field
+function ApplyCompanionType(bAddRemove, prefix) {
+	var sCompType = What(prefix + "Companion.Remember");
+	if (!sCompType || !CompanionList[sCompType]) return;
+	var oComp = CompanionList[sCompType];
+	if (CurrentCompRace[prefix].typeCompanion !== sCompType) CurrentCompRace[prefix].typeCompanion = sCompType;
+
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Changing the companion type...");
+	calcStop();
+
+	// First process the calcChanges
+	if (oComp.calcChanges) {
+		addCompEvals(oComp.calcChanges, prefix, oComp.name + " hit points calculation", bAddRemove);
+	}
+
+	if (bAddRemove) { // adding
+		thermoTxt = thermoM("Applying the companion type...", false); //change the progress dialog text
+
+		// Add companion related actions to the first page
+		if (oComp.action) processActions(true, oComp.nameTooltip ? oComp.nameTooltip : oComp.name, oComp.action, oComp.name);
+
+		// Run companion callbacks from other features (last when adding)
+		RunCreatureCallback(prefix, "companion", true);
+
+	} else { // removing
+		thermoTxt = thermoM("Resetting the companion type...", false); //change the progress dialog text
+
+		// Remove actions from the first page, if this is the last companion of its type being removed
+		var iCompTypeCnt = 0;
+		for (var sCompPrefix in CurrentCompRace) {
+			if (sCompPrefix !== prefix && CurrentCompRace[sCompPrefix].typeCompanion === sCompType) iCompTypeCnt++;
+		}
+		if (oComp.action && !iCompTypeCnt) processActions(true, oComp.nameTooltip ? oComp.nameTooltip : oComp.name, oComp.action, oComp.name);
+
+		// Run companion callbacks from other features (first when removing)
+		RunCreatureCallback(prefix, "companion", false);
+
+		// Clear the remember field so that no automation picks it up 
+		Value(prefix + "Companion.Remember", "", "", "");
+	}
+
+	thermoM(thermoTxt, true); // Stop progress bar
+}
+
+// Create and add or remove the heading for a CompanionList entry
+function SetCompanionListHeading(bAddRemove, prefix, sCompType, sFld) {
+	var oComp = CompanionList[sCompType];
+	if (!oComp) return "";
+	if (!sFld) sFld = prefix + "Cnote.Left";
+	var sHeading = oComp.name;
+	var sOrigin = oComp.nameOrigin ? oComp.nameOrigin : "";
+	var sSource = stringSource(oComp, "first,abbr", sOrigin ? ", " : "");
+	if (sSource || sOrigin) sHeading += " (" + sOrigin + sSource + ")";
+	tDoc[(bAddRemove ? "Add" : "Remove") + "String"](sFld, sHeading + ":", true);
+}
+
 // do the eval for a creature
-function ApplyCreatureEval(prefix, objCrea, type, arrLvl, objEval) {
-	var theEval = objEval ? objEval[type] : objCrea[type];
-	if (objCrea.typeFound !== "creature" || !theEval || typeof theEval != 'function') return;
+function ApplyCreatureEval(prefix, objEval, arrLvl, sType, sName) {
+	if (!objEval[sType] || typeof objEval[sType] != 'function') return;
 	if (arrLvl === undefined) {
 		arrLvl = [
 			Number(How(prefix + "Comp.Desc.Age")),
@@ -649,15 +926,14 @@ function ApplyCreatureEval(prefix, objCrea, type, arrLvl, objEval) {
 		];
 	}
 	try {
-		return theEval(prefix, arrLvl);
+		return objEval[sType](prefix, arrLvl);
 	} catch (error) {
 		var iPageNo = tDoc.getField(prefix + 'Comp.Race').page + 1;
-		var sName = objCrea.name + (objEval ? '" feature/trait/action: "' + objEval.name : '');
-		var eText = "The " + type + ' from "' + sName + '" on page ' + iPageNo + " produced an error! Please contact the author of the feature to correct this issue:\n " + error;
+		var eText = "The " + sType + ' for "' + sName + '" on page ' + iPageNo + " produced an error! Please contact the author of the feature to correct this issue and please include this error message:\n " + error;
 		for (var e in error) eText += "\n " + e + ": " + error[e];
 		console.println(eText);
 		console.show();
-		delete objCrea[type];
+		delete objEval[sType];
 	}
 }
 
@@ -668,6 +944,9 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 	if (objCrea.typeFound !== "creature") return; // only do this for CreatureList entries
 	var isMetric = What("Unit System") === "metric", arrToEval = [];
 	if (!useName) useName = What(prefix + "Comp.Race").toLowerCase();
+	var sCompType = CurrentCompRace[prefix].typeCompanion;
+	var objComp = sCompType ? CompanionList[sCompType] : false;
+	if (!objComp && sCompType) delete CurrentCompRace[prefix].typeCompanion;
 
 	// function to get the highest class level of an array of ClassList object names
 	var highestClassLevel = function(input, isHD) {
@@ -693,7 +972,7 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 
 	/* Determine the old/new levels */
 	var oldLvl = Number(How(prefix + "Comp.Desc.Age"));
-	if (newLvl === undefined) {
+	if (newLvl === undefined || newLvl === false) {
 		newLvl = objCrea.minlevelLinked ? highestClassLevel(objCrea.minlevelLinked) :
 			classes.totallevel ? classes.totallevel :
 			What("Character Level") ? Number(What("Character Level")) : 1;
@@ -703,22 +982,31 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 	AddTooltip(prefix + "Comp.Desc.Age", undefined, newLvl);
 	var minLvl = Math.min(oldLvl, newLvl), maxLvl = Math.max(oldLvl, newLvl);
 
-	// Enqueue the main object's eval if adding the creature for the first time
-	if (oldLvl === 0 && newLvl > 0 && objCrea.eval) arrToEval.push(["eval", false]);
+	// Enqueue the main objects' eval if adding the creature for the first time
+	if (oldLvl === 0 && newLvl > 0) {
+		if (objCrea.eval) arrToEval.push([objCrea, "eval", objCrea.name]);
+		if (objComp && objComp.eval) arrToEval.push([objComp, "eval", objComp.menuName]);
+	}
 
 	/* The string for the Features and Traits fields */
 	var arrProps = [
 		["features", prefix + "Comp.Use.Features"],
 		["actions", prefix + "Comp.Use.Traits"],
-		["traits", prefix + "Comp.Use.Traits"]
+		["traits", prefix + "Comp.Use.Traits"],
+		["notes", prefix + "Cnote.Left", objComp]
 	];
 	var arrCompAltStrLocs = [prefix + "Cnote.Left"];
 	if (!typePF) arrCompAltStrLocs.push(prefix + "Cnote.Right");
 	// Now loop through all the features/actions/traits
 	for (var a = 0; a < arrProps.length; a++) {
-		if (!objCrea[arrProps[a][0]] || !objCrea[arrProps[a][0]].length) continue;
-		var feaA = [].concat(objCrea[arrProps[a][0]]);
+		var objUse = arrProps[a][2] ? arrProps[a][2] : objCrea;
+		if (!objUse || !objUse[arrProps[a][0]] || !objUse[arrProps[a][0]].length) continue;
+		var feaA = [].concat(objUse[arrProps[a][0]]);
 		if (newLvl < oldLvl) feaA.reverse(); // when removing, loop through them backwards
+		// if this is the notes for a companion add/remove a heading if needed
+		if (arrProps[a][0] === "notes" && minLvl === 0) {
+			SetCompanionListHeading(oldLvl === 0, prefix, sCompType);
+		}
 		var fldNm = arrProps[a][1];
 		var arrFlds = [fldNm].concat(arrCompAltStrLocs);
 		var lastProp = a === 0 || fldNm !== arrProps[a-1][1] ? What(fldNm) : lastProp;
@@ -729,8 +1017,9 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 			var addIt = newLvl >= propMinLvl;
 			if (doPropTxt) {
 				// Create the strings for the property
-				var propFirstLine = ("\u25C6 " + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name) + ": ");
-				var propFullLine = propFirstLine + (isMetric ? ConvertToMetric(prop.description, 0.5) : prop.description);
+				var sNameDescrCoupler = prop.joinString !== undefined ? prop.joinString : ": ";
+				var propFirstLine = "\u25C6 " + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name);
+				var propFullLine = propFirstLine + sNameDescrCoupler + (isMetric ? ConvertToMetric(prop.description, 0.5) : prop.description);
 				// Apply the name of the creature if [THIS] is present in the strings
 				if (/\[THIS\]/.test(propFullLine)) {
 					if (addIt) {
@@ -755,9 +1044,9 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 				}
 				// Queue the (remove)eval
 				var evalType = addIt ? "eval" : "removeeval";
-				if (prop[evalType]) arrToEval.push([evalType, prop]);
+				if (prop[evalType]) arrToEval.push([prop, evalType, objUse.name + '" ' + fldNm + ' "' + prop.name]);
 				// Process modifiers, if any
-				if (prop.addMod) processMods(addIt, objCrea.name + ": " + prop.name, prop.addMod, prefix);
+				if (prop.addMod) processMods(addIt, objUse.name + ": " + prop.name, prop.addMod, prefix);
 			}
 			if (doPropTxt) lastProp = propFullLine;
 		}
@@ -773,18 +1062,21 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 		Value(prefix + 'Comp.Use.HD.Level', highestClassLevel(objCrea.hdLinked, true));
 	}
 
-	/* The Evals */
-	if (oldLvl > 0 && newLvl === 0 && objCrea.removeeval) {
-		// Enqueue the main object's removeeval if removing the creature
-		arrToEval.push(["removeeval", false]);
-	} else if (newLvl > 0 && objCrea.changeeval) {
-		// Enqueue the main object's changeeeval if changing level
-		arrToEval.push(["changeeval", false]);
+	/* The main evals */
+	if (oldLvl > 0 && newLvl === 0) {
+		// Enqueue the main objects' removeeval if removing the creature
+		if (objCrea.removeeval) arrToEval.push([objCrea, "removeeval", objCrea.name]);
+		if (objComp && objComp.removeeval) arrToEval.push([objComp, "removeeval", objComp.nameMenu]);
+	} else if (newLvl > 0) {
+		// Enqueue the main objects' changeeeval if changing level
+		if (objCrea.changeeval) arrToEval.push([objCrea, "changeeval", objCrea.name]);
+		if (objComp && objComp.changeeval) arrToEval.push([objComp, "changeeval", objComp.nameMenu]);
 	}
+
 	// Process all the queued evals, in the order they were added
-	// This way, the main `eval` is process first, but after all the strings are in the right location
+	// This way, the main `eval` is processed first, but after all the strings are in the right location
 	for (var i = 0; i < arrToEval.length; i++) {
-		ApplyCreatureEval(prefix, objCrea, arrToEval[i][0], [oldLvl, newLvl], arrToEval[i][1]);
+		ApplyCreatureEval(prefix, arrToEval[i][0], [oldLvl, newLvl], arrToEval[i][1], arrToEval[i][2]);
 	}
 }
 
@@ -853,6 +1145,7 @@ function processAddCompanions(bAddRemove, srcNm, aCreaAdds) {
 		var sRaceLow = sRace.toString().toLowerCase();
 		var bRemoveWholePage = aCreaAdd[1];
 		var aCallBack = aCreaAdd[2];
+		var sCompanionType = aCreaAdd[3] && CompanionList[aCreaAdd[3]] ? aCreaAdd[3] : false;
 		var AScompA = isTemplVis('AScomp') ? What('Template.extras.AScomp').split(',') : false;
 		if (bAddRemove) { // add
 			var prefix = false, stopMatch = false;
@@ -860,7 +1153,7 @@ function processAddCompanions(bAddRemove, srcNm, aCreaAdds) {
 				for (var a = 1; a < AScompA.length; a++) {
 					var sFndRace = What(AScompA[a] + 'Comp.Race');
 					if (!prefix && !sFndRace) prefix = AScompA[a];
-					if (sFndRace.toLowerCase() === sRaceLow && CurrentCompRace[AScompA[a]]) {
+					if (sFndRace.toLowerCase() === sRaceLow && CurrentCompRace[AScompA[a]] && (!sCompanionType || CurrentCompRace[AScompA[a]].typeCompanion === sCompanionType)) {
 						prefix = AScompA[a];
 						stopMatch = true;
 						break;
@@ -869,9 +1162,11 @@ function processAddCompanions(bAddRemove, srcNm, aCreaAdds) {
 			}
 			if (!prefix) prefix = DoTemplate('AScomp', 'Add');
 			if (!stopMatch) {
-				Value(prefix + 'Comp.Race', sRace);
+				ApplyCompRace(sRace, prefix, sCompanionType);
 				doCallBack(aCallBack, prefix);
-				aChangeMsg.push('A "' + sRace + '" has been added to the companion page at page number ' + (tDoc.getField(prefix + 'Comp.Race').page + 1));
+				var sChangeMsgName = '"' + What(prefix + 'Comp.Race') + '"'; // Get it from the page in case the callback changed it.
+				if (sCompanionType) sChangeMsgName = CompanionList[sCompanionType].nameMenu + " " + sChangeMsgName;
+				aChangeMsg.push('A ' + sChangeMsgName + ' has been added to the companion page at page number ' + (tDoc.getField(prefix + 'Comp.Race').page + 1) + '.');
 			}
 		} else { // remove
 			for (var a = 1; a < AScompA.length; a++) {
@@ -1026,7 +1321,7 @@ function FindCompWeapons(ArrayNmbr, aPrefix) {
 			CurrentWeapons.compKnown[prefix][j] = tempArray[j];
 		}
 	}
-};
+}
 
 function addCompEvals(evalObj, prefix, NameEntity, Add) {
 	if (!evalObj) return;
@@ -1418,13 +1713,13 @@ function ApplyWildshape() {
 		//add actions
 		if (theCrea.actions) {
 			for (var t = 0; t < theCrea.actions.length; t++) {
-				strTraits += "\n\u25C6 " + theCrea.actions[t].name + ": " + theCrea.actions[t].description;
+				strTraits += "\n\u25C6 " + theCrea.actions[t].name + (theCrea.actions[t].joinString !== undefined ? theCrea.actions[t].joinString : ": ") + theCrea.actions[t].description;
 			}
 		}
 		//add traits
 		if (theCrea.traits) {
 			for (var t = 0; t < theCrea.traits.length; t++) {
-				strTraits += "\n\u25C6 " + theCrea.traits[t].name + ": " + theCrea.traits[t].description;
+				strTraits += "\n\u25C6 " + theCrea.traits[t].name + (theCrea.traits[t].joinString !== undefined ? theCrea.traits[t].joinString : ": ") + theCrea.traits[t].description;
 			}
 		}
 	}
@@ -1880,442 +2175,6 @@ function SetCompDropdown(forceTooltips) {
 		}
 	}
 };
-
-//Make menu for the button on the companion page and parse it to Menus.companion
-function MakeCompMenu(prefix) {
-	if(!prefix) prefix = getTemplPre(event.target.name, "AScomp", true);
-	var usingRevisedRanger = ClassList.rangerua && !testSource("rangerua", ClassList.rangerua, "classExcl");
-	var usingArtificer = SourceList["UA:A"] && CurrentSources.globalExcl.indexOf("UA:A") === -1;
-	var menuLVL2 = function (menu, name, array, specialArray, addName) {
-		var temp = {};
-		var enabled = name[1] === "change" ? What(prefix + "Comp.Race") : true;
-		temp.cName = name[0];
-		if (!enabled) {
-			temp.bEnabled = enabled;
-		} else {
-			temp.oSubMenu = [];
-			for (var i = 0; i < array.length; i++) {
-				if (name[1] === "visible") {
-					var toShow = eval_ish(What(prefix + "Companion.Layers.Remember"));
-					var subMarked = array[i][1] === "comp.img" ? toShow[0] : toShow[1];
-				} else if (name[1] === "change") {
-					var subMarked = What(prefix + "Companion.Remember") === array[i][1];
-				} else {
-					var subMarked = What(prefix + "Companion.Remember") === name[1] && CurrentCompRace[prefix].known === array[i][1];
-				}
-				var aName = array[i][0];
-				if (specialArray && addName && specialArray.indexOf(array[i][1]) !== -1) aName += addName;
-				temp.oSubMenu.push({
-					cName : aName,
-					cReturn : name[1] + "#" + array[i][1] + "#" + array[i][0],
-					bMarked : subMarked,
-					bEnabled : array[i][1] === "no-mm" ? false : name[1] === "change" && (array[i][1] === "companion" || array[i][1] === "companionrr") && CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound !== "creature" ? false : true
-				})
-			}
-		}
-		menu.push(temp);
-	};
-	var menuLVL1 = function (item, array) {
-		for (var i = 0; i < array.length; i++) {
-			item.push({
-				cName : array[i][0],
-				cReturn : array[i][1] + "#" + "nothing",
-				bEnabled : array[i][2] !== undefined ? array[i][2] : true
-			});
-		}
-	};
-
-	var CompMenu = [];
-	var cObj = {
-		familiars : [],
-		familiars_not_al : [],
-		chainPact : [],
-		mounts : [],
-		steeds : [],
-		companions : [],
-		companionRR : [],
-		mechanicalServs : []
-	};
-	var change = [
-		["Into a familiar (Find Familiar spell)", "familiar"],
-		["Into a Pact of the Chain familiar (Warlock feature)", "pact_of_the_chain"],
-		["Into a mount (Find Steed spell)", "mount"]
-	].concat(!SpellsList["find greater steed"] ? [] : [
-		["Into a greater mount (Find Greater Steed spell)", "steed"]
-	]).concat(!usingArtificer ? [] : [
-		["Into a Mechanical Servant (Artificer feature)", "mechanicalserv"]
-	]).concat([
-		["Into a Ranger's Companion", usingRevisedRanger ? "companionrr" : "companion"],
-		["-", "-"],
-		["Reset to normal", "reset"]
-	]);
-
-	var visOptions = [
-		["Show box for Companion's Appearance", "comp.img"],
-		["Show Equipment section", "comp.eqp"]
-	];
-
-	//make a list of all the creatures
-	for (var aCrea in CreatureList) {
-		var theCrea = CreatureList[aCrea];
-		// test if the creature or its source isn't excluded or if it was added as part of a feature
-		if (testSource(aCrea, theCrea, "creaExcl") || (CurrentVars.extraCreatures && CurrentVars.extraCreatures[aCrea])) continue;
-		var arrAlts = [];
-		if (theCrea.nameAlt) {
-			var arrNames = isArray(theCrea.nameAlt) ? theCrea.nameAlt : [theCrea.nameAlt];
-			for (var i = 0; i < arrNames.length; i++) {
-				arrAlts.push([arrNames[i], aCrea]);
-			}
-		}
-		if (theCrea.type === "Beast" && theCrea.size >= 3 && eval_ish(theCrea.challengeRating) <= 1/4) {
-			cObj.companions = cObj.companions.concat([[theCrea.name, aCrea]]).concat(arrAlts);
-		} else if (theCrea.type === "Beast" && theCrea.size === 2 && eval_ish(theCrea.challengeRating) <= 2) {
-			cObj.mechanicalServs = cObj.mechanicalServs.concat([[theCrea.name, aCrea]]).concat(arrAlts);
-		};
-		switch (theCrea.companion) {
-			case "familiar_not_al" :
-				if (!isDisplay("DCI.Text")) break;
-				cObj.familiars_not_al.push(aCrea);
-			case "familiar" :
-				cObj.familiars = cObj.familiars.concat([[theCrea.name, aCrea]]).concat(arrAlts);
-			case "pact_of_the_chain" :
-				cObj.chainPact = cObj.chainPact.concat([[theCrea.name, aCrea]]).concat(arrAlts);
-				break;
-			case "mount" :
-				cObj.mounts = cObj.mounts.concat([[theCrea.name, aCrea]]).concat(arrAlts);
-				break;
-			case "steed" :
-				cObj.steeds = cObj.steeds.concat([[theCrea.name, aCrea]]).concat(arrAlts);
-				break;
-			case "companion" :
-			case "companionrr" :
-				cObj.companionRR = cObj.companionRR.concat([[theCrea.name, aCrea]]).concat(arrAlts);
-				break;
-		}
-	}
-
-	// Add a reminder if the monster manual & SRD have been excluded from the sources
-	var noSrd = CurrentSources.globalExcl.indexOf("SRD") !== -1;
-	var existMm = SourceList.M;
-	var reminder = (existMm && CurrentSources.globalExcl.indexOf("M") && noSrd) || (!existMm && noSrd) ? ["Be aware: the SRD " + (existMm ? "and Monster Manual are" : "is") + " excluded from the sources!", "no-mm"] : false;
-
-	// Sort the arrays and add the reminder (if any)
-	for (var cType in cObj) {
-		cObj[cType].sort();
-		if (reminder && cType !== "familiars_not_al") cObj[cType].unshift(reminder);
-	}
-
-	menuLVL2(CompMenu, ["Create familiar (Find Familiar spell)", "familiar"], cObj.familiars, cObj.familiars_not_al, " (if DM approves)");
-	menuLVL2(CompMenu, ["Create familiar (Warlock Pact of the Chain)", "pact_of_the_chain"], cObj.chainPact, cObj.familiars_not_al, " (if DM approves)");
-	menuLVL2(CompMenu, ["Create mount (Find Steed spell)", "mount"], cObj.mounts);
-	if (SpellsList["find greater steed"]) menuLVL2(CompMenu, ["Create greater mount (Find Greater Steed spell)", "steed"], cObj.steeds);
-	if (usingArtificer) menuLVL2(CompMenu, ["Create Mechanical Servant (Artificer feature)", "mechanicalserv"], cObj.mechanicalServs);
-	if (usingRevisedRanger) {
-		menuLVL2(CompMenu, ["Create Revised Ranger's Companion", "companionrr"], cObj.companionRR);
-	} else {
-		menuLVL2(CompMenu, ["Create Ranger's Companion", "companion"], cObj.companions);
-	};
-
-	CompMenu.push({cName : "-"}); //add a divider
-	menuLVL2(CompMenu, ["Change current creature", "change"], change);
-	CompMenu.push({cName : "-"}); //add a divider
-	menuLVL2(CompMenu, ["Change visible sections", "visible"], visOptions);
-	menuLVL1(CompMenu, [
-		["-", "-"],
-		["Reset this Companion page", "reset"],
-		["-", "-"],
-		["Add extra 'Companion' page", "add page"],
-		[(prefix ? "Remove" : "Hide") + " this 'Companion' page", "remove page"],
-		["-", "-"],
-		["Show things changing the companion automations", "showcalcs", ObjLength(CurrentEvals.creaStr) && (CurrentEvals.creatureCallback || CurrentEvals.companionCallback) ? true : false]
-	]);
-
-	Menus.companion = CompMenu;
-	return cObj;
-};
-
-//call the companion menu and do something with the results
-function CompOptions(prefix, input, force) {
-	var MenuSelection = input ? input : getMenu("companion");
-	if (!MenuSelection || MenuSelection[0] == "nothing") return
-	if (!prefix) prefix = getTemplPre(event.target.name, "AScomp", true);
-
-	switch (MenuSelection[0]) {
-		case "reset":
-			// Start progress bar and stop calculations
-			var thermoTxt = thermoM("Resetting the companion page...");
-			calcStop();
-	
-			tDoc.resetForm([prefix + "Comp", prefix + "Text.Comp", prefix + "BlueText.Comp", prefix + "Cnote", prefix + "Companion"]); //reset all the fields
-	
-			thermoM(0.5); // Increment the progress bar
-	
-			ApplyAttackColor("", "", "Comp.", prefix); //reset the colour of the attack boxes
-			SetHPTooltip("reset", true);
-			ShowCompanionLayer(prefix);
-			ClearIcons(prefix + "Comp.img.Portrait", true); //reset the appearance image
-	
-			thermoTxt = thermoM("Applying...", false); // Change the progress bar text
-			break;
-		case "add page":
-			DoTemplate("AScomp", "Add");
-			break;
-		case "remove page":
-			DoTemplate("AScomp", "Remove", prefix);
-			break;
-		case "visible":
-			var toShow = eval_ish(What(prefix + "Companion.Layers.Remember"));
-			if (MenuSelection[1].indexOf("comp.img") !== -1) {
-				toShow[0] = force !== undefined ? force : !toShow[0];
-			}
-			if (MenuSelection[1].indexOf("comp.eqp") !== -1) {
-				toShow[1] = force !== undefined ? force : !toShow[1];
-			}
-			Value(prefix + "Companion.Layers.Remember", toShow.toSource());
-			ShowCompanionLayer(prefix);
-			break;
-		case "showcalcs" :
-			var creaCalcStr = StringEvals("creaStr");
-			if (creaCalcStr) ShowDialog("Things Affecting the Companion Automation", creaCalcStr);
-			break;
-		default:
-			if (MenuSelection[0] === "change" && MenuSelection[1] === "reset") {
-				resetCompTypes(prefix);
-			} else {
-				if (MenuSelection[0] !== "change") {
-					IsNotSetCompType = false;
-					Value(prefix + "Comp.Race", MenuSelection[2] ? MenuSelection[2].capitalize() : CreatureList[MenuSelection[1]].name);
-					IsNotSetCompType = true;
-				}
-				var type = MenuSelection[0] !== "change" ? MenuSelection[0] : MenuSelection[1];
-				changeCompType(type, prefix);
-			}
-	}
-	thermoM(thermoTxt, true); // Stop progress bar
-}
-
-//change the creature on the companion page into the chosen form (familiar, mount, or pact of the chain familiar)
-function changeCompType(inputType, prefix) {
-	if (!compString[inputType]) return;
-	inputType = inputType.toLowerCase();
-	var oldType = What(prefix + "Companion.Remember");
-	if (oldType) resetCompTypes(prefix);
-	Value(prefix + "Companion.Remember", inputType); //set this so it can be called upon later
-	// Start progress bar and stop calculations
-	var thermoTxt = thermoM("Changing the companion to a predefined type...");
-	calcStop();
-
-	// a function to add the languages
-	var addCharLangArr = function() {
-		var creaLangs = What(prefix + "Comp.Use.Features").match(/\u25C6 languages:.*/i);
-		if (creaLangs) creaLangs = creaLangs[0].replace(/\.$/, "");
-		var charLanguages = [];
-		for (var i = 1; i <= FieldNumbers.langstools; i++) {
-			var charFld = What("Language " + i);
-			if (charFld && (!creaLangs || creaLangs.toLowerCase().indexOf(charFld.toLowerCase()) === -1)) {
-				charLanguages.push(charFld);
-			};
-		};
-		if ((/mount|steed/i).test(inputType) && charLanguages.length > 1) {
-			charLanguages = [AskUserOptions("Character's language the steed knows", "Find Greater Steed companion", charLanguages, "radio")];
-		};
-		var charLangs = charLanguages.length === 0 ? "" : (creaLangs ? "; and understands, but doesn't speak," : "\u25C6 Languages: Understands, but doesn't speak,");
-		for (var i = 0; i < charLanguages.length; i++) {
-			charLangs += i !== 0 && charLanguages.length > 2 ? ", " : " ";
-			charLangs += i !== 0 && i === charLanguages.length - 1 ? "and " : "";
-			charLangs += charLanguages[i];
-		};
-		if (creaLangs && charLangs) {
-			ReplaceString(prefix + "Comp.Use.Features", creaLangs + charLangs, true, creaLangs, true);
-		} else if (charLangs) {
-			AddString(prefix + "Comp.Use.Features", charLangs + ".", true);
-		};
-	};
-
-	switch (inputType) {
-	 case "familiar" :
-		tDoc.resetForm([prefix + "Comp.Use.Attack"]); // familiars can't make attacks
-	 case "pact_of_the_chain" :
-		Value(prefix + "Comp.Type", "Familiar");
-		if (CurrentCompRace[prefix].type === "Beast") changeCompDialog(prefix); //change the type, but only if just a beast
-		break;
-	 case "companionrr" :
-	 case "companion" :
-		Value(prefix + "Comp.Type", "Companion");
-		break;
-	 case "mount" :
-	 case "steed" :
-		Value(prefix + "Comp.Type", "Mount");
-		changeCompDialog(prefix); // change the type
-
-		//add the new language options to the mount's features
-		addCharLangArr();
-
-		//set the Intelligence to 6 if less than 6
-		var IntFld = prefix + "Comp.Use.Ability.Int.Score";
-		if (What(IntFld) < 6) Value(IntFld, 6);
-		break;
-	 case "mechanicalserv" :
-		Value(prefix + "Comp.Type", "Servant");
-		Value(prefix + "Comp.Desc.MonsterType", "Construct");
-
-		//add the new language options
-		addCharLangArr();
-
-		//add the new poison damage immunity
-		var creaDamI = What(prefix + "Comp.Use.Features").match(/\u25C6 damage immunities:.*/i);
-		if (!creaDamI || !(/poison/i).test(creaDamI)) {
-			var newDamI = (creaDamI ? creaDamI[0].replace(/\.$/, ", ") : "\u25C6 Damage Immunities: ") + "poison.";
-			if (creaDamI) {
-				ReplaceString(prefix + "Comp.Use.Features", newDamI, true, creaDamI[0], true);
-			} else {
-				AddString(prefix + "Comp.Use.Features", newDamI, true);
-			};
-		};
-
-		//add the new poisoned and charmed condition immunity
-		var creaConI = What(prefix + "Comp.Use.Features").match(/\u25C6 condition immunities:.*/i);
-		if (!creaConI) {
-			var newConI = "\u25C6 Condition Immunities: charmed, poisoned.";
-			AddString(prefix + "Comp.Use.Features", newConI, true);
-		} else if (!(/poisoned/i).test(creaConI) || !(/charmed/i).test(creaConI)) {
-			newConI = creaConI[0].replace(/\.$/, ", ");
-			if (!(/charmed/i).test(creaConI)) {
-				newConI += "charmed";
-				var goCo = true;
-			}
-			if (!(/poisoned/i).test(creaConI)) newConI += (goCo ? ", " : "") + "poisoned";
-			newConI += ".";
-			ReplaceString(prefix + "Comp.Use.Features", newConI, true, creaConI[0], true);
-		};
-
-		//add the 60 ft darkvision, if not already there, or upgrade it to 60 ft
-		var creaSens = What(prefix + "Comp.Use.Senses");
-		var newDarkv = What("Unit System") === "metric" ? "Darkvision 18 m" : "Darkvision 60 ft";
-		if (!(/darkvision \d+.?\d*.?(ft|m)/i).test(creaSens)) {
-			AddString(prefix + "Comp.Use.Senses", newDarkv, "; ");
-		} else if (!(/darkvision (60.?ft|18.?m)/i).test(creaSens)) {
-			var darkvis = creaSens.match(/darkvision \d+.?\d*.?(ft|m)/i)[0];
-			if (parseFloat(darkvis.match(/\d+/)[0]) < (What("Unit System") === "metric" ? 18 : 60)) {
-				ReplaceString(prefix + "Comp.Use.Senses", newDarkv, true, darkvis, true);
-			}
-		};
-		break;
-	 default :
-		return; //don't do the rest of this function if inputType doesn't match one of the above
-	};
-
-	//add a string in the creature's feature section
-	AddString(prefix + "Comp.Use.Features", compString[inputType].featurestring, true);
-
-	//make the string for the spell/ability explanation
-	AddString(prefix + "Cnote.Left", compString[inputType].string, true);
-
-	//add any actions this spell/companion gives the character
-	for (var i = 0; i < compString[inputType].actions.length; i++) {
-		AddAction(compString[inputType].actions[i][0], compString[inputType].actions[i][1], compString[inputType].actionTooltip);
-	};
-	thermoM(0.7);
-	//add level-dependent things if this is a ranger's companion
-	if (inputType === "companion") {
-		UpdateRangerCompanions(undefined, prefix);
-	} else if (inputType === "companionrr") {
-		UpdateRevisedRangerCompanions(undefined, prefix);
-		if (IsNotImport) {
-			app.alert({
-				cMsg : toUni("Pick Two Skills") + "\nThe Ranger's Animal Companion that you have just added, gains proficiency with two additional skills as those already selected. Because there is no automation for selecting these proficiencies, please do so manually.\n\n" + toUni("Ability Score Improvements") + "\nThe Ranger's Animal Companion gains Ability Score Improvements whenever your character gains them. There is no automation for adding these either, so please don't forget to increase the ability scores for the animal companion when you get the reminder pop-up. Also, remember that any DCs for abilities that the beast possesses are based on ability scores and that they might need to be manually changed when changing the ability scores.\nThe 'Notes' section on the companion page automatically keeps track of how many points you can increase the ability scores and what the base value of those scores are according to the Monster Manual.",
-				nIcon : 3,
-				cTitle : "Don't forget the Skills and Ability Score Improvements!"
-			});
-		}
-	}
-
-	// Run callback functions, if any are present
-	RunCreatureCallback(prefix, "companion", true);
-
-	thermoM(thermoTxt, true); // Stop progress bar
-};
-
-//change the type of the creature on the companion page to one of either Celestial, Fey, or Fiend
-function changeCompDialog(prefix) {
-	if (!IsNotImport) return;
-	//The dialog for setting the pages to print
-	var theTxt = "A familiar or mount's type changes from beast to either celestial, fey, or fiend. Please select one.";
-	var theDialog = {
-		//variables to be set by the calling function
-		bType : "Celestial",
-
-		//when starting the dialog
-		initialize : function (dialog) {
-		},
-
-		//when pressing the ok button
-		commit : function (dialog) {
-			var oResult = dialog.store();
-			if (oResult["rCel"]) {
-				this.bType = "Celestial";
-			} else if (oResult["rFey"]) {
-				this.bType = "Fey";
-			} else if (oResult["rFie"]) {
-				this.bType = "Fiend";
-			}
-		},
-
-		description : {
-			name : "COMPANION TYPE DIALOG",
-			elements : [{
-				type : "view",
-				elements : [{
-					type : "static_text",
-					item_id : "head",
-					alignment : "align_fill",
-					font : "heading",
-					bold : true,
-					height : 21,
-					char_width : 30,
-					name : "Choose the type of your familiar/mount"
-				}, {
-					type : "static_text",
-					item_id : "txt0",
-					wrap_name : true,
-					alignment : "align_fill",
-					font : "dialog",
-					char_width : 30,
-					name : theTxt
-				}, {
-					type : "cluster",
-					align_children : "align_distribute",
-					elements : [{
-						type : "radio",
-						item_id : "rCel",
-						group_id : "Type",
-						name : "Celestial"
-					}, {
-						type : "radio",
-						item_id : "rFey",
-						group_id : "Type",
-						name : "Fey"
-					}, {
-						type : "radio",
-						item_id : "rFie",
-						group_id : "Type",
-						name : "Fiend"
-					}, ]
-				}, {
-					type : "gap",
-					height : 8
-				}, {
-					type : "ok"
-				}, ]
-			}, ]
-		}
-	};
-
-	app.execDialog(theDialog);
-
-	Value(prefix + "Comp.Desc.MonsterType", theDialog.bType);
-}
-
 //update the wild shape header and all the different shapes on the all the wildshape pages
 function WildshapeUpdate(inputArray) {
 	var prefixA = What("Template.extras.WSfront").split(",");
@@ -4162,166 +4021,6 @@ function setLifeStyle(input) {
 	if (isSelection !== -1) Value("Lifestyle daily cost", Lifestyles.expenses[isSelection]);
 }
 
-// update all the level-dependent features for the ranger companions on the companion pages
-function UpdateRangerCompanions(newLvl, aPrefix) {
-	if (ClassList.rangerua && !testSource("rangerua", ClassList.rangerua, "classExcl")) {
-		UpdateRevisedRangerCompanions(newLvl, aPrefix);
-		return;
-	}
-	var thermoTxt;
-
-	var textArray = [
-		"\u2022 " + "If the beast takes the Attack action, I can use my Extra Attack feature to attack once myself", //add at level 5
-		"\u2022 " + "The beast's attacks count as magical for the purpose of overcoming resistances and immunities" + "\n\u2022 " + "As a bonus action, I can command the beast to take the Dash/Disengage/Help action on its turn", //add at level 7
-		"\u2022 " + "The beast can make two attacks (or multiattack) when I command it to take an Attack action", //add at level 11
-		"\u2022 " + "When I cast a spell on myself, I can have it also affect the beast if it is within 30 ft of me", //add at level 15
-	]
-
-	var theText = function (input) {
-		var toReturn = "If I don't command it to take an action, it takes the Dodge action instead";
-		if (input >= 5) {
-			toReturn += "\n" + textArray[0];
-		}
-		if (input >= 7) {
-			toReturn += "\n" + textArray[1];
-		}
-		if (input >= 11) {
-			toReturn += "\n" + textArray[2];
-		}
-		if (input >= 15) {
-			toReturn += "\n" + textArray[3];
-		}
-		return toReturn;
-	}
-
-	newLvl = newLvl !== undefined ? newLvl : classes.totallevel;
-	var deleteIt = newLvl === 0;
-	var newComp = !deleteIt && aPrefix;
-
-	var newLvlProfB = newLvl ? ProficiencyBonusList[Math.min(newLvl, ProficiencyBonusList.length) - 1] : 0;
-	var RangerLvl = deleteIt || (!classes.known.ranger && !classes.known["spell-less ranger"]) ? newLvl : (classes.known.ranger ? classes.known.ranger.level : 0) + (classes.known["spell-less ranger"] ? classes.known["spell-less ranger"].level : 0);
-	var newLvlText = theText(RangerLvl);
-	var AScompA = aPrefix ? [aPrefix] : What("Template.extras.AScomp").split(",").splice(1);
-
-	for (var i = 0; i < AScompA.length; i++) {
-		var prefix = AScompA[i];
-		if (What(prefix + "Companion.Remember") === "companion") { //only do something if the creature is set to "companion"
-
-			if (!thermoTxt) { // Start progress bar and stop calculations
-				thermoTxt = thermoM("Updating Ranger's Companion(s)...");
-				calcStop();
-			}
-
-			thermoM((i+2)/(AScompA.length+2)); //increment the progress dialog's progress
-
-			var thisCrea = CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound === "creature" ? CurrentCompRace[prefix] : false;
-			//first look into adding the proficiency bonus to AC, attacks, proficiencies
-			var remLvl = Who(prefix + "Companion.Remember").split(",");
-			var oldLvl = Number(remLvl[0]);
-			var RangerLvlOld = remLvl[1] !== undefined ? Number(remLvl[1]) : 0;
-			var oldLvlProfB = oldLvl ? ProficiencyBonusList[Math.min(oldLvl, ProficiencyBonusList.length) - 1] : 0;
-			var BlueTextArrayAdd = [];
-			var BlueTextArrayRemove = [];
-
-			//add saving throw proficiencies
-			for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
-				var theSave = prefix + "Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".ST.Prof";
-				var theSaveBT = prefix + "BlueText.Comp.Use.Ability." + AbilityScores.abbreviations[a] + ".ST.Bonus";
-				var hasProfAdded = What(theSaveBT).indexOf("oProf") !== -1;
-				if (!deleteIt && !hasProfAdded && tDoc.getField(theSave).isBoxChecked(0) === 1) {
-					BlueTextArrayAdd.push(theSaveBT);
-				} else if ((deleteIt || tDoc.getField(theSave).isBoxChecked(0) === 0) && hasProfAdded) {
-					BlueTextArrayRemove.push(theSaveBT);
-				};
-			};
-
-			//add skill proficiencies
-			for (var s = 0; s < (SkillsList.abbreviations.length - 2); s++) {
-				var theSkill = prefix + (typePF ? "" : "Text.") + "Comp.Use.Skills." + SkillsList.abbreviations[s] + ".Prof";
-				var isProf = typePF ? tDoc.getField(theSkill).isBoxChecked(0) : What(theSkill) !== "nothing";
-				var theSkillBT = prefix + "BlueText.Comp.Use.Skills." + SkillsList.abbreviations[s] + ".Bonus";
-				hasProfAdded = What(theSkillBT).indexOf("oProf") !== -1;
-				if (!deleteIt && !hasProfAdded && isProf) {
-					BlueTextArrayAdd.push(theSkillBT);
-				} else if ((deleteIt || !isProf) && hasProfAdded) {
-					BlueTextArrayRemove.push(theSkillBT);
-				};
-			};
-
-			//add attacks damage and to hit bonus fields, as well as count as magical to description
-			for (var A = 1; A <= 3; A++) {
-				if (What(prefix + "Comp.Use.Attack." + A + ".Weapon Selection")) {
-					var weaHit = prefix + "BlueText.Comp.Use.Attack." + A + ".To Hit Bonus";
-					hasProfAdded = What(weaHit).indexOf("oProf") !== -1;
-					if (!deleteIt && !hasProfAdded) {
-						BlueTextArrayAdd.push(weaHit);
-					} else if (deleteIt && hasProfAdded) {
-						BlueTextArrayRemove.push(weaHit);
-					};
-					var weaDmg = prefix + "BlueText.Comp.Use.Attack." + A + ".Damage Bonus";
-					hasProfAdded = What(weaDmg).indexOf("oProf") !== -1;
-					if (!deleteIt && !hasProfAdded) {
-						BlueTextArrayAdd.push(weaDmg);
-					} else if (deleteIt && hasProfAdded) {
-						BlueTextArrayRemove.push(weaDmg);
-					};
-					var weaDescr = prefix + "Comp.Use.Attack." + A + ".Description";
-					var weaDescrStr = What(weaDescr);
-					var countMagic = (/(,|;)? ?counts as magical/i).test(weaDescrStr);
-					if (newLvl >= 7 && oldLvl < 7 && !countMagic) {
-						AddString(weaDescr, "Counts as magical", "; ");
-					} else if (newLvl < 7 && oldLvl >= 7 && countMagic) {
-						Value(weaDescr, weaDescrStr.replace(/(,|;)? ?counts as magical/i, ''));
-					}
-				};
-			};
-
-			//add AC (only when adding/removing)
-			if (newComp) {
-				BlueTextArrayAdd.push(prefix + "Comp.Use.AC");
-			} else if (deleteIt) {
-				BlueTextArrayRemove.push(prefix + "Comp.Use.AC");
-			}
-
-			var NameEntity = "Ranger's Companion";
-			var Explanation = "A ranger's companion adds its master's proficiency bonus (oProf) to its AC, all skills and saving throws it is proficient with, and the to hit and damage of its attacks.";
-			for (var f = 0; f < BlueTextArrayAdd.length; f++) {
-				AddToModFld(BlueTextArrayAdd[f], "oProf", false, NameEntity, Explanation);
-			};
-			for (var f = 0; f < BlueTextArrayRemove.length; f++) {
-				AddToModFld(BlueTextArrayRemove[f], "oProf", true, NameEntity, Explanation);
-			};
-
-			// Change HP calculation only when creating for the first time or when removing
-			if (deleteIt || newComp) {
-				addCompEvals(compString.companion.calcChanges, prefix, NameEntity + " hit points calculation", newComp);
-				if (thisCrea && deleteIt) Value(prefix + "Comp.Use.HP.Max", thisCrea.hp);
-			}
-
-			//then look into the attacks per action
-			if (thisCrea && deleteIt) {
-				Value(prefix + "Comp.Use.Attack.perAction", thisCrea.attacksAction);
-			} else {
-				Value(prefix + "Comp.Use.Attack.perAction", newLvl >= 11 ? 2 : 1);
-			}
-
-			//then look into the string in the notes field
-			if (deleteIt) {
-				for (var t = 0; t < textArray.length; t++) {
-					RemoveString(prefix + "Cnote.Left", textArray[t]);
-				};
-			} else {
-				var oldLvlText = theText(RangerLvlOld);
-				ReplaceString(prefix + "Cnote.Left", newLvlText, false, oldLvlText);
-			};
-
-			//set the new level to the tooltip text of the remember field for later use
-			if (!deleteIt) AddTooltip(prefix + "Companion.Remember", newLvl + "," + RangerLvl);
-		}
-	}
-	if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
-}
-
 // Give the total HP (average, fixed, max) for the main character (prefix == "") or a companion page
 function calcHPtotals(prefix) {
 	var conFld = prefix ? prefix + "Comp.Use.Ability.Con.Score" : "Con";
@@ -4952,10 +4651,10 @@ function ChangeToCompleteAdvLogSheet(FAQpath) {
 
 	//move the pages that we want to extract to a new instance, by running code from a console
 	var forConsole = [
-		"Execute the following:\nFirst:",
+		"Execute the following:\n\tFirst:",
 		"tDoc.extractPages({nStart: 0, nEnd: 3});",
-		"\nAnd in the newly created document:",
-		"var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsClasses', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsMagicItems', 'ListsPsionics', 'ListsRaces', 'ListsSources', 'ListsSpells'];",
+		"\n\tAnd in the newly created document:",
+		"var toDelScripts = ['AbilityScores', 'ClassSelection', 'ListsBackgrounds', 'ListsClasses', 'ListsCompanions', 'ListsCreatures', 'ListsFeats', 'ListsGear', 'ListsMagicItems', 'ListsPsionics', 'ListsRaces', 'ListsSources', 'ListsSpells'];",
 		"for (var s = 0; s < toDelScripts.length; s++) {this.removeScript(toDelScripts[s]);};",
 		"this.createTemplate({cName:'ALlog', nPage:1 });",
 		"this.createTemplate({cName:'remember', nPage:2 });",
@@ -5030,218 +4729,6 @@ function CreateBkmrksCompleteAdvLogSheet() {
 		}
 	};
 	createBookmarks(tDoc.bookmarkRoot, bkmrks);
-}
-
-// update all the level-dependent features for the UA's revised ranger companions on the companion pages
-function UpdateRevisedRangerCompanions(newLvl, aPrefix) {
-	var thermoTxt, isMetric = What("Unit System") === "metric";
-
-	var notesArray = [
-		"\u2022 " + "When I take the Attack action, my companion can use its reaction to make one melee attack", //add at level 5
-		"\u2022 " + "While my companion can see me, it has advantage on all saving throws", //add at level 7
-		"\u2022 " + "My companion can, as an action, make a melee attack vs. all creatures within 5 ft of it", //add at level 11
-		"\u2022 " + "My companion can, as a reaction, halve the damage of an attack from an attacker that it sees", //add at level 15
-	];
-
-	var theText = function (input) {
-		var toReturn = "My companion gains a bonus on damage rolls against my favored enemies just like me";
-		if (input >= 5) {
-			toReturn += "\n" + notesArray[0];
-		}
-		if (input >= 7) {
-			toReturn += "\n" + notesArray[1];
-		}
-		if (input >= 11) {
-			toReturn += "\n" + notesArray[2];
-		}
-		if (input >= 15) {
-			toReturn += "\n" + notesArray[3];
-		}
-		return isMetric ? ConvertToMetric(toReturn, 0.5) : toReturn;
-	}
-
-	var featuresArray = [
-		"\u25C6 " + "Coordinated Attack: " + "As a reaction when the ranger owner takes the attack action, the companion can make one melee attack.", //add at level 5
-		"\u25C6 " + "Beast's Defense: " + "While the ranger owner is within eyeshot, the companion has advantage on all saving throws.", //add at level 7
-		"\u25C6 " + "Storm of Claws and Fangs: " + "As an action, the companion can make a melee attack against each creature that is within 5 ft.", //add at level 11
-		"\u25C6 " + "Superior Beast's Defense: " + "As a reaction, the companion can halve the damage of an attack from an attacker that it can see.", //add at level 15
-	];
-
-	var theFeature = function (input) {
-		var toReturn = "";
-		if (input >= 5) {
-			toReturn += featuresArray[0];
-		}
-		if (input >= 7) {
-			toReturn += "\n" + featuresArray[1];
-		}
-		if (input >= 11) {
-			toReturn += "\n" + featuresArray[2];
-		}
-		if (input >= 15) {
-			toReturn += "\n" + featuresArray[3];
-		}
-		return isMetric ? ConvertToMetric(toReturn, 0.5) : toReturn;
-	}
-
-	var ASIs = 0;
-	for (var aClass in classes.known) {
-		var classLvL = Math.min(CurrentClasses[aClass].improvements.length, classes.known[aClass].level);
-		ASIs += 2 * CurrentClasses[aClass].improvements[classLvL - 1];
-	}
-	var ASIstring = function (aCreat) {
-		var toReturn = "whenever I gain an ASI\r   Currently, there are " + ASIs + " points ";
-		toReturn += aCreat && aCreat.scores ? "(default: " + aCreat.scores[0] + " Str, " + aCreat.scores[1] + " Dex, " + aCreat.scores[2] + " Con, " + aCreat.scores[3] + " Int, " + aCreat.scores[4] + " Wis, " + aCreat.scores[5] + " Cha)" : "to divide among the ability scores";
-		return toReturn;
-	}
-
-	newLvl = newLvl !== undefined ? newLvl : classes.totallevel;
-	var deleteIt = newLvl === 0;
-	var newComp = !deleteIt && aPrefix;
-
-	var newLvlProfB = newLvl ? ProficiencyBonusList[Math.min(newLvl, ProficiencyBonusList.length) - 1] : 0;
-	var RangerLvl = deleteIt || !classes.known.rangerua ? newLvl : classes.known.rangerua.level;
-	var newLvlText = theText(RangerLvl);
-	var newLvlFea = theFeature(RangerLvl);
-	var AScompA = aPrefix ? [aPrefix] : What("Template.extras.AScomp").split(",").splice(1);
-
-	for (var i = 0; i < AScompA.length; i++) {
-		var prefix = AScompA[i];
-		if (What(prefix + "Companion.Remember") === "companionrr") { //only do something if the creature is set to "companionrr"
-
-			if (!thermoTxt) { // Start progress bar and stop calculations
-				thermoTxt = thermoM("Updating Revised Ranger's Companion(s)...");
-				calcStop();
-			}
-
-			thermoM((i+2)/(AScompA.length+2)); //increment the progress dialog's progress
-
-			var thisCrea = CurrentCompRace[prefix] && CurrentCompRace[prefix].typeFound === "creature" ? CurrentCompRace[prefix] : false;
-
-			//first update the proficiency bonus
-			Value(prefix + "Comp.Use.Proficiency Bonus", !deleteIt || (thisCrea && thisCrea.proficiencyBonusLinked) ? newLvlProfB : thisCrea ? thisCrea.proficiencyBonus : "");
-
-			//now look into adding the proficiency bonus to attack damage and removing multiattacks
-			var remLvl = Who(prefix + "Companion.Remember").split(",");
-			var oldLvl = Number(remLvl[0]);
-			var RangerLvlOld = remLvl[1] !== undefined ? Number(remLvl[1]) : 0;
-			var oldLvlProfB = oldLvl ? ProficiencyBonusList[Math.min(oldLvl, ProficiencyBonusList.length) - 1] : 0;
-			var diff = newLvlProfB - oldLvlProfB;
-
-			//add ranger's prof to attacks damage fields
-			var NameEntity = "Revised Ranger's Companion";
-			var Explanation = "The Revised Ranger's Companion adds the ranger's proficiency bonus (oProf) to the damage of its attacks.";
-			for (var A = 1; A <= 3; A++) {
-				if (What(prefix + "Comp.Use.Attack." + A + ".Weapon Selection")) {
-					var weaFldDmg = prefix + "BlueText.Comp.Use.Attack." + A + ".Damage Bonus";
-					var hasProfAdded = What(weaFldDmg).indexOf("oProf") !== -1;
-					if (!deleteIt) {
-						ReplaceString(prefix + "Comp.Use.Attack." + A + ".Description", "", false, "(((One|Two).+as an Attack action)|(2 per Attack));? ?", true);
-						if (!hasProfAdded) AddToModFld(weaFldDmg, "oProf", false, NameEntity, Explanation);
-					} else if (deleteIt && hasProfAdded) {
-						AddToModFld(weaFldDmg, "oProf", true, NameEntity, Explanation);
-					};
-				};
-			};
-
-			//add the HD
-			var theCompSetting = How(prefix + "Comp.Use.HP.Max").split(",");
-			theCompSetting[3] = deleteIt ? "nothing" : "fixed";
-			if (thisCrea && deleteIt) {
-				Value(prefix + "Comp.Use.HD.Level", thisCrea.hd[0]);
-				Value(prefix + "Comp.Use.HP.Max", thisCrea.hp, undefined, theCompSetting.join());
-			} else if (thisCrea) {
-				Value(prefix + "Comp.Use.HD.Level", thisCrea.hd[0] + RangerLvl - 3, undefined, theCompSetting.join());
-				AddTooltip(prefix + "Comp.Use.HP.Max", undefined, theCompSetting.join());
-			} else if (What(prefix + "Comp.Use.HD.Level")) {
-				var HDincr = oldLvl === 0 ? RangerLvl - 3 : RangerLvl - oldLvl;
-				Value(prefix + "Comp.Use.HD.Level", What(prefix + "Comp.Use.HD.Level") + HDincr, undefined, theCompSetting.join());
-				AddTooltip(prefix + "Comp.Use.HP.Max", undefined, theCompSetting.join());
-			}
-
-			//add the alignment
-			if (thisCrea && deleteIt) {
-				Value(prefix + "Comp.Desc.Alignment", thisCrea.alignment);
-			} else {
-				var theAL = tDoc.getField("Alignment").currentValueIndices;
-				if (theAL !== -1) {
-					PickDropdown(prefix + "Comp.Desc.Alignment", theAL);
-				} else {
-					Value(prefix + "Comp.Desc.Alignment", What("Alignment"));
-				}
-			}
-
-			//add saving throw proficiencies
-			for (var s = 0; s < 6; s++) {
-				var saveFld = prefix + "Comp.Use.Ability." + AbilityScores.abbreviations[s] + ".ST";
-				var creaSave = thisCrea && thisCrea.saves && isArray(thisCrea.saves) && thisCrea.saves[s] !== undefined ? thisCrea.saves[s] : "";
-				if (deleteIt && thisCrea && creaSave !== "") {
-					Checkbox(saveFld + ".Prof"); //set the save as proficient
-				} else if (deleteIt) {
-					Checkbox(saveFld + ".Prof", false); //set the save as not proficient
-				} else {
-					Checkbox(saveFld + ".Prof"); //set the save as proficient
-				}
-			}
-
-			//then set/remove the AC bonus (only at first time)
-			if (deleteIt || newComp) {
-				AddToModFld(prefix + "Comp.Use.AC", "oProf", newComp, "Ranger's Companion", "A ranger's companion adds its master's proficiency bonus to its AC.");
-			}
-
-			//then look into the attacks per action
-			if (thisCrea && deleteIt) {
-				Value(prefix + "Comp.Use.Attack.perAction", thisCrea.attacksAction);
-			} else {
-				Value(prefix + "Comp.Use.Attack.perAction", 1);
-			}
-
-			//remove the old ASI line (if any)
-			var ASIregex = /whenever I gain an ASI\r.*Currently.+(scores|Cha\))/;
-			if ((ASIregex).test(What(prefix + "Cnote.Left"))) {
-				ReplaceString(prefix + "Cnote.Left", "whenever I gain an ASI", false, "whenever I gain an ASI\\r.*Currently.+(scores|Cha\\))", true);
-			}
-
-			//then look into the string in the notes and feature fields
-			if (deleteIt) {
-				for (var t = 0; t < notesArray.length; t++) {
-					RemoveString(prefix + "Cnote.Left", isMetric ? ConvertToMetric(notesArray[t], 0.5) : notesArray[t]);
-				}
-				for (var t = 0; t < featuresArray.length; t++) {
-					RemoveString(prefix + "Comp.Use.Features", isMetric ? ConvertToMetric(featuresArray[t], 0.5) : featuresArray[t]);
-				}
-				RemoveString(prefix + "Cnote.Left", compString.companionrr.string);
-			} else {
-				var oldLvlText = theText(RangerLvlOld);
-				ReplaceString(prefix + "Cnote.Left", newLvlText, false, oldLvlText);
-				var oldLvlFea = theFeature(RangerLvlOld);
-				ReplaceString(prefix + "Comp.Use.Features", newLvlFea, false, oldLvlFea);
-				var creaASI = ASIstring(thisCrea);
-				ReplaceString(prefix + "Cnote.Left", creaASI, false, "whenever I gain an ASI");
-
-				//remove any multiattack trait
-				ReplaceString(prefix + "Comp.Use.Traits", "", false, "\u25C6 Multiattack: .+(\r|$)", true);
-			}
-
-			if (!deleteIt) {
-				//set the new level to the tooltip text of the remember field for later use
-				AddTooltip(prefix + "Companion.Remember", newLvl + "," + RangerLvl + ",");
-			} else if (thisCrea && thisCrea.traits) {
-				//bring back the multiattack trait, if applicable
-				for (var t = 0; t < thisCrea.traits.length; t++) {
-					var tName = thisCrea.traits[t].name;
-					if ((/multiattack/i).test(tName)) {
-						var traitString = "\u25C6 " + tName + ": " + thisCrea.traits[t].description;
-						AddString(prefix + "Comp.Use.Traits", traitString, true);
-					}
-				}
-			}
-		}
-	}
-	if (thermoTxt) {
-		SetHPTooltip(false, true);
-		thermoM(thermoTxt, true); // Stop progress bar
-	}
 }
 
 //a function to change the sorting of the skills
@@ -5460,11 +4947,6 @@ function setListsUnitSystem(isMetric, onStart) {
 	isMetric = isMetric ? isMetric === "metric" : What("Unit System") === "metric";
 	if (onStart && !isMetric) return; //nothing to do on startup and the unit system is not metric
 	var conStr = !onStart && wasMetric === isMetric ? "UpdateDecimals" : (isMetric ? "ConvertToMetric" : "ConvertToImperial");
-
-	for (var cType in compString) {
-		var cString = compString[cType].string
-		if (compString[cType].string) compString[cType].string = tDoc[conStr](compString[cType].string, 0.5);
-	};
 }
 
 // automatically add a new entry on the Adventurers Logsheet with the sheets current values
@@ -6424,7 +5906,7 @@ function CalcAttackDmgHit(fldName) {
 			var evalThing = CurrentEvals.spellCalc[evalName];
 			if (!evalThing || typeof evalThing !== 'function') continue;
 			try {
-				var addSpellNo = evalThing(spTypeFull, spCasters, abiScoreNo);
+				var addSpellNo = evalThing(spTypeFull, spCasters, abiScoreNo, thisWeapon[3]);
 				if (!isNaN(addSpellNo)) output.extraHit += Number(addSpellNo);
 			} catch (error) {
 				var eText = "The custom spell attack/DC (spellCalc) script '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
@@ -7669,12 +7151,12 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 	}; break;
 	case "savetxt" : { // text to be put in the "Saving Throw advantages / disadvantages" field
 		var fld = "Saving Throw advantages / disadvantages";
+		var rxCond = /.*?(\s?\((.*?)\)).*/i;
 		//create the set object if it doesn't exist already
-		var setKeys = function() {
-			for (var e in set) {return true;};
+		if ( !ObjLength(set) ) {
 			CurrentProfs.savetxt = { text : {}, immune : {}, adv_vs : {} };
 			set = CurrentProfs.savetxt;
-		}();
+		};
 		//put the input into a form we can use
 		if (typeof ProfObj == "string") ProfObj = { text : [ProfObj] };
 		for (var st in ProfObj) {
@@ -7687,22 +7169,23 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		//a functino to parse the 'immune' and 'adv_vs' parts into a usable string
 		var preTxt = {adv_vs : "Adv. on saves vs.", immune : "Immune to"};
 		var parseSvTxt = function() {
-			var adv_vsArr = [], immuneArr = [];
-			for (var svAdv in set.adv_vs) {
-				if (!set.immune[svAdv]) adv_vsArr.push(set.adv_vs[svAdv].name);
+			var sUseName = metric ? "nameMetric" : "name";
+			var oTypes = { adv_vs : [], immune : [] };
+			for (var sType in oTypes) {
+				for (var sThing in set[sType]) {
+					var obj = set[sType][sThing];
+					var sBase = obj.condition ? obj.conditionBase : sThing;
+					if ( (sType === "adv_vs" && set.immune[sBase]) || (obj.condition && set[sType][sBase])) continue;
+					oTypes[sType].push(obj[sUseName]);
+				}
+				oTypes[sType].sort();
+			}
+			return {
+				adv_vs : formatLineList(preTxt.adv_vs, oTypes.adv_vs),
+				adv_vsA : oTypes.adv_vs,
+				immune : formatLineList(preTxt.immune, oTypes.immune),
+				immuneA : oTypes.immune
 			};
-			for (var svImm in set.immune) {
-				immuneArr.push(set.immune[svImm].name);
-			};
-			adv_vsArr.sort();
-			immuneArr.sort();
-			var theRe = {
-				adv_vs : formatLineList(preTxt.adv_vs, adv_vsArr),
-				adv_vsA : adv_vsArr,
-				immune : formatLineList(preTxt.immune, immuneArr),
-				immuneA : immuneArr
-			};
-			return theRe;
 		};
 		//create an object of the current state
 		var oldSvTxt = parseSvTxt();
@@ -7721,6 +7204,11 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 							nameMetric : iAddM,
 							src : [ProfSrc]
 						};
+						var aMatchCond = iAddLC.match(rxCond);
+						if (aMatchCond) {
+							setT[iAddLC].condition = aMatchCond[2];
+							setT[iAddLC].conditionBase = iAddLC.replace(aMatchCond[1], "");
+						}
 						if (attr === "text") {
 							AddString(fld, metric ? iAdd : iAddM, "; ");
 						} else if (attr === "immune" && CurrentProfs.resistance[iAddLC]) {

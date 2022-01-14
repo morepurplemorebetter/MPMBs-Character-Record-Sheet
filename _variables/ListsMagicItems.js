@@ -1715,9 +1715,8 @@ var Base_MagicItemsList = {
 		magicItemTable : "B",
 		description : "As an action, I can sprinkle a pinch of dust over water, turning a 15-ft cube into a floating, marble-sized pellet. As an action, someone can smash the pellet against a hard surface, destroying it and releasing the absorbed water. A pinch of dust does 10d6 necrotic damage to a water elemental, Con save DC 13 halves.",
 		descriptionFull : "This small packet contains 1d6+4 pinches of dust. You can use an action to sprinkle a pinch of it over water. The dust turns a cube of water 15 feet on a side into one marble-sized pellet, which floats or rests near where the dust was sprinkled. The pellet's weight is negligible.\n   Someone can use an action to smash the pellet against a hard surface, causing the pellet to shatter and release the water the dust absorbed. Doing so ends that pellet's magic.\n   An elemental composed mostly of water that is exposed to a pinch of the dust must make a DC 13 Constitution saving throw, taking 10d6 necrotic damage on a failed save, or half as much damage on a successful one.",
-		usages : 10,
-		recovery : "Never",
-		additional : "1d6+4 pinches"
+		usages : "1d6+4",
+		recovery : "Never"
 	},
 	"dust of sneezing and choking" : {
 		name : "Dust of Sneezing and Choking",
@@ -2636,7 +2635,7 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "very rare",
 		magicItemTable : "D",
-		description : "While all four shoes are affixed to the hooves of a creature, they allow it to move normally while floating 4 inches above the floor. the creature can cross or stand above liquid or unstable surfaces, leaves no tracks, ignores difficult terrain, and doesn't suffer exhaustion from moving at normal speed for 12 hours a day.",
+		description : "While all four shoes are affixed to the hooves of a creature, they allow it to move normally while floating 4 inches above the floor. The creature leaves no tracks, can cross or stand above liquid or unstable surfaces, ignores difficult terrain, and doesn't suffer exhaustion from moving at normal speed for 12 hours a day.",
 		descriptionFull : "These iron horseshoes come in a set of four. While all four shoes are affixed to the hooves of a horse or similar creature, they allow the creature to move normally while floating 4 inches above the ground. This effect means the creature can cross or stand above nonsolid or unstable surfaces, such as water or lava. The creature leaves no tracks and ignores difficult terrain. In addition, the creature can move at normal speed for up to 12 hours a day without suffering exhaustion from a forced march."
 	},
 	"horseshoes of speed" : {
@@ -4148,7 +4147,7 @@ var Base_MagicItemsList = {
 		description : "While I wear this ring, difficult terrain doesn't cost me extra movement. In addition, magic can neither reduce my speed nor cause me to be paralyzed or restrained.",
 		descriptionFull : "While you wear this ring, difficult terrain doesn't cost you extra movement. In addition, magic can neither reduce your speed nor cause you to be paralyzed or restrained.",
 		attunement : true,
-		savetxt : { immune : ["paralyzed", "restrained"] }
+		savetxt : { immune : ["paralyzed (by magic)", "restrained (by magic)"] }
 	},
 	"ring of invisibility" : {
 		name : "Ring of Invisibility",
@@ -4406,7 +4405,7 @@ var Base_MagicItemsList = {
 		description : "While wearing this ring, I have advantage on saves against any spell that targets only me (not in an area of effect). In addition, if I roll a 20 for the save and the spell is 7th level or lower, the spell has no effect on me and instead targets the caster as if the caster had effectively targeted itself.",
 		descriptionFull : "While wearing this ring, you have advantage on saving throws against any spell that targets only you (not in an area of effect). In addition, if you roll a 20 for the save and the spell is 7th level or lower, the spell has no effect on you and instead targets the caster, using the slot level, spell save DC, attack bonus, and spellcasting ability of the caster.",
 		attunement : true,
-		savetxt : { adv_vs : ["spells targeting only me"] }
+		savetxt : { adv_vs : ["spells (targeting only me)"] }
 	},
 	"ring of swimming" : {
 		name : "Ring of Swimming",
@@ -6332,7 +6331,7 @@ var Base_MagicItemsList = {
 	},
 	"wand of the war mage, +1, +2, or +3" : {
 		name : "Wand of the War Mage, +1, +2, or +3",
-		nameTest : /^(?=.*(enhanced|war mage))(?=.*(arcane focus|rod|wand|staff)).*$/i,
+		nameTest : /^(?=.*war mage)(?=.*(arcane focus|rod|wand|staff)).*$/i,
 		source : [["SRD", 249], ["D", 212]],
 		type : "wand",
 		description : "While I am holding this wand, I gain a bonus to spell attack rolls determined by the wand's rarity: uncommon (+1), rare (+2), or very rare (+3). In addition, I ignore half cover when making a spell attack.",
@@ -6344,7 +6343,7 @@ var Base_MagicItemsList = {
 		choices : ["+1 to spell attacks (uncommon)", "+2 to spell attacks (rare)", "+3 to spell attacks (very rare)"],
 		"+1 to spell attacks (uncommon)" : {
 			name : "Wand of the War Mage +1",
-			nameTest : /^(?=.*(enhanced|war mage))(?=.*(arcane focus|rod|wand|staff))(?=.*\+1)(?!.*\+2)(?!.*\+3).*$/i,
+			nameTest : /^(?=.*war mage)(?=.*(arcane focus|rod|wand|staff))(?=.*\+1)(?!.*\+2)(?!.*\+3).*$/i,
 			rarity : "uncommon",
 			magicItemTable : "F",
 			description : "While I am holding this arcane focus, I gain a +1 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
@@ -6359,7 +6358,7 @@ var Base_MagicItemsList = {
 		},
 		"+2 to spell attacks (rare)" : {
 			name : "Wand of the War Mage +2",
-			nameTest : /^(?=.*(enhanced|war mage))(?=.*(arcane focus|rod|wand|staff))(?!.*\+1)(?=.*\+2)(?!.*\+3).*$/i,
+			nameTest : /^(?=.*war mage)(?=.*(arcane focus|rod|wand|staff))(?!.*\+1)(?=.*\+2)(?!.*\+3).*$/i,
 			rarity : "rare",
 			magicItemTable : "G",
 			description : "While I am holding this arcane focus, I gain a +2 bonus to spell attack rolls and I ignore half cover when making a spell attack.",
@@ -6374,7 +6373,7 @@ var Base_MagicItemsList = {
 		},
 		"+3 to spell attacks (very rare)" : {
 			name : "Wand of the War Mage +3",
-			nameTest : /^(?=.*(enhanced|war mage))(?=.*(arcane focus|rod|wand|staff))(?!.*\+1)(?!.*\+2)(?=.*\+3).*$/i,
+			nameTest : /^(?=.*war mage)(?=.*(arcane focus|rod|wand|staff))(?!.*\+1)(?!.*\+2)(?=.*\+3).*$/i,
 			rarity : "very rare",
 			magicItemTable : "H",
 			description : "While I am holding this arcane focus, I gain a +3 bonus to spell attack rolls and I ignore half cover when making a spell attack.",

@@ -38,7 +38,7 @@
 				If you want attack cantrips or spells to be added to the attack section,
 				use the syntax for adding a weapon (as well), see "weapon (WeaponsList).js".
 
-	Sheet:		v13.0.7 and newer
+	Sheet:		v13.1.0 and newer
 
 */
 
@@ -228,7 +228,7 @@ SpellsList["sindering purple"] = {
 	time : "1 min",
 /*	time // REQUIRED //
 	TYPE:	string
-	USE:	the casting time of the spell
+	USE:	the casting time of the spell as it should appear on the sheet
 
 	The text you add here will be put in the appropriate field on the sheet literally,
 	thus it is important to check that it fits in the field.
@@ -241,6 +241,22 @@ SpellsList["sindering purple"] = {
 		1 rea			1 reaction
 		min				minute(s)
 		h				hours(s)
+*/
+	timeFull : "1 reaction, which you take when you see a creature within 60 feet of you casting a spell",
+/*	timeFull // OPTIONAL //
+	TYPE:	string
+	USE:	the casting time of the spell as should appear in the spell's full description
+	ADDED:	v13.1.0
+
+	The text you add here will only be used in the tooltip and dialogs where the spell's
+	full description is shown.
+
+	This entry is only needed if the casting time doesn't follow any of the standard rules.
+	The sheet can automatically extrapolate the casting time from the abbreviation used in the `time`
+	attribute.
+
+	In the official spells, this `timeFull` attribute is only used for the spells with a casting time
+	of 1 reaction, as those have extra explanatory text.
 */
 	range : "60 ft",
 /*	range // REQUIRED //

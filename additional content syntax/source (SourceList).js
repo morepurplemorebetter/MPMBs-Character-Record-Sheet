@@ -37,7 +37,7 @@
 	Remarks:	The object name of a source is used for almost everything that you can import into the sheet.
 				A tip is to invoke a new source object at the start of an import script to make sure it is available for whatever you are adding.
 
-	Sheet:		v13.0.6 and newer
+	Sheet:		v13.1.0 and newer
 */
 
 var iFileName = "Homebrew Syntax - SourceList.js";
@@ -100,7 +100,7 @@ SourceList["BoP"] = {
 	The full name will only be used in tooltips and dialogs, so make it as long as you want.
 */
 	abbreviation : "BoP",
-/*	name // REQUIRED //
+/*	abbreviation // REQUIRED //
 	TYPE:	string
 	USE:	abbreviation of the source as it will be used by the sheet
 
@@ -108,6 +108,24 @@ SourceList["BoP"] = {
 
 	This is a greatly shortened name of the source.
 	The abbreviation will be used extensively throughout the sheets, so be sure to make it easily recognizable.
+*/
+	abbreviationSpellsheet : "P",
+/*	abbreviationSpellsheet // OPTIONAL //
+	TYPE:	string
+	USE:	abbreviation of the source as it will be used on the spell sheet pages in the "B" column
+	ADDED:	v13.0.1
+
+	The spell sheet pages have very limited space for the abbreviations so this is a separate attribute.
+	It is recommended to keep this abbreviation to just a single character.
+
+	Two characters might fit, depending on the character. For example, the "M" and "W" are wider
+	in most fonts than other letter.
+	If you are using more than one character, be sure to try the abbreviation on the sheet,
+	or else the text might overflow the field, resulting in a [+] sign that will obscure the whole field.
+
+	If this attribute is not present, the sheet will default to the first letter of the object name
+	(not the `abbreviation` attribute).
+	For example, for the above `SourceList["BoP"]`, the sheet will put a "B" on the spell sheet page.
 */
 	date : "2019/02/26",
 /*	date // OPTIONAL //

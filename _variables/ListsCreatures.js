@@ -313,6 +313,10 @@ var Base_CreatureList = {
 			range : "Melee (5 ft)",
 			description : "One claws and one beak attack as an Attack action"
 		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The griffon makes two attacks: one with its beak and one with its claws."
+		}],
 		traits : [{
 			name : "Keen Sight",
 			description : "The griffon has advantage on Wisdom (Perception) checks that rely on sight."
@@ -349,6 +353,10 @@ var Base_CreatureList = {
 			damage : [2, 6, "slashing"],
 			range : "Melee (5 ft)",
 			description : "One claws and one beak attack as an Attack action"
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The hippogriff makes two attacks: one with its beak and one with its claws."
 		}],
 		traits : [{
 			name : "Keen Sight",
@@ -423,6 +431,10 @@ var Base_CreatureList = {
 			damage : [2, 8, "slashing"],
 			range : "Melee (5 ft)",
 			description : "One claws and one beak attack as an Attack action"
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The owlbear makes two attacks: one with its beak and one with its claws."
 		}],
 		traits : [{
 			name : "Keen Sight and Smell",
@@ -1575,7 +1587,6 @@ var Base_CreatureList = {
 		source : [["SRD", 366], ["M", 317]],
 		size : 3, //Medium
 		type : "Beast",
-		companion : "companion",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 19,
@@ -1603,6 +1614,10 @@ var Base_CreatureList = {
 			damage : [1, 6, "bludgeoning"],
 			range : "25/50 ft",
 			description : "One rock attack as an Attack action"
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The ape makes two fist attacks."
 		}]
 	},
 	"axe beak" : {
@@ -1725,7 +1740,6 @@ var Base_CreatureList = {
 		source : [["SRD", 367], ["M", 318]],
 		size : 3, //Medium
 		type : "Beast",
-		companion : "companion",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 19,
@@ -1745,13 +1759,17 @@ var Base_CreatureList = {
 			ability : 1,
 			damage : [1, 6, "piercing"],
 			range : "Melee (5 ft)",
-			description : "One bite and one claw attack as an Attack action"
+			description : "One bite and one claws attack as an Attack action"
 		}, {
-			name : "Claw",
+			name : "Claws",
 			ability : 1,
 			damage : [2, 4, "slashing"],
 			range : "Melee (5 ft)",
-			description : "One claw and one bite attack as an Attack action"
+			description : "One claws and one bite attack as an Attack action"
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The bear makes two attacks: one with its bite and one with its claws."
 		}],
 		traits : [{
 			name : "Keen Smell",
@@ -1834,7 +1852,6 @@ var Base_CreatureList = {
 		source : [["SRD", 368], ["M", 319]],
 		size : 3, //Medium
 		type : "Beast",
-		companion : "companion",
 		alignment : "Unaligned",
 		ac : 11,
 		hp : 11,
@@ -1886,13 +1903,17 @@ var Base_CreatureList = {
 			ability : 1,
 			damage : [1, 8, "piercing"],
 			range : "Melee (5 ft)",
-			description : "One bite and one claw attack as an Attack action"
+			description : "One bite and one claws attack as an Attack action"
 		}, {
-			name : "Claw",
+			name : "Claws",
 			ability : 1,
 			damage : [2, 6, "slashing"],
 			range : "Melee (5 ft)",
-			description : "One claw and one bite attack as an Attack action"
+			description : "One claws and one bite attack as an Attack action"
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The bear makes two attacks: one with its bite and one with its claws."
 		}],
 		traits : [{
 			name : "Keen Smell",
@@ -1985,13 +2006,17 @@ var Base_CreatureList = {
 			ability : 1,
 			damage : [1, 8, "piercing"],
 			range : "Melee (5 ft)",
-			description : "One bite and one claw attack as an Attack action"
+			description : "One bite and one claws attack as an Attack action"
 		}, {
-			name : "Claw",
+			name : "Claws",
 			ability : 1,
 			damage : [2, 6, "slashing"],
 			range : "Melee (5 ft)",
-			description : "One claw and one bite attack as an Attack action"
+			description : "One claws and one bite attack as an Attack action"
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The bear makes two attacks: one with its bite and one with its claws."
 		}],
 		traits : [{
 			name : "Keen Smell",
@@ -2120,6 +2145,10 @@ var Base_CreatureList = {
 			range : "Melee (5 ft)",
 			description : "Two bite attacks as an Attack action; Target DC 12 Con save or diseased and poisoned",
 			tooltip : "If the target of the death dog's bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 5 (1d10) on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0."
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The dog makes two bite attacks."
 		}],
 		traits : [{
 			name : "Two-Headed",
@@ -2406,6 +2435,10 @@ var Base_CreatureList = {
 			damage : [7, 6, "bludgeoning"],
 			range : "50/100 ft",
 			description : "One rock attack as an Attack action"
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The ape makes two fist attacks."
 		}]
 	},
 	"giant badger" : {
@@ -2413,7 +2446,6 @@ var Base_CreatureList = {
 		source : [["SRD", 373], ["M", 323]],
 		size : 3, //Medium
 		type : "Beast",
-		companion : "companion",
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 13,
@@ -2437,6 +2469,10 @@ var Base_CreatureList = {
 			damage : [2, 4, "slashing"],
 			range : "Melee (5 ft)",
 			description : "One claws and one bite attack as an Attack action"
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The badger makes two attacks: one with its bite and one with its claws."
 		}],
 		traits : [{
 			name : "Keen Smell",
@@ -2669,6 +2705,10 @@ var Base_CreatureList = {
 			damage : [2, 6, "slashing"],
 			range : "Melee (5 ft)",
 			description : "One talons and one beak attack as an Attack action"
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The eagle makes two attacks: one with its beak and one with its talons."
 		}],
 		traits : [{
 			name : "Keen Sight",
@@ -3279,6 +3319,10 @@ var Base_CreatureList = {
 			description : "One talons and one beak attack as an Attack action",
 			modifiers : [-1, "", ""]
 		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The eagle makes two attacks: one with its beak and one with its talons."
+		}],
 		traits : [{
 			name : "Keen Sight and Smell",
 			description : "The vulture has advantage on Wisdom (Perception) checks that rely on sight or smell."
@@ -3320,7 +3364,6 @@ var Base_CreatureList = {
 		source : [["SRD", 381], ["M", 329]],
 		size : 3, //Medium
 		type : "Beast",
-		companion : "companion",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 9,
@@ -3737,7 +3780,6 @@ var Base_CreatureList = {
 		source : [["SRD", 384], ["M", 333]],
 		size : 3, //Medium
 		type : "Beast",
-		companion : "companion",
 		alignment : "Unaligned",
 		ac : 10,
 		hp : 11,
@@ -3847,7 +3889,6 @@ var Base_CreatureList = {
 		source : [["SRD", 385], ["M", 333]],
 		size : 3, //Medium
 		type : "Beast",
-		companion : "companion",
 		alignment : "Unaligned",
 		ac : 12,
 		hp : 13,
@@ -3935,13 +3976,17 @@ var Base_CreatureList = {
 			ability : 1,
 			damage : [1, 8, "piercing"],
 			range : "Melee (5 ft)",
-			description : "One bite and one claw attack as an Attack action"
+			description : "One bite and one claws attack as an Attack action"
 		}, {
 			name : "Claw",
 			ability : 1,
 			damage : [2, 6, "slashing"],
 			range : "Melee (5 ft)",
-			description : "One claw and one bite attack as an Attack action"
+			description : "One claws and one bite attack as an Attack action"
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The bear makes two attacks: one with its bite and one with its claws."
 		}],
 		traits : [{
 			name : "Keen Smell",
@@ -4462,7 +4507,6 @@ var Base_CreatureList = {
 		source : [["SRD", 393], ["M", 341]],
 		size : 3, //Medium
 		type : "Beast",
-		companion : "companion",
 		alignment : "Unaligned",
 		ac : 13,
 		hp : 11,

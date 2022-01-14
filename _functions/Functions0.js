@@ -254,6 +254,10 @@ function setPrototypes() {
 		return index;
 	};
 	Array.prototype.delete = function (del) {
+		if ( !/instanceof RegExp/.test(Array.prototype.search.toSource()) ) {
+			// old version of array.search available due to Adobe bug, so update it
+			setPrototypes();
+		}
 		var iIndx = this.search(del);
 		return iIndx === -1 ? -1 : this.splice(iIndx, 1);
 	};
@@ -1069,7 +1073,7 @@ function isTemplVis(tempNm, returnPrefix) {
 
 // A way to return a new, fresh object
 function newObj(inObj) {
-	return eval(inObj.toSource());
+	return typeof inObj === "string" ? inObj : eval(inObj.toSource());
 };
 
 // A way to return an string as an expression (use eval() if it contains a function)
