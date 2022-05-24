@@ -221,6 +221,10 @@ action : [
 	Note that it is always possible to apply a companion template option to any creature
 	on the Companion Page, using the Companion Options button and selecting to change
 	the current creature into a template option.
+
+	Even though the `companion` attribute of a CreatureList object can be a string for
+	backwards compatibility, the sheet will always correct it and make it into an array
+	to make it easier to check against it using this `includeCheck` function.
 */
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //

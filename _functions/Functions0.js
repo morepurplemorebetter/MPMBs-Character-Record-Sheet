@@ -74,6 +74,7 @@ function Checkbox(field, FldValue, tooltip, submitNm) {
 
 function desc(arr, joinStr) {
 	joinStr = joinStr ? joinStr : "\n   ";
+	if (!Array.isArray(arr)) return joinStr + arr;
 	return joinStr + arr.join(joinStr);
 };
 
@@ -221,6 +222,10 @@ function setPrototypes() {
 		return this.toString().replace(regexp_substr, newSubStr_function);
 	};
 	Array.prototype.search = function (regexpObj) {
+		// Used by older versions (v13.0.8 - 13.1.0), but kept for backwards compatibility
+		this.find(regexpObj);
+	};
+	Array.prototype.find = function (regexpObj) {
 		if (regexpObj instanceof RegExp !== true) regexpObj = regexpObj.toString().RegEscape();
 		for (var i = 0; i < this.length; i++) {
 			if (this[i].toString().search(regexpObj) !== -1) return i;
@@ -254,11 +259,12 @@ function setPrototypes() {
 		return index;
 	};
 	Array.prototype.delete = function (del) {
-		if ( !/instanceof RegExp/.test(Array.prototype.search.toSource()) ) {
-			// old version of array.search available due to Adobe bug, so update it
-			setPrototypes();
-		}
-		var iIndx = this.search(del);
+		// Used by older versions (v13.0.8 - 13.1.0), but kept for backwards compatibility
+		this.eject(del);
+	};
+	Array.prototype.eject = function (del) { // v13.1.1
+		// Ensure this is a unique function name so it can't be overwritten by old
+		var iIndx = this.find(del);
 		return iIndx === -1 ? -1 : this.splice(iIndx, 1);
 	};
 };

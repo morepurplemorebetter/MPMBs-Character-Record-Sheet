@@ -159,7 +159,7 @@ function setCurrentCompRace(prefix, type, found) {
 //add a creature to the companion page
 function ApplyCompRace(newRace, prefix, sCompType) {
 	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
-	var bIsRaceFld = event.target && event.target.name.indexOf("Comp.Race") !== -1;
+	var bIsRaceFld = event.target && event.target.name && event.target.name.indexOf("Comp.Race") !== -1;
 	if (bIsRaceFld && newRace.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
 
 	// Start progress bar and stop calculations
@@ -693,9 +693,9 @@ function MakeCompMenu_CompOptions(prefix, MenuSelection, force) {
 			var objToAdd = {}; // the list of all companion types this creature should be added to (if any)
 			if (oCrea.companion) {
 				// Add any matching companions
-				var arrCreaComps = isArray(oCrea.companion) ? oCrea.companion : [oCrea.companion];
-				for (var i = 0; i < arrCreaComps.length; i++) {
-					if (oCompanions[arrCreaComps[i]]) objToAdd[arrCreaComps[i]] = "";
+				if (!isArray(oCrea.companion)) oCrea.companion = [oCrea.companion];
+				for (var i = 0; i < oCrea.companion.length; i++) {
+					if (oCompanions[oCrea.companion[i]]) objToAdd[oCrea.companion[i]] = "";
 				}
 			}
 			// Now test for each companion type with the includeCheck attribute if this creature should be added
@@ -4933,7 +4933,7 @@ function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceChoice)
 			if (!tRe.changed && aProp.indexOf("Old") !== -1) {
 				var otherProp = aProp.replace("Old", "");
 				if (tRe[otherProp] !== "" && !isArray(tRe[otherProp])) {
-					tRe.changed = tRe[aProp] != tRe[otherProp];
+					tRe.changed = tRe[aProp].toString() != tRe[otherProp].toString();
 				}
 			}
 		}
@@ -5423,7 +5423,7 @@ function addEvals(evalObj, NameEntity, Add, type, level) {
 			CurrentEvals[sType+"Order"].push(aPrio);
 		} else {
 			if (CurrentEvals[sType] && CurrentEvals[sType][NameEntity]) delete CurrentEvals[sType][NameEntity];
-			CurrentEvals[sType+"Order"].delete(aPrio);
+			CurrentEvals[sType+"Order"].eject(aPrio);
 		}
 		CurrentEvals[sType+"Order"].sort(fSortArray);
 	}

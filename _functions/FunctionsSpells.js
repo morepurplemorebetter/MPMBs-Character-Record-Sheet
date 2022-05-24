@@ -453,7 +453,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "school"), aSpell.school ? aSpell.school : emptyCell);
 
 			//set the spell time
-			Value(base.replace("remember", "time"), aSpell.time ? aSpell.time : emptyCell);
+			Value(base.replace("remember", "time"), aSpell.time ? aSpell.time : emptyCell, aSpell.timeFull ? aSpell.timeFull : "");
 
 			//set the spell range
 			var spellRange = aSpell.range ? aSpell.range : emptyCell;
@@ -5741,7 +5741,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 		var useMatchPre = useMatch.slice(1, 1 + offsetMatch);
 		var useMatchPost = useMatch.slice(2 + offsetMatch, useMatch.length);
 		// Find the same die (if isDieType) or a number being added (if !isDieType)
-		var rRegex = isDieType ? RegExp("(.*?)(\\d" + (onceExists ? "*" : "+") + ")(d" + addDieType[2] + ".*)", "i") : /(.*[\+\-]|^)(\d+)([^d].*|$)/;
+		var rRegex = isDieType ? RegExp("(.*?)(\\d" + (onceExists ? "*" : "+") + ")(d" + addDieType[2] + ".*)", "i") : /(.*[\+\-]|^)(\d+(?!d|\d))(.*)/;
 		var rRxMatch = useMatchDie.match(rRegex);
 		var strReplace = "";
 		if (rRxMatch && !abiIsStr) {
@@ -5894,7 +5894,8 @@ function getSpellShortDescription(spellKey, spellObj) {
 		[/(obj)ects?/ig, '$1'],
 		[/(r)ounds?/ig, '$1nd'],
 		[/(save hal)ves?/ig, '$1f'],
-		[/(see) book/ig, '$1 B']
+		[/(see) book/ig, '$1 B'],
+		[/(adv)antage|(dis)advantage/ig, '$1.']
 	];
 	for (var i = 0; i < arrTxtReplace.length; i++) {
 		useSpellDescr = useSpellDescr.replace(arrTxtReplace[i][0], arrTxtReplace[i][1]);

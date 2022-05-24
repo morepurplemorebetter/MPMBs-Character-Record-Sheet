@@ -2312,7 +2312,7 @@ function ParseRace(input) {
 	for (var key in RaceList) {
 		var kObj = RaceList[key];
 
-		if (!(kObj.regExpSearch).test(input) // see if race regex matches
+		if (!kObj.regExpSearch.test(input) // see if race regex matches
 			|| testSource(key, kObj, "racesExcl") // test if the race or its source isn't excluded
 		) continue;
 
@@ -2952,18 +2952,18 @@ function SetArmordropdown(forceTooltips) {
 
 function SetBackgrounddropdown(forceTooltips) {
 	var ArrayDing = [""];
-	var tempString = "";
-	tempString += toUni("Background") + "\nType in the name of the background (or select it from the drop-down menu) and its features and proficiencies will be filled out automatically, provided that its a recognized background.";
+	var tempString = toUni("Background") + "\nType in the name of the background (or select it from the drop-down menu) and its features and proficiencies will be filled out automatically, provided that its a recognized background.";
 	tempString += "\n\n" + toUni("Changing background") + "\nIf you change the background, all the features of the previous background will be removed and the features of the new background will be applied.";
 
 	for (var key in BackgroundList) {
 		if (testSource(key, BackgroundList[key], "backgrExcl")) continue;
-		ArrayDing.push(BackgroundList[key].name);
+		var backNm = BackgroundList[key].name;
+		if (ArrayDing.indexOf(backNm) === -1) ArrayDing.push(backNm);
 		var varArr = BackgroundList[key].variant ? BackgroundList[key].variant : [];
 		for (var i = 0; i < varArr.length; i++) {
 			var varKey = varArr[i];
 			if (testSource(varKey, BackgroundSubList[varKey], "backgrExcl")) continue;
-			var backNm = BackgroundSubList[varKey].name;
+			backNm = BackgroundSubList[varKey].name;
 			if (ArrayDing.indexOf(backNm) === -1) ArrayDing.push(backNm);
 		}
 	};
@@ -2979,9 +2979,8 @@ function SetBackgrounddropdown(forceTooltips) {
 };
 
 function SetRacesdropdown(forceTooltips) {
-	var tempString = "";
 	var ArrayDing = [""];
-	tempString += toUni("Race") + "\nType in the name of the race (or select it from the drop-down menu) and its traits and features will be filled out automatically, provided that its a recognized race. You are not limited by the names in the list. Just typing \"Drow\" will also be recognized, for example.";
+	var tempString = toUni("Race") + "\nType in the name of the race (or select it from the drop-down menu) and its traits and features will be filled out automatically, provided that its a recognized race. You are not limited by the names in the list. Just typing \"Drow\" will also be recognized, for example.";
 	tempString += "\n\n" + toUni("Alternative spelling") + "\nDifferent, setting-dependent race names are recognized as well. For example, typing \"Moon Elf\" will result in all the traits and features of the \"High Elf\" from the Player's Handbook.";
 	tempString += "\n\n" + toUni("Changing race") + "\nIf you change the race, all the features of the previous race will be removed and the features of the new race will be applied.";
 
@@ -4192,7 +4191,7 @@ function AddTool(tool, toolstooltip, replaceThis) { AddLangTool("tool", tool, to
 function RemoveTool(tool, toolstooltip) { RemoveLangTool("tool", tool) };
 
 function AddWeapon(weapon, partialReplace, prefix) {
-	if (!prefix && event.target && event.target.name) prefix = getTemplPre(event.target.name, "AScomp", true);
+	if (!prefix) prefix = !prefix && event.target && event.target.name ? getTemplPre(event.target.name, "AScomp", true) : "";
 	var QI = prefix ? false : !event.target || !event.target.name || event.target.name.indexOf("Comp.") === -1;
 	var Q = QI ? "" : "Comp.Use.";
 	var maxItems = QI ? FieldNumbers.attacks : 3;
@@ -6613,13 +6612,17 @@ function CalcXPnextlvl() {
 //calculate the Ability Save DC (field calculation)
 function CalcAbilityDC() {
 	var Nmbr = event.target.name.slice(-1);
-	var Indx = tDoc.getField("Spell DC " + Nmbr + " Mod").currentValueIndices;
+	var sFldMod = "Spell DC " + Nmbr + " Mod";
+	var Indx = tDoc.getField(sFldMod).currentValueIndices;
+	var useSSDC = false, useSSDCname = false, useSSDCothers = false;
+	var sFldBonus = "Spell DC " + Nmbr + " Bonus";
+	var sFldBonusVal = What(sFldBonus);
+	var DCtot = "";
 	if (Indx) {
-		var ExtraBonus = EvalBonus(What("Spell DC " + Nmbr + " Bonus"), true);
 		var modIpvDC = tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0);
 		// Now test if this ability score is not also present on the spell sheet pages and if there are modifiers used that we should apply here as well.
-		var useSSDC = false, foundSSDC = [];
-		var aSaveA = CurrentAbilitySaveDCs["abi" + Indx];
+		var foundSSDC = [], foundSSDCref = {};
+		var aSaveA = CurrentVars.AbilitySaveDcFound ? CurrentVars.AbilitySaveDcFound["abi" + Indx] : false;
 		if (aSaveA) {
 			for (var i = 0; i < aSaveA.length; i++) {
 				var aSpCast = CurrentSpells[aSaveA[i]];
@@ -6631,16 +6634,34 @@ function CalcAbilityDC() {
 				if (aSpCast && aSpCast.calcSpellScores) {
 					useSSDC = true;
 					foundSSDC.push(aSpCast.calcSpellScores.dc);
+					if (!foundSSDCref[aSpCast.calcSpellScores.dc]) foundSSDCref[aSpCast.calcSpellScores.dc] = [];
+					foundSSDCref[aSpCast.calcSpellScores.dc].push(aSpCast.name);
 				}
 			}
 		}
-		var DCtot = useSSDC ? Math.min.apply(Math, foundSSDC) - (modIpvDC ? 8 : 0) : (modIpvDC ? 0 : 8) + Number(How("Proficiency Bonus")) + Number(What(What("Spell DC " + Nmbr + " Mod"))) + ExtraBonus;
-		event.value = modIpvDC && DCtot >= 0 ? "+" + DCtot : DCtot;
-	} else {
-		event.value = "";
+		if (useSSDC) {
+			var useSSDCmin = Math.min.apply(Math, foundSSDC);
+			useSSDCname = formatLineList("", foundSSDCref[useSSDCmin]);
+			useSSDCothers = foundSSDC.length > foundSSDCref[useSSDCmin].length;
+			DCtot = useSSDCmin - (modIpvDC ? 8 : 0);
+		} else {
+			DCtot = (modIpvDC ? 0 : 8) + Number(How("Proficiency Bonus")) + Number(What(What(sFldMod))) + EvalBonus(sFldBonusVal, true);
+		}
+	}
+	event.value = DCtot && modIpvDC && DCtot >= 0 ? "+" + DCtot : DCtot;
+
+	// Empty the modifier field and set to read-only if using the ones on the spell sheet page
+	tDoc.getField(sFldBonus).readonly = useSSDC;
+	AddTooltip(sFldMod, !useSSDCname ? "" : "The value shown is linked to the spell save DC on the spell sheets for the " + useSSDCname + "." + (useSSDCothers ? " There are other spell save DCs on the spell sheets that use Intelligence, but those have bonuses that don't apply to all, hence the number shown here is the lowest for this ability score." : "") + "\n\nBecause the value is linked to the spell sheet, you can't currently change or set a modifier here, only on the spell sheet page.");
+	// Show or hide the modifier if they are supposed to 
+	if (CurrentVars.bluetxt) {
+		if (useSSDC) {
+			Hide(sFldBonus);
+		} else {
+			DontPrint(sFldBonus);
+		}
 	}
 }
-
 //find the ability score the tool (or custom skill) is keyed off on
 function UpdateTooSkill() {
 	var TooSkillTxt = event.target && event.target.name == "Too Text" ? event.value.toLowerCase() : What("Too Text").toLowerCase();
@@ -9218,20 +9239,17 @@ function HideInvLocationColumn(type, currentstate) {
 //put the ability save DC right, and show both if more than one race/class with ability save DC
 function SetTheAbilitySaveDCs() {
 	// Reset the global variable
-	CurrentAbilitySaveDCs = { bonus : CurrentVars.AbilitySaveDcBonus ? CurrentVars.AbilitySaveDcBonus : {}, priority : {}, order : [] };
-
-	// Update the bonus part of the global variable with what's currently on the sheet
-	SaveTheAbilitySaveDCsBonuses();
+	CurrentAbilitySaveDCs = { bonus : CurrentVars.AbilitySaveDcBonus ? CurrentVars.AbilitySaveDcBonus : {}, found : {}, priority : {}, order : [] };
 
 	// The main thing to do as a function to be called later
 	var processAbility = function(sType, sName, obj) {
 		var sSave = obj.abilitySave;
 		var sAbiNm = "abi" + sSave;
-		if (!CurrentAbilitySaveDCs[sAbiNm]) {
-			CurrentAbilitySaveDCs[sAbiNm] = [];
+		if (!CurrentAbilitySaveDCs.found[sAbiNm]) {
+			CurrentAbilitySaveDCs.found[sAbiNm] = [];
 			CurrentAbilitySaveDCs.priority[sAbiNm] = [];
 		}
-		CurrentAbilitySaveDCs[sAbiNm].push(sName);
+		CurrentAbilitySaveDCs.found[sAbiNm].push(sName);
 		/* Now get the priority, which should result in a list of the abilities from:
 			 1	Classes without spellcasting progression (i.e. spellcastingBonus is ignored)
 			 2	Race without spellcasting
@@ -9264,6 +9282,12 @@ function SetTheAbilitySaveDCs() {
 	}
 	// Do the race
 	if (CurrentRace.abilitySave) processAbility("race", CurrentRace.known, CurrentRace);
+
+	// Now save the found to the global variable
+	CurrentVars.AbilitySaveDcFound = CurrentAbilitySaveDCs.found;
+
+	// Update the bonus part of the global variable with what's currently on the sheet and in doing so save the above found to the field as well
+	SaveTheAbilitySaveDCsBonuses();
 
 	// See which ability has the highest priority
 	var aPriorities = [];

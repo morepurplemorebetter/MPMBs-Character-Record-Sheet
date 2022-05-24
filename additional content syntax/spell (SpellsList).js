@@ -630,7 +630,7 @@ SpellsList["sindering purple"] = {
 		multipleDmgMoments : true,
 	/*	multipleDmgMoments // OPTIONAL //
 		TYPE:	boolean
-		USE:	force the `genericSpellDmgEdit` function to treat this spell as a single damage instance (true) or as one with multiple damage instances (false)
+		USE:	force the `genericSpellDmgEdit` function to treat this spell as a single damage instance (false) or as one with multiple damage instances (true)
 
 		See the explanation for `descriptionShorter` above for how the `genericSpellDmgEdit` function
 		normally determines wether the spell has a single or multiple damage instances.

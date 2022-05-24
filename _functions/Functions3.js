@@ -1083,11 +1083,11 @@ function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrc
 				for (var i = 0; i < oCast.bonusElsewhere[sUniqueSrcNm].length; i++) {
 					var sSpell = oCast.bonusElsewhere[sUniqueSrcNm][i];
 					if (oCast.selectCa && oCast.selectCa.indexOf(sSpell) !== -1) {
-						oCast.selectCa.delete(sSpell);
+						oCast.selectCa.eject(sSpell);
 					} else if (oCast.selectSp && oCast.selectSp.indexOf(sSpell) !== -1) {
-						oCast.selectSp.delete(sSpell);
+						oCast.selectSp.eject(sSpell);
 					} else if (oCast.selectSpSB && oCast.selectSpSB.indexOf(sSpell) !== -1) {
-						oCast.selectSpSB.delete(sSpell);
+						oCast.selectSpSB.eject(sSpell);
 					}
 				}
 				// Reorder the spellbook, as we probably won't have the right array sizes anymore

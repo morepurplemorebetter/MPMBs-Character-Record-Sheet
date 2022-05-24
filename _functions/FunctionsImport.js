@@ -739,7 +739,7 @@ function DirectImport(consoleTrigger) {
 		var weaNrFrom = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.attacks ? global.docFrom.FieldNumbers.attacks : 5;
 		if (weaNrFrom > FieldNumbers.attacks) {
 			for (var i = FieldNumbers.attacks + 1; i <= weaNrFrom; i++) {
-				var weaFldFrom = global.docFrom.getField("Attack." + i + ".Weapons Selection");
+				var weaFldFrom = global.docFrom.getField("Attack." + i + ".Weapon Selection");
 				if (weaFldFrom && weaFldFrom.value) AddWeapon(weaFldFrom.value);
 			}
 		}
@@ -854,7 +854,7 @@ function DirectImport(consoleTrigger) {
 			ImportField(abiS + " ST Dis", {doReadOnly: true});
 		};
 		ImportField("All ST Bonus", {notTooltip: true, notSubmitName: true});
-		if (global.docFrom.CurrentVars.AbilitySaveDcBonus) {
+		if (FromVersion >= semVersToNmbr("13.0.9") && global.docFrom.CurrentVars.AbilitySaveDcBonus) {
 			global.docTo.CurrentVars.AbilitySaveDcBonus = global.docFrom.CurrentVars.AbilitySaveDcBonus;
 			global.docTo.SetStringifieds("vars");
 		}

@@ -154,7 +154,8 @@ SourceList["BoP"] = {
 	then the source will appear as "Book of Purple" in the group "MPMB" in the Source Materials dialog.
 
 	Common groups are:
-	 "Primary Sources"          // WotC publications like the Players Handbook
+	 "Core Sources"             // WotC publications like the Players Handbook
+	 "Primary Sources"          // WotC publications like the Sword Coast Adventure Guide
 	 "Adventure Books"          // WotC adventures like the Curse of Strahd
 	 "Adventurers League"       // AL specific publications like the AL Player's Guide v9.1
 	 "Unearthed Arcana"         // Unearthed Arcana articles
@@ -162,6 +163,14 @@ SourceList["BoP"] = {
 	 "Dungeon Masters Guild"    // Homebrew found on the Dungeon Masters Guild website
 	 "Reddit/r/UnearthedArcana" // Homebrew found on the /r/UnearthedArcana subreddit
 	 "D&D Beyond"               // Homebrew found on the D&D Beyond website
+*/
+	campaignSetting : "Forgotten Realms",
+/*	campaignSetting // OPTIONAL //
+	TYPE:	string
+	USE:	the setting for which this source is written, if any
+
+	Added the setting will make it possible, in the future, to sort/group the sources for that setting,
+	thus making it easier to include or exclude everything from a specific setting.
 */
 	url : "https://nonexisting-website.com/Book_of_Purple.pdf",
 /*	url // OPTIONAL //

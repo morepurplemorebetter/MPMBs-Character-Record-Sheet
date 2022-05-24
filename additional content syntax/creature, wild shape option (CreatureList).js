@@ -230,13 +230,13 @@ CreatureList["purple crawler"] = {
 	companion : "familiar",
 	companion : ["familiar_not_al", "pact_of_the_chain"],
 /*	companion // OPTIONAL //
-	TYPE:	string or array of strings
+	TYPE:	array of strings (or string, for backwards compatibility)
 	USE:	list this creature as an option for a special type of companion
 	CHANGE:	v13.1.0
 
-	This attribute is either a key corresponding to a CompanionList object name, or an array
-	of those keys.
-	Doing so makes this creature selectable as that type of special companion,
+	This attribute is an array of keys corresponding to a CompanionList object name,
+	or, for backwards compatibility, a string of one key.
+	Doing so makes this creature selectable as the listed type of special companion(s),
 	using the Companion Options button on the companion page.
 
 	Some CompanionList objects have their own filter for determining which creatures are 

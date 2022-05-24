@@ -425,7 +425,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		if (srcGroup === "Unearthed Arcana" && SourceList[src].date) srcName = SourceList[src].date + " " + srcName;
 		if (!srcGroup || srcGroup === "default") continue;
 		onlySRD.push(src);
-		if (srcGroup !== "Primary Sources") srcGroup = "\u200B" + srcGroup;
+		if (!/(core|primary) source/i.test(srcGroup.indexOf)) srcGroup = "\u200B" + srcGroup;
 		if (!exclObj[srcGroup]) exclObj[srcGroup] = {};
 		if (!inclObj[srcGroup]) inclObj[srcGroup] = {};
 		if (CurrentSources.globalExcl.indexOf(src) !== -1) {
@@ -956,8 +956,8 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		var oldCS = eval(remCS);
 		if (forceDDupdate || oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.classExcl !== CurrentSources.classExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
 			setSpellVariables(forceDDupdate || oldCS.spellsExcl !== CurrentSources.spellsExcl);
+			SetGearVariables();
 		};
-		if (forceDDupdate) SetGearVariables();
 		if (forceDDupdate || oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.magicitemExcl !== CurrentSources.magicitemExcl) {
 			ParseMagicItemMenu();
 		}
@@ -1542,6 +1542,9 @@ function MakeSourceMenu_SourceOptions() {
 		cName : "All",
 		oSubMenu : []
 	}, {
+		cName : "Core Sources",
+		oSubMenu : []
+	}, {
 		cName : "Primary Sources",
 		oSubMenu : []
 	}, {
@@ -1559,11 +1562,12 @@ function MakeSourceMenu_SourceOptions() {
 	}];
 
 	var menuLoc = {
-		"primary sources" : 2,
-		"adventure books" : 3,
-		"adventurers league" : 4,
-		"extra life" : 5,
-		"unearthed arcana" : 6
+		"core sources" : 2,
+		"primary sources" : 3,
+		"adventure books" : 4,
+		"adventurers league" : 5,
+		"extra life" : 6,
+		"unearthed arcana" : 7
 	};
 
 	var abbrObj = { arr : [], obj : {}, lowObj : {} };
@@ -1579,7 +1583,8 @@ function MakeSourceMenu_SourceOptions() {
 		var aSource = abbrObj.obj[abbrObj.arr[i]];
 		if (/^(DMguild|HB)$/.test(aSource)) continue;
 		var src = SourceList[aSource];
-		var theIndex = menuLoc[src.group.toLowerCase()];
+		var useGroup = src.group.toLowerCase();
+		var theIndex = menuLoc[useGroup];
 		if (!theIndex) {
 			if (!extraMenuItems) {
 				SourceMenu.push({ cName : "-" });
@@ -1590,7 +1595,7 @@ function MakeSourceMenu_SourceOptions() {
 				cName : src.group,
 				oSubMenu : []
 			});
-			menuLoc[src.group.toLowerCase()] = theIndex;
+			menuLoc[useGroup] = theIndex;
 		};
 
 		var allItem = {
