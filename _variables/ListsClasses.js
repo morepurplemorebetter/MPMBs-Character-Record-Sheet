@@ -15,6 +15,7 @@ var FightingStyles = {
 		name : "Defense Fighting Style",
 		description : desc("+1 bonus to AC when I'm wearing armor"),
 		extraAC : {
+			name : "Defense Fighting Style", // necessary for features referring to fighting style properties directly
 			mod : 1,
 			text : "I gain a +1 bonus to AC while wearing armor.",
 			stopeval : function (v) { return !v.wearingArmor; }
@@ -761,11 +762,11 @@ var Base_ClassList = {
 				}),
 				action : [["bonus action", "Unarmed Strike (with Attack action)"]],
 				eval : function() {
-					AddString('Extra.Notes', 'Monk features:\n\u25C6 If I wear armor/shield, I lose Unarmored Defense, Martial Arts, and Unarmored Movement', true);
+					AddString('Extra.Notes', 'Monk features:\n\u25C6 If I wear armor/shield, I lose Unarmored Defense, Martial Arts, and Unarmored Movement');
 					show3rdPageNotes();
 				},
 				removeeval : function() {
-					RemoveString('Extra.Notes', 'Monk features:\n\u25C6 If I wear armor/shield, I lose Unarmored Defense, Martial Arts, and Unarmored Movement', true);
+					RemoveString('Extra.Notes', 'Monk features:\n\u25C6 If I wear armor/shield, I lose Unarmored Defense, Martial Arts, and Unarmored Movement');
 				},
 				calcChanges : {
 					atkAdd : [
@@ -1503,7 +1504,7 @@ var Base_ClassList = {
 				minlevel : 1,
 				description : desc([
 					"Once per turn, I can add damage to a finesse/ranged weapon attack if I have advantage",
-					"I don't need adv. if a conscious ally is within 5 ft of the target and I don't have disadv."
+					"I don't need adv. if the target has a conscious enemy within 5 ft and I don't have disadv."
 				]),
 				additional : levels.map(function (n) {
 					return Math.ceil(n / 2) + "d6";
@@ -3489,7 +3490,7 @@ var Base_ClassSubList = {
 				source : [["SRD", 51], ["P", 109]],
 				minlevel : 10,
 				description : desc([
-					"After a short or long rest, I can choose one damage type to become resistance to",
+					"After a short or long rest, I can choose one damage type to become resistant to",
 					"This lasts until I choose another type; Magical and silver weapons ignore this resistance"
 				])
 			},

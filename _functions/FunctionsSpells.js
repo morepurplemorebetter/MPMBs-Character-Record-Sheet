@@ -3073,7 +3073,7 @@ function AskUserSpellSheet() {
 				var loopEnd = loop ? spBonus.length : 1;
 				for (var i = 0; i < loopEnd; i++) {
 					var spBonusi = loop ? spCast.bonus[bKey][i] : spCast.bonus[bKey];
-					spBonusi.selection = [];
+					if (!spBonusi.selection) spBonusi.selection = [];
 
 					var iterate = !spBonusi.times ? 1 : isArray(spBonusi.times) ? spBonusi.times[Math.min(spBonusi.times.length, spCast.level) - 1] : spBonusi.times; //if we have to apply this thing multiple times, do so
 					for (var y = 1; y <= iterate; y++) {
@@ -3082,7 +3082,7 @@ function AskUserSpellSheet() {
 						if (BonusSpecialActions.oncelr[boNmr]) spCast.special.oncelr.push(dia.selectBo[boNmr]); //those that are usable once per LR for referencing it later
 						if (BonusSpecialActions.oncesr[boNmr]) spCast.special.oncesr.push(dia.selectBo[boNmr]); //those that are usable once per SR for referencing it later
 						if (BonusSpecialActions.other[boNmr]) spCast.special.other[dia.selectBo[boNmr]] = (/^(atwill|oncelr|oncesr|markedbox|checkbox|checkedbox)$/).test(BonusSpecialActions.other[boNmr]) ? BonusSpecialActions.other[boNmr] : BonusSpecialActions.other[boNmr].substring(0, (/\(.\)|\d-\d/).test(BonusSpecialActions.other[boNmr]) ? 3 : 2); //those that have a special first column, up to two/three characters
-						spBonusi.selection.push(dia.selectBo[boNmr]); //set the selection(s)
+						spBonusi.selection[y-1] = dia.selectBo[boNmr]; //set the selection(s)
 						boNmr += 1; //count the number of bonus things
 					}
 				}
@@ -3764,7 +3764,7 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 	 case "makeempty" :
 		if (SSvisible) {
 			var asking = {
-				cMsg : "Unfortunately it is not possible to hide the Spell Sheet. They can only be deleted.\n\nDo you want to remove all the Spell Sheets except the first one and remove the content of the first one?\nYou can then manually fill out the Spell Sheet and add/remove more pages using the \"Layout\" and \"Spells\" buttons in the \"JavaScript Window\" or in the bookmarks.\n\nRemoving the Spell Sheets cannot be undone!",
+				cMsg : 'Unfortunately it is not possible to hide the Spell Sheet. They can only be deleted.\n\nDo you want to remove all the Spell Sheets except the first one and remove the content of the first one?\nYou can then manually fill out the Spell Sheet and add/remove more pages using the "Layout" and "Spells" buttons in the "JavaScript Window" or in the bookmarks.\n\nRemoving the Spell Sheets cannot be undone!',
 				cTitle : "Delete all the Spell Sheets",
 				nIcon : 2, //question
 				nType : 2, //Yes-No

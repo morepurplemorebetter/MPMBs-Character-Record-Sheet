@@ -5636,6 +5636,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 			var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
 			var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 			var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
+			var isThrownWeapon = isWeapon && /\bthrown\b/i.test(fields.Description) && /\d ?(ft|m)\.?($|[^)])/i.test(fields.Range);
 
 			var gatherVars = {
 				WeaponText : WeaponText,
@@ -5646,6 +5647,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 				isMeleeWeapon : isMeleeWeapon,
 				isRangedWeapon : isRangedWeapon,
 				isNaturalWeapon : isNaturalWeapon,
+				isThrownWeapon : isThrownWeapon,
 				theWea : theWea,
 				StrDex : StrDex,
 				WeaponName : WeaponName,
@@ -5801,6 +5803,7 @@ function CalcAttackDmgHit(fldName) {
 	var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
 	var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 	var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
+	var isThrownWeapon = isWeapon && /\bthrown\b/i.test(fields.Description) && /\d ?(ft|m)\.?($|[^)])/i.test(fields.Range);
 
 	// see if this is a off-hand attack and the modToDmg shouldn't be use
 	var isOffHand = isMeleeWeapon && (/^(?!.*(spell|cantrip))(?=.*(off.{0,3}hand|secondary)).*$/i).test(WeaponText);
@@ -5823,6 +5826,7 @@ function CalcAttackDmgHit(fldName) {
 			isMeleeWeapon : isMeleeWeapon,
 			isRangedWeapon : isRangedWeapon,
 			isNaturalWeapon : isNaturalWeapon,
+			isThrownWeapon : isThrownWeapon,
 			theWea : theWea,
 			WeaponName : WeaponName,
 			baseWeaponName : theWea.baseWeapon ? theWea.baseWeapon : WeaponName,
@@ -8075,7 +8079,7 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 					CurrentUpdates.notesChanges.push(changeMsg);
 				}
 			} else {
-				RemoveString('Extra.Notes', noteStr, true);
+				RemoveString('Extra.Notes', noteStr);
 			}
 		} else { // add to its own section on a notes page
 			if (AddRemove) {

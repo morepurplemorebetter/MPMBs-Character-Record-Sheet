@@ -49,7 +49,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v13.1.0 and newer
+	Sheet:		v13.1.1 and newer
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -1551,6 +1551,7 @@ calcChanges : {
 		USE:	dynamically change what is put in the fields of an attack entry
 				Note that this is only run for attacks that are recognized, not manually added
 		CHANGE:	v13.0.8 (priority, 3rd array entry)
+				v13.1.1 (added v.isThrownWeapon)
 
 		// 1st array entry // REQUIRED //
 		Both examples do the exact same thing, just one is a string and the other is a function.
@@ -1591,6 +1592,7 @@ calcChanges : {
 				isMeleeWeapon, // boolean, whether (true) or not (false) this attack has a range of 'melee' and is considered a melee weapon attack
 				isRangedWeapon, // boolean, whether (true) or not (false) this attack has a range that doesn't include 'melee' and is considered a ranged weapon attack
 				isNaturalWeapon, // boolean, whether (true) or not (false) this attack has the type 'natural'
+				isThrownWeapon, // boolean, whether (true) or not (false) this attack has the 'thrown' property [added v13.1.1]
 				theWea, // object, the entry as it appears in the WeaponsList object
 				StrDex, // number, either 1 (Str) or 2 (Dex) depending on which of the two ability scores is higher
 				WeaponName, // string, the name of the entry in the WeaponsList object
@@ -1653,6 +1655,7 @@ calcChanges : {
 		USE:	dynamically change how the To Hit and Damage of attacks are calculated
 				Note that this is only run for attacks that are recognized, not manually added
 		CHANGE:	v13.0.8 (priority, 3rd array entry)
+				v13.1.1 (added v.isThrownWeapon)
 
 		// 1st array entry // REQUIRED //
 		Both examples do the exact same thing, just one is a string and the other is a function.
@@ -1681,6 +1684,7 @@ calcChanges : {
 				isMeleeWeapon, // boolean, whether (true) or not (false) this attack has a range of 'melee' and is considered a melee weapon attack
 				isRangedWeapon, // boolean, whether (true) or not (false) this attack has a range that doesn't include 'melee' and is considered a ranged weapon attack
 				isNaturalWeapon, // boolean, whether (true) or not (false) this attack has the type 'natural'
+				isThrownWeapon, // boolean, whether (true) or not (false) this attack has the 'thrown' property [added v13.1.1]
 				isOffHand, // boolean, whether (true) or not (false) this attack is both a melee weapon and an off-hand attack
 				theWea, // object, the entry as it appears in the WeaponsList object
 				WeaponName, // string, the name of the entry in the WeaponsList object

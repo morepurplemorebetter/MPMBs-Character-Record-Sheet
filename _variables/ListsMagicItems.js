@@ -2910,7 +2910,7 @@ var Base_MagicItemsList = {
 		type : "weapon (mace)",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "This magic mace sheds bright light in a 20-ft radius and dim light for another 20 ft while held. Fiends and undead hit with it take +2d6 radiant damage and becomes frightened of me until my next turn ends. If the target has less than 26 HP after taking the damage, it must make a DC 15 Wis save or be destroyed.",
+		description : "While held, this magic mace sheds bright light in a 20-ft radius and dim light for another 20 ft. It deals +2d6 radiant damage vs. fiends and undead. If it has less than 26 HP after this damage, it must make a DC 15 Wis save or be destroyed. If successfully, it instead becomes frightened of me until the end of my next turn.",
 		descriptionFull : "When you hit a fiend or an undead with this magic weapon, that creature takes an extra 2d6 radiant damage. If the target has 25 hit points or fewer after taking this damage, it must succeed on a DC 15 Wisdom saving throw or be destroyed. On a successful save, the creature becomes frightened of you until the end of your next turn.\n   While you hold this weapon, it sheds bright light in a 20-foot radius and dim light for an additional 20 feet.",
 		attunement : true,
 		weight : 4,
@@ -2920,7 +2920,7 @@ var Base_MagicItemsList = {
 			regExpSearch : /^(?=.*mace)(?=.*disruption).*$/i,
 			name : "Mace of Disruption",
 			source : [["SRD", 229], ["D", 179]],
-			description : "Fiend/undead +2d6 radiant damage, frightened until my next turn ends, and if HP<26, DC 15 Wis save or die"
+			description : "Fiend/undead +2d6 radiant damage and if HP<26, DC 15 Wis save: fail - die, success - frightened until my next turn ends"
 		}
 	},
 	"mace of smiting" : {

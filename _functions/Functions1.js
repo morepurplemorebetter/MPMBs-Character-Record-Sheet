@@ -2451,6 +2451,18 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 			var bSkipDialogAndForce = inputracetxt && IsNotImport ? undefined : CurrentVars.oldRaceAmendRemember ? true : false;
 			AmendOldToNewRace(CurrentRace.useFromPreviousRace, bSkipDialogAndForce);
 		}
+		// if set, apply some generic defaults (age/height/weight/scores/languages) if nothing was set for those attributes. These defaults were added with the introduction of VRGtR
+		if (CurrentRace.scoresGeneric) {
+			if (!CurrentRace.scores && !CurrentRace.scorestxt) {
+				// No fixed stat increases, so list the generic one
+				CurrentRace.scorestxt = "+2 to one ability score and +1 to a different score, -or- +1 to three different scores";
+			}
+			var genericHeightWeight = " vary in size. If you'd like to determine your character's height or weight randomly, consult the Random Height and Weight table in the PHB, and choose the row in the table that best represents the build you imagine for your character.";
+			if (!CurrentRace.height) CurrentRace.height = genericHeightWeight;
+			if (!CurrentRace.weight) CurrentRace.weight = genericHeightWeight;
+			if (!CurrentRace.age) CurrentRace.age = " typically live to be around 100 years old";
+			if (!CurrentRace.languageProfs) CurrentRace.languageProfs = ["Common", 1];
+		}
 	}
 
 	// set the current race level when loading the sheet
@@ -2473,6 +2485,7 @@ function ApplyRace(inputracetxt, novardialog) {
 
 	var newRace = ParseRace(inputracetxt);
 	var oldRace = [CurrentRace.known, CurrentRace.variant];
+	var isMetric = What("Unit System") === "metric";
 	if (newRace[0] !== oldRace[0] || newRace[1] !== oldRace[1]) {
 		if (CurrentRace.known) {// remove the old race if one was detected
 			thermoTxt = thermoM("Removing the " + CurrentRace.name + " features...", false); //change the progress dialog text
@@ -2497,18 +2510,18 @@ function ApplyRace(inputracetxt, novardialog) {
 		thermoM(1/10); //increment the progress dialog's progress
 
 		// Add race height
-		var theHeight = What("Unit System") === "metric" && CurrentRace.heightMetric ? CurrentRace.heightMetric : CurrentRace.height;
-		AddTooltip("Height", CurrentRace.plural + theHeight);
+		var theHeight = (isMetric || !CurrentRace.height) && CurrentRace.heightMetric ? CurrentRace.heightMetric : CurrentRace.height;
+		if (theHeight) AddTooltip("Height", CurrentRace.plural + theHeight);
 		// Add race weight
-		var theWeight = What("Unit System") === "metric" ? CurrentRace.weightMetric : CurrentRace.weight;
-		AddTooltip("Weight", CurrentRace.plural + theWeight);
+		var theWeight = (isMetric || !CurrentRace.weight) && CurrentRace.weightMetric ? CurrentRace.weightMetric : CurrentRace.weight;
+		if (theWeight) AddTooltip("Weight", CurrentRace.plural + theWeight);
 		// Add race age
 		AddTooltip("Age", CurrentRace.plural + CurrentRace.age);
 		// Add race size
 		SetCreatureSize(false, [inputracetxt, CurrentRace.plural], CurrentRace.size);
 		// Add racial traits
 		var tempString = stringSource(CurrentRace, "full,page", CurrentRace.name + " is found in ", ".");
-		var theTraits = What("Unit System") === "imperial" ? CurrentRace.trait : ConvertToMetric(CurrentRace.trait, 0.5);
+		var theTraits = !isMetric ? CurrentRace.trait : ConvertToMetric(CurrentRace.trait, 0.5);
 		Value("Racial Traits", theTraits, tempString);
 
 		thermoM(2/6); //increment the progress dialog's progress
@@ -4255,11 +4268,11 @@ function RemoveString(field, toremove, newline) {
 	var thestring = toremove.replace(/\n/g, "\r");
 	var regExString = thestring.RegEscape();
 	var thefield = tDoc.getField(field);
-	if (!thefield) return;
+	if (!thefield || !thefield.value) return;
 	var stringsArray, regExStringsArray;
-	if (newline === false) {
-		stringsArray = [thestring];
-		regExStringsArray = [regExString];
+	if (newline === false || typeof newline === "string") {
+		stringsArray = [newline + thestring, thestring];
+		regExStringsArray = [(newline + thestring).RegEscape(), regExString];
 	} else {
 		stringsArray = [
 			thestring + "\r",
@@ -4440,16 +4453,21 @@ function CalcAllSkills(isCompPage) {
 		// ability score modifier
 		setVals[setFld] = mod[theAbi];
 		var addProf = 0;
+		// modifier field
+		var modFldVal = What(isInit && !pr ? "Init Bonus" : isInit && pr ? pr + "Comp.Use.Combat.Init.Bonus" : !pr ? setFld + " Bonus" : pr + "BlueText.Comp.Use.Skills." + skFld + ".Bonus");
+		var modFldHasProf = !pr && /([^-]|^)Prof/i.test(modFldVal);
+		setVals[setFld] += EvalBonus(modFldVal, !pr ? true : pr);
 		// proficiency bonus
+		// Do not add Remarkable Athlete or Jack of All Trades if "Prof" is added as a bonus, because of the literal wording of those features
 		if (isInit) {
-			if (!pr) setVals[setFld] += remAth ? Math.ceil(profB / 2) : jackOf ? Math.floor(profB / 2) : 0;
+			if (!pr && !modFldHasProf) setVals[setFld] += remAth ? Math.ceil(profB / 2) : jackOf ? Math.floor(profB / 2) : 0;
 		} else if ((doPass || !profDie) && !pr) {
 			if (tDoc.getField(setFld + " Prof").isBoxChecked(0)) {
 				addProf = profB;
 				if (tDoc.getField(setFld + " Exp").isBoxChecked(0)) addProf += profB;
-			} else if (remAth && (/^(Str|Dex|Con)$/).test(theAbi)) {
+			} else if (remAth && !modFldHasProf && (/^(Str|Dex|Con)$/).test(theAbi)) {
 				addProf = Math.ceil(profB / 2);
-			} else if (jackOf) {
+			} else if (jackOf && !modFldHasProf) {
 				addProf = Math.floor(profB / 2);
 			}
 		} else if ((doPass || !profDie) && typePF) {
@@ -4466,9 +4484,6 @@ function CalcAllSkills(isCompPage) {
 			}
 		}
 		if (!profDie) setVals[setFld] += addProf;
-		// modifier field
-		var modFld = isInit && !pr ? "Init Bonus" : isInit && pr ? pr + "Comp.Use.Combat.Init.Bonus" : !pr ? setFld + " Bonus" : pr + "BlueText.Comp.Use.Skills." + skFld + ".Bonus";
-		setVals[setFld] += EvalBonus(What(modFld), !pr ? true : pr);
 		// all skill bonus
 		if (!isInit) setVals[setFld] += allBonus;
 		// passive perception
@@ -6631,7 +6646,7 @@ function CalcAbilityDC() {
 					useSSDC = false;
 					break;
 				}
-				if (aSpCast && aSpCast.calcSpellScores) {
+				if (aSpCast && aSpCast.calcSpellScores && aSpCast.calcSpellScores.dc !== undefined) {
 					useSSDC = true;
 					foundSSDC.push(aSpCast.calcSpellScores.dc);
 					if (!foundSSDCref[aSpCast.calcSpellScores.dc]) foundSSDCref[aSpCast.calcSpellScores.dc] = [];
