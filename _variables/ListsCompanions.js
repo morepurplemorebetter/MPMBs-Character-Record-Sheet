@@ -7,7 +7,7 @@ var Base_CompanionList = {
 		source : [["SRD", 143], ["P", 240]], // required
 		includeCheck : function(sCrea, objCrea, iCreaCR) {
 			// return true if to be included, or a string to add a note to the menu option
-			return !!isDisplay("DCI.Text") && objCrea.companion.indexOf("familiar_not_al") !== -1 ? " (if DM approves)" : false;
+			return !!isDisplay("DCI.Text") && objCrea.companion && objCrea.companion.indexOf("familiar_not_al") !== -1 ? " (if DM approves)" : false;
 		},
 		action : [
 			["action", "Familiar (dismiss/reappear)"],
@@ -84,7 +84,7 @@ var Base_CompanionList = {
 		source : [["SRD", 47], ["P", 107]],
 		includeCheck : function(sCrea, objCrea, iCreaCR) {
 			// return true if to be included, or a string to add a note to the menu option
-			return objCrea.companion.indexOf("familiar") !== -1 ? true : !!isDisplay("DCI.Text") && objCrea.companion.indexOf("familiar_not_al") !== -1 ? " (if DM approves)" : false;
+			return !objCrea.companion ? false : objCrea.companion.indexOf("familiar") !== -1 ? true : !!isDisplay("DCI.Text") && objCrea.companion.indexOf("familiar_not_al") !== -1 ? " (if DM approves)" : false;
 		},
 		action : [
 			["action", "Familiar (dismiss/reappear)"],

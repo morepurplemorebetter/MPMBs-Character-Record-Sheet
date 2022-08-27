@@ -441,6 +441,8 @@ WeaponsList["sword of purple"] = {
 	When set to `false`, the sheet will never apply the spellcasting ability,
 	even if the prerequisites are met. It will instead always use the ability set by the `ability` attribute.
 	It will still apply weapon special rules like 'Finesse'.
+	The sheet will also not apply any bonuses from calcchanges.atkCalc that increase
+	spell attacks or spell DCs to the attack.
 
 	UNDEFINED
 	Do not include this attribute if you want the sheet to determine if the spellcasting ability should be used or not.
@@ -474,7 +476,7 @@ WeaponsList["sword of purple"] = {
 	regardless of the setting of the proficiency or ability score fields in the attack section.
 	In fact, it will force the selected ability to be the ability used by the spellcasting entity.
 
-	Be aware, that is you use this for a CreatureList object, the spell attack / DC used will
+	Be aware, that if you use this for a CreatureList object, the spell attack / DC used will
 	still be that of the main character.
 	This attribute is ignored on the Wild Shape pages.
 

@@ -796,6 +796,7 @@ function DirectImport(consoleTrigger) {
 		//set the class and class features
 		if (fromBefore13) ImportExtraChoices();
 		ImportField("Class and Levels", {notTooltip: true});
+		AddExtraOtherChoices();
 
 		//set the feats
 		var feaNrFrom = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.feats ? global.docFrom.FieldNumbers.feats : FieldNumbers.feats;
@@ -1793,6 +1794,46 @@ function ImportExtraChoices() {
 					};
 				});
 			}
+		}
+	}
+};
+
+// add the extra class features that were added using a feature that grants bonus choices for other class features
+function AddExtraOtherChoices() {
+	// NOG TESTEN MET:
+	// - feat met bonus feature voor class die WEL aangezig is, maar nog niet het juiste level heeft
+	if (!CurrentFeatureChoices.bonus) return;
+	Menus.classfeatures_tempClassesKnown = [];
+	for (var sClass in CurrentFeatureChoices.bonus) {
+		// No need to process this here if it is for a known class, or there are no known selected choices
+		if (classes.known[sClass] || !CurrentFeatureChoices.classes[sClass]) continue;
+		// Map all the features to their subclasses for reference
+		var oRef = {};
+		for (var sSubClass in CurrentFeatureChoices.bonus[sClass]) {
+			for (var sFea in CurrentFeatureChoices.bonus[sClass][sSubClass]) {
+				if (!oRef[sFea]) oRef[sFea] = sSubClass;
+			}
+		}
+		// Loop through the selected features of this class
+		for (var sFea in CurrentFeatureChoices.classes[sClass]) {
+			var aXtrChc = CurrentFeatureChoices.classes[sClass][sFea].extrachoices;
+			if (!aXtrChc || !oRef[sFea]) continue; // not something to add as a bonus extrachoice
+			// Create a temporary classes.known entry
+			var sSubClass = oRef[sFea] && oRef[sFea] !== "mainClass" ? oRef[sFea] : "";
+			classes.known[sClass] = {
+				name : sClass,
+				level : 0,
+				subclass : sSubClass
+			}
+			// Add the extra choices to the sheet, one by one
+			for (var i = 0; i < aXtrChc.length; i++) {
+				ClassFeatureOptions([
+					sClass, sFea, aXtrChc[i], 'extra',
+					"add", true, sSubClass
+				], "add");
+			}
+			// Delete the temporary classes.known entry
+			delete classes.known[sClass];
 		}
 	}
 };

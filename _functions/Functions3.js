@@ -610,7 +610,10 @@ function processBonusClassExtraChoices(bAddRemove, sType, aItems) {
 		var sSubclass = oItem["subclass"] ? oItem["subclass"] : "mainClass";
 		if (!sClass || !sFea || !iBonus || isNaN(iBonus) || iBonus < 0 || sSubclass === undefined) continue;
 		if (bAddRemove) {
-			// add
+			// add, but not if it already exists and we're importing
+			try {
+				if (!IsNotImport && CurrentFeatureChoices.bonus[sClass][sSubclass][sFea]) continue;
+			} catch(e) {};
 			if (!CurrentFeatureChoices.bonus) CurrentFeatureChoices.bonus = {};
 			if (!CurrentFeatureChoices.bonus[sClass]) CurrentFeatureChoices.bonus[sClass] = {};
 			if (!CurrentFeatureChoices.bonus[sClass][sSubclass]) CurrentFeatureChoices.bonus[sClass][sSubclass] = {};

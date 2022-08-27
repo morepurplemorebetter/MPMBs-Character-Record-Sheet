@@ -3737,7 +3737,7 @@ function MakeSpellMenu() {
 	}, {
 		cName : "Show things changing the spell automations",
 		cReturn : "ssheet#showcalcs",
-		bEnabled : ObjLength(CurrentEvals.spellStr) ? true : false
+		bEnabled : ObjLength(CurrentEvals.spellStr) || ObjLength(CurrentEvals.spellAtkStr) ? true : false
 	}]);
 
 	Menus.spells = spellsMenu;

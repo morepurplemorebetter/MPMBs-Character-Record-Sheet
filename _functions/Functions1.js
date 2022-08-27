@@ -6063,7 +6063,7 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 	var sSubclass = MenuSelection[6] ? MenuSelection[6] : false;
 	var propFea = false;
 	if (extraBonus && (sSubclass || !CurrentClasses[aClass])) {
-		propFea = sSubclass ? ClassSubList[sSubclass].features[prop] : ClassList[aClass].features[prop];
+		propFea = sSubclass && ClassSubList[sSubclass] ? ClassSubList[sSubclass].features[prop] : ClassList[aClass].features[prop];
 		var unknownClass = true;
 	} else if (CurrentClasses[aClass]) {
 		propFea = CurrentClasses[aClass].features[prop];
@@ -6072,8 +6072,9 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 	var propFeaCs = propFea ? propFea[choice] : false;
 	if (!propFea || !propFeaCs) return cleanTempClassesKnown(); // no objects to process, so go back
 
-	var clLvl = unknownClass ? propFea.minlevel : classes.known[aClass].level;
-	var clLvlOld = unknownClass ? propFea.minlevel : !triggerIsMenu && Input && classes.old[aClass] ? classes.old[aClass].classlevel : clLvl;
+	var propMinLvl = propFea.minlevel ? propFea.minlevel : 1;
+	var clLvl = unknownClass ? propMinLvl : classes.known[aClass].level;
+	var clLvlOld = unknownClass ? propMinLvl : !triggerIsMenu && Input && classes.old[aClass] ? classes.old[aClass].classlevel : clLvl;
 	if (!unknownClass && propFea.minlevel && Math.max(clLvl, clLvlOld) < propFea.minlevel) {
 		// Trying to process a class feature for which there is no high enough level
 		if (!extra) { // If this is not an 'extrachoice', stop now
@@ -8999,7 +9000,7 @@ function MakeAttackLineMenu_AttackLineOptions(MenuSelection, itemNmbr, prefix) {
 			menuLVL1([
 				//[name, return, enabled]
 				["-", "-"],
-				["Show things changing the attack automations", "showcalcs", ObjLength(CurrentEvals.atkStr) && (CurrentEvals.atkAdd || CurrentEvals.atkCalc) ? true : false]
+				["Show things changing the attack automations", "showcalcs", ObjLength(CurrentEvals.atkStr) || ObjLength(CurrentEvals.spellAtkStr) ? true : false]
 			]);
 		}
 

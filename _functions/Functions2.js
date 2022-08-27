@@ -145,7 +145,7 @@ function setCurrentCompRace(prefix, type, found) {
 		if (oComp && oComp.attributesChange) {
 			try {
 				oComp.attributesChange(type === "creature" ? CurrentCompRace[prefix].known : false, CurrentCompRace[prefix]);
-			} catch (e) {
+			} catch (error) {
 				delete CompanionList[sCompType].attributesChange;
 				var eText = "The `attributesChange` attribute from the '" + sCompType + "' companion produced an error! Please contact the author of the feature to correct this issue and please include this error message:\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
@@ -706,7 +706,7 @@ function MakeCompMenu_CompOptions(prefix, MenuSelection, force) {
 						if (returnStr !== false && returnStr !== undefined) {
 							objToAdd[sComp] = typeof returnStr === "string" ? returnStr : "";
 						}
-					} catch (e) {
+					} catch (error) {
 						delete CompanionList[sComp].includeCheck;
 						var eText = "The `includeCheck` attribute from the '" + sComp + "' companion produced an error! Please contact the author of the feature to correct this issue and please include this error message:\n " + error;
 						for (var e in error) eText += "\n " + e + ": " + error[e];
@@ -5897,7 +5897,7 @@ function CalcAttackDmgHit(fldName) {
 		}
 	};
 	// Now the spellCalc custom functions
-	if ( CurrentEvals.spellCalc &&
+	if ( CurrentEvals.spellCalc && (!theWea || theWea.useSpellcastingAbility !== false) &&
 		( (fixedCaster && !fixedCaster.fixedDC) || (QI && isSpell && !fixedCaster) )
 	) {
 		// get the variables we need to pass to the function
