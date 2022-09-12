@@ -470,9 +470,10 @@ function ApplySpell(FldValue, rememberFldName) {
 			var parseSrc = parseSource(aSpell.source);
 			// Only use the first source, as there is no more space
 			var spBook = parseSrc ? parseSrc[0][0] : "";
-			var spBookAbbr = spBook && SourceList[spBook].abbreviationSpellsheet ? SourceList[spBook].abbreviationSpellsheet : spBook.substr(0,1);
+			var isUnearthedArcana = spBook && spBook !== "UA:TMC" && SourceList[spBook].group === "Unearthed Arcana";
+			var spBookAbbr = spBook && SourceList[spBook].abbreviationSpellsheet ? SourceList[spBook].abbreviationSpellsheet : isUnearthedArcana ? "UA" : spBook.substr(0,1);
 			// Get the page number, unless it is Unearthed Arcana, then get the abbreviation (the first three characters after the colon)
-			var spPage = spBook && spBook !== "UA:TMC" && SourceList[spBook].group === "Unearthed Arcana" ? spBook.replace("UA:", "").substr(0,3) : parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
+			var spPage = isUnearthedArcana ? spBook.replace("UA:", "").substr(0,3) : parseSrc && parseSrc[0][1] ? parseSrc[0][1] : "";
 			// Add them to the sheet
 			Value(base.replace("remember", "book"), spBookAbbr, aSpell.tooltipSource);
 			Value(base.replace("remember", "page"), spPage, aSpell.tooltipSource);

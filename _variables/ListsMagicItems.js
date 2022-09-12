@@ -4572,7 +4572,7 @@ var Base_MagicItemsList = {
 		},
 		spellChanges : {
 			"magic missile" : {
-				description : "8 darts hit creature(s) I can see for 1d4+1 Force dmg per dart",
+				description : "7 darts hit creature(s) I can see for 1d4+1 Force dmg per dart",
 				changes : "Magic Missile cast from the Robe of Stars is always at 5th-level."
 			}
 		}
@@ -6343,6 +6343,7 @@ var Base_MagicItemsList = {
 		weight : 1,
 		prerequisite : "Requires attunement by a spellcaster",
 		prereqeval : function(v) { return v.isSpellcaster; },
+		allowDuplicates : true,
 		choices : ["+1 to spell attacks (uncommon)", "+2 to spell attacks (rare)", "+3 to spell attacks (very rare)"],
 		"+1 to spell attacks (uncommon)" : {
 			name : "Wand of the War Mage +1",

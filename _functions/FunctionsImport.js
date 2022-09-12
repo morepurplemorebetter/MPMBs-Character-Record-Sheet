@@ -1800,41 +1800,30 @@ function ImportExtraChoices() {
 
 // add the extra class features that were added using a feature that grants bonus choices for other class features
 function AddExtraOtherChoices() {
-	// NOG TESTEN MET:
-	// - feat met bonus feature voor class die WEL aangezig is, maar nog niet het juiste level heeft
-	if (!CurrentFeatureChoices.bonus) return;
-	Menus.classfeatures_tempClassesKnown = [];
-	for (var sClass in CurrentFeatureChoices.bonus) {
-		// No need to process this here if it is for a known class, or there are no known selected choices
-		if (classes.known[sClass] || !CurrentFeatureChoices.classes[sClass]) continue;
-		// Map all the features to their subclasses for reference
-		var oRef = {};
-		for (var sSubClass in CurrentFeatureChoices.bonus[sClass]) {
-			for (var sFea in CurrentFeatureChoices.bonus[sClass][sSubClass]) {
-				if (!oRef[sFea]) oRef[sFea] = sSubClass;
-			}
+	var bonusClassFeatures = getBonusClassExtraChoices(true);
+	for (var i = 0; i < bonusClassFeatures.length; i++) {
+		var oBonus = bonusClassFeatures[i];
+		// temporarily add the (sub)class to classes.known
+		addTempClassesKnown(oBonus);
+		// get the extrachoices for this feature
+		var aChoices = GetFeatureChoice("classes", oBonus.class, oBonus.feature, true);
+		// get the object with the choices
+		var oProp = oBonus.subclass && ClassSubList[oBonus.subclass] ? ClassSubList[oBonus.subclass].features[oBonus.feature] : ClassList[oBonus.class].features[oBonus.feature];
+		// don't proceed if this feature wasn't found
+		if (!oProp) continue;
+		// loop through the selected choices for this feature
+		for (var c = 0; c < aChoices.length; c++) {
+			aChoices[c];
+			// only continue if this choice exists within the specified feature
+			if (!oProp[aChoices[c]]) continue;
+			// add the feature
+			ClassFeatureOptions([
+				oBonus.class, oBonus.feature, aChoices[c], 'extra',
+				"add", true, oBonus.subclass
+			], "add");
 		}
-		// Loop through the selected features of this class
-		for (var sFea in CurrentFeatureChoices.classes[sClass]) {
-			var aXtrChc = CurrentFeatureChoices.classes[sClass][sFea].extrachoices;
-			if (!aXtrChc || !oRef[sFea]) continue; // not something to add as a bonus extrachoice
-			// Create a temporary classes.known entry
-			var sSubClass = oRef[sFea] && oRef[sFea] !== "mainClass" ? oRef[sFea] : "";
-			classes.known[sClass] = {
-				name : sClass,
-				level : 0,
-				subclass : sSubClass
-			}
-			// Add the extra choices to the sheet, one by one
-			for (var i = 0; i < aXtrChc.length; i++) {
-				ClassFeatureOptions([
-					sClass, sFea, aXtrChc[i], 'extra',
-					"add", true, sSubClass
-				], "add");
-			}
-			// Delete the temporary classes.known entry
-			delete classes.known[sClass];
-		}
+		// remove the temporary addition to classes.known
+		cleanTempClassesKnown();
 	}
 };
 

@@ -2463,6 +2463,20 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 			if (!CurrentRace.age) CurrentRace.age = " typically live to be around 100 years old";
 			if (!CurrentRace.languageProfs) CurrentRace.languageProfs = ["Common", 1];
 		}
+		// if the abilitySave is an array, have the user select which one to use and remember that
+		if (CurrentRace.abilitySave && (isArray(CurrentRace.abilitySave) || isNaN(CurrentRace.abilitySave))) {
+			if (CurrentVars.raceAbilitySave !== undefined) {
+				CurrentRace.abilitySave = CurrentVars.raceAbilitySave;
+			} else {
+				if (!IsNotImport) {
+					CurrentRace.abilitySave = CurrentRace.abilitySave[0];
+				} else {
+					CurrentRace.abilitySave = ReturnSpellcastingAbility(CurrentRace.name, CurrentRace.abilitySave, true);
+				}
+				CurrentVars.raceAbilitySave = CurrentRace.abilitySave;
+				SetStringifieds("vars");
+			}
+		}
 	}
 
 	// set the current race level when loading the sheet
@@ -2500,6 +2514,9 @@ function ApplyRace(inputracetxt, novardialog) {
 
 			// Remove the common attributes from the CurrentRace object and remove the CurrentRace features
 			UpdateLevelFeatures("race", 0);
+
+			// Remove the remembered ability save, if any
+			if (CurrentVars.raceAbilitySave !== undefined) delete CurrentVars.raceAbilitySave;
 		}
 		FindRace(inputracetxt, novardialog, oldRace);
 		Value("Race Remember", CurrentRace.known + (CurrentRace.variant ? "-" + CurrentRace.variant : ""));
@@ -3045,6 +3062,8 @@ function SetGearWeightOnBlur() {
 			var massMod = What("Unit System") === "imperial" ? 1 : UnitsList.metric.mass;
 			if (theGear[0] === "MagicItemsList") {
 				var theWeight = theGear[2] && MagicItemsList[theGear[1]][theGear[2]].weight ? MagicItemsList[theGear[1]][theGear[2]].weight : MagicItemsList[theGear[1]].weight;
+			} else if (theGear[0] === "localObject") {
+				var theWeight = theGear[2].weight;
 			} else {
 				var theWeight = tDoc[theGear[0]][theGear[1]].weight;
 			}
@@ -3147,6 +3166,15 @@ function ParseGear(input) {
 			};
 		};
 	};
+
+	//see if it is a shield
+	var sShield = "shield";
+	if (foundLen <= sShield.length && tempString.indexOf(sShield) !== -1) {
+		result = ["localObject", "shield", {
+			name : "Shield",
+			weight : 6
+		}]
+	}
 
 	return result;
 };
@@ -5830,7 +5858,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 };
 
 // Make menu for 'choose class feature' button and parse it to Menus.classfeatures
-function MakeClassMenu(bKeepTempClassesKnown) {
+function MakeClassMenu() {
 	var gatherVars, hasEldritchBlast, isFS = false, selFS = GetFightingStyleSelection();
 	var testPrereqs = function(toEval, objNm, feaNm) {
 		if (!gatherVars) {
@@ -5990,42 +6018,25 @@ function MakeClassMenu(bKeepTempClassesKnown) {
 	};
 
 	var bonusClassFeatures = getBonusClassExtraChoices();
-	if (bonusClassFeatures) {
-		Menus.classfeatures_tempClassesKnown = [];
-		ClassMenu.push({ cName : "-" }); // Add a divider
-		for (var i = 0; i < bonusClassFeatures.length; i++) {
-			var oBonus = bonusClassFeatures[i];
-			aClass = oBonus["class"];
-			cl = oBonus.subclass ? ClassSubList[oBonus.subclass] : ClassList[aClass];
-			prop = oBonus.feature;
-			propFea = cl.features[prop];
-			propFea.extrachoices.sort();
-			toTest = GetFeatureChoice("classes", aClass, prop, true);
-			toTestNr = nrFoundInExtraChoices(toTest, propFea.extrachoices);
-			var clName = !oBonus.subclass ? cl.name : cl.fullname ? cl.fullname : ClassList[aClass].name + " (" + cl.subname + ")";
-			var menuName = "Bonus " + clName + " " + propFea.extraname + " (selected " + toTestNr + " of " + oBonus.bonus + ")";
-			var sMoreReturn = "#extrabonus" + (oBonus.subclass ? "#" + oBonus.subclass : "");
-			// temporarily add the class to classes.known, so that prereq scripts will not produce errors
-			var tempClassesKnown = false;
-			if (!classes.known[aClass]) {
-				classes.known[aClass] = {
-					name : aClass,
-					level : 0,
-					subclass : oBonus.subclass ? oBonus.subclass : ""
-				}
-				if (bKeepTempClassesKnown) {
-					Menus.classfeatures_tempClassesKnown.push(aClass);
-				} else {
-					tempClassesKnown = true;
-				}
-			} else if (oBonus.subclass && !classes.known[aClass].subclass && Menus.classfeatures_tempClassesKnown.indexOf(aClass) !== -1) {
-				classes.known[aClass].subclass = oBonus.subclass;
-			}
-			menuLVL3(ClassMenu, menuName, propFea.extrachoices, aClass, prop, "extra", propFea, toTest, sMoreReturn);
-			if (tempClassesKnown) {
-				delete classes.known[aClass];
-			}
-		}
+	if (bonusClassFeatures.length) ClassMenu.push({ cName : "-" }); // Add a divider
+	for (var i = 0; i < bonusClassFeatures.length; i++) {
+		var oBonus = bonusClassFeatures[i];
+		aClass = oBonus.class;
+		cl = oBonus.subclass ? ClassSubList[oBonus.subclass] : ClassList[aClass];
+		prop = oBonus.feature;
+		propFea = cl.features[prop];
+		propFea.extrachoices.sort();
+		toTest = GetFeatureChoice("classes", aClass, prop, true);
+		toTestNr = nrFoundInExtraChoices(toTest, propFea.extrachoices);
+		var clName = !oBonus.subclass ? cl.name : cl.fullname ? cl.fullname : ClassList[aClass].name + " (" + cl.subname + ")";
+		var menuName = "Bonus " + clName + " " + propFea.extraname + " (selected " + toTestNr + " of " + oBonus.bonus + ")";
+		var sMoreReturn = "#extrabonus" + (oBonus.subclass ? "#" + oBonus.subclass : "");
+		// temporarily add the (sub)class to classes.known, so that prereq scripts won't produce errors
+		addTempClassesKnown(oBonus);
+		// make the menu entry
+		menuLVL3(ClassMenu, menuName, propFea.extrachoices, aClass, prop, "extra", propFea, toTest, sMoreReturn);
+		// remove the temporary addition to classes.known
+		cleanTempClassesKnown();
 	}
 
 	// if no options were found, set the menu to something else and make the return false
@@ -6047,7 +6058,7 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 	// first see if we have something to do
 	var MenuSelection = Input;
 	if (!Input) {
-		MakeClassMenu(true);
+		MakeClassMenu();
 		MenuSelection = getMenu("classfeatures");
 	}
 	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[4] == "stop") return cleanTempClassesKnown();
@@ -6064,6 +6075,11 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 	var propFea = false;
 	if (extraBonus && (sSubclass || !CurrentClasses[aClass])) {
 		propFea = sSubclass && ClassSubList[sSubclass] ? ClassSubList[sSubclass].features[prop] : ClassList[aClass].features[prop];
+		// temporarily add the (sub)class to classes.known, so that scripts won't produce errors
+		addTempClassesKnown({
+			class : aClass,
+			subclass : sSubclass
+		});
 		var unknownClass = true;
 	} else if (CurrentClasses[aClass]) {
 		propFea = CurrentClasses[aClass].features[prop];
@@ -6150,12 +6166,29 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
-// Delete the temporary additions to classes.known, if any
-function cleanTempClassesKnown() {
-	for (var i = 0; i < Menus.classfeatures_tempClassesKnown.length; i++) {
-		delete classes.known[Menus.classfeatures_tempClassesKnown[i]];
+// Add a temporary addition to classes.known, if applicable
+function addTempClassesKnown(oBonus) {
+	if (!classes.known[oBonus.class]) {
+		classes.known[oBonus.class] = {
+			name : oBonus.class,
+			level : 0,
+			subclass : oBonus.subclass ? oBonus.subclass : ""
+		}
+	} else if (oBonus.subclass && oBonus.subclass !== classes.known[oBonus.class].subclass) {
+		classes.known[oBonus.class].subclassRem = classes.known[oBonus.class].subclass;
+		classes.known[oBonus.class].subclass = oBonus.subclass;
 	}
-	Menus.classfeatures_tempClassesKnown = [];
+}
+// Delete or revert all temporary changes to classes.known, if applicable
+function cleanTempClassesKnown() {
+	for (var sClass in classes.known) {
+		if (classes.known[sClass].level === 0) {
+			delete classes.known[sClass];
+		} else if (classes.known[sClass].subclassRem) {
+			classes.known[sClass].subclass = classes.known[sClass].subclassRem;
+			delete classes.known[sClass].subclassRem;
+		}
+	}
 }
 
 // Set the choice for other class features dependent on the choice of this class feature

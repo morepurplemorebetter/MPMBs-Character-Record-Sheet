@@ -217,7 +217,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 
 		// spellcasting
 		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent, objNm, forceNonCurrent ? true : false);
-		if (addIt && CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform !== undefined)) {
+		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform !== undefined)) {
 			CurrentUpdates.types.push("spells");
 			var aCast = CurrentSpells[useSpCasting];
 
@@ -645,9 +645,9 @@ function getBonusClassExtraChoiceNr(sClass, sFeaNm) {
 }
 
 // return an object with bonus class features that are not normally accessible
-function getBonusClassExtraChoices() {
-	if (!CurrentFeatureChoices.bonus) return false;
+function getBonusClassExtraChoices(bIgnoreNotInMenu) {
 	var aReturn = [];
+	if (!CurrentFeatureChoices.bonus) return aReturn;
 	for (var sClass in CurrentFeatureChoices.bonus) {
 		var oClassList = ClassList[sClass];
 		if (!oClassList) continue; // class doesn't exist
@@ -662,7 +662,7 @@ function getBonusClassExtraChoices() {
 			var oUseObj = bTestLvl ? CurrentClasses[sClass].features : bIsMainClass ? oClassList.features : ClassSubList[sSubclass].features;
 			for (var sFeaNm in oSubclass) {
 				// see if the feature exists and if it isn't already available for the character or if the features are not meant to be displayed in the menu
-				if (!oUseObj[sFeaNm] || !oUseObj[sFeaNm].extrachoices || oUseObj[sFeaNm].extrachoicesNotInMenu || (bTestLvl && oUseObj[sFeaNm].minlevel <= iClassLvl)) continue;
+				if (!oUseObj[sFeaNm] || !oUseObj[sFeaNm].extrachoices || (!bIgnoreNotInMenu && oUseObj[sFeaNm].extrachoicesNotInMenu) || (bTestLvl && oUseObj[sFeaNm].minlevel <= iClassLvl)) continue;
 				// feature is not available for the character, so return its object
 				aReturn.push({
 					"class" : sClass,
@@ -673,7 +673,7 @@ function getBonusClassExtraChoices() {
 			}
 		}
 	}
-	return aReturn.length ? aReturn : false;
+	return aReturn;
 }
 
 // a function to get all currently selected fighting styles
@@ -715,8 +715,8 @@ function classFeaChoiceBackwardsComp() {
 }
 
 // a function to return the spellcasting ability, ask the user which to use if it is an array
-function ReturnSpellcastingAbility(sCast, vAbility) {
-	if (vAbility === undefined) return 0;
+function ReturnSpellcastingAbility(sCast, vAbility, bAbilitySave) {
+	if (vAbility === undefined || (!isArray(vAbility) && isNaN(vAbility) && bAbilitySave)) return 0;
 	if (!isArray(vAbility)) return !isNaN(vAbility) || /^(class|race)$/i.test(vAbility) ? vAbility : 0;
 	var sCastName = CurrentSpells[sCast] ? CurrentSpells[sCast].name : sCast;
 	var aAbiOptions = [], oAbiRef = {};
@@ -730,7 +730,10 @@ function ReturnSpellcastingAbility(sCast, vAbility) {
 		}
 	}
 	if (aAbiOptions.length < 2) return aAbiOptions.length ? aAbiOptions[0] : 0;
-	var sAsk = AskUserOptions("Select Spellcasting Ability Score for " + sCastName, "The spellcasting ability for " + sCastName + " can be one of multiple options. It is up to you to select which the sheet will use from now on.", aAbiOptions, "radio", true, 'You can always change the spellcasting ability for ' + sCastName + ' on the spell sheet once you generate the spell sheet. What you select here is the \"default\" spellcasting ability.');
+	var sType = bAbilitySave ? "Ability Save DC" : "Spellcasting Ability";
+	var sTypeLC = sType.replace("A", "a").replace("S", "s");
+	var sTypePage = bAbilitySave ? "first page" : "spell sheet once you generate the spell sheet";
+	var sAsk = AskUserOptions("Select " + sType + " for " + sCastName, "The " + sTypeLC + " for " + sCastName + " can be one of multiple options. It is up to you to select which the sheet will use from now on.", aAbiOptions, "radio", true, 'You can always change the ' + sTypeLC + ' for ' + sCastName + ' on the ' + sTypePage + '. What you select here is the "default" ' + sTypeLC + '.');
 	if (oAbiRef[sAsk]) {
 		return oAbiRef[sAsk];
 	} else {
