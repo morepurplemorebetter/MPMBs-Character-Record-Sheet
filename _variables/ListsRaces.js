@@ -29,7 +29,7 @@ var Base_RaceList = {
 		heightMetric : " stand well over 1,8 metres tall (170 + 5d8 cm)",
 		weightMetric : " weigh around 110 kg (80 + 5d8 \xD7 4d6 / 10 kg)",
 		scores : [2, 0, 0, 0, 0, 1],
-		trait : "Dragonborn (+2 Strength, +1 Charisma)\nDraconic Ancestry: Choose one type of dragon using the \"Racial Options\" button. I gain a breath weapon and damage resistance as determined by the dragon type chosen.\nBreath Weapon: Exhale destructive energy as an action with a size, shape, saving throw type, and damage type as found in the table. All in the area must make a saving throw with DC 8 + Con modifier + prof bonus. It does 2d6 (+1d6 at level 6, 11, 16) damage, half as much damage on a successful save. I can use it again after a short rest.",
+		trait : "Dragonborn (+2 Strength, +1 Charisma)\nDraconic Ancestry: Choose one type of dragon using the \"Racial Options\" button. I gain a breath weapon and damage resistance as determined by the dragon type chosen.\nBreath Weapon: Exhale destructive energy as an action with a size, shape, saving throw type, and damage type as found in the table. All in the area must make a saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 (+1d6 at level 6, 11, 16) damage, half as much damage on a successful save. I can use it again after a short rest.",
 		features : {
 			"draconic ancestry" : {
 				name : "Draconic Ancestry",
@@ -328,7 +328,7 @@ var Base_RaceSubList = {
 		trait : "Black Dragonborn (+2 Strength, +1 Charisma)"
 		+ "\n" + "Acid Breath Weapon:"
 		+ "\n   " + "As an action, I exhale destructive energy in a 5-ft by 30-ft line."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + prof bonus."
+		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
 		+ "\n   " + "It does 2d6 acid damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
@@ -340,7 +340,7 @@ var Base_RaceSubList = {
 		trait : "Blue Dragonborn (+2 Strength, +1 Charisma)"
 		+ "\n" + "Lightning Breath Weapon:"
 		+ "\n   " + "As an action, I exhale destructive energy in a 5-ft by 30-ft line."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + prof bonus."
+		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
 		+ "\n   " + "It does 2d6 lightning damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
@@ -352,7 +352,7 @@ var Base_RaceSubList = {
 		trait : "Brass Dragonborn (+2 Strength, +1 Charisma)"
 		+ "\n" + "Fire Breath Weapon:"
 		+ "\n   " + "As an action, I exhale destructive energy in a 5-ft by 30-ft line."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + prof bonus."
+		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
 		+ "\n   " + "It does 2d6 fire damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
@@ -364,7 +364,7 @@ var Base_RaceSubList = {
 		trait : "Bronze Dragonborn (+2 Strength, +1 Charisma)"
 		+ "\n" + "Lightning Breath Weapon:"
 		+ "\n   " + "As an action, I exhale destructive energy in a 5-ft by 30-ft line."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + prof bonus."
+		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
 		+ "\n   " + "It does 2d6 lightning damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
@@ -376,7 +376,7 @@ var Base_RaceSubList = {
 		trait : "Copper Dragonborn (+2 Strength, +1 Charisma)"
 		+ "\n" + "Acid Breath Weapon:"
 		+ "\n   " + "As an action, I exhale destructive energy in a 5-ft by 30-ft line."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + prof bonus."
+		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
 		+ "\n   " + "It does 2d6 acid damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
@@ -388,7 +388,7 @@ var Base_RaceSubList = {
 		trait : "Gold Dragonborn (+2 Strength, +1 Charisma)"
 		+ "\n" + "Fire Breath Weapon:"
 		+ "\n   " + "As an action, I exhale destructive energy in a 15-ft cone."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + prof bonus."
+		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
 		+ "\n   " + "It does 2d6 fire damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
@@ -400,7 +400,7 @@ var Base_RaceSubList = {
 		trait : "Green Dragonborn (+2 Strength, +1 Charisma)"
 		+ "\n" + "Poison Breath Weapon:"
 		+ "\n   " + "As an action, I exhale destructive energy in a 15-ft cone."
-		+ "\n   " + "All in the area must make a Con saving throw with DC 8 + Con modifier + prof bonus."
+		+ "\n   " + "All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus."
 		+ "\n   " + "It does 2d6 poison damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
@@ -412,7 +412,7 @@ var Base_RaceSubList = {
 		trait : "Red Dragonborn (+2 Strength, +1 Charisma)"
 		+ "\n" + "Fire Breath Weapon:"
 		+ "\n   " + "As an action, I exhale destructive energy in a 15-ft cone."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + prof bonus."
+		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
 		+ "\n   " + "It does 2d6 fire damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
@@ -424,7 +424,7 @@ var Base_RaceSubList = {
 		trait : "Silver Dragonborn (+2 Strength, +1 Charisma)"
 		+ "\n" + "Cold Breath Weapon:"
 		+ "\n   " + "As an action, I exhale destructive energy in a 15-ft cone."
-		+ "\n   " + "All in the area must make a Con saving throw with DC 8 + Con modifier + prof bonus."
+		+ "\n   " + "All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus."
 		+ "\n   " + "It does 2d6 cold damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",
@@ -436,7 +436,7 @@ var Base_RaceSubList = {
 		trait : "White Dragonborn (+2 Strength, +1 Charisma)"
 		+ "\n" + "Cold Breath Weapon:"
 		+ "\n   " + "As an action, I exhale destructive energy in a 15-ft cone."
-		+ "\n   " + "All in the area must make a Con saving throw with DC 8 + Con modifier + prof bonus."
+		+ "\n   " + "All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus."
 		+ "\n   " + "It does 2d6 cold damage, half as much damage on a successful save."
 		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
 		+ "\n   " + "I can't use this feature again until I finish a short rest.",

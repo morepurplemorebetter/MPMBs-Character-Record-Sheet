@@ -102,11 +102,14 @@ CreatureList["purple crawler"] = {
 	TYPE:	array of strings (variable size)
 	USE:	alternative names for the creature
 	ADDED:	v13.0.6
+	CHANGE: v13.1.3 (also appears in drop-down boxes)
 
 	These names will be used to recognize what is entered into the race drop-down on
-	the companion and wild shape pages, but will not be visible in those drop-down boxes.
+	the companion and wild shape pages, and will be displayed in those drop-down boxes.
+	This last part was changed in v13.1.3, that the names in this attribute will now all
+	appear in the drop-down boxes along with the `name` attribute of the creature.
 
-	However, if this creature is an option for Find Familiar, Warlock Pact of the Chain,
+	If this creature is an option for Wild Shape, Find Familiar, Warlock Pact of the Chain,
 	Find Steed, Find Greater Steed, a ranger's companion or something similar,
 	then these alternative names will also be shown in the menu options.
 */

@@ -1176,7 +1176,16 @@ function resourceSelectionDialog(type) {
 		var theName = "Creatures";
 		var CSatt = "creaExcl";
 		for (var u in CreatureList) {
-			var uName = amendSource(CreatureList[u].name, CreatureList[u]);
+			if (CurrentVars.extraCreatures && CurrentVars.extraCreatures[u]) continue;
+			var uName = CreatureList[u].name;
+			if (CreatureList[u].nameAlt) {
+				var nameArr = !isArray(CreatureList[u].nameAlt) ? [CreatureList[u].nameAlt] : CreatureList[u].nameAlt;
+				// the alt names are probably just the same as the main name, but with a different word order. We don't want those, so we'll only take the ones without a comma in them
+				for (var i = 0; i < nameArr.length; i++) {
+					if (nameArr[i].indexOf(",") === -1) uName += "; " + nameArr[i];
+				}
+			}
+			uName = amendSource(uName, CreatureList[u]);
 			var uTest = testSource(u, CreatureList[u], CSatt, true);
 			if (uTest === "source") continue;
 			var uGroup = CreatureList[u].type;

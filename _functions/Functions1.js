@@ -4682,7 +4682,7 @@ function RemoveFeature(identifier, usages, additionaltxt, recovery, tooltip, Upd
 				usageFld.value -= usages;
 				if (tooltip && featureFld.userName.indexOf(tooltip) !== -1) featureFld.userName = featureFld.userName.replace(tooltip, "").replace(/, *$/, "").replace(/, , /g, ", ");
 			}
-			i = FieldNumbers.limfea + 1;
+			return;
 		}
 	}
 }

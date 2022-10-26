@@ -1243,3 +1243,17 @@ function outOfMemoryErrorHandling(closeFile) {
 	app.execMenuItem("Close");
 	tDoc.closeDoc();
 };
+
+// return which range of the ones given in `aOpt` the starting character of `str` belongs to. e.g. aOpt = ["A-F", "G-Q", "R-Z"];
+function getLetterRange(str, aOpt) {
+	var iCharNr = removeDiacritics(str)[0].toLowerCase().charCodeAt(0) - 97;
+	var oOpt = {};
+	aOpt.sort();
+	for (var i = 0; i < aOpt.length; i++) {
+		oOpt[aOpt[i]] = aOpt[i].slice(-1).toLowerCase().charCodeAt(0) - 97;
+	}
+	for (var sRng in oOpt) {
+		if (iCharNr <= oOpt[sRng]) return sRng;
+	}
+	return sRng; // higher than the last, so just return the last
+};

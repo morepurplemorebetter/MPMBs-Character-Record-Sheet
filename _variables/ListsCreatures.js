@@ -1,8 +1,8 @@
 var Base_CreatureList = {
 	// The four elementals (for Druid Wild Shape)
 	"air elemental" : {
-		name : "Elemental, Air",
-		nameAlt : ["Air Elemental"],
+		name : "Air Elemental",
+		nameAlt : ["Elemental, Air"],
 		source : [["SRD", 305], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
@@ -47,8 +47,8 @@ var Base_CreatureList = {
 		wildshapeString : "Darkvision 60 ft| Knows Auran| Resistant to: lightning, thunder, and bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious| Air Form: can move through 1 inch wide space without squeezing and can move through and stop in space of hostiles| Whirlwind: see Monster Manual page 124"
 	},
 	"earth elemental" : {
-		name : "Elemental, Earth",
-		nameAlt : ["Earth Elemental"],
+		name : "Earth Elemental",
+		nameAlt : ["Elemental, Earth"],
 		source : [["SRD", 306], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
@@ -85,8 +85,8 @@ var Base_CreatureList = {
 		wildshapeString : "Darkvision 60 ft; Tremorsense 60 ft| Knows Terran| Vulnerable to: thunder| Resistant to: bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, paralyzed, petrified, poisoned, unconscious| Earth Glide: can burrow through nonmagical, unworked earth and stone without disturbing the material| Siege Monster: does double damage to objects and structures"
 	},
 	"fire elemental" : {
-		name : "Elemental, Fire",
-		nameAlt : ["Fire Elemental"],
+		name : "Fire Elemental",
+		nameAlt : ["Elemental, Fire"],
 		source : [["SRD", 306], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
@@ -125,8 +125,8 @@ var Base_CreatureList = {
 		wildshapeString : "Darkvision 60 ft| Knows Ignan| Resistant to: bludg./ piercing/slashing from nonmagical weapons| Immune to: fire/poison/exhaustion/grappled/paralyzed/petrified/ poisoned/prone/restrained/unconscious| Sheds 30-ft bright/dim light| 1 cold dmg per gallon of or 5ft moved through water| Fire Form: pass through 1\" space no squeezing; move through/stop in another's space; do 1d10 fire dmg to melee attackers; MM, p125"
 	},
 	"water elemental" : {
-		name : "Elemental, Water",
-		nameAlt : ["Water Elemental"],
+		name : "Water Elemental",
+		nameAlt : ["Elemental, Water"],
 		source : [["SRD", 307], ["M", 124]],
 		size : 2, //Large
 		type : "Elemental",
@@ -937,8 +937,8 @@ var Base_CreatureList = {
 		}],
 	},
 	"skeleton (humanoid)" : {
-		name : "Skeleton (humanoid)",
-		nameAlt : ["Skeleton"],
+		name : "Skeleton",
+		nameAlt : ["Skeleton, Humanoid"],
 		source : [["SRD", 346], ["M", 272]],
 		size : 3, //Medium
 		type : "Undead",
@@ -973,6 +973,7 @@ var Base_CreatureList = {
 	},
 	"warhorse skeleton" : {
 		name : "Warhorse Skeleton",
+		nameAlt : ["Skeleton, Warhorse"],
 		source : [["SRD", 346], ["M", 273]],
 		size : 2, //Large
 		type : "Undead",
@@ -1276,7 +1277,8 @@ var Base_CreatureList = {
 	},
 	// Mephits (with help from Undrhil)
 	"dust mephit" : {
-		name : "Mephit, Dust",
+		name : "Dust Mephit",
+		nameAlt : ["Mephit, Dust"],
 		source : [["SRD", 330], ["M", 215]],
 		size : 5, //Tiny
 		type : "Elemental",
@@ -1327,7 +1329,8 @@ var Base_CreatureList = {
 		}]
 	},
 	"ice mephit" : {
-		name : "Mephit, Ice",
+		name : "Ice Mephit",
+		nameAlt : ["Mephit, Ice"],
 		source : [["SRD", 331], ["M", 215]],
 		size : 4, //Small
 		type : "Elemental",
@@ -1382,7 +1385,8 @@ var Base_CreatureList = {
 		}]
 	},
 	"magma mephit" : {
-		name : "Mephit, Magma",
+		name : "Magma Mephit",
+		nameAlt : ["Mephit, Magma"],
 		source : [["SRD", 331], ["M", 216]],
 		size : 4, //Small
 		type : "Elemental",
@@ -1436,7 +1440,8 @@ var Base_CreatureList = {
 		}]
 	},
 	"mud mephit" : {
-		name : "Mephit, Mud",
+		name : "Mud Mephit",
+		nameAlt : ["Mephit, Mud"],
 		source : [["SRD", 331], ["M", 216]],
 		size : 5, //Tiny
 		type : "Elemental",
@@ -1485,7 +1490,8 @@ var Base_CreatureList = {
 		}]
 	},
 	"smoke mephit" : {
-		name : "Mephit, Smoke",
+		name : "Smoke Mephit",
+		nameAlt : ["Mephit, Smoke"],
 		source : [["SRD", 331], ["M", 217]],
 		size : 4, //Small
 		type : "Elemental",
@@ -1536,7 +1542,8 @@ var Base_CreatureList = {
 		}]
 	},
 	"steam mephit" : {
-		name : "Mephit, Steam",
+		name : "Steam Mephit",
+		nameAlt : ["Mephit, Steam"],
 		source : [["SRD", 331], ["M", 217]],
 		size : 4, //Small
 		type : "Elemental",
@@ -1579,6 +1586,236 @@ var Base_CreatureList = {
 		}, {
 			name : "Steam Breath (Recharge 6)",
 			description : "The mephit exhales a 15-ft cone of scalding steam. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 4 (1d8) fire damage on a failed save, or half as much damage on a successful one."
+		}]
+	},
+	// Golems
+	"clay golem" : { // contributed by Nod_Hero
+		name : "Clay Golem",
+		nameAlt : ["Golem, Clay"],
+		source : [["SRD", 318], ["M", 168]],
+		size : 2, //Large
+		type : "Construct",
+		alignment : "Unaligned",
+		ac : 14,
+		hp : 133,
+		hd : [14, 10],
+		speed : "20 ft",
+		scores : [20, 9, 18, 3, 8, 1],
+		damage_immunities : "acid, poison, psychic; bludgeoning, piercing, and slashing from nonmagical attacks that aren't adamantine",
+		condition_immunities : "charmed, exhaustion, frightened, paralyzed, petrified, poisoned",
+		senses : "Darkvision 60 ft",
+		passivePerception : 9,
+		languages : "understands the languages of its creator but can't speak",
+		challengeRating : "9",
+		proficiencyBonus : 4,
+		attacksAction : 2,
+		attacks : [{
+			name : "Slam",
+			ability : 1,
+			damage : [2, 10, "bludgeoning"],
+			modifiers : [-1, ""],
+			range : "Melee (5 ft)",
+			description : "DC 15 Con save or HP max reduced; Two Slam attacks as an Attack action; Counts as magical",
+			abilitytodamage : true,
+			tooltip : "If the target is a creature, it must succeed on a DC 15 Constitution saving throw or have its hit point maximum reduced by an amount equal to the damage taken. The target dies if this attack reduces its hit point maximum to 0. The reduction lasts until removed by the greater restoration spell or other magic."
+		}, {
+			name : "Haste (Recharge 5-6)",
+			ability : "",
+			damage : ["", "", ""],
+			range : "Self",
+			description : "+2 AC, adv. on Dex saves, and can Slam as a bonus action until the end of its next turn",
+			abilitytodamage : false,
+			dc : false,
+			tooltip : "Until the end of its next turn, the golem magically gains a +2 bonus to its AC, has advantage on Dexterity saving throws, and can use its slam attack as a bonus action."
+		}],
+		traits : [{
+			name : "Acid Absorption",
+			description : "Whenever the golem is subjected to acid damage, it takes no damage and instead regains a number of hit points equal to the acid damage dealt."
+		}, {
+			name : "Berserk",
+			description : "If the golem starts its turn with 60 HP or fewer, roll a d6. On a 6, it goes berserk until destroyed or it regains all its HP. While berserk, the golem moves to and attacks the nearest creature it can see. If no creature is near enough, it attacks an object, with preference for an object smaller than itself."
+		}],
+		actions : [{
+			name : "Slam",
+			description : "Target of the golem's slam attack must make a DC 15 Con save or have their HP maximum reduced by the damage taken. This can be restored by the Greater Restoration" + (typePF ? " or other magic." : ".")
+		}, {
+			name : "Haste (Recharge 5-6)",
+			description : "As an Action, the golem can magically gain, until the end of its next turn, +2 to its AC, advantage on Dex saves, and can use its slam attack as a bonus action."
+		}],
+		features : [{
+			name : "Immutable Form",
+			description : "The golem is immune to any spell or effect that would alter its form."
+		}, {
+			name : "Magic Resistance",
+			description : "The golem has advantage on saving throws against spells and other magical effects."
+		}, {
+			name : "Magic Weapons",
+			description : "The golem's attacks are magical."
+		}]
+	},
+	"flesh golem" : { // contributed by Nod_Hero
+		name : "Flesh Golem",
+		nameAlt : ["Golem, Flesh"],
+		source : [["SRD", 319], ["M", 169]],
+		size : 2, //Large
+		type : "Construct",
+		alignment : "Unaligned",
+		ac : 9,
+		hp : 93,
+		hd : [11, 8],
+		speed : "30 ft",
+		scores : [19, 9, 18, 6, 10, 5],
+		damage_immunities : "lightning, poison; bludgeoning, piercing, and slashing from nonmagical attacks that aren't adamantine",
+		condition_immunities : "charmed, exhaustion, frightened, paralyzed, petrified, poisoned",
+		senses : "Darkvision 60 ft",
+		passivePerception : 10,
+		languages : "understands the languages of its creator but can't speak",
+		challengeRating : "5",
+		proficiencyBonus : 3,
+		attacksAction : 2,
+		attacks : [{
+			name : "Slam",
+			ability : 1,
+			damage : [2, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Two Slam attacks as an Attack action; Counts as magical",
+			abilitytodamage : true
+		}],
+		traits : [{
+			name : "Aversion of Fire",
+			description : "If the golem takes fire damage, it has disadvantage on attack rolls and ability checks until the end of its next turn."
+		}, {
+			name : "Berserk",
+			description : "If the golem starts its turn with 40 HP or fewer, roll a d6. On a 6, it goes berserk until destroyed or it regains all its HP. While berserk, it moves to and attacks the nearest creature it can see, or an object (smaller than itself if possible) if no creature is near enough. As an action, the golem's creator can try to calm it, if within 60 ft and earshot of it. it stops being berserk with a successful DC 15 Charisma (Persuasion) check. If the golem takes damage while still at 40 HP or fewer, it might go berserk again."
+		}, {
+			name : "Lightning Absorption",
+			description : "Whenever the golem is subjected to lightning damage, it takes no damage and instead regains a number of HP equal to the lightning damage."
+		}],
+		features : [{
+			name : "Immutable Form",
+			description : "The golem is immune to any spell or effect that would alter its form."
+		}, {
+			name : "Magic Resistance",
+			description : "The golem has advantage on saving throws against spells and other magical effects."
+		}, {
+			name : "Magic Weapons",
+			description : "The golem's attacks are magical."
+		}]
+	},
+	"iron golem" : { // contributed by Nod_Hero
+		name : "Iron Golem",
+		nameAlt : ["Golem, Iron"],
+		source : [["SRD", 319], ["M", 170]],
+		size : 2, //Large
+		type : "Construct",
+		alignment : "Unaligned",
+		ac : 20,
+		hp : 210,
+		hd : [20, 10],
+		speed : "30 ft",
+		scores : [24, 9, 20, 3, 11, 1],
+		damage_immunities : "fire, poison, psychic; bludgeoning, piercing, and slashing from nonmagical attacks that aren't adamantine",
+		condition_immunities : "charmed, exhaustion, frightened, paralyzed, petrified, poisoned",
+		senses : "Darkvision 120 ft",
+		passivePerception : 10,
+		languages : "understands the languages of its creator but can't speak",
+		challengeRating : "16",
+		proficiencyBonus : 5,
+		attacksAction : 2,
+		attacks : [{
+			name : "Slam",
+			ability : 1,
+			damage : [3, 8, "bludgeoning"],
+			modifiers : [1, ""],
+			range : "Melee (5 ft)",
+			description : "Two melee attacks as an Attack action; Counts as magical"
+		}, {
+			name : "Sword",
+			ability : 1,
+			damage : [3, 10, "slashing"],
+			modifiers : [1, ""],
+			range : "Melee (10 ft)",
+			description : "Two melee attacks as an Attack action; Counts as magical"
+		}, {
+			name : "Poison Breath (Recharge 5-6)",
+			ability : 3,
+			damage : [10, 8, "poison"],
+			range : "15-ft cone",
+			description : "Hits all in area; Con save, success - half damage",
+			abilitytodamage : false,
+			dc : true,
+			modifiers : [1, ""],
+			tooltip : "The golem exhales poisonous gas in a 15-foot cone. Each creature in that area must make a DC 19 Constitution saving throw, taking 45 (10d8) poison damage on a failed save, or half as much damage on a successful one.",
+		}],
+		traits : [{
+			name : "Fire Absorption",
+			description : "Whenever the golem is subjected to fire damage, it takes no damage and instead regains a number of hit points equal to the fire damage dealt."
+		}, {
+			name : "Magic Weapons",
+			description : "The golem's weapon attacks are magical."
+		}],
+		actions : [{
+			name : "Poison Breath (Recharge 5-6)",
+			description : "As an action, the golem can exhale poisonous gas in a 15-ft cone. Each creature in that area must make a DC 19 Constitution saving throw, taking 45 (10d8) poison damage on a failed save, or half as much damage on a successful one."
+		}],
+		features : [{
+			name : "Immutable Form",
+			description : "The golem is immune to any spell or effect that would alter its form."
+		}, {
+			name : "Magic Resistance",
+			description : "The golem has advantage on saving throws against spells and other magical effects."
+		}]
+	},
+	"stone golem" : { // contributed by Nod_Hero
+		name : "Stone Golem",
+		nameAlt : ["Golem, Stone"],
+		source : [["SRD", 320], ["M", 170]],
+		size : 2, //Large
+		type : "Construct",
+		alignment : "Unaligned",
+		ac : 17,
+		hp : 178,
+		hd : [17, 10],
+		speed : "30 ft",
+		scores : [22, 9, 20, 3, 11, 1],
+		damage_immunities : "poison, psychic; bludgeoning, piercing, and slashing from nonmagical attacks that aren't adamantine",
+		condition_immunities : "charmed, exhaustion, frightened, paralyzed, petrified, poisoned",
+		senses : "Darkvision 120 ft",
+		passivePerception : 10,
+		languages : "understands the languages of its creator but can't speak",
+		challengeRating : "10",
+		proficiencyBonus : 4,
+		attacksAction : 2,
+		attacks : [{
+			name : "Slam",
+			ability : 1,
+			damage : [3, 8, "bludgeoning"],
+			range : "Melee (5 ft)",
+			description : "Two Slam attacks as an Attack action; Counts as magical"
+		}, {
+			name : "Slow (Recharge 5-6)",
+			ability : 3,
+			damage : ["Wis save", "", "Slowed"],
+			range : "sight, 10 ft",
+			description : "Wis save or slowed for 1 min (can save at end of each turn)",
+			abilitytodamage : false,
+			dc : true,
+			tooltip : "The golem targets one or more creatures it can see within 10 ft of it. Each target must make a DC 17 Wisdom saving throw against this magic. On a failed save, a target can't use reactions, its speed is halved, and it can't make more than one attack on its turn. In addition, the target can take either an action or a bonus action on its turn, not both. These effects last for 1 minute. A target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+		}],
+		traits : [{
+			name : "Magic Weapons",
+			description : "The golem's weapon attacks are magical."
+		}],
+		actions : [{
+			name : "Slow (Recharge 5-6)",
+			description : "As an action, the golem can target one or more creatures it can see within 10 ft of it. Each target must make a DC 17 Wisdom saving throw against this magic. On a failed save, a target can't use reactions, its speed is halved, and it can't make more than one attack on its turn. In addition, the target can take either an action or a bonus action on its turn, not both. These effects last for 1 minute. A target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+		}],
+		features : [{
+			name : "Immutable Form",
+			description : "The golem is immune to any spell or effect that would alter its form."
+		}, {
+			name : "Magic Resistance",
+			description : "The golem has advantage on saving throws against spells and other magical effects."
 		}]
 	},
 	// Beasts (familiars, Ranger and general animal companions, and Druid Wild Shapes) [Miscellaneous Creatures Section]
@@ -1778,6 +2015,7 @@ var Base_CreatureList = {
 	},
 	"blink dog" : {
 		name : "Blink Dog",
+		nameAlt : ["Dog, Blink"],
 		source : [["SRD", 368], ["M", 318]],
 		size : 3, //Medium
 		type : "Fey",
@@ -2025,6 +2263,7 @@ var Base_CreatureList = {
 	},
 	"constrictor snake" : {
 		name : "Constrictor Snake",
+		nameAlt : ["Snake, Constrictor"],
 		source : [["SRD", 369], ["M", 320]],
 		size : 2, //Large
 		type : "Beast",
@@ -2120,6 +2359,7 @@ var Base_CreatureList = {
 	},
 	"death dog" : {
 		name : "Death Dog",
+		nameAlt : ["Dog, Death"],
 		source : [["SRD", 370], ["M", 321]],
 		size : 3, //Medium
 		type : "Monstrosity",
@@ -2220,6 +2460,7 @@ var Base_CreatureList = {
 	},
 	"draft horse" : {
 		name : "Draft Horse",
+		nameAlt : ["Horse, Draft"],
 		source : [["SRD", 371], ["M", 321]],
 		size : 2, //Large
 		type : "Beast",
@@ -2345,6 +2586,7 @@ var Base_CreatureList = {
 	},
 	"flying snake" : {
 		name : "Flying Snake",
+		nameAlt : ["Snake, Flying"],
 		source : [["SRD", 372], ["M", 322]],
 		size : 5, //Tiny
 		type : "Beast",
@@ -2405,6 +2647,7 @@ var Base_CreatureList = {
 	},
 	"giant ape" : {
 		name : "Giant Ape",
+		nameAlt : ["Ape, Giant"],
 		source : [["SRD", 373], ["M", 323]],
 		size : 1, //Huge
 		type : "Beast",
@@ -2443,6 +2686,7 @@ var Base_CreatureList = {
 	},
 	"giant badger" : {
 		name : "Giant Badger",
+		nameAlt : ["Badger, Giant"],
 		source : [["SRD", 373], ["M", 323]],
 		size : 3, //Medium
 		type : "Beast",
@@ -2481,6 +2725,7 @@ var Base_CreatureList = {
 	},
 	"giant bat" : {
 		name : "Giant Bat",
+		nameAlt : ["Bat, Giant"],
 		source : [["SRD", 373], ["M", 323]],
 		size : 2, //Large
 		type : "Beast",
@@ -2512,6 +2757,7 @@ var Base_CreatureList = {
 	},
 	"giant boar" : {
 		name : "Giant Boar",
+		nameAlt : ["Boar, Giant"],
 		source : [["SRD", 373], ["M", 323]],
 		size : 2, //Large
 		type : "Beast",
@@ -2543,6 +2789,7 @@ var Base_CreatureList = {
 	},
 	"giant centipede" : {
 		name : "Giant Centipede",
+		nameAlt : ["Centipede, Giant"],
 		source : [["SRD", 374], ["M", 323]],
 		size : 4, //Small
 		type : "Beast",
@@ -2571,6 +2818,7 @@ var Base_CreatureList = {
 	},
 	"giant constrictor snake" : {
 		name : "Giant Constrictor Snake",
+		nameAlt : ["Snake, Giant Constrictor"],
 		source : [["SRD", 374], ["M", 324]],
 		size : 1, //Huge
 		type : "Beast",
@@ -2604,6 +2852,7 @@ var Base_CreatureList = {
 	},
 	"giant crab" : {
 		name : "Giant Crab",
+		nameAlt : ["Crab, Giant"],
 		source : [["SRD", 374], ["M", 324]],
 		size : 3, //Medium
 		type : "Beast",
@@ -2635,6 +2884,7 @@ var Base_CreatureList = {
 	},
 	"giant crocodile" : {
 		name : "Giant Crocodile",
+		nameAlt : ["Crocodile, Giant"],
 		source : [["SRD", 374], ["M", 324]],
 		size : 1, //Huge
 		type : "Beast",
@@ -2675,6 +2925,7 @@ var Base_CreatureList = {
 	},
 	"giant eagle" : {
 		name : "Giant Eagle",
+		nameAlt : ["Eagle, Giant"],
 		source : [["SRD", 375], ["M", 324]],
 		size : 2, //Large
 		type : "Beast",
@@ -2717,6 +2968,7 @@ var Base_CreatureList = {
 	},
 	"giant elk" : {
 		name : "Giant Elk",
+		nameAlt : ["Elk, Giant"],
 		source : [["SRD", 375], ["M", 325]],
 		size : 1, //Huge
 		type : "Beast",
@@ -2755,6 +3007,7 @@ var Base_CreatureList = {
 	},
 	"giant fly" : {
 		name : "Giant Fly",
+		nameAlt : ["Fly, Giant"],
 		source : [["SRD", 222], ["D", 169]],
 		size : 2,
 		type : "Beast",
@@ -2773,6 +3026,7 @@ var Base_CreatureList = {
 	},
 	"giant fire beetle" : {
 		name : "Giant Fire Beetle",
+		nameAlt : ["Beetle, Giant Fire"],
 		source : [["SRD", 375], ["M", 325]],
 		size : 4, //Small
 		type : "Beast",
@@ -2801,6 +3055,7 @@ var Base_CreatureList = {
 	},
 	"giant frog" : {
 		name : "Giant Frog",
+		nameAlt : ["Frog, Giant"],
 		source : [["SRD", 376], ["M", 325]],
 		size : 3, //Medium
 		type : "Beast",
@@ -2840,7 +3095,7 @@ var Base_CreatureList = {
 	},
 	"giant goat" : {
 		name : "Giant Goat",
-		nameAlt : ["Moose"],
+		nameAlt : ["Goat, Giant", "Moose"],
 		source : [["SRD", 376], ["M", 326]],
 		size : 2, //Large
 		type : "Beast",
@@ -2872,6 +3127,7 @@ var Base_CreatureList = {
 	},
 	"giant hyena" : {
 		name : "Giant Hyena",
+		nameAlt : ["Hyena, Giant"],
 		source : [["SRD", 376], ["M", 326]],
 		size : 2, //Large
 		type : "Beast",
@@ -2903,6 +3159,7 @@ var Base_CreatureList = {
 	},
 	"giant lizard" : {
 		name : "Giant Lizard",
+		nameAlt : ["Lizard, Giant"],
 		source : [["SRD", 377], ["M", 326]],
 		size : 2, //Large
 		type : "Beast",
@@ -2934,6 +3191,7 @@ var Base_CreatureList = {
 	},
 	"giant octopus" : {
 		name : "Giant Octopus",
+		nameAlt : ["Octopus, Giant"],
 		source : [["SRD", 377], ["M", 326]],
 		size : 2, //Large
 		type : "Beast",
@@ -2977,6 +3235,7 @@ var Base_CreatureList = {
 	},
 	"giant owl" : {
 		name : "Giant Owl",
+		nameAlt : ["Owl, Giant"],
 		source : [["SRD", 377], ["M", 327]],
 		size : 2, //Large
 		type : "Beast",
@@ -3013,6 +3272,7 @@ var Base_CreatureList = {
 	},
 	"giant poisonous snake" : {
 		name : "Giant Poisonous Snake",
+		nameAlt : ["Snake, Giant Poisonous"],
 		source : [["SRD", 378], ["M", 327]],
 		size : 3, //Medium
 		type : "Beast",
@@ -3040,6 +3300,7 @@ var Base_CreatureList = {
 	},
 	"giant rat" : {
 		name : "Giant Rat",
+		nameAlt : ["Rat, Giant"],
 		source : [["SRD", 378], ["M", 327]],
 		size : 4, //Small
 		type : "Beast",
@@ -3071,6 +3332,7 @@ var Base_CreatureList = {
 	},
 	"giant rat (diseased)" : {
 		name : "Giant Rat (Diseased)",
+		nameAlt : ["Rat, Giant (Diseased)"],
 		source : [["SRD", 378], ["M", 327]],
 		size : 4, //Small
 		type : "Beast",
@@ -3099,6 +3361,7 @@ var Base_CreatureList = {
 	},
 	"giant scorpion" : {
 		name : "Giant Scorpion",
+		nameAlt : ["Scorpion, Giant"],
 		source : [["SRD", 378], ["M", 327]],
 		size : 2, //Large
 		type : "Beast",
@@ -3133,6 +3396,7 @@ var Base_CreatureList = {
 	},
 	"giant sea horse" : {
 		name : "Giant Sea Horse",
+		nameAlt : ["Sea Horse, Giant"],
 		source : [["SRD", 378], ["M", 328]],
 		size : 2, //Large
 		type : "Beast",
@@ -3164,6 +3428,7 @@ var Base_CreatureList = {
 	},
 	"giant shark" : {
 		name : "Giant Shark",
+		nameAlt : ["Shark, Giant"],
 		source : [["SRD", 379], ["M", 328]],
 		size : 1, //Huge
 		type : "Beast",
@@ -3198,6 +3463,7 @@ var Base_CreatureList = {
 	},
 	"giant spider" : {
 		name : "Giant Spider",
+		nameAlt : ["Spider, Giant"],
 		source : [["SRD", 379], ["M", 328]],
 		size : 2, //Large
 		type : "Beast",
@@ -3251,6 +3517,7 @@ var Base_CreatureList = {
 	},
 	"giant toad" : {
 		name : "Giant Toad",
+		nameAlt : ["Toad, Giant"],
 		source : [["SRD", 380], ["M", 329]],
 		size : 2, //Large
 		type : "Beast",
@@ -3286,6 +3553,7 @@ var Base_CreatureList = {
 	},
 	"giant vulture" : {
 		name : "Giant Vulture",
+		nameAlt : ["Vulture, Giant"],
 		source : [["SRD", 380], ["M", 329]],
 		size : 2, //Large
 		type : "Beast",
@@ -3333,6 +3601,7 @@ var Base_CreatureList = {
 	},
 	"giant wasp" : {
 		name : "Giant Wasp",
+		nameAlt : ["Wasp, Giant"],
 		source : [["SRD", 380], ["M", 329]],
 		size : 3, //Medium
 		type : "Beast",
@@ -3361,6 +3630,7 @@ var Base_CreatureList = {
 	},
 	"giant weasel" : {
 		name : "Giant Weasel",
+		nameAlt : ["Weasel, Giant"],
 		source : [["SRD", 381], ["M", 329]],
 		size : 3, //Medium
 		type : "Beast",
@@ -3393,6 +3663,7 @@ var Base_CreatureList = {
 	},
 	"giant wolf spider" : {
 		name : "Giant Wolf Spider",
+		nameAlt : ["Wolf Spider, Giant"],
 		source : [["SRD", 381], ["M", 330]],
 		size : 3, //Medium
 		type : "Beast",
@@ -3500,6 +3771,7 @@ var Base_CreatureList = {
 	},
 	"hunter shark" : {
 		name : "Hunter Shark",
+		nameAlt : ["Shark, Hunter"],
 		source : [["SRD", 382], ["M", 330]],
 		size : 2, //Large
 		type : "Beast",
@@ -3599,6 +3871,7 @@ var Base_CreatureList = {
 	},
 	"killer whale" : {
 		name : "Killer Whale",
+		nameAlt : ["Orca"],
 		source : [["SRD", 383], ["M", 331]],
 		size : 1, //Huge
 		type : "Beast",
@@ -3927,6 +4200,7 @@ var Base_CreatureList = {
 	},
 	"poisonous snake" : {
 		name : "Poisonous Snake",
+		nameAlt : ["Snake, Poisonous"],
 		source : [["SRD", 386], ["M", 334]],
 		size : 5, //Tiny
 		type : "Beast",
@@ -4118,6 +4392,7 @@ var Base_CreatureList = {
 	},
 	"reef shark" : {
 		name : "Reef Shark",
+		nameAlt : ["Shark, Reef"],
 		source : [["SRD", 387], ["M", 336]],
 		size : 3, //Medium
 		type : "Beast",
@@ -4181,7 +4456,7 @@ var Base_CreatureList = {
 	},
 	"riding horse" : {
 		name : "Riding Horse",
-		nameAlt : ["Horse"],
+		nameAlt : ["Horse, Riding", "Horse"],
 		source : [["SRD", 388], ["M", 336]],
 		size : 2, //Large
 		type : "Beast",
@@ -4206,6 +4481,7 @@ var Base_CreatureList = {
 	},
 	"saber-toothed tiger" : {
 		name : "Saber-Toothed Tiger",
+		nameAlt : ["Tiger, Saber-Toothed"],
 		source : [["SRD", 388], ["M", 336]],
 		size : 2, //Large
 		type : "Beast",
@@ -4365,7 +4641,8 @@ var Base_CreatureList = {
 	},
 	"tiger" : {
 		name : "Tiger",
-		source : [["SRD", 391], ["M", 339]],
+		nameAlt : ["Snow Leopard", "Leopard, Snow"],
+		source : [["SRD", 391], ["M", 339], ["TftYP", 183]],
 		size : 2, //Large
 		type : "Beast",
 		alignment : "Unaligned",
@@ -4398,10 +4675,10 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Keen Smell",
-			description : "The tiger has advantage on Wisdom (Perception) checks that rely on smell."
+			description : "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell."
 		}, {
 			name : "Pounce",
-			description : "If the tiger moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the tiger can make one bite attack against it as a bonus action."
+			description : "If the [THIS] moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the [THIS] can make one bite attack against it as a bonus action."
 		}]
 	},
 	"vulture" : {
@@ -4441,6 +4718,7 @@ var Base_CreatureList = {
 	},
 	"warhorse" : {
 		name : "Warhorse",
+		nameAlt : ["Horse, War"],
 		source : [["SRD", 392], ["M", 340]],
 		size : 2, //Large
 		type : "Beast",
@@ -4504,7 +4782,8 @@ var Base_CreatureList = {
 	},
 	"wolf" : {
 		name : "Wolf",
-		source : [["SRD", 393], ["M", 341]],
+		nameAlt : ["Sled Dog", "Dog, Sled"],
+		source : [["SRD", 393], ["M", 341], ["RoT", 27]],
 		size : 3, //Medium
 		type : "Beast",
 		alignment : "Unaligned",
@@ -4531,10 +4810,10 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Keen Hearing and Smell",
-			description : "The wolf has advantage on Wisdom (Perception) checks that rely on hearing or smell."
+			description : "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing or smell."
 		}, {
 			name : "Pack Tactics",
-			description : "The wolf has advantage on an attack roll against a creature if at least one of the wolf's allies is within 5 ft of the creature and the ally isn't incapacitated."
+			description : "The [THIS] has advantage on an attack roll against a creature if at least one of the [THIS]'s allies is within 5 ft of the creature and the ally isn't incapacitated."
 		}]
 	},
 	"worg" : {

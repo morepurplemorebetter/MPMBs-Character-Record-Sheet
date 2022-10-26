@@ -184,7 +184,7 @@ var Base_CompanionList = {
 			description : "we can move stealthily at a normal pace",
 			joinString : ", "
 		}, {
-			name : "The beast adds my proficiency bonus",
+			name : "The beast adds my Proficiency Bonus",
 			description : typePF ? "to its AC, attack rolls, damage rolls, and saves/skills it is proficient with" : [
 				"to its AC, attack rolls, damage rolls,",
 				"as well as to any saving throws and skills it is proficient with."
@@ -284,7 +284,7 @@ var Base_CompanionList = {
 		},
 		changeeval : function (prefix, lvl) {
 			var sNameEntity = "Ranger's Companion";
-			var sExplanation = "A ranger's companion adds its master's proficiency bonus (oProf) to its AC, all skills and saving throws it is proficient with, and the to hit and damage of its attacks.";
+			var sExplanation = "A ranger's companion adds its master's Proficiency Bonus (oProf) to its AC, all skills and saving throws it is proficient with, and the to hit and damage of its attacks.";
 			// Add oProf to the AC, if not already present
 			var sACfld = prefix + "Comp.Use.AC";
 			if (lvl[0] === 0 && What(sACfld).indexOf("oProf") === -1) {
