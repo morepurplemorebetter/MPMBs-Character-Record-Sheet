@@ -159,7 +159,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"vard - ild" : {
 				name : "Vard - Ild",
 				source : ["XLNtEE", 20],
-				description : "\n   " + "While active, when hit by a melee attack, the attacker gets my prof bonus in fire damage",
+				description : "\n   " + "While active, when hit by a melee attack, the attacker gets my Prof Bonus in fire damage",
 				usages : 1,
 				recovery : "short rest",
 				action : ["reaction", ""]

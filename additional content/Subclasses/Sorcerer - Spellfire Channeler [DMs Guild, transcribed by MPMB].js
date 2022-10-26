@@ -63,8 +63,8 @@ AddSubClass("sorcerer", "spellfire channeler", {
 				"When I use any, I shed 30 ft bright and 30 ft dim light until the end of my next turn",
 				"If I use 4 or more dice in a single turn, the radii are doubled",
 				"Starting at level 6, I can expend up to my proficiency bonus amount of die per turn",
-				"If the dice spend in a turn exceed my Con mod, I must make a Wis save (DC 13+prof B.)",
-				"If failed, I and all within 10 ft take fire and force damage of half my level + my prof B.",
+				"If the dice spend in a turn exceed my Con mod, I must make a Wis save (DC 13+Prof B.)",
+				"If failed, I and all within 10 ft take fire and force damage of half my level + my Prof B.",
 				"Whenever I am healed for 10 or more damage, I can regain 1 dice instead of healing 10"
 			]),
 			usages : levels.map(function (n) {
@@ -121,7 +121,7 @@ AddSubClass("sorcerer", "spellfire channeler", {
 			minlevel : 1,
 			description : desc([
 				"As an action, I can drain one use or charge consumable magic item within 5 ft of me",
-				"If the item is in a creature's possession, it can make a Wis save (DC 8+prof B.)",
+				"If the item is in a creature's possession, it can make a Wis save (DC 8+Prof B.)",
 				"If I succeed in draining, I can use a bonus action to regain one expended spellfire die"
 			]),
 			action : ["action", ""],

@@ -133,7 +133,7 @@ AddSubClass("bard", "college of the maestro", {
 FeatsList["journeyman conductor"] = { // The limited feature listing of this feat only works if the character has either no Bard levels or has the College of the Maestro archetype
 	name : "Journeyman Conductor",
 	source : ["MM:CM", 3],
-	calculate : "event.value = 'I learn two conducting techniques of my choice from those available to the College of the Maestro. The saving throw DC for this is ' + (8 + What('Proficiency Bonus') + What('Cha Mod')) + ' (8 + proficiency bonus + Cha mod). I gain one bardic inspiration die (d6), which I regain when I finish a short rest.';",
+	calculate : "event.value = 'I learn two conducting techniques of my choice from those available to the College of the Maestro. The saving throw DC for this is ' + (8 + How('Proficiency Bonus') + What('Cha Mod')) + ' (8 + proficiency bonus + Cha mod). I gain one bardic inspiration die (d6), which I regain when I finish a short rest.';",
 	eval : "if (classes.known.bard && classes.known.bard.subclass.indexOf('college of the maestro') !== -1) { UpdateLevelFeatures() } else { AddFeature('Bardic Inspiration ', 1, '(d6)', 'short rest', 'the Journeyman Conductor feat', 'bonus'); };",
 	removeeval : "if (!classes.known.bard || classes.known.bard.subclass.indexOf('college of the maestro') === -1) { RemoveFeature('Bardic Inspiration ', 1); };"
 };

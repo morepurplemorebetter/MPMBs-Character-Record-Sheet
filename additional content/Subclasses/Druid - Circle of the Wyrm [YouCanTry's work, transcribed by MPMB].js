@@ -64,7 +64,7 @@ AddSubClass("druid", "circle of the wyrm-giantitp", {
 			name : "Favored Identity",
 			source : ["Y:CotW", 0],
 			minlevel : 6,
-			description : "\n   " + "I add double my prof. bonus to checks for conversing, knowledge, or identifying dragons"
+			description : "\n   " + "I add double my Prof Bonus to checks for conversing, knowledge, or identifying dragons"
 		},
 		"subclassfeature10" : {
 			name : "Wyrm Heal",

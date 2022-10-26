@@ -136,7 +136,7 @@ AddSubClass("barbarian", "juggernaut-tdcs", {
 			description : desc([
 				"While raging, when I damage a target with a melee attack, I can have it make a Str save",
 				"If failed, I push the target 5 ft away from me and I can move into its previous position",
-				"I can do this only once per turn; the save DC is 8 + my Prof bonus + my Str mod"
+				"I can do this only once per turn; the save DC is 8 + my Prof Bonus + my Str mod"
 			]),
 			calcChanges : {
 				atkAdd : ["if (isMeleeWeapon && (/\\brage\\b/i).test(WeaponText)) { fields.Description += (fields.Description ? '; ' : '') + 'Once per turn, target Str save or pushed 5 ft'; }; ", "If I include the word 'Rage' in a melee weapon's name or description, the description will show that I can use Thunderous Blows once per turn to push the target 5 ft."]
@@ -478,7 +478,7 @@ BackgroundFeatureList["wicked awareness"] = {
 FeatsList["cruel-tdcs"] = {
 	name : "Cruel",
 	source : ["TDCS", 108],
-	description : "I have a number of cruelty points equal to my proficiency bonus, which replenish on a long rest. I can spend these points to: once per turn, deal an additional 1d6 attack damage, regain 1d6 HP when I score a critical hit, or to gain advantage on an Intimidation check.",
+	description : "I have a number of cruelty points equal to my Proficiency Bonus, which replenish on a long rest. I can spend these points to: once per turn, deal an additional 1d6 attack damage, regain 1d6 HP when I score a critical hit, or to gain advantage on an Intimidation check.",
 	usagescalc : "event.value = How('Proficiency Bonus');",
 	recovery : "long rest"
 };
@@ -511,7 +511,7 @@ FeatsList["gambler-tdcs"] = {
 FeatsList["mending affinity-tdcs"] = {
 	name : "Mending Affinity",
 	source : ["TDCS", 109],
-	description : "Whenever I regain HP by means of a spell, potion, or class ability, I regain additional HP equal to my proficiency bonus. When another stabilizes my with the use of a healer's kit, I also heal a number of HP equal to my proficiency bonus. [+1 Constitution]",
+	description : "Whenever I regain HP by means of a spell, potion, or class ability, I regain additional HP equal to my Proficiency Bonus. When another stabilizes my with the use of a healer's kit, I also heal a number of HP equal to my Proficiency Bonus. [+1 Constitution]",
 	improvements : "Mending Affinity (feat): +1 Constitution;",
 	scores : [0, 0, 1, 0, 0, 0]
 };

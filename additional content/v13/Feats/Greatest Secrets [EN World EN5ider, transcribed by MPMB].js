@@ -33,7 +33,7 @@ SourceList["EN5:110"] = {
 FeatsList["cardshark"] = {
 	name : "Cardshark",
 	source : ["EN5:110", 5],
-	description : "I gain proficiency with playing card set, Deception, and Insight. I also apply my prof. bonus to any checks related to determining odds, bets, and chance. I double my prof. bonus on Wis (Insight) checks against creature that I have played a card game against. [+1 Int]",
+	description : "I gain proficiency with playing card set, Deception, and Insight. I also apply my Prof Bonus to any checks related to determining odds, bets, and chance. I double my Prof Bonus on Wis (Insight) checks against creature that I have played a card game against. [+1 Int]",
 	scores : [0, 0, 0, 1, 0, 0],
 	prerequisite : "Wisdom 13 or higher",
 	prereqeval : function(v) { return What('Wis') >= 13; },

@@ -71,7 +71,7 @@ AddSubClass("barbarian", "path of the brawler", {
 			description : desc([
 				"As a bonus action when I land from a jump, I can create a powerful shockwave",
 				"All creatures within 5 ft of where I land take 5d10 force damage and are knocked prone",
-				"Targets make a Dex save (DC 8 + Prof. bonus + Str mod) to avoid being knocked prone"
+				"Targets make a Dex save (DC 8 + Prof Bonus + Str mod) to avoid being knocked prone"
 			]),
 			action : ["bonus action", " (after jump)"],
 			usages : 1,

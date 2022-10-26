@@ -108,7 +108,7 @@ AddRacialVariant("greater dragonborn", "black", {
 	scores : [1, 0, 2, 0, 0, 0],
 	trait : [
 		"Greater Black Dragonborn (+1 Strength, +2 Constitution)",
-		"Acid Breath Weapon: As an action once per short rest, I can deal 2d6 acid damage to all in a 5 ft by 30 ft line, Dex save halves (DC 8 + Con mod + prof bonus). This damage increases with 1d6 at level 5, 11, and 17.",
+		"Acid Breath Weapon: As an action once per short rest, I can deal 2d6 acid damage to all in a 5 ft by 30 ft line, Dex save halves (DC 8 + Con mod + Prof Bonus). This damage increases with 1d6 at level 5, 11, and 17.",
 		"Brutal and Cruel: I add my Constitution modifier to the damage of my breath weapon.",
 		"Natural Armor: I have an AC of 13 + Dexterity modifier + shield."
 	].join("\n"),
@@ -120,7 +120,7 @@ AddRacialVariant("greater dragonborn", "blue", {
 	scores : [1, 1, 1, 0, 0, 0],
 	trait : [
 		"Greater Blue Dragonborn (+1 Str" + (typePF ? ", +1 Dex, +1 Con)" : "ength, +1 Dexterity, +1 Constitution)"),
-		"Lightning Breath Weapon: As an action once per short rest, I can deal 2d6 lightning damage to all in a 5 ft by 30 ft line, Dex save halves (DC 8 + Con mod + prof bonus). This damage increases with 1d6 at level 5, 11, and 17.",
+		"Lightning Breath Weapon: As an action once per short rest, I can deal 2d6 lightning damage to all in a 5 ft by 30 ft line, Dex save halves (DC 8 + Con mod + Prof Bonus). This damage increases with 1d6 at level 5, 11, and 17.",
 		"Desert Predator: As an action, I can burrow myself into loose soil, giving those that try to see me a -5 to their Wisdom (Perception) checks as long as I do not move or take actions.",
 		"Natural Armor: I have an AC of 13 + Dexterity modifier + shield."
 	].join("\n"),
@@ -133,7 +133,7 @@ AddRacialVariant("greater dragonborn", "brass", {
 	scores : [2, 0, 0, 0, 0, 1],
 	trait : [
 		"Greater Brass Dragonborn (+2 Strength, +1 Charisma)",
-		"Fire Breath Weapon: As an action once per short rest, I can deal 2d6 fire damage to all in a 5 ft by 30 ft line, Dex save halves (DC 8 + Con mod + prof bonus). This damage increases with 1d6 at level 5, 11, and 17.",
+		"Fire Breath Weapon: As an action once per short rest, I can deal 2d6 fire damage to all in a 5 ft by 30 ft line, Dex save halves (DC 8 + Con mod + Prof Bonus). This damage increases with 1d6 at level 5, 11, and 17.",
 		"Boldly Talkative: I have proficiency in Persuasion.",
 		"Natural Armor: I have an AC of 13 + Dexterity modifier + shield."
 	].join("\n"),
@@ -146,7 +146,7 @@ AddRacialVariant("greater dragonborn", "bronze", {
 	scores : [1, 1, 0, 0, 0, 1],
 	trait : [
 		"Greater Bronze Dragonborn (+1 Str" + (typePF ? ", +1 Con, +1 Cha)" : "ength, +1 Constitution, +1 Charisma)"),
-		"Lightning Breath Weapon: As an action once per short rest, I can deal 2d6 lightning damage to all in a 5 ft by 30 ft line, Dex save halves (DC 8 + Con mod + prof bonus). This damage increases with 1d6 at level 5, 11, and 17.",
+		"Lightning Breath Weapon: As an action once per short rest, I can deal 2d6 lightning damage to all in a 5 ft by 30 ft line, Dex save halves (DC 8 + Con mod + Prof Bonus). This damage increases with 1d6 at level 5, 11, and 17.",
 		"Dragon of the Coast: I have a swim speed of 30 ft.",
 		"Natural Armor: I have an AC of 13 + Dexterity modifier + shield."
 	].join("\n"),
@@ -162,7 +162,7 @@ AddRacialVariant("greater dragonborn", "copper", {
 	scores : [1, 0, 0, 0, 0, 2],
 	trait : [
 		"Greater Copper Dragonborn (+1 Strength, +2 Charisma)",
-		"Acid Breath Weapon: As an action once per short rest, I can deal 2d6 acid damage to all in a 5 ft by 30 ft line, Dex save halves (DC 8 + Con mod + prof bonus). This damage increases with 1d6 at level 5, 11, and 17.",
+		"Acid Breath Weapon: As an action once per short rest, I can deal 2d6 acid damage to all in a 5 ft by 30 ft line, Dex save halves (DC 8 + Con mod + Prof Bonus). This damage increases with 1d6 at level 5, 11, and 17.",
 		"Good Host: I have proficiency in Performance, and can speak, read, and write one extra language of my choice.",
 		"Natural Armor: I have an AC of 13 + Dexterity modifier + shield."
 	].join("\n"),
@@ -176,7 +176,7 @@ AddRacialVariant("greater dragonborn", "gold", {
 	scores : [1, 0, 0, 0, 2, 0],
 	trait : [
 		"Greater Gold Dragonborn (+1 Strength, +2 Wisdom)",
-		"Fire Breath Weapon: As an action once per short rest, I can deal 2d6 fire damage to all in a 15 ft cone, Dex save halves (DC 8 + Con mod + prof bonus). This damage increases with 1d6 at level 5, 11, and 17.",
+		"Fire Breath Weapon: As an action once per short rest, I can deal 2d6 fire damage to all in a 15 ft cone, Dex save halves (DC 8 + Con mod + Prof Bonus). This damage increases with 1d6 at level 5, 11, and 17.",
 		"Reserved Companion: I have proficiency in Insight.",
 		"Natural Armor: I have an AC of 13 + Dexterity modifier + shield."
 	].join("\n"),
@@ -189,7 +189,7 @@ AddRacialVariant("greater dragonborn", "green", {
 	scores : [1, 0, 0, 0, 0, 2],
 	trait : [
 		"Greater Green Dragonborn (+1 Strength, +2 Charisma)",
-		"Poison Breath Weapon: As an action once per short rest, I can deal 2d6 poison damage to all in a 15 ft cone, Con save halves (DC 8 + Con mod + prof bonus). This damage increases with 1d6 at level 5, 11, and 17.",
+		"Poison Breath Weapon: As an action once per short rest, I can deal 2d6 poison damage to all in a 15 ft cone, Con save halves (DC 8 + Con mod + Prof Bonus). This damage increases with 1d6 at level 5, 11, and 17.",
 		"Manipulative Schemer: I have proficiency in Deception.",
 		"Natural Armor: I have an AC of 13 + Dexterity modifier + shield."
 	].join("\n"),
@@ -202,7 +202,7 @@ AddRacialVariant("greater dragonborn", "red", {
 	scores : [2, 0, 1, 0, 0, 0],
 	trait : [
 		"Greater Red Dragonborn (+2 Strength, +1 Constitution)",
-		"Fire Breath Weapon: As an action once per short rest, I can deal 2d6 fire damage to all in a 15 ft cone, Dex save halves (DC 8 + Con mod + prof bonus). This damage increases with 1d6 at level 5, 11, and 17.",
+		"Fire Breath Weapon: As an action once per short rest, I can deal 2d6 fire damage to all in a 15 ft cone, Dex save halves (DC 8 + Con mod + Prof Bonus). This damage increases with 1d6 at level 5, 11, and 17.",
 		"Arrogant Tyrant: I have advantage on saving throws to avoid being charmed or frightened.",
 		"Natural Armor: I have an AC of 13 + Dexterity modifier + shield."
 	].join("\n"),
@@ -215,7 +215,7 @@ AddRacialVariant("greater dragonborn", "silver", {
 	scores : [1, 0, 0, 2, 0, 0],
 	trait : [
 		"Greater Silver Dragonborn (+1 Strength, +2 Intelligence)",
-		"Cold Breath Weapon: As an action once per short rest, I can deal 2d6 cold damage to all in a 15 ft cone, Con save halves (DC 8 + Con mod + prof bonus). This damage increases with 1d6 at level 5, 11, and 17.",
+		"Cold Breath Weapon: As an action once per short rest, I can deal 2d6 cold damage to all in a 15 ft cone, Con save halves (DC 8 + Con mod + Prof Bonus). This damage increases with 1d6 at level 5, 11, and 17.",
 		"Hoarding History: I have proficiency in History.",
 		"Natural Armor: I have an AC of 13 + Dexterity modifier + shield."
 	].join("\n"),
@@ -228,7 +228,7 @@ AddRacialVariant("greater dragonborn", "white", {
 	scores : [1, 0, 2, 0, 0, 0],
 	trait : [
 		"Greater White Dragonborn (+1 Strength, +2 Constitution)",
-		"Cold Breath Weapon: As an action once per short rest, I can deal 2d6 cold damage to all in a 15 ft cone, Con save halves (DC 8 + Con mod + prof bonus). This damage increases with 1d6 at level 5, 11, and 17.",
+		"Cold Breath Weapon: As an action once per short rest, I can deal 2d6 cold damage to all in a 15 ft cone, Con save halves (DC 8 + Con mod + Prof Bonus). This damage increases with 1d6 at level 5, 11, and 17.",
 		"Primal and Vengeful: I have proficiency in Survival.",
 		"Natural Armor: I have an AC of 13 + Dexterity modifier + shield."
 	].join("\n"),

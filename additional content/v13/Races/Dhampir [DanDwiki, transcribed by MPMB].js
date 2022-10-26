@@ -55,7 +55,7 @@ RaceList["dhampir"] = {
 	weightMetric : " weigh around 70 kg (50 + 5d8 \xD7 4d4 / 10 kg)",
 	scorestxt : "+2 Charisma and +1 to Strength, Dexterity, or Constitution",
 	scores : [0, 0, 0, 0, 0, 2],
-	trait : "Dhampir (+2 Charisma and +1 to Strength, Dexterity, or Constitution)" + (typePF ? " " : "\n") + "Sunlight Sensitivity: Disadvantage on attack rolls and Wisdom (Perception) checks that rely on sight when I or what I am trying to attack/perceive is in direct sunlight.\nVampire's Bite: I can use my bite attack if a target is charmed/grappled by me, or if it is incapacitated or restrained. If hit, I can choose to gain the damage dealt as temp HP, my prof. bonus per long rest. Vampiric Gaze: Once per short rest, I can cast charm person using Charisma as my spellcasting ability.",
+	trait : "Dhampir (+2 Charisma and +1 to Strength, Dexterity, or Constitution)" + (typePF ? " " : "\n") + "Sunlight Sensitivity: Disadvantage on attack rolls and Wisdom (Perception) checks that rely on sight when I or what I am trying to attack/perceive is in direct sunlight.\nVampire's Bite: I can use my bite attack if a target is charmed/grappled by me, or if it is incapacitated or restrained. If hit, I can choose to gain the damage dealt as temp HP, my Prof Bonus per long rest. Vampiric Gaze: Once per short rest, I can cast charm person using Charisma as my spellcasting ability.",
 	spellcastingAbility : 6,
 	extraLimitedFeatures : [{
 		name : "Vampire's Bite (regain temp hp)",

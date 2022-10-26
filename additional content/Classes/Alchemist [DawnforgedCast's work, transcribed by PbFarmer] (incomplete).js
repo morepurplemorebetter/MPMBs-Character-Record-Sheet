@@ -322,7 +322,7 @@ ClassSubList["dawnforgedcast-alchemist-arcane distiller"] = {
 			name : "Arcane Poisons",
 			source : ["DFC:AC", 8],
 			minlevel : 3,
-			description : "\n   " + "I can now coat a weapon or ammo in a spell" + "\n   " + "The effect requires no concentration to cast" + "\n   " + "The spells lasts a number of rounds equal to my prof bonus or the spell duration, whichever is less",
+			description : "\n   " + "I can now coat a weapon or ammo in a spell" + "\n   " + "The effect requires no concentration to cast" + "\n   " + "The spells lasts a number of rounds equal to my Prof Bonus or the spell duration, whichever is less",
 			spellcastingBonus : {
 				name : "Arcane Poisons",
 				spells : ["bane", "command", "faerie fire", "hideous laughter", "blindness", "crown of madness", "hold person", "ray of enfeeblement", "bestow curse", "dispel magic", "fear", "slow", "blight", "confusion", "elemental bane", "polymorph"]
@@ -537,7 +537,7 @@ ClassSubList["dawnforgedcast-alchemist-metamorph"] = {
 			name : "Supreme Mutagen",
 			source : ["DFC:AC", 7],
 			minlevel : 14,
-			description : "\n   " + "I now have all 3 monstrous power benefits" + "\n   " + "I now regen every while mutated equal to my Prof bonus, once a round in combat, once a minute outside of combat",
+			description : "\n   " + "I now have all 3 monstrous power benefits" + "\n   " + "I now regen every while mutated equal to my Prof Bonus, once a round in combat, once a minute outside of combat",
 		},
 		"subclassfeature20" : {
 			name : "Grand Discovery",

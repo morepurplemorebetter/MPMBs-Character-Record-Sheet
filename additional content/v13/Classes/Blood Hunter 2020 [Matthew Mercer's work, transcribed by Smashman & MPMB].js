@@ -565,7 +565,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the hexblade" : {
 				name : "Rite Focus: the Hexblade",
-				description : "\n   When I use a blood curse, my next attack adds my Prof bonus to damage vs. the cursed"
+				description : "\n   When I use a blood curse, my next attack adds my Prof Bonus to damage vs. the cursed"
 			},
 			choiceDependencies : [{
 				feature : "subclassfeature7.1"
