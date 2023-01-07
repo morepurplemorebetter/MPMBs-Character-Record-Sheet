@@ -259,7 +259,7 @@ MagicItemsList["staff of purple"] = {
 	Setting this to 0 is the same as not including this attribute.
 */
 	prerequisite : "Requires attunement by a dwarf",
-/*	weight // OPTIONAL //
+/*	prerequisite // OPTIONAL //
 	TYPE:	string
 	USE:	textual explanation of a prerequisite the item has
 
