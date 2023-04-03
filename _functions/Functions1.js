@@ -5367,8 +5367,8 @@ function resetLimFeaUsed(rxType) {
 			}
 	}
 	for (var i = 1; i <= FieldNumbers.limfea; i++) {
-		var sFldVal = What("Limited Feature Recovery " + z).toString();
-		if (rxType.test(sFldVal)) aFldsToReset.push("Limited Feature Used " + z);
+		var sFldVal = What("Limited Feature Recovery " + i).toString();
+		if (rxType.test(sFldVal)) aFldsToReset.push("Limited Feature Used " + i);
 	}
 	if (bResetSpellSlots) {
 		var SSfrontA = What("Template.extras.SSfront").split(",")[1];
