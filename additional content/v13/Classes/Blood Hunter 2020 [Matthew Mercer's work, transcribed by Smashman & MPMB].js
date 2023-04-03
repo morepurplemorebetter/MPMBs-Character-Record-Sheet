@@ -36,7 +36,8 @@ SourceList["MM:BH"] = {
 	date : "2020/02/11"
 };
 
-var BHhemocraftDie = function(n) {
+// Add a persistent function, as a local variable it won't be usable after re-opening the sheet
+MMBH_BhHemocraftDie = function(n) {
 	return "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
 };
 
@@ -185,7 +186,7 @@ ClassList["blood hunter"] = {
 			source : [["MM:BH", 3]],
 			minlevel : 1,
 			description : "",
-			additional : levels.map(BHhemocraftDie)
+			additional : levels.map(MMBH_BhHemocraftDie)
 		},
 		"hunter's bane" : {
 			name : "Hunter's Bane",
@@ -249,7 +250,7 @@ ClassList["blood hunter"] = {
 				atkAdd : [
 					function (fields, v) {
 						if (!v.isSpell && (/\brite\b/i).test(v.WeaponTextName)) {
-							fields.Description += (fields.Description ? '; ' : '') + '+' + BHhemocraftDie(classes.known['blood hunter'].level) + ' rite damage';
+							fields.Description += (fields.Description ? '; ' : '') + '+' + MMBH_BhHemocraftDie(classes.known['blood hunter'].level) + ' rite damage';
 						}
 					},
 					"If I include the word 'Rite' in a weapon's name, it gets my hemocraft damage die added in its description."
@@ -456,7 +457,7 @@ AddSubClass("blood hunter", "ghostslayer", {
 				atkAdd : [
 					function (fields, v) {
 						if (!v.isSpell && (/\brite\b/i).test(v.WeaponTextName)) {
-							fields.Description += (fields.Description ? '; ' : '') + '+' + BHhemocraftDie(classes.known['blood hunter'].level) + ' rite damage vs. branded creature';
+							fields.Description += (fields.Description ? '; ' : '') + '+' + MMBH_BhHemocraftDie(classes.known['blood hunter'].level) + ' rite damage vs. branded creature';
 						}
 					},
 					"If I include the word 'Rite' in a weapon's name, it gets an additional hemocraft die if target is branded."
@@ -552,14 +553,14 @@ AddSubClass("blood hunter", "profane soul", {
 				name : "Rite Focus: the Undying",
 				description : "\n   When I reduce a hostile creature to 0 HP using an active rite weapon, I heal HP",
 				additional : levels.map(function (n) {
-					return n < 3 ? "" : "regain " + BHhemocraftDie(n) + " HP";
+					return n < 3 ? "" : "regain " + MMBH_BhHemocraftDie(n) + " HP";
 				})
 			},
 			"the celestial" : {
 				name : "Rite Focus: the Celestial",
 				description : "\n   As a bonus action, I can expend a blood maledict use to heal a creature I can see in 60 ft",
 				additional : levels.map(function (n) {
-					return n < 3 ? "" : "heals " + BHhemocraftDie(n) + "+Int mod";
+					return n < 3 ? "" : "heals " + MMBH_BhHemocraftDie(n) + "+Int mod";
 				}),
 				action : [["bonus action", ""]]
 			},
