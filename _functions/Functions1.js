@@ -5341,37 +5341,45 @@ function ChangeSpeed(input) {
 	console.show();
 };
 
-function ResetFeaSR() {
-	for (var z = 1; z <= FieldNumbers.limfea; z++) {
-		var recoveryFld = What("Limited Feature Recovery " + z).toLowerCase();
-		if (recoveryFld.indexOf("short rest") !== -1 || recoveryFld.indexOf("sr") !== -1) {
-			resetForm(["Limited Feature Used " + z]);
-		}
+// Reset the limited feature uses, buttons on the 1st page
+function resetLimFeaUsed(rxType) {
+	var bResetSpellSlots = false, aFldsToReset = [];
+	var sType = !rxType ? 'long rest' : rxType.toString().toLowerCase().replace(/^\/|\/[igm]$/g, "");
+	switch (sType) {
+		case 'long rest':
+			rxType = /\b(long rest|lr)\b/i;
+			bResetSpellSlots = true;
+			break;
+		case 'short rest':
+			rxType = /\b(short rest|sr)\b/i;
+			break;
+		case 'day':
+		case 'dawn':
+		case 'dusk':
+		case 'night':
+			rxType = /\b(day|dawn|dusk|night)\b/i;
+			break;
+		default:
+			if (typeof rxType === "string") {
+				rxType = RegExp(rxType.RegEscape(), "i");
+			} else if (typeof rxType !== "object") {
+				return;
+			}
 	}
-}
-
-function ResetFeaLR() {
-	calcStop();
-	for (var z = 1; z <= FieldNumbers.limfea; z++) {
-		var recoveryFld = What("Limited Feature Recovery " + z).toLowerCase();
-		if (recoveryFld.indexOf("short rest") !== -1 || recoveryFld.indexOf("sr") !== -1 || recoveryFld.indexOf("long rest") !== -1 || recoveryFld.indexOf("lr") !== -1) {
-			resetForm(["Limited Feature Used " + z]);
-		}
+	for (var i = 1; i <= FieldNumbers.limfea; i++) {
+		var sFldVal = What("Limited Feature Recovery " + z).toString();
+		if (rxType.test(sFldVal)) aFldsToReset.push("Limited Feature Used " + z);
 	}
-	var SpellSlotsReset = [];
-	var SSfrontA = What("Template.extras.SSfront").split(",")[1];
-	if (SSfrontA) SpellSlotsReset.push(SSfrontA + "SpellSlots.Checkboxes");
-	if (!typePF) SpellSlotsReset.push("SpellSlots.Checkboxes");
-	if (!typePF && SSfrontA) SpellSlotsReset.push(SSfrontA + "SpellSlots2.Checkboxes");
-	if (SpellSlotsReset.length > 0) tDoc.resetForm(SpellSlotsReset);
-}
-
-function ResetFeaDawn() {
-	for (var z = 1; z <= FieldNumbers.limfea; z++) {
-		var recoveryFld = What("Limited Feature Recovery " + z).toLowerCase();
-		if (recoveryFld.indexOf("dawn") !== -1 || recoveryFld.indexOf("day") !== -1) {
-			resetForm(["Limited Feature Used " + z]);
-		}
+	if (bResetSpellSlots) {
+		var SSfrontA = What("Template.extras.SSfront").split(",")[1];
+		if (SSfrontA) aFldsToReset.push(SSfrontA + "SpellSlots.Checkboxes");
+		if (!typePF) aFldsToReset.push("SpellSlots.Checkboxes");
+		if (!typePF && SSfrontA) aFldsToReset.push(SSfrontA + "SpellSlots2.Checkboxes");
+		
+	}
+	if (aFldsToReset.length > 0) {
+		calcStop();
+		tDoc.resetForm(aFldsToReset);
 	}
 }
 
@@ -6065,7 +6073,7 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 
 	// initialize some variables
 	var triggerIsMenu = event.target && event.target.name && event.target.name == "Class Features Menu";
-	var addIt = AddRemove ? AddRemove.toLowerCase() == "add" : MenuSelection[4] ? MenuSelection[4] == "add" : true;
+	var addIt = (AddRemove !== undefined ? AddRemove : MenuSelection[4] !== undefined ? MenuSelection[4] : "add").toString().toLowerCase() === "add"; // default add, remove if second variable or 4th array entry is defined and not "add"
 	var aClass = MenuSelection[0];
 	var prop = MenuSelection[1];
 	var choice = MenuSelection[2];

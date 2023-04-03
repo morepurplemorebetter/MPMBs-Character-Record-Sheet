@@ -1361,6 +1361,8 @@ function addCompEvals(evalObj, prefix, NameEntity, Add) {
 			}
 		}
 	}
+	// Finally, set this global variable to its field for safekeeping
+	SetStringifieds("evals");
 }
 
 //add a wildshape based on the selection and calculation settings

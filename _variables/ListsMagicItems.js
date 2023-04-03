@@ -3605,7 +3605,7 @@ var Base_MagicItemsList = {
 		source : [["SRD", 234], ["D", 187]],
 		type : "potion",
 		description : "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score for 1 hour. The number of this score depends on the type of giant from which a sliver of fingernail is floating in this potions' transparent liquid.",
-		descriptionFull : "When you drink this potion, your Strength score changes for 1 hour. The type of giant determines the score (see the table below). The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a giant of the appropriate type. The potion of frost giant strength and the potion of stone giant strength have the same effect.\n\n" + toUni("Type\t\tStr\tRarity") + "\nHill giant\t\t21\tUncommon\nStone/frost giant\t23\tRare\nFire giant   \t25\tRare\nCloud giant\t27\tVery rare\nStorm giant\t29\tLegendary",
+		descriptionFull : "When you drink this potion, your Strength score changes for 1 hour. The type of giant determines the score (see the table below). The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a giant of the appropriate type. The potion of frost giant strength and the potion of stone giant strength have the same effect.\n\n" + toUni("Type\t\tStr\tRarity") + "\nHill giant\t\t21\tUncommon\nStone/frost giant\t23\tRare\nFire giant   \t25\tRare\nCloud giant\t27\tVery rare\nStorm giant\t29\tLegendary",
 		weight : 0.5,
 		allowDuplicates : true,
 		choices : ["Hill (Str 21, uncommon)", "Frost (Str 23, rare)", "Stone (Str 23, rare)", "Fire (Str 25, rare)", "Cloud (Str 27, very rare)", "Storm (Str 29, legendary)"],
@@ -3932,7 +3932,7 @@ var Base_MagicItemsList = {
 		rarity : "legendary",
 		magicItemTable : "I",
 		description : "Select one of the eight types of this ring, two for each of the elemental planes, with each ring having two option, its initial state and its 'unlocked' state that becomes available once you help slay an elemental of that plane while attuned to the ring.",
-		descriptionFull : "This ring is linked to one of the four Elemental Planes. The GM chooses or randomly determines the linked plane.\n   While wearing this ring, you have advantage on attack rolls against elementals from the linked plane, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the linked plane.\n   The ring has 5 charges. It regains 1d4 + 1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.",
+		descriptionFull : "This ring is linked to one of the four Elemental Planes. The GM chooses or randomly determines the linked plane.\n   While wearing this ring, you have advantage on attack rolls against elementals from the linked plane, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the linked plane.\n   The ring has 5 charges. It regains 1d4 + 1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.",
 		attunement : true,
 		allowDuplicates : true,
 		usages : 5,
@@ -4970,7 +4970,7 @@ var Base_MagicItemsList = {
 		source : [["SRD", 242], ["D", 200]],
 		type : "scroll",
 		description : "If the spell on this scroll is on my class' spell list(s), I can cast it with its normal casting time, but have the scroll crumble to dust. If the spell is of a higher level than I can cast, I need to make an ability check using my spellcasting ability. The DC for this, the spell save, and its attack modifier depend on its level.",
-		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10 + the spell's level. On a failed check, the spell disappears from the scroll with no other effect.\n   The level of the spell on the scroll determines the spell's saving throw DC and attack bonus, as well as the scroll's rarity, as shown below.\n\n" + toUni("Level\tRarity\t\tDC\tTo hit") + [
+		descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10 + the spell's level. On a failed check, the spell disappears from the scroll with no other effect.\n   The level of the spell on the scroll determines the spell's saving throw DC and attack bonus, as well as the scroll's rarity, as shown below.\n\n" + toUni("Level\tRarity\t\tDC\tTo hit") + [
 			"\nCantrip\tCommon  \t13\t+5",
 			"1st  \tCommon  \t13\t+5",
 			"2nd  \tUncommon\t13\t+5",
@@ -4981,7 +4981,7 @@ var Base_MagicItemsList = {
 			"7th  \tVery rare    \t18\t+10",
 			"8th  \tVery rare    \t18\t+10",
 			"9th  \tLegendary  \t19\t+11"
-		].join("\n") + "\n\nA wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on an Intelligence (Arcana) check with a DC equal to 10 + the spell's level. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+		].join("\n") + "\n\nA wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on an Intelligence (Arcana) check with a DC equal to 10 + the spell's level. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 		allowDuplicates : true,
 		calcChanges : {
 			spellAdd : [

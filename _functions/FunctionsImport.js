@@ -465,6 +465,7 @@ function DirectImport(consoleTrigger) {
 		var FromVersion = semVersToNmbr(FromVersionSem);
 		var ToVersion = global.docTo.sheetVersion;
 		var fromBefore13 = FromVersion < semVersToNmbr("13.0.0-beta14");
+		var fromBefore13_1_5 = FromVersion < semVersToNmbr("13.1.5");
 		if (FromVersion > ToVersion || (FromVersion >= semVersToNmbr("13.0.0-beta1") && fromBefore13)) {
 			// If importing from a newer version or from a v13.0.0-beta1-beta13
 			var versTypeTxt = FromVersion > ToVersion ? ["this sheet is", "newer", "than the one you are importing"] : ["the other sheet is an", "unsupported beta", "that can't be imported to any other MPMB's Character Record Sheet"];
@@ -501,6 +502,7 @@ function DirectImport(consoleTrigger) {
 		var bothPF = typePF && fromSheetTypePF;
 		var bothCF = !typePF && !fromSheetTypePF;
 		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
+		var aTextExtra = []; // anything in this array is added to the warning dialog after the import, joined with a line break
 
 		// Make sure to remove the flattened state from the sheet to import from
 		if (fromBefore13) {
@@ -1170,7 +1172,7 @@ function DirectImport(consoleTrigger) {
 			parentA = parentA.getArray();
 			for (var pA =  0; pA < parentA.length; pA++) {
 				var pAnameTo = parentA[pA].name;
-				if (excludeRegEx && (excludeRegEx).test(pAnameTo)) continue;
+				if (excludeRegEx && excludeRegEx.test(pAnameTo)) continue;
 				var pAnameFrom = pAnameTo.replace(toPre, fromPre);
 				ImportField(pAnameTo, actionsObj ? actionsObj : {notTooltip: true, doVisiblity: inclVisibility}, pAnameFrom);
 			}
@@ -1209,8 +1211,26 @@ function DirectImport(consoleTrigger) {
 			//do the description fields
 			doChildren("Comp.Desc", prefixFrom, prefixTo);
 
-			//do the bulk of the fields
-			doChildren("Comp.Use", prefixFrom, prefixTo, /\.Score|\.Mod|Text|Calculated|Button|Init\.Dex|HD\.Con/i);
+			//do the bulk of the fields (but not HP Max, see below)
+			doChildren("Comp.Use", prefixFrom, prefixTo, /\.Score|\.Mod|Text|Calculated|Button|Init\.Dex|HD\.Con|HP\.Max$/i);
+
+			//do HP
+			// Because of a bug in v13.1.4 and older, we need to do something special for creatures that have an alt HP calculation
+			var keepCompRaceHPsetting = false;
+			if (fromBefore13_1_5 && global.docTo.CurrentEvals.Comp && global.docTo.CurrentEvals.Comp[prefixTo] && global.docTo.CurrentEvals.Comp[prefixTo].hp) {
+				var compRaceHPsetFrom = global.docFrom.getField(prefixFrom + "Comp.Use.HP.Max").submitName.split(',');
+				var compRaceHPsetTo = global.docTo.getField(prefixTo + "Comp.Use.HP.Max").submitName.split(',');
+				keepCompRaceHPsetting = compRaceHPsetFrom[3] !== compRaceHPsetTo[3] && compRaceHPsetTo[3].indexOf('alt') !== -1;
+				if (keepCompRaceHPsetting) {
+					// add text to the dialog
+					var sCompHpTitle = toUni("\nFixed special HP calculation for companions");
+					if (aTextExtra.indexOf(sCompHpTitle) === -1) aTextExtra.push(sCompHpTitle);
+					var sCompName = What(prefixTo + 'Comp.Desc.Name');
+					if (!sCompName) sCompName = compRaceFldTo.value;
+					aTextExtra.push('  \u2022 For the companion "' + sCompName + '" on page ' + (compRaceFldFrom.page+1));
+				}
+			}
+			ImportField(prefixTo + "Comp.Use.HP.Max", {notTooltip: true, notSubmitName: keepCompRaceHPsetting}, prefixFrom + "Comp.Use.HP.Max");
 
 			//do the BlueText fields
 			doChildren("BlueText.Comp.Use", prefixFrom, prefixTo);
@@ -1495,6 +1515,7 @@ function DirectImport(consoleTrigger) {
 				"Things manually added/changed in the fields for Saving Throw Advantages/Disadvantages and Senses have not been copied."
 			].join("\n  \u2022 ");
 		};
+		if (aTextExtra.length) aText += '\n' + aTextExtra.join("\n");
 		app.alert({
 			cMsg : aText,
 			nIcon : 3,
