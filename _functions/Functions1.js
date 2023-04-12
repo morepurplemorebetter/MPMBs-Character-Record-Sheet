@@ -6245,7 +6245,7 @@ function processClassFeatureExtraChoiceDependencies(lvlA, aClass, aFeature, fObj
 		// set or remove the class feature, depending on its level
 		ClassFeatureOptions(
 			[aClass, aFeature, aDep.extrachoice, 'extra'],
-			lvlA[1] < minLvl ? 'remove' : false,
+			lvlA[1] < minLvl ? 'remove' : 'add',
 			aDep.extraname
 		);
 	}
