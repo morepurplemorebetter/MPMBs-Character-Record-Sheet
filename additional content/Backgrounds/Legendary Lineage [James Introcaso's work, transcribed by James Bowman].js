@@ -24,7 +24,7 @@ SourceList["WBB:15"] = {
 	name : "15 New Backgrounds - World Builder Blog Presents",
 	abbreviation : "WBB:15",
 	group : "Dungeon Masters Guild",
-	url : "https://www.dmsguild.com/product/171771",
+	url : "https://www.dmsguild.com/product/171771/",
 	date : "2016/01/22"
 };
 

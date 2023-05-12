@@ -16,7 +16,7 @@
 */
 
 var iFileName = "Doppelganger [D&D Beyond, transcribed by MPMB].js";
-RequiredSheetVersion(12.999);
+RequiredSheetVersion(13);
 
 SourceList["DnD-B:D"] = {
 	name : "D&D Beyond: Doppelganger",
@@ -29,7 +29,7 @@ SourceList["DnD-B:D"] = {
 RaceList["doppelganger"] = {
 	regExpSearch : /doppelganger/i,
 	name : "Doppelganger",
-	source : ["DnD-B:D", 0],
+	source : [["DnD-B:D", 0]],
 	plural : "Doppelgangers",
 	size : 3,
 	speed : {
@@ -45,7 +45,6 @@ RaceList["doppelganger"] = {
 	height : " stand around 6 feet tall, slightly taller than humans, with hints of elven features",
 	weight : "",
 	heightMetric : " stand around 1,8 metres tall, slightly taller than humans, with hints of elven features",
-	improvements: "Doppelganger: +1 Dexterity, +1 Charisma;",
 	scores : [0, 1, 0, 0, 0, 1],
 	trait : "Doppelganger (+1 Dexterity, +1 Charisma)\n   Shapechanger: As an action three times per long rest, I can polymorph into a Small or Medium humanoid I have seen. Stats and equipment don't change. I revert back when I die.\n   Read Thoughts: As an action, I can read the surface thoughts of a creature in 30 ft which lasts until my concentration is broken.\n   Psychic Intuition: Once per long rest, while reading a target's thoughts, I can choose to have advantage on a single Insight, Deception, Intimidation, or Persuasion check against it.",
 	features : {
@@ -54,12 +53,12 @@ RaceList["doppelganger"] = {
 			minlevel : 1,
 			usages : 3,
 			recovery : "long rest",
-			action : ["action", " (start/end)"]
+			action : [["action", " (start/end)"]]
 		},
 		"read thoughts" : {
 			name : "Read Thoughts",
 			minlevel : 1,
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"psychic intuition" : {
 			name : "Psychic Intuition",

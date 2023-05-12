@@ -24,7 +24,7 @@ SourceList["DM:IB"] = {
     name : "Damion Meany's Improved Backgrounds",
     abbreviation : "DM:IB",
     group : "Dungeon Masters Guild",
-    url : "https://www.dmsguild.com/product/208784/",
+    url : "https://www.dmsguild.com/product/208784/Improved-Backgrounds",
 	date : "2017/04/01"
 };
 

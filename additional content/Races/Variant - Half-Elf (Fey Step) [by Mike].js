@@ -15,27 +15,26 @@
 */
 
 var iFileName = "Variant - Half-Elf (Fey Step) [by Mike].js";
-RequiredSheetVersion(12.999);
+RequiredSheetVersion(13);
 
 AddRacialVariant("half-elf", "fey step", {
 	regExpSearch : /^(?=.*fey)(?=.*step).*$/i,
 	name : "Half-eladrin",
-	source : ["HB", 0],
+	source : [["HB", 0]],
 	plural : "Half-eladrin",
 	trait : "Half-Eladrin (+2 Charisma and +1 to two other ability scores of my choice)\n\nFey Step: I can cast Misty Step once using this trait. I regain the ability to do so when I finish a short rest.",
 	features : {
 		"fey step" : {
-			name : "Misty Step",
+			name : "Fey Step",
+			limfeaname : "Misty Step",
 			minlevel : 1,
 			usages : 1,
 			recovery : "short rest",
-			tooltip : " (Fey Step)",
-			action : ["bonus action", ""],
 			spellcastingBonus : {
 				name : "Fey Step",
 				spells : ["misty step"],
 				selection : ["misty step"],
-				oncesr : true
+				firstCol : 'oncesr'
 			}
 		}
 	}

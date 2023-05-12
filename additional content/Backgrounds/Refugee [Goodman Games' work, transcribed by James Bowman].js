@@ -18,13 +18,13 @@
 */
 
 var iFileName = "Refugee [Goodman Games' work, transcribed by James Bowman].js";
-RequiredSheetVersion(12.81);
+RequiredSheetVersion(12.999);
 
 SourceList["FEF1:G"] = {
 	name : "Fifth Edition Fantasy #1: Glitterdoom",
 	abbreviation : "FEF1:G",
 	group : "Goodman Games",
-	url : "https://www.drivethrurpg.com/product/132657/",
+	url : "https://www.drivethrurpg.com/product/132657/Fifth-Edition-Fantasy-1-Glitterdoom",
 	date : "2014/09/29"
 };
 
@@ -91,11 +91,11 @@ BackgroundList["refugee"] = {
 			"I have no respect for those who lead a life of luxury and leisure, untested by the hardships of life."
 		],
 		variant: [],
-		tools: ["Artisan's tools", "Vehicles (land)"],
+		toolProfs: ["Artisan's tools", "Vehicles (land)"],
 		lifestyle : "poor"
 };
 
 BackgroundFeatureList["far-flung friends"] = {
-	description : "In communities that are now home to my kith and kin, I can count on housing, food, free advice, and other assistance so long as it doesn�t threaten the lives and well-being of those lending me aid. The DM will decide whether or not a particular community has fellow refugees amongst its population.",
+	description : "In communities that are now home to my kith and kin, I can count on housing, food, free advice, and other assistance so long as it doesn't threaten the lives and well-being of those lending me aid. The DM will decide whether or not a particular community has fellow refugees amongst its population.",
 	source : ["FEF1:G", 14]
 };

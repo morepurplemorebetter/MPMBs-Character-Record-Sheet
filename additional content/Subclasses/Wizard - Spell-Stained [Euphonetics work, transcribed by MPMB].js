@@ -12,25 +12,26 @@
 				This subclass is made by Euphonetics
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-01-05 (sheet v12.999)
+				2023-05-12 (updated to v13.1.6)
 */
 
 var iFileName = "Wizard - Spell-Stained [Euphonetics work, transcribed by MPMB].js";
-RequiredSheetVersion(12.999);
+RequiredSheetVersion("13.1.1");
 
 AddSubClass("wizard", "spell-stained", {
 	regExpSearch : /^(?=.*wizard)(?=.*spell)(?=.*stained).*$/i,
 	subname : "Spell-Stained",
-	source : ["HB", 0],
+	source : [["HB", 0]],
 	spellcastingExtra : ["dissonant whispers", "find familiar", "spike growth", "call lightning", "phantom steed", "faithful hound", "raise dead"],
 	features : {
 		"subclassfeature2" : {
 			name : "Inkling's Teachings",
-			source : ["HB", 0],
+			source : [["HB", 0]],
 			minlevel : 2,
 			description : desc([
 				"I can use my spell-stained skin as a spellcasting focus",
 				"I gain proficiency with either the History skill, painter's supplies, or learn one language",
-				"Use the \"Choose Feature\" button above to select one of these three options"
+				'Use the "Choose Feature" button above to select one of these three options'
 			]),
 			choices : ["Skill proficiency: History", "Tool proficiency: Painter's supplies", "Language proficiency"],
 			"language proficiency" : {
@@ -60,7 +61,7 @@ AddSubClass("wizard", "spell-stained", {
 		},
 		"subclassfeature2.1" : {
 			name : "Skin Glyphs",
-			source : ["HB", 0],
+			source : [["HB", 0]],
 			minlevel : 2,
 			description : desc([
 				"When preparing spells, I can make a spell that I can cast into a skin glyph",
@@ -72,11 +73,15 @@ AddSubClass("wizard", "spell-stained", {
 				"If I set a condition for the glyph's trigger, it will always use my reaction to trigger",
 				"Another trigger option is by gesture/command, which requires my bonus action"
 			]),
-			additional : levels.map( function(n) { return n < 2 ? "" : "max " + (n < 14 ? 1 : 2) + " active skin glyph" + (n < 14 ? "" : "s"); })
+			additional : levels.map( function(n) { return n < 2 ? "" : "max " + (n < 14 ? 1 : 2) + " active skin glyph" + (n < 14 ? "" : "s"); }),
+			action : [
+				["raction", " (trigger by condition)"],
+				["bonus action", " (trigger by gesture/command)"]
+			]
 		},
 		"subclassfeature6" : {
 			name : "Mark of Binding",
-			source : ["HB", 0],
+			source : [["HB", 0]],
 			minlevel : 6,
 			description : desc([
 				"With a 10-minute ritual, I can bind a small object to me that I can physically carry",
@@ -85,20 +90,20 @@ AddSubClass("wizard", "spell-stained", {
 				"By pressing on the marking again as a bonus action, I can return the item to it",
 				"If an object is destroyed, the corresponding marking disappears from my skin"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			additional : levels.map( function(n) { return n < 6 ? "" : "max " + (n < 14 ? 2 : 4) + " objects bound"; })
 		},
 		"subclassfeature10" : {
 			name : "Rune Cocoon",
-			source : ["HB", 0],
+			source : [["HB", 0]],
 			minlevel : 10,
-			description : "\n   " + "I'm always under the effects of Mage Armor and Detect Magic",
-			addarmor : "Mage Armor",
+			description : desc("I'm always under the effects of Mage Armor and Detect Magic"),
+			armorAdd : "Mage Armor",
 			vision : [["Detect Magic", 0]]
 		},
 		"subclassfeature14" : {
 			name : "Horrific Teleport",
-			source : ["HB", 0],
+			source : [["HB", 0]],
 			minlevel : 14,
 			description : desc([
 				"I can create up to two active skin glyphs and bind up to four objects",

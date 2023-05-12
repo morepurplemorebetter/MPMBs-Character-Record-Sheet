@@ -13,11 +13,11 @@
 				You can find it here: https://homebrewery.naturalcrit.com/share/ryefY7KzV
 
 	Code by:	MorePurpleMoreBetter
-	Date:		2019-01-15 (sheet v12.999)
+	Date:		2019-01-15 (sheet v13.0.0)
 */
 
 var iFileName = "Awakened Ooze [RedCxy's work, transcribed by MPMB].js";
-RequiredSheetVersion(12.999);
+RequiredSheetVersion(13);
 
 RaceList["awakened ooze"] = {
 	regExpSearch : /^(?=.*awakened)(?=.*ooze).*$/i,
@@ -35,7 +35,6 @@ RaceList["awakened ooze"] = {
 	age : " live for as long as the latent magical energies that awakened them lasts, which can be anywhere from decades to millennia, depending on the strength of the enchantment",
 	height : "",
 	weight : "",
-	improvements : "Awakened Ooze: +2 Constitution, +1 Charisma;",
 	scores : [0, 0, 2, 0, 0, 1],
-	trait : "Awakened Ooze (+2 Constitution, +1 Charisma)\n   Hybrid Nature: Things that affect either humanoids or oozes affect me, as I'm both types.\nAmorphous: I can fit through a 1 inch opening, although my gear might not. I can shape myself like any humanoid, but can't change color. I can don or doff any armor in 1 minute.\n   Unrest: Instead of sleeping, I have to be motionless for 6 hours to have a long rest. I don't suffer the effects of lack of rest and magic can't put me to sleep.\n   Oozes Metabolism: I don't need to eat or breath, but need water."
+	trait : "Awakened Ooze (+2 Constitution, +1 Charisma)\n   Hybrid Nature: Things that affect either humanoids or oozes affect me, as I'm both types.\n   Amorphous: I can fit through a 1 inch opening, although my gear might not. I can shape myself like any humanoid, but can't change color. I can don or doff any armor in 1 minute.\n   Unrest: Instead of sleeping, I have to be motionless for 6 hours to have a long rest. I don't suffer exhaustion due to lack of rest and magic can't put me to sleep.\n   Oozes Metabolism: I don't need to eat or breath, but need water."
 };

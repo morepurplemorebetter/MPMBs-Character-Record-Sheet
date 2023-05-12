@@ -18,20 +18,20 @@
 */
 
 var iFileName = "Kitsune [Marshall Miller's work, transcribed by Murray].js";
-RequiredSheetVersion(12.999);
+RequiredSheetVersion(13);
 
 SourceList["MM:K"] = {
 	name : "Marshall Miller: Kitsune player race",
 	abbreviation : "MM:K",
 	group : "Dungeon Masters Guild",
-	url : "https://www.dmsguild.com/product/171361/",
+	url : "https://www.dmsguild.com/product/171361/Kitsune-Player-Race",
 	date : "2016/01/18"
 };
 
 RaceList["kitsune"] = {
 	regExpSearch : /kitsune/i,
 	name : "Kitsune",
-	source : ["MM:K", 0],
+	source : [["MM:K", 0]],
 	plural : "Kitsune",
 	size : 3,
 	speed : {
@@ -40,15 +40,13 @@ RaceList["kitsune"] = {
 	languageProfs : ["Common", "Sylvan"],
 	vision : [["Darkvision", 60]],
 	age : " reach adulthood around 100 years and live around 900 years",
-	height : " range from 5 to 6 feet tall)",
-	weight : " weigh around 135 to 175 lb.",
-	improvements : "Kitsune: +1 Dexterity, +2 Charisma;",
+	height : " range from 5 to 6 feet tall",
+	weight : " weigh around 135 to 175 lb",
 	scores : [0, 1, 0, 0, 0, 2],
 	trait : "Kitsune (+1 Dexterity, +2 Charisma)\nKitsune Magic: 1st level: Dancing Lights cantrip; 3rd level: Charm Person as a 2nd-level spell; 5th level: Invisibility, self only; Both spells can be used once per long rest without material components. Charisma is my spellcasting ability for these.\nTrue Form: As an action, I can transform to a human form or back to my true fox form.\nThis works as Wild Shape, with the exception that my HP doesn't change when shifting and I may speak as normal and use Kitsune Magic while in fox form.",
-	abilitySave : 6,
 	spellcastingAbility : 6,
 	spellcastingBonus : {
-		name : "Kitsune Magic 1",
+		name : "Kitsune Magic (level 1)",
 		spells : ["dancing lights"],
 		selection : ["dancing lights"]
 	},
@@ -56,34 +54,32 @@ RaceList["kitsune"] = {
 		"true form" : {
 			name : "True Form",
 			minlevel : 1,
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"charm person" : {
-			name : "Charm Person (level 2)",
+			name : "Kitsune Magic (level 3)",
+			limfeaname : "Charm Person (level 2)",
 			minlevel : 3,
-			tooltip : " (Kitsune Magic)",
-			action : ["action", ""],
 			usages : 1,
 			recovery : "long rest",
 			spellcastingBonus : {
-				name : "Kitsune Magic 3",
+				name : "Kitsune Magic (level 3)",
 				spells : ["charm person"],
 				selection : ["charm person"],
-				oncelr : true
+				firstCol : 'oncelr'
 			}
 		},
 		"invisibility" : {
-			name : "Invisibility",
+			name : "Kitsune Magic (level 5)",
+			limfeaname : "Invisibility",
 			minlevel : 5,
-			tooltip : " (Kitsune Magic)",
-			action : ["action", ""],
 			usages : 1,
 			recovery : "long rest",
 			spellcastingBonus : {
-				name : "Kitsune Magic 5",
+				name : "Kitsune Magic (level 5)",
 				spells : ["invisibility"],
 				selection : ["invisibility"],
-				oncelr : true
+				firstCol : 'oncelr'
 			}
 		}
 	}

@@ -18,13 +18,13 @@
 */
 
 var iFileName = "Fighter - Tactician [Joshua Bramlett's work, transcribed by Vypir & MPMB].js";
-RequiredSheetVersion(12.999);
+RequiredSheetVersion(13);
 
 SourceList["JB:TAS"] = {
 	name : "Joshua Bramlett: Martial Archetypes: Tactician and Scoundrel",
 	abbreviation : "JB:TAS",
 	group : "Dungeon Masters Guild",
-	url : "https://www.dmsguild.com/product/216366/",
+	url : "https://www.dmsguild.com/product/216366/Martial-Archetypes-Tactician--Scoundrel",
 	date : "2017/07/13"
 };
 
@@ -32,11 +32,11 @@ AddSubClass("fighter", "tactician", {
 	regExpSearch : /tactician/i,
 	subname : "Tactician",
 	fullname : "Tactician",
-	source : ["JB:TAS", 2],
+	source : [["JB:TAS", 2]],
 	features : {
 		"subclassfeature3" : {
 			name : "Issue Orders",
-			source : ["JB:TAS", 2],
+			source : [["JB:TAS", 2]],
 			minlevel : 3,
 			description : "\n   " + "I learn special orders that my allies can follow as a reaction",
 			additional : levels.map(function (n) {
@@ -46,74 +46,74 @@ AddSubClass("fighter", "tactician", {
 			extrachoices : ["Attack", "Cast It", "Find Them", "Grab Them", "Line Them Up", "Lose Them", "Move", "Retreat", "stand Your Ground", "Use It"],
 			"attack" : {
 				name : "Attack",
-				source : ["JB:TAS", 2],
+				source : [["JB:TAS", 2]],
 				description : "\n   " + "As a bonus action, I can order one alley within 30 ft to make one weapon attack",
-				action : ["bonus action", " (order)"]
+				action : [["bonus action", " (order)"]]
 			},
 			"cast it" : {
 				name : "Cast It",
-				source : ["JB:TAS", 2],
+				source : [["JB:TAS", 2]],
 				description : "\n   " + "As an action, I can order one alley to cast a spell that has a casting time of one action",
-				action : ["action", " (order)"]
+				action : [["action", " (order)"]]
 			},
 			"find them" : {
 				name : "Find Them",
-				source : ["JB:TAS", 2],
+				source : [["JB:TAS", 2]],
 				description : "\n   " + "As a reaction, I can order an alley to use the search action",
-				action : ["reaction", " (order)"]
+				action : [["reaction", " (order)"]]
 			},
 			"grab them" : {
 				name : "Grab Them",
-				source : ["JB:TAS", 2],
+				source : [["JB:TAS", 2]],
 				description : "\n   " + "As a reaction, I can order one alley to make a grapple attempt",
-				action : ["reaction", " (order)"]
+				action : [["reaction", " (order)"]]
 			},
 			"line them up" : {
 				name : "Line Them Up",
-				source : ["JB:TAS", 2],
+				source : [["JB:TAS", 2]],
 				description : "\n   " + "As a reaction, I can order one alley to make a shove attempt",
-				action : ["reaction", " (order)"]
+				action : [["reaction", " (order)"]]
 			},
 			"lose them" : {
 				name : "Lose Them",
-				source : ["JB:TAS", 2],
+				source : [["JB:TAS", 2]],
 				description : "\n   " + "As a reaction, I can order one alley to take the hide action",
-				action : ["reaction", " (order)"]
+				action : [["reaction", " (order)"]]
 			},
 			"move" : {
 				name : "Move",
-				source : ["JB:TAS", 2],
+				source : [["JB:TAS", 2]],
 				description : "\n   " + "As a bonus action, I can order one alley to take the dash action",
-				action : ["bonus action", " (order)"]
+				action : [["bonus action", " (order)"]]
 			},
 			"retreat" : {
 				name : "Line Them Up",
-				source : ["JB:TAS", 2],
+				source : [["JB:TAS", 2]],
 				description : "\n   " + "As a reaction, I can order one alley to take the disengage action",
-				action : ["reaction", " (order)"]
+				action : [["reaction", " (order)"]]
 			},
 			"stand your ground" : {
 				name : "Stand Your Ground",
-				source : ["JB:TAS", 2],
+				source : [["JB:TAS", 2]],
 				description : "\n   " + "As a bonus action, I can order one alley to take the dodge action",
-				action : ["bonus action", " (order)"]
+				action : [["bonus action", " (order)"]]
 			},
 			"use it" : {
 				name : "Use It",
-				source : ["JB:TAS", 2],
+				source : [["JB:TAS", 2]],
 				description : "\n   " + "As a reaction, I can order one alley to take the use an object action",
-				action : ["reaction", " (order)"]
+				action : [["reaction", " (order)"]]
 			}
 		},
 		"subclassfeature7" : {
 			name : "Preparation",
-			source : ["JB:TAS", 2],
+			source : [["JB:TAS", 2]],
 			minlevel : 7,
 			description : "\n   " + "By spending at least 1 minute going over battle plans with my allies, they all gain insight" + "\n   " + "That insight gives them adv. on the first roll they make on their first turn in combat"
 		},
 		"subclassfeature10" : {
 			name : "Sound Mind",
-			source : ["JB:TAS", 2],
+			source : [["JB:TAS", 2]],
 			minlevel : 10,
 			description : "\n   " + "I have advantage on saving throws against being charmed or frightened",
 			savetxt : {
@@ -122,13 +122,13 @@ AddSubClass("fighter", "tactician", {
 		},
 		"subclassfeature15" : {
 			name : "Group Command",
-			source : ["JB:TAS", 2],
+			source : [["JB:TAS", 2]],
 			minlevel : 15,
 			description : "\n   " + "When I issue an order, I can issue it to two allies at the same time"
 		},
 		"subclassfeature18" : {
 			name : "Inspiring Presence",
-			source : ["JB:TAS", 2],
+			source : [["JB:TAS", 2]],
 			minlevel : 18,
 			description : "\n   " + "At the start of each of my turns, I grant 5 temporary HP to myself and allies in 30 ft"
 		}

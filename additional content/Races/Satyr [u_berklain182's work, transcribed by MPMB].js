@@ -16,7 +16,7 @@
 */
 
 var iFileName = "Satyr [u_berklain182's work, transcribed by MPMB].js";
-RequiredSheetVersion(12.999);
+RequiredSheetVersion('13.0.3');
 
 SourceList["B182:S"] = {
 	name : "/u/berklain182: Satyr",
@@ -42,13 +42,23 @@ RaceList["satyr"] = {
 		adv_vs : ["charmed"]
 	},
 	toolProfs : ["Flute"],
-	weapons : ["Satyr Headbutt"],
+	weaponsAdd : ["Satyr Headbutt"],
+	weaponOptions : [{
+		regExpSearch : /^(?=.*satyr)(?=.*headbutt).*$/i,
+		name : "Satyr Headbutt",
+		source : ["B182:S", 0],
+		ability : 1,
+		type : "Natural",
+		damage : [1, 4, "bludgeoning"],
+		range : "Melee",
+		description : "Damage type depends on type of horns",
+		abilitytodamage : true
+	}],
 	age : " mature at the rate of humans, but live up to 500 years",
 	height : " stand between 5 and 5.5 feet tall",
 	weight : " weigh around 155 lb",
 	heightMetric : " stand between 1,5 and 1,65 metres tall",
 	weightMetric : " weigh around 70 kg",
-	improvements : "Satyr: +1 Dexterity, +2 Charisma;",
 	scores : [0, 1, 0, 0, 0, 2],
 	trait : "Satyr (+1 Dexterity, +2 Charisma)\nHeadbutt: I can use my head to make an attack, dealing 1d4 damage of a type determined by my horns.\nFlute: I know the Vicious Mockery cantrip.\n   At 3rd level, I can cast Sleep once per long rest as a 2nd-level spell.\n   At 5th level, I can also cast Charm Person once per long rest.\n   Charisma is my spellcasting ability for these spells",
 	spellcastingAbility : 6,
@@ -60,11 +70,11 @@ RaceList["satyr"] = {
 	},
 	features : {
 		"sleep" : {
-			name : "Sleep (2nd level)",
+			name : "Flute (level 3)",
+			limfeaname : "Sleep (2nd level)",
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			tooltip : " (Flute)",
 			spellcastingBonus : {
 				name : "Flute (level 3)",
 				spells : ["sleep"],
@@ -73,11 +83,11 @@ RaceList["satyr"] = {
 			}
 		},
 		"charm person" : {
-			name :  "Charm Person",
+			name : "Flute (level 5)",
+			limfeaname : "Charm Person",
 			minlevel : 5,
 			usages : 1,
 			recovery : "long rest",
-			tooltip : " (Flute)",
 			spellcastingBonus : {
 				name : "Flute (level 5)",
 				spells : ["charm person"],
@@ -86,16 +96,4 @@ RaceList["satyr"] = {
 			}
 		}
 	}
-};
-
-WeaponsList["satyr headbutt"] = {
-	regExpSearch : /^(?=.*satyr)(?=.*headbutt).*$/i,
-	name : "Satyr Headbutt",
-	source : ["B182:S", 0],
-	ability : 1,
-	type : "Natural",
-	damage : [1, 4, "bludgeoning"],
-	range : "Melee",
-	description : "Damage type depends on type of horns",
-	abilitytodamage : true
 };
