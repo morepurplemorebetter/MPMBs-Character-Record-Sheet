@@ -1663,9 +1663,10 @@ function ApplyWildshape() {
 		var atkMod = mods[atk.ability - 1];
 		var atkAlt = atk.modifiers ? atk.modifiers : [];
 		var atkRange = What("Unit System") === "imperial" ? atk.range : ConvertToMetric(atk.range, 0.5);
+		var atkDescription = !atk.description ? "" : What("Unit System") === "imperial" ? atk.description : ConvertToMetric(atk.description, 0.5);
 		Value(atkStr + ".Weapon", atk.name); //set attack name
 		Value(atkStr + ".Range", atkRange); //set attack range
-		Value(atkStr + ".Description", atk.description, atk.tooltip ? atk.tooltip : ""); //set attack description
+		Value(atkStr + ".Description", atkDescription, atk.tooltip ? atk.tooltip : ""); //set attack description
 
 		//set to hit
 		var tohitProfB = setting[1].indexOf("attacks") !== -1 ? charProfBfix : creaProfBfix;
@@ -5616,7 +5617,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 		thermoTxt = thermoM("Applying the weapon's features...", false); //change the progress dialog text
 		var curDescr = What(fldBase + "Description");
 		var curRange = What(fldBase + "Range");
-		fields.Description = theWea.description; //add description
+		fields.Description = theWea.description ? theWea.description : ""; //add description
 		fields.Description_Tooltip = theWea.tooltip ? theWea.tooltip : ""; //add the tooltip for the description
 		fields.Range = theWea.range; //add range
 		fields.Damage_Type = theWea.damage[2]; //add Damage Type

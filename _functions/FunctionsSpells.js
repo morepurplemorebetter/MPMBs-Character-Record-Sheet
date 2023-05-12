@@ -5556,6 +5556,11 @@ function getSpellcastingAbility(theCast) {
 	var testFixedDC = (/race|class/i).test(spObj.abilityBackup);
 	var bContinueAsClass = false;
 	if (spObj && spObj.ability && isNaN(spObj.ability) && !(/race|class/i).test(spObj.ability) && spObj.ability !== theCast) {
+		// First delete the fixedDC if previously added because the ability resulted in 0
+		if (spObj.fixedDC_becauseAbi0) {
+			delete spObj.fixedDC;
+			delete spObj.fixedDC_becauseAbi0;
+		}
 		// It is a string, but not "race" or "class", so it must be made to match another
 		// Make sure it doesn't match this CurrentSpells entry name to avoid recursion
 		if (CurrentSpells[spObj.ability] && CurrentSpells[spObj.ability].ability && CurrentSpells[spObj.ability].ability !== theCast) {
@@ -5596,7 +5601,9 @@ function getSpellcastingAbility(theCast) {
 	// if the spellcasting ability is still 0 after testing class/race, set a fixed DC as if a +0 ability modifier, so just 8 + Prof
 	if (testFixedDC) {
 		if (spAbility == 0) {
-			spObj.fixedDC = 8; // a fixed DC of 8 will always get the prof bonus added
+			// a fixed DC of 8 will always get the prof bonus added
+			spObj.fixedDC = 8;
+			spObj.fixedDC_becauseAbi0 = true;
 		} else {
 			delete spObj.fixedDC;
 		}

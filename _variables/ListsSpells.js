@@ -740,7 +740,7 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Conc, 1 h",
 		description : "CR 4+1/2SL celestial; obeys my verbal commands if they do not go against its alignment",
-		descriptionFull : "You summon a celestial of challenge rating 4 or lower, which appears in an unoccupied space that you can see within range. The celestial disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The celestial is friendly to you and your companions for the duration. Roll initiative for the celestial, which has its own turns. It obeys any verbal commands that you issue to it (no action required by you), as long as they don't violate its alignment. If you don't issue any commands to the celestial, it defends itself from hostile creatures but otherwise takes no actions The DM has the celestial's statistics. At Higher Levels:" + "\n   " + "When you cast this spell using a 9th-level spell slot, you summon a celestial of challenge rating 5 or lower."
+		descriptionFull : "You summon a celestial of challenge rating 4 or lower, which appears in an unoccupied space that you can see within range. The celestial disappears when it drops to 0 hit points or when the spell ends." + "\n   " + "The celestial is friendly to you and your companions for the duration. Roll initiative for the celestial, which has its own turns. It obeys any verbal commands that you issue to it (no action required by you), as long as they don't violate its alignment. If you don't issue any commands to the celestial, it defends itself from hostile creatures but otherwise takes no actions The DM has the celestial's statistics." + AtHigherLevels + "When you cast this spell using a 9th-level spell slot, you summon a celestial of challenge rating 5 or lower."
 	},
 	"conjure elemental" : {
 		name : "Conjure Elemental",
@@ -896,7 +896,7 @@ var Base_SpellsList = {
 		components : "S",
 		duration : "Instantaneous",
 		description : "Stop a spell being cast; if above SL of this spell, make DC 10+SL spellcasting ability check",
-		descriptionFull : "You attempt to interrupt a creature in the process of casting a spell. If the creature is casting a spell of 3rd level or lower, its spell fails and has no effect. If it is casting a spell of 4th level or higher, make an ability check using your spellcasting ability. The DC equals 10 + the spell's level. On a success, the creature's spell fails and has no effect." + "\n   " + "At Higher Level. When you cast this spell using a spell slot of 4th level or higher, the interrupted spell has no effect if its level is less than or equal to the level of the spell slot you used."
+		descriptionFull : "You attempt to interrupt a creature in the process of casting a spell. If the creature is casting a spell of 3rd level or lower, its spell fails and has no effect. If it is casting a spell of 4th level or higher, make an ability check using your spellcasting ability. The DC equals 10 + the spell's level. On a success, the creature's spell fails and has no effect." + AtHigherLevels + "When you cast this spell using a spell slot of 4th level or higher, the interrupted spell has no effect if its level is less than or equal to the level of the spell slot you used."
 	},
 	"create food and water" : {
 		name : "Create Food and Water",

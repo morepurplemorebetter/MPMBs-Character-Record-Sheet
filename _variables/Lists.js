@@ -2098,8 +2098,8 @@ var factions = {
 
 var LinksLatest = {
 	advlog : {
-		PF : "http://www.dmsguild.com/product/194068",
-		CF : "http://www.dmsguild.com/product/194069"
+		PF : "https://www.dmsguild.com/product/194068",
+		CF : "https://www.dmsguild.com/product/194069"
 	},
 	character : {
 		PF : "https://www.patreon.com/posts/19406992", // while website is not finished "https://flapkan.com/#download",

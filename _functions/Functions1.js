@@ -6180,7 +6180,8 @@ function addTempClassesKnown(oBonus) {
 		classes.known[oBonus.class] = {
 			name : oBonus.class,
 			level : 0,
-			subclass : oBonus.subclass ? oBonus.subclass : ""
+			subclass : oBonus.subclass ? oBonus.subclass : "",
+			isTempKnown : true
 		}
 	} else if (oBonus.subclass && oBonus.subclass !== classes.known[oBonus.class].subclass) {
 		classes.known[oBonus.class].subclassRem = classes.known[oBonus.class].subclass;
@@ -6190,7 +6191,7 @@ function addTempClassesKnown(oBonus) {
 // Delete or revert all temporary changes to classes.known, if applicable
 function cleanTempClassesKnown() {
 	for (var sClass in classes.known) {
-		if (classes.known[sClass].level === 0) {
+		if (classes.known[sClass].isTempKnown === true) {
 			delete classes.known[sClass];
 		} else if (classes.known[sClass].subclassRem) {
 			classes.known[sClass].subclass = classes.known[sClass].subclassRem;

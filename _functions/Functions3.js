@@ -840,23 +840,17 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, force
 		// create the spellcasting object if it doesn't yet exist
 		if (!CurrentSpells[useSpName]) sObj = CreateCurrentSpellsEntry(type, parentName, choice, forceNonCurrent);
 		if (!sObj) return; // failed to create CurrentSpells entry, so stop now
+		if (!isArray(spBon)) spBon = [spBon];
 		sObj.bonus[srcNm] = spBon;
 		// see if this wants to change the spellcasting ability
-		var spFeatItemLvl = false;
-		var spAbility = !isArray(spBon) ? spBon.spellcastingAbility : false;
-		var spFixedDC = !isArray(spBon) ? spBon.fixedDC : false;
-		var spFixedSpAttack = !isArray(spBon) ? spBon.fixedSpAttack : false;
-		var spAllowUpCasting = !isArray(spBon) ? spBon.allowUpCasting : undefined;
-		var spMagicItemComponents = !isArray(spBon) ? spBon.magicItemComponents : undefined;
-		if (isArray(spBon)) {
-			for (var i = 0; i < spBon.length; i++) {
-				if (!spFeatItemLvl && spBon[i].times && isArray(spBon[i].times)) spFeatItemLvl = true;
-				if (spBon[i].spellcastingAbility) spAbility = spBon[i].spellcastingAbility;
-				if (spBon[i].fixedDC) spFixedDC = spBon[i].fixedDC;
-				if (spBon[i].fixedSpAttack) spFixedSpAttack = spBon[i].fixedSpAttack;
-				if (spBon[i].allowUpCasting !== undefined) spAllowUpCasting = spBon[i].allowUpCasting;
-				if (spBon[i].magicItemComponents !== undefined) spMagicItemComponents = spBon[i].magicItemComponents;
-			}
+		var spFeatItemLvl, spAbility, spFixedDC, spFixedSpAttack, spAllowUpCasting, spMagicItemComponents;
+		for (var i = 0; i < spBon.length; i++) {
+			if (!spFeatItemLvl && spBon[i].times && isArray(spBon[i].times)) spFeatItemLvl = true;
+			if (spBon[i].spellcastingAbility) spAbility = spBon[i].spellcastingAbility;
+			if (spBon[i].fixedDC) spFixedDC = spBon[i].fixedDC;
+			if (spBon[i].fixedSpAttack) spFixedSpAttack = spBon[i].fixedSpAttack;
+			if (spBon[i].allowUpCasting !== undefined) spAllowUpCasting = spBon[i].allowUpCasting;
+			if (spBon[i].magicItemComponents !== undefined) spMagicItemComponents = spBon[i].magicItemComponents;
 		}
 		if (spAbility) {
 			sObj.ability = ReturnSpellcastingAbility(useSpName, spAbility);
@@ -867,7 +861,7 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, force
 		if (spAllowUpCasting !== undefined) sObj.allowUpCasting = spAllowUpCasting;
 		if (spMagicItemComponents !== undefined) sObj.magicItemComponents = spMagicItemComponents;
 		// if concerning a feat or item, set the level only if the spellcastingBonus needs it
-		if ((/feat|item/i).test(sObj.typeSp) && spFeatItemLvl) sObj.level = Math.max(Number(What("Character Level")), 1);
+		if (/feat|item/i.test(sObj.typeSp) && spFeatItemLvl) sObj.level = Math.max(Number(What("Character Level")), 1);
 	}
 	SetStringifieds('spells');
 	CurrentUpdates.types.push("spells");
