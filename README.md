@@ -21,6 +21,7 @@ Here the sheet stores the information that it uses to populate the fields.
 ## Additional Content
 The **[additional content](https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/tree/master/additional%20content)** folder contains scripts that can be imported into the sheet using the "Add Extra Materials" bookmark or "Import" button.
 Each file is a complete script. You can add multiple files, but take note that they will be processed in the order they are added.
+Please see the [How-To Guide - Add More Content](https://www.flapkan.com/how-to/add-more-content) on my website for an explanation how to add these scripts to the PDF.
 
 ## Syntax
 The **[additional content syntax](https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/tree/master/additional%20content%20syntax)** folder contains explanatory files for making the additional content scripts.
