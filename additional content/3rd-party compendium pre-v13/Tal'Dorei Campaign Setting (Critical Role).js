@@ -19,8 +19,10 @@
 	Code by:	AqueonTheConjurer & MorePurpleMoreBetter
 	Date:		2018-07-13 (sheet v12.999)
 
-	Please support the creator of this content (Matthew Mercer) and purchase his creation. It contains a lot more than just player options!
-	https://greenroninstore.com/products/critical-role-tal-dorei-campaign-setting-5e-pdf
+	-BE AWARE-
+	This content is outdated as an extended and revised re-release of the book was published on 31 December 2021.
+	You can find the new version here:
+	https://shop.critrole.com/products/taldorei-campaign-setting-reborn
 */
 
 var iFileName = "Tal'Dorei Campaign Setting (Critical Role).js";
@@ -31,7 +33,7 @@ SourceList.TDCS = {
 	name: "Tal'Dorei Campaign Setting (Critical Role) v1.1",
 	abbreviation: "TDCS",
 	group: "Third Party Compendium",
-	url: "https://greenroninstore.com/products/critical-role-tal-dorei-campaign-setting-5e-pdf",
+	url: "https://criticalrole.fandom.com/wiki/Critical_Role:_Tal%27Dorei_Campaign_Setting",
 	date: "2017/10/17"
 };
 

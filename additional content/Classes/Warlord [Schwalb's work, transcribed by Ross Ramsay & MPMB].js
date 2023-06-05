@@ -9,7 +9,7 @@
 	Subject:	Class
 	Effect:		This script adds a class, called "Warlord" and its 6 subclasses
 				This class has been made and published by Schwalb Entertainment
-				If you intend to use this script, please purchase the class at https://schwalb-entertainment.myshopify.com/products/call-to-arms-the-warlord
+				If you intend to use this script, please purchase the class at https://www.drivethrurpg.com/product/264030/Call-to-Arms-The-Warlord
 				For more information, see here: https://schwalbentertainment.com/2019/01/14/call-to-arms-the-warlord/
 				This script uses the version of the 19th of January 2019
 	Code by:	Ross Ramsay & MorePurpleMoreBetter
@@ -19,7 +19,7 @@
 	The multiclassing settings used below are an interpretation by MPMB.
 
 	If you like this class, take a look at other content of this creator:
-	https://www.dmsguild.com/browse/pub/8782/Schwalb-Entertainment
+	https://www.drivethrurpg.com/browse/pub/8782/Schwalb-Entertainment
 
 	Caution:	MorePurpleMoreBetter advises against using this class as it breaks game balance (some of its features are clearly overpowered). This code was made on commission for a patron.
 */
@@ -31,7 +31,7 @@ SourceList["SE:W"] = {
 	name : "Schwalb Entertainment: Warlord",
 	abbreviation : "SE:W",
 	group : "Dungeon Masters Guild",
-	url : "https://www.dmsguild.com/product/264030/",
+	url : "https://www.drivethrurpg.com/product/264030/Call-to-Arms-The-Warlord",
 	date : "2019/01/19"
 };
 

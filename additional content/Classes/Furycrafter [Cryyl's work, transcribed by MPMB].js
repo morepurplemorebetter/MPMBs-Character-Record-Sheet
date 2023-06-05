@@ -9,8 +9,11 @@
 /*	-INFORMATION-
 	Subject:	Class
 	Effect:		This script adds a class, called "Furycrafter" and its 2 subclasses
-				This class has been made by /u/Cryyl over on /r/UnearthedArcana on Reddit (https://www.reddit.com/45a74m/)
-				
+				This class has been made by /u/Cryyl over on /r/UnearthedArcana on Reddit ( https://www.reddit.com/45a74m/ )
+
+				You can request access to the PDF here: https://drive.google.com/file/d/0Bwg2aP_GFKBIUEl5dG1ia2VQdlU/view
+				Note that this is maintained by /u/Cryyl and not MPMB!
+
 	Code by:	MorePurpleMoreBetter
 	Date:		2019-05-20 (sheet v13.0.0beta34)
 
@@ -28,7 +31,7 @@ SourceList["Cryyl:F"] = {
 	name: "/u/Cryyl: Furycrafter",
 	abbreviation: "Cryyl:F",
 	group: "Reddit/r/UnearthedArcana",
-	url: "https://drive.google.com/file/d/0Bwg2aP_GFKBIUEl5dG1ia2VQdlU/view",
+	url: "https://www.reddit.com/45a74m/",
 	date : "2016/02/12"
 };
 

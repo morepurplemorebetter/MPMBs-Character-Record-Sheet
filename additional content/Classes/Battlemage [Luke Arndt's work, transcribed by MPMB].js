@@ -33,6 +33,7 @@ ClassList["battlemage"] = {
 	name : "Battlemage",
 	source : ["LA:BM", 0],
 	primaryAbility : "Intelligence, and Strength or Dexterity",
+	abilitySave : 4,
 	prereqs : "Intelligence 13, and Strength 13 or Dexterity 13",
 	die : 10,
 	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
@@ -48,7 +49,7 @@ ClassList["battlemage"] = {
 		primary : [true, true],
 		secondary : [true, true]
 	},
-	equipment : "Warlord starting equipment:" +
+	equipment : "Battlemage starting equipment:" +
 		"\n \u2022 A martial weapon and a shield -or- two martial weapons;" +
 		"\n \u2022 Chain shirt -or- leather armor and 10 darts;" +
 		"\n \u2022 A sholar's pack -or- an explorer's pack;" +
