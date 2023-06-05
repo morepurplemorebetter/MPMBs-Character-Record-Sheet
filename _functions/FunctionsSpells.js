@@ -2793,11 +2793,11 @@ function AskUserSpellSheet() {
 		// get the ability score to use for save DCs/spell attacks/prepared
 		spCast.abilityToUse = getSpellcastingAbility(aCast);
 		if (spCast.level !== undefined) {
-			if ((/feat|item/i).test(spCast.typeSp)) {
-				//set the level if concerning a feat/item
-				spCast.level = Math.max(1, Number(What("Character Level")));
-			} else if (classes.known[aCast]) {
+			if (classes.known[aCast]) {
 				spCast.level = classes.known[aCast].level;
+			} else if (/feat|item/i.test(spCast.refType)) {
+				//set the level if concerning a feat/item/race
+				spCast.level = Math.max(1, Number(What("Character Level")));
 			}
 		}
 

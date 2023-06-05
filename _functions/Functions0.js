@@ -267,6 +267,17 @@ function setPrototypes() {
 		var iIndx = this.find(del);
 		return iIndx === -1 ? -1 : this.splice(iIndx, 1);
 	};
+	Array.prototype.merge = function (arr) {
+		// Merge array with another, but ignoring duplicates
+		// Does not alter original array
+		try {
+			// This should work in ES6
+			return [...new Set([...this, ...arr])];
+		} catch (e) {
+			// ES5 and older will have to rely on old, slow method
+			return this.concat(arr.filter(function(item) { return this.indexOf(item) < 0; }));
+		}
+	};
 };
 setPrototypes();
 

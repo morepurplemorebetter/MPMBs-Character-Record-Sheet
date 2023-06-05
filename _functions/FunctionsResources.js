@@ -228,10 +228,10 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 	// Exclude new objects that have the defaultExcluded flag
 	var resourceOptions = [{
 		exclObj : "classExcl",
-		name : "Class(es)",
+		name : "Classes",
 		listObj : "ClassList",
 		subAttribute : "subclasses",
-		subName : "Archetype(s)",
+		subName : "Archetypes",
 		subListObj : "ClassSubList",
 		subListObjName : "subname"
 	}, {

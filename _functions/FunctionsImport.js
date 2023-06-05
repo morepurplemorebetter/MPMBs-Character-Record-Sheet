@@ -1434,8 +1434,10 @@ function DirectImport(consoleTrigger) {
 		} else {
 			SetToManual_Dialog.mAtt = !!global.docFrom.CurrentVars.manual.attacks;
 			SetToManual_Dialog.mBac = !!global.docFrom.CurrentVars.manual.background;
+			SetToManual_Dialog.mBFe = !!global.docFrom.CurrentVars.manual.backgroundFeature;
 			SetToManual_Dialog.mCla = !!global.docFrom.CurrentVars.manual.classes;
 			SetToManual_Dialog.mFea = !!global.docFrom.CurrentVars.manual.feats;
+			SetToManual_Dialog.mMag = !!global.docFrom.CurrentVars.manual.items;
 			SetToManual_Dialog.mRac = !!global.docFrom.CurrentVars.manual.race;
 		}
 		SetToManual_Button(true);

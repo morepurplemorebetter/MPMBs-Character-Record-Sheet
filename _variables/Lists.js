@@ -281,7 +281,8 @@ var classes = {
 	parsed : [],
 	known : {},
 	old : {},
-	hd : [],
+	hd : {},
+	oldhd : {},
 	hp : 0,
 	attacks : 1,
 	totallevel : 0, // classes.parsed.reduce(function(acc, val) { return acc + val[1]; }, 0);

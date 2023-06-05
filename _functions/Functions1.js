@@ -1712,7 +1712,8 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	}
 
 	// Reset the global classes variables
-	classes.hd = [];
+	classes.oldhd = eval_ish(classes.hd.toSource());
+	classes.hd = {};
 	classes.hp = 0;
 
 	//find known classes and push them into known array, add hd
@@ -1726,11 +1727,10 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		var tempSubClass = tempFound[1];
 		var tempSubClassOld = classes.old[aClass] && classes.old[aClass].subclass ? classes.old[aClass].subclass : false;
 		var tempClObj = ClassList[tempClass];
-		var tempDie = tempSubClass && ClassSubList[tempSubClass].die ? ClassSubList[tempSubClass].die : tempClObj.die;
 
-		// see if the found class isn't a prestige class and if all prereqs are met. If not, skip this class
-		var tempPrereq = !ignorePrereqs && tempClObj.prestigeClassPrereq ? tempClObj.prestigeClassPrereq : false;
-		if (tempPrereq) {
+		// see if the found class isn't a prestige class and if all prereqs are met. If not, skip this class (only if not a reset, import, or load on startup)
+		var tempPrereq = !ignorePrereqs && tempClObj.prestigeClassPrereq ? tempClObj.prestigeClassPrereq : tempClObj.prereqeval ? tempClObj.prereqeval : false;
+		if (tempPrereq && IsNotReset && IsNotImport && NotAtStartup) {
 			if (!isNaN(tempPrereq)) {
 				tempPrereq = Number(tempPrereq) <= (classes.totallevel - tempLevel);
 			} else {
@@ -1739,21 +1739,26 @@ function FindClasses(NotAtStartup, isFieldVal) {
 						tempPrereq = eval(tempPrereq);
 					} else if (typeof tempPrereq == 'function') {
 						if (!gatherVars) gatherVars = gatherPrereqevalVars();
-						tempPrereq(gatherVars);
+						gatherVars['class'] = tempClass;
+						gatherVars.subclass = tempSubClass;
+						gatherVars.classlevel = tempLevel;
+						tempPrereq = tempPrereq(gatherVars);
 					}
 				} catch (err) {
 					tempPrereq = true;
 				}
 			}
-			// ask the user if we should apply this prestige class (only if not a reset, import, or load on startup)
-			if (tempPrereq === false && IsNotReset && IsNotImport && NotAtStartup) {
-				var prestClMsg = app.alert({
+			// ask the user if we should apply this class or skip it if the prereqeval returned "skip"
+			if (tempPrereq === "skip") {
+				continue;
+			} else if (tempPrereq === false) {
+				var prestClMsg = {
 					nType : 2, // Yes,No
 					nIcon : 1, // Warning
-					cTitle : "Prestige class prerequisites not met!",
-					cMsg : "The prestige class '" + tempClObj.name + "' has a prerequisite which wasn't met. Apply this prestige class anyway?\n\nIf you select 'No', the " + tempLevel + " level(s) of this prestige class will be counted towards the total character level, but none of its features will be added."
-				});
-				if (prestClMsg == 3) continue; // user decided not to apply the prestige class
+					cTitle : "(Prestige) Class prerequisites not met!",
+					cMsg : "The (prestige) class '" + tempClObj.name + "' has a prerequisite which wasn't met. Apply this class anyway?\n\nIf you select 'No', the " + tempLevel + " level(s) of this class will be counted towards the total character level, but none of its features will be added."
+				};
+				if (app.alert(prestClMsg) === 3) continue; // user decided not to apply the class
 			}
 		}
 
@@ -1789,15 +1794,12 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			}
 		}
 
-		if (classes.hd[tempDie] === undefined) { //add hd
-			classes.hd[tempDie] = [tempDie, tempLevel];
-		} else {
-			classes.hd[tempDie][1] += tempLevel;
-		};
-
-		if (classes.hp === 0) { //add first level hp
-			classes.hp = tempDie;
-		};
+		// add hd
+		var tempDie = tempSubClass && ClassSubList[tempSubClass].die ? ClassSubList[tempSubClass].die : tempClObj.die;
+		if (!classes.hd[tempDie]) classes.hd[tempDie] = 0;
+		classes.hd[tempDie] += tempLevel;
+		// add first level hp
+		if (classes.hp === 0) classes.hp = tempDie;
 	};
 
 	// if there is only a single class, remove the level from the classes.field (if present)
@@ -2069,6 +2071,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		}
 		classes.oldspellcastlvl = classes.spellcastlvl;
 		classes.oldprimary = classes.primary;
+		classes.oldhd = eval_ish(classes.hd.toSource());
 	} else { // if not a startup event, update the field with the CurrentSpells variable
 		SetStringifieds("spells");
 	}
@@ -2092,18 +2095,8 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	// Tell prompt there was a class change
 	CurrentUpdates.types.push("classes");
 
-	// Put hit dice on sheet
-	var hdChanged = false;
-	if (classes.hd.length > 0) classes.hd.sort(function (a, b) { return a - b; }); // sort by biggest HD
-	for (var i = 0; i < 3; i++) { // loop through the 3 HD fields
-		var hdLvl = classes.hd[i] ? Math.min(classes.hd[i][1], 999) : "";
-		var hdDie = classes.hd[i] ? classes.hd[i][0] : "";
-		if (!hdChanged) hdChanged = What("HD" + (i+1) + " Level") != hdLvl || What("HD" + (i+1) + " Die") != hdDie;
-		Value("HD" + (i+1) + " Level", hdLvl);
-		Value("HD" + (i+1) + " Die", hdDie);
-	}
-	// If the HD changed, prompt the user about this and update the HP tooltip
-	if (hdChanged || CurrentEvals.hp) CurrentUpdates.types.push("hp");
+	// Update the HD fields
+	SetClassHD();
 
 	thermoM(2/4); // Increment the progress bar
 
@@ -2162,6 +2155,56 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	AddAttacksPerAction();
 	ClassMenuVisibility();
 };
+
+// update the HD fields using the classes.oldhd and classes.hd objects
+function SetClassHD() {
+	// Get the current HD field values
+	var oCurHD = {};
+	for (var i = 1; i <= 3; i++) {
+		var curHDice = What("HD" + i + " Die");
+		var curHDlvl = What("HD" + i + " Level");
+		if (curHDice && curHDlvl) {
+			if (!oCurHD[curHDice]) oCurHD[curHDice] = 0;
+			oCurHD[curHDice] += curHDlvl;
+		}
+	}
+	// Create a difference object to account for manually changed HD
+	var oDifHD = {};
+	for (var sHD in oCurHD) {
+		if (!classes.oldhd[sHD] || classes.oldhd[sHD] == oCurHD[sHD]) continue;
+		oDifHD[sHD] = oCurHD[sHD] - classes.oldhd[sHD];
+	}
+	// and the HD in oldhd that were manually removed from the sheet
+	for (var sHD in classes.oldhd) {
+		if ( !(sHD in oCurHD) ) oDifHD[sHD] = classes.oldhd[sHD] * -1;
+	}
+
+	// sort by biggest HD
+	var arrAllHD = Object.keys(classes.hd).merge(Object.keys(oDifHD));
+	var oTotHD = {};
+	// create a new HD object for the totals including manual additions
+	for (var i = 0; i < arrAllHD.length; i++) {
+		oTotHD[arrAllHD[i]] = 0;
+		if (classes.hd[arrAllHD[i]]) oTotHD[arrAllHD[i]] += classes.hd[arrAllHD[i]];
+		if (oDifHD[arrAllHD[i]]) oTotHD[arrAllHD[i]] += oDifHD[arrAllHD[i]];
+		if (oTotHD[arrAllHD[i]] <= 0) delete oTotHD[arrAllHD[i]];
+	}
+	// Put hit dice on sheet
+	var hdChanged = false, hdDie, hdLvl;
+	var arrSizedHD = Object.keys(oTotHD).sort(function (a, b) { return b - a; });
+	for (var i = 0; i < 3; i++) { // loop through the 3 HD fields
+		hdDie = "", hdLvl = "";
+		if (arrSizedHD[i] && oTotHD[arrSizedHD[i]]) {
+			hdDie = arrSizedHD[i];
+			hdLvl = Math.min(oTotHD[arrSizedHD[i]], 999);
+		}
+		if (!hdChanged) hdChanged = oTotHD[arrSizedHD[i]] != oCurHD[arrSizedHD[i]];
+		Value("HD" + (i+1) + " Level", hdLvl);
+		Value("HD" + (i+1) + " Die", hdDie);
+	}
+	// If the HD changed, prompt the user about this and update the HP tooltip
+	if (hdChanged || CurrentEvals.hp) CurrentUpdates.types.push("hp");
+}
 
 function ClassMenuVisibility() {
 	// Show the option button if a class has features that offers a choice

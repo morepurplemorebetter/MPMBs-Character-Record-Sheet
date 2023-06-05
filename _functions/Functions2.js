@@ -4180,7 +4180,7 @@ function SetHPTooltip(resetHP, onlyComp, aPrefix) {
 			"\n \u2022 " + toUni(HD.average + extrahp) + " is the total average HP" +
 			"\n \u2022 " + toUni(HD.fixed + extrahp) + " is the total HP when using fixed values" +
 			"\n \u2022 " + toUni(HD.max + extrahp) + " is the total maximum HP" +
-			(HD.conCorrection ? "\n\nNote that the Constitution modifier can't bring the HP gained from a single HD below 1 before adding other bonuses. Thus, the totals may seem off from the calculation above them. See PHB, page 15." : "");
+			(HD.conCorrection ? "\n\nNote that the Constitution modifier can't bring the HP gained from a single HD below 1 before adding other bonuses. Thus, the totals may seem off from the calculation above. See PHB, page 15." : "");
 		if (HD.altStr.length) {
 			tooltip += "\n\n>> ALTERNATIVE TOTAL HP CALCULATIONS <<" + HD.altStr.join("\n\n");
 		}
@@ -7833,17 +7833,17 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sB
 				alignment : "align_fill",
 				align_children : "align_row",
 				elements : [{
-					type : "static_text",
-					alignment : "align_left",
-					item_id : "st" + ("0" + i).slice(-2),
-					font : "dialog",
-					name : "Already known!"
-				}, {
 					type : "edit_text",
-					alignment : "align_right",
+					alignment : "align_left",
 					item_id : "sl" + ("0" + i).slice(-2),
 					char_width : 30,
 					height : 20
+				}, {
+					type : "static_text",
+					alignment : "align_right",
+					item_id : "st" + ("0" + i).slice(-2),
+					font : "dialog",
+					name : "Already known!"
 				}]
 			});
 		};
