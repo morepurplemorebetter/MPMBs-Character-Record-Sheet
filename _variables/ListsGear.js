@@ -675,7 +675,8 @@ var Base_WeaponsList = {
 		weight : 1,
 		description : "Target +1d4 damage at the start of each of its turn; Can end it as an action with a DC 10 Dex check",
 		abilitytodamage : false,
-		ammo : "alchemist fire"
+		ammo : "alchemist fire",
+		isNotWeapon : true
 	},
 	"vials of acid" : {
 		regExpSearch : /^(?=.*vial)(?=.*acid).*$/i,
@@ -689,7 +690,8 @@ var Base_WeaponsList = {
 		weight : 1,
 		description : "",
 		abilitytodamage : false,
-		ammo : "vials of acid"
+		ammo : "vials of acid",
+		isNotWeapon : true
 	},
 	"holy water" : {
 		regExpSearch : /^(?=.*holy)(?=.*water).*$/i,
@@ -703,7 +705,8 @@ var Base_WeaponsList = {
 		weight : 1,
 		description : "Only does damage against fiends and undead; Comes in flasks",
 		abilitytodamage : false,
-		ammo : "holy water"
+		ammo : "holy water",
+		isNotWeapon : true
 	},
 	"burning torch" : {
 		regExpSearch : /^(?=.*torch)(?=.*burning).*$/i,
@@ -716,7 +719,8 @@ var Base_WeaponsList = {
 		range : "Melee",
 		weight : 1,
 		description : "Only does damage while burning",
-		abilitytodamage : false
+		abilitytodamage : false,
+		isNotWeapon : true
 	},
 	// Cantrips
 	"spell attack" : {

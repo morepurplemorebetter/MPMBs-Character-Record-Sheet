@@ -999,7 +999,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 			try {
 				evalThing(inputObject, objName, objType);
 			} catch (error) {
-				var eText = "The custom calcChange.spellList function '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
+				var eText = "The custom calcChanges.spellList function '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
 				console.println(eText);
 				console.show();

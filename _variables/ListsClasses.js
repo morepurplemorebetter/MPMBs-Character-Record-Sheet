@@ -106,7 +106,7 @@ var Base_ClassList = {
 				source : [["SRD", 8], ["P", 48]],
 				minlevel : 1,
 				description : desc([
-					"Start/end as bonus action; add damage to melee weapons that use Str; lasts 1 min",
+					"Start/end as bonus action; bonus damage to melee weapon attacks using Str; lasts 1 min",
 					"Adv. on Strength checks/saves (not attacks); resistance to bludgeoning/piercing/slashing",
 					"Stops if I end turn without attacking or taking damage since last turn, or unconscious"
 				]),
@@ -121,11 +121,11 @@ var Base_ClassList = {
 				calcChanges : {
 					atkCalc : [
 						function (fields, v, output) {
-							if (v.isMeleeWeapon && classes.known.barbarian && classes.known.barbarian.level && (/\brage\b/i).test(v.WeaponTextName)) {
+							if (v.isMeleeWeapon && fields.Mod === 1 && classes.known.barbarian && classes.known.barbarian.level && /\brage\b/i.test(v.WeaponTextName)) {
 								output.extraDmg += classes.known.barbarian.level < 9 ? 2 : classes.known.barbarian.level < 16 ? 3 : 4;
 							}
 						},
-						"If I include the word 'Rage' in a melee weapon's name, the calculation will add my Rage's bonus damage to it."
+						"If I include the word 'Rage' in a melee weapon's name that uses Strength, the calculation will add my Rage's bonus damage to it. Be aware that if the weapon is used to make a ranged attack, the rage bonus damage shouldn't be added (e.g. when using a thrown weapon)."
 					]
 				}
 			},
@@ -541,7 +541,7 @@ var Base_ClassList = {
 				name : "Druidic",
 				source : [["SRD", 19], ["P", 66]],
 				minlevel : 1,
-				description : desc("I know Druidic; Hidden messages with it can only be understood by who know Druidic"),
+				description : desc("I know Druidic; Hidden messages with it are only understood by those who know Druidic"),
 				languageProfs : ["Druidic"]
 			},
 			"spellcasting" : {
@@ -782,7 +782,7 @@ var Base_ClassList = {
 								if (isNaN(curDie) || curDie < aMonkDie) {
 									fields.Damage_Die = '1d' + aMonkDie;
 								};
-								if (fields.Mod == 1 || fields.Mod == 2 || What(AbilityScores.abbreviations[fields.Mod - 1] + " Mod") < What(AbilityScores.abbreviations[v.StrDex - 1] + " Mod")) {
+								if (fields.Mod === 1 || fields.Mod === 2 || What(AbilityScores.abbreviations[fields.Mod - 1] + " Mod") < What(AbilityScores.abbreviations[v.StrDex - 1] + " Mod")) {
 									fields.Mod = v.StrDex;
 								}
 							};

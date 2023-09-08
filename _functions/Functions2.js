@@ -1085,7 +1085,7 @@ function RunCreatureCallback(sPrefix, sType, bAdd, fOverride, sOverrideNm) {
 	var sEvalType = (/companion/i).test(sType) ? "companionCallback" : "creatureCallback";
 	var aPrefix = (/all/i).test(sPrefix) ? What("Template.extras.AScomp").split(",").splice(1) : [sPrefix];
 	if (bAdd === undefined) bAdd = true;
-	var prefix, oCrea, sCompType, sEval;
+	var prefix, oCrea, sCompType;
 	var doEval = function(evalThing, evalName) {
 		if (!evalThing) return;
 		try {
@@ -5643,7 +5643,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 
 		//add mod
 		var StrDex = What(QI ? "Str" : prefix + "Comp.Use.Ability.Str.Score") < What(QI ? "Dex" : prefix + "Comp.Use.Ability.Dex.Score") ? 2 : 1;
-		fields.Mod = isReCalc && !theWea.ability ? What(fldBase + "Mod") :
+		fields.Mod = isReCalc && !theWea.ability ? tDoc.getField(fldBase + "Mod").currentValueIndices :
 			(/finesse/i).test(theWea.description) ? StrDex : theWea.ability;
 
 		//change mod if this is concerning a spell/cantrip
@@ -5680,7 +5680,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 			var WeaponText = inputText + " " + fields.Description;
 			var isDC = (/dc/i).test(fields.To_Hit_Bonus);
 			var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText)) ? true : false;
-			var isWeapon = !isSpell || (isSpell && theWea && !(/cantrip|spell/i).test(theWea.type));
+			var isWeapon = theWea && theWea.isNotWeapon ? false : !isSpell || (isSpell && theWea && !(/cantrip|spell/i).test(theWea.type));
 			var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
 			var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 			var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
@@ -5798,7 +5798,7 @@ function CalcAttackDmgHit(fldName) {
 	var fldBaseBT = prefix + "BlueText." + Q + "Attack." + fldNmbr + ".";
 	var fields = {
 		Proficiency : tDoc.getField(fldBase + "Proficiency").isBoxChecked(0),
-		Mod : What(fldBase + "Mod"),
+		Mod : tDoc.getField(fldBase + "Mod").currentValueIndices,
 		Range : What(fldBase + "Range"),
 		Damage_Type : What(fldBase + "Damage Type"),
 		Description : What(fldBase + "Description"),
@@ -5834,7 +5834,7 @@ function CalcAttackDmgHit(fldName) {
 		prof : !fields.Proficiency ? 0 : (QI ? (tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) ? 0 : Number(How("Proficiency Bonus"))) : (tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) ? 0 : What(prefix + "Comp.Use.Proficiency Bonus"))),
 		die : fields.Damage_Die,
 		modToDmg : thisWeapon[2],
-		mod : !fields.Mod || fields.Mod === "empty" ? 0 : What(prefix + fields.Mod),
+		mod : getAbiModValue(fields.Mod, prefix),
 		magic : thisWeapon[1],
 		bHit : fields.To_Hit_Bonus,
 		bDmg : fields.Damage_Bonus,
@@ -5847,7 +5847,7 @@ function CalcAttackDmgHit(fldName) {
 
 	// Gather some information on the weapon
 	var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText)) ? true : false;
-	var isWeapon = !isSpell || (isSpell && theWea && !(/cantrip|spell/i).test(theWea.type));
+	var isWeapon = theWea && theWea.isNotWeapon ? false : !isSpell || (isSpell && theWea && !(/cantrip|spell/i).test(theWea.type));
 	var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
 	var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
 	var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
@@ -6152,6 +6152,24 @@ function FunctionIsNotAvailable() {
 		cMsg : "This feature doesn't work (correctly) with the version of Adobe Acrobat you are using. This version of Adobe Acrobat is not supported for use with MPMB's D&D 5e Character Tools. Please update to Adobe Acrobat DC.\n\nYou can get Adobe Acrobat Reader DC for free at https://get.adobe.com/reader/"
 	});
 };
+
+// get the string for the modifier field
+// this can be based on index number Str = 1, Dex = 2, etc.
+// or on the abbreviation string "Str", "Dex", etc.
+// wildshapeNo is the index of the monser on wild shape page, starting with 1
+function getAbiModValue(ability, prefix, wildshapeNo) {
+	var mod = 0;
+	var abi = !isNaN(ability) && ability > 0 && ability <= AbilityScores.abbreviations.length ?  AbilityScores.abbreviations[ability - 1] : AbilityScores.abbreviations.indexOf(ability) !== -1 ? ability : "error";
+	if (abi === "error") return mod;
+	if (!prefix) {
+		mod = Number(What(abi + " Mod"));
+	} else if (wildshapeNo) {
+		mod = Number(What(prefix + "Wildshape." + wildshapeNo + ".Ability." + abi + ".Mod"));
+	} else {
+		mod = Number(What(prefix + "Comp.Use.Ability." + abi + ".Mod"));
+	}
+	return mod;
+}
 
 // a way to eval the content of a modifier field; prefix === true if it is the character (true) or a string if it is for a companion page (the prefix of the companion page); if isSpecial === "test" it will output undefined if an error occurs; if isSpecial is a number it will look for that entry on the Wild Shape page with the corresponding prefix variable as a prefix;
 function EvalBonus(input, prefix, isSpecial) {

@@ -387,7 +387,6 @@ function ToggleWhiteout(toggle) {
 
 	// Show/hide the whiteout field on page 3 depending on the state of the layers
 	if (!typePF && !minVer) {
-		if (CurrentVars.vislayers == undefined) CurrentVars.vislayers = ["rules", "equipment"];
 		if (nowWhat) {
 			if (CurrentVars.vislayers[0] === "notes") Show("Extra.Notes Whiteout");
 			if (CurrentVars.vislayers[1] === "equipment") Show("Extra.Other Holdings Whiteout");
@@ -669,7 +668,7 @@ function LayerVisibilityOptions(showMenu, useSelect) {
 	if (typePF || minVer) return; //don't do this function in the Printer-Friendly version
 
 	var isReset = false;
-	if (CurrentVars.vislayers == undefined) {
+	if (CurrentVars.vislayers === undefined) {
 		isReset = !showMenu;
 		CurrentVars.vislayers = ["rules", "equipment"];
 	}
@@ -706,7 +705,6 @@ function LayerVisibilityOptions(showMenu, useSelect) {
 	var thermoTxt = thermoM("Show the 3rd page " + selection[0] + " and " + selection[1] + " sections...");
 	calcStop();
 
-	Value("Extra.Layers Remember", selection);
 	var LNotesFlds = [
 		"Text.Header.Notes.Left",
 		"Extra.Notes",
@@ -9326,7 +9324,7 @@ function HideInvLocationColumn(type, currentstate) {
 		RowName.rect = gRect; // Update the value of b.rect
 		RowName.value = RowName.value; //re-input the value as to counteract the changing of font
 	}
-	if (typePF || (type === "Extra.Gear " && What("Extra.Layers Remember").split(",")[1] === "equipment") || type === "Adventuring Gear ") { //only show things on the third page, if the extra equipment section is visible
+	if (typePF || (type === "Extra.Gear " && CurrentVars.vislayers[1] === "equipment") || type === "Adventuring Gear ") { //only show things on the third page, if the extra equipment section is visible
 		tDoc[HideShow](type + "Location");
 		if (!currentstate && type === "Adventuring Gear " && What("Adventuring Gear Remember") === false) {
 			Hide("Adventuring Gear Location.Row " + FieldNumbers.gearMIrow);

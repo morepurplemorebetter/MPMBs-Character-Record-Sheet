@@ -380,6 +380,37 @@ WeaponsList["sword of purple"] = {
 
 	Setting this to false is the same as not including this attribute.
 */
+	isNotWeapon : true,
+/*	isNotWeapon // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether (false) or not (true) this attack is counted as a weapon
+	ADDED:	v13.1.8
+
+	Normally, the sheet sees everything as a weapon, except those with a `type` attribute
+	that includes either the words "spell" or "cantrip", which are set to be a spell.
+	Something that is a weapon is automatically either a ranged or a melee weapon.
+	Something can be both a spell and a weapon (by using the `SpellsList` attribute below and
+	setting the `type` attribute to something else then "Spell" or "Cantrip").
+
+	If this attribute is set to `true`, the sheet will make sure the attack is not considered
+	a weapon.
+	In doing so, the attack can still be considered a spell.
+	The attack can also be considered neither a spell nor a weapon.
+	This is used, for example, for the attacks made with adventuring gear:
+	  - Alchemist Fire
+	  - Vials of Acid
+	  - Holy Water
+	  - Burning Torch
+
+	This attribute only has an effect for attack calculations and features adding text to an
+	attack's description. For example, Sneak Attack requires the attack to be made with a
+	ranged weapon.
+
+	See also the `calcChanges` attribute in "_common attributes.js", and specifically the
+	atkAdd and atkCalc sub-attributes.
+
+	Setting this to false is the same as not including this attribute.
+*/
 	isAlwaysProf : true,
 /*	isAlwaysProf // OPTIONAL //
 	TYPE:	boolean
