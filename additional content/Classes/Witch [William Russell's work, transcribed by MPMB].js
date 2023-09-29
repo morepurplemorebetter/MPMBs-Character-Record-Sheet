@@ -26,7 +26,7 @@ SourceList["WR:W"] = {
 	name : "William Russell: Witch",
 	abbreviation : "WR:W",
 	group : "Dungeon Masters Guild",
-	url : "https://www.dropbox.com/s/39mm98n3uygfiai/Witch_Class_5e_9305741.pdf?dl=0",
+	url : "https://www.dropbox.com/s/39mm98n3uygfiai/Witch_Class_5e_9305741.pdf?dl=1",
 	date : "2016/05/18"
 };
 

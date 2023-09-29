@@ -3860,7 +3860,7 @@ var Base_MagicItemsList = {
 			action : [["action", " (create/dismiss)"]]
 		},
 		"swan boat" : {
-			description : "As an action, I can touch the token to a body of water at least 60-ft in diameter, having it turn into a 50 ft by 20 ft boat shaped like a swan that remains for 24 hours. It moves itself at 6 miles per hour. As an action, I can command it to turn up to 90°. It can hold up to 32 Medium creatures (Large count as 4, Huge as 9).",
+			description : "As an action, I can touch the token to a body of water at least 60-ft in diameter, having it turn into a 50 ft by 20 ft boat shaped like a swan that remains for 24 hours. It moves itself at 6 miles per hour. As an action, I can command it to turn up to 90\u00B0. It can hold up to 32 Medium creatures (Large count as 4, Huge as 9).",
 			descriptionFull : "This tiny object looks like a feather. You can use an action to touch the token to a body of water at least 60 feet in diameter. The token disappears, and a 50-foot-long, 20-foot-wide boat shaped like a swan takes its place. The boat is self-propelled and moves across water at a speed of 6 miles per hour. You can use an action while on the boat to command it to move or to turn up to 90 degrees. The boat can carry up to thirty-two Medium or smaller creatures. A Large creature counts as four Medium creatures, while a Huge creature counts as nine. The boat remains for 24 hours and then disappears. You can dismiss the boat as an action.",
 			action : [["action", " (create/dismiss)"]]
 		},

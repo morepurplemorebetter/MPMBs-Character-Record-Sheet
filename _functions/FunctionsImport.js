@@ -54,21 +54,79 @@ function AddFolderJavaScript(justConsole) {
 	var isContin = app.viewerVersion.substring(6, 8) != 30;
 	var vYear = 20 + app.viewerVersion.substring(0, 2);
 
-	var textLoc = "The 'JavaScripts' folder for Adobe Acrobat " + isType + " DC on " + (isWindows ? "Windows 10 x64" : "Mac OS") + " is:";
+	var textLoc = "The 'JavaScripts' folder" + (isWindows ? 's' : '') + " for Adobe Acrobat " + isType + " DC on " + (isWindows ? "Windows are:" : "macOS is:");
 	var locWin = "C:\\Program Files (x86)\\Adobe\\Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + "\\" + (isType === "Reader" ? "Reader" : "Acrobat") + "\\Javascripts\\";
+	var locWin64 = locWin.replace(' (x86)', '');
 	var locMac = "/Applications/Adobe Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + ".app/Contents/Resources/JavaScripts/";
 
 	var Text0 = justConsole ? "In order to import user-defined icons, you will have to manually add a JavaScript file to your Adobe Acrobat installation. This is necessary, because of Adobe Acrobat's security protocol. You will have to do this only once to get this function working." : "In order to use the 'Direct Import' functionality, you will need to do something to appease Adobe Acrobat's security settings. You have two options:\nOption 1 is that you add a JavaScript file to your installation. After you've done this, you will never see this dialog again.\nOption 2 is that you run the code from console, but you will have to do this every time if you want to use this function.";
 	var Text1 = "Do the following steps:\n   1)  Use the button below to save the file somewhere (don't change the filename).\n   2)  Rename the file so that its extension is \".js\" (can't be done while saving).\n   3)  Move the file to the right location mentioned below (can't be saved there directly).\n   4)  Restart Adobe Acrobat and try the 'Direct Import' function again.";
-	var Text2 = "The directory where you have to put this file depends on your version of Adobe Acrobat and your operating system. The path shown here is an estimated guess for your installation. It is possible that this folder doesn't exist yet, or that it is hidden.\n" + toUni("Note that you can't save the file directly to this location!");
-	var Text3 = "Open the console (a.k.a. \"JavaScript Debugger\") and run the code that is printed there. Running the code is done by selecting the line it is on and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + " (or the numpad Enter).";
-	var LocJS = isWindows ? locWin : locMac;
+	var Text2 = (isWindows ? "The paths shown above are an estimated guess for your installation. Use the x64 or x86 path, depending on which version of Adobe Acrobat you have installed." : "The path shown above is an estimated guess for your installation.")+
+		" You can select and copy the path above. It is possible that this folder doesn't exist yet, or that it is hidden.\n" + toUni("Note that you can't save the file directly to this location!\n ");
+	var Text3 = 'Open the console (a.k.a. "JavaScript Debugger") and run the code that is printed there. Running the code is done by selecting the line it is on and pressing ' + (isWindows ? "Ctrl+Enter" : "Command+Enter") + " (or the numpad Enter).";
 
+	var windowsLocations = {
+		type : "view",
+		align_children : "align_left",
+		elements : [{
+			type : "view",
+			align_children : "align_row",
+			elements : [{
+				type : "static_text",
+				item_id : "l1tx",
+				name : " 32-bit Acrobat (x86):",
+				width : 80,
+				font : "dialog",
+				bold : true
+			}, {
+				type : "edit_text",
+				item_id : "loc1",
+				alignment : "align_fill",
+				font : "dialog",
+				width : 390,
+				readonly : true
+			}]
+		}, {
+			type : "view",
+			align_children : "align_row",
+			elements : [{
+				type : "static_text",
+				item_id : "l2tx",
+				name : " 64-bit Acrobat (x64):",
+				width : 80,
+				font : "dialog",
+				bold : true
+			}, {
+				type : "edit_text",
+				item_id : "loc2",
+				alignment : "align_fill",
+				font : "dialog",
+				width : 390,
+				readonly : true
+			}]
+		}]
+	};
+	var macLocations = {
+		type : "edit_text",
+		item_id : "loc1",
+		alignment : "align_fill",
+		font : "dialog",
+		width : 470,
+		readonly : true
+	};
 	var AddJS_dialog = {
 		initialize : function(dialog) {
-			dialog.load({
-				locJ : LocJS
-			});
+			if (isWindows) {
+				var toLoad = {
+					loc1 : locWin,
+					loc2 : locWin64
+				};
+			} else {
+				var toLoad = {
+					loc1 : locMac
+				};
+			}
+			dialog.load(toLoad);
 		},
 		bADD : function(dialog) {
 			tDoc.exportDataObject({ cName: "MPMB-IF Remove '.txt' from the end.js.txt", nLaunch: 0});
@@ -137,37 +195,21 @@ function AddFolderJavaScript(justConsole) {
 								back_color: "windowDialog",
 								alignment : "align_fill",
 								width : 500,
-								elements : [{
-									type : "cluster",
-									item_id : "txtJ",
+								elements : [isWindows ? windowsLocations : macLocations].concat([{
+									type : "static_text",
+									item_id : "txt2",
 									alignment : "align_fill",
 									font : "dialog",
-									bold : true,
-									width : 500,
-									name : textLoc,
-									elements : [{
-										type : "edit_text",
-										item_id : "locJ",
-										alignment : "align_fill",
-										font : "dialog",
-										width : 470,
-										readonly : true
-									}, {
-										type : "static_text",
-										item_id : "txt2",
-										alignment : "align_fill",
-										font : "dialog",
-										wrap_name : true,
-										width : 470,
-										name : Text2
-									}, ]
-								}, ]
-							}, ]
-						}, ]
+									wrap_name : true,
+									width : 470,
+									name : Text2
+								}])
+							}]
+						}]
 					}, {
 						type : "gap",
 						height : 5
-					}, {
+					}].concat(justConsole ? [] : [{
 						type : "view",
 						item_id : "vieC",
 						back_color: "windowBackground",
@@ -195,19 +237,17 @@ function AddFolderJavaScript(justConsole) {
 								font : "heading",
 								bold : true,
 								alignment : "align_center"
-							}, ]
-						}, ]
-					}, ]
+							}]
+						}]
+					}])
 				}, {
 					type : justConsole ? "ok_cancel" : "ok",
 					ok_name : "Done",
 					cancel_name : "Continue without importing icons"
-				}, ]
-			}, ]
+				}]
+			}]
 		}
 	};
-
-	if (justConsole) delete AddJS_dialog.description.elements[0].elements[0].elements[4];
 
 	var theDialog = app.execDialog(AddJS_dialog);
 
@@ -2199,11 +2239,11 @@ function MakeXFDFExport(partial) {
 						}, {
 							type : "gap",
 							height : 5
-						}, ]
+						}]
 					}, {
 						type : "ok"
-					}, ]
-				}, ]
+					}]
+				}]
 			}
 		}
 		app.execDialog(DisplayExport_dialog);
