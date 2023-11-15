@@ -456,21 +456,37 @@ function AbilityScores_Button(onlySetTooltip) {
 				var res = dialog.store();
 				// Save to the global variable
 				this.setCurrentStats(dialog);
+				// See if any stats changed
+				var statChange = { any : false, con : false, mental : false };
+				for (var s = 0; s < 7; s++) {
+					var abbr2 = asab2[s];
+					if (res["ol"+abbr2] != res["to"+abbr2]) {
+						statChange.any = true;
+						if (abbr2 == "Cn") {
+							statChange.con = true;
+						} else if (!statChange.mental && /In|Ws|Ch/.test(abbr2)) {
+							statChange.mental = true;
+						}
+					}
+				}
+				if (!statChange.any) return; // no totals changed
 				// Start progress bar and stop calculations
 				var thermoTxt = thermoM("Applying stats...");
 				calcStop();
 				// Set the new ability scores to the fields (and their mods, so functions use the new one)
 				for (var s = 0; s < 7; s++) {
-					var theAbi = res["to"+asab2[s]];
+					var theAbi = Number(res["to"+asab2[s]]);
 					Value(asab3[s], theAbi);
-					Value(asab3[s] + " Mod", Math.round((Number(theAbi) - 10.5) * 0.5));
+					Value(asab3[s] + " Mod", Math.round((theAbi - 10.5) * 0.5));
 				}
 				// Update the Honor/Sanity
 				if (this.fieldHoS !== curHoS) ShowHonorSanity(this.fieldHoS);
 				// Apply HP tooltips if Con changed
-				if (res["olCn"] != res["toCn"]) CurrentUpdates.types.push("hp");
+				if (statChange.con) CurrentUpdates.types.push("hp");
 				// Recalculate attack entries, as they might have changed (Finesse)
 				CurrentUpdates.types.push("attacks");
+				// Recalculate wild shapes, if the mental stats changed
+				if (statChange.mental) WildshapeRecalc();
 				thermoM(thermoTxt, true); // Stop progress bar
 			},
 

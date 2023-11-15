@@ -1522,7 +1522,7 @@ var Base_CreatureList = {
 		}, {
 			name : "Cinder Breath (Recharge 6)",
 			ability : 3,
-			damage : ["Dex Save", "", "Blinded"],
+			damage : ["Dex save", "", "Blinded"],
 			range : "15-ft cone",
 			description : "Hits all in area; Dex save or blinded until the end of the next turn",
 			dc : true,
@@ -1620,12 +1620,11 @@ var Base_CreatureList = {
 			tooltip : "If the target is a creature, it must succeed on a DC 15 Constitution saving throw or have its hit point maximum reduced by an amount equal to the damage taken. The target dies if this attack reduces its hit point maximum to 0. The reduction lasts until removed by the greater restoration spell or other magic."
 		}, {
 			name : "Haste (Recharge 5-6)",
-			ability : "",
+			ability : 0,
 			damage : ["", "", ""],
 			range : "Self",
 			description : "+2 AC, adv. on Dex saves, and can Slam as a bonus action until the end of its next turn",
 			abilitytodamage : false,
-			dc : false,
 			tooltip : "Until the end of its next turn, the golem magically gains a +2 bonus to its AC, has advantage on Dexterity saving throws, and can use its slam attack as a bonus action."
 		}],
 		traits : [{
@@ -2354,7 +2353,7 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Hold Breath",
-			description : "The crocodile can hold its breath for 15 minutes."
+			description : "The [THIS] can hold its breath for 15 minutes."
 		}]
 	},
 	"death dog" : {
@@ -2550,8 +2549,8 @@ var Base_CreatureList = {
 	},
 	"elk" : {
 		name : "Elk",
-		nameAlt : ["Reindeer"],
-		source : [["SRD", 372], ["M", 322]],
+		nameAlt : ["Reindeer"], // from Icewind Dale: Rime of the Frostmaiden
+		source : [["SRD", 372], ["M", 322], ["RotF", 107]],
 		size : 2, //Large
 		type : "Beast",
 		companion : "mount",
@@ -2884,8 +2883,8 @@ var Base_CreatureList = {
 	},
 	"giant crocodile" : {
 		name : "Giant Crocodile",
-		nameAlt : ["Crocodile, Giant"],
-		source : [["SRD", 374], ["M", 324]],
+		nameAlt : ["Crocodile, Giant", "Whirlwyrm"], // Whirlwyrm from Turn of Fortune's Wheel (Planescape)
+		source : [["SRD", 374], ["M", 324], ["P:AitM", 0]],
 		size : 1, //Huge
 		type : "Beast",
 		alignment : "Unaligned",
@@ -2917,10 +2916,10 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Hold Breath",
-			description : "The crocodile can hold its breath for 30 minutes."
+			description : "The [THIS] can hold its breath for 30 minutes."
 		}, {
 			name : "Multiattack",
-			description : "The crocodile makes two attacks: one with its bite and one with its tail (to a target it is not grappling)."
+			description : "The [THIS] makes two attacks: one with its bite and one with its tail (to a target it is not grappling)."
 		}]
 	},
 	"giant eagle" : {
@@ -3095,8 +3094,8 @@ var Base_CreatureList = {
 	},
 	"giant goat" : {
 		name : "Giant Goat",
-		nameAlt : ["Goat, Giant", "Moose"],
-		source : [["SRD", 376], ["M", 326]],
+		nameAlt : ["Goat, Giant", "Moose"], // Moose from Icewind Dale: Rime of the Frostmaiden
+		source : [["SRD", 376], ["M", 326], ["RotF", 80]],
 		size : 2, //Large
 		type : "Beast",
 		alignment : "Unaligned",
@@ -3737,7 +3736,7 @@ var Base_CreatureList = {
 	},
 	"hawk" : {
 		name : "Hawk",
-		nameAlt : ["Falcon"],
+		nameAlt : ["Falcon"], // from Waterdeep: Dragon Heist
 		source : [["SRD", 382], ["M", 330], ["WDH", 53]],
 		size : 5, //Tiny
 		type : "Beast",
@@ -4358,7 +4357,7 @@ var Base_CreatureList = {
 	},
 	"raven" : {
 		name : "Raven",
-		nameAlt : ["Crow"],
+		nameAlt : ["Crow"], // from Waterdeep: Dungeon of the Mad Mage
 		source : [["SRD", 387], ["M", 335], ["WDotMM", 302]],
 		size : 5, //Tiny
 		type : "Beast",
@@ -4641,7 +4640,7 @@ var Base_CreatureList = {
 	},
 	"tiger" : {
 		name : "Tiger",
-		nameAlt : ["Snow Leopard", "Leopard, Snow"],
+		nameAlt : ["Snow Leopard", "Leopard, Snow"], // from Tales from the Yawning Portal
 		source : [["SRD", 391], ["M", 339], ["TftYP", 183]],
 		size : 2, //Large
 		type : "Beast",
@@ -4683,7 +4682,7 @@ var Base_CreatureList = {
 	},
 	"vulture" : {
 		name : "Vulture",
-		nameAlt : ["Peacock"],
+		nameAlt : ["Peacock"], // from Baldur's Gate: Descend into Avernus
 		source : [["SRD", 392], ["M", 339], ["DiA", 195]],
 		size : 3, //Medium
 		type : "Beast",
@@ -4782,7 +4781,7 @@ var Base_CreatureList = {
 	},
 	"wolf" : {
 		name : "Wolf",
-		nameAlt : ["Sled Dog", "Dog, Sled"],
+		nameAlt : ["Sled Dog", "Dog, Sled"], // from Rise of Tiamat
 		source : [["SRD", 393], ["M", 341], ["RoT", 27]],
 		size : 3, //Medium
 		type : "Beast",

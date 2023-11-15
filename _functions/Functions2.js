@@ -159,14 +159,20 @@ function setCurrentCompRace(prefix, type, found) {
 //add a creature to the companion page
 function ApplyCompRace(newRace, prefix, sCompType) {
 	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
-	var bIsRaceFld = event.target && event.target.name && event.target.name.indexOf("Comp.Race") !== -1;
+	if (!prefix) {
+		if (event.target && event.target.name) {
+			prefix = getTemplPre(event.target.name, "AScomp", true);
+		} else {
+			return;
+		}
+	}
+	var bIsRaceFld = event.target && event.target.name && event.target.name === prefix + "Comp.Race";
 	if (bIsRaceFld && newRace.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying companion race...");
 	calcStop();
 
-	if (!prefix) prefix = getTemplPre(event.target.name, "AScomp", true);
 	var hpCalcTxt = " hit points calculation";
 	var strRaceEntry = clean(newRace).toLowerCase();
 	var strRaceEntryCap = strRaceEntry.capitalize()
@@ -235,7 +241,7 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 
 	var fndObj = FindCompRace(newRace, prefix);
 	if (!fndObj.new && sCurrentCompType === sCompType) {
-		// No (new) race was found and no change was made to the compantion type, so stop here
+		// No (new) race was found and no change was made to the companion type, so stop here
 		thermoM(thermoTxt, true); // Stop progress bar
 		return; //don't do the rest of the function
 	}
@@ -849,8 +855,7 @@ function MakeCompMenu_CompOptions(prefix, MenuSelection, force) {
 			if (MenuSelection[2].indexOf("comp.eqp") !== -1) {
 				aVisLayers[1] = force !== undefined ? force : !aVisLayers[1];
 			}
-			Value(prefix + "Companion.Layers.Remember", aVisLayers.toSource());
-			ShowCompanionLayer(prefix);
+			ShowCompanionLayer(prefix, aVisLayers);
 			break;
 		case "showcalcs" :
 			ShowDialog("Things Affecting the Companion Automation", creaCalcStr);
@@ -913,7 +918,7 @@ function SetCompanionListHeading(bAddRemove, prefix, sCompType, sFld) {
 	var sOrigin = oComp.nameOrigin ? oComp.nameOrigin : "";
 	var sSource = stringSource(oComp, "first,abbr", sOrigin ? ", " : "");
 	if (sSource || sOrigin) sHeading += " (" + sOrigin + sSource + ")";
-	tDoc[(bAddRemove ? "Add" : "Remove") + "String"](sFld, sHeading + ":", true);
+	tDoc[(bAddRemove ? "Add" : "Remove") + "String"](sFld, sHeading + ":", '\r\r');
 }
 
 // do the eval for a creature
@@ -991,64 +996,68 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 	/* The string for the Features and Traits fields */
 	var arrProps = [
 		["features", prefix + "Comp.Use.Features"],
-		["actions", prefix + "Comp.Use.Traits"],
-		["traits", prefix + "Comp.Use.Traits"],
-		["notes", prefix + "Cnote.Left", objComp]
+		["actions",  prefix + "Comp.Use.Traits"],
+		["traits",   prefix + "Comp.Use.Traits"],
+		["notes",    prefix + "Cnote.Left"]
 	];
 	var arrCompAltStrLocs = [prefix + "Cnote.Left"];
 	if (!typePF) arrCompAltStrLocs.push(prefix + "Cnote.Right");
 	// Now loop through all the features/actions/traits
-	for (var a = 0; a < arrProps.length; a++) {
-		var objUse = arrProps[a][2] ? arrProps[a][2] : objCrea;
-		if (!objUse || !objUse[arrProps[a][0]] || !objUse[arrProps[a][0]].length) continue;
-		var feaA = [].concat(objUse[arrProps[a][0]]);
-		if (newLvl < oldLvl) feaA.reverse(); // when removing, loop through them backwards
-		// if this is the notes for a companion add/remove a heading if needed
-		if (arrProps[a][0] === "notes" && minLvl === 0) {
-			SetCompanionListHeading(oldLvl === 0, prefix, sCompType);
-		}
-		var fldNm = arrProps[a][1];
-		var arrFlds = [fldNm].concat(arrCompAltStrLocs);
-		var lastProp = a === 0 || fldNm !== arrProps[a-1][1] ? What(fldNm) : lastProp;
-		for (var f = 0; f < feaA.length; f++) {
-			var prop = feaA[f];
-			var doPropTxt = prop.description !== undefined;
-			var propMinLvl = prop.minlevel ? prop.minlevel : 1;
-			var addIt = newLvl >= propMinLvl;
-			if (doPropTxt) {
-				// Create the strings for the property
-				var sNameDescrCoupler = prop.joinString !== undefined ? prop.joinString : ": ";
-				var propFirstLine = "\u25C6 " + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name);
-				var propFullLine = propFirstLine + sNameDescrCoupler + (isMetric ? ConvertToMetric(prop.description, 0.5) : prop.description);
-				// Apply the name of the creature if [THIS] is present in the strings
-				if (/\[THIS\]/.test(propFullLine)) {
-					if (addIt) {
-						propFirstLine = propFirstLine.replace(/\[THIS\]/g, useName);
-						propFullLine = propFullLine.replace(/\[THIS\]/g, useName);
-					} else {
-						propFirstLine = propFirstLine.replace(/\[THIS\][\s\S]*/, "");
-						propFullLine = propFullLine.replace(/\[THIS\][\s\S]*/, "");
+	for (var n = 1; n <= 2; n++) {
+		// First do the creature and then the companion direct attribute (probably only `notes`; i.e. not those under `attributesAdd`)
+		var objUse = n === 1 ? objCrea : objComp;
+		if (!objUse) continue;
+		for (var a = 0; a < arrProps.length; a++) {
+			if (!objUse[arrProps[a][0]] || !objUse[arrProps[a][0]].length) continue;
+			var feaA = [].concat(objUse[arrProps[a][0]]);
+			if (newLvl < oldLvl) feaA.reverse(); // when removing, loop through them backwards
+			// if this is the notes for a companion add/remove a heading if needed
+			if (n === 2 && arrProps[a][0] === "notes" && minLvl === 0) {
+				SetCompanionListHeading(oldLvl === 0, prefix, sCompType);
+			}
+			var fldNm = arrProps[a][1];
+			var arrFlds = [fldNm].concat(arrCompAltStrLocs);
+			var lastProp = a === 0 || fldNm !== arrProps[a-1][1] ? What(fldNm) : lastProp;
+			for (var f = 0; f < feaA.length; f++) {
+				var prop = feaA[f];
+				var doPropTxt = prop.description !== undefined;
+				var propMinLvl = prop.minlevel ? prop.minlevel : 1;
+				var addIt = newLvl >= propMinLvl;
+				if (doPropTxt) {
+					// Create the strings for the property
+					var sNameDescrCoupler = prop.joinString !== undefined ? prop.joinString : ": ";
+					var propFirstLine = "\u25C6 " + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name);
+					var propFullLine = propFirstLine + sNameDescrCoupler + (isMetric ? ConvertToMetric(prop.description, 0.5) : prop.description);
+					// Apply the name of the creature if [THIS] is present in the strings
+					if (/\[THIS\]/.test(propFullLine)) {
+						if (addIt) {
+							propFirstLine = propFirstLine.replace(/\[THIS\]/g, useName);
+							propFullLine = propFullLine.replace(/\[THIS\]/g, useName);
+						} else {
+							propFirstLine = propFirstLine.replace(/\[THIS\][\s\S]*/, "");
+							propFullLine = propFullLine.replace(/\[THIS\][\s\S]*/, "");
+						}
 					}
 				}
-			}
-			// See if we need to do this prop
-			if (minLvl < propMinLvl && maxLvl >= propMinLvl) {
-				// Add/remove the text
-				if (doPropTxt && !lastProp && addIt) {
-					// First thing entered to an empty field, this is easy
-					Value(fldNm, propFullLine);
-				} else if (doPropTxt) {
-					// Insert or remove it after the previous entry
-					var insertResult = applyClassFeatureText(addIt ? "insert" : "remove", arrFlds, [propFirstLine, "\r" + propFullLine], [propFirstLine, "\r" + propFullLine], lastProp);
-					if (insertResult === false && addIt) AddString(fldNm, propFullLine, true);
+				// See if we need to do this prop
+				if (minLvl < propMinLvl && maxLvl >= propMinLvl) {
+					// Add/remove the text
+					if (doPropTxt && !lastProp && addIt) {
+						// First thing entered to an empty field, this is easy
+						Value(fldNm, propFullLine);
+					} else if (doPropTxt) {
+						// Insert or remove it after the previous entry
+						var insertResult = applyClassFeatureText(addIt ? "insert" : "remove", arrFlds, [propFirstLine, "\r" + propFullLine], [propFirstLine, "\r" + propFullLine], lastProp);
+						if (insertResult === false && addIt) AddString(fldNm, propFullLine, true);
+					}
+					// Queue the (remove)eval
+					var evalType = addIt ? "eval" : "removeeval";
+					if (prop[evalType]) arrToEval.push([prop, evalType, objUse.name + '" ' + fldNm + ' "' + prop.name]);
+					// Process modifiers, if any
+					if (prop.addMod) processMods(addIt, objUse.name + ": " + prop.name, prop.addMod, prefix);
 				}
-				// Queue the (remove)eval
-				var evalType = addIt ? "eval" : "removeeval";
-				if (prop[evalType]) arrToEval.push([prop, evalType, objUse.name + '" ' + fldNm + ' "' + prop.name]);
-				// Process modifiers, if any
-				if (prop.addMod) processMods(addIt, objUse.name + ": " + prop.name, prop.addMod, prefix);
+				if (doPropTxt) lastProp = propFullLine;
 			}
-			if (doPropTxt) lastProp = propFullLine;
 		}
 	}
 
@@ -1121,7 +1130,7 @@ function RunCreatureCallback(sPrefix, sType, bAdd, fOverride, sOverrideNm) {
 }
 
 // set a race on an empty companion page (or add a new page)
-// aCreaAdds is an array with arrays of 3 entries: [sRace (string), bRemoveWholePage (boolean), fCallBack (function)], but the 2nd and 3rd entries are optional
+// aCreaAdds is an array with arrays of 1-4 entries: [sRace (string), bRemoveWholePage (boolean), fCallBack (function), sCompanionType (string)]. The 2nd, 3rd, and 4th entries are optional
 function processAddCompanions(bAddRemove, srcNm, aCreaAdds) {
 	if (!isArray(aCreaAdds)) aCreaAdds = [aCreaAdds];
 	var aChangeMsg = [];
@@ -1146,22 +1155,23 @@ function processAddCompanions(bAddRemove, srcNm, aCreaAdds) {
 		var bRemoveWholePage = aCreaAdd[1];
 		var aCallBack = aCreaAdd[2];
 		var sCompanionType = aCreaAdd[3] && CompanionList[aCreaAdd[3]] ? aCreaAdd[3] : false;
-		var AScompA = isTemplVis('AScomp') ? What('Template.extras.AScomp').split(',') : false;
+		var AScompA = isTemplVis('AScomp') ? What('Template.extras.AScomp').split(',') : [];
 		if (bAddRemove) { // add
 			var prefix = false, stopMatch = false;
-			if (AScompA) {
-				for (var a = 1; a < AScompA.length; a++) {
-					var sFndRace = What(AScompA[a] + 'Comp.Race');
-					if (!prefix && !sFndRace) prefix = AScompA[a];
-					if (sFndRace.toLowerCase() === sRaceLow && CurrentCompRace[AScompA[a]] && (!sCompanionType || CurrentCompRace[AScompA[a]].typeCompanion === sCompanionType)) {
-						prefix = AScompA[a];
-						stopMatch = true;
-						break;
-					}
+			for (var a = 1; a < AScompA.length; a++) {
+				// first check if a selection made in this field wasn't the one initiating this function, because then it should be skipped
+				var sFldNm = AScompA[a] + 'Comp.Race';
+				if (event.target && event.target.name === sFldNm) continue;
+				var sFndRace = What(sFldNm);
+				if (!prefix && !sFndRace) prefix = AScompA[a];
+				if (sFndRace.toLowerCase() === sRaceLow && CurrentCompRace[AScompA[a]] && (!sCompanionType || CurrentCompRace[AScompA[a]].typeCompanion === sCompanionType)) {
+					prefix = AScompA[a];
+					stopMatch = true;
+					break;
 				}
 			}
-			if (!prefix) prefix = DoTemplate('AScomp', 'Add');
 			if (!stopMatch) {
+				if (!prefix) prefix = DoTemplate('AScomp', 'Add');
 				ApplyCompRace(sRace, prefix, sCompanionType);
 				doCallBack(aCallBack, prefix);
 				var sChangeMsgName = '"' + What(prefix + 'Comp.Race') + '"'; // Get it from the page in case the callback changed it.
@@ -1169,11 +1179,13 @@ function processAddCompanions(bAddRemove, srcNm, aCreaAdds) {
 				aChangeMsg.push('A ' + sChangeMsgName + ' has been added to the companion page at page number ' + (tDoc.getField(prefix + 'Comp.Race').page + 1) + '.');
 			}
 		} else if (!/stop/i.test(bRemoveWholePage)) { // remove, unless bRemoveWholePage == "stop"
+			var sRaceFnd = ParseCreature(sRace);
 			for (var a = 1; a < AScompA.length; a++) {
-				if (What(AScompA[a] + 'Comp.Race').toLowerCase().indexOf(sRaceLow) !== -1) {
-					var iPageNo = tDoc.getField(AScompA[a] + 'Comp.Race').page + 1;
+				var prefix = AScompA[a];
+				if (CurrentCompRace[prefix].known === sRaceFnd || What(prefix + 'Comp.Race').toLowerCase().indexOf(sRaceLow) !== -1) {
+					var iPageNo = tDoc.getField(prefix + 'Comp.Race').page + 1;
 					if (bRemoveWholePage) { // remove the whole page
-						DoTemplate("AScomp", "Remove", AScompA[a], true);
+						DoTemplate("AScomp", "Remove", prefix, true);
 					} else {
 						Value(prefix + 'Comp.Race', ""); // reset the race field
 					}
@@ -1428,7 +1440,6 @@ function ApplyWildshape() {
 	}
 
 	//get the proficiency bonuses
-	ProfBonus("Proficiency Bonus"); // first make sure it is up to date
 	var creaProfBcalc = theCrea.proficiencyBonus;
 	var charProfBcalc = Number(How("Proficiency Bonus"));
 	var creaProfBfix = theCrea.proficiencyBonus;
@@ -1491,13 +1502,14 @@ function ApplyWildshape() {
 	Value(prefix + "Wildshape." + Fld + ".CR", theCrea.challengeRating); //set CR
 
 	//set AC
-	var theAC = [theCrea.ac];
+	var theCreaAC = EvalBonus(theCrea.ac, prefix, Fld, creaProfBcalc);
+	var theAC = [theCreaAC];
 	var theACtt = [""];
 	if (CurrentVars.extraArmour) {
 		for (var anArmour in CurrentVars.extraArmour) {
 			var spArmour = CurrentVars.extraArmour[anArmour];
 			if (!spArmour.affectsWildShape) continue;
-			var newAC = Number(EvalBonus(spArmour.ac, prefix, Fld)) + calcCompMaxDexToAC(false, anArmour, mods[1]);
+			var newAC = EvalBonus(spArmour.ac, prefix, Fld, charProfBcalc) + calcCompMaxDexToAC(false, anArmour, mods[1]);
 			if (newAC) {
 				theAC.push(newAC);
 				theACtt.push("\n\nThe AC used here is calculated using " + spArmour.name);
@@ -1505,7 +1517,7 @@ function ApplyWildshape() {
 		}
 	}
 	if (CurrentArmour.known && ArmourList[CurrentArmour.known].affectsWildShape) {
-		var newAC = Number(EvalBonus(CurrentArmour.acString, prefix, Fld)) + calcCompMaxDexToAC(false, CurrentArmour.known, mods[1]);
+		var newAC = EvalBonus(CurrentArmour.acString, prefix, Fld, charProfBcalc) + calcCompMaxDexToAC(false, CurrentArmour.known, mods[1]);
 		theAC.push(newAC);
 		theACtt.push("\n\nThe AC used here is calculated using " + What("AC Armor Description"));
 	}
@@ -1561,8 +1573,8 @@ function ApplyWildshape() {
 		var skillChar = [
 			skill,
 			charProfFlds[0] && charProfFlds[1] ? "expertise" : charProfFlds[0] ? "proficient" : "nothing",
-			EvalBonus(charProfFlds[2], prefix, Fld),
-			EvalBonus(charProfFlds[3], prefix, Fld)
+			EvalBonus(charProfFlds[2], prefix, Fld, charProfBcalc),
+			EvalBonus(charProfFlds[3], prefix, Fld, charProfBcalc)
 		];
 
 		//set the right colouring of the skill name (i.e. the proficiency level)
@@ -1633,8 +1645,8 @@ function ApplyWildshape() {
 		var saveChar = [
 			saveCharFlds[0] ? "proficient" : "nothing",
 			saveCharFlds[0] ? charProfBcalc : 0,
-			EvalBonus(saveCharFlds[1], prefix, Fld),
-			EvalBonus(saveCharFlds[2], prefix, Fld)
+			EvalBonus(saveCharFlds[1], prefix, Fld, charProfBcalc),
+			EvalBonus(saveCharFlds[2], prefix, Fld, charProfBcalc)
 		];
 
 		//check the box for proficiency, if applicable
@@ -1656,36 +1668,67 @@ function ApplyWildshape() {
 
 	//add attacks
 	var modIpvDC = tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0);
-	var attacksArray = theCrea.wildshapeAttacks ? theCrea.attacks.concat(theCrea.wildshapeAttacks) : theCrea.attacks;
-	for (var a = 0; a < (Math.min(2, attacksArray.length)); a++) {
-		var atk = attacksArray[a];
-		var atkStr = prefix + "Wildshape." + Fld + ".Attack." + (a + 1);
-		var atkMod = mods[atk.ability - 1];
-		var atkAlt = atk.modifiers ? atk.modifiers : [];
+	var atkProfB = setting[1].indexOf("attacks") !== -1 ? charProfBcalc : creaProfBcalc;
+	for (var a = 0; a < (Math.min(2, theCrea.attacks.length)); a++) {
+		var atk = theCrea.attacks[a];
+		var atkFld = prefix + "Wildshape." + Fld + ".Attack." + (a + 1);
+		var atkMod = atk.ability === 0 ? 0 : mods[atk.ability - 1];
 		var atkRange = What("Unit System") === "imperial" ? atk.range : ConvertToMetric(atk.range, 0.5);
 		var atkDescription = !atk.description ? "" : What("Unit System") === "imperial" ? atk.description : ConvertToMetric(atk.description, 0.5);
-		Value(atkStr + ".Weapon", atk.name); //set attack name
-		Value(atkStr + ".Range", atkRange); //set attack range
-		Value(atkStr + ".Description", atkDescription, atk.tooltip ? atk.tooltip : ""); //set attack description
+		Value(atkFld + ".Weapon", atk.name); //set attack name
+		Value(atkFld + ".Range", atkRange); //set attack range
+		Value(atkFld + ".Description", atkDescription, atk.tooltip ? atk.tooltip : ""); //set attack description
+		AddDmgType(atkFld + ".Damage Type", atk.damage[2]); //set damage type
 
-		//set to hit
-		var tohitProfB = setting[1].indexOf("attacks") !== -1 ? charProfBfix : creaProfBfix;
-		tohitProfB = tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) ? 0 : tohitProfB;
-		var tohitString = atk.dc && !modIpvDC ? 8 + tohitProfB + atkMod : tohitProfB + atkMod;
-		if (atkAlt[0]) tohitString += !isNaN(atkAlt[0]) ? atkAlt[0] : AbilityScores.abbreviations.indexOf(atkAlt[0]) !== -1 ? mods[AbilityScores.abbreviations.indexOf(atkAlt[0])] : 0; //add a modifier, if defined
-		if (atk.dc && !modIpvDC) {
-			tohitString = "DC " + tohitString;
-		} else if (tohitString >= 0) {
-			tohitString = "+" + tohitString;
+		// for backwards compatibility
+		if (atk.modifiers) {
+			if (atk.dc === undefined && atk.modifiers[0] !== undefined && /dc/i.test(atk.modifiers[0])) {
+				atk.dc = true;
+				atk.modifiers[0] = atk.modifiers[0].replace(/dc\+?/ig, '');
+			}
+			if (atk.abilitytodamage === undefined && atk.modifiers[2] !== undefined && atk.modifiers[2] !== "") {
+				atk.abilitytodamage = atk.modifiers[2];
+			}
 		}
-		Value(atkStr + ".To Hit", tohitString); //set to hit string
 
-		//set damage
-		var damageString = atk.damage[1] === "" ? atk.damage[0] : atk.damage[0] + "d" + atk.damage[1];
-		var damageBonus = (!atkAlt[1] ? 0 : !isNaN(atkAlt[1]) ? atkAlt[1] : mods[AbilityScores.abbreviations.indexOf(atkAlt[1])]) + (atkAlt[2] !== undefined && atkAlt[2] !== "" && atkAlt[2] === false ? 0 : atkMod);
-		damageString += damageBonus === 0 ? "" : damageBonus > 0 ? "+" + damageBonus : damageBonus;
-		Value(atkStr + ".Damage", damageString); //set damage string
-		AddDmgType(atkStr + ".Damage Type", atk.damage[2]); //set damage type
+		// Calculate to hit
+		var atkToHit = atkProfB; // proficiency bonus
+		atkToHit += atkMod; // add ability modifier
+		if (atk.modifiers && atk.modifiers[0]) { // add special to hit modifier
+			atkToHit += EvalBonus(atk.modifiers[0], prefix, Fld, atkProfB);
+		}
+		if (!modIpvDC && atk.dc) {
+			atkToHit += 8; // add 8 if DC
+			atkToHit = "DC " + atkToHit; // write it with a DC prefix
+		} else if (atkToHit >= 0) {
+			atkToHit = "+" + atkToHit; // write it with a "+" prefix when not a negative number
+		}
+
+		// output to hit string to field
+		Value(atkFld + ".To Hit", atkToHit);
+
+		// Calculate damage die
+		var atkDmgDie = atk.damage[0] + (parseFloat(atk.damage[1]) ? "d" + atk.damage[1] : "");
+		atkDmgDie = EvalDmgDie(atkDmgDie, prefix, Fld, atkProfB);
+		if (!isNaN(Number(atkDmgDie))) atkDmgDie = Number(atkDmgDie); // make sure it is a number if eligible
+
+		// Calculate damage bonus
+		var modToDmg = atk.abilitytodamage !== undefined ? atk.abilitytodamage : true;
+		var atkDmg = modToDmg ? atkMod : 0; // add ability modifier
+		if (atk.modifiers && atk.modifiers[1]) { // add special damage modifier
+			atkDmg += EvalBonus(atk.modifiers[1], prefix, Fld, atkProfB);
+		}
+
+		// Assemble damage string
+		if (atkDmgDie === "\u2015" || atkDmgDie === "-") {
+			var atkDmgTot = atkDmgDie;
+		} else {
+			if (atkDmgDie && isNaN(atkDmgDie) && atkDmg > 0) atkDmg = "+" + atkDmg;
+			var atkDmgTot = atkDmgDie + (atkDmg === 0 ? "" : atkDmg);
+		}
+
+		// output damage string to field
+		Value(atkFld + ".Damage", atkDmgTot == 0 ? "" : atkDmgTot);
 	}
 
 	thermoM(7/10); //increment the progress dialog's progress
@@ -2092,9 +2135,6 @@ function WildshapeOptions() {
 
 //re-calculate all the wild shapes
 function WildshapeRecalc(order) {
-	// first make sure we have the right calculated values (if function is invoked when changes are made after a calcStop)
-	tDoc.calculateNow();
-
 	// Start progress bar
 	var thermoTxt = thermoM("Re-calculating the wild shapes...");
 
@@ -2252,7 +2292,7 @@ function WildshapeUpdate(inputArray) {
 		};
 	};
 	//now recalculate all the wild shapes if not just adding a new sheet (i.e. inputArray === undefined)
-	if (inputArray !== undefined) WildshapeRecalc();
+	WildshapeRecalc();
 }
 
 //change the font of all fields to this
@@ -3438,8 +3478,7 @@ function MakeNotesMenu_NotesOptions() {
 		toShow[0] = !toShow[0];
 	 case "comp.eqp" :
 		if (MenuSelection[0] === "comp.eqp") toShow[1] = !toShow[1];
-		Value(prefix + "Companion.Layers.Remember", toShow.toSource());
-		ShowCompanionLayer(prefix);
+		ShowCompanionLayer(prefix, toShow);
 		break;
 	}
 
@@ -4522,7 +4561,8 @@ function ValidateCompNotes() {
 }
 
 // show the selected layers on the companion page
-function ShowCompanionLayer(prefix) {
+// forceShow is optional and has to be an array with two true/false values, the first is for the image section, second is for the equipment section 
+function ShowCompanionLayer(prefix, forceShow) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Changing the visible sections on the companion page...");
 	calcStop();
@@ -4531,7 +4571,15 @@ function ShowCompanionLayer(prefix) {
 
 	prefix = prefix ? prefix : "";
 	var notesFld = prefix + (typePF ? "Cnote.Left" : "Cnote.Right");
-	var toShow = eval_ish(What(prefix + "Companion.Layers.Remember")); //an array with two true/false values, the first is for the image section, second is for the equipment section
+	var fieldVal = What(prefix + "Companion.Layers.Remember");
+	var toShow = eval_ish(fieldVal); //an array with two true/false values, the first is for the image section, second is for the equipment section
+	if (forceShow && isArray(forceShow) && forceShow.length === 2) {
+		if (forceShow[0] !== undefined) toShow[0] = forceShow[0];
+		if (forceShow[1] !== undefined) toShow[1] = forceShow[1];
+		var newFielVal = toShow.toSource();
+		if (fieldVal === newFielVal) return; // nothing changed
+		Value(prefix + "Companion.Layers.Remember", newFielVal);
+	}
 	var changeNotes = typePF ? toShow[1] : toShow[0] || toShow[1];
 
 	if (changeNotes) {
@@ -6023,7 +6071,7 @@ function CalcAttackDmgHit(fldName) {
 	};
 	// Further modify the string for the damage die and add the damage
 	if (!isNaN(Number(dmgDie))) dmgDie = Number(dmgDie);
-	if (dmgDie && isNaN(dmgDie) && Number(dmgNum) > 0) dmgNum = "+" + dmgNum;
+	if (dmgDie && isNaN(dmgDie) && parseFloat(dmgNum) > 0) dmgNum = "+" + dmgNum;
 	var dmgTot = dmgDie === "\u2015" || dmgDie === "-" ? dmgDie : dmgDie + (dmgNum === 0 ? "" : dmgNum);
 	// The to hit total
 	var hitTot = (isDC ? "DC " : (hitNum >= 0 ? "+" : "")) + hitNum;
@@ -6172,14 +6220,14 @@ function getAbiModValue(ability, prefix, wildshapeNo) {
 }
 
 // a way to eval the content of a modifier field; prefix === true if it is the character (true) or a string if it is for a companion page (the prefix of the companion page); if isSpecial === "test" it will output undefined if an error occurs; if isSpecial is a number it will look for that entry on the Wild Shape page with the corresponding prefix variable as a prefix;
-function EvalBonus(input, prefix, isSpecial) {
+function EvalBonus(input, prefix, isSpecial, useProfB) {
 	if (!input) {
 		return 0;
 	} else if (!isNaN(input)) {
 		return Number(input);
 	};
 	var modStr = prefix === true ? ["", " Mod"] : !isSpecial || isSpecial === "test" ? [prefix + "Comp.Use.Ability.", ".Mod"] : [prefix + "Wildshape." + isSpecial + ".Ability.", ".Mod"];
-	var ProfB = prefix === true ? Number(How("Proficiency Bonus")) : !isSpecial || isSpecial === "test" ? What(prefix + "Comp.Use.Proficiency Bonus") : What(prefix + "Wildshape." + isSpecial + ".Proficiency Bonus");
+	var ProfB = useProfB !== undefined && !isNaN(useProfB) ? useProfB : prefix === true ? Number(How("Proficiency Bonus")) : Number(What(!isSpecial || isSpecial === "test" ? prefix + "Comp.Use.Proficiency Bonus" : prefix + "Wildshape." + isSpecial + ".Proficiency Bonus"));
 	// remove 'dc' and convert commas to dots for decimal handling
 	input = input.replace(/,/g, ".").replace(/dc/ig, "");
 	// add a "+" between abbreviations that have no operator. Do this twice, so we also catch uneven groups
@@ -6210,8 +6258,8 @@ function EvalBonus(input, prefix, isSpecial) {
 	};
 };
 
-// a way to eval the content of a weapon damage die field; notComp if it is the character (true) or if it is for a companion page (the prefix of the companion page); if isSpecial === "test" it will output _ERROR_ for the part that produces an error;
-function EvalDmgDie(input, notComp, isSpecial) {
+// a way to eval the content of a weapon damage die field; prefix if it is the character (true) or if it is for a companion page (the prefix of the companion page); if isSpecial === "test" it will output _ERROR_ for the part that produces an error; if isSpecial is a number it will look for that entry on the Wild Shape page with the corresponding prefix variable as a prefix; useProfB is just here to pass to EvalBonus if present
+function EvalDmgDie(input, prefix, isSpecial, useProfB) {
 	if (!input) {
 		return 0;
 	} else if (!isNaN(input)) {
@@ -6219,7 +6267,8 @@ function EvalDmgDie(input, notComp, isSpecial) {
 	};
 	// resolve the C, B, and Q for cantrip die, if present
 	if ((/^(?=.*(B|C|Q))(?=.*d\d).*$/).test(input)) { //if this involves a cantrip calculation
-		var cLvl = Number(notComp === true ? What("Character Level") : What(notComp + "Comp.Use.HD.Level"));
+		// Get the character level, or HD for the companion page (wild shape uses character level)
+		var cLvl = Number(What(prefix === true || (isSpecial && isSpecial !== "test") ? "Character Level" :  prefix + "Comp.Use.HD.Level"));
 		var cDie = cantripDie[Math.min(Math.max(cLvl, 1), cantripDie.length) - 1];
 		input = input.replace(/cha/ig, "kha").replace(/con/ig, "kon");
 		input = input.replace(/C/g, cDie).replace(/B/g, cDie - 1).replace(/Q/g, cDie + 1).replace(/0.?d\d+/g, 0);
@@ -6229,7 +6278,7 @@ function EvalDmgDie(input, notComp, isSpecial) {
 		input = input.substr(1).split("_").map(function(u) {
 			return u.split("d").map(function(v) {
 				try {
-					var theEval = EvalBonus(v, notComp, isSpecial);
+					var theEval = EvalBonus(v, prefix, isSpecial, useProfB);
 					return theEval === undefined ? "_ERROR_" : theEval;
 				} catch (errV) {
 					return v;

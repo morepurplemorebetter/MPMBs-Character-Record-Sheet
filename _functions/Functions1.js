@@ -2372,20 +2372,23 @@ function ParseRace(input) {
 		if (kObj.variants) {
 			var foundLen2 = 0;
 			var foundDat2 = 0;
-			for (var sub = 0; sub < kObj.variants.length; sub++) { // scan string for all variants of the race
-				var theR = key + "-" + kObj.variants[sub];
+			for (var i = 0; i < kObj.variants.length; i++) { // scan string for all variants of the race
+				var theR = key + "-" + kObj.variants[i];
 				var rVars = RaceSubList[theR];
 				if (!rVars) {
-					console.println("The racial variant '" + kObj.variants[sub] + "' for the '" + kObj.name + "' race is not found in the RaceSubList. Please contact the author of this race to have this issue corrected. The variant will be ignored for now.");
+					console.println("The racial variant '" + kObj.variants[i] + "' for the '" + kObj.name + "' race missing from the RaceSubList object. Please contact its author to have this issue corrected. The variant will be ignored for now.");
 					console.show();
+					// Remove this array entry, but make sure we don't skip an entry
+					kObj.variants.splice(i, 1);
+					i--;
 					continue;
 				}
-				var theRname = rVars.name ? rVars.name : kObj.variants[sub];
+				var theRname = rVars.name ? rVars.name : kObj.variants[i];
 
 				// test if the racial variant or its source isn't excluded
 				if (testSource(theR, rVars, "racesExcl")) continue;
 
-				resultArray[2].push(kObj.variants[sub]);
+				resultArray[2].push(kObj.variants[i]);
 
 				// see if racial variant regex matches
 				if (!(rVars.regExpSearch).test(input)) continue;
@@ -2397,7 +2400,7 @@ function ParseRace(input) {
 				if ((!ignoreSearchLength && theRname.length < foundLen2) || (!ignoreSearchLength && theRname.length == foundLen2 && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
 
 				// we have a match, set the values
-				resultArray[1] = kObj.variants[sub];
+				resultArray[1] = kObj.variants[i];
 				foundLen2 = theRname.length;
 				foundDat2 = tempDate;
 			}
@@ -3977,12 +3980,19 @@ function ParseBackground(input) {
 		// first we look for background variants
 		if (kObj.variant) {
 			var matchedThisSub = false;
-			var BackOpt = kObj.variant;
-			for (var sub = 0; sub < BackOpt.length; sub++) { // scan string for all variants of the background
-				var bVars = BackgroundSubList[BackOpt[sub]];
+			for (var i = 0; i < kObj.variant.length; i++) { // scan string for all variants of the background
+				var bVars = BackgroundSubList[kObj.variant[i]];
+				if (!bVars) {
+					console.println("The variant '" + kObj.variant[i] + "' for the background '" + kObj.name + "' is missing from the BackgroundSubList object. Please contact its author to have this issue corrected. The variant will be ignored for now.");
+					console.show();
+					// Remove this array entry, but make sure we don't skip an entry
+					kObj.variant.splice(i, 1);
+					i--;
+					continue;
+				}
 
 				if (!(bVars.regExpSearch).test(input) // see if background variant regex matches
-					|| testSource(BackOpt[sub], bVars, "backgrExcl") // test if the background variant or its source isn't excluded
+					|| testSource(kObj.variant[i], bVars, "backgrExcl") // test if the background variant or its source isn't excluded
 				) continue;
 
 				// only go on with this entry if:
@@ -3992,7 +4002,7 @@ function ParseBackground(input) {
 				if ((!ignoreSearchLength && bVars.name.length < foundLen) || (!ignoreSearchLength && bVars.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
 
 				// we have a match, set the values
-				resultArray = [key, BackOpt[sub]];
+				resultArray = [key, kObj.variant[i]];
 				foundLen = bVars.name.length;
 				foundDat = tempDate;
 				matchedThisSub = true;
@@ -4773,7 +4783,15 @@ function ParseFeat(input) {
 			for (var i = 0; i < kObj.choices.length; i++) {
 				var keySub = kObj.choices[i].toLowerCase();
 				var sObj = kObj[keySub];
-				if (!sObj || testSource(key + "-" + keySub, sObj, "featsExcl")) continue;
+				if (!sObj) {
+					console.println("The subchoice '" + kObj.choices[i] + "' for the feat '" + kObj.name + "' doesn't have a corresponding object entry. Please contact its author to have this issue corrected. The choice will be ignored for now.");
+					console.show();
+					// Remove this array entry, but make sure we don't skip an entry
+					kObj.choices.splice(i, 1);
+					i--;
+					continue;
+				}
+				if (testSource(key + "-" + keySub, sObj, "featsExcl")) continue;
 				varArr.push(kObj.choices[i]);
 				var isMatchSub = false;
 				if (sObj.name) {
@@ -5316,7 +5334,9 @@ function AddFeat(sFeat) {
 	var RegExFeat = RegExp("\\b" + sFeat.RegEscape() + "\\b", "i");
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 1; i <= FieldNumbers.feats; i++) {
+			// first check if a selection made in this field wasn't the one initiating this function, because then it should be skipped
 			var sFldNm = "Feat Name " + i;
+			if (event.target && event.target.name === sFldNm) continue;
 			var sCurFeat = What(sFldNm);
 			if (n === 1 && (RegExFeat.test(sCurFeat) || sCurFeat.toLowerCase() === sFeatLC)) {
 				return; // the feat already exists
@@ -5756,7 +5776,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			for (var i = 1; i <= 4; i++) {
 				var theFld = What(prefixA[p] + "Wildshape.Race." + i);
 				if (!theFld || theFld.toLowerCase() === "make a selection") continue;
-				if (!theFld && theFld.toLowerCase() !== "make a selection" && ParseCreature(theFld)) {
+				if (theFld && theFld.toLowerCase() !== "make a selection" && ParseCreature(theFld)) {
 					WSinUse = true;
 					p = prefixA.length;
 					break;
@@ -6730,7 +6750,7 @@ function CalcAbilityDC() {
 					useSSDC = false;
 					break;
 				}
-				if (aSpCast && aSpCast.calcSpellScores && aSpCast.calcSpellScores.dc !== undefined) {
+				if (aSpCast && aSpCast.abilityToUse[0] === Indx && aSpCast.calcSpellScores && aSpCast.calcSpellScores.dc !== undefined) {
 					useSSDC = true;
 					foundSSDC.push(aSpCast.calcSpellScores.dc);
 					if (!foundSSDCref[aSpCast.calcSpellScores.dc]) foundSSDCref[aSpCast.calcSpellScores.dc] = [];

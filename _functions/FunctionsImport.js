@@ -2651,6 +2651,8 @@ function deleteUnknownReferences() {
 		for (var i = oClass.subclasses[1].length - 1; i >= 0; i--) {
 			var sSubcl = oClass.subclasses[1][i];
 			if (!ClassSubList[sSubcl] || arrDupl.indexOf(sSubcl) !== -1) {
+				console.println("The subclass '" + sSubcl + "' for the class '" + oClass.name + "' is missing from the ClassSubList object, or appears multiple times in the `subclasses` attribute. Please contact its author to have this issue corrected. The subclass will be ignored for now.\nBe aware that if you add a subclass using the `AddSubClass()` function, you shouldn't list it in the `subclasses` attribute, the function will take care of that.");
+				console.show();
 				oClass.subclasses[1].splice(i, 1);
 			} else {
 				arrDupl.push(sSubcl);

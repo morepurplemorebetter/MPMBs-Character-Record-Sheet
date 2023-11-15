@@ -809,7 +809,7 @@ var SetPrintPages_Dialog = {
 						}, {
 							type : "check_box",
 							item_id : "Pag3",
-							name : (typePF ? "Feats" : "Conditions") + "/magic items page"
+							name : "Additional sheet (" + (typePF ? "feats" : "conditions") + "/magic items)"
 						}, {
 							type : "check_box",
 							item_id : "Pa10",

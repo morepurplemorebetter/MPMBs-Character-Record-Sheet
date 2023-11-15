@@ -2350,7 +2350,15 @@ function ParseMagicItem(input, bForInventory) {
 				var keySub = kObj.choices[i].toLowerCase();
 				var sObj = kObj[keySub];
 				// Continue if choice doesn't exist or source is excluded
-				if (!sObj || testSource(key + "-" + keySub, sObj, "magicitemExcl")) continue;
+				if (!sObj) {
+					console.println("The subchoice '" + kObj.choices[i] + "' for the magic item '" + kObj.name + "' doesn't have a corresponding object entry. Please contact its author to have this issue corrected. The choice will be ignored for now.");
+					console.show();
+					// Remove this array entry, but make sure we don't skip an entry
+					kObj.choices.splice(i, 1);
+					i--;
+					continue;
+				}
+				if (testSource(key + "-" + keySub, sObj, "magicitemExcl")) continue;
 				// If looking for something in the inventory, only process those with a weight
 				if (bForInventory && !sObj.weight) continue;
 				varArr.push(kObj.choices[i]);
@@ -2630,7 +2638,6 @@ function ApplyMagicItem(input, FldNmbr) {
 		// Set the field calculation
 		if (theMI.calculate) {
 			var theCalc = What("Unit System") === "imperial" ? theMI.calculate : ConvertToMetric(theMI.calculate, 0.5);
-			if (typePF) theCalc = theCalc.replace("\n", " ");
 			tDoc.getField(MIflds[2]).setAction("Calculate", theCalc);
 		}
 
@@ -2675,7 +2682,6 @@ function ApplyMagicItem(input, FldNmbr) {
 		if (!theMI.calculate) {
 			theDesc = FldNmbr > FieldNumbers.magicitemsD && theMI.descriptionLong ? theMI.descriptionLong : theMI.description ? theMI.description : "";
 			if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
-			if (typePF) theDesc = theDesc.replace("\n", " ");
 		}
 
 		// Set it all to the appropriate field
@@ -2749,7 +2755,6 @@ function correctMIdescriptionLong(FldNmbr) {
 
 	var theDesc = FldNmbr > FieldNumbers.magicitemsD && theMI.descriptionLong ? theMI.descriptionLong : theMI.description ? theMI.description : "";
 	if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
-	if (typePF) theDesc = theDesc.replace("\n", " ");
 	Value("Extra.Magic Item Description " + FldNmbr, theDesc);
 	// Apply the chooseGear item again to the description
 	var hasChooseGear = aMIvar && aMIvar.chooseGear ? aMIvar.chooseGear : aMI.chooseGear;
@@ -3324,6 +3329,8 @@ function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow, forceAttun
 	for (var n = 1; n <= 2; n++) {
 		for (var i = startFld; i <= FieldNumbers.magicitems; i++) {
 			var MIflds = ReturnMagicItemFieldsArray(i);
+			// first check if a selection made in this field wasn't the one initiating this function, because then it should be skipped
+			if (event.target && event.target.name === MIflds[0]) continue;
 			var curItem = What(MIflds[0]);
 			if (n === 1 && ((RegExItem.test(curItem) && !RegExItemNo.test(curItem)) || curItem.toLowerCase() === itemLower)) {
 				return; // the item already exists
@@ -3340,9 +3347,9 @@ function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow, forceAttun
 					Checkbox(MIflds[4], false);
 					ApplyAttunementMI(i);
 				}
-				var isAttuneVisible = How("Extra.Magic Item Attuned " + i) == "";
+				var isAttuneVisible = How(MIflds[4]) == "";
 				if (forceAttunedVisible !== undefined && forceAttunedVisible !== isAttuneVisible) {
-					AddTooltip("Extra.Magic Item Attuned " + i, undefined, forceAttunedVisible ? "" : "hide");
+					AddTooltip(MIflds[4], undefined, forceAttunedVisible ? "" : "hide");
 					setMIattunedVisibility(i);
 					if (attuned === undefined) {
 						Checkbox(MIflds[4], forceAttunedVisible);

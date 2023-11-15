@@ -1001,6 +1001,7 @@ function resourceSelectionDialog(type) {
 			if (!inclObj[uGroup]) inclObj[uGroup] = {};
 			for (var z = 0; z < ClassList[u].subclasses[1].length; z++) {
 				var uSub = ClassList[u].subclasses[1][z];
+				if (!ClassSubList[uSub]) continue;
 				uSubTest = testSource(uSub, ClassSubList[uSub], CSatt, true);
 				if (uSubTest === "source") continue;
 				var uName = amendSource(ClassSubList[uSub].subname, ClassSubList[uSub], ClassList[u]);
@@ -1039,6 +1040,7 @@ function resourceSelectionDialog(type) {
 				for (var z = 0; z < rLen + 1; z++) {
 					var uSub = z === rLen ? u : u + "-" + RaceList[u].variants[z];
 					var uRaceVar = z === rLen ? RaceList[u] : RaceSubList[uSub];
+					if (!uRaceVar) continue;
 					var uSubTest = testSource(uSub, uRaceVar, CSatt, true);
 					if (uSubTest === "source") continue;
 					doAny = z !== rLen ? true : doAny;
@@ -1084,8 +1086,9 @@ function resourceSelectionDialog(type) {
 				for (var z = 0; z < rLen; z++) {
 					var uSub = parObj[u].choices[z];
 					var uSubL = uSub.toLowerCase();
-					var uSubVar = parObj[u][uSubL];
 					var uSubRef = u + "-" + uSubL;
+					var uSubVar = parObj[u][uSubL];
+					if (!uSubVar) continue;
 					var uSubTest = testSource(uSubRef, uSubVar.source ? uSubVar : parObj[u], CSatt, true);
 					if (uSubTest === "source") continue;
 					var uName = amendSource(uSubVar.name ? uSubVar.name : uSub, uSubVar, parObj[u]);
@@ -1137,9 +1140,11 @@ function resourceSelectionDialog(type) {
 			if (BackgroundList[u].variant) {
 				for (var z = 0; z < BackgroundList[u].variant.length; z++) {
 					var uSub = BackgroundList[u].variant[z];
-					var uSubTest = testSource(uSub, BackgroundSubList[uSub], CSatt, true);
+					var uSubVar = BackgroundSubList[uSub];
+					if (!uSubVar) continue;
+					var uSubTest = testSource(uSub, uSubVar, CSatt, true);
 					if (uSubTest === "source") continue;
-					var uSubName = amendSource(BackgroundSubList[uSub].name, BackgroundSubList[uSub], BackgroundList[u]);
+					var uSubName = amendSource(uSubVar.name, uSubVar, BackgroundList[u]);
 					refObj[uSubName] = uSub;
 					if (uSubTest) {
 						exclObj[uSubName] = -1;

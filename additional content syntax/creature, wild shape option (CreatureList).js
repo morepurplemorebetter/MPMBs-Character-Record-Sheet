@@ -42,7 +42,7 @@
 	        	You will also need the syntax for common attributes if you want to use a
 	        	custom calculation for hit points (calcChanges.hp).
 
-	Sheet:		v13.1.0 and newer
+	Sheet:		v13.1.11 and newer
 
 */
 
@@ -60,7 +60,7 @@ var iFileName = "Homebrew Syntax - CreatureList.js";
 	Only the first occurrence of this variable will be used.
 */
 
-RequiredSheetVersion("13.0.6");
+RequiredSheetVersion("13.1.11");
 /*	RequiredSheetVersion // OPTIONAL //
 	TYPE:	function call with one variable, a string or number
 	USE:	the minimum version of the sheet required for the import script to work
@@ -584,12 +584,23 @@ CreatureList["purple crawler"] = {
 			PickDropdown(prefix + "Comp.Desc.Size", 3);
 		}
 	}],
+	notes : [{
+		name : "Lila Laser Light (Purplemancer 13)",
+		minlevel : 13,
+		description : desc([
+			"The purple companion gains the ability to shine in a bright purple color",
+			"Once per long rest, it can cast Hypnotic Pattern without requiring components"
+		]),
+		joinString : ""
+	}],
 /*	features // OPTIONAL //
 	actions  // OPTIONAL //
 	traits   // OPTIONAL //
+	notes   // OPTIONAL // since v13.1.11
 	TYPE:	array (variable length) with objects
 	USE:	add text to the Traits and Features sections on the Companion page
 	CHANGE:	v13.1.0 (added `joinString` attribute)
+	CHANGE:	v13.1.11 (added `notes`)
 
 	Each of these three attributes work in the same way.
 	Each is an array with objects that have at least two attributes, `name` and `description`, that each contain a string.
@@ -632,17 +643,27 @@ CreatureList["purple crawler"] = {
 	 features		 Features
 	 actions 		 Traits
 	 traits  		 Traits
+	 notes  		 Notes (left)
 
+	> `features`
 	Be aware that languages, resistances, vulnerabilities, and immunities are also added to the
 	Features section on the companion page and before the features attribute described here.
 
+	> `actions` & `traits`
 	The actions are added before traits to the Traits section.
+
+	> `notes`
+	Starting with v13.1.11, the array in `notes` is added to the notes section before any notes from a
+	CompanionList selection are added.
+	Be aware that if you add anything in the `notes` of a CreatureList object, some CompanionList options
+	will run out of space for all their notes.
+	Notes are not displayed on the wild shape page.
 
 	The array is processed in the order it is in the code, no sorting will take place.
 
-	These text are also displayed on the wild shape page, but all together in the singular Traits & Features section,
-	regardless of their `minlevel` attribute value.
-	Also, `eval` and `changeeval` are not executed when this creature is selected on the Wild Shape page.
+	These text, except `notes`, are also displayed on the wild shape page, but all together in the singular
+	Traits & Features section,	regardless of their `minlevel` attribute value.
+	Also, `eval`, `removeeval`, and `changeeval` are not executed when this creature is selected/removed on the Wild Shape page.
 	As the wild shape pages offer limited space, it is recommended to test if all of
 	these and the other attributes together will fit.
 	If they don't fit (well), consider using the `wildshapeString` attribute, see below.
@@ -657,12 +678,12 @@ CreatureList["purple crawler"] = {
 */
 
 /*	minlevel // OPTIONAL //
-	(Part of `features`, `traits`, or `actions` object, see above)
+	(Part of `features`, `traits`, `actions`, or `notes` object, see above)
 	TYPE:	number
 	USE:	the level at which to add the feature, trait, or action
 	ADDED:	v13.0.6
 
-	This attribute is part of an object in the `features`, `traits`, or `actions` arrays, see above.
+	This attribute is part of an object in the `features`, `traits`, `actions`, or `notes` arrays, see above.
 	Use this if an entry in that array is only supposed to be displayed
 	once the main character (the character on the 1st page) reaches a certain level.
 	If the main character goes below this level, the entry is removed again.
@@ -673,16 +694,16 @@ CreatureList["purple crawler"] = {
 */
 
 /*	eval & removeeval & addMod // OPTIONAL //
-	(Part of `features`, `traits`, or `actions` object, see above)
+	(Part of `features`, `traits`, `actions`, or `notes` object, see above)
 	TYPE:	variable, see the entries for `eval`, `removeeval`, or `addMod`
 	USE:	variable, see the entries for `eval`, `removeeval`, or `addMod`
 	ADDED:	v13.0.6
 
-	These attributes are part of an object in the `features`, `traits`, or `actions` arrays, see above.
+	These attributes are part of an object in the `features`, `traits`, `actions`, or `notes` arrays, see above.
 	These optional attributes function identical to those that share their name.
 	They function exactly as described for the main object, but they will only be called when the
-	`features`, `traits`, or `actions` object is processed, which can be influenced using the
-	`minlevel` attribute, see above.
+	`features`, `traits`, `actions`, or `notes` object is processed, which can be influenced
+	using the `minlevel` attribute, see above.
 */
 
 	minlevelLinked : ["artificer", "wizard"],
@@ -705,7 +726,7 @@ CreatureList["purple crawler"] = {
 	2. function that returns the number
 		The function is called upon any time a level needs to be determined for the creature,
 		be it to determine which level to pass to `changeeval` (see below),
-		or to determine which `features`, `traits`, or `actions` to add.remove (see `minlevel` above).
+		or to determine which `features`, `traits`, `actions`, or `notes` to add.remove (see `minlevel` above).
 		It is passed one variable: a string: the prefix of the Companion page this creature was selected on.
 		If it returns false, 0, "", or anything that is not a number, the sheet will default
 		to the total class level, or 1 if the level field is empty.
@@ -786,7 +807,10 @@ CreatureList["purple crawler"] = {
 	},
 
 	eval : function(prefix, lvl) {
-		AddString(prefix + 'Cnote.Left', 'The purple crawler always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.', true);
+		var fldName = prefix + "Comp.Use.Speed";
+		var newSpeed = "40 ft, fly 60 ft, swim 40 ft";
+		if (What("Unit System") === "metric") newSpeed = ConvertToMetric(newSpeed, 0.5);
+		Value(fldName, newSpeed);
 	},
 /*	eval // OPTIONAL //
 	TYPE:	function
@@ -795,7 +819,7 @@ CreatureList["purple crawler"] = {
 	The function is passed two variables:
 	1) The first variable is a string: the prefix of the Companion page this creature was selected on
 		You can use this variable to call on fields on that page. The example above uses it to set
-		a string to the leftmost Notes section on the Companion page.
+		the speed to something else.
 	2) The second variable is an array with 2 numbers: the old level and the new level
 		e.g. lvl = [0,5] when the creature gets added and the character is 5th level
 		The first entry, the old level, is the level that was passed as the second entry the last time
@@ -810,7 +834,10 @@ CreatureList["purple crawler"] = {
 */
 
 	removeeval : function(prefix, lvl) {
-		RemoveString(prefix + 'Cnote.Left', 'The purple crawler always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.', true);
+		var fldName = prefix + "Comp.Use.Speed";
+		var newSpeed = "30 ft, fly 45 ft, swim 30 ft";
+		if (What("Unit System") === "metric") newSpeed = ConvertToMetric(newSpeed, 0.5);
+		Value(fldName, newSpeed);
 	},
 /*	removeeval // OPTIONAL //
 	TYPE:	function
@@ -818,8 +845,8 @@ CreatureList["purple crawler"] = {
 
 	The function is passed two variables:
 	1) The first variable is a string: the prefix of the Companion page this creature was selected on
-		You can use this variable to call on fields on that page. The example above uses it to remove
-		a string to the leftmost Notes section on the Companion page.
+		You can use this variable to call on fields on that page. The example above uses it to set
+		the speed to something else.
 	2) The second variable is an array with 2 numbers: the old level and the new level
 		e.g. lvl = [0,5] when the creature gets added and the character is 5th level
 		The first entry, the old level, is the level that the creature had before being removed.

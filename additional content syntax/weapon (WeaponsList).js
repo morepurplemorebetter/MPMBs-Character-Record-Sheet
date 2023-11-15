@@ -337,7 +337,8 @@ WeaponsList["sword of purple"] = {
 	This array has two entries:
 	1. string or number
 		The first entry is what to put in the To Hit modifier field.
-		If this starts with "dc", the To Hit will be calculated as a DC.
+		For backwards compatibility, if this starts with "dc", the To Hit will be calculated as a DC.
+		However, it is recommended to set the `dc` attribute to `true` if you want this to be a DC.
 	2. string or number
 		The second entry is what to put in the Damage modifier field.
 
