@@ -19,7 +19,7 @@
 
 
 	Code by:	Nod_Hero & PoetOfGod & MorePurpleMoreBetter
-	Date:		2023-09-21 (sheet v13.1.9)
+	Date:		2023-12-05 (sheet v13.1.9)
 */
 
 var iFileName = "Kibbles' Compendium of Craft and Creation (v1.1.3).js";
