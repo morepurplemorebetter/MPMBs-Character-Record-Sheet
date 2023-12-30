@@ -529,7 +529,7 @@ var Base_CreatureList = {
 		damage_resistances : "cold; bludgeoning, piercing, and slashing from nonmagical attacks that aren't silver weapons",
 		damage_immunities : "fire, poison",
 		condition_immunities : "poisoned",
-		senses : "Darkvision 120 ft; Devil's Sight (Magical darkness doesn't impede the imp's Darkvision)",
+		senses : "Darkvision 120 ft; Devil's Sight (Magical darkness doesn't impede the imp's darkvision)",
 		passivePerception : 11,
 		languages : "Infernal, Common",
 		challengeRating : "1",
@@ -744,7 +744,6 @@ var Base_CreatureList = {
 			ability : 2,
 			damage : [1, "", "piercing"],
 			range : "40/160 ft",
-			description : "",
 			abilitytodamage : false,
 			description : "DC 10 Con save or poisoned 1 min; fail by 5 or more: also unconscious 1 min, until damaged or awakened",
 			tooltip : "The target hit must succeed on a DC 10 Constitution saving throw or become poisoned for 1 minute. If its saving throw result is 5 or lower, the poisoned target falls unconscious for the same duration, or until it takes damage or another creature takes an action to shake it awake."
@@ -1079,7 +1078,7 @@ var Base_CreatureList = {
 			ability : 2,
 			damage : [1, 8, "piercing"],
 			range : "150/600 ft",
-			description : "Ammunition, heavy, two-handed)"
+			description : "Ammunition, heavy, two-handed"
 		}],
 		traits : [{
 			name : "Sunlight Sensitivity",
@@ -1087,6 +1086,10 @@ var Base_CreatureList = {
 		}, {
 			name : "Life Drain",
 			description : "A target of the wight's life drain attack must succeed on a DC 13 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the target finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.\n   A humanoid slain by this attack rises 24 hours later as a zombie under the wight's control, unless the humanoid is restored to life or its body is destroyed. The wight can have no more than twelve zombies under its control at one time."
+		}],
+		actions : [{
+			name : "Multiattack",
+			description : "The wight makes two longsword attacks or two longbow attacks. It can use its Life Drain in place of one longsword attack."
 		}]
 	},
 	"zombie" : {
@@ -1615,7 +1618,7 @@ var Base_CreatureList = {
 			damage : [2, 10, "bludgeoning"],
 			modifiers : [-1, ""],
 			range : "Melee (5 ft)",
-			description : "DC 15 Con save or HP max reduced; Two Slam attacks as an Attack action; Counts as magical",
+			description : "DC 15 Con save or HP max reduced; Two slam attacks as an Attack action; Counts as magical",
 			abilitytodamage : true,
 			tooltip : "If the target is a creature, it must succeed on a DC 15 Constitution saving throw or have its hit point maximum reduced by an amount equal to the damage taken. The target dies if this attack reduces its hit point maximum to 0. The reduction lasts until removed by the greater restoration spell or other magic."
 		}, {
@@ -1677,7 +1680,7 @@ var Base_CreatureList = {
 			ability : 1,
 			damage : [2, 8, "bludgeoning"],
 			range : "Melee (5 ft)",
-			description : "Two Slam attacks as an Attack action; Counts as magical",
+			description : "Two slam attacks as an Attack action; Counts as magical",
 			abilitytodamage : true
 		}],
 		traits : [{
@@ -1790,7 +1793,7 @@ var Base_CreatureList = {
 			ability : 1,
 			damage : [3, 8, "bludgeoning"],
 			range : "Melee (5 ft)",
-			description : "Two Slam attacks as an Attack action; Counts as magical"
+			description : "Two slam attacks as an Attack action; Counts as magical"
 		}, {
 			name : "Slow (Recharge 5-6)",
 			ability : 3,

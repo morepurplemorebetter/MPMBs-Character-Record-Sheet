@@ -387,7 +387,10 @@ var Base_MagicItemsList = {
 		chooseGear : {
 			type : "ammo",
 			prefixOrSuffix : "prefix",
-			descriptionChange : ["replace", "ammunition"]
+			descriptionChange : ["replace", "ammunition"],
+			excludeCheck : function (inObjKey, inObj) {
+				return /vials|flasks/i.test(inObj.icon);
+			}
 		}
 	},
 	"bag of beans" : { // contributed by Larry Hoy
@@ -563,7 +566,7 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "axe"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /axe/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		calcChanges : {
@@ -712,7 +715,7 @@ var Base_MagicItemsList = {
 					}
 				},
 				'I add +2 to the damage of attacks I make with shortbows and longbows.'
-			],
+			]
 		}
 	},
 	"bracers of defense" : {
@@ -1268,13 +1271,13 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/dancing/i).test(v.WeaponTextName)) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/dancing/i).test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + 'Attacks on its own as a bonus action';
@@ -1304,9 +1307,9 @@ var Base_MagicItemsList = {
 		description : "As an action, I can draw a card at random from this deck and throw it on the ground within 30 ft. An illusion, determined by the type of card, forms over the thrown card and remains until dispelled. While I'm within 120 ft of it, I can use an action to move it within 30 ft of the card. See Notes page for more details.",
 		descriptionFull : [
 			"This box contains a set of parchment cards. A full deck has 34 cards. A deck found as treasure is usually missing 1d20-1 cards.",
-			"The magic of the deck functions only if cards are drawn at random (you can use an altered deck of playing cards to simulate the deck). You can use an action to draw a card at random from the deck and throw it to the ground at a point within 30 feet of you.",
-			"An illusion of one or more creatures forms over the thrown card and remains until dispelled. An illusory creature appears real, of the appropriate size, and behaves as if it were a real creature, except that it can do no harm. While you are within 120 feet of the illusory creature and can see it, you can use an action to move it magically anywhere within 30 feet of its card. Any physical interaction with the illusory creature reveals it to be an illusion, because objects pass through it. Someone who uses an action to visually inspect the creature identifies it as illusory with a successful DC 15 Intelligence (Investigation) check. The creature then appears translucent.",
-			"The illusion lasts until its card is moved or the illusion is dispelled. When the illusion ends, the image on its card disappears, and that card can't be used again.\n",
+			"   The magic of the deck functions only if cards are drawn at random (you can use an altered deck of playing cards to simulate the deck). You can use an action to draw a card at random from the deck and throw it to the ground at a point within 30 feet of you.",
+			"   An illusion of one or more creatures forms over the thrown card and remains until dispelled. An illusory creature appears real, of the appropriate size, and behaves as if it were a real creature, except that it can do no harm. While you are within 120 feet of the illusory creature and can see it, you can use an action to move it magically anywhere within 30 feet of its card. Any physical interaction with the illusory creature reveals it to be an illusion, because objects pass through it. Someone who uses an action to visually inspect the creature identifies it as illusory with a successful DC 15 Intelligence (Investigation) check. The creature then appears translucent.",
+			"   The illusion lasts until its card is moved or the illusion is dispelled. When the illusion ends, the image on its card disappears, and that card can't be used again.\n",
 			toUni("1d34\tPlaying Card\tIllusion"),
 			"  1\tAce of hearts\tRed dragon",
 			"  2\tKing of hearts\tKnight and four guards",
@@ -1348,42 +1351,42 @@ var Base_MagicItemsList = {
 				"This box contains a set of parchment cards. A full deck has 34 cards. A deck found as treasure is usually missing 1d20-1 cards.",
 				"The magic of the deck functions only if cards are drawn at random. I can use an action to draw a card at random from the deck and throw it to the ground at a point within 30 ft of me.",
 				"An illusion of one or more creatures forms over the thrown card and remains until dispelled. An illusory creature appears real, of the appropriate size, and behaves as if it were a real creature, except that it can do no harm. While I am within 120 ft of the illusory creature and can see it, I can use an action to move it magically anywhere within 30 ft of its card. Any physical interaction with the illusory creature reveals it to be an illusion, because objects pass through it. Someone who uses an action to visually inspect the creature identifies it as illusory with a successful DC 15 Intelligence (Investigation) check. The creature then appears translucent.",
-				"The illusion lasts until its card is moved or the illusion is dispelled. When the illusion ends, the image on its card disappears, and that card can't be used again.\n",
-				"1d34\tPLAYING CARD\tILLUSION",
-				"  1\tAce of hearts\tRed dragon",
-				"  2\tKing of hearts\tKnight and four guards",
-				"  3\tQueen of hearts\tSuccubus/Incubus",
-				"  4\tJack of hearts\tDruid",
-				"  5\tTen of hearts\tCloud giant",
-				"  6\tNine of hearts\tEttin",
-				"  7\tEight of hearts\tBugbear",
-				"  8\tTwo of hearts\tGoblin",
-				"  9\tAce of diamonds\tBeholder",
-				"  10\tKing of diamonds\tArchmage and mage apprentice",
-				"  11\tQueen diamonds\tNight hag",
-				"  12\tJack of diamonds\tAssassin",
-				"  13\tTen of diamonds\tFire giant",
-				"  14\tNine of diamonds\tOgre mage",
-				"  15\tEight of diamonds\tGnoll",
-				"  16\tTwo of diamonds\tKobold",
-				"  17\tAce of spades\tLich",
-				"  18\tKing of spades\tPriest and two acolytes",
-				"  19\tQueen of spades\tMedusa",
-				"  20\tJack of spades\tVeteran",
-				"  21\tTen of spades\tFrost giant",
-				"  22\tNine of spades\tTroll",
-				"  23\tEight of spades\tHobgoblin",
-				"  24\tTwo of spades\tGoblin",
-				"  25\tAce of clubs \tIron golem",
-				"  26\tKing of clubs\tBandit captain and three bandits",
-				"  27\tQueen of clubs\tErinyes",
-				"  28\tJack of clubs\tBerserker",
-				"  29\tTen of clubs \tHill giant",
-				"  30\tNine of clubs\tOgre",
-				"  31\tEight of clubs\tOrc",
-				"  32\tTwo of clubs \tKobold",
-				"33-34\tJoker (2)\t\tYou (the deck's owner)"
-			].join("\n")
+				"The illusion lasts until its card is moved or the illusion is dispelled. When the illusion ends, the image on its card disappears, and that card can't be used again.",
+				"\n1d34\tPLAYING CARD\t\tILLUSION",
+				"1\t[A\u2665] Ace of hearts\t\tRed dragon",
+				"2\t[K\u2665] King of hearts\t\tKnight and four guards",
+				"3\t[Q\u2665] Queen of hearts\t\tSuccubus/Incubus",
+				"4\t[J\u2665] Jack of hearts\t\tDruid",
+				"5\t[10\u2665] Ten of hearts\t\tCloud giant",
+				"6\t[9\u2665] Nine of hearts\t\tEttin",
+				"7\t[8\u2665] Eight of hearts\t\tBugbear",
+				"8\t[2\u2665] Two of hearts\t\tGoblin",
+				"9\t[A\u2666] Ace of diamonds\t\tBeholder",
+				"10\t[K\u2666] King of diamonds\t\tArchmage and mage apprentice",
+				"11\t[Q\u2666] Queen of diamonds \tNight hag",
+				"12\t[J\u2666] Jack of diamonds\t\tAssassin",
+				"13\t[10\u2666] Ten of diamonds\t\tFire giant",
+				"14\t[9\u2666] Nine of diamonds\t\tOgre mage",
+				"15\t[8\u2666] Eight of diamonds\t\tGnoll",
+				"16\t[2\u2666] Two of diamonds\t\tKobold",
+				"17\t[A\u2660] Ace of spades\t\tLich",
+				"18\t[K\u2660] King of spades\t\tPriest and two acolytes",
+				"19\t[Q\u2660] Queen of spades\t\tMedusa",
+				"20\t[J\u2660] Jack of spades\t\tVeteran",
+				"21\t[10\u2660] Ten of spades\t\tFrost giant",
+				"22\t[9\u2660] Nine of spades\t\tTroll",
+				"23\t[8\u2660] Eight of spades\t\tHobgoblin",
+				"24\t[2\u2660] Two of spades\t\tGoblin",
+				"25\t[A\u2663] Ace of clubs\t\tIron golem",
+				"26\t[K\u2663] King of clubs\t\tBandit captain and three bandits",
+				"27\t[Q\u2663] Queen of clubs\t\tErinyes",
+				"28\t[J\u2663] Jack of clubs\t\tBerserker",
+				"29\t[10\u2663] Ten of clubs\t\tHill giant",
+				"30\t[9\u2663] Nine of clubs\t\tOgre",
+				"31\t[8\u2663] Eight of clubs\t\tOrc",
+				"32\t[2\u2663] Two of clubs\t\tKobold",
+				"33-34\tJoker (2)\t\t\tYou (the deck's owner)"
+			]
 		}]
 	},
 	"deck of many things" : { // contains contributions by Larry Hoy
@@ -1419,56 +1422,63 @@ var Base_MagicItemsList = {
 			toUni("The Void") + ". This black card spells disaster. Your soul is drawn from your body and contained in an object in a place of the DM's choice. One or more powerful beings guard the place. While your soul is trapped in this way, your body is incapacitated. A Wish spell can't restore your soul, but the spell reveals the location of the object that holds it. You draw no more cards."
 		].join("\n \u2022 "),
 		toNotesPage : [{
-			name : "Cards and Their Effects",
+			name : "Features and Table",
 			note : [
 				"Usually found in a box or pouch, this deck contains either 13 (75%) or 22 (25%) cards made of ivory or vellum.",
 				"Before I draw a card, I must declare how many cards I intend to draw and then draw them randomly. Any cards drawn in excess of this number have no effect. Otherwise, as soon as I draw a card from the deck, its magic takes effect. I must draw each card no more than 1 hour after the previous draw. If I fail to draw the chosen number, the remaining number of cards fly from the deck on their own and take effect all at once.",
-				"Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.\n\n1d22\tPLAYING CARD\tCARD",
-				"1\tAce of diamonds\tVizier*",
-				"2\tKing of diamonds\tSun",
-				"3\tQueen of diamonds\tMoon",
-				"4\tJack of diamonds\tStar",
-				"5\tTwo of diamonds\tComet*",
-				"6\tAce of hearts\tThe Fates*",
-				"7\tKing of hearts\tThrone",
-				"8\tQueen of hearts\tKey",
-				"9\tJack of hearts\tKnight",
-				"10\tTwo of hearts\tGem*",
-				"11\tAce of clubs  \tTalons*",
-				"12\tKing of clubs\tThe Void",
-				"13\tQueen of clubs\tFlames",
-				"14\tJack of clubs\tSkull",
-				"15\tTwo of clubs  \tIdiot*",
-				"16\tAce of spades\tDonjon*",
-				"17\tKing of spades\tRuin",
-				"18\tQueen of spades\tEuryale",
-				"19\tJack of spades\tRogue",
-				"20\tTwo of spades\tBalance*",
-				"21\tJoker (with TM)\tFool*",
-				"22\tJoker (no TM)\tJester\n* Found only in a deck with twenty-two cards\n",
-				"\u2022 Balance. My mind suffers a wrenching alteration, causing my alignment to change. Lawful to chaotic, good to evil, and vice versa.",
-				"\u2022 Comet. If I single-handedly defeat the next hostile monster/group of monsters I encounter, I gain enough XP to gain one level.",
-				"\u2022 Donjon. I disappear into a state of suspended animation in an extradimensional sphere. Everything I had stays behind. Wish can reveal my location. I draw no more cards.",
-				"\u2022 Euryale. This card's medusa-like visage curses me with a -2 penalty on saving throws. Only a god or the magic of The Fates card can end this curse.",
-				"\u2022 The Fates. Reality's fabric unravels and spins anew, allowing me to avoid or erase one event. I can use the card's magic any one time before I die.",
-				"\u2022 Flames. A powerful devil becomes my enemy until one of us dies. It seeks my ruin and plagues my life, savoring my suffering before attempting to slay me.",
-				"\u2022 Fool. I lose up to 10,000 XP (no level loss), discard this card, and draw again.",
-				"\u2022 Gem. 25 pieces of jewelry (2000 gp each) or 50 gems (1000 gp each) appear at my feet.",
-				"\u2022 Idiot. Permanently reduce my Intelligence by 1d4+1 (min of 1). I can draw one additional card.",
-				"\u2022 Jester. I gain 10,000 XP or I can draw two extra cards.",
-				"\u2022 Key. A rare or rarer magic weapon with which I'm proficient appears in my hands.",
-				"\u2022 Knight. A 4th-level fighter of my race appears within 30 ft, serving me loyally until death, believing the fates have drawn him/her to me (I control this NPC).",
-				"\u2022 Moon. I am granted the ability to cast the Wish spell 1d3 times.",
-				"\u2022 Rogue. An NPC becomes hostile toward me (Wish or divine intervention ends).",
-				"\u2022 Ruin. All forms of wealth that I carry or own, other than magic items, are lost. Businesses, buildings, and land I own are lost in a way that alters reality the least.",
-				"\u2022 Skull. I summon a ghostly skeleton with tattered robes and a spectral scythe within 10 ft. It attacks me, warning all others that I must win the battle alone.",
-				"\u2022 Star. Increase one of my ability scores by 2 (can't exceed 24).",
-				"\u2022 Sun. I gain 50,000 XP and a wondrous item appears in my hands.",
-				"\u2022 Talons. Every magic item I wear or carry disintegrates. Artifacts in my possession aren't destroyed but do vanish.",
-				"\u2022 Throne. I gain expertise in Persuasion and rightful ownership of a small keep somewhere in the world (currently occupied by monsters).",
-				"\u2022 Vizier. Within one year I can ask one question in meditation and receive a truthful answer. This knowledge comes with the wisdom on how to apply it.",
-				"\u2022 The Void. This black card spells disaster. My soul is contained in an object, powerful beings guard it, and my body is incapacitated. Wish can reveal my location. I draw no more cards."
+				"Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.",
+				"\n1d13\t1d22\tPLAYING CARD\t\tCARD",
+				"\t   1\t[A\u2666] Ace of diamonds\t\tVizier*",
+				"1\t   2\t[K\u2666] King of diamonds\t\tSun",
+				"2\t   3\t[Q\u2666] Queen of diamonds \tMoon",
+				"3\t   4\t[J\u2666] Jack of diamonds\t\tStar",
+				"\t   5\t[2\u2666] Two of diamonds\t\tComet*",
+				"\t   6\t[A\u2665] Ace of hearts\t\tThe Fates*",
+				"4\t   7\t[K\u2665] King of hearts\t\tThrone",
+				"5\t   8\t[Q\u2665] Queen of hearts\t\tKey",
+				"6\t   9\t[J\u2665] Jack of hearts\t\tKnight",
+				"\t   10\t[2\u2665] Two of hearts\t\tGem*",
+				"\t   11\t[A\u2663] Ace of clubs\t\tTalons*",
+				"7\t   12\t[K\u2663] King of clubs\t\tThe Void",
+				"8\t   13\t[Q\u2663] Queen of clubs\t\tFlames",
+				"9\t   14\t[J\u2663] Jack of clubs\t\tSkull",
+				"\t   15\t[2\u2663] Two of clubs\t\tIdiot*",
+				"\t   16\t[A\u2660] Ace of spades\t\tDonjon*",
+				"10\t   17\t[K\u2660] King of spades\t\tRuin",
+				"11\t   18\t[Q\u2660] Queen of spades\t\tEuryale",
+				"12\t   19\t[J\u2660] Jack of spades\t\tRogue",
+				"\t   20\t[2\u2660] Two of spades\t\tBalance*",
+				"\t   21\tJoker (with TM)\t\tFool*",
+				"13\t   22\tJoker (no TM)\t\tJester\n",
+				"* Found only in a deck with twenty-two cards"
 			]
+		}, {
+			name : "Cards and Their Effects",
+			note : [
+				"",
+				"Balance: My mind suffers a wrenching alteration, causing my alignment to change. Lawful to chaotic, good to evil, and vice versa.",
+				"Comet: If I single-handedly defeat the next hostile monster/group of monsters I encounter, I gain enough XP to gain one level.",
+				"Donjon: I disappear into a state of suspended animation in an extradimensional sphere. Everything I had stays behind. Wish can reveal my location. I draw no more cards.",
+				"Euryale: This card's medusa-like visage curses me with a -2 penalty on saving throws. Only a god or the magic of The Fates card can end this curse.",
+				"The Fates: Reality's fabric unravels and spins anew, allowing me to avoid or erase one event. I can use the card's magic any one time before I die.",
+				"Flames: A powerful devil becomes my enemy until one of us dies. It seeks my ruin and plagues my life, savoring my suffering before attempting to slay me.",
+				"Fool: I lose up to 10,000 XP (no level loss), discard this card, and draw again.",
+				"Gem: 25 pieces of jewelry (2000 gp each) or 50 gems (1000 gp each) appear at my feet.",
+				"Idiot: Permanently reduce my Intelligence by 1d4+1 (min of 1). I can draw one additional card.",
+				"Jester: I gain 10,000 XP or I can draw two extra cards.",
+				"Key: A rare or rarer magic weapon with which I'm proficient appears in my hands.",
+				"Knight: A 4th-level fighter of my race appears within 30 ft, serving me loyally until death, believing the fates have drawn him/her to me (I control this NPC).",
+				"Moon: I am granted the ability to cast the Wish spell 1d3 times.",
+				"Rogue: An NPC becomes hostile toward me (Wish or divine intervention ends).",
+				"Ruin: All forms of wealth that I carry or own, other than magic items, are lost. Businesses, buildings, and land I own are lost in a way that alters reality the least.",
+				"Skull: I summon a ghostly skeleton with tattered robes and a spectral scythe within 10 ft. It attacks me, warning all others that I must win the battle alone.",
+				"Star: Increase one of my ability scores by 2 (can't exceed 24).",
+				"Sun: I gain 50,000 XP and a wondrous item appears in my hands.",
+				"Talons: Every magic item I wear or carry disintegrates. Artifacts in my possession aren't destroyed but do vanish.",
+				"Throne: I gain expertise in Persuasion and rightful ownership of a small keep somewhere in the world (currently occupied by monsters).",
+				"Vizier: Within one year I can ask one question in meditation and receive a truthful answer. This knowledge comes with the wisdom on how to apply it.",
+				"The Void: This black card spells disaster. My soul is contained in an object, powerful beings guard it, and my body is incapacitated. Wish can reveal my location. I draw no more cards."
+			].join("\n\u2022 ")
 		}]
 	},
 	"defender" : {
@@ -1486,13 +1496,13 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/defender/i).test(v.WeaponTextName)) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/defender/i).test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + '+3 bonus can be used for AC instead';
@@ -1502,7 +1512,7 @@ var Base_MagicItemsList = {
 			],
 			atkCalc : [
 				function (fields, v, output) {
-					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/defender/i).test(v.WeaponTextName)) {
+					if (v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/defender/i).test(v.WeaponTextName)) {
 						output.magic = v.thisWeapon[1] + 3;
 					}
 				}, ''
@@ -1675,13 +1685,13 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*dragon)(?=.*slayer).*$/i).test(v.WeaponTextName)) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/^(?=.*dragon)(?=.*slayer).*$/i).test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + '+3d6 damage vs. dragons';
@@ -1691,7 +1701,7 @@ var Base_MagicItemsList = {
 			],
 			atkCalc : [
 				function (fields, v, output) {
-					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*dragon)(?=.*slayer).*$/i).test(v.WeaponTextName)) {
+					if (v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/^(?=.*dragon)(?=.*slayer).*$/i).test(v.WeaponTextName)) {
 						output.magic = v.thisWeapon[1] + 1;
 					}
 				}, ''
@@ -2091,13 +2101,13 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*flame)(?=.*tongue).*$/i).test(v.WeaponTextName)) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && /^(?=.*flame)(?=.*tongue).*$/i.test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + 'While active, +2d6 fire damage';
@@ -2138,13 +2148,13 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*frost)(?=.*brand).*$/i).test(v.WeaponTextName)) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/^(?=.*frost)(?=.*brand).*$/i).test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + '+1d6 cold damage';
@@ -2207,7 +2217,7 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "weapon"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier|axe/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		calcChanges : {
@@ -2523,13 +2533,13 @@ var Base_MagicItemsList = {
 			itemName1stPage : ["brackets", "Holy Avenger"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*holy)(?=.*avenger).*$/i).test(v.WeaponTextName)) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/^(?=.*holy)(?=.*avenger).*$/i).test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + '+2d10 radiant damage vs. fiends and undead';
@@ -2539,7 +2549,7 @@ var Base_MagicItemsList = {
 			],
 			atkCalc : [
 				function (fields, v, output) {
-					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*holy)(?=.*avenger).*$/i).test(v.WeaponTextName)) {
+					if (v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/^(?=.*holy)(?=.*avenger).*$/i).test(v.WeaponTextName)) {
 						output.magic = v.thisWeapon[1] + 3;
 					}
 				}, ''
@@ -2631,9 +2641,9 @@ var Base_MagicItemsList = {
 		creaturesAdd : [["Berserker"]],
 		creatureOptions : [{
 			name : "Berserker",
-			source : [["SRD", 392], ["M", 344]],
+			source : [["SRD", 397], ["M", 344]],
 			eval : function(prefix) {
-				Value(prefix + "Comp.Desc.Name", "Warrior Spirits");
+				Value(prefix + "Comp.Desc.Name", "Warrior Spirit");
 			},
 			size : 3,
 			type : "Humanoid",
@@ -2662,7 +2672,7 @@ var Base_MagicItemsList = {
 			}],
 			features : [{
 				name : "Summoned",
-				description : "The Warrior Spirits are friendly to you and your companions and follow your commands. They return to Ysgard after 1 hour or when they drop to 0 hit points."
+				description : "The Warrior Spirit is friendly to you and your companions and follow your commands. They return to Ysgard after 1 hour or when they drop to 0 hit points."
 			}]
 		}]
 	},
@@ -2906,7 +2916,7 @@ var Base_MagicItemsList = {
 		extraLimitedFeatures : [{
 			name : "Luck Blade - luck reroll",
 			usages : 1,
-			recovery : "Dawn"
+			recovery : "dawn"
 		}, {
 			name : "Luck Blade - cast Wish",
 			usages : "1d4-1",
@@ -2918,14 +2928,14 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		addMod : [{ type : "save", field : "all", mod : 1, text : "While the Luck Blade is on my person, I gain a +1 bonus to all my saving throws." }],
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponTextName)) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 					}
@@ -2934,7 +2944,7 @@ var Base_MagicItemsList = {
 			],
 			atkCalc : [
 				function (fields, v, output) {
-					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponTextName)) {
+					if (v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/^(?=.*luck)(?=.*blade).*$/i).test(v.WeaponTextName)) {
 						output.magic = v.thisWeapon[1] + 1;
 					}
 				}, ''
@@ -3311,13 +3321,13 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*(9|nine))(?=.*(lives|life))(?=.*stealer).*$/i).test(v.WeaponTextName)) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/^(?=.*(9|nine))(?=.*(lives|life))(?=.*stealer).*$/i).test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + 'On crit to target <100 HP, DC 15 Con save or die';
@@ -3327,7 +3337,7 @@ var Base_MagicItemsList = {
 			],
 			atkCalc : [
 				function (fields, v, output) {
-					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*(9|nine))(?=.*(lives|life))(?=.*stealer).*$/i).test(v.WeaponTextName)) {
+					if (v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/^(?=.*(9|nine))(?=.*(lives|life))(?=.*stealer).*$/i).test(v.WeaponTextName)) {
 						output.magic = v.thisWeapon[1] + 2;
 					}
 				}, ''
@@ -4783,7 +4793,7 @@ var Base_MagicItemsList = {
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*lordly)(?=.*might).*$/i).test(v.WeaponTextName)) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/^(?=.*lordly)(?=.*might).*$/i).test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + '+2d6 fire damage';
@@ -5848,13 +5858,13 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/^(?=.*life)(?=.*stealing).*$/i).test(v.WeaponTextName)) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/^(?=.*life)(?=.*stealing).*$/i).test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +10 Necrotic dmg, 10 temp HP';
@@ -5881,13 +5891,13 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return (!(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon))) || (inObj.baseWeapon && !inObj.damage ? WeaponsList[inObj.baseWeapon].damage : inObj.damage)[2] !== "slashing";
+				return (!testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon))) || (inObj.baseWeapon && !inObj.damage ? WeaponsList[inObj.baseWeapon].damage : inObj.damage)[2] !== "slashing";
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/of sharpness/i).test(v.WeaponTextName) && v.theWea.damage[2] == "slashing") {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/of sharpness/i).test(v.WeaponTextName) && v.theWea.damage[2] == "slashing") {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +14 damage \u0026 5% chance to sever limb; Max damage vs. objects';
@@ -5914,13 +5924,13 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return !(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon));
+				return !testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon));
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/of wounding/i).test(v.WeaponTextName)) {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/of wounding/i).test(v.WeaponTextName)) {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + 'Damage can only be healed by resting; Once per turn, wound target';
@@ -5944,7 +5954,7 @@ var Base_MagicItemsList = {
 		prerequisite : "Requires attunement by a creature of good alignment",
 		prereqeval : function(v) { return (/good/i).test(What("Alignment")); },
 		usages : 7,
-		recovery : "never",
+		recovery : "Never",
 		action : [["action", ""]],
 		calcChanges : {
 			spellCalc : [
@@ -5980,7 +5990,7 @@ var Base_MagicItemsList = {
 		prerequisite : "Requires attunement by a creature of evil alignment",
 		prereqeval : function(v) { return (/evil/i).test(What("Alignment")); },
 		usages : 6,
-		recovery : "never",
+		recovery : "Never",
 		action : [["action", ""]],
 		calcChanges : {
 			spellCalc : [
@@ -6117,13 +6127,14 @@ var Base_MagicItemsList = {
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
 				var testRegex = /sword|scimitar|rapier/i;
-				return (!(testRegex).test(inObjKey) && (!inObj.baseWeapon || !(testRegex).test(inObj.baseWeapon))) || (inObj.baseWeapon && !inObj.damage ? WeaponsList[inObj.baseWeapon].damage : inObj.damage)[2] !== "slashing";
+				var damageArr = inObj.baseWeapon && !inObj.damage ? WeaponsList[inObj.baseWeapon].damage : inObj.damage;
+				return (!testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon))) || !/slash(\.|ing)/i.test(damageArr.toString());
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/vorpal/i).test(v.WeaponTextName) && v.theWea.damage[2] == "slashing") {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/vorpal/i).test(v.WeaponTextName) && v.theWea.damage[2] == "slashing") {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + 'Ignores slashing resistance; On 20 to hit: cut off head';
@@ -6133,7 +6144,7 @@ var Base_MagicItemsList = {
 			],
 			atkCalc : [
 				function (fields, v, output) {
-					if (v.isMeleeWeapon && (/sword|scimitar|rapier/i).test(v.baseWeaponName) && (/vorpal/i).test(v.WeaponTextName) && v.theWea.damage[2] == "slashing") {
+					if (v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/vorpal/i).test(v.WeaponTextName) && v.theWea.damage[2] == "slashing") {
 						output.magic = v.thisWeapon[1] + 3;
 					}
 				}, ''
@@ -6373,8 +6384,8 @@ var Base_MagicItemsList = {
 		additional : "regains 1d3",
 		action : [["action", ""]]
 	},
-	"wand of the war mage, +1, +2, or +3" : {
-		name : "Wand of the War Mage, +1, +2, or +3",
+	"wand of the war mage" : {
+		name : "Wand of the War Mage",
 		nameTest : /^(?=.*war mage)(?=.*(arcane focus|rod|wand|staff)).*$/i,
 		source : [["SRD", 249], ["D", 212]],
 		type : "wand",

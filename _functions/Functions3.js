@@ -1198,7 +1198,7 @@ function processAddWeapons(AddRemove, weapons) {
 // set ammuntion or remove the ammuntion
 function processAddAmmo(AddRemove, ammos) {
 	if (!ammos) return;
-	if (!isArray(ammos) || (ammos.length === 2 && isNaN(ammos[1]))) {
+	if (!isArray(ammos) || (ammos.length === 2 && !isNaN(ammos[1]))) {
 		ammos = [ammos];
 	}
 	for (var a = 0; a < ammos.length; a++) {
@@ -3653,13 +3653,13 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	if (!correctingDescrLong) {
 		switch (typeNm) {
 			case "ammunition":
-				processAddAmmo(AddRemove, [itemToProcess ? itemToProcess : newMIname.replace(/ammunition (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"), typeObj.ammoAmount && !isNaN(typeObj.ammoAmount) ? typeObj.ammoAmount : 1]);
+				processAddAmmo(AddRemove, [[itemToProcess ? itemToProcess : newMIname.replace(/ammunition (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2"), typeObj.ammoAmount && !isNaN(typeObj.ammoAmount) ? typeObj.ammoAmount : 1]]);
 				break;
 			case "weapon":
-				processAddWeapons(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/weapon (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"));
+				processAddWeapons(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/weapon (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2"));
 				break;
 			case "armor":
-				processAddArmour(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/armou?r (\+\d)/i, "$1").replace(/(\+\d) *\((.*?)\)/i, "$1 $2"));
+				processAddArmour(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/armou?r (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2"));
 				break;
 		}
 	}

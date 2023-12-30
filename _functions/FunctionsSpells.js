@@ -1049,10 +1049,10 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 				continue;
 			} else if (isArray(inputObject.class)) {
 				addSp = inputObject.class.some(function (v) {
-					return v === "any" || aSpell.classes.indexOf(v) !== -1;
+					return v === "any" || v === "all" || aSpell.classes.indexOf(v) !== -1;
 				});
 			} else {
-				addSp = inputObject.class === "any" || aSpell.classes.indexOf(inputObject.class) !== -1;
+				addSp = inputObject.class === "any" || inputObject.class === "all" || aSpell.classes.indexOf(inputObject.class) !== -1;
 			}
 		}
 		if (addSp && inputObject.level) {

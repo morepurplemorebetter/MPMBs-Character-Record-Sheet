@@ -1138,31 +1138,45 @@ var ColorList = {
 } //for gradients, add 15% brightness as BHS color
 
 var DarkColorList = {
-	aqua : ["CMYK", 0.85, 0.5, 0.01, 0.5], //144671
-	blue : ["CMYK", 0.75, 0.13, 0.09, 0.5], //066882
-	brown : ["CMYK", 0.38, 0.53, 0.51, 0.9], //291d16
-	gray : ["CMYK", 0.7, 0.6, 0.56, 0.67], //303131
-	green : ["CMYK", 0.9, 0.33, 0.96, 0.77], //003012
+	aqua :   ["CMYK", 0.85, 0.5, 0.01, 0.5], //144671
+	blue :   ["CMYK", 0.75, 0.13, 0.09, 0.5], //066882
+	brown :  ["CMYK", 0.38, 0.53, 0.51, 0.9], //291d16
+	gray :   ["CMYK", 0.7, 0.6, 0.56, 0.67], //303131
+	green :  ["CMYK", 0.9, 0.33, 0.96, 0.77], //003012
 	orange : ["CMYK", 0, 0.8, 1, 0.5], //8d3200
-	pink : ["CMYK", 0, 0.9, 0.15, 0.5], //8e204c
+	pink :   ["CMYK", 0, 0.9, 0.15, 0.5], //8e204c
 	purple : ["CMYK", 0.76, 1, 0.03, 0.5], //401150
-	red : ["CMYK", 0.18, 1, 0.91, 0.58], //6e110b
-	teal : ["CMYK", 0.79, 0.12, 0.45, 0.5], //00645f
+	red :    ["CMYK", 0.18, 1, 0.91, 0.58], //6e110b
+	teal :   ["CMYK", 0.79, 0.12, 0.45, 0.5], //00645f
 	yellow : ["CMYK", 0, 0.5, 1, 0.5] //935b00
 } // +50% black
 
 var LightColorList = {
-	aqua : ["CMYK", 0.68, 0.29, 0, 0], //4e9ad9
-	blue : ["CMYK", 0.7, 0.06, 0.11, 0], //2bb3d9
-	brown : ["CMYK", 0.29, 0.39, 0.38, 0.14], //ad9189
-	gray : ["CMYK", 0.33, 0.25, 0.26, 0.04], //b3b3b3
-	green : ["CMYK", 0.8, 0.13, 0.78, 0], //219a5e
+	aqua :   ["CMYK", 0.68, 0.29, 0, 0], //4e9ad9
+	blue :   ["CMYK", 0.7, 0.06, 0.11, 0], //2bb3d9
+	brown :  ["CMYK", 0.29, 0.39, 0.38, 0.14], //ad9189
+	gray :   ["CMYK", 0.33, 0.25, 0.26, 0.04], //b3b3b3
+	green :  ["CMYK", 0.8, 0.13, 0.78, 0], //219a5e
 	orange : ["CMYK", 0, 0.62, 0.7, 0], //f77d4d
-	pink : ["CMYK", 0, 0.69, 0.01, 0], //f772a9
+	pink :   ["CMYK", 0, 0.69, 0.01, 0], //f772a9
 	purple : ["CMYK", 0.58, 0.78, 0.01, 0], //844e99
-	red : ["CMYK", 0.1, 0.79, 0.55, 0], //db535c
-	teal : ["CMYK", 0.7, 0, 0.35, 0], //26bdb8
+	red :    ["CMYK", 0.1, 0.79, 0.55, 0], //db535c
+	teal :   ["CMYK", 0.7, 0, 0.35, 0], //26bdb8
 	yellow : ["CMYK", 0, 0.38, 0.82, 0] //f8ad3c
+}
+
+var HighlightColorList = { // = LightColorList with Luminosity at 85%
+	aqua :   ['RGB', 0.75, 0.86, 0.95], //c0dbf2
+	blue :   ['RGB', 0.75, 0.91, 0.96], //bee8f4
+	brown :  ['RGB', 0.88, 0.84, 0.82], //e0d5d2
+	gray :   ['RGB', 0.85, 0.85, 0.85], //d9d9d9
+	green :  ['RGB', 0.75, 0.95, 0.85], //c0f2d9
+	orange : ['RGB', 0.99, 0.79, 0.71], //fccab6
+	pink :   ['RGB', 0.98, 0.72, 0.83], //fbb7d3
+	purple : ['RGB', 0.87, 0.80, 0.90], //decde5
+	red :    ['RGB', 0.95, 0.75, 0.76], //f2c0c3
+	teal :   ['RGB', 0.75, 0.95, 0.95], //bff2f1
+	yellow : ['RGB', 0.99, 0.88, 0.71]  //fce0b5
 }
 
 //The dialog for setting the unit system and decimal

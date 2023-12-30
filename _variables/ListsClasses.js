@@ -1111,7 +1111,7 @@ var Base_ClassList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (v.isMeleeWeapon) fields.Description += (fields.Description ? '; ' : '') + '+1d8 Radiant damage';
+							if (v.isMeleeWeapon) fields.Description += (fields.Description ? '; ' : '') + '+1d8 Radiant damage' + (v.isThrownWeapon ? ' in melee' : '');
 						},
 						"With my melee weapon attacks I deal an extra 1d8 radiant damage."
 					]

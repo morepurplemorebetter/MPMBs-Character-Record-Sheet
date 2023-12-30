@@ -101,7 +101,9 @@ spellcastingList : {
 		TYPE:	array (variable length) of class names as used in the SpellsList object's classes attribute
 		USE:	spells not on one of the listed class spell lists will be excluded from the final list
 
-		It is also possible to list the class "all", thus including spells from all class spell lists.
+		It is also possible to list the class as "any" or "all", thus including spells
+		from all class spell lists.
+		If you include either "any" or "all" in the array, there is no need to add others.
 	*/
 
 	level : [1, 5],

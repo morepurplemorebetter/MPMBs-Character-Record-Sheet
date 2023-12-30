@@ -1631,12 +1631,12 @@ calcChanges : {
 
 		VALUE	REASON
 		1-10 	When changing the damage die to something else (e.g. Monk's Martial Arts)
-		17-20	When changing the critical range to something else (e.g. 18 is used for Fighter (Champion)'s
-				Superior Critical)
+		17-20	When changing the critical range to something else (e.g. 18 is used for
+				Fighter (Champion)'s Superior Critical)
 		200< 	(199 or less) Something that is best changed before any script is run
 		700-899	When dependent on an attribute of the weapon that could be changed by 
-				another feature (e.g. the Rogue's Sneak Attack, because something could theoretically
-				add the Finesse property)
+				another feature (e.g. the Rogue's Sneak Attack, because something could
+				theoretically add the Finesse property)
 		900+ 	When using the damage die for something in the description (e.g. Half-orc's Savage Attacks)
 	*/
 
@@ -2122,10 +2122,11 @@ addMod : [
 		a)	for "skill" it can be the name of a skill (e.g. "Acrobatics"),
 			or "Init" for initiative,
 			or "Too" for the optional tool/skill for which you can change the name,
-			or "All" for the all skills modifier.
+			or "all" for the all skills modifier,
+			or "pass" for the passive perception modifier.
 
 		b)	for "save" it can be the three-letter abbreviation of an ability score,
-			or "All" for the all saves modifier.
+			or "all" for the all saves modifier.
 
 		c)	for "dc" it can be the three-letter abbreviation of an ability score.
 			In this context, "dc" refers to the Ability Save DC on the front page.
@@ -2135,8 +2136,13 @@ addMod : [
 
 		d)	for "" it has to be the exact name of the field as used in the PDF.
 			common ones include:
-			"Proficiency Bonus Modifier",	// modifier field for proficiency bonus
-			"Passive Perception Bonus",		// modifier field for passive perception (not normal perception)
+			"Proficiency Bonus Modifier"	// modifier field for proficiency bonus
+			"Age"							// age description field
+			"SpellSlots.CheckboxesSet.lvlX"	// amount of spellslot checkboxes to show, 
+									where X is replaced with the level (1-9).
+									N.B. These fields can only be a positive number,
+									you can't pre-emptively add "-1",
+									nor use any dynamic modifier like "Int" or "Prof".
 
 	3. mod
 		This can be any combination of numbers, mathematical operators,
@@ -2179,7 +2185,8 @@ addMod : [
 		character should be handled by adding a `calcChanges.atkAdd` attribute.
 
 	4. text
-		This is an explanation of why the modifier was added and is used in the modifier change dialog.
+		This is an explanation of why the modifier was added and is used in the
+		modifier change dialog, which appears when clicking the modifier field.
 
 	NOTE: for modifiers to attacks, use calcChanges.atkCalc
 	NOTE: for modifiers to AC, use extraAC
@@ -2273,7 +2280,7 @@ bonusClassExtrachoices : [{
 	If the class feature is eligable (i.e. the character has the class in question and is high enough level),
 	the number you enter in the `bonus` attribute will be added to the total allowed that is displayed
 	in the Choose Feature menu on the 2nd page.
-	If the class feature is no eligable (i.e. the character does not have the class or is too low level),
+	If the class feature is not eligable (i.e. the character does not have the class or is too low level),
 	the extrachoices will be displayed separately in the Choose Feature menu on the 2nd page and the player
 	can select them.
 

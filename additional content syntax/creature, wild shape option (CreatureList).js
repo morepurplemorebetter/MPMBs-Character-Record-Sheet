@@ -231,11 +231,12 @@ CreatureList["purple crawler"] = {
 	only with added brackets around it,	thus it is recommended to have it all lowercase for consistency.
 */
 	companion : "familiar",
-	companion : ["familiar_not_al", "pact_of_the_chain"],
+	companion : ["familiar_not_al", "mount"],
 /*	companion // OPTIONAL //
 	TYPE:	array of strings (or string, for backwards compatibility)
 	USE:	list this creature as an option for a special type of companion
 	CHANGE:	v13.1.0
+	CHANGE:	v13.1.12 ("_not_al" suffix)
 
 	This attribute is an array of keys corresponding to a CompanionList object name,
 	or, for backwards compatibility, a string of one key.
@@ -256,16 +257,21 @@ CreatureList["purple crawler"] = {
 	OPTION                 EXPLANATION
 	"familiar"             Find Familiar spell and Pact of the Chain warlock boon
 	"pact_of_the_chain"    Pact of the Chain warlock boon (but not Find Familiar spell)
-	"familiar_not_al"      Same as "familiar", but with the added description "(if DM approves)"
-                           However, this creature will not be shown for either Find Familiar 
-                           or Pact of the Chain when the DCI field is visible (i.e. Adventurers League).
 	"mount"                Find Steed spell
 	"steed"                Find Greater Steed spell
 	"companion"            Ranger's Companion (Beast Master feature)
 	                       Has its own filter, so normally you don't need this option.
-						   Filter: any Beast, Medium or smaller, and CR of 1/4 or lower
+	                       Filter: any Beast, Medium or smaller, and CR of 1/4 or lower
 	"companionrr"          2016/09/12 Unearthed Arcana: Revised Ranger's Beast Conclave feature
 	"strixhaven_mascot"    Strixhaven Mascot familiar (Strixhaven Mascot feat), but not Find Familiar spell
+
+	"_not_al" SUFFIX
+	From v13.1.12 onwards, any of the above can have the "_not_al" suffix (e.g. "mount_not_al").
+	"al" stands for Adventurers League.
+	If this suffix is included, the creature will be listed in the menu with
+	the text "(if DM approves)" added.
+	When the DCI field is visible (i.e. Adventurers League enabled), the creature
+	will not be listed in the menu for that companion type.
 */
 	companionApply : "companion",
 /*	companionApply // OPTIONAL //

@@ -3172,7 +3172,7 @@ function ParseGear(input) {
 	};
 
 	//see if it is an ammunition weapon
-	var findAmmo = ParseAmmo(tempString, true);
+	var findAmmo = ParseAmmo(tempString, true, true);
 	if (findAmmo) {
 		testLen = Math.min(findAmmo[1], tempStrLen);
 		if (testLen > foundLen) {
@@ -7397,7 +7397,7 @@ function SetEncumbrance(variant) {
 };
 
 //see if a known ammunition is in a string, and return the ammo name
-function ParseAmmo(input, onlyInv) {
+function ParseAmmo(input, onlyInv, bReturnLength) {
 	var found = "";
 	if (!input) return found;
 
@@ -7445,7 +7445,7 @@ function ParseAmmo(input, onlyInv) {
 		keyLen = foundLen;
 		foundDat = tempDate;
 	}
-	return onlyInv && found ? [found, keyLen] : found;
+	return bReturnLength && found ? [found, keyLen] : found;
 }
 
 //Reset the visibility of all the ammo fields of a particular side (input = "Left" or "Right")
@@ -7944,8 +7944,8 @@ function ApplyColorScheme(aColour) {
 
 	// Set the highlighting color if it has been coupled to the headers
 	if (Who("Highlighting") === "headers") {
-		app.runtimeHighlightColor = LightColorList[colour];
-		tDoc.getField("Highlighting").fillColor = LightColorList[colour];
+		app.runtimeHighlightColor = HighlightColorList[colour];
+		tDoc.getField("Highlighting").fillColor = HighlightColorList[colour];
 	}
 	// See if any of the Ability Save DC's or the HP Dragons have the color connected to this
 	if (What("Color.DC").indexOf("headers") != -1) ApplyDCColorScheme();
@@ -8096,8 +8096,8 @@ function ApplyDragonColorScheme(aColour) {
 
 	// Set the highlighting color if it has been coupled to the dragon heads color
 	if (Who("Highlighting") === "dragons") {
-		app.runtimeHighlightColor = LightColorList[colour];
-		tDoc.getField("Highlighting").fillColor = LightColorList[colour];
+		app.runtimeHighlightColor = HighlightColorList[colour];
+		tDoc.getField("Highlighting").fillColor = HighlightColorList[colour];
 	}
 	// See if any of the Ability Save DC's or the HP Dragons have the color connected to this
 	if (What("Color.DC").indexOf("dragons") != -1) ApplyDCColorScheme();
@@ -8297,14 +8297,14 @@ function ColoryOptions(input) {
 					var theColour = ["RGB", 0.9, 0.9, 1];
 					break;
 				case "headers" :
-					var theColour = LightColorList[What("Color.Theme")];
+					var theColour = HighlightColorList[What("Color.Theme")];
 					break;
 				case "dragons" :
-					var theColour = LightColorList[What("Color.DragonHeads")];
+					var theColour = HighlightColorList[What("Color.DragonHeads")];
 					break;
 				default :
-					if (!LightColorList[MenuSelection[2]]) return;
-					var theColour = LightColorList[MenuSelection[2]];
+					if (!HighlightColorList[MenuSelection[2]]) return;
+					var theColour = HighlightColorList[MenuSelection[2]];
 					break;
 			};
 			app.runtimeHighlight = highlightsOn;

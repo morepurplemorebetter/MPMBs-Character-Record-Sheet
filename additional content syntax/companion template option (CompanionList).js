@@ -86,7 +86,15 @@ CompanionList["purple familiar"] = {
 	The object name here is 'purple familiar'. You can use any object name as long as it is not already used.
 	If you do use an object name that is already in use, you will be overwriting that object.
 
-	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
+	It is this object name that will be used to refer to this companion type.
+	For example, it is what is used to fill the `companion` attribute of a CreatureList object.
+	When used in the `companion` attribute, this object name can be given the suffix
+	"_not_al", to hide it from the menu when the sheet is in Adventurers League mode and
+	display the text "(if DM approves)" when not in Adventurers League mode (the default).
+	See also the `includeCheck` attribute below.
+
+	Note the use of only lower case!
+	Also note the absence of the word "var" and the use of brackets [].
 */
 	name : "Purple Familiar",
 /*	name // REQUIRED //
@@ -187,17 +195,20 @@ action : [
 	For the tooltip of the origin of these action(s), the `nameTooltip` will be used if
 	defined, see above. If `nameTooltip` isn't defined, the `name` will be used instead.
 */
-	includeCheck : function(sCrea, objCrea, iCreaCR) {
+	includeCheck : function(sCrea, objCrea, iCreaCR, bIsAL) {
 		return objCrea.type.toLowerCase() === "beast" && objCrea.size >= 3 && iCreaCR <= 1/4 ? true : false;
 	},
 /*	includeCheck // OPTIONAL //
 	TYPE:	function
 	USE:	filter things from the list of creatures to create the menu options
+	CHANGE:	v13.1.12 (bIsAL variable, "_not_al" suffix)
 
 	This function is called when the Companion Options button is pressed, to generate
 	the menu entries for this companion template option.
 	By default, the only creatures that will be displayed in the menu,
 	will be those that have the `companion` attribute set to this CompanionList object's name.
+	Or those that have the `companion` attribute set to this CompanionList object's name with
+	the suffix "_not_al" (e.g. "familiar_not_al").
 	If options should be more dynamic, or if you don't want to alter a bunch of CreatureList entries,
 	it is recommended to add this attribute.
 
@@ -206,7 +217,7 @@ action : [
 	If the function returns a string, that entry will be added to the menu options and
 	that string will be amended to it (e.g. return " (if DM approves)" for a "Cat" to have it "Cat (if DM approves)" in the menu).
 
-	This function is passed three variables:
+	This function is passed four variables:
 	1)	sCrea
 			A string of the name of the entry in the CreatureList object
 	2)	objCrea
@@ -214,6 +225,10 @@ action : [
 	3)	iCreaCR
 			The numerical value of the challenge rating of the CreatureList object
 			(e.g. 0.25 if the challengeRating attribute is "1/4")
+	3)	bIsAL
+			Boolean, `true` if the DCI text field is visible or `false` otherwise.
+			The DCI text field being visible is an indicator of the sheet being used in
+			and Adventurers League game.
 
 	Only creatures in the CreatureList will be processed, not those added through
 	the `creaturesAdd` attribute.

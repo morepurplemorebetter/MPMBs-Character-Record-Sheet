@@ -5,10 +5,6 @@ var Base_CompanionList = {
 		nameOrigin : "1st-level conjuration [ritual] spell",
 		nameMenu : "Familiar (Find Familiar spell)", // required
 		source : [["SRD", 143], ["P", 240]], // required
-		includeCheck : function(sCrea, objCrea, iCreaCR) {
-			// return true if to be included, or a string to add a note to the menu option
-			return !!isDisplay("DCI.Text") && objCrea.companion && objCrea.companion.indexOf("familiar_not_al") !== -1 ? " (if DM approves)" : false;
-		},
 		action : [
 			["action", "Familiar (dismiss/reappear)"],
 			["action", "Use familiar's senses"]
@@ -82,9 +78,9 @@ var Base_CompanionList = {
 		nameOrigin : "variant of the Find Familiar 1st-level conjuration [ritual] spell",
 		nameMenu : "Pact of the Chain familiar (Warlock feature)",
 		source : [["SRD", 47], ["P", 107]],
-		includeCheck : function(sCrea, objCrea, iCreaCR) {
+		includeCheck : function(sCrea, objCrea, iCreaCR, bIsAL) {
 			// return true if to be included, or a string to add a note to the menu option
-			return !objCrea.companion ? false : objCrea.companion.indexOf("familiar") !== -1 ? true : !!isDisplay("DCI.Text") && objCrea.companion.indexOf("familiar_not_al") !== -1 ? " (if DM approves)" : false;
+			return !objCrea.companion ? false : objCrea.companion.indexOf("familiar") !== -1 ? true : bIsAL && objCrea.companion.indexOf("familiar_not_al") !== -1 ? " (if DM approves)" : false;
 		},
 		action : [
 			["action", "Familiar (dismiss/reappear)"],

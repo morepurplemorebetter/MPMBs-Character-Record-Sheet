@@ -686,6 +686,7 @@ function MakeCompMenu_CompOptions(prefix, MenuSelection, force) {
 	// Menu options for creating special companions
 		// First get a list of all the companion options that should be available
 		var oCompanions = {};
+		var bIsAL = !isDisplay("DCI.Text");
 		for (var sComp in CompanionList) {
 			if (testSource(sComp, CompanionList[sComp], "compExcl")) continue;
 			oCompanions[sComp] = [];
@@ -702,13 +703,17 @@ function MakeCompMenu_CompOptions(prefix, MenuSelection, force) {
 				if (!isArray(oCrea.companion)) oCrea.companion = [oCrea.companion];
 				for (var i = 0; i < oCrea.companion.length; i++) {
 					if (oCompanions[oCrea.companion[i]]) objToAdd[oCrea.companion[i]] = "";
+					if (!bIsAL && oCrea.companion[i].substr(-7) === "_not_al") {
+						var notAlComp = oCrea.companion[i].replace("_not_al", "");
+						if (oCompanions[notAlComp]) objToAdd[notAlComp] = " (if DM approves)";
+					}
 				}
 			}
 			// Now test for each companion type with the includeCheck attribute if this creature should be added
 			for (var sComp in oCompanions) {
 				if (CompanionList[sComp].includeCheck && typeof CompanionList[sComp].includeCheck === "function") {
 					try {
-						var returnStr = CompanionList[sComp].includeCheck(sCrea, oCrea, iCreaCR);
+						var returnStr = CompanionList[sComp].includeCheck(sCrea, oCrea, iCreaCR, bIsAL);
 						if (returnStr !== false && returnStr !== undefined) {
 							objToAdd[sComp] = typeof returnStr === "string" ? returnStr : "";
 						}
@@ -7311,6 +7316,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		//Process the input. //for the simple text strings, immediately add/remove it
 		for (var attr in ProfObj) {
 			var setT = set[attr];
+			if (!setT) continue;
 			var addT = ProfObj[attr];
 			for (var i = 0; i < addT.length; i++) {
 				var iAdd = addT[i];
@@ -7882,7 +7888,8 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, with
 
 // open a dialog with a number of lines of choices and return the choices in an array; if knownOpt === "radio", show radio buttons instead, and return the entry selected
 // if notProficiencies is set to true, the optType will serve as the dialog header, and optSrc will serve as the multiline explanatory text
-function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sBottomMsg) {
+// bReturnIndex only does something if knownOpt === "radio"; it will return the index of the selection from the input optSubj array
+function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sBottomMsg, bReturnIndex) {
 	if (!IsNotImport) return optSubj;
 	//first make the entry lines
 	var selectionLines = [];
@@ -8104,6 +8111,9 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sB
 		theDialog["sl" + ("0" + i).slice(-2)] = Function("dialog", "this.check(dialog, " + i + ");");
 	}; };
 	app.execDialog(theDialog)
+	if (bReturnIndex && knownOpt === "radio" && typeof theDialog.choices == 'string') {
+		return optSubj.indexOf(theDialog.choices);
+	}
 	return theDialog.choices;
 };
 
