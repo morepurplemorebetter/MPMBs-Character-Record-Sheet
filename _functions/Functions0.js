@@ -1127,8 +1127,8 @@ function pageErrorCleanup(tempNm, prefixes) {
 			var goOn = expectedPageNo.indexOf(i) !== -1 || expectedPageNo.indexOf(i+1) !== -1 || expectedPageNo.indexOf(i-1) !== -1; // Test if matches (or close enough) an expected page number
 			if ( !goOn ) { // Didn't match, so ask the user if this page should be deleted
 				var userResponse = app.alert({
-					cMsg: "Delete erroneous page " + (i+1) + "?",
-					cTitle: "Page number " + (i+1) + " seems to have no fields on it. This is probably due to an error when generating new pages or deleting them."+
+					cTitle: "Delete erroneous page " + (i+1) + "?",
+					cMsg: "Page number " + (i+1) + " seems to have no fields on it. This is probably due to an error when generating new pages or deleting them."+
 					"\n\nWould you like to delete page " + (i+1) + "?",
 					nIcon: 2,
 					nType: 2

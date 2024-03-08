@@ -168,7 +168,7 @@ SpellsList["sindering purple"] = {
 	Setting this attribute to false is the same as not including this attribute.
 */
 	classes : ["druid", "ranger", "sorcerer", "wizard"],
-/*	classes // OPTIONAL //
+/*	classes // OPTIONAL, but almost always NECESSARY //
 	TYPE:	array (variable length)
 	USE:	define for which classes this spell appears on their spell list
 
@@ -180,8 +180,9 @@ SpellsList["sindering purple"] = {
 		"ranger", "sorcerer", "warlock", and "wizard".
 	Although there might be more through importing custom scripts.
 
-	If you the spell doesn't appear on any class' spell list, but should be available through
-	the 'spellcastingBonus' or 'spellcastingExtra' attributes, have this be an empty array:
+	If you the spell doesn't appear on any class' spell list, but should be available as
+	a manually added bonus spell, or through the 'spellcastingBonus' or 'spellcastingExtra'
+	attributes, have this be an empty array:
 		classes : [],
 	For an explanation of the 'spellcastingBonus' and 'spellcastingExtra' attributes, see "_common attributes.js".
 

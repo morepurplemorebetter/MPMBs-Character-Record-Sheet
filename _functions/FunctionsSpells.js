@@ -209,24 +209,28 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	var spTooltip = "";
 	var ttSpellObj = aSpell.completeRewrite ? aSpell : foundSpell;
 	if (ttSpellObj.descriptionFull || tipShortDescr) {
-		spTooltip = toUni(ttSpellObj.name);
+		spTooltip = toUni(ttSpellObj.name) + " \u2014 ";
+
 		if (ttSpellObj.school) {
-			spTooltip += " \u2014 ";
 			var spSchoolNm = spellSchoolList[ttSpellObj.school] ? spellSchoolList[ttSpellObj.school] : ttSpellObj.school;
 			if (spSchoolNm && ttSpellObj.subSchool) spSchoolNm += " (" + ttSpellObj.subSchool + ")";
-			if (ttSpellObj.psionic) {
-				var spLevelNm = spellLevelList[ttSpellObj.level + 10].replace(/s\b/, '');
-				spTooltip += ttSpellObj.level == 0 ?
-					spLevelNm :
-					spSchoolNm.capitalize() + spLevelNm.toLowerCase();
-			} else {
-				var spLevelNm = spellLevelList[ttSpellObj.level] ? spellLevelList[ttSpellObj.level].replace(/s\b/, '').toLowerCase() : "";
-				spTooltip += ttSpellObj.level == 0 ?
-					spSchoolNm.capitalize() + " " + spLevelNm :
-					spLevelNm + " " + spSchoolNm;
-			}
-			if (ttSpellObj.ritual) spTooltip += " (ritual)";
+		} else {
+			spSchoolNm = ttSpellObj.level == 0 ? "" : "spell";
 		}
+		if (ttSpellObj.psionic) {
+			var spLevelNm = spellLevelList[ttSpellObj.level + 10].replace(/s\b/, '');
+			spTooltip += ttSpellObj.level == 0 ?
+				spLevelNm :
+				spSchoolNm.capitalize() + " " + spLevelNm.toLowerCase();
+		} else {
+			var spLevelNm = spellLevelList[ttSpellObj.level] ? spellLevelList[ttSpellObj.level].replace(/s\b/, '') : "";
+			spTooltip += ttSpellObj.level != 0 ?
+				spLevelNm + " " + spSchoolNm :
+				spSchoolNm ?
+					spSchoolNm.capitalize() + " " + spLevelNm.toLowerCase() :
+					spLevelNm;
+		}
+		if (ttSpellObj.ritual) spTooltip += " (ritual)";
 
 		if (ttSpellObj.timeFull) {
 			spTooltip += "\n  Casting Time:  " + ttSpellObj.timeFull;
@@ -2871,11 +2875,11 @@ function AskUserSpellSheet() {
 			}
 
 			//show the spell radio buttons if concerning a level-dependent spellcaster (classes)
-			dia.showSpRadio = !isPsionics && (/list|book|known/i).test(dia.typeSp);
+			dia.showSpRadio = (/list|book|known/i).test(dia.typeSp);
 
 			if (dia.showSpRadio) { // set the name of the radio buttons and set the selection
 				var diaRadBtns = [];
-				if (spCast.level) {
+				if (spCast.level && maxSpell) {
 					diaRadBtns.push({
 						type : "radio",
 						item_id : "SpR1",
@@ -2917,7 +2921,7 @@ function AskUserSpellSheet() {
 					});
 				};
 
-				dia.selectSpRadio = spCast.typeList ? spCast.typeList : spCast.level ? 1 : 2;
+				dia.selectSpRadio = spCast.typeList ? spCast.typeList : spCast.level && maxSpell ? 1 : 2;
 
 				diaDynCol1.push({
 					type : "cluster", //radio button cluster

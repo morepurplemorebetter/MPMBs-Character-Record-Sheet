@@ -2165,8 +2165,18 @@ addMod : [
 		to the Strength modifier of the companion.
 		Note that AddMod in a CreatureList object is not applied for wild shapes.
 
-		Additionally, you can use min(1|2) and max(1|2), which work like Math.min(1,2) and Math.max(1,2).
-		Note that the pipe is used instead of a comma.
+		Additionally, you can use min(1|2) and max(1|2), which work like Math.min(1,2)
+		and Math.max(1,2).
+		Note that the pipe character is used instead of a comma.
+		
+		You can use brackets for complex calculations, but you can't use brackets within
+		the brackets of the min() and max() operators.
+		Everything seperated by a pipe symbol is calculated separately.
+		For example "max(Cha+1|2)" will get the highest of "Charisma modifier + 1" and "2".
+
+		Modifiers can only be integers (whole numbers, no decimals).
+		Any resulting value that is not an integer will be rounded down (as per the rules,
+		all values are rounded down in D&D 5e unless stated otherwise).
 
 		For example, to add the proficiency bonus, Constitution modifier, and subtract 2, it would look like this:
 			mod : "Prof+Con-2",
@@ -2174,6 +2184,8 @@ addMod : [
 			mod : 1,
 		Or, another example, to add the Charisma modifier with a minimum of 1, it would look like this:
 			mod : "max(Cha|1)",
+		Or, another example, to add half the Charisma modifier rounded up with a minimum of 1, it would look like this:
+			mod : "max(Cha+1|2)/2",
 		Or, an example for the companion page, to add the Intelligence modifier of the main
 		character with a maximum of 3, it would look like this:
 			mod : "min(oInt|3)",
@@ -2181,8 +2193,8 @@ addMod : [
 		When using this to add something to the Damage Die modifier field, it is also
 		possible to use dice notation (e.g. "1d6"). [ADDED v13.0.8]
 		Dice notation can't be combined with 'max' or 'min'.
-		Normally this should only be used on the companion page as scaling damage die for the main
-		character should be handled by adding a `calcChanges.atkAdd` attribute.
+		Normally this should only be used on the companion page as scaling damage die for
+		the main character is better handled by adding a `calcChanges.atkAdd` attribute.
 
 	4. text
 		This is an explanation of why the modifier was added and is used in the
@@ -2211,10 +2223,8 @@ extraAC : [{
 		and three-letter ability score abbreviations for ability score modifiers,
 		or 'Prof' for the proficiency bonus.
 
-		For example, to add the proficiency bonus, Constitution modifier, and subtract 2, it would look like this:
-			mod : "Prof+Con-2",
-		Or, another example, to add 1 to the AC, it would look like this:
-			mod : 1,
+		This works the same as the `mod` attribute of the `addMod` entry above.
+		Please look there for a more thorough explanation and examples.
 	*/
 	name : "Bracers of Defense",
 	/*	name // OPTIONAL //

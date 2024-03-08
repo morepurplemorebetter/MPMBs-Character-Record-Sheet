@@ -223,7 +223,7 @@ function OpeningStatement() {
 		if (!minVer && CurrentSources.firstTime && app.viewerVersion >= 15) resourceDecisionDialog(true);
 	};
 	if (tDoc.getField("SaveIMG.Patreon").submitName !== "") {
-		OpeningStatementVar = app.setTimeOut("PatreonStatement();", 66000);
+		var patreonStatementTimeOut = app.setTimeOut("PatreonStatement();", 66000);
 	};
 };
 
@@ -1836,54 +1836,60 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	};
 
 	// Check every class in classes old and if they are not in classesTemp, remove their features
-	if (NotAtStartup) { for (var oClass in classes.old) {
-		// if this class exists, was the primary class, and is no longer, change things up
-		if (classesTemp[oClass] && classes.primary === oClass && primeClass !== classes.primary) {
-			// first remove its primary class attributes
-			ApplyClassBaseAttributes(false, oClass, true);
-			// then add its non-primary class attributes
-			ApplyClassBaseAttributes(true, oClass, false);
-		}
+	if (NotAtStartup) {
+		var classesRemove = {};
+		for (var oClass in classes.old) {
+			// if this class exists, was the primary class, and is no longer, change things up
+			if (classesTemp[oClass] && classes.primary === oClass && primeClass !== classes.primary) {
+				// first remove its primary class attributes
+				ApplyClassBaseAttributes(false, oClass, true);
+				// then add its non-primary class attributes
+				ApplyClassBaseAttributes(true, oClass, false);
+			}
 
-		if (!classesTemp[oClass]) {
-			// remove the class base features if removing the class
-			ApplyClassBaseAttributes(false, oClass, classes.primary == oClass);
-			// reset the tooltip of the equipment menu if this was the primary class
-			if (classes.primary == oClass) AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
-			// remove the class from the CurrentSpells variable
-			delete CurrentSpells[oClass];
-		} else if (classesTemp[oClass].subclass !== classes.old[oClass].subclass) {
-			// when only changing the subclass, or adding a new one, remove the base features of the subclass and add those of the new class
-			ApplyClassBaseAttributes([classes.old[oClass].subclass, classesTemp[oClass].subclass], oClass, classes.primary == oClass);
-			// if the class doesn't have spellcasting, but the old subclass did, remove it from the CurrentSpells variable (if the new subclass has spellcasting, we will create that again below)
-			var oldSubClass = classes.old[oClass].subclass ? ClassSubList[classes.old[oClass].subclass] : false;
-			if (oldSubClass && oldSubClass.spellcastingFactor && !ClassList[oClass].spellcastingFactor) {
-				deletedCurrentSpells.push(oClass);
+			if (!classesTemp[oClass]) {
+				// remove the class base features if removing the class
+				ApplyClassBaseAttributes(false, oClass, classes.primary == oClass);
+				// reset the tooltip of the equipment menu if this was the primary class
+				if (classes.primary == oClass) AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
+				// remove the class from the CurrentSpells variable
 				delete CurrentSpells[oClass];
+			} else if (classesTemp[oClass].subclass !== classes.old[oClass].subclass) {
+				// when only changing the subclass, or adding a new one, remove the base features of the subclass and add those of the new class
+				ApplyClassBaseAttributes([classes.old[oClass].subclass, classesTemp[oClass].subclass], oClass, classes.primary == oClass);
+				// if the class doesn't have spellcasting, but the old subclass did, remove it from the CurrentSpells variable (if the new subclass has spellcasting, we will create that again below)
+				var oldSubClass = classes.old[oClass].subclass ? ClassSubList[classes.old[oClass].subclass] : false;
+				if (oldSubClass && oldSubClass.spellcastingFactor && !ClassList[oClass].spellcastingFactor) {
+					deletedCurrentSpells.push(oClass);
+					delete CurrentSpells[oClass];
+				}
+			}
+
+			// update things when removing a whole class or when removing a subclass
+			if (!classesTemp[oClass] || (classesTemp[oClass].subclass !== classes.old[oClass].subclass && classes.old[oClass].subclass)) {
+				// Indicate that this class should be removed
+				classesRemove[oClass] = classes.known[oClass];
+				classesRemove[oClass].level = 0;
+
+				// If removing the (sub)class, also remove the class from the SubClass Remember field, so that the pop-up to pick a subclass appears again
+				if (!classesTemp[oClass] || !classesTemp[oClass].subclass) {
+					RemoveString("SubClass Remember", oClass, false);
+				}
 			}
 		}
-
-		// update things when removing a whole class or when removing a subclass
-		if (!classesTemp[oClass] || (classesTemp[oClass].subclass !== classes.old[oClass].subclass && classes.old[oClass].subclass)) {
-			// Temporarily add the class to classes known for the next step
-			classes.known = {};
-			classes.known[oClass] = {
-				name : oClass,
-				level : 0,
-				subclass : classes.old[oClass].subclass
-			}
+		// Remove the class' features of those removed, if any
+		if (ObjLength(classesRemove)) {
+			// Temporarily set the classes.known to the ones that need removing
+			classes.known = classesRemove;
 			// Remove all the features of the class (remember, new level is set to 0 above)
 			UpdateLevelFeatures("class");
 
-			// If changing subclass, set the class' old level to 0 so all features are added again in full
-			if (classesTemp[oClass]) classes.old[oClass].classlevel = 0;
-
-			// If removing the (sub)class, also remove the class from the SubClass Remember field
-			if (!classesTemp[oClass] || !classesTemp[oClass].subclass) {
-				RemoveString("SubClass Remember", oClass, false);
+			// Loop through these removed classes and set old class' level to 0 if class was removed, so all features are added again in full
+			for (var oClass in classesRemove) {
+				if (classesTemp[oClass]) classes.old[oClass].classlevel = 0;
 			}
 		}
-	} }
+	}
 
 	classes.known = classesTemp;
 	classes.primary = primeClass;
@@ -2655,22 +2661,22 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 		if (oBaseRace.source) CurrentRace.source = CurrentRace.source.concat(oBaseRace.source);
 		// Merge the name in the trait
 		if (oInstr.replaceNameInTrait && CurrentRace.trait && oBaseRace.name) {
-			var sReplace = oInstr.replaceNameInTrait[0], sReplaceWith;
+			var sReplace = oInstr.replaceNameInTrait[0];
 			switch (oInstr.replaceNameInTrait[1] ? oInstr.replaceNameInTrait[1].toLowerCase() : "") {
 				case "replace" :
-					sReplaceWith = oBaseRace.name;
+					CurrentRace.name = oBaseRace.name;
 					break;
 				case "prefix" :
-					sReplaceWith = oBaseRace.name.capitalize() + " " + sReplace;
+					CurrentRace.name = oBaseRace.name.capitalize() + " " + sReplace;
 					break;
 				case "insert" :
-					sReplaceWith = sReplace + " " + oBaseRace.name + (oInstr.replaceNameInTrait[2] ? " " + oInstr.replaceNameInTrait[2] : "");
+					CurrentRace.name = sReplace + " " + oBaseRace.name + (oInstr.replaceNameInTrait[2] ? " " + oInstr.replaceNameInTrait[2] : "");
 					break;
 				case "suffix" :
 				default :
-					sReplaceWith = sReplace + " " + oBaseRace.name;
+				CurrentRace.name = sReplace + " " + oBaseRace.name;
 			}
-			CurrentRace.trait = CurrentRace.trait.replace(sReplace, sReplaceWith)
+			CurrentRace.trait = CurrentRace.trait.replace(sReplace, CurrentRace.name);
 		}
 		// Define a function to handle the merging
 		var mergeAttr = function(aProp, oFrom, oTo) {
@@ -2681,7 +2687,18 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 				var sProp = aProp[p];
 				if (oBaseRef[sProp]) {
 					if (p === (aProp.length - 1)) { // last in the array
-						oCurRef[sProp] = oBaseRef[sProp];
+						if (isArray(oCurRef[sProp])) {
+							// merge arrays instead of overwriting
+							if (isArray(oBaseRef[sProp])) {
+								oCurRef[sProp] = oCurRef[sProp].concat(oBaseRef[sProp]);
+							} else {
+								// some attributes can be both singular and an array
+								oCurRef[sProp].push(oBaseRef[sProp]);
+							}
+						} else {
+							// either oTo doesn't have this property and it's not an array, so overwrite it
+							oCurRef[sProp] = oBaseRef[sProp];
+						}
 						return true;
 					} else if (typeof oBaseRef[sProp] === "object") {
 						// move the reference objects one step deeper
@@ -2703,13 +2720,16 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 			}
 		}
 		// Now have the CurrenRace object inheret the traits as needed
-		for (var i = 0; i < oInstr.gainTraits.length; i ++) {
+		var skipRegex = /^(known(Old)?|variants?(Old)?|level|name|features|trait|minlevel|limfeaname|usages|recovery|source|useFromPreviousRace)$/i;
+		for (var i = 0; i < oInstr.gainTraits.length; i++) {
 			aProp = oInstr.gainTraits[i].split(".");
-			if ((/^(known(Old)?|variants?(Old)?|level|name|features|trait)$/i).test(aProp[0])) continue;
+			if (skipRegex.test(aProp[0])) continue;
 			// Merge the attribute of the base race
 			mergeAttr(aProp, oBaseRace, CurrentRace);
-			// Merge the traits in the features, if any
-			if (!oBaseRace.features) continue;
+		}
+		// Merge the traits in the features, if any exist and match the criteria
+		var bAddFeature, bMergeAllFeatures = oInstr.gainTraits.indexOf("features") !== -1;
+		if (oBaseRace.features) {
 			for (var sFea in oBaseRace.features) {
 				var oFea = oBaseRace.features[sFea];
 				var oTemp = {
@@ -2719,9 +2739,18 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 					usages : oFea.usages,
 					recovery : oFea.recovery,
 					action : oFea.action,
-					source : CurrentRace.source
+					source : oFea.source ? oFea.source : oBaseRace.source
 				};
-				if (mergeAttr(aProp, oFea, oTemp)) {
+				bAddFeature = bMergeAllFeatures; // Will be true if all features should be merged
+				if (!bAddFeature) {
+					// Add only features from the base race that have an attribute defined in `gainTraits`
+					for (var i = 0; i < oInstr.gainTraits.length; i++) {
+						aProp = oInstr.gainTraits[i].split(".");
+						if (skipRegex.test(aProp[0]) || aProp[0] === 'action') continue;
+						bAddFeature = mergeAttr(aProp, oFea, oTemp);
+					}
+				}
+				if (bAddFeature) {
 					if (!CurrentRace.features) CurrentRace.features = {};
 					var sAttrName = sFea;
 					while (CurrentRace.features[sAttrName]) {
@@ -2729,6 +2758,19 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 					}
 					CurrentRace.features[sAttrName] = oTemp;
 				}
+			}
+		}
+		// Run a custom function, if defined
+		if (oInstr.evalAfterMerge) {
+			try {
+				oInstr.evalAfterMerge(oBaseRace);
+			} catch (error) {
+				var raceObject = CurrentRace.variant && RaceSubList[CurrentRace.known + '-' + CurrentRace.variant].useFromPreviousRace ? 'RaceSubList["' + CurrentRace.known + '-' + CurrentRace.variant + '"]' : 'RaceList["' + CurrentRace.known + '"]';
+				var baseRaceObject = oOldVariant ? 'RaceSubList["' + CurrentRace.knownOld + '-' + CurrentRace.variantOld + '"]' : 'RaceList["' + CurrentRace.knownOld + '"]';
+				var eText = 'The function call to `' + raceObject + '.useFromPreviousRace.evalAfterMerge` when creating the merged "' + CurrentRace.name + '" from `' + baseRaceObject + '` produced an error!\nPlease contact the author of `' + raceObject + '` to correct this issue:\n ' + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
+				console.println(eText);
+				console.show();
 			}
 		}
 	} else if (oInstr.defaultTraits) { // Use the defaultTraits
@@ -6993,7 +7035,7 @@ function MakeMobileReady(toggle) {
 		if (!SSmoreA[0]) SSmoreA.shift();
 		for (var SS = 0; SS < SSmoreA.length; SS++) {
 			var maxLine = FieldNumbers.spells[SSfrontA[1] && SSmoreA[SS] === SSfrontA[1] ? 0 : 1];
-			for (var S = 0; S < maxLine; S++) {
+			for (var S = 0; S <= maxLine; S++) {
 				var SSbox = tDoc.getField(SSmoreA[SS] + "spells.checkbox." + S);
 				if (SSbox.display === display.visible) SSbox.readonly = false;
 			}
@@ -7727,7 +7769,7 @@ function ApplyColorScheme(aColour) {
 	// set the fill colours of the spellsheet boxes
 	var fillListIfDontPrint = [];
 	for (var SS = 0; SS < SSmoreA.length; SS++) {
-		var maxSpells = SSmoreA[SS] === SSfrontA ? FieldNumbers.spells[0] : FieldNumbers.spells[1];
+		var maxSpells = FieldNumbers.spells[SSmoreA[SS] === SSfrontA ? 0 : 1];
 		for (var L = 0; L <= maxSpells; L++) {
 			fillListIfDontPrint.push(SSmoreA[SS] + "spells.checkbox." + L);
 		}
@@ -8782,8 +8824,8 @@ function SetUnitDecimals_Button() {
 		var SkipArray = ["hidethisline", "setcaptions", "setheader", "setdivider", "setglossary"];
 		if (SSmoreA[0]) {
 			for (var SS = 0; SS < SSmoreA.length; SS++) {
-				var fldsNmbrs = SS === 0 ? FieldNumbers.spells[0] : FieldNumbers.spells[1];
-				for (var q = 0; q < fldsNmbrs; q++) {
+				var fldsNmbrs = FieldNumbers.spells[SS === 0 ? 0 : 1];
+				for (var q = 0; q <= fldsNmbrs; q++) {
 					var SSrem = SSmoreA[SS] + "spells.remember." + q;
 					var SSremV = What(SSrem);
 					if (SSremV && SkipArray.indexOf(SSremV.split("##")[0]) === -1) {

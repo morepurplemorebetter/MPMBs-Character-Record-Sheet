@@ -240,7 +240,7 @@ var Base_MagicItemsList = {
 		action : [["action", " (immunity)"]],
 		dmgres : [ ["All", "All (nonmagical)"] ],
 		armorAdd : "Armor of Invulnerability",
-		armorOptions : {
+		armorOptions : [{
 			regExpSearch : /^(?=.*armor)(?=.*invulnerability).*$/i,
 			name : "Armor of Invulnerability",
 			source: [["SRD", 208], ["D", 152]],
@@ -249,7 +249,7 @@ var Base_MagicItemsList = {
 			stealthdis : true,
 			weight : 65,
 			strReq : 15
-		}
+		}]
 	},
 	"armor of resistance" : {
 		name : "Armor of Resistance",
@@ -330,7 +330,7 @@ var Base_MagicItemsList = {
 		weight: 65,
 		cursed: true,
 		armorAdd : "Armor of Vulnerability",
-		armorOptions : {
+		armorOptions : [{
 			regExpSearch : /^(?=.*armor)(?=.*vulnerability).*$/i,
 			name : "Armor of Vulnerability",
 			source: [["SRD", 209], ["D", 152]],
@@ -339,7 +339,7 @@ var Base_MagicItemsList = {
 			stealthdis : true,
 			weight : 65,
 			strReq : 15
-		},
+		}],
 		choices : ["Bludgeoning", "Piercing", "Slashing"],
 		choicesNotInMenu : true,
 		"bludgeoning" : {
@@ -1538,7 +1538,7 @@ var Base_MagicItemsList = {
 			name : "Demon Armor",
 			source: [["SRD", 218], ["D", 165]],
 			type : "heavy",
-			ac : 19,
+			ac : "18+1",
 			stealthdis : true,
 			weight : 65,
 			strReq : 15
@@ -1579,15 +1579,15 @@ var Base_MagicItemsList = {
 		savetxt : {
 			adv_vs : ["Dragon Frightful Presence", "Dragon Breath Weapons"],
 		},
-		armorOptions : {
+		armorOptions : [{
 			regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
 			name : "Dragon Scale Mail",
 			source : [["SRD", 219], ["D", 165]],
 			type : "medium",
-			ac : 15,
+			ac : "14+1",
 			stealthdis : true,
 			weight : 45
-		},
+		}],
 		choices : ["Black (acid)", "Blue (lightning)", "Brass (fire)", "Bronze (lightning)", "Copper (acid)", "Gold (fire)", "Green (poison)", "Red (fire)", "Silver (cold)", "White (cold)"],
 		choicesNotInMenu : true,
 		"black (acid)" : {
@@ -1753,7 +1753,7 @@ var Base_MagicItemsList = {
 			name : "Dwarven Plate",
 			source : [["SRD", 220], ["D", 167]],
 			type : "heavy",
-			ac : 20,
+			ac : "18+2",
 			stealthdis : true,
 			weight : 65,
 			strReq : 15
@@ -1888,7 +1888,7 @@ var Base_MagicItemsList = {
 			name : "Elven Chain",
 			source : [["SRD", 220], ["D", 168]],
 			type : "medium",
-			ac : 14,
+			ac : "13+1",
 			weight : 20
 		}]
 	},
@@ -2250,14 +2250,14 @@ var Base_MagicItemsList = {
 		weight : 13,
 		descriptionFull : "While wearing this armor, you gain a +1 bonus to AC. You can also use a bonus action to speak the armor's command word and cause the armor to assume the appearance of a normal set of clothing or some other kind of armor. You decide what it looks like, including color, style, and accessories, but the armor retains its normal bulk and weight. The illusory appearance last until you use this property again or remove the armor.",
 		armorAdd : "Glamoured Studded Leather",
-		armorOptions : {
+		armorOptions : [{
 			regExpSearch : /^(?=.*glamou?r)(?=.*(studded|studs))(?=.*leather).*$/i,
 			name : "Glamoured studded Leather",
 			source : [["SRD", 224], ["D", 172]],
 			type : "light",
-			ac : 13,
+			ac : "12+1",
 			weight : 13
-		},
+		}],
 		action : [["bonus action", ""]]
 	},
 	"gloves of missile snaring" : {
@@ -3510,7 +3510,7 @@ var Base_MagicItemsList = {
 		recovery : "dawn",
 		action : [["action", " (start/stop)"]],
 		armorAdd : "Plate Armor of Etherealness",
-		armorOptions : {
+		armorOptions : [{
 			regExpSearch : /^(?=.*plate)(?=.*etherealness).*$/i,
 			name : "Plate Armor of Etherealness",
 			source : [["SRD", 233], ["D", 185]],
@@ -3519,7 +3519,7 @@ var Base_MagicItemsList = {
 			stealthdis : true,
 			weight : 65,
 			strReq : 15
-		},
+		}],
 		spellcastingBonus : {
 			name : "once per dawn",
 			spells : ["etherealness"],
@@ -4647,14 +4647,14 @@ var Base_MagicItemsList = {
 				"While wearing the Robe of the Archmagi my spell save DC and spell attack bonus each increase by 2."
 			]
 		},
-		addArmor: "Robe of the Archmagi",
-		armorOptions: {
+		armorAdd : "Robe of the Archmagi",
+		armorOptions : [{
 			regExpSearch: /^(?=.*robe)(?=.*(archmage|archmagi)).*$/i,
 			name : "Robe of the Archmagi",
 			source : [["SRD", 239], ["D", 194]],
 			ac : 15,
 			weight : 4
-		},
+		}],
 		choices : ["Good", "Neutral", "Evil"],
 		choicesNotInMenu : true,
 		"good" : {

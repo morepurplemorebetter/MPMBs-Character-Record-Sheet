@@ -162,6 +162,13 @@ ArmourList["purple mail"] = {
 		How this works is fully explained in the description of the `addMod` attribute
 		in "_common attributes.js". See point 3 of that description.
 
+		For magical armour that gives a fixed +X bonus, it is recommended to not just write
+		the total AC, but write the bonus separately.
+		For example, for a +2 breastplate you would write:
+			`ac : "14+2",`
+		This is effectively the same as using `ac : 16,`, but by using a string,
+		the player can see the bonus in the AC field.
+
 	If you use a string here, it is recommended to omit the `addMod` attribute.
 */
 	type : "heavy",
@@ -190,7 +197,7 @@ ArmourList["purple mail"] = {
 
 	If this attribute is not present, the 'type' attribute will determine the sorting instead.
 
-	If you use any other string than the four options given above,
+	If you use any other string than the options given above,
 	the armour will appear at the end of the drop-down options.
 
 	Setting this to and empty string ("") is the same as not including this attribute.
