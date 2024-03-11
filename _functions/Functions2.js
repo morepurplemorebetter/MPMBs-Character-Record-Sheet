@@ -7972,10 +7972,10 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sB
 	var diaHeader = notProficiencies ? optType : "Select proficiencies";
 
 	//make all the known options lowercase for easier testing
-	var showOptions = "";
+	var showOptions;
 	if (knownOpt && knownOpt !== "radio") {
-		showOptions = knownOpt.toString();
-		for (var i = 0; i < knownOpt.length; i++) { knownOpt[i] = knownOpt[i].toLowerCase(); };
+		showOptions = formatLineList("", knownOpt);
+		knownOpt = knownOpt.map(function (n) { return n.toLowerCase() });
 	};
 
 	var theDialog = {
