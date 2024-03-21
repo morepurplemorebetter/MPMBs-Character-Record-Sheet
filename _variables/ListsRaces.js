@@ -255,8 +255,7 @@ var Base_RaceList = {
 		weightMetric : " weigh around 75 kg (50 + 5d10 \xD7 4d4 / 10 kg)",
 		scorestxt : "+1 to all ability scores",
 		scores : [1, 1, 1, 1, 1, 1, 1],
-		trait : "Human (+1 to all ability scores)",
-
+		trait : "Human (+1 to all ability scores)"
 	},
 	"tiefling" : {
 		regExpSearch : /^((?=.*tiefling)|(?=.*planetouched)(?=.*(hell|abyss|fiend|devil|asmodeus))).*$/i,

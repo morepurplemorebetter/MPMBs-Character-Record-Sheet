@@ -2225,6 +2225,8 @@ extraAC : [{
 
 		This works the same as the `mod` attribute of the `addMod` entry above.
 		Please look there for a more thorough explanation and examples.
+
+		You can set this to `0`, so that just the name is added to the description fields.
 	*/
 	name : "Bracers of Defense",
 	/*	name // OPTIONAL //
@@ -2246,8 +2248,8 @@ extraAC : [{
 		TYPE:	string
 		USE:	the explanation of what is added to the AC and its criteria (if any)
 
-		If you do not include this attribute, there will be no explanation visible for this entry
-		in the modifiers dialog that appears when clicking on the modifier field.
+		If you do not include this attribute, there will be no explanation visible for this
+		entry in the modifiers dialog that appears when clicking on the modifier field.
 	*/
 	stopeval : function (v) {
 		return v.wearingArmor;
@@ -2407,6 +2409,8 @@ toNotesPage : [{
 		TYPE:	boolean
 		USE:	whether to add this to the 3rd page's Notes section (true) or on a Notes page (false)
 
+		If this is set to true, `amendTo` will be ignored (see below).
+
 		Setting this to 0 or false is the same as not including this attribute.
 	*/
 	popupName : "Wild Mage's Wild Magic Surge Table, part 1",
@@ -2462,6 +2466,8 @@ toNotesPage : [{
 		or it will match with the wrong notes section.
 
 		The string will be matched on a case-insensitive basis.
+
+		This attribute is useless if the `page3notes` attribute is also present and set to `true`.
 	*/
 }],
 

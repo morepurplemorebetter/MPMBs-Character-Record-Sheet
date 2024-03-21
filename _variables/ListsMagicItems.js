@@ -6344,7 +6344,10 @@ var Base_MagicItemsList = {
 		weight : 1,
 		prerequisite : "Requires attunement by a spellcaster",
 		prereqeval : function(v) { return v.isSpellcaster; },
-		action : [["action", ""]]
+		action : [["action", ""]],
+		usages : 7,
+		recovery : "dawn",
+		additional : "regains 1d6+1"
 	},
 	"wand of polymorph" : {
 		name : "Wand of Polymorph",

@@ -2617,14 +2617,14 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 	var iAskUser = 3; // No
 	var oOldRace = RaceList[CurrentRace.knownOld];
 	var oOldVariant = RaceSubList[CurrentRace.knownOld + "-" + CurrentRace.variantOld];
-	// Check if there is a new and old race known and they aren't identical
-	if (!CurrentRace.known || !CurrentRace.knownOld || CurrentRace.known === CurrentRace.knownOld) {
+	// Check if there is a new and old race known and they aren't identical and they don't also have the useFromPreviousRace feature
+	if (!CurrentRace.known || !CurrentRace.knownOld || CurrentRace.known === CurrentRace.knownOld || (oOldRace && oOldRace.useFromPreviousRace) || (oOldVariant && oOldVariant.useFromPreviousRace)) {
 		// Show a message for how this type of race works
 		if (bSkipDialogAndForce === undefined && !CurrentRace.knownOld) {
 			app.alert({
 				nIcon : 3, // Status
 				cTitle : "Tip for using the " + CurrentRace.name + " race",
-				cMsg : "The " + CurrentRace.name + " race has the option to use some specific traits from another race, its 'base race'. To use this option, first select a race as normal, and then change it to " + CurrentRace.name + ". If you do that, you will be prompted wheter or not you want to use the race you had selected first as the base race." + (oInstr.message ? "\n\n" + oInstr.message : "")
+				cMsg : "The " + CurrentRace.name + " race has the option to use some specific traits from another race, its 'base race'. To use this option, first select a race as normal, and then change it to " + CurrentRace.name + ". If you do that, you will be prompted wheter or not you want to use the race you had selected first as the base race. This base race can't also have the option to use traits from another race." + (oInstr.message ? "\n\n" + oInstr.message : "")
 			})
 		}
 	} else if (bSkipDialogAndForce === undefined) {
@@ -2644,6 +2644,7 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 	if (iAskUser === 4) { // Use the traits fromt he previous race
 		// First make the base race combined object
 		var oBaseRace = newObj(oOldRace);
+		var bMergeEverything = false;
 		if (oOldVariant) {
 			oOldVariant = newObj(oOldVariant);
 			for (var prop in oOldVariant) {
@@ -2659,111 +2660,150 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 		}
 		// Merge the source
 		if (oBaseRace.source) CurrentRace.source = CurrentRace.source.concat(oBaseRace.source);
-		// Merge the name in the trait
-		if (oInstr.replaceNameInTrait && CurrentRace.trait && oBaseRace.name) {
-			var sReplace = oInstr.replaceNameInTrait[0];
-			switch (oInstr.replaceNameInTrait[1] ? oInstr.replaceNameInTrait[1].toLowerCase() : "") {
+		// Now have the CurrenRace object inheret the defined traits
+		if (oInstr.gainTraits) {
+			bMergeEverything = oInstr.gainTraits.find(/^(all|everything|complete|full)$/i) !== -1;
+			// Define a function to handle the merging
+			var mergeAttr = function(aProp, oFrom, oTo) {
+				var oBaseRef = oFrom;
+				var oCurRef = oTo;
+				var oCurRefCreated;
+				for (var p = 0; p < aProp.length; p++) {
+					var sProp = aProp[p];
+					if (oBaseRef[sProp]) {
+						if (p === (aProp.length - 1)) { // last in the array
+							if (isArray(oCurRef[sProp])) {
+								// merge arrays instead of overwriting
+								if (isArray(oBaseRef[sProp])) {
+									oCurRef[sProp] = oCurRef[sProp].concat(oBaseRef[sProp]);
+								} else {
+									// some attributes can be both singular and an array
+									oCurRef[sProp].push(oBaseRef[sProp]);
+								}
+							} else {
+								// either oTo doesn't have this property and it's not an array, so overwrite it
+								oCurRef[sProp] = oBaseRef[sProp];
+							}
+							return true;
+						} else if (typeof oBaseRef[sProp] === "object") {
+							// move the reference objects one step deeper
+							oBaseRef = newObj(oBaseRef[sProp]);
+							if (!oCurRef[sProp]) {
+								oCurRef[sProp] = {};
+								if (!oCurRefCreated) oCurRefCreated = aProp[0];
+							}
+							oCurRef = oCurRef[sProp];
+						}
+					} else {
+						// This (sub)property doesn't exist, so skip this whole entry in the gainTraits array, but first delete any stuff we created from the CurrentRace as its an empty object
+						if (oCurRefCreated && CurrentRace[oCurRefCreated]) {
+							var toClean = CleanObject(CurrentRace[oCurRefCreated]);
+							if (!ObjLength(CurrentRace[oCurRefCreated])) delete CurrentRace[oCurRefCreated];
+						}
+						return false;
+					}
+				}
+			}
+			// The attributes to never overwrite in the CurrentRace object (either stored references or handled differently)
+			var rxNeverOverwrite = /^(known(Old)?|variants?(Old)?|level|source|name|plural|useFromPreviousRace|features)$/;
+			if (bMergeEverything) {
+				// Merge every attribute from the base race to the CurrentRace object
+				for (var attribute in oBaseRace) {
+					if (rxNeverOverwrite.test(attribute)) continue;
+					mergeAttr([attribute], oBaseRace, CurrentRace);
+				}
+			} else {
+				for (var i = 0; i < oInstr.gainTraits.length; i++) {
+					var aProp = oInstr.gainTraits[i].split(".");
+					if (rxNeverOverwrite.test(aProp[0])) continue;
+					// Merge the attribute of the base race to the CurrentRace
+					mergeAttr(aProp, oBaseRace, CurrentRace);
+				}
+			}
+			// Merge the traits in the features, if any exist and match the criteria
+			if (oBaseRace.features) {
+				var bMergeAllFeatures = bMergeEverything || oInstr.gainTraits.indexOf("features") !== -1;
+				for (var sFea in oBaseRace.features) {
+					var oFea = oBaseRace.features[sFea], oTemp, bAddFeature = false;
+					if (!bMergeAllFeatures) {
+						// Add only features from the base race that have an attribute defined in `gainTraits`
+						var rxFeatureAttrSkip = /^(known(Old)?|variants?(Old)?|level|source|name|plural|useFromPreviousRace|features|minlevel|limfeaname|usages|recovery|action)$/;
+						oTemp = {
+							name : oFea.name,
+							minlevel : oFea.minlevel,
+							limfeaname : oFea.limfeaname,
+							usages : oFea.usages,
+							recovery : oFea.recovery,
+							action : oFea.action,
+							source : oFea.source ? oFea.source : oBaseRace.source
+						};
+						for (var i = 0; i < oInstr.gainTraits.length; i++) {
+							aProp = oInstr.gainTraits[i].split(".");
+							if (rxFeatureAttrSkip.test(aProp[0])) continue;
+							if (mergeAttr(aProp, oFea, oTemp)) bAddFeature = true;
+						}
+					}
+					if (bMergeAllFeatures || bAddFeature) {
+						if (!CurrentRace.features) CurrentRace.features = {};
+						var sAttrName = sFea;
+						while (CurrentRace.features[sAttrName]) {
+							sAttrName += " bonus";
+						}
+						CurrentRace.features[sAttrName] = bMergeAllFeatures ? oFea : oTemp;
+						// Add the source if it doesn't exist (bMergeAllFeatures only)
+						if (!CurrentRace.features[sAttrName].source) {
+							CurrentRace.features[sAttrName].source = oBaseRace.source;
+						}
+					}
+				}
+			}
+		}
+		// Merge the name and plural and replace it in the trait
+		if ((oInstr.replaceNameInTrait || oInstr.updateName) && oBaseRace.name) {
+			if (!oInstr.updateName && oInstr.replaceNameInTrait) {
+				// Backwards compatibility: `replaceNameInTrait` has been deprecated in v13.1.13
+				var sCurName = oInstr.replaceNameInTrait[0];
+				var sAction = oInstr.replaceNameInTrait[1] ? oInstr.replaceNameInTrait[1].toLowerCase() : "";
+			} else {
+				// `updateName` is new since v13.1.13. A string that can be "replace", "prefix", or "suffix"
+				var sCurName = CurrentRace.name;
+				var sAction = oInstr.updateName.toLowerCase();
+			}
+			var sNameInTrait = !bMergeEverything && oInstr.gainTraits.indexOf("trait") === -1 ? sCurName : oBaseRace.name;
+			var rxBaseName = RegExp(sNameInTrait.toLowerCase(), "i");
+			switch (sAction) {
 				case "replace" :
 					CurrentRace.name = oBaseRace.name;
+					if (oBaseRace.plural) CurrentRace.plural = oBaseRace.plural;
 					break;
 				case "prefix" :
-					CurrentRace.name = oBaseRace.name.capitalize() + " " + sReplace;
+					CurrentRace.name = oBaseRace.name.capitalize() + " " + sCurName;
+					if (CurrentRace.plural) CurrentRace.plural = oBaseRace.name.capitalize() + " " + CurrentRace.plural;
 					break;
 				case "insert" :
-					CurrentRace.name = sReplace + " " + oBaseRace.name + (oInstr.replaceNameInTrait[2] ? " " + oInstr.replaceNameInTrait[2] : "");
-					break;
+					if (Instr.replaceNameInTrait && Instr.replaceNameInTrait[2]) {
+						CurrentRace.name = sCurName + " " + oBaseRace.name + " " + oInstr.replaceNameInTrait[2];
+						break;
+					}
 				case "suffix" :
 				default :
-				CurrentRace.name = sReplace + " " + oBaseRace.name;
+					CurrentRace.name   = sCurName + " " + oBaseRace.name;
+					CurrentRace.plural = sCurName + " " + oBaseRace.plural;
 			}
-			CurrentRace.trait = CurrentRace.trait.replace(sReplace, CurrentRace.name);
-		}
-		// Define a function to handle the merging
-		var mergeAttr = function(aProp, oFrom, oTo) {
-			var oBaseRef = oFrom;
-			var oCurRef = oTo;
-			var oCurRefCreated;
-			for (var p = 0; p < aProp.length; p++) {
-				var sProp = aProp[p];
-				if (oBaseRef[sProp]) {
-					if (p === (aProp.length - 1)) { // last in the array
-						if (isArray(oCurRef[sProp])) {
-							// merge arrays instead of overwriting
-							if (isArray(oBaseRef[sProp])) {
-								oCurRef[sProp] = oCurRef[sProp].concat(oBaseRef[sProp]);
-							} else {
-								// some attributes can be both singular and an array
-								oCurRef[sProp].push(oBaseRef[sProp]);
-							}
-						} else {
-							// either oTo doesn't have this property and it's not an array, so overwrite it
-							oCurRef[sProp] = oBaseRef[sProp];
-						}
-						return true;
-					} else if (typeof oBaseRef[sProp] === "object") {
-						// move the reference objects one step deeper
-						oBaseRef = newObj(oBaseRef[sProp]);
-						if (!oCurRef[sProp]) {
-							oCurRef[sProp] = {};
-							if (!oCurRefCreated) oCurRefCreated = aProp[0];
-						}
-						oCurRef = oCurRef[sProp];
-					}
-				} else {
-					// This (sub)property doesn't exist, so skip this whole entry in the gainTraits array, but first delete any stuff we created from the CurrentRace as its an empty object
-					if (oCurRefCreated && CurrentRace[oCurRefCreated]) {
-						var toClean = CleanObject(CurrentRace[oCurRefCreated]);
-						if (!ObjLength(CurrentRace[oCurRefCreated])) delete CurrentRace[oCurRefCreated];
-					}
-					return false;
-				}
-			}
-		}
-		// Now have the CurrenRace object inheret the traits as needed
-		var skipRegex = /^(known(Old)?|variants?(Old)?|level|name|features|trait|minlevel|limfeaname|usages|recovery|source|useFromPreviousRace)$/i;
-		for (var i = 0; i < oInstr.gainTraits.length; i++) {
-			aProp = oInstr.gainTraits[i].split(".");
-			if (skipRegex.test(aProp[0])) continue;
-			// Merge the attribute of the base race
-			mergeAttr(aProp, oBaseRace, CurrentRace);
-		}
-		// Merge the traits in the features, if any exist and match the criteria
-		var bAddFeature, bMergeAllFeatures = oInstr.gainTraits.indexOf("features") !== -1;
-		if (oBaseRace.features) {
-			for (var sFea in oBaseRace.features) {
-				var oFea = oBaseRace.features[sFea];
-				var oTemp = {
-					name : oFea.name,
-					minlevel : oFea.minlevel,
-					limfeaname : oFea.limfeaname,
-					usages : oFea.usages,
-					recovery : oFea.recovery,
-					action : oFea.action,
-					source : oFea.source ? oFea.source : oBaseRace.source
-				};
-				bAddFeature = bMergeAllFeatures; // Will be true if all features should be merged
-				if (!bAddFeature) {
-					// Add only features from the base race that have an attribute defined in `gainTraits`
-					for (var i = 0; i < oInstr.gainTraits.length; i++) {
-						aProp = oInstr.gainTraits[i].split(".");
-						if (skipRegex.test(aProp[0]) || aProp[0] === 'action') continue;
-						bAddFeature = mergeAttr(aProp, oFea, oTemp);
-					}
-				}
-				if (bAddFeature) {
-					if (!CurrentRace.features) CurrentRace.features = {};
-					var sAttrName = sFea;
-					while (CurrentRace.features[sAttrName]) {
-						sAttrName += " bonus";
-					}
-					CurrentRace.features[sAttrName] = oTemp;
-				}
+			// Replace the name in the trait with the new one
+			if ( rxBaseName.test(CurrentRace.trait) ) {
+				CurrentRace.trait = CurrentRace.trait.replace(rxBaseName, CurrentRace.name);
 			}
 		}
 		// Run a custom function, if defined
 		if (oInstr.evalAfterMerge) {
 			try {
-				oInstr.evalAfterMerge(oBaseRace);
+				/* Pass to this function:
+					1. `oBaseRace` the base race object
+					2. `rxNeverOverwrite` a regex of CurrentRace attributes that should never be merged, because they are used by the code to store references or would cause an error.
+					3. `oInstr.gainTraits` the array of already merged traits (if any).
+				*/
+				oInstr.evalAfterMerge(oBaseRace, rxNeverOverwrite, oInstr.gainTraits);
 			} catch (error) {
 				var raceObject = CurrentRace.variant && RaceSubList[CurrentRace.known + '-' + CurrentRace.variant].useFromPreviousRace ? 'RaceSubList["' + CurrentRace.known + '-' + CurrentRace.variant + '"]' : 'RaceList["' + CurrentRace.known + '"]';
 				var baseRaceObject = oOldVariant ? 'RaceSubList["' + CurrentRace.knownOld + '-' + CurrentRace.variantOld + '"]' : 'RaceList["' + CurrentRace.knownOld + '"]';
@@ -2775,7 +2815,7 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 		}
 	} else if (oInstr.defaultTraits) { // Use the defaultTraits
 		for (var prop in oInstr.defaultTraits) {
-			if ((/^(known(Old)?|variants?(Old)?|level|name|plural|source)$/i).test(prop)) continue;
+			if ((/^(known(Old)?|variants?(Old)?|level|source)$/i).test(prop)) continue;
 			if (prop === "features") { // merge instead of replace
 				if (!CurrentRace.features) CurrentRace.features = {};
 				for (var fea in oInstr.defaultTraits.features) {

@@ -801,7 +801,15 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 				fObjName += "_-_" + aChoice;
 			}
 			var sObj = setCSobj(fObjName);
-			sObj.name = MagicItemGetShortestName(fObj) + " (item)";
+			var nameObj = fObjP && !fObj.name ? fObjP : fObj;
+			if (fObj.chooseGear || (fObjP && fObjP.chooseGear)) {
+				// For a chooseGear item, just use its full name to avoid weird names
+				sObj.name = nameObj.name
+			} else {
+				// Otherwise, use the shortest name
+				sObj.name =  MagicItemGetShortestName(nameObj);
+			}
+			sObj.name += " (item)";
 			sObj.typeSp = sTypeSingular;
 			sObj.refType = sTypeSingular;
 			break;

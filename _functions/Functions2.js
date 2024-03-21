@@ -7618,7 +7618,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		Value(fldEnc, encString, ttips.enc);
 	}; break;
 	case "specialarmour" : { // Extra is to make the entry unique (the array index)
-		if (!ProfObj.mod) return;
+		if (!ProfObj.mod && ProfObj.mod !== 0) return;
 		var fldNms = {
 			magic : ["AC Magic", "AC Magic Description"],
 			misc1 : ["AC Misc Mod 1", "AC Misc Mod 1 Description"],
