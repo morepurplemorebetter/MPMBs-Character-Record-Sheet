@@ -416,10 +416,12 @@ weaponProfs : [
 
 		Add the names of weapons as they appear in the WeaponsList object.
 		Alternatively, you can use a grouping of weapons, as their 'list' attribute says, for example 'firearm'.
-		Alternatively, you can use types of weapons, as their 'type' attribute says, for example 'Improvised Weapons'.
+		Alternatively, you can use types of weapons, as their 'type' attribute says, for example 'Improvised Weapons'.		
 
 		For example the High Elf weapon proficiency looks like this:
 		weaponProfs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
+
+		If you don't want to add individual weapon proficiencies, you can simply not set this weaponProfs 3rd entry, or set this to `false`, an empty string `""`, or `0`.
 	*/
 ],
 
@@ -428,28 +430,105 @@ weaponProfs : [
 // >>> Weapons & Armour >>> //
 // >>>>>>>>>>>>>>>>>>>>>>>> //
 
-weaponsAdd : ["Bite", "Longsword +2"],
+weaponsAdd : ["Bite", "Longsword +2"], // legacy, before v13.1.14
+weaponsAdd : {
+	select : ["Bite", "Rusty Greataxe"],
+	options : ["Longsword +2", "Rusty Greataxe"]
+},
 /*	weaponsAdd // OPTIONAL //
-	TYPE:	array (variable length)
-	USE:	adds each string in the array to one of the attack drop-downs on the 1st page
+	TYPE:	object
+	USE:	add attack(s) to and/or edit the available options in 1st page attack section
+	CHANGE:	v13.1.14 (changed from array to object)
 
-	This is an array of strings. Each string will be added to the attack section.
-	An entry will only be added if there is space left in the attack section and it isn't already present.
-	The strings will be added exactly as you write them here, capitalisation and all.
+	This does not add automation for the added attack selections or options.
+	If you want to add automation for an attack option, then don't use this attribute,
+	but use `weaponOptions` (see below). That can also add it to the current selection.
 
-	If a feature with this attribute is removed, these attack entries will be removed as well.
+	This is an object with two possible attributes, each is optional.
+	`select`
+		OPTIONAL
+		TYPE: array of strings
+		USE: fill 1st page attack lines with strings
+
+		Each string will be added to the attack section.
+		An entry will only be added if there is space left in the attack section and
+		it isn't already present.
+		The string will be added exactly as written, capitalisation and all.
+
+		If no selections have to be added to attack sections, then
+		don't include this attribute.
+
+	`options`
+		OPTIONAL
+		TYPE: array of strings
+		USE: add options to 1st page attack drop-down boxes
+
+		Each string in the array will be added as an option in the attack drop-down boxes
+		on the 1st page.
+		Each will be added at the top of list, along with those added by
+		`weaponOptions` (see below), and sorted alphabetically.
+		The strings will be added exactly as written, capitalisation and all.
+
+		If no options have to be added to the list in the drop-down box, then
+		don't include this attribute.
+
+	If a feature with this attribute is removed, these attack selections/options
+	will be removed as well.
+
+	>> Backwards compatible <<
+	Before v13.1.14, this was an array of strings, not an object.
+	If `weaponsAdd` is an array, it will be treated as if that array was set for the
+	`select` attribute, thus preserving the functionality from v13.1.13 and earlier.
 */
 
-armorAdd : "Natural Armor",
+armorAdd : "Natural Armor", // legacy, before v13.1.14
+armorAdd : {
+	select : "Breastplate +1",
+	options : ["Glamoured Studded Leather", "Unarmored Defense (Con)"]
+},
 /*	armorAdd // OPTIONAL //
-	TYPE:	string
-	USE:	sets the string as the value for the armour drop-down on the 1st page
+	TYPE:	object
+	USE:	select armor as current and/or edit the available options in the drop-down
+	CHANGE:	v13.1.14 (changed from string to object)
 
-	The armour will only be set if there is currently no armour selected on the 1st page, or
-	if the currently selected armour gives a lower AC total than this armour.
-	The string will be added exactly as you write it here, capitalisation and all.
+	This does not add automation for the added armour selection or options.
+	If you want to add automation for an armour option, then don't use this attribute,
+	but use `armorOptions` (see below). That can also add it to the current selection.
 
-	If a feature with this attribute is removed, this armour will be removed as well.
+	This is an object with two possible attributes, each is optional.
+	`select`
+		OPTIONAL
+		TYPE: string
+		USE: sets the value for the armour drop-down on the 1st page
+
+		The armour will only be set if there is currently no armour selected, or
+		if the currently selected armour gives a lower AC total than this armour.
+		The string will be added exactly as you write it here, capitalisation and all.
+
+		If nothing has to change about the current armour selection, then
+		don't include this attribute.
+
+	`options`
+		OPTIONAL
+		TYPE: array of strings
+		USE: add options to 1st page armour drop-down box
+
+		Each string in the array will be added as an option in the armour drop-down box
+		on the 1st page.
+		Each will be added at the top of list, along with those added by
+		`armorOptions` (see below), and sorted alphabetically.
+		The strings will be added exactly as written, capitalisation and all.
+
+		If no options have to be added to the list in the drop-down box, then
+		don't include this attribute.
+
+	If a feature with this attribute is removed, the selection/options
+	will be removed as well.
+
+	>> Backwards compatible <<
+	Before v13.1.14, this was a string, not an object.
+	If `armorAdd` is a string, it will be treated as if that string was set for the
+	`select` attribute, thus preserving the functionality from v13.1.13 and earlier.
 */
 
 shieldAdd : "Wooden Buckler",
@@ -517,8 +596,15 @@ armorOptions : [{ /* ArmourList object, see "armor (ArmourList).js" syntax file 
 /*	armorOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the ArmourList variable
+	CHANGE:	v13.1.14 (added `selectNow` attribute)
 
 	The syntax of the objects is not explained here, but in the "armor (ArmourList).js" syntax file.
+
+	Since v13.1.14, objects in the `armorOptions` array can use the `selectNow` attribute.
+	This attribute is also explained in the "armor (ArmourList).js" syntax file.
+	Adding `selectNow : true` will cause the armour to be immediately select on the 1st page,
+	but only if it grants higher AC than the current selected armour.
+	It also means that you don't need to include the `armorAdd` attribute as well.
 
 	This way you can have a feature add a type of armour to the automation.
 	It will also be added at the top of options in the armour field drop-down.
@@ -529,8 +615,16 @@ weaponOptions : [{ /* WeaponsList object, see "weapon (WeaponsList).js" syntax f
 /*	weaponOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the WeaponsList variable
+	CHANGE:	v13.1.14 (added `selectNow` attribute)
 
 	The syntax of the objects is not explained here, but in the "weapon (WeaponsList).js" syntax file.
+
+	Since v13.1.14, objects in the `weaponOptions` array can use the `selectNow` attribute.
+	This attribute is also explained in the "weapon (WeaponsList).js" syntax file.
+	Adding `selectNow : true` will cause the weapon to be immediately added to the selection
+	on the 1st page, if there is space to do so.
+	It also means that you don't need to include the `weaponsAdd` attribute
+	next to this attribute.
 
 	This way you can have a feature add a type of weapon/attack to the automation.
 	It will also be added at the top of options in each attack field drop-down.
@@ -1243,16 +1337,17 @@ spellcastingBonusElsewhere : {
 	
 	Normally, the automation will only influence spells known for spellcasting gained from the parent object.
 	With this attribute, you can add known and/or bonus spells to another spellcasting source.
-	For example, you could have a magic item spellbook add spells to the spellbook of a wizard. That way
-	they aren't displayed in their own header on the spell sheet pages, but as part of the wizard's spells.
+	For example, you could have a magic item spellbook add spells to the spellbook of a wizard.
+	That way they aren't displayed in their own header on the spell sheet pages,
+	but as part of the wizard's spells.
 
-	To do this, the object must contain the `addTo` attribute and either or both the `spellcastingBonus`
-	and `addToKnown` attributes.
+	To do this, the object must contain the `addTo` attribute and either or both the
+	`spellcastingBonus` and `addToKnown` attributes.
 	These attributes are discussed individually below.
 
 	Note that you should not use this if you want to add bonus spells to spellcasting from a parent object.
-	For example, don't use this for a subclass feature that adds a bonus spell for that class', instead
-	use `spellcastingBonus`, see above.
+	For example, don't use this for a subclass feature that adds a bonus spell for its class,
+	but instead use `spellcastingBonus`, see above.
 */
 	addTo : "wizard",
 	/*	addTo // REQUIRED //
@@ -1279,8 +1374,8 @@ spellcastingBonusElsewhere : {
 		Be aware that this spellcastingBonus will be added to the spellcasting defined in `addTo` above.
 		Be careful, because you could overwrite somethings like which spellcasting ability is used.
 
-		The `spellcastingBonusElsewhere` object requires to have either or both the `spellcastingBonus`
-		or `addToKnown` attribute to be present.
+		The `spellcastingBonusElsewhere` object won't work if neither the `spellcastingBonus`
+		attribute nor the `addToKnown` attribute are present.
 	*/
 
 	addToKnown : [],
@@ -1288,25 +1383,28 @@ spellcastingBonusElsewhere : {
 		TYPE:	array (variable length) of spell object names as used in the SpellsList object
 		USE:	which spells should be added to the spells known / spellbook
 
-		Unlike the `spellcastingBonus` attribute above, the spells listed here will be directly added
-		to the known cantrips/spells.
+		Unlike the `spellcastingBonus` attribute above, the spells listed here will be directly
+		added to the known cantrips/spells.
 		This comes with the following limitations/considerations:
-		  * Only spellscasting classes have known spells, feats, magic items, and races only have
-			'bonus' spells. To add spells to those kind of entries, use the `spellcastingBonus` attribute.
-		  * Spellcasting classes that always know all their spells (e.g. cleric, druid, paladin), can't
-			have spells added this way to their known spells (cantrips will still work).
+		  * Only spellscasting classes can have known spells (but not all do).
+			Feats, magic items, and races only have 'bonus' spells.
+			To add spells to those kind of entries, use the `spellcastingBonus` attribute.
+		  * Spellcasting classes that always know all their spells (e.g. cleric, druid, paladin),
+			can't have spells added this way to their known spells (cantrips will still work).
 			For those kind of classes, use `calcChanges.spellList`.
-		  * The sheet only has space for 20 cantrips and 20 spells known. If the spellcaster already has
-			known spells and this list would increase the number above 20, the access spells will be lost.
-			This limitation does not apply to classes that use a spellbook, as a spellbook can have an
-			unlimited number of spells.
+		  * The sheet only has space for 20 cantrips and 20 spells known. If the spellcaster 
+			already has known spells and this list would increase the number above 20,
+			the access spells will be lost.
+			This limitation does not apply to classes that use a spellbook, as a spellbook can
+			have an unlimited number of spells.
 			Every class can still only have a maximum of 20 known cantrips, though.
-		  * These added spells must still adhere to the normal restrictions of the spell list available for
-			the class. If you want to go beyond that (for example, add a wizard spell to a cleric),
+		  * These added spells must still adhere to the normal restrictions of the spell list
+			available for the class.
+			If you want to go beyond that (for example, add a wizard spell to a cleric),
 			you'll also have to change the available spell list using `calcChanges.spellList`.
 
-		The `spellcastingBonusElsewhere` object requires to have either or both the `spellcastingBonus`
-		or `addToKnown` attribute to be present.
+		The `spellcastingBonusElsewhere` object won't work if neither the `spellcastingBonus`
+		attribute nor the `addToKnown` attribute are present.
 	*/
 
 	countsTowardsKnown : true

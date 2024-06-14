@@ -16,7 +16,7 @@
 */
 
 var iFileName = "Abishai [GarzettDragon's work, transcribed by MPMB].js";
-RequiredSheetVersion(13.1);
+RequiredSheetVersion("13.1.14");
 
 RaceList["abishai"] = {
 	regExpSearch : /abishai/i,
@@ -33,14 +33,14 @@ RaceList["abishai"] = {
 	vision : [["Darkvision", 120]],
 	savetxt : { immune : ["poison", "disease"] },
 	scores : [0, 0, 2, 0, 0, 1],
-	armorOptions : {
+	armorOptions : [{
 		regExpSearch : /^(?=.*natural)(?=.*armou?r).*$/i,
 		name : "Natural Armor",
 		source : [["HB", 0]],
 		ac : "10+Con+Cha",
-		dex : -10
-	},
-	armorAdd : "Natural Armor",
+		dex : -10,
+		selectNow : true
+	}],
 	abilitySave : 6,
 	trait : [
 		"Abishai (+2 Constitution, +1 Charisma)",

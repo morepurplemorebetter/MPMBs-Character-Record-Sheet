@@ -239,7 +239,6 @@ var Base_MagicItemsList = {
 		recovery: "dawn",
 		action : [["action", " (immunity)"]],
 		dmgres : [ ["All", "All (nonmagical)"] ],
-		armorAdd : "Armor of Invulnerability",
 		armorOptions : [{
 			regExpSearch : /^(?=.*armor)(?=.*invulnerability).*$/i,
 			name : "Armor of Invulnerability",
@@ -248,7 +247,8 @@ var Base_MagicItemsList = {
 			ac : 18,
 			stealthdis : true,
 			weight : 65,
-			strReq : 15
+			strReq : 15,
+			selectNow : true
 		}]
 	},
 	"armor of resistance" : {
@@ -329,7 +329,6 @@ var Base_MagicItemsList = {
 		allowDuplicates : true,
 		weight: 65,
 		cursed: true,
-		armorAdd : "Armor of Vulnerability",
 		armorOptions : [{
 			regExpSearch : /^(?=.*armor)(?=.*vulnerability).*$/i,
 			name : "Armor of Vulnerability",
@@ -338,7 +337,8 @@ var Base_MagicItemsList = {
 			ac : 18,
 			stealthdis : true,
 			weight : 65,
-			strReq : 15
+			strReq : 15,
+			selectNow : true
 		}],
 		choices : ["Bludgeoning", "Piercing", "Slashing"],
 		choicesNotInMenu : true,
@@ -425,7 +425,7 @@ var Base_MagicItemsList = {
 		rarity : "uncommon",
 		magicItemTable : ["A", "B"],
 		description : "This bag is 2 ft in diameter at the mouth, 4 ft deep, and 15 lb regardless of content. It can hold up to 500 lb, not exceeding a volume of 64 cu ft. Retrieving an item from it requires an action. If it's overloaded, pierced, or torn, it's destroyed with its contents in the Astral plane. If turned inside out, all its contents spill forth.",
-		descriptionLong : "This bag is 2 ft in diameter at the mouth, 4 ft deep, and 15 lb regardless of content. It can hold up to 500 lb, not exceeding a volume of 64 cu ft. Retrieving an item from it requires an action. If it is overloaded, pierced, or torn, it is destroyed, leaving its contents in the Astral plane. If it is turned inside out, all its contents spill forth unharmed. Breathing creatures inside the bag can breath for 10 minutes divided by the number of creatures in it (minimum 1 minute), after which they begin to suffocate. Placing the bag in an other extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
+		descriptionLong : "This bag is 2 ft in diameter at the mouth, 4 ft deep, and 15 lb regardless of content. It can hold up to 500 lb, not exceeding a volume of 64 cu ft. Retrieving an item from it requires an action. If it is overloaded, pierced, or torn, it is destroyed, leaving its contents in the Astral plane. If it is turned inside out, all its contents spill forth unharmed. Breathing creatures inside the bag can breath for 10 minutes divided by the number of creatures in it (minimum 1 minute), after which they begin to suffocate. Placing the bag in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
 		descriptionFull : "This bag has an interior space considerably larger than its outside dimensions, roughly 2 feet in diameter at the mouth and 4 feet deep. The bag can hold up to 500 pounds, not exceeding a volume of 64 cubic feet. The bag weighs 15 pounds, regardless of its contents. Retrieving an item from the bag requires an action.\n   If the bag is overloaded, pierced, or torn, it ruptures and is destroyed, and its contents are scattered in the Astral Plane. If the bag is turned inside out, its contents spill forth, unharmed, but the bag must be put right before it can be used again. Breathing creatures inside the bag can survive up to a number of minutes equal to 10 divided by the number of creatures (minimum 1 minute), after which time they begin to suffocate.\n   Placing a bag of holding inside an extradimensional space created by a Heward's handy haversack, portable hole, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10 feet of the gate is sucked through it to a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
 		weight : 15,
 		action : [["action", " (retrieve item)"]]
@@ -483,7 +483,7 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "While wearing this belt, my Con increases by 2 (to max 20), I get adv. on Cha (Persuasion) checks to interact with dwarves, adv. on saves vs. poison, resistance to poison damage, darkvision 60 ft, and known Dwarvish. Each day at dawn, there is a 50% chance I grow a full beard or my current beard becomes visibly thicker.",
+		description : "While wearing this belt, my Con increases by 2 (to max 20), I get adv. on Cha (Persuasion) checks to interact with dwarves, adv. on saves vs. poison, resistance to poison damage, darkvision 60 ft, and know Dwarvish. Each day at dawn, there is a 50% chance I grow a full beard or my current beard becomes visibly thicker.",
 		descriptionFull : "While wearing this belt, you gain the following benefits:\n \u2022 Your Constitution score increases by 2, to a maximum of 20.\n \u2022 You have advantage on Charisma (Persuasion) checks made to interact with dwarves.\n\nIn addition, while attuned to the belt, you have a 50% chance each day at dawn of growing a full beard if you're capable of growing one, or a visibly thicker beard if you already have one.\n\nIf you aren't a dwarf, you gain the following additional benefits while wearing the belt:\n \u2022 You have advantage on saving throws against poison, and you have resistance against poison damage.\n \u2022 You have darkvision out to a range of 60 feet.\n \u2022 You can speak, read, and write Dwarvish.",
 		attunement : true,
 		languageProfs : ["Dwarvish"],
@@ -1243,15 +1243,15 @@ var Base_MagicItemsList = {
 		weight : 1,
 		usages : 1,
 		recovery : "dawn",
-		weaponsAdd : ["Dagger of Venom"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "dagger",
 			regExpSearch : /^(?=.*dagger)(?=.*venom).*$/i,
 			name : "Dagger of Venom",
 			source : [["SRD", 215], ["D", 161]],
 			description : "Finesse, light, thrown; If coated, DC 15 Con save or +2d10 poison damage \u0026 1 min poisoned",
-			modifiers : [1, 1]
-		}
+			modifiers : [1, 1],
+			selectNow : true
+		}]
 	},
 	"dancing sword" : {
 		name : "Dancing Sword",
@@ -1532,7 +1532,6 @@ var Base_MagicItemsList = {
 		cursed : true,
 		languageProfs : ["Abyssal"],
 		savetxt : { text : ["Disadv. on saves vs. demons"] },
-		armorAdd : "Demon Armor",
 		armorOptions : [{
 			regExpSearch : /^(?=.*demon)(?=.*armor).*$/i,
 			name : "Demon Armor",
@@ -1541,16 +1540,17 @@ var Base_MagicItemsList = {
 			ac : "18+1",
 			stealthdis : true,
 			weight : 65,
-			strReq : 15
+			strReq : 15,
+			selectNow : true
 		}],
-		weaponsAdd: ["Demon Armor Claws"],
 		weaponOptions: [{
 			baseWeapon : "unarmed strike",
 			regExpSearch : /^(?=.*demon)(?=.*armor)(?=.*claws).*$/i,
 			name : "Demon Armor Claws",
 			source: [["SRD", 218], ["D", 165]],
 			damage : [1, 8, "slashing"],
-			modifiers : [1, 1]
+			modifiers : [1, 1],
+			selectNow : true
 		}]
 	},
 	"dimensional shackles" : {
@@ -1579,96 +1579,177 @@ var Base_MagicItemsList = {
 		savetxt : {
 			adv_vs : ["Dragon Frightful Presence", "Dragon Breath Weapons"],
 		},
-		armorOptions : [{
-			regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
-			name : "Dragon Scale Mail",
-			source : [["SRD", 219], ["D", 165]],
-			type : "medium",
-			ac : "14+1",
-			stealthdis : true,
-			weight : 45
-		}],
 		choices : ["Black (acid)", "Blue (lightning)", "Brass (fire)", "Bronze (lightning)", "Copper (acid)", "Gold (fire)", "Green (poison)", "Red (fire)", "Silver (cold)", "White (cold)"],
 		choicesNotInMenu : true,
 		"black (acid)" : {
 			name : "Black Dragon Scale Mail",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to acid damage. As an action, I can magically discern the distance and direction to the closest black dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
-			armorAdd : "Black Dragon Scale Mail",
 			dmgres: ["Acid"],
 			limfeaname : "Detect Black Dragon",
-			action : [["action", "Detect Black Dragon"]]
+			action : [["action", "Detect Black Dragon"]],
+			armorOptions : [{
+				regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
+				name : "Black Dragon Scale Mail",
+				source : [["SRD", 219], ["D", 165]],
+				type : "medium",
+				ac : "14+1",
+				stealthdis : true,
+				weight : 45,
+				selectNow : true
+			}]
 		},
 		"blue (lightning)" : {
 			name : "Blue Dragon Scale Mail",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to lightning damage. As an action, I can magically discern the distance and direction to the closest blue dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
-			armorAdd : "Blue Dragon Scale Mail",
 			dmgres: ["Lightning"],
 			limfeaname : "Detect Blue Dragon",
-			action : [["action", "Detect Blue Dragon"]]
+			action : [["action", "Detect Blue Dragon"]],
+			armorOptions : [{
+				regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
+				name : "Blue Dragon Scale Mail",
+				source : [["SRD", 219], ["D", 165]],
+				type : "medium",
+				ac : "14+1",
+				stealthdis : true,
+				weight : 45,
+				selectNow : true
+			}]
 		},
 		"brass (fire)" : {
 			name : "Brass Dragon Scale Mail",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest brass dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
-			armorAdd : "Brass Dragon Scale Mail",
 			dmgres: ["Fire"],
 			limfeaname : "Detect Brass Dragon",
-			action : [["action", "Detect Brass Dragon"]]
+			action : [["action", "Detect Brass Dragon"]],
+			armorOptions : [{
+				regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
+				name : "Brass Dragon Scale Mail",
+				source : [["SRD", 219], ["D", 165]],
+				type : "medium",
+				ac : "14+1",
+				stealthdis : true,
+				weight : 45,
+				selectNow : true
+			}]
 		},
 		"bronze (lightning)" : {
 			name : "Bronze Dragon Scale Mail",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to lightning damage. As an action, I can magically discern the distance and direction to the closest bronze dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
-			armorAdd : "Bronze Dragon Scale Mail",
 			dmgres: ["Lightning"],
 			limfeaname : "Detect Bronze Dragon",
-			action : [["action", "Detect Bronze Dragon"]]
+			action : [["action", "Detect Bronze Dragon"]],
+			armorOptions : [{
+				regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
+				name : "Bonze Dragon Scale Mail",
+				source : [["SRD", 219], ["D", 165]],
+				type : "medium",
+				ac : "14+1",
+				stealthdis : true,
+				weight : 45,
+				selectNow : true
+			}]
 		},
 		"copper (acid)" : {
 			name : "Copper Dragon Scale Mail",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to acid damage. As an action, I can magically discern the distance and direction to the closest copper dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
-			armorAdd : "Copper Dragon Scale Mail",
 			dmgres: ["Acid"],
 			limfeaname : "Detect Copper Dragon",
-			action : [["action", "Detect Copper Dragon"]]
+			action : [["action", "Detect Copper Dragon"]],
+			armorOptions : [{
+				regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
+				name : "Copper Dragon Scale Mail",
+				source : [["SRD", 219], ["D", 165]],
+				type : "medium",
+				ac : "14+1",
+				stealthdis : true,
+				weight : 45,
+				selectNow : true
+			}]
 		},
 		"gold (fire)" : {
 			name : "Gold Dragon Scale Mail",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest gold dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
-			armorAdd : "Gold Dragon Scale Mail",
 			dmgres: ["Fire"],
 			limfeaname : "Detect Gold Dragon",
-			action : [["action", "Detect Gold Dragon"]]
+			action : [["action", "Detect Gold Dragon"]],
+			armorOptions : [{
+				regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
+				name : "Gold Dragon Scale Mail",
+				source : [["SRD", 219], ["D", 165]],
+				type : "medium",
+				ac : "14+1",
+				stealthdis : true,
+				weight : 45,
+				selectNow : true
+			}]
 		},
 		"green (poison)" : {
 			name : "Green Dragon Scale Mail",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to poison damage. As an action, I can magically discern the distance and direction to the closest green dragon in 30 miles. Once I use this action, I can't use it again until the next dawn.",
-			armorAdd : "Green Dragon Scale Mail",
 			dmgres: ["Poison"],
 			limfeaname : "Detect Green Dragon",
-			action : [["action", "Detect Green Dragon"]]
+			action : [["action", "Detect Green Dragon"]],
+			armorOptions : [{
+				regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
+				name : "Green Dragon Scale Mail",
+				source : [["SRD", 219], ["D", 165]],
+				type : "medium",
+				ac : "14+1",
+				stealthdis : true,
+				weight : 45,
+				selectNow : true
+			}]
 		},
 		"red (fire)" : {
 			name : "Red Dragon Scale Mail",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to fire damage. As an action, I can magically discern the distance and direction to the closest red dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
-			armorAdd : "Red Dragon Scale Mail",
 			dmgres: ["Fire"],
 			limfeaname : "Detect Red Dragon",
-			action : [["action", "Detect Red Dragon"]]
+			action : [["action", "Detect Red Dragon"]],
+			armorOptions : [{
+				regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
+				name : "Red Dragon Scale Mail",
+				source : [["SRD", 219], ["D", 165]],
+				type : "medium",
+				ac : "14+1",
+				stealthdis : true,
+				weight : 45,
+				selectNow : true
+			}]
 		},
 		"silver (cold)" : {
 			name : "Silver Dragon Scale Mail",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to cold damage. As an action, I can magically discern the distance and direction to the closest silver dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
-			armorAdd : "Silver Dragon Scale Mail",
 			dmgres: ["Cold"],
 			limfeaname : "Detect Silver Dragon",
-			action : [["action", "Detect Silver Dragon"]]
+			action : [["action", "Detect Silver Dragon"]],
+			armorOptions : [{
+				regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
+				name : "Silver Dragon Scale Mail",
+				source : [["SRD", 219], ["D", 165]],
+				type : "medium",
+				ac : "14+1",
+				stealthdis : true,
+				weight : 45,
+				selectNow : true
+			}]
 		},
 		"white (cold)" : {
 			name : "White Dragon Scale Mail",
 			description : "This scale mail gives +1 to AC, adv. on saves against the frightful presence and breath weapons of dragons, and resistance to cold damage. As an action, I can magically discern the distance and direction to the closest white dragon within 30 miles. Once I use this action, I can't use it again until the next dawn.",
-			armorAdd : "White Dragon Scale Mail",
 			dmgres: ["Cold"],
 			limfeaname : "Detect White Dragon",
-			action : [["action", "Detect White Dragon"]]
+			action : [["action", "Detect White Dragon"]],
+			armorOptions : [{
+				regExpSearch : /^(?=.*dragon)(?=.*scale)(?=.*mail).*$/i,
+				name : "White Dragon Scale Mail",
+				source : [["SRD", 219], ["D", 165]],
+				type : "medium",
+				ac : "14+1",
+				stealthdis : true,
+				weight : 45,
+				selectNow : true
+			}]
 		}
 	},
 	"dragon slayer" : {
@@ -1747,7 +1828,6 @@ var Base_MagicItemsList = {
 		descriptionFull : "While wearing this armor, you gain a +2 bonus to AC. In addition, if an effect moves you against your will along the ground, you can use your reaction to reduce the distance you are moved by up to 10 feet.",
 		weight : 65,
 		action : [["reaction", ""]],
-		armorAdd : "Dwarven Plate",
 		armorOptions : [{
 			regExpSearch : /^(?=.*dwarven)(?=.*plate).*$/i,
 			name : "Dwarven Plate",
@@ -1756,7 +1836,8 @@ var Base_MagicItemsList = {
 			ac : "18+2",
 			stealthdis : true,
 			weight : 65,
-			strReq : 15
+			strReq : 15,
+			selectNow : true
 		}]
 	},
 	"dwarven thrower" : {
@@ -1771,16 +1852,16 @@ var Base_MagicItemsList = {
 		prereqeval : function(v) { return CurrentRace.known.indexOf('dwarf') !== -1; },
 		weight : 2,
 		descriptionFull : "You gain a +3 bonus to attack and damage rolls made with this magic weapon. It has the thrown property with a normal range of 20 feet and a long range of 60 feet. When you hit with a ranged attack using this weapon, it deals an extra 1d8 damage or, if the target is a giant, 2d8 damage. Immediately after the attack, the weapon flies back to your hand.",
-		weaponsAdd : ["Dwarven Thrower"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "warhammer",
 			regExpSearch : /^(?=.*dwarven)(?=.*thrower).*$/i,
 			name : "Dwarven Thrower",
 			source : [["SRD", 220], ["D", 167]],
 			range : "Melee, 20/60 ft",
 			description : "Thrown, versatile (1d10); +1d8 damage when thrown (2d8 vs. giants) and returns immediately",
-			modifiers : [3, 3] // add 3 to each to hit and damage because of the magical bonus
-		}
+			modifiers : [3, 3],
+			selectNow : true
+		}]
 	},
 	"efreeti bottle" : { // contributed by AelarTheElfRogue
 		name : "Efreeti Bottle",
@@ -1882,14 +1963,14 @@ var Base_MagicItemsList = {
 		description : "I gain a +1 bonus to AC while I wear this chain shirt. I am considered proficient with this armor even if I lack proficiency with medium armor.",
 		descriptionFull : "You gain a +1 bonus to AC while you wear this armor. You are considered proficient with this armor even if you lack proficiency with medium armor.",
 		weight : 20,
-		armorAdd : "Elven Chain",
 		armorOptions : [{
 			regExpSearch : /^(?=.*elven)(?=.*chain).*$/i,
 			name : "Elven Chain",
 			source : [["SRD", 220], ["D", 168]],
 			type : "medium",
 			ac : "13+1",
-			weight : 20
+			weight : 20,
+			selectNow : true
 		}]
 	},
 	"eversmoking bottle" : {
@@ -2009,17 +2090,18 @@ var Base_MagicItemsList = {
 					"The goat of terror becomes a giant goat for up to 3 hours. The goat can't attack, but I can remove its horns and use them as weapons. One horn becomes a +1 lance, and the other becomes a +2 longsword. Removing a horn requires an action, and the weapons disappear and the horns return when the goat reverts to figurine form. In addition, the goat radiates a 30-ft radius aura of terror while I am riding it. Any creature hostile to me that starts its turn in the aura must succeed on a DC 15 Wisdom saving throw or be frightened of the goat for 1 minute, or until the goat reverts to figurine form. The frightened creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. Once it successfully saves against the effect, a creature is immune to the goat's aura for the next 24 hours. Once the figurine has been used, it can't be used again until 15 days have passed."
 				]
 			}],
-			weaponsAdd : ["Lance +1, Ivory Goat Horn", "Longsword +2, Ivory Goat Horn"],
 			weaponOptions : [{
 				baseWeapon : "lance",
 				regExpSearch : /^(?=.*ivory)(?=.*goat)(?=.*lance).*$/i,
 				name : "Lance +1, Ivory Goat Horn",
-				source : [["SRD", 222], ["D", 170]]
+				source : [["SRD", 222], ["D", 170]],
+				selectNow : true
 			}, {
 				baseWeapon : "longsword",
 				regExpSearch : /^(?=.*ivory)(?=.*goat)(?=.*longsword).*$/i,
 				name : "Longsword +2, Ivory Goat Horn",
-				source : [["SRD", 222], ["D", 170]]
+				source : [["SRD", 222], ["D", 170]],
+				selectNow : true
 			}]
 		},
 		"marble elephant" : {
@@ -2249,14 +2331,14 @@ var Base_MagicItemsList = {
 		description : "Studded leather with +1 AC. As a bonus action, I can speak its command word and have it assume the appearance of a normal set of clothing or another armor. I decide what it looks like: style, color, and accessories, but the armor retains its bulk and weight. The illusion lasts until I use this again or remove the armor.",
 		weight : 13,
 		descriptionFull : "While wearing this armor, you gain a +1 bonus to AC. You can also use a bonus action to speak the armor's command word and cause the armor to assume the appearance of a normal set of clothing or some other kind of armor. You decide what it looks like, including color, style, and accessories, but the armor retains its normal bulk and weight. The illusory appearance last until you use this property again or remove the armor.",
-		armorAdd : "Glamoured Studded Leather",
 		armorOptions : [{
 			regExpSearch : /^(?=.*glamou?r)(?=.*(studded|studs))(?=.*leather).*$/i,
 			name : "Glamoured studded Leather",
 			source : [["SRD", 224], ["D", 172]],
 			type : "light",
 			ac : "12+1",
-			weight : 13
+			weight : 13,
+			selectNow : true
 		}],
 		action : [["bonus action", ""]]
 	},
@@ -2308,14 +2390,14 @@ var Base_MagicItemsList = {
 		choices : ["not attuned", "attuned (requires Belt of Giant Strength and Gauntlets of Ogre Power)"],
 		"not attuned" : {
 			description : "This magical maul adds a +1 bonus to attack and damage rolls made with it. It has additional features when I'm attuned to it, which requires me to wear both a belt of giant strength and gauntlets of ogre power.",
-			weaponsAdd : ["Hammer of Thunderbolts"],
-			weaponOptions : {
+			weaponOptions : [{
 				baseWeapon : "maul",
 				regExpSearch : /^(?=.*hammer)(?=.*thunderbolts).*$/i,
 				name : "Hammer of Thunderbolts",
 				source : [["SRD", 224], ["D", 173]],
-				modifiers : [1, 1]
-			}
+				modifiers : [1, 1],
+				selectNow : true
+			}]
 		},
 		"attuned (requires belt of giant strength and gauntlets of ogre power)" : {
 			name : "Hammer of Thunderbolts [attuned]",
@@ -2331,15 +2413,15 @@ var Base_MagicItemsList = {
 			additional : "regains 1d4+1",
 			scores : [4, 0, 0, 0, 0, 0],
 			scoresMaximum : [30, 0, 0, 0, 0, 0],
-			weaponsAdd : ["Hammer of Thunderbolts"],
-			weaponOptions : {
+			weaponOptions : [{
 				baseWeapon : "maul",
 				regExpSearch : /^(?=.*hammer)(?=.*thunderbolts).*$/i,
 				name : "Hammer of Thunderbolts",
 				source : [["SRD", 224], ["D", 173]],
 				description : "Heavy, two-handed; On 20 to hit vs. Giant: DC 17 Con save or die; Expend charge to throw",
-				modifiers : [1, 1]
-			}
+				modifiers : [1, 1],
+				selectNow : true
+			}]
 		}
 	},
 	"hat of disguise" : { // contributed by Larry Hoy
@@ -2834,8 +2916,7 @@ var Base_MagicItemsList = {
 		usages : 1,
 		recovery : "dawn",
 		action : [["action", " (throw)"], ["bonus action", " (release)"]],
-		weaponsAdd : ["Iron Bands of Bilarro"],
-		weaponOptions : {
+		weaponOptions : [{
 			regExpSearch : /^(?=.*iron)(?=.*band)(?=.*(bilarro|binding)).*$/i,
 			name : "Iron Bands of Bilarro",
 			source : [["SRD", 228], ["D", 177]],
@@ -2845,8 +2926,9 @@ var Base_MagicItemsList = {
 			range : "60 ft",
 			description : "Restrains Huge or smaller creature; DC 20 Strength check to break out",
 			abilitytodamage : false,
-			weight : 1
-		}
+			weight : 1,
+			selectNow : true
+		}]
 	},
 	"iron flask" : { // contains contributions by Larry Hoy
 		name : "Iron Flask",
@@ -2871,14 +2953,14 @@ var Base_MagicItemsList = {
 		weight : 2,
 		usages : 1,
 		recovery : "dawn",
-		weaponsAdd : ["Javelin of Lightning"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "javelin",
 			regExpSearch : /^(?=.*javelin)(?=.*lightning).*$/i,
 			name : "Javelin of Lightning",
 			source : [["SRD", 228], ["D", 178]],
-			description : "Thrown; Once per dawn special attack, see item description"
-		}
+			description : "Thrown; Once per dawn special attack, see item description",
+			selectNow : true
+		}]
 	},
 	"keoghtom's ointment" : {
 		name : "Keoghtom's Ointment",
@@ -2961,14 +3043,14 @@ var Base_MagicItemsList = {
 		descriptionFull : "When you hit a fiend or an undead with this magic weapon, that creature takes an extra 2d6 radiant damage. If the target has 25 hit points or fewer after taking this damage, it must succeed on a DC 15 Wisdom saving throw or be destroyed. On a successful save, the creature becomes frightened of you until the end of your next turn.\n   While you hold this weapon, it sheds bright light in a 20-foot radius and dim light for an additional 20 feet.",
 		attunement : true,
 		weight : 4,
-		weaponsAdd : ["Mace of Disruption"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "mace",
 			regExpSearch : /^(?=.*mace)(?=.*disruption).*$/i,
 			name : "Mace of Disruption",
 			source : [["SRD", 229], ["D", 179]],
-			description : "Fiend/undead +2d6 radiant damage and if HP<26, DC 15 Wis save: fail - die, success - frightened until my next turn ends"
-		}
+			description : "Fiend/undead +2d6 radiant damage and if HP<26, DC 15 Wis save: fail - die, success - frightened until my next turn ends",
+			selectNow : true
+		}]
 	},
 	"mace of smiting" : {
 		name : "Mace of Smiting",
@@ -2979,15 +3061,15 @@ var Base_MagicItemsList = {
 		description : "This magical mace adds a +1 bonus (+3 vs. constructs) to attack and damage rolls made with it. When I roll a 20 on an attack roll, the target takes an extra 7 bludgeoning damage, or an extra 14 bludgeoning damage if it's a construct. If a construct has less than 26 HP after taking this damage, it is destroyed.",
 		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon. The bonus increases to +3 when you use the mace to attack a construct.\n   When you roll a 20 on an attack roll made with this weapon, the target takes an extra 7 bludgeoning damage, or an extra 14 bludgeoning damage if it's a construct. If a construct has 25 hit points or fewer after taking this damage, it is destroyed.",
 		weight : 4,
-		weaponsAdd : ["Mace of Smiting"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "mace",
 			regExpSearch : /^(?=.*mace)(?=.*smiting).*$/i,
 			name : "Mace of Smiting",
 			source : [["SRD", 229], ["D", 179]],
 			description : "+2 to hit/damage vs. constructs; On 20 to hit: +7 damage (+14 vs. constructs); Constructs HP<26 destroyed",
-			modifiers : [1,1]
-		}
+			modifiers : [1, 1],
+			selectNow : true
+		}]
 	},
 	"mace of terror" : {
 		name : "Mace of Terror",
@@ -3003,13 +3085,13 @@ var Base_MagicItemsList = {
 		usages : 3,
 		recovery : "dawn",
 		additional : "regains 1d3",
-		weaponsAdd : ["Mace of Terror"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "mace",
 			regExpSearch : /^(?=.*mace)(?=.*terror).*$/i,
 			name : "Mace of Terror",
-			source : [["SRD", 229], ["D", 180]]
-		}
+			source : [["SRD", 229], ["D", 180]],
+			selectNow : true
+		}]
 	},
 	"mantle of spell resistance" : {
 		name : "Mantle of Spell Resistance",
@@ -3355,14 +3437,14 @@ var Base_MagicItemsList = {
 		descriptionFull : 'When you nock an arrow on this bow, it whispers in Elvish, "Swift defeat to my enemies." When you use this weapon to make a ranged attack, you can, as a command phrase, say, "Swift death to you who have wronged me." The target of your attack becomes your sworn enemy until it dies or until dawn seven days later. You can have only one such sworn enemy at a time. When your sworn enemy dies, you can choose a new one after the next dawn.\n   When you make a ranged attack roll with this weapon against your sworn enemy, you have advantage on the roll. In addition, your target gains no benefit from cover, other than total cover, and you suffer no disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 piercing damage.\n   While your sworn enemy lives, you have disadvantage on attack rolls with all other weapons.',
 		attunement : true,
 		weight : 2,
-		weaponsAdd : ["Oathbow"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "longbow",
 			regExpSearch : /oathbow/i,
 			name : "Oathbow",
 			source : [["SRD", 231], ["D", 183]],
-			description : "Ammunition, heavy, two-handed; Vs. sworn enemy: adv, +3d6 damage, no cover/range penalties"
-		}
+			description : "Ammunition, heavy, two-handed; Vs. sworn enemy: adv, +3d6 damage, no cover/range penalties",
+			selectNow : true
+		}]
 	},
 	"oil of etherealness" : { // contains contributions by AelarTheElfRogue
 		name : "Oil of Etherealness",
@@ -3509,7 +3591,6 @@ var Base_MagicItemsList = {
 		usages : 1,
 		recovery : "dawn",
 		action : [["action", " (start/stop)"]],
-		armorAdd : "Plate Armor of Etherealness",
 		armorOptions : [{
 			regExpSearch : /^(?=.*plate)(?=.*etherealness).*$/i,
 			name : "Plate Armor of Etherealness",
@@ -3518,7 +3599,8 @@ var Base_MagicItemsList = {
 			ac : 18,
 			stealthdis : true,
 			weight : 65,
-			strReq : 15
+			strReq : 15,
+			selectNow : true
 		}],
 		spellcastingBonus : {
 			name : "once per dawn",
@@ -3860,7 +3942,7 @@ var Base_MagicItemsList = {
 			action : [["action", ""]]
 		},
 		"bird" : {
-			description : "As an action, I can toss this token into the air and it turns into a roc. It obeys my simple commands, can't attack, can carry 500 lb while flying (16 miles per hour or 144 miles per day, as it rests 1 hour per 3 of flying), or double that at half speed. It disappears after a day, i it drops to 0 HP, or if I use an action to make it.",
+			description : "As an action, I can toss this token into the air to turns into a roc. It obeys my simple commands, can't attack, carries 500 lb while flying (16 miles/hour or 144 miles/day), or 1000 lb at half speed. It rests 1 hour per 3 flown. It disappears if it drops to 0 HP, after flying its max distance for a day, or if I dismiss it as an action.",
 			descriptionFull : "This tiny object looks like a feather. You can use an action to toss the token 5 feet into the air. The token disappears and an enormous, multicolored bird takes its place. The bird has the statistics of a roc, but it obeys your simple commands and can't attack. It can carry up to 500 pounds while flying at its maximum speed (16 miles an hour for a maximum of 144 miles per day. with a one-hour rest for every 3 hours of flying), or 1,000 pounds at half that speed. The bird disappears after flying its maximum distance for a day or if it drops to 0 hit points. You can dismiss the bird as an action.",
 			action : [["action", " (use/dismiss)"]]
 		},
@@ -4502,8 +4584,7 @@ var Base_MagicItemsList = {
 		usages : 3,
 		recovery : "dawn",
 		additional : "regains 1d3",
-		weaponsAdd : ["Ring of the Ram"],
-		weaponOptions : {
+		weaponOptions : [{
 			regExpSearch : /^(?=.*ring)(?=.*ram).*$/i,
 			name : "Ring of the Ram",
 			source : [["SRD", 238], ["D", 193]],
@@ -4513,8 +4594,9 @@ var Base_MagicItemsList = {
 			range : "60 ft",
 			description : "Damage is per charge used, also pushes 5 ft away per charge used",
 			abilitytodamage : false,
-			modifiers : [7, ""]
-		}
+			modifiers : [7, ""],
+			selectNow : true
+		}]
 	},
 	"ring of three wishes" : {
 		name : "Ring of Three Wishes",
@@ -4647,13 +4729,13 @@ var Base_MagicItemsList = {
 				"While wearing the Robe of the Archmagi my spell save DC and spell attack bonus each increase by 2."
 			]
 		},
-		armorAdd : "Robe of the Archmagi",
 		armorOptions : [{
 			regExpSearch: /^(?=.*robe)(?=.*(archmage|archmagi)).*$/i,
 			name : "Robe of the Archmagi",
 			source : [["SRD", 239], ["D", 194]],
 			ac : 15,
-			weight : 4
+			weight : 4,
+			selectNow : true
 		}],
 		choices : ["Good", "Neutral", "Evil"],
 		choicesNotInMenu : true,
@@ -4759,19 +4841,19 @@ var Base_MagicItemsList = {
 			regExpSearch : /^(?=.*rod)(?=.*lordly)(?=.*might)(?=.*axe).*$/i,
 			name : "Rod of Lordly Might (Axe)",
 			source : [["SRD", 240], ["D", 196]],
-			modifiers : [3,3]
+			modifiers : [3, 3]
 		}, {
 			baseWeapon : "mace",
 			regExpSearch : /^(?=.*rod)(?=.*lordly)(?=.*might)(?=.*mace).*$/i,
 			name : "Rod of Lordly Might (Mace)",
 			source : [["SRD", 240], ["D", 196]],
-			modifiers : [3,3]
+			modifiers : [3, 3]
 		}, {
 			baseWeapon : "spear",
 			regExpSearch : /^(?=.*rod)(?=.*lordly)(?=.*might)(?=.*spear).*$/i,
 			name : "Rod of Lordly Might (Spear)",
 			source : [["SRD", 240], ["D", 196]],
-			modifiers : [3,3]
+			modifiers : [3, 3]
 		}],
 		toNotesPage : [{
 			name : "Buttons and Other Functions",
@@ -4852,8 +4934,7 @@ var Base_MagicItemsList = {
 		descriptionFull : "This rope is 30 feet long and weighs 3 pounds. If you hold one end of the rope and use an action to speak its command word, the other end darts forward to entangle a creature you can see within 20 feet of you. The target must succeed on a DC 15 Dexterity saving throw or become restrained.\n   You can release the creature by using a bonus action to speak a second command word. A target restrained by the rope can use an action to make a DC 15 Strength or Dexterity check (target's choice). On a success, the creature is no longer restrained by the rope.\n   The rope has AC 20 and 20 hit points. It regains 1 hit point every 5 minutes as long as it has at least 1 hit point. If the rope drops to 0 hit points, it is destroyed.",
 		weight : 3,
 		action : [["action", " (entangle)"], ["bonus action", " (release)"]],
-		weaponsAdd : ["Rope of Entanglement"],
-		weaponOptions : {
+		weaponOptions : [{
 			regExpSearch : /^(?=.*rope)(?=.*entanglement).*$/i,
 			name : "Rope of Entanglement",
 			source : [["SRD", 241], ["D", 197]],
@@ -4866,7 +4947,7 @@ var Base_MagicItemsList = {
 			weight : 3,
 			modifiers : [7, 0],
 			dc : true
-		}
+		}]
 	},
 	"scarab of protection" : {
 		name : "Scarab of Protection",
@@ -4893,15 +4974,15 @@ var Base_MagicItemsList = {
 		attunement : true,
 		weight : 3,
 		action : [["bonus action", ""]],
-		weaponsAdd : ["Scimitar of Speed"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "scimitar",
 			regExpSearch : /^(?=.*scimitar)(?=.*speed).*$/i,
 			name : "Scimitar of Speed",
 			source : [["SRD", 241], ["D", 199]],
 			description : "Finesse, light; Extra attack as bonus action",
-			modifiers : [2, 2]
-		}
+			modifiers : [2, 2],
+			selectNow : true
+		}]
 	},
 	"shield, +1, +2, or +3" : {
 		name : "Shield, +1, +2, or +3",
@@ -5385,15 +5466,15 @@ var Base_MagicItemsList = {
 		usages : 20,
 		recovery : "dawn",
 		additional : "regains 2d8+4",
-		weaponsAdd : ["Staff of Power"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "quarterstaff",
 			regExpSearch : /^(?=.*staff)(?=.*power).*$/i,
 			name : "Staff of Power",
 			source : [["SRD", 243], ["D", 202]],
 			description : "Versatile (1d8); On hit, 1 charge for +1d6 force damage",
-			modifiers : [2, 2]
-		},
+			modifiers : [2, 2],
+			selectNow : true
+		}],
 		calcChanges : {
 			spellCalc : [
 				function (type, spellcasters, ability) {
@@ -5462,15 +5543,15 @@ var Base_MagicItemsList = {
 		usages : 10,
 		recovery : "dawn",
 		additional : "regains 1d6+4",
-		weaponsAdd : ["Staff of Striking"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "quarterstaff",
 			regExpSearch : /^(?=.*staff)(?=.*striking).*$/i,
 			name : "Staff of Striking",
 			source : [["SRD", 244], ["D", 203]],
 			modifiers : [3, 3],
-			description : "Versatile (1d8); On hit, 1-3 charges for +1d6 force damage per charge"
-		}
+			description : "Versatile (1d8); On hit, 1-3 charges for +1d6 force damage per charge",
+			selectNow : true
+		}]
 	},
 	"staff of swarming insects" : {
 		name : "Staff of Swarming Insects",
@@ -5517,14 +5598,14 @@ var Base_MagicItemsList = {
 		prereqeval : function (v) {
 			return classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false;
 		},
-		weaponsAdd : ["Staff of the Magi"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "quarterstaff",
 			regExpSearch : /^(?=.*staff)(?=.*magi).*$/i,
 			name : "Staff of the Magi",
 			source : [["SRD", 244], ["D", 203]],
-			modifiers : [2, 2]
-		},
+			modifiers : [2, 2],
+			selectNow : true
+		}],
 		calcChanges : {
 			spellCalc : [
 				function (type, spellcasters, ability) {
@@ -5633,14 +5714,14 @@ var Base_MagicItemsList = {
 		usages : 10,
 		recovery : "dawn",
 		additional : "regains 1d6+4",
-		weaponsAdd : ["Staff of the Woodlands"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "quarterstaff",
 			regExpSearch : /^(?=.*staff)(?=.*woodlands).*$/i,
 			name : "Staff of the Woodlands",
 			source : [["SRD", 245], ["D", 204]],
-			modifiers : [2, 2]
-		},
+			modifiers : [2, 2],
+			selectNow : true
+		}],
 		calcChanges : {
 			spellCalc : [
 				function (type, spellcasters, ability) {
@@ -5702,15 +5783,15 @@ var Base_MagicItemsList = {
 		attunement : true,
 		weight : 4,
 		action : [["action", "Staff of T\u0026L (Lightning Strike, Thunderclap, both)"]],
-		weaponsAdd : ["Staff of Thunder and Lightning"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "quarterstaff",
 			regExpSearch : /^(?=.*staff)(?=.*thunder)(?=.*lightning).*$/i,
 			name : "Staff of Thunder and Lightning",
 			source : [["SRD", 245], ["D", 204]],
 			description : "Versatile (1d8); Lightning: 1\xD7 per dawn, +2d6 lightning damage; Thunder: 1\xD7 per dawn DC 17 Con save or 1 round stunned",
-			modifiers : [2, 2]
-		},
+			modifiers : [2, 2],
+			selectNow : true
+		}],
 		extraLimitedFeatures : [{
 			name : "Staff of T\u0026L [Lightning]",
 			usages : 1,
@@ -5759,14 +5840,14 @@ var Base_MagicItemsList = {
 		usages : 3,
 		recovery : "dawn",
 		additional : "regains 1d3",
-		weaponsAdd : ["Staff of Withering"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "quarterstaff",
 			regExpSearch : /^(?=.*staff)(?=.*withering).*$/i,
 			name : "Staff of Withering",
 			source : [["SRD", 244], ["D", 203]],
-			description : "Versatile (1d8); On hit, 1 charge for +2d10 necrotic damage and save, see magic item"
-		}
+			description : "Versatile (1d8); On hit, 1 charge for +2d10 necrotic damage and save, see magic item",
+			selectNow : true
+		}]
 	},
 	"stone of controlling earth elementals" : {
 		name : "Stone of Controlling Earth Elementals",
@@ -5822,16 +5903,16 @@ var Base_MagicItemsList = {
 		descriptionFull : "This item appears to be a longsword hilt. While grasping the hilt, you can use a bonus action to cause a blade of pure radiance to spring into existence, or make the blade disappear. While the blade exists, this magic longsword has the finesse property. If you are proficient with shortswords or longswords, you are proficient with the sun blade.\n   You gain a +2 bonus to attack and damage rolls made with this weapon, which deals radiant damage instead of slashing damage. When you hit an undead with it, that target takes an extra 1d8 radiant damage.\n   The sword's luminous blade emits bright light in a 15-foot radius and dim light for an additional 15 feet. The light is sunlight. While the blade persists, you can use an action to expand or reduce its radius of bright and dim light by 5 feet each, to a maximum of 30 feet each or a minimum of 10 feet each.",
 		weight : 3,
 		action : [["bonus action", " (start/stop)"], ["action", " (change light)"]],
-		weaponsAdd : ["Sun Blade"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "longsword",
 			regExpSearch : /^(?=.*sun)(?=.*blade).*$/i,
 			name : "Sun Blade",
 			source : [["SRD", 246], ["D", 205]],
 			damage : [1, 8, "radiant"],
 			description : "Finesse, versatile (1d10); +1d8 damage to undead",
-			modifiers : [2, 2]
-		},
+			modifiers : [2, 2],
+			selectNow : true
+		}],
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
@@ -5882,8 +5963,8 @@ var Base_MagicItemsList = {
 		rarity : "rare",
 		magicItemTable : "H",
 		attunement : true,
-		description : "When I roll a 20 to hit with this magic sword vs. a creature, it takes +14 slashing damage and I have a 5% chance of lobbing off one of its limbs. It does maximum damage vs. objects. With the command word, the blade gives bright light in a 10-ft radius \u0026 dim light in another 10 ft. " + (typePF ? "This stops if sheathed." : "The light stops when commanded again or sheathed."),
-		descriptionLong : "When I attack a creature with this magic sword and roll a 20 on the attack roll, that target takes an extra 14 slashing damage and I roll another d20. If that turns op 20 as well, I lob off one of the target's limbs. If the creature has no limb to sever, you lop off a portion of its body instead. When used against an object, the damage dice are maximized. In addition, I can speak the sword's command word to cause the blade to shed bright light in a 10-foot radius and dim light for an additional 10 feet. Speaking the command word again or sheathing the sword puts out the light.",
+		description : "When I roll a 20 to hit with this magic sword vs. a creature, it takes +14 slashing damage and I have a 5% chance of lopping off one of its limbs. It does maximum damage vs. objects. With the command word, the blade gives bright light in a 10-ft radius \u0026 dim light in another 10 ft. " + (typePF ? "This stops if sheathed." : "The light stops when commanded again or sheathed."),
+		descriptionLong : "When I attack a creature with this magic sword and roll a 20 on the attack roll, that target takes an extra 14 slashing damage and I roll another d20. If that turns up a 20 as well, I lop off one of the target's limbs. If the creature has no limb to sever, I lop off a portion of its body instead. When used against an object, the damage dice are maximized. In addition, I can speak the sword's command word to cause the blade to shed bright light in a 10-ft radius and dim light for an additional 10 ft. Speaking the command word again or sheathing the sword puts out the light.",
 		descriptionFull : "When you attack an object with this magic sword and hit, maximize your weapon damage dice against the target.\n   When you attack a creature with this weapon and roll a 20 on the attack roll, that target takes an extra 14 slashing damage. Then roll another d20. If you roll a 20, you lop off one of the target's limbs, with the effect of such loss determined by the DM. If the creature has no limb to sever, you lop off a portion of its body instead.\n   In addition, you can speak the sword's command word to cause the blade to shed bright light in a 10-foot radius and dim light for an additional 10 feet. Speaking the command word again or sheathing the sword puts out the light.", // the SRD says 4d6 but that is incorrect
 		chooseGear : {
 			type : "weapon",
@@ -5903,7 +5984,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +14 damage \u0026 5% chance to sever limb; Max damage vs. objects';
 					}
 				},
-				'If I include the words "of Sharpness" in a the name of a sword that deals slashing damage, it will be treated as the magic weapon Sword of Sharpness. It deals maximum damage against objects. On a roll of 20 to hit against creatures, it deals +14 slashing damage and has a 5% chance to lob off one limb.'
+				'If I include the words "of Sharpness" in a the name of a sword that deals slashing damage, it will be treated as the magic weapon Sword of Sharpness. It deals maximum damage against objects. On a roll of 20 to hit against creatures, it deals +14 slashing damage and has a 5% chance to lop off one limb.'
 			]
 		}
 	},
@@ -6053,13 +6134,13 @@ var Base_MagicItemsList = {
 		usages : 3,
 		recovery : "dawn",
 		additional : "regains 1d3",
-		weaponsAdd : ["Trident of Fish Command"],
-		weaponOptions : {
+		weaponOptions : [{
 			baseWeapon : "trident",
 			regExpSearch : /^(?=.*trident)(?=.*fish)(?=.*command).*$/i,
 			name : "Trident of Fish Command",
-			source : [["SRD", 247], ["D", 209]]
-		},
+			source : [["SRD", 247], ["D", 209]],
+			selectNow : true
+		}],
 		fixedDC : 15,
 		spellFirstColTitle : "Ch",
 		spellcastingBonus : {

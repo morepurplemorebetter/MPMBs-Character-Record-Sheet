@@ -18,7 +18,7 @@
 */
 
 var iFileName = "Battlemage [Luke Arndt's work, transcribed by MPMB].js";
-RequiredSheetVersion("13.0.6");
+RequiredSheetVersion("13.1.14");
 
 SourceList["LA:BM"] = {
 	name : "Luke Arndt: Battlemage (v4.0)",
@@ -483,7 +483,6 @@ AddSubClass("battlemage", "mystic marksman", {
 				"I can throw any small object that fits into my hand (e.g. coins, cards) as a magical dart",
 				"I double the range of all of my thrown weapons and deal 1d8 damage with them"
 			]),
-			weaponsAdd : ["Arcane Throw"],
 			weaponOptions : [{
 				baseWeapon : "dart",
 				regExpSearch : /^(?=.*arcane)(?=.*throw).*$/i,
@@ -491,7 +490,8 @@ AddSubClass("battlemage", "mystic marksman", {
 				source : ["LA:BM", 4],
 				damage : [1, 8, "piercing"],
 				description : "Thrown, finesse; Counts as magical; Objects fitting in one hand",
-				weight : ""
+				weight : "",
+				selectNow : true
 			}],
 			calcChanges : {
 				atkAdd : [
@@ -573,7 +573,6 @@ AddSubClass("battlemage", "mystic marksman", {
 				"All in the 60-ft long, 1-ft wide line must make a Dex save or take the attack's damage",
 				"The energy dice are added as lightning damage; The line ignores 1/2 and 3/4 cover"
 			]),
-			weaponsAdd : ["Arcane Puncture"],
 			weaponOptions : [{
 				isArcanePuncture : true,
 				regExpSearch : /^(?=.*arcane)(?=.*puncture).*$/i,
@@ -585,7 +584,8 @@ AddSubClass("battlemage", "mystic marksman", {
 				range : "60-ft line",
 				description : "Dex save to avoid; With ranged weapon attack; Damage is weapon damage + energy dice expended (3+)",
 				abilitytodamage : false,
-				dc : true
+				dc : true,
+				selectNow : true
 			}],
 			calcChanges : {
 				atkAdd : [
@@ -870,14 +870,14 @@ AddSubClass("battlemage", "spell dancer", {
 			source : ["LA:BM", 7],
 			minlevel : 3,
 			description : "\n   " + "Without armor and no shield, my AC is 10 + Dexterity modifier + Intelligence modifier",
-			armorOptions : {
-				regExpSearch : /justToAddToDropDown/,
+			armorOptions : [{
+				regExpSearch : /justToAddToDropDownAndEffectWildShape/,
 				name : "Unarmored Defense (Int)",
 				source : ["LA:BM", 7],
 				ac : "10+Int",
-				affectsWildShape : true
-			},
-			armorAdd : "Unarmored Defense (Int)"
+				affectsWildShape : true,
+				selectNow : true
+			}]
 		},
 		"subclassfeature6" : {
 			name : "Defensive Riposte",

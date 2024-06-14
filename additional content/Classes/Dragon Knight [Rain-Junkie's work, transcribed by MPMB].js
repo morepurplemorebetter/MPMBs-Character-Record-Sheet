@@ -34,7 +34,7 @@
 */
 
 var iFileName = "Dragon Knight [Rain-Junkie's work, transcribed by MPMB].js";
-RequiredSheetVersion('13.1.11');
+RequiredSheetVersion('13.1.14');
 
 SourceList["RJ:DK"] = {
 	name : "/u/Rain-Junkie: Dragon Knight (v8.1)",
@@ -1180,9 +1180,9 @@ ClassList["dragon knight"] = {
 					name : "Draconic Nature: Scales",
 					source : [["RJ:DK", 6]],
 					ac : "10+Cha",
-					affectsWildShape : true
-				}],
-				armorAdd : "Draconic Nature: Scales"
+					affectsWildShape : true,
+					selectNow : true
+				}]
 			},
 			"eyes (perception and investigation)" : {
 				name : "Draconic Nature: Eyes",

@@ -38,8 +38,8 @@
 
 	Remarks:	This syntax is also used for objects in the 'weaponOptions' attribute found in '_common attributes.js'.
 				For the 'weaponOptions', you can disregard the object name and WeaponsList variable.
-				Note that if you want a class feature, race, racial trait, feat, background, or magic item to add a weapon/attack,
-				you should be using the 'weaponOptions' attribute.
+				Note that if you want a class feature, race, racial trait, feat, background, or magic item to
+				add a weapon/attack, you should be using the 'weaponOptions' attribute.
 
 	Sheet:		v13.0.6 and newer
 
@@ -536,5 +536,22 @@ WeaponsList["sword of purple"] = {
 		By linking a weapon to a base weapon those scripts that would affect the base weapon will also affect this weapon.
 
 	Setting this to an empty string ("") is the same as not including this attribute.
+*/
+	selectNow : true,
+/*	selectNow // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether (true) or not (false) this weapon should immediately be selected
+	ADDED:	v13.1.14
+
+	This attribute only has an effect on weapons added through the `weaponOptions` common attribute 
+	(see '_common attributes.js').
+
+	By setting this attribute to `true`, it is no longer necessary to include the
+	`weaponsAdd` attribute as well.
+
+	This attribute has no effect outside of `weaponOptions`.
+	For armour added directly in the WeaponsList, this attribute will be ignored.
+
+	Setting this to false is the same as not including this attribute.
 */
 }

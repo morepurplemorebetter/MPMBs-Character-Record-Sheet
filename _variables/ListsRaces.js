@@ -9,7 +9,7 @@ var Base_RaceList = {
 			walk : { spd : 30, enc : 20 }
 		},
 		languageProfs : ["Common", "Draconic"],
-		weaponOptions : {
+		weaponOptions : [{
 			regExpSearch : /^(?=.*breath)(?=.*weapon).*$/i,
 			name : "Breath weapon",
 			source : [["SRD", 5], ["P", 34]],
@@ -20,9 +20,9 @@ var Base_RaceList = {
 			description : "Hits all in area; Dex save, success - half damage; Usable only once per short rest",
 			abilitytodamage : false,
 			dc : true,
-			dbBreathWeapon : true
-		},
-		weaponsAdd : ["Breath Weapon"],
+			dbBreathWeapon : true,
+			selectNow : true
+		}],
 		age : " reach adulthood by 15 and live around 80 years",
 		height : " stand well over 6 feet tall (5'6\" + 2d8\")",
 		weight : " weigh around 240 lb (175 + 2d8 \xD7 2d6 lb)",

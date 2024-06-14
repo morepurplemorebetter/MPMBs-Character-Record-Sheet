@@ -72,6 +72,30 @@ var FightingStyles = {
 	}
 };
 
+var GenericClassFeatures = {
+	"potent spellcasting" : {
+		name : "Potent Spellcasting",
+		description : desc("I add my Wisdom modifier to the damage I deal with my cleric cantrips"),
+		calcChanges : {
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.thisWeapon[3] && /\bcleric\b/.test(v.thisWeapon[4]) && SpellsList[v.thisWeapon[3]].level === 0 && /\d/.test(fields.Damage_Die)) {
+						output.extraDmg += What('Wis Mod');
+					};
+				},
+				"My cleric cantrips get my Wisdom modifier added to their damage."
+			],
+			spellAdd : [
+				function (spellKey, spellObj, spName) {
+					if (spellObj.psionic || spellObj.level !== 0 || spName.indexOf("cleric") == -1 || !What("Wis Mod") || Number(What("Wis Mod")) <= 0) return;
+					return genericSpellDmgEdit(spellKey, spellObj, "\\w+\\.?", "Wis");
+				},
+				"My cleric cantrips get my Wisdom modifier added to their damage."
+			]
+		}
+	}
+}
+
 var Base_ClassList = {
 	"barbarian" : {
 		regExpSearch : /^((?=.*(marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n))|((?=.*(warrior|fighter))(?=.*(feral|tribal)))).*$/i,
@@ -135,13 +159,13 @@ var Base_ClassList = {
 				minlevel : 1,
 				description : desc("Without armor, my AC is 10 + Dexterity modifier + Constitution modifier + shield"),
 				armorOptions : [{
-					regExpSearch : /justToAddToDropDown/,
+					regExpSearch : /justToAddToDropDownAndEffectWildShape/,
 					name : "Unarmored Defense (Con)",
 					source : [["SRD", 8], ["P", 48]],
 					ac : "10+Con",
-					affectsWildShape : true
-				}],
-				armorAdd : "Unarmored Defense (Con)"
+					affectsWildShape : true,
+					selectNow : true
+				}]
 			},
 			"reckless attack" : {
 				name : "Reckless Attack",
@@ -740,13 +764,13 @@ var Base_ClassList = {
 				minlevel : 1,
 				description : desc("Without armor and no shield, my AC is 10 + Dexterity modifier + Wisdom modifier"),
 				armorOptions : [{
-					regExpSearch : /justToAddToDropDown/,
+					regExpSearch : /justToAddToDropDownAndEffectWildShape/,
 					name : "Unarmored Defense (Wis)",
 					source : [["SRD", 26], ["P", 78]],
 					ac : "10+Wis",
-					affectsWildShape : true
-				}],
-				armorAdd : "Unarmored Defense (Wis)"
+					affectsWildShape : true,
+					selectNow : true
+				}]
 			},
 			"martial arts" : {
 				name : "Martial Arts",
@@ -2025,14 +2049,19 @@ var Base_ClassList = {
 							function (fields, v) {
 								if (v.baseWeaponName == 'eldritch blast') fields.Range = 300 * (v.rangeM ? v.rangeM : 1) + ' ft';
 							},
-							"My Eldritch Blast cantrip has a range of 300 ft."
+							"My Eldritch Blast cantrip has a range of 300 ft.",
+							50
+						],
+						spellAdd : [
+							function (spellKey, spellObj, spName) {
+								if (spellKey == 'eldritch blast') {
+									spellObj.range = '300 ft';
+									if (What("Unit System") === "metric") spellObj.range = ConvertToMetric(spellObj.range, 0.5);
+								}
+							},
+							"My Eldritch Blast cantrip has a range of 300 ft.",
+							50
 						]
-					},
-					spellChanges : {
-						"eldritch blast" : {
-							range : "300 ft",
-							changes : "My Eldritch Blast cantrip has a range of 300 ft."
-						}
 					}
 				},
 				"eyes of the rune keeper" : {
@@ -2203,16 +2232,20 @@ var Base_ClassList = {
 							function (fields, v) {
 								if (v.baseWeaponName == 'eldritch blast') fields.Description += '; Target pushed back 10 ft';
 							},
-							"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
+							"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me.",
+							51
+						],
+						spellAdd : [
+							function (spellKey, spellObj, spName) {
+								if (spellKey == 'eldritch blast') {
+									spellObj.description = "Spell attack beam 1d10 Force damage \u0026 push 10 ft; beams can be combined; +1 beam at CL5,11,17";
+									spellObj.descriptionShorter = "Spell atk beam 1d10 Force damage \u0026 push 10 ft; can combine beams; +1 beam at CL5,11,17";
+									spellObj.descriptionCantripDie = "Spell atk for `CD` beam(s), each 1d10 Force damage \u0026 push 10 ft; can combine/split beams";
+								}
+							},
+							"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me.",
+							51
 						]
-					},
-					spellChanges : {
-						"eldritch blast" : {
-							description : "Spell attack beam 1d10 Force damage \u0026 push 10 ft; beams can be combined; +1 beam at CL5,11,17",
-							descriptionShorter : "Spell atk beam 1d10 Force damage \u0026 push 10 ft; can combine beams; +1 beam at CL5,11,17",
-							descriptionCantripDie : "Spell atk for `CD` beam(s), each 1d10 Force damage \u0026 push 10 ft; can combine/split beams",
-							changes : "When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
-						}
 					}
 				},
 				"sculptor of flesh (prereq: level 7 warlock)" : {
@@ -2712,7 +2745,7 @@ var Base_ClassSubList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (classes.known.cleric && classes.known.cleric.level > 7 && !v.isSpell) {
+							if (classes.known.cleric && v.isWeapon) {
 								fields.Description += (fields.Description ? '; ' : '') + 'Once per turn +' + (classes.known.cleric.level < 14 ? 1 : 2) + 'd8 radiant damage';
 							}
 						},
@@ -3307,9 +3340,9 @@ var Base_ClassSubList = {
 					name : "Draconic Resilience",
 					source : [["SRD", 45], ["P", 102]],
 					ac : 13,
-					affectsWildShape : true
-				}],
-				armorAdd : "Draconic Resilience"
+					affectsWildShape : true,
+					selectNow : true
+				}]
 			},
 			"subclassfeature6" : {
 				name : "Elemental Affinity",

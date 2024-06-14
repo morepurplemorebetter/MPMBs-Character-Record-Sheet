@@ -494,7 +494,7 @@ function ResetAll(GoOn, noTempl, deleteImports) {
 	CurrentUpdates = {types : []};
 	GetStringifieds(keepImports);
 
-	if (keepImports) { // remove the imports and reset the sources
+	if (keepImports) { // keep the imports and reset the sources
 		SetStringifieds("sources");
 		SetStringifieds("scriptfiles");
 		Value("User Script", userScriptString);
@@ -2939,7 +2939,9 @@ function ReCalcWeapons(justProfs, force) {
 	};
 };
 
-function SetWeaponsdropdown(forceTooltips) {
+// Fill the attack drop-down boxes.
+// `aCompPrefixes` - Optional - Pass (array of) prefix of companion pages to update drop-down boxes. Omit to update every drop-down.
+function SetWeaponsdropdown(forceTooltips, aCompPrefixes) {
 	var tempString = "Type in the name of the attack (or select it from the drop-down menu) and all its attributes will be filled out automatically, provided that its a recognized attack.";
 	tempString += "\n\n" + toUni("Magic bonus") + '\nAny magical bonus you type in this field is added to both the to hit and damage (e.g. type " +2Longsword").';
 	tempString += "\n\n" + toUni("Off-hand weapons") + '\nIf the name or description fields include the word "off-hand", "secondary", "spell", or "cantrip", the ability modifier will only be added to the to hit bonus, and not to the damage.';
@@ -2988,47 +2990,67 @@ function SetWeaponsdropdown(forceTooltips) {
 		}
 	};
 
+	if (CurrentVars.extraWeaponsDisplay) {
+		for (var key in CurrentVars.extraWeaponsDisplay) {
+			weaponlists.startlist.push(CurrentVars.extraWeaponsDisplay[key]);
+		}
+	};
+
 	// make the definitive list of weapons for the dropdown box
 	var setweapons = [];
-	var addWeaList = function (weArr, addFirst, noSort, addAtStart) {
+	var addWeaList = function (setweapons, weArr, addFirst, noSort, addAtStart) {
+		if (!weArr) return setweapons;
 		if (!noSort) weArr.sort();
 		if (addFirst) weArr.unshift(addFirst);
 		if (weArr.length) {
 			weArr.unshift("");
 			setweapons = !addAtStart ? setweapons.concat(weArr) : weArr.concat(setweapons);
 		}
+		return setweapons;
 	};
-	addWeaList(weaponlists.melee.concat(weaponlists.ranged), "Unarmed Strike"); // add the natural weapons
-	addWeaList(weaponlists.improvised, "Improvised Weapon"); // add the improvised weapons
-	addWeaList(weaponlists.spell, "Spell Attack"); // add the spells/cantrips
-	addWeaList(weaponlists.endlist, false, true); // add the endlist weapons
+	setweapons = addWeaList(setweapons, weaponlists.melee.concat(weaponlists.ranged), "Unarmed Strike"); // add the natural weapons
+	setweapons = addWeaList(setweapons, weaponlists.improvised, "Improvised Weapon"); // add the improvised weapons
+	setweapons = addWeaList(setweapons, weaponlists.spell, "Spell Attack"); // add the spells/cantrips
+
 	// now add any lists that are not preset
 	otherLists.sort();
 	for (var i = 0; i < otherLists.length; i++) addWeaList(weaponlists[otherLists[i]]);
 
+	setweapons = addWeaList(setweapons, weaponlists.endlist, false, true); // add the endlist weapons
+
+	var listToSource = setweapons.toSource();
+
 	// first set the companion sheets attack dropdowns
 	var AScompA = What("Template.extras.AScomp").split(",");
-	var listToSource = setweapons.toSource();
+	if (aCompPrefixes && !isArray(aCompPrefixes)) aCompPrefixes = [aCompPrefixes];
 	for (var i = 0; i < AScompA.length; i++) {
 		var prefix = AScompA[i];
+		if (aCompPrefixes && aCompPrefixes.indexOf(prefix) === -1) continue; // only do selected
+		// Create new list of attacks, at the start
+		var compAtkList = !CurrentCompRace[prefix] || !CurrentCompRace[prefix].attacks ? false : CurrentCompRace[prefix].attacks.map(function (atk) { return atk.name; })
+		var setweaponsComp = addWeaList(setweapons, compAtkList, false, true, true);
+		var listToSourceComp = !compAtkList ? listToSource : setweaponsComp.toSource();
+		// Apply list to drop-downs
 		for (var c = 1; c <= 3; c++) {
 			var theFld = prefix + "Comp.Use.Attack." + c + ".Weapon Selection";
 			var theFldSuNm = prefix + "Comp.Use.Attack." + c + ".Proficiency";
-			if (tDoc.getField(theFldSuNm).submitName === listToSource) {
+			if (tDoc.getField(theFldSuNm).submitName === listToSourceComp) {
 				if (forceTooltips) AddTooltip(theFld, tempString);
 				continue; // no changes, so no reason to set this field
 			}
-			tDoc.getField(theFldSuNm).submitName = listToSource;
+			tDoc.getField(theFldSuNm).submitName = listToSourceComp;
 			var theFldVal = What(theFld);
 			IsNotWeaponMenu = false;
-			tDoc.getField(theFld).setItems(setweapons);
+			tDoc.getField(theFld).setItems(setweaponsComp);
 			IsNotWeaponMenu = true;
 			if (theFldVal !== What(theFld)) Value(theFld, theFldVal, tempString);
 		};
 	}
 
+	if (aCompPrefixes) return; // Only doing a specific companion page, so stop here
+
 	// now add the special weapons added by features, as we only want those on the first page
-	addWeaList(weaponlists.startlist, false, false, true);
+	setweapons = addWeaList(setweapons, weaponlists.startlist, false, false, true);
 	listToSource = setweapons.toSource();
 
 	// lastly set this array for the attack dropdowns on the first page
@@ -3072,6 +3094,12 @@ function SetArmordropdown(forceTooltips) {
 			aLists[armList] = [armNm];
 		} else {
 			aLists[armList].push(armNm);
+		}
+	};
+
+	if (CurrentVars.extraArmourDisplay) {
+		for (var key in CurrentVars.extraArmourDisplay) {
+			aLists.startlist.push(CurrentVars.extraArmourDisplay[key]);
 		}
 	};
 
@@ -3215,7 +3243,7 @@ function ParseGear(input) {
 	if (!input) return false;
 	var foundLen = 0, testLen = 0;
 	var result = false;
-	var tempString = removeDiacritics(input.toLowerCase());
+	var tempString = clean(input.toLowerCase(), false, true);
 	var tempStrLen = tempString.length;
 
 	//see if it is a magic item
@@ -4941,7 +4969,6 @@ function ApplyFeat(input, FldNmbr) {
 	var ArrayNmbr = FldNmbr - 1;
 	var oldFeat = CurrentFeats.known[ArrayNmbr];
 	var oldFeatVar = CurrentFeats.choices[ArrayNmbr];
-	var setFieldValueTo;
 	var failedChoice = false;
 
 	var doNotCommit = function(toSetVal) {
@@ -4974,7 +5001,7 @@ function ApplyFeat(input, FldNmbr) {
 				if (!selectFeatVar) selectFeatVar = AskUserOptions("Select " + aFeat.name + " Type", "The '" + aFeat.name + "' feat has several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the feat line that this feat is in.", parseResult[2], "radio", true);
 				newFeatVar = selectFeatVar.toLowerCase();
 				aFeatVar = aFeat[newFeatVar];
-				setFieldValueTo = aFeatVar.name ? aFeatVar.name : aFeat.name + " [" + selectFeatVar + "]";
+				event.target.setValPrepared = aFeatVar.name ? aFeatVar.name : aFeat.name + " [" + selectFeatVar + "]";
 			}
 		} else if (!IsNotImport) {
 			failedChoice = true;
@@ -5001,7 +5028,7 @@ function ApplyFeat(input, FldNmbr) {
 	}
 
 	if (oldFeat === newFeat && oldFeatVar === newFeatVar) {
-		if (setFieldValueTo) event.target.setVal = setFieldValueTo;
+		if (event.target.setValPrepared) event.target.setVal = event.target.setValPrepared;
 		return; // No changes were made
 	}
 
@@ -5015,7 +5042,7 @@ function ApplyFeat(input, FldNmbr) {
 		aFeatVar = "";
 	} else {
 		var theFeat = {
-			name : aFeatVar.name ? aFeatVar.name : setFieldValueTo ? setFieldValueTo : input
+			name : aFeatVar.name ? aFeatVar.name : event.target.setValPrepared ? event.target.setValPrepared : input
 		}
 		var FeatAttr = ["source", "description", "descriptionFull", "calculate", "prerequisite", "prereqeval"];
 		for (var a = 0; a < FeatAttr.length; a++) {
@@ -5089,9 +5116,6 @@ function ApplyFeat(input, FldNmbr) {
 		};
 	};
 
-	// if a feat variant was chosen, make sure this field will show that selection, now that it can't be cancelled anymore due to not meeting a prerequisite
-	if (setFieldValueTo) event.target.setVal = setFieldValueTo;
-
 	calcStop(); // Now stop the calculations
 
 	// Remove previous feat at the same field
@@ -5159,6 +5183,9 @@ function ApplyFeat(input, FldNmbr) {
 			false // forceNonCurrent
 		);
 	}
+
+	// if a feat variant was chosen, make sure this field will show that selection (important that this is the last step)
+	if (event.target.setValPrepared) event.target.setVal = event.target.setValPrepared;
 
 	thermoM(thermoTxt, true); // Stop progress bar
 };

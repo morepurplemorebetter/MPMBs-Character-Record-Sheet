@@ -20,7 +20,7 @@
 */
 
 var iFileName = "Witch [William Russell's work, transcribed by MPMB].js";
-RequiredSheetVersion("13.1.3");
+RequiredSheetVersion("13.1.14");
 
 SourceList["WR:W"] = {
 	name : "William Russell: Witch",
@@ -586,14 +586,14 @@ AddSubClass("witch-wr", "shadow tradition", {
 				"My look changes as I gain stringy hair, pale skin, dark eyes, and long, sharp teeth",
 				"I can use my sharp teeth to make unarmed strikes dealing 1d4 piercing damage"
 			]),
-			weaponOptions : {
+			weaponOptions : [{
 				baseWeapon : "unarmed strike",
 				regExpSearch : /\bbite\b/i,
 				name : "Bite",
 				source : [["WR:W", 8]],
-				damage : [1, 4, "piercing"]
-			},
-			weaponsAdd : ["Bite"]
+				damage : [1, 4, "piercing"],
+				selectNow : true
+			}]
 		},
 		"subclassfeature5" : {
 			name : "Shadowborne",

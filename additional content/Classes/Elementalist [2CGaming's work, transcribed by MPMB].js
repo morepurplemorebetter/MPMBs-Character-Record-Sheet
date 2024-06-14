@@ -21,7 +21,7 @@
 */
 
 var iFileName = "Elementalist [2CGaming's work, transcribed by MPMB].js";
-RequiredSheetVersion('13.1.13');
+RequiredSheetVersion('13.1.14');
 
 SourceList["ELCC"] = {
 	name : "Epic Legacy Campaign Codex",
@@ -409,7 +409,6 @@ AddSubClass("elementalist", "air", {
 				return (n < 6 ? 1 : n < 10 ? 2 : n < 14 ? 3 : n < 18 ? 4 : 5) + 'd6 bludgeoning damage'
 			}),
 			action : [["action", ""]],
-			weaponsAdd : ["Guiding Wind Blast"],
 			weaponOptions : [{
 				regExpSearch : /^(?=.*guiding)(?=.*wind)(?=.*blast).*$/i,
 				name : "Guiding Wind Blast",
@@ -420,7 +419,8 @@ AddSubClass("elementalist", "air", {
 				description : "Ranged spell attack; Or add damage to ally's ranged weapon attack",
 				damage : [1, 6, "bludgeoning"],
 				abilitytodamage : false,
-				isGuidingWindBlast : true
+				isGuidingWindBlast : true,
+				selectNow : true
 			}],
 			calcChanges : {
 				atkAdd : [
@@ -552,7 +552,6 @@ AddSubClass("elementalist", "earth", {
 				"After I finish a long rest, I can gain 4 times my elementalist level in temporary hit points",
 				"I can make melee spell attacks instead of unarmed strikes, dealing +" + elementalistAbilityAbbr + " mod damage"
 			]),
-			weaponsAdd : ["Stone Mantle Strike"],
 			weaponOptions : [{
 				baseWeapon : "unarmed strike",
 				regExpSearch : /^(?=.*stone)(?=.*mantle)(?=.*strike).*$/i,
@@ -561,7 +560,8 @@ AddSubClass("elementalist", "earth", {
 				ability : elementalistAbility,
 				type : "Spell",
 				description : "Melee spell attack",
-				damage : ["1+Str", "", "bludgeoning"]
+				damage : ["1+Str", "", "bludgeoning"],
+				selectNow : true
 			}],
 			additional : levels.map(function (n) {
 				return (n * 4) + " temp HP";
@@ -805,7 +805,6 @@ AddSubClass("elementalist", "water", {
 				return (n < 6 ? 1 : n < 10 ? 2 : n < 14 ? 3 : n < 18 ? 4 : 5) + 'd4 necrotic damage'
 			}),
 			action : [["action", ""]],
-			weaponsAdd : ["Siphoning Strike"],
 			weaponOptions : [{
 				regExpSearch : /^(?=.*siphoning)(?=.*strike).*$/i,
 				name : "Siphoning Strike",
@@ -816,7 +815,8 @@ AddSubClass("elementalist", "water", {
 				description : "Melee spell attack; Ally in area of influence heals same amount as damage dealt",
 				damage : [1, 4, "necrotic"],
 				abilitytodamage : false,
-				isSiphoningStrike : true
+				isSiphoningStrike : true,
+				selectNow : true
 			}],
 			calcChanges : {
 				atkAdd : [

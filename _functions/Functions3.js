@@ -262,9 +262,9 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		// --- backwards compatibility --- //
 		// armor, shield, and weapon additions
 		var aWeaponsAdd = uObj.weaponsAdd ? uObj.weaponsAdd : type == "race" && uObj.weapons ? uObj.weapons : false;
-		if (aWeaponsAdd) processAddWeapons(addIt, aWeaponsAdd);
+		if (aWeaponsAdd) processAddWeapons(addIt, aWeaponsAdd, tipNm);
 		var anArmorAdd = uObj.armorAdd ? uObj.armorAdd : uObj.addarmor ? uObj.addarmor : false;
-		if (anArmorAdd) processAddArmour(addIt, anArmorAdd);
+		if (anArmorAdd) processAddArmour(addIt, anArmorAdd, tipNm);
 		if (uObj.shieldAdd) processAddShield(addIt, uObj.shieldAdd, uObj.weight);
 		if (uObj.ammoAdd) processAddAmmo(addIt, uObj.ammoAdd);
 
@@ -1138,25 +1138,52 @@ function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrc
 }
 
 // set the armour (if more AC than current armour) or remove the armour
-function processAddArmour(AddRemove, armour) {
-	if (!armour || typeof armour != "string") return;
-	if (!AddRemove) { // remove
-		RemoveArmor(armour);
-	} else { // add
-		if (!ParseArmor(armour)) return;
-		var remCurArm = What("AC Armor Description");
-		var remAC = Number(What("AC"));
-		Value("AC Armor Description", armour);
-		if (remCurArm && remAC) { // there was a previous armor, so check if this new armor is better or not
-			// calculate all the field values, or the AC field will not be updated
-			var isStoppedCalc = calcStartSet != false;
-			if (isStoppedCalc) calcCont(true);
-			if (remAC > Number(What("AC"))) {
-				Value("AC Armor Description", remCurArm);
-			} else if (isStoppedCalc) {
-				calcStop();
+function processAddArmour(AddRemove, armorAdd, srcNm) {
+	if (!armorAdd || isArray(armorAdd)) return;
+	if (typeof armorAdd === "string") {
+		armorAdd = { select : armorAdd };
+	}
+	srcNm = srcNm ? srcNm.toLowerCase() : 'unknownSource';
+	if (armorAdd.options) {
+		if (!CurrentVars.extraArmourDisplay) CurrentVars.extraArmourDisplay = {};
+		for (var i = 0; i < armorAdd.options.length; i++) {
+			var armOption = armorAdd.options[i];
+			var newName = srcNm + "-" + armOption.toLowerCase();
+			if (AddRemove) {
+				CurrentVars.extraArmourDisplay[newName] = armOption;
+			} else {
+				delete CurrentVars.extraArmourDisplay[newName];
 			}
 		}
+		// if adding, update the dropdown before adding selection
+		if (AddRemove) UpdateDropdown("armour");
+	}
+	if (armorAdd.select) {
+		if (!AddRemove) { // remove
+			RemoveArmor(armorAdd.select);
+		} else if (ParseArmor(armorAdd.select)) { // add, but only if a recognized armour
+			var remCurArm = What("AC Armor Description");
+			var remAC = Number(What("AC"));
+			Value("AC Armor Description", armorAdd.select);
+			if (remCurArm && remAC) { // there was a previous armor, so check if this new armor is better or not
+				// calculate all the field values, or the AC field will not be updated
+				var isStoppedCalc = calcStartSet != false;
+				if (isStoppedCalc) calcCont(true);
+				if (remAC > Number(What("AC"))) {
+					Value("AC Armor Description", remCurArm);
+				} else if (isStoppedCalc) {
+					calcStop();
+				}
+			}
+		}
+	}
+	if (armorAdd.options) {
+		// if removing, update the armour dropdown after removing the selection
+		if (!AddRemove) {
+			UpdateDropdown("armour");
+			if (!ObjLength(CurrentVars.extraArmourDisplay)) delete CurrentVars.extraArmourDisplay;
+		}
+		SetStringifieds("vars"); // Save the new settings to a field
 	}
 }
 
@@ -1171,8 +1198,6 @@ function processAddShield(AddRemove, shield, weight) {
 		if (weight !== undefined && !isNaN(weight)) shield[2] = weight;
 	}
 
-	// grab current fields
-	var shieldFld = What("AC Shield Bonus Description");
 	if (AddRemove) { // add
 		// see what the new AC will be
 		var newACdefined = shield[1] !== undefined && !isNaN(shield[1]) ? shield[1] : undefined;
@@ -1195,11 +1220,40 @@ function processAddShield(AddRemove, shield, weight) {
 }
 
 // set attacks or remove the attacks
-function processAddWeapons(AddRemove, weapons) {
-	if (!weapons) return;
-	if (!isArray(weapons)) weapons = [weapons];
-	for (var w = 0; w < weapons.length; w++) {
-		tDoc[(AddRemove ? "Add" : "Remove") + "Weapon"](weapons[w]);
+function processAddWeapons(AddRemove, weaponsAdd, srcNm) {
+	if (!weaponsAdd ) return;
+	if (typeof weaponsAdd === "string") {
+		weaponsAdd = { select : [weaponsAdd] };
+	} else if (isArray(weaponsAdd)) {
+		weaponsAdd = { select : weaponsAdd };
+	}
+	srcNm = srcNm ? srcNm.toLowerCase() : 'unknownSource';
+	if (weaponsAdd.options) {
+		if (!CurrentVars.extraWeaponsDisplay) CurrentVars.extraWeaponsDisplay = {};
+		for (var i = 0; i < weaponsAdd.options.length; i++) {
+			var weaOption = weaponsAdd.options[i];
+			var newName = srcNm + "-" + weaOption.toLowerCase();
+			if (AddRemove) {
+				CurrentVars.extraWeaponsDisplay[newName] = weaOption;
+			} else {
+				delete CurrentVars.extraWeaponsDisplay[newName];
+			}
+		}
+		// if adding, update the dropdowns before adding selection
+		if (AddRemove) UpdateDropdown("weapons");
+	}
+	if (weaponsAdd.select) {
+		for (var w = 0; w < weaponsAdd.select.length; w++) {
+			tDoc[(AddRemove ? "Add" : "Remove") + "Weapon"](weaponsAdd.select[w]);
+		}
+	}
+	if (weaponsAdd.options) {
+		// if removing, update the weapon dropdowns after removing the selection
+		if (!AddRemove) {
+			UpdateDropdown("weapons");
+			if (!ObjLength(CurrentVars.extraWeaponsDisplay)) delete CurrentVars.extraWeaponsDisplay;
+		}
+		SetStringifieds("vars"); // Save the new settings to a field
 	}
 }
 
@@ -1239,6 +1293,7 @@ function processArmorOptions(AddRemove, srcNm, itemArr, magical) {
 	// if adding things but the variable doesn't exist
 	if (AddRemove && !CurrentVars.extraArmour) CurrentVars.extraArmour = {};
 
+	var setSelection = [];
 	srcNm = srcNm.toLowerCase();
 	for (var i = 0; i < itemArr.length; i++) {
 		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
@@ -1248,17 +1303,26 @@ function processArmorOptions(AddRemove, srcNm, itemArr, magical) {
 			if (magical) itemArr[i].isMagicArmor = true;
 			CurrentVars.extraArmour[newName] = itemArr[i];
 			ArmourList[newName] = itemArr[i];
+			if (itemArr[i].selectNow) setSelection.push(itemArr[i].name);
 		} else {
+			// remove as current armour if selected
+			if (CurrentArmour.known === newName) tDoc.resetForm(["AC Armor Description"]);
 			// remove the entries if they exist
 			if (CurrentVars.extraArmour[newName]) delete CurrentVars.extraArmour[newName];
 			if (ArmourList[newName]) delete ArmourList[newName];
 		}
 	}
 
-	// if removing things and the variable is now empty
+	// if removing things and the variable is now empty, delete it
 	if (!AddRemove && !ObjLength(CurrentVars.extraArmour)) delete CurrentVars.extraArmour;
 	UpdateDropdown("armour"); // update the armour dropdown
 	SetStringifieds("vars"); // Save the new settings to a field
+	if (AddRemove && setSelection.length) {
+		// when adding, add the armour after changing the drop-down box
+		for (var i = 0; i < setSelection.length; i++) {
+			processAddArmour(true, { select : setSelection[i] }, srcNm);
+		}
+	}
 }
 
 // set or remove attack options
@@ -1269,6 +1333,7 @@ function processWeaponOptions(AddRemove, srcNm, itemArr, magical) {
 	// if adding things but the variable doesn't exist
 	if (AddRemove && !CurrentVars.extraWeapons) CurrentVars.extraWeapons = {};
 
+	var setSelection = [];
 	srcNm = srcNm.toLowerCase();
 	for (var i = 0; i < itemArr.length; i++) {
 		var newName = srcNm + "-" + itemArr[i].name.toLowerCase();
@@ -1278,6 +1343,7 @@ function processWeaponOptions(AddRemove, srcNm, itemArr, magical) {
 			if (magical) itemArr[i].isMagicWeapon = true;
 			CurrentVars.extraWeapons[newName] = itemArr[i];
 			WeaponsList[newName] = itemArr[i];
+			if (itemArr[i].selectNow) setSelection.push(itemArr[i].name);
 		} else {
 			// remove the entries if they exist and delete any weapons like it
 			for (var j = FieldNumbers.attacks - 1; j >= 0; j--) {
@@ -1288,10 +1354,14 @@ function processWeaponOptions(AddRemove, srcNm, itemArr, magical) {
 		}
 	}
 
-	// if removing things and the variable is now empty
+	// if removing things and the variable is now empty, delete it
 	if (!AddRemove && !ObjLength(CurrentVars.extraWeapons)) delete CurrentVars.extraWeapons;
-	UpdateDropdown("weapons"); // update the weapons dropdown
+	UpdateDropdown("weapons"); // update the weapons dropdowns
 	SetStringifieds("vars"); // Save the new settings to a field
+	if (AddRemove && setSelection.length) {
+		// when adding, add the weapons after changing the drop-down box
+		processAddWeapons(true, { select : setSelection }, srcNm);
+	}
 }
 
 // set or remove ammo options
@@ -1440,6 +1510,7 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 
 // a function to recalculate the weapon entries after a change in weapon proficiencies or CurrentEvals
 function UpdateSheetWeapons() {
+	if (!CurrentUpdates.types.length) return;
 	// some atkAdd eval might be level-dependent, so force updating the weapons when changing level and such an eval is present
 	var isLvlDepAtkAdd = false;
 	// iterate through all the atkAdd evals to see if any are level-dependent, but only when changing level
@@ -1454,8 +1525,7 @@ function UpdateSheetWeapons() {
 		}
 	}
 
-	var CUflat = CurrentUpdates.types.toString();
-	if (!isLvlDepAtkAdd && (!CurrentUpdates.types.length || !IsNotReset || !IsNotImport || CUflat.indexOf("attacks") == -1)) return;
+	if (!isLvlDepAtkAdd && (!IsNotReset || !IsNotImport || CurrentUpdates.types.toString().indexOf("attacks") == -1)) return;
 	ReCalcWeapons(CurrentUpdates.types.indexOf("attacksprofs") !== -1, isLvlDepAtkAdd || CurrentUpdates.types.indexOf("attacksforce") !== -1);
 }
 
@@ -2280,6 +2350,7 @@ function doDropDownValCalcWithChoices() {
 		case "Validate":
 			if (event.target.setVal !== undefined) {
 				delete event.target.setVal;
+				delete event.target.setValPrepared;
 				return;
 			}
 			// only in case of a validation event and not changing the value
@@ -2448,7 +2519,6 @@ function ApplyMagicItem(input, FldNmbr) {
 	var ArrayNmbr = FldNmbr - 1;
 	var oldMI = CurrentMagicItems.known[ArrayNmbr];
 	var oldMIvar = CurrentMagicItems.choices[ArrayNmbr];
-	var setFieldValueTo;
 	var failedChoice = false;
 
 	var doNotCommit = function(toSetVal) {
@@ -2482,7 +2552,7 @@ function ApplyMagicItem(input, FldNmbr) {
 				if (!selectMIvar) selectMIvar = AskUserOptions("Select " + aMI.name + " Type", "The '" + aMI.name + "' magic item exists in several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the magic item line that this item is in.", parseResult[2], "radio", true);
 				newMIvar = selectMIvar.toLowerCase();
 				aMIvar = aMI[newMIvar];
-				setFieldValueTo = aMIvar.name ? aMIvar.name : aMI.name + " [" + selectMIvar + "]";
+				event.target.setValPrepared = aMIvar.name ? aMIvar.name : aMI.name + " [" + selectMIvar + "]";
 			}
 		} else if (!IsNotImport) {
 			failedChoice = true;
@@ -2509,7 +2579,7 @@ function ApplyMagicItem(input, FldNmbr) {
 	}
 
 	if (oldMI === newMI && oldMIvar === newMIvar && (!aMI || !aMI.chooseGear) && (!aMIvar || !aMIvar.chooseGear)) {
-		if (setFieldValueTo) event.target.setVal = setFieldValueTo;
+		if (event.target.setValPrepared) event.target.setVal = event.target.setValPrepared;
 		return; // No changes were made
 	}
 
@@ -2523,7 +2593,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		newMIvar = "";
 	} else {
 		var theMI = {
-			name : aMIvar.name ? aMIvar.name : setFieldValueTo ? setFieldValueTo : input
+			name : aMIvar.name ? aMIvar.name : event.target.setValPrepared ? event.target.setValPrepared : input
 		}
 		var MIattr = ["source", "type", "rarity", "attunement", "magicItemTable", "weight", "description", "descriptionLong", "descriptionFull", "calculate", "prerequisite", "prereqeval", "chooseGear", "extraTooltip", "storyItemAL"];
 		for (var a = 0; a < MIattr.length; a++) {
@@ -2596,9 +2666,6 @@ function ApplyMagicItem(input, FldNmbr) {
 			}
 		};
 	};
-
-	// if a magic item variant was chosen, make sure this field will show that selection, now that it can't be cancelled anymore due to not meeting a prerequisite
-	if (setFieldValueTo) event.target.setVal = setFieldValueTo;
 
 	calcStop(); // Now stop the calculations
 
@@ -2732,6 +2799,9 @@ function ApplyMagicItem(input, FldNmbr) {
 
 	// Set the visibility of the attuned checkbox
 	setMIattunedVisibility(FldNmbr);
+
+	// if a magic item variant was chosen, make sure this field will show that selection (important that this is the last step)
+	if (event.target.setValPrepared) event.target.setVal = event.target.setValPrepared;
 
 	thermoM(thermoTxt, true); // Stop progress bar
 };
@@ -3642,7 +3712,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 		isItem = itemRefs[userSelected];
 		selectedItem = baseList[isItem].name;
 	} else {
-		if (isApplyFld && event.target.setVal) selectedItem = baseList[isItem].name;
+		if (isApplyFld && event.target.setValPrepared) selectedItem = baseList[isItem].name;
 		var theItemName = baseList[isItem].name.toLowerCase();
 	}
 	// ammunitions are often written as plural, but we don't want that here
@@ -3664,10 +3734,12 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 				processAddAmmo(AddRemove, [[itemToProcess ? itemToProcess : newMIname.replace(/ammunition (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2"), typeObj.ammoAmount && !isNaN(typeObj.ammoAmount) ? typeObj.ammoAmount : 1]]);
 				break;
 			case "weapon":
-				processAddWeapons(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/weapon (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2"));
+				var weaponName = itemToProcess ? itemToProcess : newMIname.replace(/weapon (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2");
+				processAddWeapons(AddRemove, {select : [weaponName], options : [weaponName]});
 				break;
 			case "armor":
-				processAddArmour(AddRemove, itemToProcess ? itemToProcess : newMIname.replace(/armou?r (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2"));
+				var armourName = itemToProcess ? itemToProcess : newMIname.replace(/armou?r (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2");
+				processAddArmour(AddRemove, {select : armourName, options : [armourName]});
 				break;
 		}
 	}
@@ -3692,7 +3764,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			Value(MIflds[3], RoundTo(baseList[isItem].weight * massMod, 0.001, true));
 		}
 		// set the changed name of the magic item (always do this last!)
-		if (newMIname !== event.value) event.target.setVal = newMIname;
+		if (newMIname !== event.value) event.target.setValPrepared = newMIname;
 	}
 }
 

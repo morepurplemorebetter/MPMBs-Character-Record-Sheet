@@ -36,8 +36,8 @@
 
 	Remarks:	This syntax is also used for objects in the 'armorOptions' attribute found in '_common attributes.js'.
 				For the 'armorOptions', you can disregard the object name and ArmourList variable.
-				Note that if you want a class feature, race, racial trait, feat, background, or magic item to add an armor,
-				you should be using the 'armorOptions' attribute.
+				Note that if you want a class feature, race, racial trait, feat, background, or magic item to
+				add an armor, you should be using the 'armorOptions' attribute.
 
 	Sheet:		v13.0.6 and newer
 
@@ -302,6 +302,23 @@ ArmourList["purple mail"] = {
 
 	This attribute is commonly only used for alternative armour options gained from
 	class features like Unarmoured Defence.
+
+	Setting this to false is the same as not including this attribute.
+*/
+	selectNow : true,
+/*	selectNow // OPTIONAL //
+	TYPE:	boolean
+	USE:	whether (true) or not (false) this armour should immediately be selected
+	ADDED:	v13.1.14
+
+	This attribute only has an effect on armour added through the `armorOptions` common attribute 
+	(see '_common attributes.js').
+
+	By setting this attribute to `true`, it is no longer necessary to include the
+	`armorAdd` attribute as well.
+
+	This attribute has no effect outside of `armorOptions`.
+	For armour added directly in the ArmourList, this attribute will be ignored.
 
 	Setting this to false is the same as not including this attribute.
 */
