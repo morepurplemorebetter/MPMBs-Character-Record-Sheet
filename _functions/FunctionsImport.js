@@ -1403,6 +1403,10 @@ function DirectImport(consoleTrigger) {
 						}
 					}
 				};
+				if (spCastFrom.abilityBackup) {
+					spCastTo.abilityBackup = spCastFrom.abilityBackup;
+					spCastTo.ability = spCastFrom.ability;
+				};
 			};
 			if (global.docFrom.CurrentCasters.incl || global.docFrom.CurrentCasters.excl) {
 				CurrentCasters = newObj(global.docFrom.CurrentCasters);

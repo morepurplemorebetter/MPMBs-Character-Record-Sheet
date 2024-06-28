@@ -2787,19 +2787,28 @@ function LimFeaDelete(itemNmbr) {
 
 //a way of going to a specified field (for making bookmarks independent of templates)
 function Bookmark_Goto(BookNm) {
+	// Set focus to the last iteration of the field
+	var gotoField = function(fldName) {
+		var fld = tDoc.getField(fldName);
+		if (fld && isArray(fld.page)) {
+			fld = tDoc.getField(fldName + "." + (fld.page.length - 1));
+		}
+		if (fld) fld.setFocus();
+	}
+
 	// Find the field corresponding to the bookmark name
-	var theTemplate = event.type === "Bookmark" ? getBookmarkTemplate(event.target) : false;
+	var theTemplate = getBookmarkTemplate(event.type === "Bookmark" ? event.target : {name : BookNm});
 	var isVisible = theTemplate ? isTemplVis(theTemplate[0], true) : true;
 	var prefix = "";
 	if (isArray(isVisible)) {
 		prefix = isVisible[1];
 		isVisible = isVisible[0];
 	}
-	var theFld = prefix + BookMarkList[BookNm];
+	var fldName = prefix + BookMarkList[BookNm];
 
 	// Determine if the selected section is on a visible page, and if so go to it.
-	if (isVisible && theFld && tDoc.getField(theFld)) {
-		tDoc.getField(theFld).setFocus();
+	if (isVisible && fldName && tDoc.getField(fldName)) {
+		gotoField(fldName);
 		return;
 	};
 
@@ -2814,7 +2823,7 @@ function Bookmark_Goto(BookNm) {
 		if (app.alert(theMessage) === 4) {
 			if (theTemplate[0] !== "SSfront") {
 				var newPrefix = DoTemplate(theTemplate[0], "Add");
-				tDoc.getField(newPrefix + BookMarkList[BookNm]).setFocus();
+				gotoField(newPrefix + BookMarkList[BookNm]);
 			} else {
 				GenerateSpellSheet();
 			};
@@ -2826,7 +2835,7 @@ function Bookmark_Goto(BookNm) {
 function deletePage(fldNm, onTemplate) {
 	var tempFld = tDoc.getField(fldNm);
 	if (!tempFld) return false;
-	var tempPage = onTemplate ? Math.max.apply(Math, tempFld.page) : tempFld.page;
+	var tempPage = onTemplate || isArray(tempFld.page) ? Math.max.apply(Math, tempFld.page) : tempFld.page;
 	try {
 		tDoc.deletePages(tempPage);
 	} catch (theError) {
@@ -2839,6 +2848,21 @@ function deletePage(fldNm, onTemplate) {
 			return true;
 		}
 		return false;
+	}
+	// Because of a bug, sometimes the page is deleted but the fields aren't, corrupting the AcroForm
+	if (!onTemplate && tDoc.getField(fldNm) && tDoc.getField(fldNm).page === -1) {
+		var alert = {
+			cTitle : "ERROR: this AcroForm is corrupted",
+			cMsg : "The removal of the page caused this PDF to become corrupted. The fields from the deleted page(s) haven't been properly removed because of a bug in Adobe Acrobat (not something MPMB can fix)."+
+			"\n\nThis corruption will cause the filesize to keep increasing, the sheet to slow down significantly, and eventually you won't be able to open this PDF at all."+
+			"\n\nIMPORTANT! To remedy this, either:"+
+			"\n \u2022 Stop what you are doing, close, but don't save this file, and re-open a saved version of it."+
+			"\n \u2022 Save this sheet and import it into a freshly downloaded version. You can learn how to do this on MPMB's website.",
+			nIcon : 1,
+			oCheckbox : { cMsg : "Open the step-by-step \"Upgrade to New Sheet\" guide on MPMB's website." }
+		};
+		app.alert(alert);
+		if (alert.oCheckbox.bAfterValue) contactMPMB("upgrade to new sheet");
 	}
 	return true;
 }
@@ -2854,14 +2878,30 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 			var theDep = DepL[T];
 			var multiDep = TemplatesWithExtras.indexOf(theDep) !== -1;
 			if (!multiDep) {
-				var DepTypeFld = tDoc.getField(BookMarkList[theDep]);
-				if (isArray(DepTypeFld.page)) {
-					return Math.max.apply(Math, DepTypeFld.page) + 1;
+				var pageNum = tDoc.getField(BookMarkList[theDep]).page;
+				if (isArray(pageNum)) {
+					return Math.max.apply(Math, pageNum) + 1;
 				};
 			} else {
 				var depVisible = isTemplVis(theDep, "last");
 				if (depVisible) {
-					return tDoc.getField(depVisible[1] + BookMarkList[theDep]).page + 1;
+					var pageNum = tDoc.getField(depVisible[1] + BookMarkList[theDep]).page;
+					if (isArray(pageNum) && pageNum[0] === -1) {
+						// A bug in Acrobat caused the page to be deleted but not the fields, making the internal form structure corrupted
+						pageNum = pageNum[pageNum.length - 1];
+						var alert = {
+							cTitle : "ERROR: this AcroForm is corrupted",
+							cMsg : "This PDF seems to have been corrupted. Fields from deleted pages haven't been properly removed. This is caused by a bug in Adobe Acrobat and not something MPMB can fix."+
+							"\n\nThis corruption will cause the filesize to keep increasing, the sheet to slow down significantly, and eventually you won't be able to open this PDF at all."+
+							"\n\nIMPORTANT! This was not caused by the thing you just clicked, but your action did make the corruption apparent. Older saves of this PDF could also be corrupted."+
+							"\n\nTo remedy this, please save this sheet and import it into a freshly downloaded version. You can learn how to do this on MPMB's website.",
+							nIcon : 1,
+							oCheckbox : { cMsg : "Open the step-by-step guide on MPMB's website." }
+						};
+						app.alert(alert);
+						if (alert.oCheckbox.bAfterValue) contactMPMB("upgrade to new sheet");
+					}
+					return pageNum + 1;
 				}
 			};
 		};
@@ -3718,7 +3758,7 @@ function MakeAdvLogMenu_AdvLogOptions(Button) {
 
 //get the parent of the bookmark so we can know which template it is on
 function getBookmarkTemplate(bookmark) {
-	while (bookmark.name !== "Root") {
+	while (bookmark && bookmark.name !== "Root") {
 		if (BookMarkList[bookmark.name + "_template"]) {
 			return [BookMarkList[bookmark.name + "_template"], bookmark.name];
 		};
@@ -5299,6 +5339,9 @@ function contactMPMB(medium) {
 		default :
 		case "website" :
 			app.launchURL("https://www.flapkan.com/", true);
+			break;
+		case "upgrade to new sheet" :
+			app.launchURL("https://www.flapkan.com/how-to/upgrade-to-new-sheet", true);
 			break;
 		case "how to add content" :
 			app.launchURL("https://www.flapkan.com/how-to/add-more-content", true);

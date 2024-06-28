@@ -4913,7 +4913,7 @@ function SaveSpellcastingAbility() {
 			});
 			if (redosheets === 4) {
 				SetStringifieds("spells");
-				GenerateSpellSheet();
+				var waitForThisBlurActionToFinish = app.setTimeOut("GenerateSpellSheet();", 10);
 				return;
 			}
 		}
