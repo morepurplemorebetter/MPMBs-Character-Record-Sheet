@@ -2832,25 +2832,33 @@ function Bookmark_Goto(BookNm) {
 };
 
 // a function to delete a page (and deal with the bug https://acrobat.uservoice.com/forums/590923-acrobat-for-windows-and-mac/suggestions/39561631--bug-report-deleting-a-page-while-the-mini-page-p )
-function deletePage(fldNm, onTemplate) {
+function deletePage(fldNm, onTemplate, ignoreError) {
 	var tempFld = tDoc.getField(fldNm);
-	if (!tempFld) return false;
+	var theReturn = true;
+	if (!tempFld) return theReturn;
 	var tempPage = onTemplate || isArray(tempFld.page) ? Math.max.apply(Math, tempFld.page) : tempFld.page;
 	try {
 		tDoc.deletePages(tempPage);
 	} catch (theError) {
+		theReturn = false;
 		// Because of bug, the fields could be removed, but the page is still there. Test for this
 		// IMPORTANT, the tempFld object will be dead if all fields by its name were removed, so re-initiate it
 		tempFld = tDoc.getField(fldNm);
 		var fldWasRemoved = !tempFld ? true : isArray(tempFld.page) ? false : onTemplate ? tempFld.page != tempPage : false;
 		if (theError.toString().indexOf("One or more pages are in use and could not be deleted") !== -1 && fldWasRemoved) {
-			tDoc.deletePages(tempPage);
-			return true;
+			try {
+				tDoc.deletePages(tempPage);
+				theReturn = true;
+			} catch (error) {
+				var eText = "Error while deleting page. Please contact MPMB and share the following error text:\n Adobe Acrobat version: " + app.viewerVersion + "\n " + error;
+				for (var e in error) eText += "\n " + e + ": " + error[e];
+				console.println(eText);
+				console.show();
+			}
 		}
-		return false;
 	}
 	// Because of a bug, sometimes the page is deleted but the fields aren't, corrupting the AcroForm
-	if (!onTemplate && tDoc.getField(fldNm) && tDoc.getField(fldNm).page === -1) {
+	if (!ignoreError && !onTemplate && tDoc.getField(fldNm) && tDoc.getField(fldNm).page === -1) {
 		var alert = {
 			cTitle : "ERROR: this AcroForm is corrupted",
 			cMsg : "The removal of the page caused this PDF to become corrupted. The fields from the deleted page(s) haven't been properly removed because of a bug in Adobe Acrobat (not something MPMB can fix)."+
@@ -2864,16 +2872,17 @@ function deletePage(fldNm, onTemplate) {
 		app.alert(alert);
 		if (alert.oCheckbox.bAfterValue) contactMPMB("upgrade to new sheet");
 	}
-	return true;
+	return theReturn;
 }
 
 // show/hide a template (AddRemove == undefined) or add/remove template with multiple instances (AddRemove == "Add" | "Remove" | "RemoveAll")
 function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 	MakeMobileReady(false); // Undo flatten, if needed
 
+	var pageError = false;
 	//make a function for determining the next page to add the template
-	var whatPage = function(templN) {
-		var DepL = TemplateDep[templN];
+	var whatPage = function(templN, prefix) {
+		var DepL = prefix ? [templN] : TemplateDep[templN];
 		for (var T = 0; T < DepL.length; T++) {
 			var theDep = DepL[T];
 			var multiDep = TemplatesWithExtras.indexOf(theDep) !== -1;
@@ -2883,7 +2892,7 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 					return Math.max.apply(Math, pageNum) + 1;
 				};
 			} else {
-				var depVisible = isTemplVis(theDep, "last");
+				var depVisible = prefix ? [true, prefix] : isTemplVis(theDep, "last");
 				if (depVisible) {
 					var pageNum = tDoc.getField(depVisible[1] + BookMarkList[theDep]).page;
 					if (isArray(pageNum) && pageNum[0] === -1) {
@@ -2900,6 +2909,7 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 						};
 						app.alert(alert);
 						if (alert.oCheckbox.bAfterValue) contactMPMB("upgrade to new sheet");
+						pageError = true;
 					}
 					return pageNum + 1;
 				}
@@ -2974,8 +2984,9 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 			var newTemplList = What("Template.extras." + tempNm).split(",");
 			var removeWhich = (/removeall/i).test(AddRemove) ? "all" : removePrefix ? tempExtras.indexOf(removePrefix) : "last";
 			tempExtras = isNaN(removeWhich) ? tempExtras.splice(removeWhich === "all" ? 1 : -1) : tempExtras.splice(removeWhich, 1);
-			var pageNr = tempExtras.length > 1 ? false : tDoc.getField(tempExtras[0] + BookMarkList[tempNm]).page + 1;
-			var removeTxt = (removeWhich === "all" ? "all " : "") + TemplateNames[tempNm] + (removeWhich === "all" ? "s that are currently in this document" : " (page "+pageNr+")");
+			var removeTxt = (removeWhich === "all" ? "all " : "") +
+				TemplateNames[tempNm] +
+				(removeWhich === "all" ? "s that are currently in this document" : " (page " + whatPage(tempNm, tempExtras[0]) + ")");
 
 			var doGoOn = {
 				cTitle: "Continue with deleting page(s)?",
@@ -3000,7 +3011,7 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 					var tempFld = tempExtras[i] + BookMarkList[tempNm];
 					thermoM((i + 1) / tempExtras.length); // Increment the progress bar
 					// delete the page, but beware of bug
-					if (deletePage(tempFld, false) == false) continue;
+					if (deletePage(tempFld, false, pageError) == false) continue;
 					// remove the deleted entry from the newTemplList
 					newTemplList.splice(newTemplList.indexOf(tempExtras[i]), 1);
 				};
@@ -5913,7 +5924,7 @@ function CalcAttackDmgHit(fldName) {
 	var WeaponName = thisWeapon[0];
 	var aWea = QI || isNaN(parseFloat(WeaponName)) ? WeaponsList[WeaponName] : !QI && !isNaN(parseFloat(WeaponName)) && CurrentCompRace[prefix] && CurrentCompRace[prefix].attacks ? CurrentCompRace[prefix].attacks[WeaponName] : false;
 	var WeaponTextName = QI ? CurrentWeapons.field[ArrayNmbr] : CurrentWeapons.compField[prefix][ArrayNmbr];
-	var WeaponText = WeaponText + (fields.Description ? " " + fields.Description : "");
+	var WeaponText = WeaponTextName + " " + fields.Description;
 	var theWea = {};
 	if (aWea && aWea.baseWeapon && WeaponsList[aWea.baseWeapon]) {
 		for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
@@ -7299,7 +7310,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				if (AddRemove) { // add
 					if (!set.toolSkill) {
 						set.toolSkill = [theTooTxt];
-					} else if (set.toolSkill.indexOf(ProfSrc) === -1) {
+					} else if (set.toolSkill.indexOf(theTooTxt) === -1) {
 						set.toolSkill.push(theTooTxt);
 					};
 				} else if (!set[ProfObjLC] && set.toolSkill && set.toolSkill.indexOf(theTooTxt) !== -1) { // remove
@@ -7307,12 +7318,14 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					if (set.toolSkill.length === 0) delete set.toolSkill;
 				};
 				// now update the skill proficiency entry
-				var curToolTxt = What("Too Text");
-				if (theTooTxt.toLowerCase().indexOf(curToolTxt.toLowerCase()) !== -1 && set.toolSkill && set.toolSkill.indexOf(curToolTxt) === -1) {
+				var toolField = tDoc.getField("Too Text");
+				var toolFieldDefault = toolField.defaultValue == toolField.value;
+				var curToolTxt = toolField.value.toLowerCase();
+				if (set.toolSkill && (toolFieldDefault || set.toolSkill.indexOf(curToolTxt) === -1)) {
 					Value("Too Text", set.toolSkill[0]);
 					Checkbox("Too Prof", true);
 					Checkbox("Too Exp", false);
-				} else if (!set.toolSkill && theTooTxt.toLowerCase().indexOf(curToolTxt.toLowerCase()) !== -1) {
+				} else if (!set.toolSkill && curToolTxt.indexOf(theTooTxt.toLowerCase()) !== -1) {
 					tDoc.resetForm(["Too Text"]);
 					Checkbox("Too Prof", false);
 					Checkbox("Too Exp", false);
