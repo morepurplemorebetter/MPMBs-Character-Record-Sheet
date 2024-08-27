@@ -506,6 +506,7 @@ function DirectImport(consoleTrigger) {
 		var ToVersion = global.docTo.sheetVersion;
 		var fromBefore13 = FromVersion < semVersToNmbr("13.0.0-beta14");
 		var fromBefore13_1_5 = FromVersion < semVersToNmbr("13.1.5");
+		var fromBefore13_2 = FromVersion < semVersToNmbr("13.2.0");
 		if (FromVersion > ToVersion || (FromVersion >= semVersToNmbr("13.0.0-beta1") && fromBefore13)) {
 			// If importing from a newer version or from a v13.0.0-beta1-beta13
 			var versTypeTxt = FromVersion > ToVersion ? ["this sheet is", "newer", "than the one you are importing"] : ["the other sheet is an", "unsupported beta", "that can't be imported to any other MPMB's Character Record Sheet"];
@@ -774,6 +775,9 @@ function DirectImport(consoleTrigger) {
 		};
 
 	//do the fields for the main automations
+		// easy reference for manual caulcations
+		var docFromManual = fromBefore13 ? {} : global.docFrom.CurrentVars.manual;
+
 		//add the weapons (before the rest so weapons added by any new automation are still added)
 		for (var i = 1; i <= FieldNumbers.attacks; i++) {
 			if (ImportField("Attack." + i + ".Weapon Selection", {notTooltip: true})) ImportField("Attack." + i + ".Description", {notTooltip: true});
@@ -803,14 +807,33 @@ function DirectImport(consoleTrigger) {
 		ImportField("Character Level", {notTooltip: true}); ImportField("Total Experience", {notTooltip: true}); ImportField("Add Experience", {notTooltip: true});
 		ProfBonus("Proficiency Bonus"); //make sure the proficiency bonus is updated
 
-		//set the race
+		// >> RACE <<
 		if (!fromBefore13 && global.docFrom.CurrentVars.oldRace) {
 			global.docTo.CurrentVars.oldRace = global.docFrom.CurrentVars.oldRace;
 			global.docTo.CurrentVars.oldRaceAmendRemember = global.docFrom.CurrentVars.oldRaceAmendRemember;
 			global.docTo.SetStringifieds("vars");
 		}
+		if (docFromManual.race) { // if set to manual, use the saved race info
+			// FindRace(docFromManual.race[0], true);
+			// UpdateLevelFeatures("race", docFromManual.race[1]);
+			ApplyRace(docFromManual.race[0], true, docFromManual.race[1]);
+			ImportField("Race Remember");
+			IsSetDropDowns = true; // After this, we import the race field, but it shouldn't do any automation
+		} else if (ImportField("Race Remember")) { // didn't exist in old sheets
+			ApplyRace(What("Race Remember"), true);
+			if (global.docTo.CurrentRace.known) IsSetDropDowns = true; // After this, we import the race field, but no need to do the automation as the race is already set
+		}
 		ImportField("Race", {notTooltip: true, notSubmitName: true});
-		if (ImportField("Race Remember")) ApplyRace(What("Race Remember"));
+		IsSetDropDowns = false; // reset this setting after setting the race from manual or through "Race Remember", otherwise it was already false
+
+		// >> BACKGROUND <<
+		if (docFromManual.background) { // if set to manual, use the saved background info
+			ApplyBackground(docFromManual.background);
+			IsSetDropDowns = true; // After this, we import the background field, but it shouldn't do any automation
+		}
+		ImportField("Background", {notTooltip: true, notSubmitName: true});
+		ImportField("Background Extra", {notTooltip: true});
+		IsSetDropDowns = false; // reset this setting if backgrounds was set to manual, otherwise it was already false
 
 		//set the values of the ability score dialog (after race, so scores manually set for race are not undone)
 		var abiScoreFlds = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
@@ -832,59 +855,90 @@ function DirectImport(consoleTrigger) {
 			CurrentStats = eval(What("CurrentStats.Stringified"));
 		}
 
-		//set the background
-		ImportField("Background", {notTooltip: true, notSubmitName: true}); ImportField("Background Extra", {notTooltip: true});
-
-		//set the class and class features
+		// >> CLASSES <<
 		if (fromBefore13) ImportExtraChoices();
+		if (docFromManual.classes) { // if set to manual, use the saved class
+			IsCharLvlVal = true; // make sure the level field is not changed
+			ApplyClasses(docFromManual.classes, false); // apply the saved class info
+			UpdateLevelFeatures("class"); // we have to call this manually as we are skipping the level field
+			IsCharLvlVal = false; // reset setting
+			global.docTo.getField("Class and Levels").remVal = global.docFrom.What("Class and Levels"); // After this, we import the Class and Levels field, but it shouldn't do any automation, so trick it into thinking there is nothing to validate
+		}
 		ImportField("Class and Levels", {notTooltip: true});
 		AddExtraOtherChoices();
 
-		//set the feats
-		var feaNrFrom = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.feats ? global.docFrom.FieldNumbers.feats : FieldNumbers.feats;
-		for (var i = 1; i <= feaNrFrom; i++) {
-			if (i <= FieldNumbers.feats) {
-				var impFeat = ImportField("Feat Name " + i, {notTooltip: true});
-				if (impFeat && !CurrentFeats.known[i - 1]) {
-					ImportField("Feat Note " + i);
-					ImportField("Feat Description " + i);
-				}
+		// >> FEATS <<
+		// if from version >= 13.2.0 and feats set to manual, first import the ones present before it was toggled to manual
+		if (!fromBefore13_2 && docFromManual.feats && docFromManual.feats[3]) {
+			CurrentFeats.level = docFromManual.feats[1];
+			for (var i = 0; i < docFromManual.feats[3].length; i++) {
+				AddFeat(docFromManual.feats[3][i]);
 			}
-			if (i > FieldNumbers.feats) {
-				var feaFldFrom = global.docFrom.getField("Feat Name " + i);
-				if (!feaFldFrom || !feaFldFrom.value) continue;
-				for (var feaNr = 1; feaNr <= FieldNumbers.feats; feaNr++) {
-					if (What("Feat Name " + feaNr) === "") {
-						Value("Feat Name " + feaNr, feaFldFrom.value);
-						if (!CurrentFeats.known[feaNr - 1]) {
-							Value("Feat Note " + feaNr, global.docFrom.What("Feat Note " + i));
-							Value("Feat Description " + feaNr, global.docFrom.What("Feat Description " + i));
-						}
-						break;
-					}
-				}
+			IsSetDropDowns = true; // After this, we import the feat fields as currently set, but they shouldn't do any automation
+			// Also empty all the drop-down boxes again and disable calculations or AddFeat will not work correctly
+			for (var i = 1; i <= FieldNumbers.feats; i++) {
+				var descFld = "Feat Description " + i;
+				tDoc.getField(descFld).setAction("Calculate", "");
+				AddTooltip(descFld, undefined, "");
+				Value("Feat Name " + i, "");
 			}
+		}
+		// import the feats
+		var nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.feats ? global.docFrom.FieldNumbers.feats : FieldNumbers.feats;
+		for (var i = 1; i <= nmbrFlds; i++) {
+			var fromFld = global.docFrom.getField("Feat Name " + i);
+			if (!fromFld || !fromFld.value) continue;
+			AddFeat(
+				fromFld.value, // sFeat
+				global.docFrom.What("Feat Note " + i), // sFeatNote
+				global.docFrom.What("Feat Description " + i), // sFeatDescr
+				IsSetDropDowns ? i : false // bIgnoreCurrent // if set to manual, tell the function to put the feat at the exact field
+			);
 		};
+		IsSetDropDowns = false; // reset this setting if magic items was set to manual, otherwise it was already false
 
+		// >> MAGIC ITEMS <<
 		// a function to import the magic items
 		var importMagicItems = function () {
 			var nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.magicitems ? global.docFrom.FieldNumbers.magicitems : FieldNumbers.magicitems;
+			// if set to manual, first clear all fields 
 			for (var i = 1; i <= nmbrFlds; i++) {
-				var fromFld = global.docFrom.getField("Extra.Magic Item " + i);
+				var MIflds = ReturnMagicItemFieldsArray(i);
+				var fromFld = global.docFrom.getField(MIflds[0]);
 				if (!fromFld || !fromFld.value) continue;
 				AddMagicItem(
-					fromFld.value,
-					global.docFrom.getField("Extra.Magic Item Attuned " + i).isBoxChecked(0),
-					global.docFrom.What("Extra.Magic Item Description " + i),
-					global.docFrom.What("Extra.Magic Item Weight " + i),
-					false,
-					fromBefore13 ? undefined : global.docFrom.How("Extra.Magic Item Attuned " + i) == ""
+					fromFld.value, // item
+					global.docFrom.getField(MIflds[4]).isBoxChecked(0), // attuned
+					global.docFrom.What(MIflds[2]), // itemDescr
+					global.docFrom.What(MIflds[3]), // itemWeight
+					false, // overflow
+					fromBefore13 ? undefined : global.docFrom.How(MIflds[4]) == "", // forceAttunedVisible
+					global.docFrom.What(MIflds[1]), // sItemNote
+					IsSetDropDowns ? i : false // bIgnoreCurrent // if set to manual, tell the function to put the item at the exact field
 				);
 			}
 		}
 
+		// if from version >= 13.2.0 and magic items set to manual, first import the ones present before it was toggled to manual
+		if (!fromBefore13_2 && docFromManual.items && docFromManual.items[4]) {
+			CurrentMagicItems.level = docFromManual.items[2];
+			for (var i = 0; i < docFromManual.items[4].length; i++) {
+				var sItemName = docFromManual.items[4][i];
+				var bItemAttuned = docFromManual.items[1][i];
+				if (bItemAttuned !== false) AddMagicItem(sItemName);
+			}
+			IsSetDropDowns = true; // After this, we import the magic item fields as currently set, but they shouldn't do any automation
+			// Also empty all the drop-down boxes again and disable calculations or AddMagicItem will not work correctly
+			for (var i = 1; i <= FieldNumbers.magicitems; i++) {
+				var descFld = "Extra.Magic Item Description " + i;
+				tDoc.getField(descFld).setAction("Calculate", "");
+				AddTooltip(descFld, undefined, "");
+				Value("Extra.Magic Item " + i, "");
+			}
+		}
 		// if from version >= 13, do magic items before setting the rest of the fields
 		if (!fromBefore13) importMagicItems();
+		IsSetDropDowns = false; // reset this setting if magic items was set to manual, otherwise it was already false
 
 		//set the ability scores and associated fields
 		for (var a = 0; a < abiScoreFlds.length; a++) {
@@ -1475,16 +1529,10 @@ function DirectImport(consoleTrigger) {
 			SetToManual_Dialog.mCla = global.docFrom.getField("Manual Class Remember") ? global.docFrom.What("Manual Class Remember") !== "No" : false;
 			SetToManual_Dialog.mFea = global.docFrom.getField("Manual Feat Remember") ? global.docFrom.What("Manual Feat Remember") !== "No" : false;
 			SetToManual_Dialog.mRac = global.docFrom.getField("Manual Race Remember") ? global.docFrom.What("Manual Race Remember") !== "No" : false;
+			SetToManual_Button(true);
 		} else {
-			SetToManual_Dialog.mAtt = !!global.docFrom.CurrentVars.manual.attacks;
-			SetToManual_Dialog.mBac = !!global.docFrom.CurrentVars.manual.background;
-			SetToManual_Dialog.mBFe = !!global.docFrom.CurrentVars.manual.backgroundFeature;
-			SetToManual_Dialog.mCla = !!global.docFrom.CurrentVars.manual.classes;
-			SetToManual_Dialog.mFea = !!global.docFrom.CurrentVars.manual.feats;
-			SetToManual_Dialog.mMag = !!global.docFrom.CurrentVars.manual.items;
-			SetToManual_Dialog.mRac = !!global.docFrom.CurrentVars.manual.race;
+			SetToManual_Button(true, newObj(docFromManual));
 		}
-		SetToManual_Button(true);
 
 	//Recalculate the weapons, for things might have changed since importing them
 		ReCalcWeapons(false);
@@ -1553,7 +1601,13 @@ function DirectImport(consoleTrigger) {
 				"If you added bonuses to modifier fields to account for magic items, those bonuses will have been imported, but the magic item automation will have applied those bonuses as well. It could well be that some things now have twice the bonus that they should have! Please check carefully if all the modifier fields still display the right numbers.",
 				"The modifier fields are hidden by default, but you can toggle their visiblity with the Functions >> Modifiers bookmark."
 			].join("\n  \u2022 ");
-		};
+		} else if (fromBefore13_2 && (docFromManual.feats || docFromManual.items)) {
+			aText += [
+				"\n\n" + toUni("Manual Option for Feats / Magic Items"),
+				"From v13.2.0 onwards, importing feats or magic items that have been set to manual is fully supported.",
+				"As you are importing from an older version, features granted by feats/items before calculations were disabled (set to manual) have not been imported."
+			].join("\n  \u2022 ");
+		}
 		if (FromVersion < semVersToNmbr(12.998)) {
 			aText += [
 				"\n\n" + toUni("Importing from older version, before v12.998"),

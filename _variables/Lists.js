@@ -965,7 +965,7 @@ var SetToManual_Dialog = {
 					font : "dialog",
 					wrap_name : true,
 					char_width : 40,
-					name : "Here you can select the functions of this sheet that you want to be done manually instead of calculated (which is the default setting).\n\nSimply check of any items you want to set to manual and press \"Apply\".\n\nIf some items are already set to manual, simply uncheck the box, press \"Apply\", and that feature will be calculated and added to the sheet immediately."
+					name : 'Here you can select the functions of this sheet that you want to be done manually instead of calculated (which is the default setting).\n\nCheck of any items you want to set to manual.\n\nIf some items are already set to manual, unchecking the box and pressing "Apply" will return them to automatic and those will immediately be recalculated to what their field currently says.'
 				}, {
 					type : "cluster",
 					align_children : "align_distribute",
@@ -1029,7 +1029,7 @@ var SetToManual_Dialog = {
 							}, {
 								type : "static_text",
 								item_id : "tCla",
-								name : "Do nothing when changing the class or level"
+								name : "Do nothing when changing the class and ignore level changes for class features"
 							}]
 						}, {
 							type : "view",
@@ -1074,7 +1074,7 @@ var SetToManual_Dialog = {
 							},  {
 								type : "static_text",
 								item_id : "tRac",
-								name : "Do nothing when changing the race"
+								name : "Do nothing when changing the race and ignore level changes for racial features"
 							}]
 						}]
 					}]

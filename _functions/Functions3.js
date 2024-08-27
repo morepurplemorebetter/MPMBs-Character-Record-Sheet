@@ -1303,7 +1303,7 @@ function processArmorOptions(AddRemove, srcNm, itemArr, magical) {
 			if (magical) itemArr[i].isMagicArmor = true;
 			CurrentVars.extraArmour[newName] = itemArr[i];
 			ArmourList[newName] = itemArr[i];
-			if (itemArr[i].selectNow) setSelection.push(itemArr[i].name);
+			if (itemArr[i].selectNow) setSelection.push(itemArr[i].name.capitalize());
 		} else {
 			// remove as current armour if selected
 			if (CurrentArmour.known === newName) tDoc.resetForm(["AC Armor Description"]);
@@ -1343,7 +1343,7 @@ function processWeaponOptions(AddRemove, srcNm, itemArr, magical) {
 			if (magical) itemArr[i].isMagicWeapon = true;
 			CurrentVars.extraWeapons[newName] = itemArr[i];
 			WeaponsList[newName] = itemArr[i];
-			if (itemArr[i].selectNow) setSelection.push(itemArr[i].name);
+			if (itemArr[i].selectNow) setSelection.push(itemArr[i].name.capitalize());
 		} else {
 			// remove the entries if they exist and delete any weapons like it
 			for (var j = FieldNumbers.attacks - 1; j >= 0; j--) {
@@ -1514,7 +1514,7 @@ function UpdateSheetWeapons() {
 	// some atkAdd eval might be level-dependent, so force updating the weapons when changing level and such an eval is present
 	var isLvlDepAtkAdd = false;
 	// iterate through all the atkAdd evals to see if any are level-dependent, but only when changing level
-	if (CurrentUpdates.types.indexOf("xp") !== -1 && CurrentEvals.atkAdd) {
+	if (CurrentUpdates.types.find(/^(xp|classchange)$/) !== -1 && CurrentEvals.atkAdd) {
 		for (addEval in CurrentEvals.atkAdd) {
 			var evalThing = CurrentEvals.atkAdd[addEval];
 			if (typeof evalThing == 'function') evalThing = evalThing.toSource();
@@ -2494,6 +2494,11 @@ function ParseMagicItem(input, bForInventory) {
 function FindMagicItems() {
 	CurrentMagicItems.known = [];
 	CurrentMagicItems.choices = [];
+	if (CurrentVars.manual.items) {
+		CurrentMagicItems.known = CurrentVars.manual.items[0];
+		CurrentMagicItems.choices = CurrentVars.manual.items[3] ? CurrentVars.manual.items[3] : [];
+		return;
+	}
 	for (var i = 1; i <= FieldNumbers.magicitems; i++) {
 		var parsedItem = ParseMagicItem( What("Extra.Magic Item " + i) );
 		CurrentMagicItems.known.push(parsedItem[0]);
@@ -3387,14 +3392,16 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 }
 
 // Add a magic item to the third page or overflow page
-function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow, forceAttunedVisible) {
+function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow, forceAttunedVisible, sItemNote, bIgnoreCurrent) {
 	// Check if the item is recognized and if that is already known to be present
-	var aParsedItem = ParseMagicItem(item);
-	if (aParsedItem[0] && !MagicItemsList[aParsedItem[0]].allowDuplicates && CurrentMagicItems.known.indexOf(MagicItemsList[0]) !== -1) {
-		return;
-	} else if (aParsedItem[0]) {
-		for (var i = 0; i < CurrentMagicItems.known.length; i++) {
-			if (CurrentMagicItems.known[i] === aParsedItem[0] && CurrentMagicItems.choices[i] === aParsedItem[1]) return;
+	if (!bIgnoreCurrent) {
+		var aParsedItem = ParseMagicItem(item);
+		if (aParsedItem[0] && !MagicItemsList[aParsedItem[0]].allowDuplicates && CurrentMagicItems.known.indexOf(MagicItemsList[0]) !== -1) {
+			return;
+		} else if (aParsedItem[0]) {
+			for (var i = 0; i < CurrentMagicItems.known.length; i++) {
+				if (CurrentMagicItems.known[i] === aParsedItem[0] && CurrentMagicItems.choices[i] === aParsedItem[1]) return;
+			}
 		}
 	}
 	// Item is not recognized and/or not present exactly, so do a manual check
@@ -3403,39 +3410,47 @@ function AddMagicItem(item, attuned, itemDescr, itemWeight, overflow, forceAttun
 	var RegExItem = "\\b" + item.RegEscape() + "\\b";
 	var RegExItemNo = RegExp(RegExItem + " \\+\\d+", "i");
 	RegExItem = RegExp(RegExItem, "i");
-	var startFld = overflow ? FieldNumbers.magicitemsD + 1 : 1;
+	var overrideField = bIgnoreCurrent && !isNaN(bIgnoreCurrent) ? parseInt(bIgnoreCurrent) : false;
+	var startFld = overrideField ? overrideField : overflow ? FieldNumbers.magicitemsD + 1 : 1;
 	for (var n = 1; n <= 2; n++) {
 		for (var i = startFld; i <= FieldNumbers.magicitems; i++) {
 			var MIflds = ReturnMagicItemFieldsArray(i);
 			// first check if a selection made in this field wasn't the one initiating this function, because then it should be skipped
 			if (event.target && event.target.name === MIflds[0]) continue;
 			var curItem = What(MIflds[0]);
-			if (n === 1 && ((RegExItem.test(curItem) && !RegExItemNo.test(curItem)) || curItem.toLowerCase() === itemLower)) {
+			if (n === 1 && !bIgnoreCurrent && ((RegExItem.test(curItem) && !RegExItemNo.test(curItem)) || curItem.toLowerCase() === itemLower)) {
 				return; // the item already exists
-			} else if (n === 2 && curItem === "") {
+			} else if (n === 2 && (curItem === "" || overrideField === i)) {
 				if (i > FieldNumbers.magicitemsD && !tDoc.getField(BookMarkList["Overflow sheet"])) DoTemplate("ASoverflow", "Add");
+				var knownItem = CurrentMagicItems.known[i - 1];
 				Value(MIflds[0], item);
-				var recognizedItem = CurrentMagicItems.known[i - 1];
-				if (!recognizedItem) {
+				var newItem = CurrentMagicItems.known[i - 1];
+				// Do the rest of the fields manually if the item isn't recognized or doesn't match the known array (e.g. because magic item automation was turned off)
+				var newItemFound = newItem && newItem !== knownItem;
+				var applyAttunement = false;
+				if (bIgnoreCurrent || !newItemFound) {
+					if (sItemNote !== undefined) Value(MIflds[1], sItemNote);
 					if (itemDescr !== undefined) Value(MIflds[2], itemDescr);
 					if (itemWeight !== undefined) Value(MIflds[3], itemWeight);
 					if (attuned !== undefined) Checkbox(MIflds[4], attuned ? true : false);
-				} else if ((forceAttunedVisible === undefined || forceAttunedVisible) && attuned !== undefined && !attuned && MagicItemsList[recognizedItem].attunement) {
+				}
+				if ((bIgnoreCurrent || newItemFound) && (forceAttunedVisible === undefined || forceAttunedVisible) && attuned !== undefined && !attuned && MagicItemsList[newItem] && MagicItemsList[newItem].attunement) {
 					// This is an item that requires attunement, but attunement is explicitly set to none, so undo the automation of the magic item
 					Checkbox(MIflds[4], false);
-					ApplyAttunementMI(i);
+					applyAttunement = true;
 				}
-				var isAttuneVisible = How(MIflds[4]) == "";
-				if (forceAttunedVisible !== undefined && forceAttunedVisible !== isAttuneVisible) {
+				var isAttunedVisible = How(MIflds[4]) == "";
+				if (forceAttunedVisible !== undefined && forceAttunedVisible != isAttunedVisible) {
 					AddTooltip(MIflds[4], undefined, forceAttunedVisible ? "" : "hide");
 					setMIattunedVisibility(i);
 					if (attuned === undefined) {
 						Checkbox(MIflds[4], forceAttunedVisible);
 					} else if (!attuned && forceAttunedVisible) {
 						Checkbox(MIflds[4], false);
-						ApplyAttunementMI(i);
+						applyAttunement = true;
 					}
 				}
+				if (applyAttunement) ApplyAttunementMI(i);
 				return;
 			}
 		}

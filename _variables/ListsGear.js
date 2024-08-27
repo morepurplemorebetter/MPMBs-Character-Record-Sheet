@@ -9,7 +9,7 @@ var Base_ArmourList = {
 	},
 	"mage armor" : {
 		regExpSearch : /^(?=.*(mage|magic))(?=.*armou?r).*$/i,
-		name : "Mage Armor",
+		name : "Mage armor",
 		source : [["SRD", 160], ["P", 256]],
 		ac : 13,
 		list : "magic",
@@ -37,7 +37,7 @@ var Base_ArmourList = {
 	},
 	"studded leather" : {
 		regExpSearch : /^(?=.*(studded|studs))(?=.*leather).*$/i,
-		name : "Studded Leather",
+		name : "Studded leather",
 		source : [["SRD", 63], ["P", 145]],
 		type : "light",
 		ac : 12,
@@ -55,22 +55,20 @@ var Base_ArmourList = {
 	},
 	"chain shirt" : {
 		regExpSearch : /^(?=.*chain)(?=.*shirt).*$/i,
-		name : "Chain Shirt",
+		name : "Chain shirt",
 		source : [["SRD", 63], ["P", 145]],
 		type : "medium",
 		ac : 13,
-		weight : 20,
-		invName : "Chain shirt"
+		weight : 20
 	},
 	"scale mail" : {
 		regExpSearch : /^(?=.*scale)(?=.*mail).*$/i,
-		name : "Scale Mail",
+		name : "Scale mail",
 		source : [["SRD", 63], ["P", 145]],
 		type : "medium",
 		ac : 14,
 		stealthdis : true,
-		weight : 45,
-		invName : "Scale mail"
+		weight : 45
 	},
 	"breastplate" : {
 		regExpSearch : /^(?=.*breast)(?=.*plate).*$/i,
@@ -82,7 +80,7 @@ var Base_ArmourList = {
 	},
 	"half plate" : {
 		regExpSearch : /^(?=.*half)(?=.*plate).*$/i,
-		name : "Half Plate",
+		name : "Half plate",
 		source : [["SRD", 63], ["P", 145]],
 		type : "medium",
 		ac : 15,
@@ -92,24 +90,22 @@ var Base_ArmourList = {
 	},
 	"ring mail" : {
 		regExpSearch : /^(?=.*ring)(?=.*mail).*$/i,
-		name : "Ring Mail",
+		name : "Ring mail",
 		source : [["SRD", 63], ["P", 145]],
 		type : "heavy",
 		ac : 14,
 		stealthdis : true,
-		weight : 40,
-		invName : "Ring mail"
+		weight : 40
 	},
 	"chain mail" : {
 		regExpSearch : /^(?!.*(scale|plate|ring|shirt))(?=.*chain)(?=.*mail).*$/i,
-		name : "Chain Mail",
+		name : "Chain mail",
 		source : [["SRD", 63], ["P", 145]],
 		type : "heavy",
 		ac : 16,
 		stealthdis : true,
 		weight : 55,
-		strReq : 13,
-		invName : "Chain mail"
+		strReq : 13
 	},
 	"splint" : {
 		regExpSearch : /splint/i,
@@ -180,6 +176,7 @@ var Base_WeaponsList = {
 	"greatclub" : {
 		regExpSearch : /^(?=.*(great|heavy|big|weida))(?=.*(club|bian|tonfa)s?\b).*$|tetsubo/i,
 		name : "Greatclub",
+		nameAlt : ["Club, Great"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -193,6 +190,7 @@ var Base_WeaponsList = {
 	"handaxe" : {
 		regExpSearch : /^(?=.*(light|hand|short|small|throw))(?=.*(axe|\bfu)s?\b).*$|\bonos?\b/i,
 		name : "Handaxe",
+		nameAlt : ["Axe, Hand"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -221,6 +219,7 @@ var Base_WeaponsList = {
 	"light hammer" : {
 		regExpSearch : /^(?=.*(light|hand|short|small|throw))(?=.*hammer).*$/i,
 		name : "Light hammer",
+		nameAlt : ["Hammer, Light"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -249,6 +248,7 @@ var Base_WeaponsList = {
 	"quarterstaff" : {
 		regExpSearch : /quarterstaff|\bstaffs?\b|\bbos?\b|^gun(.?(\+|-)\d+)?$/i,
 		name : "Quarterstaff",
+		nameAlt : ["Staff"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -263,6 +263,7 @@ var Base_WeaponsList = {
 	"sickle" : {
 		regExpSearch : /sickle|\bkamas?\b/i,
 		name : "Sickle",
+		nameAlt : ["Kama"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -291,6 +292,7 @@ var Base_WeaponsList = {
 	"light crossbow" : {
 		regExpSearch : /^(((?=.*light)(?=.*crossbow))|((?!.*(hand|short|great|heavy|bolt))(?=.*\bcrossbows?\b))).*$/i,
 		name : "Light crossbow",
+		nameAlt : ["Crossbow, Light"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "ranged",
 		ability : 2,
@@ -305,6 +307,7 @@ var Base_WeaponsList = {
 	"dart" : {
 		regExpSearch : /dart|shuriken/i,
 		name : "Dart",
+		nameAlt : ["Shuriken"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "ranged",
 		ability : 2,
@@ -318,6 +321,7 @@ var Base_WeaponsList = {
 	"shortbow" : {
 		regExpSearch : /^(?!.*crossbow)(((?=.*short)(?=.*bow))|((?!.*(moon|long))(?=.*\bbows?\b))).*$|hankyus?/i,
 		name : "Shortbow",
+		nameAlt : ["Bow, Short"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "ranged",
 		ability : 2,
@@ -346,6 +350,7 @@ var Base_WeaponsList = {
 	"battleaxe" : {
 		regExpSearch : /^(((?=.*battle)(?=.*(axe|\bono|\bfu)s?\b))|((?!.*(light|hand|short|small|great|heavy|throw))(?=.*\b(axe|fu|masakari)s?\b))).*$/i,
 		name : "Battleaxe",
+		nameAlt : ["Axe, Battle"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -385,6 +390,7 @@ var Base_WeaponsList = {
 	"greataxe" : {
 		regExpSearch : /^(?=.*(great|heavy|weida))(?=.*(axe|\bono|\bfu|masakari)s?\b).*$/i,
 		name : "Greataxe",
+		nameAlt : ["Axe, Great"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -398,6 +404,7 @@ var Base_WeaponsList = {
 	"greatsword" : {
 		regExpSearch : /^(?=.*(great|heavy))(?=.*sword).*$|changdao|nodachi/i,
 		name : "Greatsword",
+		nameAlt : ["Sword, Great"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -439,6 +446,7 @@ var Base_WeaponsList = {
 	"longsword" : {
 		regExpSearch : /katana|\bjians?\b|^(((?=.*long)(?=.*sword))|((?!.*(burst|light|hand|short|small|great|heavy))(?=.*\bswords?\b))).*$/i,
 		name : "Longsword",
+		nameAlt : ["Sword, Long", "Katana"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -452,6 +460,7 @@ var Base_WeaponsList = {
 	"maul" : {
 		regExpSearch : /^((?=.*maul)|((?=.*(great|heavy))(?=.*hammer))).*$/i,
 		name : "Maul",
+		nameAlt : ["Greathammer", "Hammer, Heavy"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -504,6 +513,7 @@ var Base_WeaponsList = {
 	"scimitar" : {
 		regExpSearch : /scimitar|liuyedao|wakizashi/i,
 		name : "Scimitar",
+		nameAlt : ["Wakizashi"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -517,6 +527,7 @@ var Base_WeaponsList = {
 	"shortsword" : {
 		regExpSearch : /^(?=.*short)(?=.*sword).*$|shuangdao/i,
 		name : "Shortsword",
+		nameAlt : ["Sword, Short"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -557,6 +568,7 @@ var Base_WeaponsList = {
 	"warhammer" : {
 		regExpSearch : /^(((?=.*hammer)(?=.*war))|((?!.*(light|hand|short|small|great|heavy|throw|maul))(?=.*\bhammers?\b))).*$/i,
 		name : "Warhammer",
+		nameAlt : ["Hammer, War"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "melee",
 		ability : 1,
@@ -597,6 +609,7 @@ var Base_WeaponsList = {
 	"hand crossbow" : {
 		regExpSearch : /^(?=.*hand)(?=.*crossbow).*$/i,
 		name : "Hand crossbow",
+		nameAlt : ["Crossbow, Hand"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "ranged",
 		ability : 2,
@@ -611,6 +624,7 @@ var Base_WeaponsList = {
 	"heavy crossbow" : {
 		regExpSearch : /^(?=.*(great|heavy))(?=.*crossbow).*$/i,
 		name : "Heavy crossbow",
+		nameAlt : ["Crossbow, Heavy"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "ranged",
 		ability : 2,
@@ -625,6 +639,7 @@ var Base_WeaponsList = {
 	"longbow" : {
 		regExpSearch : /^(?!.*crossbow)(?=.*long)(?=.*bow).*$|daikyu/i,
 		name : "Longbow",
+		nameAlt : ["Bow, Long"],
 		source : [["SRD", 66], ["P", 149]],
 		list : "ranged",
 		ability : 2,

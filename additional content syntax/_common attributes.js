@@ -49,7 +49,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v13.1.1 and newer
+	Sheet:		v13.2.0 and newer
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -766,6 +766,12 @@ speed : {
 				this will add, subtract, multiply, or divide the movement mode with the given number, if present from another source.
 		4. "fixed 60": If the string starts with "fixed" followed by a space and then a number,
 				it will gain a speed of the number in feet, regardless of modifiers from other features.
+
+		>> IMPORTANT <<
+		If a feature grants a bonus to walking speed and another movement mode, you 
+		should use the `allModes` attribute to avoid the bonuses to stack when
+		another feature set the other movement mode equal to walking speed.
+		See the `allModes` attribute below.
 	*/
 
 	// example of using "walk":
@@ -777,16 +783,52 @@ speed : {
 	// example of using "fixed":
 	swim : { spd : "fixed 60", enc : "fixed 60" },
 
-	allModes : "+10",
+	allModes : "+10", // string, deprecated
+	allModes : { bonus : "+10", exclude : ["fly"] },
 	/*	allModes // OPTIONAL //
-		TYPE:	string
-		USE:	add a modifier to all movement modes, if present
+		TYPE:	object with two attributes, "bonus" (required) and "exclude" (optional)
+				or, for backwards-compatibility, a string
+		USE:	add a modifier to all movement modes, if present, except those excluded
+		CHANGE: v13.2.0 (changed to object, adding `exclude` setting)
 
-		The 'allModes' attribute can only consist of a modifier-string.
-		It has to be a logical operator ("+", "-", "*", or "/") followed by a number.
-		Every movement mode of the character, both normal and encumbered, will be subjected to the modifier in feet.
-		This will only work on movement modes that are non-zero.
-		It won't give the character a burrow speed if it would otherwise have none, for example.
+		Use this `allModes` attribute if a feature gives bonuses to multiple movement
+		modes and one of them is the walking speed.
+
+		For example, lets say something gives +10 ft walking and climbing speed and 
+		another thing grants a climbing speed equal to the walking speed.
+		If just using the modifiers defined above, the sheet would first add the +10 to
+		walking, then setting climbing to that number, and add another +10 to climbing.
+		When using `allModes`, this +10 is not added to the base walking speed used to
+		determine the climbing speed, and is then added afterwards to both.
+
+		This object consists of two possible attributes, of which `bonus` is required.
+		`bonus`
+			REQUIRED
+			TYPE: string
+			USE: modifier to add to all movement modes, if present
+			
+			This can only be a modifier-string.
+			It has to be a logical operator ("+", "-", "*", or "/") followed by a number.
+			Every movement mode of the character, both normal and encumbered, will be subjected to the modifier in feet.
+			This will only work on movement modes that are non-zero.
+			It won't give the character a burrow speed if it would otherwise have none, for example.
+
+			You can exclude movement modes from getting this bonus by using the
+			`exclude` attribute, see below.
+
+		`exclude`
+			OPTIONAL
+			TYPE: array of strings
+			USE: define which movement modes should NOT get this bonus
+
+			This can only be strings that reflect the different movement modes:
+			"walk", "burrow", "climb", "fly", or "swim".
+
+		>> Backwards compatible <<
+		Before v13.2.0, this was a string, not an object.
+		If `allModes` is a string, it will be treated as if that string is the one
+		set for its `bonus` attribute.
+		Thus, it will be added to all movement modes without exception.
 	*/
 },
 
@@ -1844,7 +1886,11 @@ calcChanges : {
 
 		This attribute is used both in the attacks section and on spell sheet pages,
 		but not for the 'Ability Save DC' on the 1st page.
-		For the attacks section, this is only run for cantrips/spells that are recognized, not manually added.
+		The 'Ability Save DC' will automatically mirror what's on the spell sheet page if there
+		are not multiple sources using the same ability to determine (spell) save DCs.
+
+		For the attacks section, this is run for cantrips/spells that are recognized, and 
+		manually added attacks that have "cantrip" or "spell" in their name or description.
 
 		// 1st array entry // REQUIRED //
 		The function should return the number it wishes to add/remove as a number.
@@ -2599,7 +2645,7 @@ magicitemsAdd : [ "Hat of Disguise", ["Staff of Power", true] ],
 // >>> Run Custom Code >>> //
 // >>>>>>>>>>>>>>>>>>>>>>> //
 
-eval : "Checkbox('Jack of All Trades', true);",
+eval : "Checkbox('Jack of All Trades', true);", // string, deprecated
 eval : function(lvl, chc) {
 	AddString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
 },
@@ -2636,7 +2682,7 @@ eval : function(lvl, chc) {
 	This attribute is processed first, before all other attributes are processed.
 */
 
-removeeval : "Checkbox('Jack of All Trades', false);",
+removeeval : "Checkbox('Jack of All Trades', false);", // string, deprecated
 removeeval : function(lvl, chc) {
 	RemoveString('Extra.Notes', 'Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields', true);
 },
@@ -2673,7 +2719,7 @@ removeeval : function(lvl, chc) {
 	This attribute is processed first, before all other attributes are processed.
 */
 
-changeeval : "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level); SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, displName);",
+changeeval : "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level); SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, displName);", // string, deprecated
 changeeval : function(lvl, chc) {
 	var monkSpd = '+' + (lvl[1] < 2 ? 0 : lvl[1] < 6 ? 10 : lvl[1] < 10 ? 15 : lvl[1] < 14 ? 20 : lvl[1] < 18 ? 25 : 30);
 	SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, "Monk: Unarmored Movement");

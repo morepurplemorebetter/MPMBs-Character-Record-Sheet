@@ -208,7 +208,7 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 		for (var i = 0; i < CurrentSources.globalKnown.length; i++) {
 			var src = CurrentSources.globalKnown[i];
 			var aSrc = SourceList[src];
-			exclAllUA = !aSrc || !aSrc.group || !(/unearthed arcana/i).test(aSrc.group) || CurrentSources.globalExcl.indexOf(src) !== -1;
+			exclAllUA = !aSrc || !aSrc.group || !/unearthed arcana/i.test(aSrc.group) || CurrentSources.globalExcl.indexOf(src) !== -1;
 			if (!exclAllUA) break;
 		};
 		var newGlobalKnown = [];
@@ -217,7 +217,7 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 			newGlobalKnown.push(src);
 			var aSrc = SourceList[src];
 			if (CurrentSources.globalExcl.indexOf(src) === -1 && (
-				(exclAllUA && (/unearthed arcana/i).test(aSrc.group)) || 
+				(exclAllUA && /unearthed arcana/i.test(aSrc.group)) || 
 				(SourceList[src].defaultExcluded && CurrentSources.globalKnown.indexOf(src) === -1)
 			)) {
 				CurrentSources.globalExcl.push(src);
@@ -354,7 +354,7 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 						subID = key + "-" + subID;
 						subName = subObj.name ? subObj.name : mainObjName + " [" + subObjs[c] + "]";
 					}
-					addNewExcl(opt.exclObj, opt.subName, subObj, subID, subName);
+					addNewExcl(opt.exclObj, opt.subName ? opt.subName : opt.name, subObj, subID, subName);
 				}
 			}
 		}

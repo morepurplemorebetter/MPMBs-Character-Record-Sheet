@@ -4595,6 +4595,8 @@ var Base_MagicItemsList = {
 			description : "Damage is per charge used, also pushes 5 ft away per charge used",
 			abilitytodamage : false,
 			modifiers : [7, ""],
+			isNotWeapon : true,
+			isAlwaysProf : false,
 			selectNow : true
 		}]
 	},
@@ -4946,7 +4948,9 @@ var Base_MagicItemsList = {
 			abilitytodamage : false,
 			weight : 3,
 			modifiers : [7, 0],
-			dc : true
+			dc : true,
+			isNotWeapon : true,
+			isAlwaysProf : false,
 		}]
 	},
 	"scarab of protection" : {
@@ -5899,7 +5903,7 @@ var Base_MagicItemsList = {
 		magicItemTable : "G",
 		attunement : true,
 		description : "As a bonus action, I can have this hilt create a blade of radiance. While the blade exists, it acts like a longsword that does +2 to attack and damage rolls, radiant damage (+1d8 to undead), has finesse, emits bright sunlight in a 15-ft radius and dim light in another 15 ft. As an action, I can change the light's radius by 5 ft.",
-		descriptionLong : "As a bonus action, I can have this longsword hilt create or dismiss a blade of pure radiance. While the blade exists, it acts like a longsword that grants a +2 bonus to attack and damage rolls, does radiant damage and has the finesse property. It also deals +1d8 radiant damage to undead and emits sunlight, bright light in a 15-ft radius and dim light in an additional 15-ft radius. As an action, I can expand or reduce both the bright and dim light's radius by 5 ft each, to a maximum of 30 feet each or a minimum of 10 feet each. I am proficient with this weapon if I'm proficient with either longswords or shortswords.",
+		descriptionLong : "As a bonus action, I can have this longsword hilt create or dismiss a blade of pure radiance. While the blade exists, it acts like a longsword that grants a +2 bonus to attack and damage rolls, does radiant damage and has the finesse property. It also deals +1d8 radiant damage to undead and emits sunlight, bright light in a 15-ft radius and dim light in an additional 15-ft radius. As an action, I can expand or reduce both the bright and dim light's radius by 5 ft each, to a maximum of 30 ft each or a minimum of 10 ft each. I am proficient with this weapon if I'm proficient with either longswords or shortswords.",
 		descriptionFull : "This item appears to be a longsword hilt. While grasping the hilt, you can use a bonus action to cause a blade of pure radiance to spring into existence, or make the blade disappear. While the blade exists, this magic longsword has the finesse property. If you are proficient with shortswords or longswords, you are proficient with the sun blade.\n   You gain a +2 bonus to attack and damage rolls made with this weapon, which deals radiant damage instead of slashing damage. When you hit an undead with it, that target takes an extra 1d8 radiant damage.\n   The sword's luminous blade emits bright light in a 15-foot radius and dim light for an additional 15 feet. The light is sunlight. While the blade persists, you can use an action to expand or reduce its radius of bright and dim light by 5 feet each, to a maximum of 30 feet each or a minimum of 10 feet each.",
 		weight : 3,
 		action : [["bonus action", " (start/stop)"], ["action", " (change light)"]],

@@ -5624,11 +5624,13 @@ function StringEvals(aType) {
 
 // test if the main character is proficient with a weapon (return true) or not (return false)
 function isProficientWithWeapon(WeaponName, theWea) {
-	if (theWea.isAlwaysProf || (/natural|spell|cantrip|alwaysprof/i).test(theWea.type)) {
+	if (theWea.isAlwaysProf || /natural|spell|cantrip|alwaysprof/i.test(theWea.type)) {
 		return true; // No need to check further for natural weapons, spells, and 'alwaysprof'
+	} else if (theWea.isAlwaysProf === false) {
+		return false; // Always not proficient
 	} else if ((theWea.type.toLowerCase() == "simple" && tDoc.getField("Proficiency Weapon Simple").isBoxChecked(0)) || (theWea.type.toLowerCase() == "martial" && tDoc.getField("Proficiency Weapon Martial").isBoxChecked(0))) {
 		return true; // Proficient with the relevant type (simple/martial)
-	} else if (CurrentProfs.weapon.otherWea && RegExp(";(" + (CurrentProfs.weapon.otherWea.finalProfs.join("s?|")  + "s?").replace(/ss\?(\||$)/g, "s?$1") + ");", "i").test(";" + [WeaponName, theWea.type].concat(theWea.list ? [theWea.list] : []).concat(theWea.baseWeapon ? [theWea.baseWeapon] : []).join(";") + ";")) {
+	} else if (CurrentProfs.weapon.otherWea && RegExp(";(" + (CurrentProfs.weapon.otherWea.finalProfs.join("s?|")  + "s?").replace(/ss\?(\||$)/g, "s?$1") + ");", "i").test(";" + [WeaponName, theWea.type].concat(theWea.list ? [theWea.list] : []).concat(theWea.baseWeapon ? [theWea.baseWeapon] : []).concat(theWea.nameAlt ? theWea.nameAlt : []).join(";") + ";")) {
 		return true; // Proficient with the weapon through an 'other weapons' proficiency
 	}
 	return false;
@@ -5781,12 +5783,12 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 
 			// define some variables that we can check against later or with the CurrentEvals
 			var WeaponText = inputText + " " + fields.Description;
-			var isDC = (/dc/i).test(fields.To_Hit_Bonus);
-			var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText)) ? true : false;
-			var isWeapon = theWea && theWea.isNotWeapon ? false : !isSpell || (isSpell && theWea && !(/cantrip|spell/i).test(theWea.type));
-			var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
-			var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
-			var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
+			var isDC = /dc/i.test(fields.To_Hit_Bonus);
+			var isSpell = thisWeapon[3] || (theWea && /cantrip|spell/i.test(theWea.type)) || (!theWea && /\b(cantrip|spell)\b/i.test(WeaponText)) ? true : false;
+			var isWeapon = theWea && theWea.isNotWeapon ? false : !isSpell || (isSpell && theWea && !/cantrip|spell/i.test(theWea.type));
+			var isMeleeWeapon = isWeapon && /melee/i.test(fields.Range);
+			var isRangedWeapon = isWeapon && /^(?!.*melee).*\d+.*$/i.test(fields.Range);
+			var isNaturalWeapon = isWeapon && theWea && /natural/i.test(theWea.type);
 			var isThrownWeapon = isWeapon && /\bthrown\b/i.test(fields.Description) && /\d ?(ft|m)\.?($|[^)])/i.test(fields.Range);
 
 			var gatherVars = {
@@ -5933,7 +5935,7 @@ function CalcAttackDmgHit(fldName) {
 	var fixedCaster = theWea.useSpellMod && CurrentSpells[theWea.useSpellMod] ? CurrentSpells[theWea.useSpellMod] : false;
 	var aWeaNoAbi = theWea.ability === 0 || (fixedCaster && fixedCaster.fixedDC && fixedCaster.abilityToUse && !fixedCaster.abilityToUse[0]);
 
-	if (!WeaponTextName || ((/^(| |empty)$/).test(fields.Mod) && !aWeaNoAbi)) {
+	if (!WeaponTextName || (/^(| |empty)$/.test(fields.Mod) && !aWeaNoAbi)) {
 		Value(fldBase + "Damage", "");
 		Value(fldBase + "To Hit", "");
 		if (QI) CurrentWeapons.offHands[ArrayNmbr] = false;
@@ -5954,14 +5956,14 @@ function CalcAttackDmgHit(fldName) {
 	};
 
 	// define some variables that we can check against later or with the CurrentEvals
-	var isDC = (/dc/i).test(fields.To_Hit_Bonus), spTypeShort = isDC ? "dc" : "atk", spTypeFull = isDC ? "dc" : "attack";
+	var isDC = /dc/i.test(fields.To_Hit_Bonus), spTypeShort = isDC ? "dc" : "atk", spTypeFull = isDC ? "dc" : "attack";
 
 	// Gather some information on the weapon
-	var isSpell = thisWeapon[3] || (theWea && (/cantrip|spell/i).test(theWea.type)) || (!theWea && (/\b(cantrip|spell)\b/i).test(WeaponText)) ? true : false;
-	var isWeapon = theWea && theWea.isNotWeapon ? false : !isSpell || (isSpell && theWea && !(/cantrip|spell/i).test(theWea.type));
-	var isMeleeWeapon = isWeapon && (/melee/i).test(fields.Range);
-	var isRangedWeapon = isWeapon && (/^(?!.*melee).*\d+.*$/i).test(fields.Range);
-	var isNaturalWeapon = isWeapon && theWea && (/natural/i).test(theWea.type);
+	var isSpell = thisWeapon[3] || (theWea && /cantrip|spell/i.test(theWea.type)) || (!theWea && /\b(cantrip|spell)\b/i.test(WeaponText)) ? true : false;
+	var isWeapon = theWea && theWea.isNotWeapon ? false : !isSpell || (isSpell && theWea && !/cantrip|spell/i.test(theWea.type));
+	var isMeleeWeapon = isWeapon && /melee/i.test(fields.Range);
+	var isRangedWeapon = isWeapon && /^(?!.*melee).*\d+.*$/i.test(fields.Range);
+	var isNaturalWeapon = isWeapon && theWea && /natural/i.test(theWea.type);
 	var isThrownWeapon = isWeapon && /\bthrown\b/i.test(fields.Description) && /\d ?(ft|m)\.?($|[^)])/i.test(fields.Range);
 
 	// see if this is a off-hand attack and the modToDmg shouldn't be use
@@ -6090,8 +6092,8 @@ function CalcAttackDmgHit(fldName) {
 	var addNum = function(inP, DmgHit) {
 		inP = Number(inP);
 		if (isNaN(inP)) inP = 0;
-		if (!DmgHit || (/dmg/i).test(DmgHit)) dmgNum += inP;
-		if (!DmgHit || (/hit/i).test(DmgHit)) hitNum += inP;
+		if (!DmgHit || /dmg/i.test(DmgHit)) dmgNum += inP;
+		if (!DmgHit || /hit/i.test(DmgHit)) hitNum += inP;
 	};
 
 	// no longer consider it a DC if Players Make All Rolls is enabled
@@ -6141,7 +6143,7 @@ function CalcAttackDmgHit(fldName) {
 
 	// Set the values to the sheet
 	Value(fldBase + "Damage", dmgTot == 0 ? "" : dmgTot);
-	if (event.target && event.target.name && (/.*Attack.*To Hit/).test(event.target.name)) {
+	if (event.target && event.target.name && /.*Attack.*To Hit/.test(event.target.name)) {
 		event.value = fields.Range === "With melee wea" ? "" : hitTot;
 	} else {
 		Value(fldBase + "To Hit", fields.Range === "With melee wea" ? "" : hitTot);
@@ -7531,23 +7533,28 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		var fldEnc = "Speed encumbered";
 		var fldEncdW = What(fldEnc).replace(/\n|\r/g, "").replace(/,/g, ".");
 		var spdTypes = ["walk", "burrow", "climb", "fly", "swim"];
-		//create the set object if it doesn't exist already
+		// Backwards compatibility, when `speed` was still an array
+		if (isArray(ProfObj)) ProfObj = { walk : {spd : parseFloat(ProfObj[0]), enc : parseFloat(ProfObj[1])} };
+		// Create the set object if it doesn't already have any content
 		var setKeys = function() {
-			for (var e in set) {return true;};
+			for (var e in set) { return true; };
 			CurrentProfs.speed = { allModes : {} };
 			for (var i = 0; i < spdTypes.length; i++) CurrentProfs.speed[spdTypes[i]] = {spd : {}, enc : {}};
 			set = CurrentProfs.speed;
-		}();
-		// a function to get the correct value of the speed
+		};
+		setKeys();
+		// A function to get the correct value of the speed
 		var parseSpeed = function(type, inpObj, fullString, replaceWalk, extra) {
 			if (ObjLength(inpObj) || extra) {
-				if (extra < 0) {
-					inpObj.extra = extra;
-				} else if (!isNaN(extra) && extra > 0) {
-					inpObj.extra = "+" + extra;
-					inpObj.extraFixed = "fixed " + extra;
+				if (extra) {
+					if (extra < 0) {
+						inpObj.extra = extra;
+					} else if (!isNaN(extra) && extra > 0) {
+						inpObj.extra = "+" + extra;
+						inpObj.extraFixed = "fixed " + extra;
+					}
 				}
-				var total = getHighestTotal(inpObj, true, replaceWalk, CurrentProfs.speed.allModes, type == "walk" ? false : type, true);
+				var total = getHighestTotal(inpObj, true, replaceWalk, CurrentProfs.speed.allModes, type, true);
 				if (inpObj.extra !== undefined) delete inpObj.extra;
 				if (inpObj.extraFixed !== undefined) delete inpObj.extraFixed;
 			} else {
@@ -7555,7 +7562,25 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			}
 			return fullString == "both" ? total : fullString ? total[0] : total[1];
 		};
-		// get the totals before we change anything
+		// A function to get the totals at the current state
+		var getTotals = function(oDeltaSpds) {
+			if (!oDeltaSpds) oDeltaSpds = {};
+			var oBaseWalk = { 
+				spd : parseSpeed("walk", set.walk.spd, "both", 0, oDeltaSpds.walkSpd),
+				enc : parseSpeed("walk", set.walk.enc, "both", 0, oDeltaSpds.walkEnc)
+			};
+			var oTotals = { walkSpd : oBaseWalk.spd[0], walkEnc : oBaseWalk.enc[0] };
+			for (var i = 0; i < spdTypes.length; i++) {
+				var sT = spdTypes[i];
+				if (sT === "walk") continue;
+				oTotals[sT + "Spd"] = parseSpeed(sT, set[sT].spd, true, oBaseWalk.spd[2], oDeltaSpds[sT + "Spd"]);
+				oTotals[sT + "Enc"] = parseSpeed(sT, set[sT].enc, true, oBaseWalk.enc[2], oDeltaSpds[sT + "Enc"]);
+			};
+			return oTotals;
+		}
+		// Get the current expected totals before we change anything
+		var oldTotals = getTotals();
+	/* TESTING
 		var oldTotals = {
 			walkSpd : parseSpeed("walk", set.walk.spd, false, 0),
 			walkEnc : parseSpeed("walk", set.walk.enc, false, 0)
@@ -7566,13 +7591,14 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			oldTotals[sT + "Spd"] = parseSpeed(sT, set[sT].spd, false, oldTotals.walkSpd);
 			oldTotals[sT + "Enc"] = parseSpeed(sT, set[sT].enc, false, oldTotals.walkEnc);
 		};
-		// make an object of all the differences between the values of the field and the oldTotals
-		var deltaSpds = {};
+	*/
+		// Get the manual changed by comparing the values of the field and the oldTotals
+		var oDeltaSpds = {};
 		var splitSpdString = function(type, str) {
 			for (var i = 0; i < spdTypes.length; i++) {
 				var sT = spdTypes[i];
 				if (!str) {
-					deltaSpds[sT + type] = 0;
+					oDeltaSpds[sT + type] = 0;
 					continue;
 				};
 				var strParse = oldTotals[sT + type];
@@ -7582,17 +7608,16 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					if (metric) strParse = RoundTo(strParse / 0.3, 5, false, false);
 				}
 				var total = strParse - oldTotals[sT + type];
-				deltaSpds[sT + type] = isNaN(total) ? 0 : total;
+				oDeltaSpds[sT + type] = isNaN(total) ? 0 : total;
 			}
 		};
 		splitSpdString("Spd", fldSpdW);
 		splitSpdString("Enc", fldEncdW);
-		if (isArray(ProfObj)) ProfObj = { walk : {spd : parseFloat(ProfObj[0]), enc : parseFloat(ProfObj[1])} };
-		// add or remove the ProfObj from the current object
+		// Process the passed `speed` object, ProfObj. Modify CurrentProfs.speed with it
 		for (var spdType in ProfObj) {
-			if (!CurrentProfs.speed[spdType]) continue;
+			var theSet = set[spdType];
+			if (!theSet) continue;
 			var theInp = ProfObj[spdType];
-			var theSet = CurrentProfs.speed[spdType];
 			if (AddRemove) { // add
 				if (spdType === "allModes") {
 					theSet[ProfSrc] = theInp;
@@ -7612,19 +7637,22 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				};
 			};
 		};
-		// get the new totals
+		// Get the new totals
+		var newTotals = getTotals(oDeltaSpds);
+	/* TESTING
 		var theWalks = {
-			spd : parseSpeed("walk", set.walk.spd, "both", 0, deltaSpds.walkSpd),
-			enc : parseSpeed("walk", set.walk.enc, "both", 0, deltaSpds.walkEnc)
+			spd : parseSpeed("walk", set.walk.spd, "both", 0, oDeltaSpds.walkSpd),
+			enc : parseSpeed("walk", set.walk.enc, "both", 0, oDeltaSpds.walkEnc)
 		};
 		var newTotals = { walkSpd : theWalks.spd[0], walkEnc : theWalks.enc[0] };
 		for (var i = 0; i < spdTypes.length; i++) {
 			var sT = spdTypes[i];
 			if (sT === "walk") continue;
-			newTotals[sT + "Spd"] = parseSpeed(sT, set[sT].spd, true, theWalks.spd[1], deltaSpds[sT + "Spd"]);
-			newTotals[sT + "Enc"] = parseSpeed(sT, set[sT].enc, true, theWalks.enc[1], deltaSpds[sT + "Enc"]);
+			newTotals[sT + "Spd"] = parseSpeed(sT, set[sT].spd, true, theWalks.spd[2], oDeltaSpds[sT + "Spd"]);
+			newTotals[sT + "Enc"] = parseSpeed(sT, set[sT].enc, true, theWalks.enc[2], oDeltaSpds[sT + "Enc"]);
 		};
-		// create the strings
+	*/
+		// Create the strings
 		var spdString = "";
 		var encString = "";
 		for (var i = 0; i < spdTypes.length; i++) {
@@ -7634,29 +7662,39 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			var eSpd = newTotals[sT + "Enc"];
 			if (eSpd) encString += (!encString ? "" : typePF ? ", " : ",\n") + eSpd;
 		};
-		// create the tooltips
+		// Create the tooltips
 		var ttips = {spd : "", enc : ""};
-		var modArray = [];
-		for (var spMod in set.allModes) {
-			var theVal = set.allModes[spMod];
-			if (!theVal) continue;
-			if (!isNaN(theVal) || !(/[xX\*\xD7\/:]/).test(theVal[0])) theVal += " ft";
-			if (metric) theVal = ConvertToMetric(theVal, 0.5);
-			modArray.push(spMod + " [" + theVal + "]");
-		};
 		for (var i = 0; i < spdTypes.length; i++) {
 			var sT = spdTypes[i];
+			// Create a string for the allModes of this speed
+			var modArray = [];
+			for (var spMod in set.allModes) {
+				var oAllMode = set.allModes[spMod];
+				if (typeof oAllMode == "object") {
+					if (oAllMode.exclude && oAllMode.exclude.indexOf(sT) !== -1) continue; // don't add to this speed type
+					var theVal = oAllMode.bonus;
+				} else {
+					// backwards compatible, just a string/number
+					var theVal = oAllMode;
+				}
+				if (!theVal) continue;
+				if (!isNaN(theVal) || !/[xX\*\xD7\/:]/.test(theVal[0])) theVal += " ft";
+				if (metric) theVal = ConvertToMetric(theVal, 0.5);
+				modArray.push(spMod + " [" + theVal + "]");
+			};
+			// The strings for full speed and encumbered speed
 			var arrs = {spd : [], enc : []};
 			for (var n = 0; n <= 1; n++) {
 				var sV = n ? "enc" : "spd";
 				var theSpeeds = set[sT][sV];
 				var goOn = false;
+				// Make a string of the speeds
 				for (var aSpeed in theSpeeds) {
 					var theVal = theSpeeds[aSpeed];
 					if (!theVal) continue;
 					if (theVal === "walk") {
 						theVal = "as walking speed";
-					} else if (!isNaN(theVal) || !(/[xX\*\xD7\/:]/).test(theVal[0])) {
+					} else if (!isNaN(theVal) || !/[xX\*\xD7\/:]/.test(theVal[0])) {
 						theVal += " ft";
 					};
 					if (metric) theVal = ConvertToMetric(theVal, 0.5);
@@ -7669,7 +7707,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 				};
 			};
 		};
-		// set them to the fields
+		// Set the values and tooltips to the fields
 		if (metric) {
 			spdString = ConvertToMetric(spdString, 0.5);
 			encString = ConvertToMetric(encString, 0.5);
@@ -7891,13 +7929,13 @@ function processModifiers(iTot, aMods) {
 };
 
 //a way to condense an array of numbers down to the highest and modifiers
-function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, withCleanValue) {
+function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, type, withCleanValue) {
 	var values = [0];
 	var modifications = [];
 	var fixedVals = [0];
 	var noModsIfWalks = false;
 	var prsVal = function(val) {
-		if (isNaN(val) && (/unlimited|\u221E/i).test(val)){
+		if (isNaN(val) && /unlimited|\u221E/i.test(val)){
 			values.push(9999);
 		} else if (!val) {
 			return;
@@ -7907,16 +7945,20 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, with
 			values.push(val);
 		} else if (replaceWalk !== undefined && replaceWalk !== "walk" && val === "walk") {
 			prsVal(replaceWalk);
-			noModsIfWalks = true;
-		} else if ((/fixed/i).test(val) && (/\d+/).test(val)) { // for Magic Items granting a speed, no modifiers at all
+			// noModsIfWalks = true;
+		} else if (/fixed/i.test(val) && /\d+/.test(val)) { // for Magic Items granting a speed, no modifiers at all
 			fixedVals.push(Number(val.match(/\d+/)[0]));
 		};
 	};
-	var recurProcess = function(input) {
+	var recurProcess = function(input, isAllModes) {
 		if (isArray(input)) {
-			for (var i = 0; i < input.length; i++) { recurProcess(input[i]); };
+			for (var i = 0; i < input.length; i++) { recurProcess(input[i], isAllModes); };
 		} else if (typeof input == "object") {
-			for (var i in input) { recurProcess(input[i]); };
+			if (isAllModes && input.bonus) {
+				if (!input.exclude || input.exclude.indexOf(type) === -1) recurProcess(input.bonus, isAllModes);
+			} else {
+				for (var i in input) { recurProcess(input[i], isAllModes); };
+			}
 		} else {
 			prsVal(input);
 		};
@@ -7925,24 +7967,26 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, prefix, with
 	//process the values
 	var tValue = Math.max.apply(Math, values);
 	if (tValue && modifications.length) tValue = processModifiers(tValue, modifications);
+	var tValBeforeExtra = tValue;
 	if (tValue && extraMods && !(replaceWalk && noModsIfWalks && tValue === replaceWalk)) {
 		modifications = [];
-		recurProcess(extraMods);
+		recurProcess(extraMods, true);
 		if (modifications.length) tValue = processModifiers(tValue, modifications);
 	};
 	if (fixedVals.length > 1) {
 		tValue = Math.max.apply(Math, fixedVals.concat([tValue]));
 	};
-	prefix = prefix ? prefix + " " : prefix === false ? "" : " ";
+	var prefix = type === false || type === "walk" ? "" : type ? type + " " : " ";
 	if (!tValue) {
-		return withCleanValue ? ["", 0] : "";
+		return withCleanValue ? ["", 0, 0] : "";
 	} else if (tValue >= 9999) {
-		return prefix + "(unlimited)";
+		var returnStr = prefix + "(unlimited)";
+		return withCleanValue ? [returnStr, 0, 0] : returnStr;
 	} else {
 		if (!notRound) tValue = Math.round(tValue);
 		var metric = What("Unit System") !== "imperial";
 		var returnStr = prefix + RoundTo(tValue * (metric ? 0.3 : 1), 0.5, false, true) + (metric ? " m" : " ft");
-		return withCleanValue ? [returnStr, tValue] : returnStr;
+		return withCleanValue ? [returnStr, tValue, tValBeforeExtra] : returnStr;
 	}
 };
 

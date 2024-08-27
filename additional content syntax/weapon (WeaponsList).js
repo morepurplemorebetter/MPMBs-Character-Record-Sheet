@@ -41,8 +41,7 @@
 				Note that if you want a class feature, race, racial trait, feat, background, or magic item to
 				add a weapon/attack, you should be using the 'weaponOptions' attribute.
 
-	Sheet:		v13.0.6 and newer
-
+	Sheet:		v13.2.0 and newer
 */
 
 var iFileName = "Homebrew Syntax - WeaponsList.js";
@@ -59,7 +58,7 @@ var iFileName = "Homebrew Syntax - WeaponsList.js";
 	Only the first occurrence of this variable will be used.
 */
 
-RequiredSheetVersion("13.0.6");
+RequiredSheetVersion("13.2.0");
 /*	RequiredSheetVersion // OPTIONAL //
 	TYPE:	function call with one variable, a string or number
 	USE:	the minimum version of the sheet required for the import script to work
@@ -78,22 +77,34 @@ RequiredSheetVersion("13.0.6");
 	or go to File >> Properties >> Description, where the version is part of the document title.
 */
 
-WeaponsList["sword of purple"] = {
+WeaponsList["purple sword"] = {
 /* 	WeaponsList object name // REQUIRED //
 	TYPE:	string
 	USE:	object name of the weapon as it will be used by the sheet
 
 	By adding a new object to the existing WeaponsList object, we create a new weapon/attack.
-	The object name here is 'sword of purple'. You can use any object name as long as it is not already in use.
+	The object name here is 'purple sword'. You can use any object name as long as it is not already in use.
 	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
-	name : "Sword of Purple",
+	name : "Purple Sword",
 /*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the weapon as it will be used by the sheet
 
-	This name will be capitalized (first letter of every word) before being added to the weapon drop-down.
+	This name will be capitalized (first letter of every word) before
+	being added to the weapon drop-down.
+*/
+	nameAlt : ["Sword, Purple", "More Purple More Sword"],
+/*	nameAlt // OPTIONAL //
+	TYPE:	array of strings
+	USE:	extra names to be listed in the drop-down box
+	ADDED:	v13.2.0
+
+	This list of names is added at the end of the options in the attack drop-down boxes.
+	They will be capitalized (first letter of every word) before being added.
+
+	Make sure that the `regExpSearch` also matches each and every entry in this list.
 */
 	source : ["SRD", 204],
 	source : [["E", 7], ["S", 115]],
@@ -143,7 +154,7 @@ WeaponsList["sword of purple"] = {
 	Now it looks for any entry that has both the words "sword" and "purple" in it,
 	disregarding capitalization or word order.
 	If this looks too complicated, or you want to match only a single word, or a fixed order of words, just write it like this:
-		regExpSearch : /sword of purple/i,
+		regExpSearch : /purple sword/i,
 */
 	type : "Martial",
 /*	type // REQUIRED //
@@ -298,9 +309,13 @@ WeaponsList["sword of purple"] = {
 		"ranged"	// ranged weapons
 		"spell"		// cantrips and spells
 		"improvised"// improvised weapons such as vial of acid
+		"firearm"   // firearms
 
-	If you use any other string than the four options given above,
-	the weapon will appear at the end of the drop-down options.
+	If you use any other string than the five options given above,
+	the weapon will appear below these five lists.
+
+	If you don't include this attribute, the weapon will not be added as an option
+	in the drop-down box, but will still function when typed in manually.
 
 	Setting this to and empty string ("") is the same as not including this attribute.
 
@@ -416,14 +431,37 @@ WeaponsList["sword of purple"] = {
 /*	isAlwaysProf // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether (true) or not (false) the proficiency bonus should always be added for this weapon
+	CHANGE: v13.2.0 (`false` is now a valid value)
 
-	This attribute only has an effect if the character would otherwise not be proficient with this weapon.
+	This attribute forces the proficiency checkbox to be on (true) or off (false)
+	when a weapon is selected.
 	Add this for weapons where the normal way of determining proficiency would not produce the correct result.
-	For example, if you set 'type' above to 'Cantrip', setting this to 'true' will have no effect.
-	Another example, if you set 'type' above to 'Simple', setting this to 'true' will add proficiency
-	even if the character is not proficient with simple weapons (or has the weapon listed in 'other weapon proficiencies').
 
-	Setting this to false is the same as not including this attribute.
+	Without this attribute, the sheet will automatically determine if the character is
+	proficient with the weapon. The sheet automatically marks something as proficient if:
+		* The `type` attribute is "Spell", "Cantrip" or "Natural".
+		* The `type` attribute is "Simple" or "Martial" and the relevant proficiency
+		  checkbox is checked on the sheet.
+		* The box for other weapon proficiencies matches of the weapon: the object name or 
+		  the `type`, `list`, `baseWeapon`, or `nameAlt` attribute.
+
+	TRUE
+	When set to `true`, the sheet will always check the Proficiency checkbox when this weapon is selected.
+
+	FALSE
+	When set to `false`, the sheet will never check the Proficiency checkbox when this weapon is selected.
+
+	UNDEFINED
+	Do not include this attribute if you want the sheet to determine proficiency itself.
+
+	The checkbox can still be changed manually or with features using `calcChanges.atkAdd`.
+	
+	For example, if you set 'type' above to 'Cantrip', setting this to 'true' will have no extra effect.
+	But setting it to 'false' will force the weapon not to add proficiency to its to hit / DC.
+	Another example, if you set 'type' above to 'Simple', setting this to 'true' will add
+	proficiency even if the character is not proficient with simple weapons.
+
+	Setting this to false is NOT the same as not including this attribute!
 */
 	ammo : "bolt",
 /*	ammo // OPTIONAL //

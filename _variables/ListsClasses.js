@@ -171,7 +171,7 @@ var Base_ClassList = {
 				name : "Reckless Attack",
 				source : [["SRD", 9], ["P", 48]],
 				minlevel : 2,
-				description : desc("Adv. on melee weapon attacks during my turn, but attacks vs. me adv. until next turn")
+				description : desc("Adv. on Str melee weapon attacks in my turn, but attacks vs. me adv. until next turn")
 			},
 			"danger sense" : {
 				name : "Danger Sense",
@@ -2908,7 +2908,7 @@ var Base_ClassSubList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (!v.isSpell && !v.CritChance && classes.known.fighter && classes.known.fighter.level < 15) {
+							if (!v.isSpell && !v.CritChance && !v.isDC && classes.known.fighter && classes.known.fighter.level < 15) {
 								fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20';
 								v.CritChance = 19;
 							};
@@ -2945,7 +2945,7 @@ var Base_ClassSubList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (v.isSpell) return;
+							if (v.isSpell || v.isDC) return;
 							if (v.CritChance && v.CritChance > 18) {
 								fields.Description = fields.Description.replace('Crit on ' + CritChance + '-20', 'Crit on 18-20');
 								v.CritChance = 18;

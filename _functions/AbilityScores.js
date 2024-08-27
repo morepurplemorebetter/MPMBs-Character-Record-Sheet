@@ -487,6 +487,13 @@ function AbilityScores_Button(onlySetTooltip) {
 				CurrentUpdates.types.push("attacks");
 				// Recalculate wild shapes, if the mental stats changed
 				if (statChange.mental) WildshapeRecalc();
+				// Redo which Ability Save DCs are visible, if any class has an alt
+				for (var sClass in CurrentClasses) {
+					if (CurrentClasses[sClass].abilitySaveAlt) {
+						SetTheAbilitySaveDCs();
+						break;
+					}
+				}
 				thermoM(thermoTxt, true); // Stop progress bar
 			},
 
