@@ -809,20 +809,31 @@ function CalcSpellScores() {
 
 	// do custom calculations
 	if (CurrentEvals.spellCalc) {
-		var abiScoreNo = tDoc.getField(modFldName).currentValueIndices;
-		var classArray = cSpells ? [aClass] : [];
-		if (cSpells && cSpells.ability && isNaN(cSpells.ability) && CurrentSpells[cSpells.ability]) classArray.push(cSpells.ability);
+		var iAbiScore = tDoc.getField(modFldName).currentValueIndices;
+		var aCasters = cSpells ? [aClass] : [];
+		if (cSpells && cSpells.ability && isNaN(cSpells.ability) && CurrentSpells[cSpells.ability]) aCasters.push(cSpells.ability);
 
+		for (var sType in theResult) {
+			if ((fixedDC && sType != "prepare") || (sType == "prepare" && !isPrepareVis)) continue;
+			theResult[sType] += runSpellCalc(sType, aCasters, iAbiScore, "");
+		}
+	}
+
+	// finally set the results to the field
+	setResults(true);
+}
+
+// Run the calcChanges.spellCalc for the given variables
+function runSpellCalc(sType, aCasters, iAbiScore, sSpell) {
+	var iReturn = 0;
+	if (CurrentEvals.spellCalc) {
 		for (var i = 0; i < CurrentEvals.spellCalcOrder.length; i++) {
 			var evalName = CurrentEvals.spellCalcOrder[i][1];
 			var evalThing = CurrentEvals.spellCalc[evalName];
 			if (!evalThing || typeof evalThing !== 'function') continue;
 			try {
-				for (var aType in theResult) {
-					if ((fixedDC && aType != "prepare") || (aType == "prepare" && !isPrepareVis)) continue;
-					var addSpellNo = evalThing(aType, classArray, abiScoreNo);
-					if (!isNaN(addSpellNo)) theResult[aType] += Number(addSpellNo);
-				}
+				var evalResult = evalThing(sType, aCasters, iAbiScore, sSpell);
+				if (!isNaN(evalResult)) iReturn = Number(evalResult);
 			} catch (error) {
 				var eText = "The custom spell attack/DC (spellCalc) script from '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
@@ -834,9 +845,7 @@ function CalcSpellScores() {
 			}
 		}
 	}
-
-	// finally set the results to the field
-	setResults(true);
+	return iReturn;
 }
 
 //set the blueText field bonus to the global CurrentSpells object for spells to memorize, attack modifier, and DC (field blur)

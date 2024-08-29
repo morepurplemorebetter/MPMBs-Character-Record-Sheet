@@ -1871,7 +1871,7 @@ calcChanges : {
 	*/
 
 	spellCalc : [
-		function (type, spellcasters, ability) {
+		function (type, spellcasters, ability, spell) {
 			if (type == "dc") return 1;
 		},
 		"I add +1 to all the saving throw DCs of my spells."
@@ -1921,6 +1921,10 @@ calcChanges : {
 			Check against this if you only want to change something if it is with a certain ability score.
 			For example, if you want to add 1 to the spell attacks done with Charisma:
 				if (type == "attack" && ability == 6) return 1;
+
+		4)	spell, a string, the object name of the spell in the `SpellsList` object
+			This is only used for DC/attack calculated in the attacks section,
+			on the 1st page.
 
 		// 2nd array entry // OPTIONAL //
 		This has to be a string and will be used to populate the "Things affecting the attack calculations" dialog.

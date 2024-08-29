@@ -5750,9 +5750,15 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 		//add mod
 		var StrDex = What(QI ? "Str" : prefix + "Comp.Use.Ability.Str.Score") < What(QI ? "Dex" : prefix + "Comp.Use.Ability.Dex.Score") ? 2 : 1;
 		var weaponMod = /finesse/i.test(theWea.description) ? StrDex : theWea.ability;
-		//change mod if this is concerning a spell/cantrip
+		//special cases
+		var fixedCaster = theWea.useSpellMod && CurrentSpells[theWea.useSpellMod] ? theWea.useSpellMod : false;
 		var forceUseSpellcastingMod = theWea.useSpellcastingAbility === undefined ? false : theWea.useSpellcastingAbility ? "y" : "n";
-		if ((thisWeapon[3] || forceUseSpellcastingMod == "y") && forceUseSpellcastingMod != "n") {
+		
+		if (fixedCaster) {
+			//if the weapon has `useSpellMod`, set the ability to the matching spellcaster
+			weaponMod = CurrentSpells[theWea.useSpellMod].abilityToUse ? CurrentSpells[theWea.useSpellMod].abilityToUse[0] : getSpellcastingAbility(theWea.useSpellMod)[0];
+		} else if ((thisWeapon[3] || forceUseSpellcastingMod == "y") && forceUseSpellcastingMod != "n") {
+			//change mod if this is concerning a spell/cantrip
 			if (thisWeapon[4].length) {
 				var abiArr = thisWeapon[4].map( function(sClass) {
 					return CurrentSpells[sClass] && CurrentSpells[sClass].ability && !isNaN(CurrentSpells[sClass].ability) ? CurrentSpells[sClass].ability : 0;
@@ -5828,7 +5834,13 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 					i--;
 				}
 			}
+
+			// if the `useSpellMod` was changed, change the ability to match
+			if (fixedCaster !== theWea.useSpellMod && CurrentSpells[theWea.useSpellMod]) {
+				weaponMod = CurrentSpells[theWea.useSpellMod].abilityToUse ? CurrentSpells[theWea.useSpellMod].abilityToUse[0] : getSpellcastingAbility(theWea.useSpellMod)[0];
+			}
 		};
+
 		// if this is a field recalculation and no custom eval changed specific parts, just use the one from the field so that manual changes are preserved
 		if (isReCalc && !forceRedo) {
 			if (fields.Description === theWea.description) {
@@ -5956,7 +5968,7 @@ function CalcAttackDmgHit(fldName) {
 	};
 
 	// define some variables that we can check against later or with the CurrentEvals
-	var isDC = /dc/i.test(fields.To_Hit_Bonus), spTypeShort = isDC ? "dc" : "atk", spTypeFull = isDC ? "dc" : "attack";
+	var isDC = /dc/i.test(fields.To_Hit_Bonus), spTypeShort = isDC ? "dc" : "atk";
 
 	// Gather some information on the weapon
 	var isSpell = thisWeapon[3] || (theWea && /cantrip|spell/i.test(theWea.type)) || (!theWea && /\b(cantrip|spell)\b/i.test(WeaponText)) ? true : false;
@@ -6062,27 +6074,12 @@ function CalcAttackDmgHit(fldName) {
 		( (fixedCaster && !fixedCaster.fixedDC) || (QI && isSpell && !fixedCaster) )
 	) {
 		// get the variables we need to pass to the function
-		var spCasters = spCaster ? spCaster : !thisWeapon[4].length ? [] : thisWeapon[4].map( function(sClass) {
+		var aCasters = spCaster ? spCaster : !thisWeapon[4].length ? [] : thisWeapon[4].map( function(sClass) {
 			return CurrentSpells[sClass] && CurrentSpells[sClass].ability == abiScoreNo ? sClass : "";
 		});
+		var sType = isDC ? "dc" : "attack";
 
-		for (var i = 0; i < CurrentEvals.spellCalcOrder.length; i++) {
-			var evalName = CurrentEvals.spellCalcOrder[i][1];
-			var evalThing = CurrentEvals.spellCalc[evalName];
-			if (!evalThing || typeof evalThing !== 'function') continue;
-			try {
-				var addSpellNo = evalThing(spTypeFull, spCasters, abiScoreNo, thisWeapon[3]);
-				if (!isNaN(addSpellNo)) output.extraHit += Number(addSpellNo);
-			} catch (error) {
-				var eText = "The custom spell attack/DC (spellCalc) script '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
-				for (var e in error) eText += "\n " + e + ": " + error[e];
-				console.println(eText);
-				console.show();
-				delete CurrentEvals.spellCalc[evalName];
-				CurrentEvals.spellCalcOrder.splice(i, 1);
-				i--;
-			}
-		}
+		output.extraHit += runSpellCalc(sType, aCasters, abiScoreNo, thisWeapon[3]);
 	}
 
 	// Now we parse all that information to a total
@@ -7580,18 +7577,6 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		}
 		// Get the current expected totals before we change anything
 		var oldTotals = getTotals();
-	/* TESTING
-		var oldTotals = {
-			walkSpd : parseSpeed("walk", set.walk.spd, false, 0),
-			walkEnc : parseSpeed("walk", set.walk.enc, false, 0)
-		};
-		for (var i = 0; i < spdTypes.length; i++) {
-			var sT = spdTypes[i];
-			if (sT === "walk") continue;
-			oldTotals[sT + "Spd"] = parseSpeed(sT, set[sT].spd, false, oldTotals.walkSpd);
-			oldTotals[sT + "Enc"] = parseSpeed(sT, set[sT].enc, false, oldTotals.walkEnc);
-		};
-	*/
 		// Get the manual changed by comparing the values of the field and the oldTotals
 		var oDeltaSpds = {};
 		var splitSpdString = function(type, str) {
@@ -7639,19 +7624,6 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		};
 		// Get the new totals
 		var newTotals = getTotals(oDeltaSpds);
-	/* TESTING
-		var theWalks = {
-			spd : parseSpeed("walk", set.walk.spd, "both", 0, oDeltaSpds.walkSpd),
-			enc : parseSpeed("walk", set.walk.enc, "both", 0, oDeltaSpds.walkEnc)
-		};
-		var newTotals = { walkSpd : theWalks.spd[0], walkEnc : theWalks.enc[0] };
-		for (var i = 0; i < spdTypes.length; i++) {
-			var sT = spdTypes[i];
-			if (sT === "walk") continue;
-			newTotals[sT + "Spd"] = parseSpeed(sT, set[sT].spd, true, theWalks.spd[2], oDeltaSpds[sT + "Spd"]);
-			newTotals[sT + "Enc"] = parseSpeed(sT, set[sT].enc, true, theWalks.enc[2], oDeltaSpds[sT + "Enc"]);
-		};
-	*/
 		// Create the strings
 		var spdString = "";
 		var encString = "";

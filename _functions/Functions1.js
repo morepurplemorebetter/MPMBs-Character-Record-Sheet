@@ -1938,15 +1938,6 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			}
 		}
 
-	/* TESTING
-		//special something for classes that have alternative ability scores that can be used for the DC
-		if (Temps.abilitySave && Temps.abilitySaveAlt) {
-			var as1 = Number(What(AbilityScores.abbreviations[Temps.abilitySave - 1]));
-			var as2 = Number(What(AbilityScores.abbreviations[Temps.abilitySaveAlt - 1]));
-			if (as1 < as2) Temps.abilitySave = Temps.abilitySaveAlt;
-		}
-	*/
-
 		var fAB = [];
 		var fTrans = {};
 		//add features of the class
@@ -3023,37 +3014,6 @@ function SetWeaponsdropdown(forceTooltips, aCompPrefixes) {
 	}
 
 	processWea(WeaponsList);
-/* TESTING
-	for (var key in WeaponsList) {
-		var weaKey = WeaponsList[key];
-		var weaList = weaKey.list ? weaKey.list.toLowerCase() : "";
-		if (!weaList || testSource(key, weaKey, "weapExcl")) continue; // test if the weapon or its source is set to be included
-		if (!oWeaponLists[weaList]) {
-			otherLists.push(weaList);
-			oWeaponLists[weaList] = [];
-		}
-		var weaName = WeaponsList[key].name.capitalize();
-		if (added.indexOf(weaName) === -1) {
-			added.push(weaName);
-			oWeaponLists[weaList].push(weaName);
-		}
-		if (isArray(WeaponsList[key].nameAlt)) {
-			WeaponsList[key].nameAlt.forEach(function (name) {
-				name = name.capitalize();
-				if (added.indexOf(name) === -1) {
-					added.push(name);
-					oWeaponLists.altList.push(name);
-				}
-			});
-		}
-	};
-
-	if (CurrentVars.extraWeaponsDisplay) {
-		for (var key in CurrentVars.extraWeaponsDisplay) {
-			oWeaponLists.startlist.push(CurrentVars.extraWeaponsDisplay[key]);
-		}
-	};
-*/
 
 	// make the definitive list of weapons for the dropdown box
 	var setweapons = [];
@@ -6805,7 +6765,6 @@ function SetToManual_Button(bSkipDialog, oDialogResults) {
 			CurrentVars.manual.background = What("Background") + " ";
 			Hide("Background Menu");
 		} else if (CurrentVars.manual.background) {
-			// FindBackground(CurrentVars.manual.background); // TESTING
 			CurrentVars.manual.background = false;
 			// Apply the current background field content
 			DontPrint("Background Menu");
@@ -6838,16 +6797,6 @@ function SetToManual_Button(bSkipDialog, oDialogResults) {
 			CurrentVars.manual.classes = false;
 			// Apply the current class and levels field content
 			ApplyClasses(What("Class and Levels"), false);
-			/* TESTING
-			var newClassValue = What("Class and Levels");
-			// restore the old class value so that we have a working classes.old
-			var oldClassValue = CurrentVars.manual.classes;
-			tDoc.getField("Class and Levels").remVal = oldClassValue;
-			Value("Class and Levels", oldClassValue);
-			// now set class processing back to automatic and apply the new value
-			CurrentVars.manual.classes = false;
-			Value("Class and Levels", newClassValue);
-			*/
 		}
 	}
 
@@ -6898,29 +6847,6 @@ function SetToManual_Button(bSkipDialog, oDialogResults) {
 					oFeat.idx // bIgnoreCurrent
 				);
 			}
-
-			/* TESTING
-			// set the old known feats back and apply the current ones
-			var oldKnowns = CurrentVars.manual.feats[0];
-			CurrentFeats.level = CurrentVars.manual.feats[1];
-			CurrentVars.manual.feats = false;
-			var remIgnoreDuplicates = ignoreDuplicates;
-			ignoreDuplicates = true;
-			for (var i = 1; i <= FieldNumbers.feats; i++) {
-				CurrentFeats.known[i - 1] = oldKnowns[i - 1];
-				ApplyFeat(What("Feat Name " + i), i);
-			}
-			// loop through the known feats and if any are still the same as before, first delete it and then apply it again
-			for (var i = 0; i < FieldNumbers.feats; i++) {
-				if (oldKnowns[i] && CurrentFeats.known[i] == oldKnowns[i]) {
-					Value("Feat Name " + (i+1), "");
-					Value("Feat Name " + (i+1), FeatsList[oldKnowns[i]].name);
-				}
-			}
-			ignoreDuplicates = remIgnoreDuplicates;
-			// update the feat level to the current level
-			UpdateLevelFeatures("feat");
-			*/
 		}
 	}
 
@@ -6984,32 +6910,6 @@ function SetToManual_Button(bSkipDialog, oDialogResults) {
 					oItem.idx // bIgnoreCurrent
 				);
 			}
-
-			/* TESTING
-			var oldKnowns = CurrentVars.manual.items[0];
-			var oldChoices = CurrentVars.manual.items[3];
-			if (!oldChoices) oldChoices = []; // backwards compatibility
-			var oldAttuned = CurrentVars.manual.items[1];
-			CurrentMagicItems.level = CurrentVars.manual.items[2];
-			CurrentVars.manual.items = false;
-			var remIgnoreDuplicates = ignoreDuplicates;
-			ignoreDuplicates = true;
-			for (var i = 1; i <= FieldNumbers.magicitems; i++) {
-				CurrentMagicItems.known[i - 1] = oldKnowns[i - 1];
-				CurrentMagicItems.choices[i - 1] = oldChoices[i - 1];
-				ApplyMagicItem(What("Extra.Magic Item " + i), i);
-			}
-			// loop through the known magic items and if any are still the same as before, first delete it and then apply it again
-			for (var i = 0; i < FieldNumbers.magicitems; i++) {
-				if (oldKnowns[i] && CurrentMagicItems.known[i] == oldKnowns[i]) {
-					Value("Extra.Magic Item " + (i+1), "");
-					Value("Extra.Magic Item " + (i+1), MagicItemsList[oldKnowns[i]].name);
-				}
-			}
-			ignoreDuplicates = remIgnoreDuplicates;
-			// update the magic item level to the current level
-			UpdateLevelFeatures("item");
-			*/
 		}
 	}
 
@@ -7024,7 +6924,6 @@ function SetToManual_Button(bSkipDialog, oDialogResults) {
 			];
 			Hide("Race Features Menu");
 		} else if (CurrentVars.manual.race) {
-			// FindRace(CurrentVars.manual.race[0], true); // TESTING
 			// Set the level to the remember field
 			if (CurrentRace.known) CurrentRace.level = CurrentVars.manual.race[1];
 			// Disable manual races
