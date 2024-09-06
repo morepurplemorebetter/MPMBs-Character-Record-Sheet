@@ -94,7 +94,7 @@ ClassList["blood hunter"] = {
 				var rite = (n < 6 ? 1 : n < 11 ? 2 : 3) + " primal rite" + (n < 6 ? "" : "s") + (n < 14 ? "" : " \u0026 1 esoteric rite") + " known";
 				return die + "; " + rite;
 			}),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			extraname : "Crimson Rite",
 			extrachoices : ["Flame (Primal Rite)", "Frozen (Primal Rite)", "Storm (Primal Rite)", "Roar (Esoteric Rite)", "Oracle (Esoteric Rite)", "Dead (Esoteric Rite)"],
 			"flame (primal rite)" : {
@@ -168,7 +168,7 @@ ClassList["blood hunter"] = {
 					"\u2022 Amplify: I can affect any size of creature and the curse doesn't end by itself",
 					"  At the end of each of the target's turns, it can make another Str save to stop the curse"
 				]),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"blood curse of the eyeless" : {
 				name : "Blood Curse of the Eyeless",
@@ -178,7 +178,7 @@ ClassList["blood hunter"] = {
 					"This doesn't work if the creature is immune to being blinded",
 					"\u2022 Amplify: the creature also has disadvantage on its next attack roll"
 				]),
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"blood curse of the fallen puppet" : {
 				name : "Blood Curse of the Fallen Puppet",
@@ -188,7 +188,7 @@ ClassList["blood hunter"] = {
 					"The creature makes one attack against a target of my choice within its attack range",
 					"\u2022 Amplify: the attack and damage roll gain a bonus equal to my Wisdom modifier (min 1)"
 				]),
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"blood curse of the fending rite" : {
 				name : "Blood Curse of the Fending Rite",
@@ -198,7 +198,7 @@ ClassList["blood hunter"] = {
 					"I can add my Wisdom modifier (min 1) to that Dexterity saving throw",
 					"\u2022 Amplify: allies within 5 ft of me gain the same bonus on their save vs. the spell"
 				]),
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"blood curse of the marked" : {
 				name : "Blood Curse of the Marked",
@@ -208,7 +208,7 @@ ClassList["blood hunter"] = {
 					"While marked, my rite damage to the target is doubled",
 					"\u2022 Amplify: The marked target loses resistance to my rite damage type"
 				]),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"blood curse of mutual suffering" : {
 				name : "Blood Curse of Mutual Suffering",
@@ -218,7 +218,7 @@ ClassList["blood hunter"] = {
 					"If it damages me while linked it takes half the damage as necrotic and the curse ends",
 					"\u2022 Amplify: The target takes full damage instead of half and can't use necrotic resistance"
 				]),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"blood curse of purgation" : {
 				name : "Blood Curse of Purgation",
@@ -227,7 +227,7 @@ ClassList["blood hunter"] = {
 					"As a bonus action, I give a creature within 30 ft an immediate save vs. being poisoned",
 					"\u2022 Amplify: The target can instead make a save vs. being blinded, deafened, or paralysed"
 				]),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"blood curse of spell sunder" : {
 				name : "Blood Curse of Spell Sunder",
@@ -236,7 +236,7 @@ ClassList["blood hunter"] = {
 					"As a reaction when a spell attack is made vs. me by a creature in 30 ft, I impose disadv.",
 					"\u2022 Amplify: I make a Wis check (DC 10 + spell's level) to make the spell miss me completely"
 				]),
-				action : [" reaction ", " "]
+				action : [[" reaction ", " "]]
 			}
 		},
 		"subclassfeature3" : {
@@ -340,7 +340,7 @@ ClassSubList["blood hunter-order of the ghostslayer"] = {
 			usages : "Wisdom mod per ",
 			usagescalc : "event.value = Math.max(1, tDoc.getField('Wis Mod').value);",
 			recovery : "short rest",
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"subclassfeature15" : {
 			name : "Gravesight",
@@ -435,7 +435,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 					var die = "2d" + (n < 6 ? 4 : n < 11 ? 6 : n < 16 ? 8 : 10);
 					return n < 3 ? "" : "heal " + die + " + Wisdom modifier";
 				}),
-				action : ["bonus action", ""],
+				action : [["bonus action", ""]],
 				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the celestial']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"the hexblade" : {
@@ -459,7 +459,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			source : ["MM:BH", 6],
 			minlevel : 7,
 			description : "\n   " + "When I cast a cantrip as an action, I can make one weapon attack as a bonus action",
-			action : ["bonus action", " (with cantrip)"]
+			action : [["bonus action", " (with cantrip)"]]
 		},
 		"subclassfeature7.1" : {
 			name : "Revealed Arcana",
@@ -473,62 +473,62 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			"the archfey" : {
 				name : "Revealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Blur using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["blur"],
 					selection : ["blur"],
 					oncelr : true
-				}
+				}]
 			},
 			"the fiend" : {
 				name : "Revealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Scorching Ray using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["scorching ray"],
 					selection : ["scorching ray"],
 					oncelr : true
-				}
+				}]
 			},
 			"the great old one" : {
 				name : "Revealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Detect Thoughts using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["detect thoughts"],
 					selection : ["detect thoughts"],
 					oncelr : true
-				}
+				}]
 			},
 			"the undying" : {
 				name : "Revealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Blindness/Deafness using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["blindness/deafness"],
 					selection : ["blindness/deafness"],
 					oncelr : true
-				}
+				}]
 			},
 			"the celestial" : {
 				name : "Revealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Lesser Restoration using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["lesser restoration"],
 					selection : ["lesser restoration"],
 					oncelr : true
-				}
+				}]
 			},
 			"the hexblade" : {
 				name : "Revealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Branding Smite using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["branding smite"],
 					selection : ["branding smite"],
 					oncelr : true
-				}
+				}]
 			},
 			eval : "if (FeaChoice === '') {var CFrem = What('Class Features Remember'); var tReg = /.*?blood hunter,subclassfeature3,(the (archfey|fiend|great old one|undying|celestial|hexblade)).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, '$1'); AddString('Class Features Remember', 'blood hunter,subclassfeature7.1,' + FeaChoice, false);};};"
 		},
@@ -543,7 +543,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 				"If the spell requires any attack rolls, those all succeed against the target",
 				"If the spell requires a save and the attack had adv., the target has disadv. on the save"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature15" : {
 			name : "Unsealed Arcana",
@@ -557,62 +557,62 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			"the archfey2" : {
 				name : "Unsealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Slow without using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["slow"],
 					selection : ["slow"],
 					oncelr : true
-				}
+				}]
 			},
 			"the fiend2" : {
 				name : "Unsealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Fireball without using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["fireball"],
 					selection : ["fireball"],
 					oncelr : true
-				}
+				}]
 			},
 			"the great old one2" : {
 				name : "Unsealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Haste without using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["haste"],
 					selection : ["haste"],
 					oncelr : true
-				}
+				}]
 			},
 			"the undying2" : {
 				name : "Unsealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Bestow Curse without using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["bestow curse"],
 					selection : ["bestow curse"],
 					oncelr : true
-				}
+				}]
 			},
 			"the celestial2" : {
 				name : "Unsealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Revivify without using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["revivify"],
 					selection : ["revivify"],
 					oncelr : true
-				}
+				}]
 			},
 			"the hexblade2" : {
 				name : "Unsealed Arcana",
 				description : "\n   " + "Once per long rest, I can cast Blink without using a profane soul spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["blink"],
 					selection : ["blink"],
 					oncelr : true
-				}
+				}]
 			},
 			eval : "if (FeaChoice === '') {var CFrem = What('Class Features Remember'); var tReg = /.*?blood hunter,subclassfeature3,(the (archfey|fiend|great old one|undying|celestial|hexblade)).*/i; if ((tReg).test(CFrem)) {FeaChoice = CFrem.replace(tReg, '$1') + 2; AddString('Class Features Remember', 'blood hunter,subclassfeature15,' + FeaChoice, false);};};"
 		},
@@ -778,7 +778,7 @@ ClassSubList["blood hunter-order of the mutant"] = {
 			usages : [0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3],
 			recovery : "short rest",
 			additional : levels.map(function (n) { return n < 3 ? "" : "Mutation Score: " + Math.ceil(n/4); }),
-			action : ["bonus action", " (Consume Mutagen)"],
+			action : [["bonus action", " (Consume Mutagen)"]],
 			eval : "AddAction('action', 'Mutagen Craft (End Mutagen)', 'Blood Hunter (Order of the Mutant)');",
 			removeeval : "RemoveAction('action', 'Mutagen Craft (End Mutagen)', 'Blood Hunter (Order of the Mutant)');"
 		},
@@ -789,7 +789,7 @@ ClassSubList["blood hunter-order of the mutant"] = {
 			description : "\n   " + "As a bonus action, I can ignore the side effects of a single mutagen for 1 minute",
 			usages : 1,
 			recovery : "short rest",
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"subclassfeature15" : {
 			name : "Robust Physiology",
@@ -829,7 +829,7 @@ ClassSubList["blood hunter-order of the lycan"] = {
 			]),
 			usages : ["", "", 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3],
 			recovery : "short rest",
-			action : ["action", " (start/end)"],
+			action : [["action", " (start/end)"]],
 			savetxt : { text : ["Adv. on Str saves in Hybrid form"] },
 			dmgres : [["Bludgeoning", "Bludg. (in hybrid)"], ["Piercing", "Pierc. (in hybrid)"], ["Slashing", "Slash. (in hybrid)"], ["Silver vuln.", "Silver vuln. (in hybrid)"]],
 			eval : "AddWeapon('Predatory Strikes'); AddAction('bonus action', 'Predatory Strike (with Attack action)', 'Order of the Lycan (Hybrid Transformation)');",
@@ -896,7 +896,7 @@ ClassSubList["blood hunter-order of the lycan"] = {
 					"This lasts until the end of my next turn; Successful save means immune for 24 hours",
 					"\u2022 Amplify: The range increases to 60 ft"
 				]),
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			eval : "ClassFeatureOptions(['blood hunter', 'subclassfeature18', 'blood curse of the howl', 'extra']);",
 			removeeval : "ClassFeatureOptions(['blood hunter', 'subclassfeature18', 'blood curse of the howl', 'extra'], 'remove');"

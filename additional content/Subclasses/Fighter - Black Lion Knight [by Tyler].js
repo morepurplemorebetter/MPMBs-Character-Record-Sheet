@@ -88,7 +88,7 @@ AddSubClass("fighter", "black lion knight", {
 				"I gain a +2 bonus to AC and saves against opportunity attacks",
 				"I can take the Help action as a bonus action"
 			]),
-			action : ["bonus action", "Help (Lion's Agility)"],
+			action : [["bonus action", "Help (Lion's Agility)"]],
 			savetxt : { text : ["+2 AC/saves vs. opportunity attacks"] }
 		},
 		"subclassfeature10" : {

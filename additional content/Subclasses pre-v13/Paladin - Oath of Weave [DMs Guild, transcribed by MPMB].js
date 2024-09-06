@@ -46,7 +46,7 @@ AddSubClass("paladin", "paladin-weave", {
 				"My first hit with it as part of an action to cast a cantrip, it deals extra radiant damage",
 				"Also, the next time the target tries to cast a spell, it must succeed a concentration save"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			additional : levels.map(function (n) {
 				if (n < 3) return "";
 				return "2d8+" + n + " damage";
@@ -60,7 +60,7 @@ AddSubClass("paladin", "paladin-weave", {
 				"As a reaction when a spell missed me or I save against it, I can redirect the spell cast",
 				"I can have it target another within 30 ft, causing a new attack/save roll"
 			]),
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature3.2" : {
 			name : "Spellshatter",
@@ -74,18 +74,18 @@ AddSubClass("paladin", "paladin-weave", {
 			usages : "Charisma modifier per ",
 			usagescalc : "event.value = Math.max(1, tDoc.getField('Cha Mod').value);",
 			recovery : "long rest",
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"subclassfeature3.3" : {
 			name : "Arcane Cantrips",
 			source : ["FRA2", 22],
 			minlevel : 3,
 			description : "\n   " + "I learn two cantrips, with Charisma as my spellcasting ability",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Arcane Cantrips",
 				spells : ["booming blade", "green-flame blade", "challenger's mark", "echoing blow", "frostwind blade", "looming shadow", "punishing strike"],
 				times : 2
-			}
+			}]
 		},
 		"subclassfeature7" : {
 			name : "Arcane Cantrips: Quick Casting",
@@ -110,7 +110,7 @@ AddSubClass("paladin", "paladin-weave", {
 				if (n < 7) return "";
 				return (n < 18 ? "10" : "30") + "-foot aura";
 			}),
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature15" : {
 			name : "Mystic Champion",
@@ -120,7 +120,7 @@ AddSubClass("paladin", "paladin-weave", {
 				"I add a 4th-level or lower wizard spell to my oath spells and learn two wizard cantrips",
 				"When I use my action to cast a cantrip, I can make a weapon attack as a bonus action"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			spellcastingBonus : [{
 				name : "Mystic Champion",
 				class : "wizard",
@@ -146,7 +146,7 @@ AddSubClass("paladin", "paladin-weave", {
 			]),
 			recovery : "long rest",
 			usages : 1,
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 });

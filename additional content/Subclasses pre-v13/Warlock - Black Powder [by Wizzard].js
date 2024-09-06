@@ -125,12 +125,12 @@ AddSubClass("warlock", "black powder", {
 			usages : 1,
 			additional : ["", "", "", "", "", "", "", "", "", "", "", "", "", "as 7th-level spell", "as 8th-level spell", "as 8th-level spell", "as 9th-level spell", "as 9th-level spell", "as 9th-level spell", "as 9th-level spell"],
 			recovery : "long rest",
-			action : ["bonus action", ""],
-			spellcastingBonus : {
+			action : [["bonus action", ""]],
+			spellcastingBonus : [{
 				name : "Killing Strike",
 				spells : ["finger of death"],
 				selection : ["finger of death"]
-			}
+			}]
 		}
 	}
 });

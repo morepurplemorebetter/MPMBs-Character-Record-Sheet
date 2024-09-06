@@ -304,11 +304,11 @@ ClassList["battlemage"] = {
 					"It has twice my level as HP, has my Proficiency bonus, and is immune to energy damage",
 					"Also, it can speak and understand common and one language of my choice"
 				]),
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Improved Familiar",
 					spells : ["find familiar"],
 					selection : ["find familiar"]
-				},
+				}],
 				changeeval : function (lvlA, choiceA) {
 					var AScompA = isTemplVis('AScomp') ? What('Template.extras.AScomp').split(',') : false;
 					if (!AScompA) return;
@@ -392,7 +392,7 @@ ClassList["battlemage"] = {
 				"When I use my action to cast a spell, I can make a weapon attack as a bonus action",
 				"I can do the attack first, but it takes up my action if I can't cast a spell afterwards"
 			]),
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"energy efficiency" : {
 			name : "Energy Efficiency",
@@ -666,11 +666,11 @@ AddSubClass("battlemage", "psychic warrior", {
 				"I can wield a weapon with it, using my Int instead of Str, but still my own Dex",
 				"An action to make an Investigation or Insight check vs. my spell DC to see I'm responsible"
 			]),
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Telekinetic Hand",
 				spells : ["mage hand"],
 				selection : ["mage hand"]
-			},
+			}],
 			eval : function () {
 				var curCa = CurrentSpells.battlemage.selectCa;
 				if (curCa && curCa.indexOf("mage hand") == -1) curCa.push("mage hand");
@@ -888,7 +888,7 @@ AddSubClass("battlemage", "spell dancer", {
 				"As a reaction when missed in melee, I can expend an energy die and add it to my AC",
 				"I then make an opportunity attack vs. the attacker; AC lasts until my next turn starts"
 			]),
-			action : ["reaction", " (after missed in melee)"]
+			action : [["reaction", " (after missed in melee)"]]
 		},
 		"subclassfeature10" : {
 			name : "Evasion",
@@ -916,7 +916,7 @@ AddSubClass("battlemage", "spell dancer", {
 				"Line-area spells stop at my space and I then create the same effect, originating from me",
 				"For other type of spells, I choose another eligible target within range of the spell"
 			]),
-			action : ["reaction", ""],
+			action : [["reaction", ""]],
 			additional : levels.map(function (n) {
 				return n < 15 ? "" : n < 20 ? "30 ft" : "60 ft";
 			})
@@ -929,12 +929,12 @@ AddSubClass("battlemage", "spell dancer", {
 				"I'm always under the effect of a Freedom of Movement spell and thus can't be restrained",
 				"This can't be dispelled, but can be temporarily suppressed there were no magic functions"
 			]),
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Permanent",
 				spells : ["freedom of movement"],
 				selection : ["freedom of movement"],
 				firstCol : "SP"
-			}
+			}]
 		}
 	}
 });

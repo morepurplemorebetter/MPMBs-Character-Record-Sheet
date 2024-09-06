@@ -57,7 +57,7 @@ AddSubClass("wizard", "blood magic-v2", {
 				"I can only inflict one such wound per long rest; It closes when I have no Blood Points left",
 				"Whenever I receive any healing, I lose 1 Blood Point (regardless of amount of HP healed)"
 			]),
-			action : ["action", " (open wound)"],
+			action : [["action", " (open wound)"]],
 			usages : levels.map(function (n) {
 				return n < 2 ? "" : n < 5 ? 2 : n < 9 ? 3 : n < 13 ? 4 : n < 17 ? 5 : 6;
 			}),
@@ -122,7 +122,7 @@ AddSubClass("wizard", "blood magic-v2", {
 					"I expend 1 blood point to gain 1d4+4 temporary HP"
 				]),
 				additional : "1 blood point",
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"potent blood" : {
 				name : "Potent Blood",
@@ -158,12 +158,12 @@ AddSubClass("wizard", "blood magic-v2", {
 			description : "\n   " + "Once per long rest, I can cast Revivify using a wizard spell slot",
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Blood Awakening",
 				spells : ["revivify"],
 				selection : ["revivify"],
 				oncelr : true
-			}
+			}]
 		},
 		"subclassfeature14" : {
 			name : "Cull the Blood",
@@ -177,7 +177,7 @@ AddSubClass("wizard", "blood magic-v2", {
 			]),
 			usages : 1,
 			recovery : "long rest",
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 });

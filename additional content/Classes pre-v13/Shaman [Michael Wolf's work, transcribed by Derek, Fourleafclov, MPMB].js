@@ -130,19 +130,19 @@ ClassList["shaman"] = {
 				name : "Ascendant Step",
 				description : "\n   " + "I can cast Levitate on myself at will, without spirit points or material components",
 				source : ["MW:SC", 13],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Ascendant Step",
 					spells : ["levitate"],
 					selection : ["levitate"],
 					atwill : true
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 9"
 			},
 			"battle frenzy (prereq: level 12 shaman, gift of savagery)" : {
 				name : "Battle Frenzy",
 				description : "\n   " + "I can make one attack as a bonus action when taking the attack action",
 				source : ["MW:SC", 13],
-				action : ["bonus action", " (with Attack action)"],
+				action : [["bonus action", " (with Attack action)"]],
 				prereqeval : "classes.known.shaman.level >= 12 && What('Class Features Remember').indexOf('shaman,spiritual gift,gift of savagery') !== -1"
 			},
 			"call of the elements (prereq: level 9 shaman, speaker of flames/stones/waters/winds)" : {
@@ -151,12 +151,12 @@ ClassList["shaman"] = {
 				source : ["MW:SC", 13],
 				usages : 1,
 				recovery : "long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Call of the Elements",
 					spells : ["conjure elemental"],
 					selection : ["conjure elemental"],
 					oncelr : true
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 9 && (/flames|stones|waters|winds/i).test(classes.known.shaman.subclass)"
 			},
 			"elemental empowerment (prereq: level 7 shaman, gift of savagery)" : {
@@ -169,25 +169,25 @@ ClassList["shaman"] = {
 				name : "Entreat the Spirits",
 				description : "\n   " + "I can cast Commune with Nature, but only as a ritual",
 				source : ["MW:SC", 13],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Entreat the Spirits",
 					spells : ["commune with nature"],
 					selection : ["commune with nature"],
 					firstCol : "(R)"
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 9"
 			},
 			"fauna shaman (prereq: level 5 shaman)" : {
 				name : "Fauna Shaman",
 				description : "\n   " + "I can cast Animal Friendship and Beast Sense, but only as rituals",
 				source : ["MW:SC", 14],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Fauna Shaman",
 					spells : ["animal friendship", "beast sense"],
 					selection : ["animal friendship", "beast sense"],
 					firstCol : "(R)",
 					times : 2
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 5"
 			},
 			"force of will" : {
@@ -202,12 +202,12 @@ ClassList["shaman"] = {
 				name : "Glimpse the Path",
 				description : "\n   " + "I can cast Augury, but only as a ritual",
 				source : ["MW:SC", 14],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Glimpse the Path",
 					spells : ["augury"],
 					selection : ["augury"],
 					firstCol : "(R)"
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 5 && What('Class Features Remember').indexOf('shaman,spiritual gift,gift of sight') !== -1"
 			},
 			"keeper of lore" : {
@@ -221,35 +221,35 @@ ClassList["shaman"] = {
 				source : ["MW:SC", 14],
 				usages : 1,
 				recovery : "long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Mask of Beasts",
 					spells : ["polymorph"],
 					selection : ["polymorph"],
 					oncelr : true
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 9"
 			},
 			"mask of many faces" : {
 				name : "Mask of Many Faces",
 				description : "\n   " + "I can cast Disguise Self at will, without expending spirit points",
 				source : ["MW:SC", 14],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Mask of Many Faces",
 					spells : ["disguise self"],
 					selection : ["disguise self"],
 					atwill : true
-				}
+				}]
 			},
 			"master of myriad forms (prereq: level 15 shaman)" : {
 				name : "Master of Myriad Forms",
 				description : "\n   " + "I can cast Alter Self at will, without expending spirit points",
 				source : ["MW:SC", 14],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Master of Myriad Forms",
 					spells : ["alter self"],
 					selection : ["alter self"],
 					atwill : true
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 15"
 			},
 			"pierce the shadows (prereq: gift of sight)" : {
@@ -265,12 +265,12 @@ ClassList["shaman"] = {
 				source : ["MW:SC", 14],
 				usages : 1,
 				recovery : "long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Rally the Ancestors",
 					spells : ["animate dead"],
 					selection : ["animate dead"],
 					oncelr : true
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 9 && classes.known.shaman.subclass === 'speaker of ancestors'"
 			},
 			"rewrite the past (prereq: level 12 shaman, speaker of dreams)" : {
@@ -279,36 +279,36 @@ ClassList["shaman"] = {
 				source : ["MW:SC", 14],
 				usages : 1,
 				recovery : "long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Rewrite the Past",
 					spells : ["modify memory"],
 					selection : ["modify memory"],
 					oncelr : true
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 12 && classes.known.shaman.subclass === 'speaker of dreams'"
 			},
 			"rite of cleansing" : {
 				name : "Rite of Cleansing",
 				description : "\n   " + "I can cast Purify Food and Water, but only as a ritual",
 				source : ["MW:SC", 14],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Rite of Cleansing",
 					spells : ["purify food and water"],
 					selection : ["purify food and water"],
 					firstCol : "(R)"
-				},
+				}],
 			},
 			"river's secrets (prereq: level 5 shaman)" : {
 				name : "River's Secrets",
 				description : "\n   " + "I can cast Water Breathing and Water Walk, but only as rituals",
 				source : ["MW:SC", 14],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "River's Secrets",
 					spells : ["water breathing", "water walk"],
 					selection : ["water breathing", "water walk"],
 					firstCol : "(R)",
 					times : 2
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 5"
 			},
 			"savage magic (prereq: level 5 shaman, gift of savagery)" : {
@@ -327,12 +327,12 @@ ClassList["shaman"] = {
 				name : "Seeker of Visions",
 				description : "\n   " + "I can cast Divination, but only as a ritual",
 				source : ["MW:SC", 14],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Seeker of Visions",
 					spells : ["divination"],
 					selection : ["divination"],
 					firstCol : "(R)"
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 7 && What('Class Features Remember').indexOf('shaman,spiritual gift,gift of sight') !== -1"
 			},
 			"sight beyond sight (prereq: level 15 shaman, gift of sight)" : {
@@ -346,19 +346,19 @@ ClassList["shaman"] = {
 				name : "Sky Shaping",
 				description : "\n   " + "I can cast Skywrite, but only as a ritual",
 				source : ["MW:SC", 14],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Sky Shaping",
 					spells : ["skywrite"],
 					selection : ["skywrite"],
 					firstCol : "(R)"
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 5"
 			},
 			"smoke teller" : {
 				name : "Smoke Teller",
 				description : "\n   " + "As an action, I can control smoke within 10 ft and form it into an image up to 5-ft cube" + "\n   " + "Each round I concentrate on this, I can use my action to expand or change the image" + "\n   " + "As an action, I expand the image by a 5-ft cube, up to a 20-ft cube" + "\n   " + "As an action, I can change the image, its color, and have it appear to be moving" + "\n   " + "The smoke lightly obscures and dissipates 1 minute after I stop concentrating on it",
 				source : ["MW:SC", 14],
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"soul reading (prereq: level 5 shaman)" : {
 				name : "Soul Reading",
@@ -366,12 +366,12 @@ ClassList["shaman"] = {
 				source : ["MW:SC", 14],
 				usages : 1,
 				recovery : "long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Soul Reading",
 					spells : ["detect thoughts"],
 					selection : ["detect thoughts"],
 					oncelr : true
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 5"
 			},
 			"speaker of all (prereq: level 12 shaman)" : {
@@ -384,12 +384,12 @@ ClassList["shaman"] = {
 				name : "Spirit Sight",
 				description : "\n   " + "I can cast Detect Magic at will, without expending spirit points",
 				source : ["MW:SC", 15],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Spirit Sight",
 					spells : ["detect magic"],
 					selection : ["detect magic"],
 					atwill : true
-				},
+				}],
 				prereqeval : "What('Class Features Remember').indexOf('shaman,spiritual gift,gift of sight') !== -1"
 			},
 			"spirit warrior (prereq: gift of savagery)" : {
@@ -411,23 +411,23 @@ ClassList["shaman"] = {
 				name : "Tongue of Beasts",
 				description : "\n   " + "I can cast Speak with Animals at will, without expending spirit points",
 				source : ["MW:SC", 15],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Tongue of Beasts",
 					spells : ["speak with animals"],
 					selection : ["speak with animals"],
 					atwill : true
-				}
+				}]
 			},
 			"tongue of wild spaces (prereq: level 5 shaman)" : {
 				name : "Tongue of Wild Spaces",
 				description : "\n   " + "I can cast Speak with Plants at will, without expending spirit points",
 				source : ["MW:SC", 15],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Tongue of Wild Spaces",
 					spells : ["speak with plants"],
 					selection : ["speak with plants"],
 					oncelr : true
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 5"
 			},
 			"twilight shepherd (prereq: level 9 shaman)" : {
@@ -436,12 +436,12 @@ ClassList["shaman"] = {
 				source : ["MW:SC", 15],
 				usages : 1,
 				recovery : "long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Twilight Shepherd",
 					spells : ["reincarnate"],
 					selection : ["reincarnate"],
 					oncelr : true
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 9"
 			},
 			"unfiltered perceptions (prereq: level 7 shaman)" : {
@@ -462,12 +462,12 @@ ClassList["shaman"] = {
 				name : "Voice of the Forgotten",
 				description : "\n   " + "I can cast speak with dead at will, without expending spirit points",
 				source : ["MW:SC", 15],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Voice of the Forgotten",
 					spells : ["speak with dead"],
 					selection : ["speak with dead"],
 					atwill : true
-				},
+				}],
 				prereqeval : "classes.known.shaman.level >= 7"
 			},
 			"walker of the world (prereq: level 7 shaman)" : {
@@ -494,7 +494,7 @@ ClassList["shaman"] = {
 					"I can transform a magic weapon into my spiritual weapon in an hour-long ritual",
 					"I can use an action to re-summon it in any form and can dismiss it as a free action"
 				]),
-				action : ["action", ""],
+				action : [["action", ""]],
 				eval : "AddWeapon(\"Spirit Weapon\");",
 				removeeval : "RemoveWeapon(\"Spirit Weapon\");"
 			},
@@ -517,12 +517,12 @@ ClassList["shaman"] = {
 				"I can cast these spells each once per long rest without needing to use a spell slot"
 			]),
 			additional : ["", "", "", "", "", "", "", "", "", "", "6th level", "6th level", "6th and 7th level", "6th and 7th level", "6th, 7th, and 8th level", "6th, 7th, and 8th level", "6th, 7th, 8th, and 9th level", "6th, 7th, 8th, and 9th level", "6th, 7th, 8th, and 9th level", "6th, 7th, 8th, and 9th level"],
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Hidden Lore (6)",
 				class : "shaman",
 				level : [6, 6],
 				oncelr : true
-			},
+			}],
 			changeeval : "if (classes.known.shaman.level < 13) {delete CurrentSpells.shaman.bonus[\"hidden lore (7)\"]} else {if (!CurrentSpells.shaman.bonus[\"hidden lore (7)\"]) {CurrentSpells.shaman.bonus[\"hidden lore (7)\"] = {name : \"Hidden Lore (7)\", class : \"shaman\", level : [7, 7], oncelr : true}}}; if (classes.known.shaman.level < 15) {delete CurrentSpells.shaman.bonus[\"hidden lore (8)\"]} else {if (!CurrentSpells.shaman.bonus[\"hidden lore (8)\"]) {CurrentSpells.shaman.bonus[\"hidden lore (8)\"] = {name : \"Hidden Lore (8)\", class : \"shaman\", level : [8, 8], oncelr : true}}}; if (classes.known.shaman.level < 17) {delete CurrentSpells.shaman.bonus[\"hidden lore (9)\"]} else {if (!CurrentSpells.shaman.bonus[\"hidden lore (9)\"]) {CurrentSpells.shaman.bonus[\"hidden lore (9)\"] = {name : \"Hidden Lore (9)\", class : \"shaman\", level : [9, 9], oncelr : true}}}"
 		},
 		"timeless body" : {
@@ -560,12 +560,12 @@ ClassSubList["shaman-speaker of ancestors"] = {
 				"I learn one language of my choice from my Ancestors and become proficient in History"
 			]),
 			languageProfs : [1],
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Blessings of the Ancestors",
 				spells : ["chill touch", "spare the dying", "thaumaturgy"],
 				selection : ["chill touch", "spare the dying", "thaumaturgy"],
 				times : 3
-			}
+			}]
 		},
 		"subclassfeature1.1" : {
 			name : "Channel Divinity",
@@ -585,7 +585,7 @@ ClassSubList["shaman-speaker of ancestors"] = {
 				"Turned: move away, never within 30 ft of me, no reactions or actions other than Dash",
 				"Turned: may Dodge instead of Dash when nowhere to move and unable to escape bonds"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature6" : {
 			name : "Channel Divinity: Control Undead",
@@ -595,7 +595,7 @@ ClassSubList["shaman-speaker of ancestors"] = {
 				"As an action, one undead (CR < shaman level) I can see in 30 ft must make a Wis save",
 				"If failed, it must obey my commands for 24 hours or until I use this on another"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature10" : {
 			name : "Death's Comfort",
@@ -617,7 +617,7 @@ ClassSubList["shaman-speaker of ancestors"] = {
 				"If I die as stated within 24 hours, I get the effects of Resurrection, 1 min after death"
 			]),
 			recovery : "short rest",
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 }
@@ -639,12 +639,12 @@ ClassSubList["shaman-speaker of dreams"] = {
 				"I learn the Minor Illusion, Prestidigitation, and Touch of Madness cantrips",
 				"I become proficient with one skill: Deception, Performance, Sleight of Hand, or Stealth"
 			]),
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Blessings of Dream",
 				spells : ["minor illusion", "prestidigitation", "touch of madness"],
 				selection : ["minor illusion", "prestidigitation", "touch of madness"],
 				times : 3
-			}
+			}]
 		},
 		"subclassfeature1.1" : {
 			name : "Dreamreader",
@@ -668,7 +668,7 @@ ClassSubList["shaman-speaker of dreams"] = {
 			]),
 			usages : 1,
 			recovery : "short rest",
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature10" : {
 			name : "Thought Shield",
@@ -693,7 +693,7 @@ ClassSubList["shaman-speaker of dreams"] = {
 			]),
 			usages : 1,
 			recovery : "short rest",
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 }
@@ -715,12 +715,12 @@ ClassSubList["shaman-speaker of flames"] = {
 			]),
 			toolProfs : [["Artisan's tools", 1]],
 			languageProfs : ["Ignan"],
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Blessings of the Flame",
 				spells : ["control flames", "fire bolt", "produce flame"],
 				selection : ["control flames", "fire bolt", "produce flame"],
 				times : 3
-			}
+			}]
 		},
 		"subclassfeature1.1" : {
 			name : "Flamespeaker",
@@ -733,7 +733,7 @@ ClassSubList["shaman-speaker of flames"] = {
 				"If it burned a corpse fully, I can ask one question about what the corpse knew in life",
 				"Once I speak with a fire, I can't speak with it again for 24 hours"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature6" : {
 			name : "Burn Away",
@@ -746,7 +746,7 @@ ClassSubList["shaman-speaker of flames"] = {
 			]),
 			recovery : "short rest",
 			usages : 1,
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature10" : {
 			name : "Absorb Fire",
@@ -770,7 +770,7 @@ ClassSubList["shaman-speaker of flames"] = {
 				"I can maintain a number of objects equal to my Charisma modifier",
 				"Can't create spell components, magic items, items requiring craftmanship I don't have"
 			]),
-			action : ["action", " (dismiss)"]
+			action : [["action", " (dismiss)"]]
 		}
 	}
 }
@@ -793,12 +793,12 @@ ClassSubList["shaman-speaker of stones"] = {
 				"I learn the Terran dialect of the Primordial language, and gain proficiency in Athletics"
 			]),
 			languageProfs : ["Terran"],
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Blessings of the Stone",
 				spells : ["magic stone", "mold earth", "thorn whip"],
 				selection : ["magic stone", "mold earth", "thorn whip"],
 				times : 3
-			}
+			}]
 		},
 		"subclassfeature1.1" : {
 			name : "Stonespeaker",
@@ -809,7 +809,7 @@ ClassSubList["shaman-speaker of stones"] = {
 				"Stone spirits know what touched them, is inside them, and 100 ft of surroundings",
 				"Once I speak with a stone, I can't speak with it again for 10 days"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature6" : {
 			name : "Unyielding Stone",
@@ -818,7 +818,7 @@ ClassSubList["shaman-speaker of stones"] = {
 			description : "\n   " + "As a reaction when hit by a seen attacker, I can turn to stone to nullify the damage",
 			recovery : "short rest",
 			usages : 1,
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature10" : {
 			name : "Roots of the Mountain",
@@ -839,7 +839,7 @@ ClassSubList["shaman-speaker of stones"] = {
 				"By meditating for 10 min, I can turn a willing/incapacitated or object into stone",
 				"As an action, I can release a petrified creature/object; I can have only 1 at a time"
 			]),
-			action : ["action", " (release)"]
+			action : [["action", " (release)"]]
 		}
 	}
 };
@@ -862,12 +862,12 @@ ClassSubList["shaman-speaker of waters"] = {
 				"I learn the Aquan dialect of the Primordial language, and proficiency in Investigation"
 			]),
 			languageProfs : ["Aquan"],
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Blessings of the Waters",
 				spells : ["acid splash", "frostbite", "shape water"],
 				selection : ["acid splash", "frostbite", "shape water"],
 				times : 3
-			}
+			}]
 		},
 		"subclassfeature1.1" : {
 			name : "Waterspeaker",
@@ -880,7 +880,7 @@ ClassSubList["shaman-speaker of waters"] = {
 				"If a creature drank from it in the last 10 days, it can answers one question about it",
 				"Once I speak with a body of water, I can't speak with it again for 10 days"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature6" : {
 			name : "Aqueous Form",
@@ -892,7 +892,7 @@ ClassSubList["shaman-speaker of waters"] = {
 			]),
 			recovery : "short rest",
 			usages : 1,
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature10" : {
 			name : "Master of Ice and Steam",
@@ -919,7 +919,7 @@ ClassSubList["shaman-speaker of waters"] = {
 			]),
 			recovery : "long rest",
 			usages : 1,
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 }
@@ -942,12 +942,12 @@ ClassSubList["shaman-speaker of winds"] = {
 				"I learn the Auran dialect of the Primordial language, and gain proficiency in Acrobatics"
 			]),
 			languageProfs : ["Auran"],
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Blessings of the Wind",
 				spells : ["gust", "lashing wind", "shocking grasp"],
 				selection : ["gust", "lashing wind", "shocking grasp"],
 				times : 3
-			}
+			}]
 		},
 		"subclassfeature1.1" : {
 			name : "Windspeaker",
@@ -960,7 +960,7 @@ ClassSubList["shaman-speaker of winds"] = {
 				"I can ask the wind to carry a 25-word message to a downwind creature within 5 miles",
 				"Once I do this, I can't speak with wind within 1 mile of the same location for 24 hours"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature6" : {
 			name : "Gustcloak",
@@ -972,7 +972,7 @@ ClassSubList["shaman-speaker of winds"] = {
 			]),
 			recovery : "short rest",
 			usages : 1,
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature10" : {
 			name : "Weather the Storm",
@@ -999,7 +999,7 @@ ClassSubList["shaman-speaker of winds"] = {
 			]),
 			recovery : "long rest",
 			usages : 1,
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 };

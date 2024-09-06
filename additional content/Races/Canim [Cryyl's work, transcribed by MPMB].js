@@ -118,12 +118,12 @@ RaceList["ritualist clan canim"] = {
 	scorestxt : "+2 Strength, and +1 Intelligence or Charisma",
 	scores : [2, 0, 0, 0, 0, 0],
 	spellcastingAbility : 6,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Innate Sorcery (level 1)",
 		spells : ["poison spray"],
 		selection : ["poison spray"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"arms of hadar" : {
 			name : "Innate Sorcery (level 3)",
@@ -131,12 +131,12 @@ RaceList["ritualist clan canim"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Innate Sorcery (level 3)",
 				spells : ["arms of hadar"],
 				selection : ["arms of hadar"],
 				firstCol : 'oncelr'
-			}
+			}]
 		}
 	},
 	trait : "Ritualist Clan Canim (+2 Strength, and +1 Intelligence or Charisma)\n   Claw and Fang: I am proficient with my strikes and bite. My claws deal 1d4 slashing damage and my bite deals 1d4 piercing damage.\n   Innate Sorcery: I know the Poison Spray cantrip. At 3rd level, I can cast Arms of Hadar once per long rest as a 2nd-level spell. Charisma is my spellcasting ability for these spells.\n   Blood Sack: I carry with me a leather sack filled with blood of my slain enemies or myself. I can use this like component pouch."

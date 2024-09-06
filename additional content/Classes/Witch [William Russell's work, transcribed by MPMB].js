@@ -163,11 +163,11 @@ ClassList['witch-wr'] = {
 				"It casts using my spellcasting ability; Spells transferred can't be re-added to my Grimoire",
 				"If it is killed, I can learn transferred spells again, but they don't reappear automatically"
 			]),
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Spirit Kin",
 				spells : ["find spirit kin"],
 				selection : ["find spirit kin"]
-			}
+			}]
 		},
 		"improved animal shift" : {
 			name : "Improved Animal Shift",

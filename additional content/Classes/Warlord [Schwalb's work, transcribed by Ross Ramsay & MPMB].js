@@ -76,7 +76,7 @@ ClassList["warlord"] = {
 			usages : "Charisma modifier per ",
 			usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
 			recovery : "short rest",
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			additional : levels.map(function (n) {
 				return n < 5 ? "d4" : n < 9 ? "d6" : n < 13 ? "d8" : n < 17 ? "d10" : "d12";
 			})
@@ -206,7 +206,7 @@ AddSubClass("warlord", "daring gambler", {
 				"As a bonus action, I make a target in range provoke opportunity attacks from 1 creature",
 				"If it does the attack, the attacker grants adv. on all attacks vs. it until it next turn starts"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			additional : levels.map(function (n) {
 				return n < 15 ? "" : n < 20 ? "30 ft" : "60 ft";
 			})

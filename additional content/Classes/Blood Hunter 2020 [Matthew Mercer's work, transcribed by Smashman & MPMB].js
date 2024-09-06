@@ -605,62 +605,62 @@ AddSubClass("blood hunter", "profane soul", {
 			"the archfey" : {
 				name : "Revealed Arcana",
 				description : "\n   Once per long rest, I can cast Blur by expending a pact magic spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["blur"],
 					selection : ["blur"],
 					firstCol : "oncelr"
-				}
+				}]
 			},
 			"the fiend" : {
 				name : "Revealed Arcana",
 				description : "\n   Once per long rest, I can cast Scorching Ray by expending a pact magic spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["scorching ray"],
 					selection : ["scorching ray"],
 					firstCol : "oncelr"
-				}
+				}]
 			},
 			"the great old one" : {
 				name : "Revealed Arcana",
 				description : "\n   Once per long rest, I can cast Detect Thoughts by expending a pact magic spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["detect thoughts"],
 					selection : ["detect thoughts"],
 					firstCol : "oncelr"
-				}
+				}]
 			},
 			"the undying" : {
 				name : "Revealed Arcana",
 				description : "\n   Once per long rest, I can cast Blindness/Deafness by expending a pact magic spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["blindness/deafness"],
 					selection : ["blindness/deafness"],
 					firstCol : "oncelr"
-				}
+				}]
 			},
 			"the celestial" : {
 				name : "Revealed Arcana",
 				description : "\n   Once per long rest, I can cast Lesser Restoration by expending a pact magic spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["lesser restoration"],
 					selection : ["lesser restoration"],
 					firstCol : "oncelr"
-				}
+				}]
 			},
 			"the hexblade" : {
 				name : "Revealed Arcana",
 				description : "\n   Once per long rest, I can cast Branding Smite by expending a pact magic spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["branding smite"],
 					selection : ["branding smite"],
 					firstCol : "oncelr"
-				}
+				}]
 			}
 		},
 		"subclassfeature11" : {
@@ -679,62 +679,62 @@ AddSubClass("blood hunter", "profane soul", {
 			"the archfey" : {
 				name : "Unsealed Arcana",
 				description : "\n   Once per long rest, I can cast Slow without expending a spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["slow"],
 					selection : ["slow"],
 					firstCol : "oncelr"
-				}
+				}]
 			},
 			"the fiend" : {
 				name : "Unsealed Arcana",
 				description : "\n   Once per long rest, I can cast Fireball without expending a spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["fireball"],
 					selection : ["fireball"],
 					firstCol : "oncelr"
-				}
+				}]
 			},
 			"the great old one" : {
 				name : "Unsealed Arcana",
 				description : "\n   Once per long rest, I can cast Haste without expending a spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["haste"],
 					selection : ["haste"],
 					firstCol : "oncelr"
-				}
+				}]
 			},
 			"the undying" : {
 				name : "Unsealed Arcana",
 				description : "\n   Once per long rest, I can cast Bestow Curse without expending a spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["bestow curse"],
 					selection : ["bestow curse"],
 					firstCol : "oncelr"
-				}
+				}]
 			},
 			"the celestial" : {
 				name : "Unsealed Arcana",
 				description : "\n   Once per long rest, I can cast Revivify without expending a spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["revivify"],
 					selection : ["revivify"],
 					firstCol : "oncelr"
-				}
+				}]
 			},
 			"the hexblade" : {
 				name : "Unsealed Arcana",
 				description : "\n   Once per long rest, I can cast Blink without expending a spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["blink"],
 					selection : ["blink"],
 					firstCol : "oncelr"
-				}
+				}]
 			},
 			"blood curse of the souleater" : {
 				name : "Blood Curse of the Souleater",

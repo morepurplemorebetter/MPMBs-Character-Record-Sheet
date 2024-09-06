@@ -64,9 +64,9 @@ FeatsList["intuitive diviner"] = {
 	prerequisite : "Wisdom 13 or higher",
 	prereqeval : function(v) { return What('Wis') >= 13; },
 	spellcastingAbility : 5,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		'class': ['cleric', 'wizard'],
 		school : ['Div'],
 		times : levels.map(function (n) { return 2 + Math.floor((n-1)/2); })
-	}
+	}]
 };

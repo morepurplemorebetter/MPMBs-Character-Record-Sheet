@@ -48,11 +48,11 @@ AddSubClass("bard", "college of bladesingers", {
 			calcChanges : {
 				atkAdd : ["if (WeaponName == 'longsword') { fields.Description += ', finesse'; fields.Mod = StrDex; } ", "I treat longswords as if they have the finesse property"]
 			},
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Bladesong Style",
 				"class" : "wizard",
 				level : [0, 0]
-			}
+			}]
 		},
 		"subclassfeature3.1" : {
 			name : "Dance of Defense",
@@ -73,7 +73,7 @@ AddSubClass("bard", "college of bladesingers", {
 			source : ["MTC:CB", 0],
 			minlevel : 6,
 			description : "\n   " + "As a bonus action when I use my action to cast a cantrip, I can make a weapon attack",
-			action : ["bonus action", " (with cantrip)"]
+			action : [["bonus action", " (with cantrip)"]]
 		},
 		"subclassfeature6.1" : {
 			name : "War Chanter",
@@ -91,7 +91,7 @@ AddSubClass("bard", "college of bladesingers", {
 				"Opportunity attacks I suffer from movement during this have disadvantage",
 				"When using this action, I can't also use my move during this turn"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 });

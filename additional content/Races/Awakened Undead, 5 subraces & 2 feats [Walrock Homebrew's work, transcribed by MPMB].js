@@ -155,7 +155,7 @@ RaceList["ghoul-au"] = {
 			usages : 1,
 			recovery : "short rest",
 			additional : levels.map(function (n) { return n + " + Con mod";}),
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	},
 	trait : "Ghoul (+1 Constitution, and +2 Strength or Dexterity)\nUndead: I'm immune to poison, being poisoned, and disease. I treat exhaustion as one level less and I don't need to eat or breathe. Instead of sleeping, I trance for 4 hours.\nFeeding: Once per short rest, as an action, I can feed on a corpse or make a claw or fang attack against a prone creature. If successful, I regain my level + Con mod in HP.\nCurse of the Abyss: If I see a creature drop to 0 HP and have not used my Feeding feature, I must make a DC 15 - half my level Wis save or I have to move and feed on this creature.",
@@ -213,7 +213,7 @@ RaceList["mummy-au"] = {
 			minlevel : 1,
 			usages : 1,
 			recovery : "short rest",
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 	},
 	trait : "Mummy (+1 Constitution, and +2 Strength, Wisdom, or Charisma)\nUndead: I'm immune to poison, being poisoned, and disease. I treat exhaustion as one level less and I don't need to eat or breathe. Instead of sleeping, I trance for 4 hours.\nMummy Rot: Unarmed strikes do necrotic and curse: unable to heal for 24h while cursed.\nDreadful Glare: Once per short rest, as a bonus action, a creature within 60 ft of me must make a Wis save (DC 8+Con+Prof) or be frightened of me until the end of my next turn.\nCanopic Resurrection: If my heart is outside my body, I treat a 15 on a death save as a 20."
@@ -315,7 +315,7 @@ RaceList["skeleton-au"] = {
 		"bone to pick" : {
 			name : "Bone to Pick",
 			minlevel : 1,
-			action : ["bonus action", " (remove/reattach)"]
+			action : [["bonus action", " (remove/reattach)"]]
 		}
 	},
 	trait : "Skeleton (+1 Constitution, and +2 Dexterity or Intelligence)\nUndead: I'm immune to poison, being poisoned, and disease. I treat exhaustion as one level less and I don't need to eat or breathe. Instead of sleeping, I trance for 4 hours.\nBone Pile: When I am reduced to 0 hit points but not killed outright, I can drop to 1 hit point instead. I can't use this feature again until I finish a long rest.\nBone to Pick: As a bonus action, I can remove an arm (1d6 bludgeoning weapon with which I'm proficient) or a hand (use as thieves' tools). I can re-attach it as a bonus action."

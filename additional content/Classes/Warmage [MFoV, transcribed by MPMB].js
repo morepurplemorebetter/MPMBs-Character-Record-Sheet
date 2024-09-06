@@ -95,12 +95,12 @@ ClassList["warmage"] = {
 			additional : levels.map(function (n) {
 				return (2 + Math.ceil(n/2)) + " cantrips known";
 			}),
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Cantrips",
 				"class" : "warmage",
 				level : [0, 0],
 				times : levels.map(function (n) { return Math.max(0, Math.ceil(n/2) - 8); })
-			}
+			}]
 		},
 		"arcane initiation" : {
 			name : "Arcane Initiation",
@@ -135,12 +135,12 @@ ClassList["warmage"] = {
 					"I learn two sorcerer cantrips (not counted towards the number of cantrips I can know)",
 					"Additionally, when I roll a critical hit with a cantrips, I can roll an extra damage die"
 				]),
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Arcane Initiation: Savant",
 					"class" : "sorcerer",
 					level : [0, 0],
 					times : 2
-				}
+				}]
 			},
 			"scholar" : {
 				name : "Arcane Initiation: Scholar",
@@ -163,12 +163,12 @@ ClassList["warmage"] = {
 					delete CurrentSpells['ritual spellbook'];
 					SetStringifieds('spells'); CurrentUpdates.types.push('spells');
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Arcane Initiation: Scholar",
 					spells : ["dancing lights", "prestidigitation"],
 					selection : ["dancing lights", "prestidigitation"],
 					times : 2
-				}
+				}]
 			}
 		},
 		"arcane fighting style" : {
@@ -195,7 +195,7 @@ ClassList["warmage"] = {
 					"As a reaction if targeted by spell attack or ranged weapon attack, I can increase my AC",
 					"The bonus to my AC is equal to my Proficiency Bonus and can cause the attack to miss"
 				]),
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"resistive" : {
 				name : "Resistive Arcane Fighting Style",
@@ -331,23 +331,23 @@ ClassList["warmage"] = {
 				name : "Mystical Armor",
 				source : ["MFoV:CW", 9],
 				description : "\n   " + "I can cast Mage Armor at will, without using a spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Mystical Armor",
 					spells : ["mage armor"],
 					selection : ["mage armor"],
 					firstCol : "atwill"
-				}
+				}]
 			},
 			"mystical vision" : {
 				name : "Mystical Vision",
 				source : ["MFoV:CW", 9],
 				description : "\n   " + "I can cast Detect Magic at will, without using a spell slot",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Mystical Vision",
 					spells : ["detect magic"],
 					selection : ["detect magic"],
 					firstCol : "atwill"
-				}
+				}]
 			},
 			"pawn storm (prereq: house of pawns)" : {
 				name : "Pawn Storm",
@@ -507,7 +507,7 @@ ClassList["warmage"] = {
 					"After I move, I become the target of that attack, potentially causing the attack to miss"
 				]),
 				prereqeval : function(v) { return classes.known.warmage.level >= 10 && (/pawns/i).test(classes.known.warmage.subclass); },
-				action : ["reaction", ""],
+				action : [["reaction", ""]],
 				usages : 1,
 				recovery : "short rest"
 			},
@@ -597,7 +597,7 @@ AddSubClass("warmage", "pawns", {
 				return n < 3 ? "" : n < 15 ? 1 : 2;
 			}),
 			recovery : "short rest",
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature7" : {
 			name : "Defensive Casting",
@@ -608,7 +608,7 @@ AddSubClass("warmage", "pawns", {
 				"When a creature provokes an opportunity attack from me, I can cast a cantrip instead",
 				"This uses my reaction as normal and the cantrip can only target the provoking creature"
 			]),
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature10" : {
 			name : "Fighting Style",
@@ -627,7 +627,7 @@ AddSubClass("warmage", "pawns", {
 				"As a bonus action after a melee attack (weapon/cantrip), I can do the Shove action",
 				"I gain adv. on the shove if moving 10 ft in a straight line before making the attack roll"
 			]),
-			action : ["bonus action", " (with attack/cantrip)"]
+			action : [["bonus action", " (with attack/cantrip)"]]
 		},
 		"subclassfeature18" : {
 			name : "Impenetrable Fortress Defense",
@@ -637,13 +637,13 @@ AddSubClass("warmage", "pawns", {
 				"I know the Wall of Fire, Wall of Force, Wall of Ice, and Wall of Stone spells",
 				"I can cast these spells each once per long rest without needing to use a spell slot"
 			]),
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Impenetrable Fortress Defense",
 				spells : ["wall of fire", "wall of force", "wall of ice", "wall of stone"],
 				selection : ["wall of fire", "wall of force", "wall of ice", "wall of stone"],
 				firstCol : "oncelr",
 				times : 4
-			}
+			}]
 		}
 	}
 });

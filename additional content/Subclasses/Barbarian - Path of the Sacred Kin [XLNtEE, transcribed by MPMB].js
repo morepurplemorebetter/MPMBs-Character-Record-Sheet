@@ -48,12 +48,12 @@ AddSubClass("barbarian", "sacred kin-xlntee2", {
 			minlevel : 3,
 			description : "\n   " + "I can cast known sorcerer cantrips/spells, using Constitution as my spellcasting ability",
 			additional : ["", "", "2 cantrips \u0026 3 spells known", "2 cantrips \u0026 4 spells known", "2 cantrips \u0026 4 spells known", "2 cantrips \u0026 4 spells known", "2 cantrips \u0026 5 spells known", "2 cantrips \u0026 6 spells known", "2 cantrips \u0026 6 spells known", "3 cantrips \u0026 7 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 9 spells known", "3 cantrips \u0026 10 spells known", "3 cantrips \u0026 10 spells known", "3 cantrips \u0026 11 spells known", "3 cantrips \u0026 11 spells known", "3 cantrips \u0026 11 spells known", "3 cantrips \u0026 12 spells known", "3 cantrips \u0026 13 spells known"],
-			spellcastingBonus : { //for the spells gained at level 3, 8, 14, 20
+			spellcastingBonus : [{ //for the spells gained at level 3, 8, 14, 20
 				name : "From any school",
 				"class" : "sorcerer",
 				times : [0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4],
 				level : [1, 4]
-			}
+			}]
 		},
 		"subclassfeature3.1" : {
 			name : "Ancestral Origins",
@@ -133,14 +133,14 @@ AddSubClass("barbarian", "sacred kin-xlntee2", {
 				"When I use my action to cast a cantrip, I can make a weapon attack as a bonus action",
 				"If the cantrip dealt damage, I gain advantage on the bonus action attack roll"
 			]),
-			action : ["bonus action", " (after cantrip)"],
+			action : [["bonus action", " (after cantrip)"]],
 		},
 		"subclassfeature14" : {
 			name : "Immortal Birthright",
 			source : ["XLNtEE2", 9],
 			minlevel : 14,
 			description : "\n   Use the \"Choose Features\" button above to select the ancestral origins",
-			action : ["bonus action", " (start/stop)"],
+			action : [["bonus action", " (start/stop)"]],
 			speed : { fly : { spd : "walk", enc : "walk" } },
 			choices : ["aberrant", "celestial", "demonic"],
 			choicesNotInMenu : true,

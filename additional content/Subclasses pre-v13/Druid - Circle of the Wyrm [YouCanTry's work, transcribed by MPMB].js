@@ -98,13 +98,13 @@ AddSubClass("druid", "circle of the wyrm-giantitp", {
 				"I learn the Alter Self and Disguise Self and always have these prepared",
 				"I can cast these in dragon shape, but I use my original size and type for the spells"
 			]),
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Change Shape",
 				spells : ["alter self", "disguise self"],
 				selection : ["alter self", "disguise self"],
 				times : 2,
 				prepared : true
-			}
+			}]
 		}
 	}
 });

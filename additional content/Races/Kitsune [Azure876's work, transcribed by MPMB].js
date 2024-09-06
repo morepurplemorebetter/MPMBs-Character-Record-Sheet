@@ -44,12 +44,12 @@ RaceList["ninko kitsune"] = {
 	scores : [0, 2, 0, 0, 1, 0],
 	trait : "Ninko (+2 Dexterity, +1 Wisdom)\nFox Form: As an action once per short rest, I can shift between my human form or my true fox form. See the 'Notes' page for how this works.\nFox Magic: 1st level: Dancing Lights; 3rd level: Hideous Laughter; 5th level: Mirror Image. Both spells can each be used once per long rest. Wisdom is my spellcasting ability for these.\nPossessed Sight: As an action, I can become invisible to a creature I can see as long as I concentrate. It ends if I attack or cast a spell. I can only affect a target once per long rest.",
 	spellcastingAbility : 5,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Fox Magic (level 1)",
 		spells : ["dancing lights"],
 		selection : ["dancing lights"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"tasha's hideous laughter" : {
 			name : "Fox Magic (level 3)",
@@ -57,12 +57,12 @@ RaceList["ninko kitsune"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Fox Magic (level 3)",
 				spells : ["tasha's hideous laughter"],
 				selection : ["tasha's hideous laughter"],
 				firstCol : "oncelr"
-			}
+			}]
 		},
 		"mirror image" : {
 			name : "Fox Magic (level 5)",
@@ -70,12 +70,12 @@ RaceList["ninko kitsune"] = {
 			minlevel : 5,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Fox Magic (level 5)",
 				spells : ["mirror image"],
 				selection : ["mirror image"],
 				firstCol : "oncelr"
-			}
+			}]
 		}
 	},
 	action : [["action", "Fox Form"], ["action", "Possessed Sight"]],
@@ -113,12 +113,12 @@ RaceList["nogitsune kitsune"] = {
 	scores : [0, 2, 0, 0, 0, 1],
 	trait : "Nogitsune (+2 Dexterity, +1 Charisma)\nFox Form: As an action once per short rest, I can shift between my human form or my true fox form. See the 'Notes' page for how this works.\nFox Magic: 1st level: Dancing Lights cantrip; 3rd level: Ensnaring Strike; 5th level: Shatter. Both spells can each be used once per long rest. Wisdom is my spellcasting ability for these.\nMaddening Sight: As an action once per long rest, I can have a creature that I can see within 30 ft make a Wis save or be turned by me for 1 min. See the 'Notes' page.",
 	spellcastingAbility : 5,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Fox Magic (level 1)",
 		spells : ["dancing lights"],
 		selection : ["dancing lights"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"ensnaring strike" : {
 			name : "Fox Magic (level 3)",
@@ -126,12 +126,12 @@ RaceList["nogitsune kitsune"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Fox Magic (level 3)",
 				spells : ["ensnaring strike"],
 				selection : ["ensnaring strike"],
 				firstCol : "oncelr"
-			}
+			}]
 		},
 		"shatter" : {
 			name : "Fox Magic (level 5)",
@@ -139,12 +139,12 @@ RaceList["nogitsune kitsune"] = {
 			minlevel : 5,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Fox Magic (level 5)",
 				spells : ["shatter"],
 				selection : ["shatter"],
 				firstCol : "oncelr"
-			}
+			}]
 		}
 	},
 	abilitySave : 6,
@@ -186,12 +186,12 @@ RaceList["tenko kitsune"] = {
 	scores : [0, 2, 0, 1, 0, 0],
 	trait : "Tenko (+2 Dexterity, +1 Intelligence)\nFox Form: As an action once per short rest, I can shift between my human form or my true fox form. See the 'Notes' page for how this works.\nFox Magic: 1st level: Dancing Lights; 3rd level: Longstrider; 5th level: Animal Messenger. Both spells can each be used once per long rest. Wisdom is my spellcasting ability for these.\nStar Sight: As an action once per short rest, I can know the location of all living creatures within 60 ft, their size and cover, for 1 min. 2 ft or rock, 2\" of metal, and lead blocks this.",
 	spellcastingAbility : 5,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Fox Magic (level 1)",
 		spells : ["dancing lights"],
 		selection : ["dancing lights"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"longstrider" : {
 			name : "Fox Magic (level 3)",
@@ -199,12 +199,12 @@ RaceList["tenko kitsune"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Fox Magic (level 3)",
 				spells : ["longstrider"],
 				selection : ["longstrider"],
 				firstCol : "oncelr"
-			}
+			}]
 		},
 		"animal messenger" : {
 			name : "Fox Magic (level 5)",
@@ -212,12 +212,12 @@ RaceList["tenko kitsune"] = {
 			minlevel : 5,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Fox Magic (level 5)",
 				spells : ["animal messenger"],
 				selection : ["animal messenger"],
 				firstCol : "oncelr"
-			}
+			}]
 		}
 	},
 	action : [["action", "Fox Form"], ["action", "Star Sight"]],

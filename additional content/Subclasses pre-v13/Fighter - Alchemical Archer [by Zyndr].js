@@ -95,13 +95,13 @@ AddSubClass("fighter", "alchemical archer", {
 				name : "Disarming Shot",
 				description : "\n   " + "My target must make a Strength saving throw or drop one item of my choice that it’s holding. On a failed save, it drops the object I choose. The object lands at its feet.",
 				source : ["HB", 0],
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"distracting shot" : {
 				name : "Distracting Shot",
 				description : "\n   " + "The next attack roll against my target by an attacker other than me has Advantage if the attack is made before the start of my next turn.",
 				source : ["HB", 0],
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"focused shot" : {
 				name : "Focused Shot",
@@ -117,19 +117,19 @@ AddSubClass("fighter", "alchemical archer", {
 				name : "Manyshot",
 				description : "\n   " + "I can fire two arrows at the same time at the same target with a single ranged weapon attack. This attack does 1 die step larger damage (a d8 becomes a d10, a d6 becomes a d8, etc.) and consumes 2 arrows.",
 				source : ["HB", 0],
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"pinning shot" : {
 				name : "Pinning Shot",
 				description : "\n   " + "If an enemy within the normal range of my bow performs an action that would provoke an opportunity attack if I was within melee range, I may make an attack as a reaction. If this attack hits, it sets the target’s Movement to 0ft until the end of the turn, but deals no damage.",
 				source : ["HB", 0],
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"pinpoint aim" : {
 				name : "Pinpoint Aim",
 				description : "\n   " + "Taking a bonus action to observe my target, I gain Advantage against that target but I take Disadvantage against and from all others until the start of my next turn. This may be combined with other Trick Shots.",
 				source : ["HB", 0],
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"point blank shot" : {
 				name : "Point Blank Shot",
@@ -140,13 +140,13 @@ AddSubClass("fighter", "alchemical archer", {
 				name : "Pointed Response",
 				description : "\n   " + "I may make a melee opportunity attack using an arrow as a weapon. The arrow uses the statistic for a dagger.",
 				source : ["HB", 0],
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"rapid shot" : {
 				name : "Rapid Shot",
 				description : "\n   " + "I may make an additional bow attack as a bonus action.",
 				source : ["HB", 0],
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"spellbreaker" : {
 				name : "Spellbreaker",
@@ -157,7 +157,7 @@ AddSubClass("fighter", "alchemical archer", {
 				name : "Volley",
 				description : "\n   " + "I can use my action to make a ranged attack against any number of creatures within 10 feet of a point you can see within your weapon’s range. I must have ammunition for each target as normal, and I make a separate attack roll for each target. At 17th level, the radius increases to 30ft.",
 				source : ["HB", 0],
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 		},
         "subclassfeature7" : {

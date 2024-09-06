@@ -46,7 +46,7 @@ AddSubClass("warlock", "the big bad wolf", {
 			]),
 			usages : 1,
 			recovery : "short rest",
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature6" : {
 			name : "Growl of the Wolf",
@@ -61,7 +61,7 @@ AddSubClass("warlock", "the big bad wolf", {
 				if (n < 6) return "";
 				return "1d6+" + n + "+Cha";
 			}),
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature10" : {
 			name : "Step of the Wolf",
@@ -72,7 +72,7 @@ AddSubClass("warlock", "the big bad wolf", {
 				"After, a target I damage with a spell/weapon attack before the turn ends is frightened",
 				"The target is frightened of me until the end of my next turn"
 			]),
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"subclassfeature14" : {
 			name : "Fangs of the Wolf",
@@ -98,23 +98,23 @@ AddWarlockInvocation("The Better to See You With", {
 	name : "The Better to See You With",
 	description : "\n   " + "I can cast Faerie Fire at will (PHB 239)",
 	source : ["ATC:BBW", 3],
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "The Better to See You With",
 		spells : ["faerie fire"],
 		selection : ["faerie fire"],
 		atwill : true
-	}
+	}]
 });
 AddWarlockInvocation("Obscuring Fog", {
 	name : "Obscuring Fog",
 	description : "\n   " + "I can cast Fog Cloud at will, as a 1st-level spell (PHB 243)",
 	source : ["ATC:BBW", 3],
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Obscuring Fog",
 		spells : ["fog cloud"],
 		selection : ["fog cloud"],
 		atwill : true
-	}
+	}]
 });
 AddWarlockInvocation("Hex Beacon (prereq: level 5 warlock)", {
 	name : "Hex Beacon",
@@ -128,12 +128,12 @@ AddWarlockInvocation("Whispers from the Dark (prereq: level 5 warlock)", {
 	source : ["ATC:BBW", 3],
 	usages : 1,
 	recovery : "short rest",
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Whispers from the Dark",
 		spells : ["dissonant whispers"],
 		selection : ["dissonant whispers"],
 		oncesr : true
-	},
+	}],
 	prereqeval : "classes.known.warlock.level >= 5"
 });
 AddWarlockInvocation("Stalker's Step (prereq: level 7 warlock)", {
@@ -142,12 +142,12 @@ AddWarlockInvocation("Stalker's Step (prereq: level 7 warlock)", {
 	source : ["ATC:BBW", 3],
 	usages : 1,
 	recovery : "short rest",
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Stalker's Step",
 		spells : ["pass without trace"],
 		selection : ["pass without trace"],
 		oncesr : true
-	},
+	}],
 	prereqeval : "classes.known.warlock.level >= 7"
 });
 AddWarlockInvocation("The Better to Find You With (prereq: level 9 warlock)", {
@@ -156,24 +156,24 @@ AddWarlockInvocation("The Better to Find You With (prereq: level 9 warlock)", {
 	source : ["ATC:BBW", 3],
 	usages : 1,
 	recovery : "short rest",
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "The Better to Find You With",
 		spells : ["locate creature"],
 		selection : ["locate creature"],
 		oncesr : true
-	},
+	}],
 	prereqeval : "classes.known.warlock.level >= 9"
 });
 AddWarlockInvocation("Let Me In (prereq: level 9 warlock)", {
 	name : "Let Me In",
 	description : "\n   " + "I can cast Knock at will (PHB 254)",
 	source : ["ATC:BBW", 3],
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Let Me In",
 		spells : ["knock"],
 		selection : ["knock"],
 		atwill : true
-	},
+	}],
 	prereqeval : "classes.known.warlock.level >= 9"
 });
 AddWarlockInvocation("Unseen Artisans (prereq: level 15 warlock)", {
@@ -182,12 +182,12 @@ AddWarlockInvocation("Unseen Artisans (prereq: level 15 warlock)", {
 	source : ["ATC:BBW", 3],
 	usages : 1,
 	recovery : "short rest",
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Unseen Artisans",
 		spells : ["fabricate"],
 		selection : ["fabricate"],
 		atwill : true
-	},
+	}],
 	prereqeval : "classes.known.warlock.level >= 15"
 });
 AddWarlockInvocation("Fangs of the Wolf (prereq: level 12 warlock, the Big, Bad Wolf patron, Pact of the Blade)", {
@@ -216,10 +216,10 @@ AddWarlockInvocation("Wisdom of the Wolf (prereq: level 15 warlock, the Big, Bad
 	usages : "Charisma modifier per ",
 	usagescalc : "event.value = What('Cha Mod');",
 	recovery : "short rest",
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Wisdom of the Wolf",
 		spells : ["counterspell"],
 		selection : ["counterspell"]
-	},
+	}],
 	prereqeval : "classes.known.warlock.subclass === 'warlock-the big bad wolf' && classes.known.warlock.level >= 15 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the tome') !== -1"
 });

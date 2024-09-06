@@ -39,12 +39,12 @@ AddSubClass("rogue", "thieving magpie", {
 				"I can select a cat, corvid (raven stats), ferret, monkey, rat, spider, squirrel, or weasel",
 				"It gains proficiency in Sleight of Hand and Stealth, using my proficiency bonus"
 			]),
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Partner in Crime",
 				spells : ["find familiar"],
 				selection : ["find familiar"],
 				firstCol : "(R)"
-			}
+			}]
 		},
 		"subclassfeature3.1": {
 			name: "Mugger",

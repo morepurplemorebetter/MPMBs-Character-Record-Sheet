@@ -131,7 +131,7 @@ AddSubClass("fighter", "gunslinger", {
 			source : ["MM:GMA", 2],
 			minlevel : 15,
 			description : "\n   " + "I can reload any firearm as a bonus action",
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"subclassfeature18" : {
 			name : "Vicious Intent",

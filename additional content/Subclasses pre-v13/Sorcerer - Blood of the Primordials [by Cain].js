@@ -93,7 +93,7 @@ AddSubClass("sorcerer", "blood of the primordials", {
 			source : ["HB", 0],
 			minlevel : 14,
 			description : "\n   " + "As a bonus action, unless armor is in the way, I can sprout elemental wings from my back"  + "\n   " + "They are magical and are not affected by the environment" + "\n   " + "I gain a fly speed equal to my current speed until I dismiss the wings as a bonus action",
-			action : ["bonus action", " (start/stop)"],
+			action : [["bonus action", " (start/stop)"]],
 			speed : { fly : { spd : "walk", enc : "walk" } }
 		},
 		"subclassfeature18" : {
@@ -102,7 +102,7 @@ AddSubClass("sorcerer", "blood of the primordials", {
 			minlevel : 18,
 			description : "\n   " + "As an action, I create 60-ft radius aura of awe/fear for concentration up to 1 minute" + "\n   " + "All hostiles in this aura must make a Wis save or be charmed (awe) or frightened (fear)" + "\n   " + "They make their saves at the beginning of their turns" + "\n   " + "A creature that succeeds on the save is immune to my aura for 24 hours",
 			additional : "5 sorcery points",
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 });

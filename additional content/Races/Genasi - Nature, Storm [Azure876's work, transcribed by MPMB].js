@@ -46,12 +46,12 @@ RaceList["nature genasi"] = {
 	scores : [0, 0, 2, 0, 1, 0],
 	trait : "Nature Genasi (+2 Constitution, +1 Wisdom)\n\nOne of Nature: I know the Druidcraft cantrip. At 3rd level, I can cast Entangle once per long rest. Constitution is my spellcasting ability for these spells.\n\nNature Walk: I can move across difficult terrain made of natural earth or non-magical vegetation without expending extra movement. I am proficient in the Nature skill.",
 	spellcastingAbility : 3,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "One of Nature (level 1)",
 		spells : ["druidcraft"],
 		selection : ["druidcraft"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"entangle" : {
 			name : "One of Nature (level 3)",
@@ -59,12 +59,12 @@ RaceList["nature genasi"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "One of Nature (level 3)",
 				spells : ["entangle"],
 				selection : ["entangle"],
 				firstCol : "oncelr"
-			}
+			}]
 		}
 	},
 	dmgres : ["Poison"],
@@ -91,12 +91,12 @@ RaceList["storm genasi"] = {
 	scores : [0, 0, 2, 0, 0, 1],
 	trait : "Storm Genasi (+2 Constitution, +1 Charisma)\n\nRoar of the Storm:\n   I know the Shocking Grasp cantrip.\n   At 3rd level, I can cast Thunderwave once per long rest.\n   At 5th level, I can also cast Warding Wind once per long rest.\n   Constitution is my spellcasting ability for these spells.",
 	spellcastingAbility : 6,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Roar of the Storm (level 1)",
 		spells : ["shocking grasp"],
 		selection : ["shocking grasp"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"thunderwave" : {
 			name : "Roar of the Storm (level 3)",
@@ -104,12 +104,12 @@ RaceList["storm genasi"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Roar of the Storm (level 3)",
 				spells : ["thunderwave"],
 				selection : ["thunderwave"],
 				firstCol : "oncelr"
-			}
+			}]
 		},
 		"warding wind" : {
 			name : "Roar of the Storm (level 5)",
@@ -117,12 +117,12 @@ RaceList["storm genasi"] = {
 			minlevel : 5,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Roar of the Storm (level 5)",
 				spells : ["warding wind"],
 				selection : ["warding wind"],
 				firstCol : "oncelr"
-			}
+			}]
 		}
 	},
 	dmgres : ["Lightning", "Thunder"]

@@ -75,7 +75,7 @@ RaceList["greater dragonborn"] = {
 				return (n < 5 ? 2 : n < 11 ? 3 : n < 17 ? 4 : 5) + 'd6';
 			}),
 			recovery : "short rest",
-			action : ["action", ""],
+			action : [["action", ""]],
 			calcChanges : {
 				atkAdd : [
 					function (fields, v) {

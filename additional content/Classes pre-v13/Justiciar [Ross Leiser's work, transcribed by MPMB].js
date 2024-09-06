@@ -137,7 +137,7 @@ ClassList["justiciar"] = {
 			source : ["OAP:JC", 3],
 			minlevel : 1,
 			description : "\n   " + "I can create a magical cell that traps creatures; See the third page's Notes section",
-			action : ["action", " (create)"],
+			action : [["action", " (create)"]],
 			usages : levels.map(function(n) {
 				return n < 3 ? 2 : n < 6 ? 3 : n < 12 ? 4 : n < 17 ? 5 : n < 20 ? 6 : "\u221E\u00D7 per ";
 			}),
@@ -319,7 +319,7 @@ AddSubClass("justiciar", "division of defense", {
 				"By expending a spell slot, I give the attacked 5 times the slot level in temp. HP (max 15)",
 				"Additionally, I can make a weapon attack vs. the attacker as part of the same reaction"
 			]),
-			action : ["reaction", ""],
+			action : [["reaction", ""]],
 			extraNotesTxt : [[
 				3,
 				"\n \u2022 Defender's Cell (Division of Defense 3, OAP:JC 5)" + desc([
@@ -346,7 +346,7 @@ AddSubClass("justiciar", "division of defense", {
 			usages : "Intelligence modifier per ",
 			usagescalc : "event.value = Math.max(1, What('Int Mod'));",
 			recovery : "long rest",
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature18" : {
 			name : "Arcane Bastion",
@@ -472,7 +472,7 @@ AddSubClass("justiciar", "division of prosecution", {
 				"I can expend a spell slot to make a weapon attack against the attacker",
 				"This attack does +1d6 force damage per level of the spell slot expended (max 3d6)"
 			]),
-			action : ["reaction", ""],
+			action : [["reaction", ""]],
 			extraNotesTxt : [[
 				3,
 				"\n \u2022 Prosecutor's Cell (Division of Prosecution 3, OAP:JC 7)" + desc([
@@ -487,7 +487,7 @@ AddSubClass("justiciar", "division of prosecution", {
 			source : ["OAP:JC", 7],
 			minlevel : 7,
 			description : "\n   " + "As a reaction, I halve the damage of an attack from an attacker that I can see",
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature14" : {
 			name : "Voiding Clause",
@@ -496,12 +496,12 @@ AddSubClass("justiciar", "division of prosecution", {
 			description : "\n   " + "Once per long rest, I can cast Counterspell without using a spell slot",
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Voiding Clause",
 				spells : ["counterspell"],
 				selection : ["counterspell"],
 				oncelr : true
-			}
+			}]
 		},
 		"subclassfeature18" : {
 			name : "Prosecutor's Analysis",
@@ -528,12 +528,12 @@ AddSubClass("justiciar", "division of archives", {
 				"I learn the Mage Hand cantrip; I can use it to deliver 1st-level or higher spells",
 				"While the spectral hand persists, I can use its position to cast touch range spells from"
 			]),
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Archival Custodian",
 				spells : ["mage hand"],
 				selection : ["mage hand"],
 				atwill : true
-			},
+			}],
 			extraNotesTxt : [[
 				3,
 				"\n \u2022 Archivist's Cell (Division of Archives 3, OAP:OJ 2)" + desc([

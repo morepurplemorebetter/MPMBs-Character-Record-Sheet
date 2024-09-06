@@ -211,11 +211,11 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 			"While wearing my warplate gauntlet, I can use the Fire Bolt cantrip",
 			"Also, I add Burning Hands, Scorching Ray, Fireball, and Wall of Fire to my artificer spell list"
 		]),
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Flame Projector",
 			spells : ["fire bolt"],
 			selection : ["fire bolt"]
-		},
+		}],
 		calcChanges : {
 			spellList : [
 				function(spList, spName, spType) {
@@ -281,12 +281,12 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		]),
 		usages : 1,
 		recovery : "short rest",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Lightning Channel",
 			spells : ["lightning charged"],
 			selection : ["lightning charged"],
 			firstCol : "oncesr"
-		},
+		}],
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
@@ -311,11 +311,11 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 			"While wearing my gauntlet, I can use Shocking Grasp and add to my artificer spell list:",
 			"Thunderwave, Lightning Charged, Lightning Bolt, and Storm Sphere"
 		]),
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Lightning Projector",
 			spells : ["shocking grasp"],
 			selection : ["shocking grasp"]
-		},
+		}],
 		calcChanges : {
 			spellList : [
 				function(spList, spName, spType) {
@@ -664,12 +664,12 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 			"As an action, I become intangible, moving through creatures and objects until my turn ends",
 			"If I end my turn inside something, I'm shunted out of it and take 10 force damage"
 		]),
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Phase Suit",
 			spells : ["misty step", "blink"],
 			selection : ["misty step", "blink"],
 			times : 2
-		},
+		}],
 		usages : 1,
 		recovery : "long rest",
 		additional : "intangible",
@@ -724,12 +724,12 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		usages : 1,
 		recovery : "long rest",
 		additional : "Greater Invisibility",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Cloaking Device",
 			spells : ["greater invisibility"],
 			selection : ["greater invisibility"],
 			firstCol : "oncelr"
-		}
+		}]
 	}, {
 		listlevel : 11,
 		name : "Distributed Force",
@@ -774,12 +774,12 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		]),
 		usages : 1,
 		recovery : "long rest",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Flash Freeze Capacitor",
 			spells : ["cone of cold"],
 			selection : ["cone of cold"],
 			firstCol : "oncelr"
-		},
+		}],
 		spellChanges : {
 			"cone of cold" : {
 				description : "8d8+1d8/SL Cold dmg; save half; killed crea frozen statues till thawed; area dif. ter. till next turn ends",
@@ -826,12 +826,12 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		usages : 1,
 		recovery : "long rest",
 		action : [["action", ""]],
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Power Slam Capacitor",
 			spells : ["destructive wave"],
 			selection : ["destructive wave"],
 			firstCol : "oncelr"
-		}
+		}]
 	}, {
 		listname : "Self-Repair Matrix (prereq: Ablative Armor)",
 		listlevel : 11,
@@ -915,12 +915,12 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		description : "\n   Once per long rest, I can cast Sunbeam using this upgrade without using a spell slot",
 		usages : 1,
 		recovery : "long rest",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Sun Cannon",
 			spells : ["sunbeam"],
 			selection : ["sunbeam"],
 			firstCol : "oncelr"
-		}
+		}]
 	}, {
 		listname : "Virtual Interface (prereq: Sentient Armor)",
 		listlevel : 15,

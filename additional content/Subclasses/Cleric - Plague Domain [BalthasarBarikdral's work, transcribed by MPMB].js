@@ -37,11 +37,11 @@ AddSubClass("cleric", "plague domain", {
 			source : ["BB:PD", 0],
 			minlevel : 1,
 			description : "\n   " + "I learn the Poison Spray cantrip if I didn't already know it",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Bonus Cantrip",
 				spells : ["poison spray"],
 				selection : ["poison spray"]
-			}
+			}]
 		},
 		"subclassfeature1.1" : {
 			name : "Plague-Touched",
@@ -56,7 +56,7 @@ AddSubClass("cleric", "plague domain", {
 			]),
 			usages : 1,
 			recovery : "short rest",
-			action : ["action", ""],
+			action : [["action", ""]],
 			additional : levels.map(function (n) {
 				return (n < 5 ? 5 : n < 8 ? 10 : n < 11 ? 15 : n < 14 ? 20 : n < 17 ? 25 : 30) + " cu ft of food/water";
 			})
@@ -71,7 +71,7 @@ AddSubClass("cleric", "plague domain", {
 				"This feature ignores any immunity to being charmed that the undead might posses",
 				"Charmed undead regard me as friendly, won't attack me, but might attack my allies"
 			]),
-			action : ["action", ""],
+			action : [["action", ""]],
 			eval : function () { RemoveAction("action", "Channel Divinity: Turn Undead"); }
 		},
 		"subclassfeature2" : {
@@ -82,7 +82,7 @@ AddSubClass("cleric", "plague domain", {
 				"As an action, all hostiles within 30 ft take poison damage and 1 level of exhaustion",
 				"The targets can make Con save to half the poison damage and not get any exhaustion"
 			]),
-			action : ["action", ""],
+			action : [["action", ""]],
 			additional : levels.map(function (n) {
 				return n < 2 ? "" : "2d10+" + n + " poison damage";
 			})

@@ -237,7 +237,7 @@ AddSubClass("shadowcaster", "nightblade", {
 				"As an action, I can become invisible (as per Invisibility) while in darkness or dim light",
 				"This lasts until I use a bonus action to end it, attacks, cast a spell, or go into bright light"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature14" : {
 			name : "Shadow's Grace",
@@ -262,7 +262,7 @@ AddSubClass("shadowcaster", "nightblade", {
 			]),
 			usages : 1,
 			recovery : "short rest",
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 });
@@ -342,7 +342,7 @@ AddSubClass("shadowcaster", "shadowsmith", {
 				"I can only maintain 1 item like this and it fades 1 minute after it leaves my possession",
 				"With ranged weapons created like this, I can create and fire 1 piece of ammo per turn"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			toolProfs : [["Smith's tools"]],
 			calcChanges : {
 				atkAdd : [
@@ -362,7 +362,7 @@ AddSubClass("shadowcaster", "shadowsmith", {
 			additional : "1 minute",
 			usages : 1,
 			recovery : "short rest",
-			action : ["action", ""],
+			action : [["action", ""]],
 			calcChanges : {
 				atkAdd : [
 					"if ((/shadowcraft/i).test(WeaponText) && !isSpell && fields.Description.indexOf('Counts as magical') === -1 && !thisWeapon[1]) {fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical'; }; ",
@@ -417,7 +417,7 @@ AddSubClass("shadowcaster", "shadowsmith", {
 			]),
 			usages : 1,
 			recovery : "long rest",
-			action : ["action", " (manifest)"],
+			action : [["action", " (manifest)"]],
 			eval : "AddAction('bonus action', 'Shadow Waltz (direct weapon)', 'Shadowsmith');",
 			removeeval : "RemoveAction('bonus action', 'Shadow Waltz (direct weapon)', 'Shadowsmith');"
 		}
@@ -512,7 +512,7 @@ AddSubClass("shadowcaster", "skiamancer", {
 				"While this lasts, I have adv. on shadowcasting ability checks and spell attacks",
 				"The effects ends after 1 minute or if the target is ever more than 120 ft from me"
 			]),
-			action : ["action", ""],
+			action : [["action", ""]],
 			usages : 1,
 			recovery : "long rest"
 		},

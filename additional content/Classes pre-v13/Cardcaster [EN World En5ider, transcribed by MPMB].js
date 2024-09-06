@@ -313,12 +313,12 @@ AddSubClass("cardcaster", "knight of swords", {
 			]),
 			weapons : [false, false, ["shortsword", "longsword", "rapier"]],
 			armor : [true, true, false, true],
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Knight of Swords",
 				spells : ["mage hand", "sacred flame"],
 				selection : ["mage hand", "sacred flame"],
 				times : 2
-			}
+			}]
 		},
 		"subclassfeature1.1" : {
 			name : "Warrior's Fortitude",
@@ -335,7 +335,7 @@ AddSubClass("cardcaster", "knight of swords", {
 				"While this lasts, my movement doesn't provoke opportunity attacks",
 				"Also, any hostile creature I become adjacent to must succeed on a Str save or fall prone"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			usages : 1,
 			recovery : "short rest"
 		},
@@ -347,7 +347,7 @@ AddSubClass("cardcaster", "knight of swords", {
 				"As a bonus action, I can select a creature I can see within 60 ft; This lasts for 1 minute",
 				"Whenever it takes damage while this lasts, it takes extra damage equal to my Int mod"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			usages : 1,
 			recovery : "long rest"
 		},
@@ -388,12 +388,12 @@ AddSubClass("cardcaster", "page of wands", {
 			source : ["EN5:106", 6],
 			minlevel : 1,
 			description : "\n   " + "I know the Minor Illusion and Produce Flames cantrips",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Page of Wands",
 				spells : ["minor illusion", "produce flames"],
 				selection : ["minor illusion", "produce flames"],
 				times : 2
-			}
+			}]
 		},
 		"subclassfeature1.1" : {
 			name : "Seeds of Possibility",
@@ -433,7 +433,7 @@ AddSubClass("cardcaster", "page of wands", {
 				"If the card is not part of my deck, I do not put it on the discard pile",
 				"If I succeed, I can't use this feature again for 7 days"
 			]),
-			action : ["action", ""],
+			action : [["action", ""]],
 			usages : 1,
 			recovery : "long rest",
 			additional : levels.map(function (n) {
@@ -464,12 +464,12 @@ AddSubClass("cardcaster", "queen of cups", {
 				"I know the Friends, Message, and Ray of Frost cantrips",
 				"I gain proficiency with the Insight and Persuasion skills"
 			]),
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Queen of Cups",
 				spells : ["friends", "message", "ray of frost"],
 				selection : ["friends", "message", "ray of frost"],
 				times : 3
-			},
+			}],
 			skills : ["Insight", "Persuasion"],
 			skillstxt : "\n\n" + toUni("Cardcaster (Queen of Cups)") + ": Insight and Persuasion."
 		},
@@ -532,12 +532,12 @@ AddSubClass("cardcaster", "king of pentacles", {
 			source : ["EN5:110", 2],
 			minlevel : 1,
 			description : "\n   " + "I know the Fire Bolt and Prestidigitation cantrips; I start play with an extra 50 gp",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "King of Pentacles",
 				spells : ["fire bolt", "prestidigitation"],
 				selection : ["fire bolt", "prestidigitation"],
 				times : 2
-			}
+			}]
 		},
 		"subclassfeature1.1" : {
 			name : "Spendthrift",
@@ -571,7 +571,7 @@ AddSubClass("cardcaster", "king of pentacles", {
 			]),
 			usages : 1,
 			recovery : "long rest",
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature10" : {
 			name : "Bribe the Fates",
@@ -655,7 +655,7 @@ AddSubClass("cardcaster", "jack of beasts", {
 			]),
 			usages : 1,
 			recovery : "short rest",
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"subclassfeature6" : {
 			name : "Empowered Summoner",
@@ -677,13 +677,13 @@ AddSubClass("cardcaster", "jack of beasts", {
 			]),
 			usages : 1,
 			recovery : "short rest",
-			action : ["action", ""],
-			spellcastingBonus : {
+			action : [["action", ""]],
+			spellcastingBonus : [{
 				name : "Voice of the Void",
 				spells : ["speak with dead", "speak with plants"],
 				selection : ["speak with dead", "speak with plants"],
 				times : 2
-			}
+			}]
 		},
 		"subclassfeature14" : {
 			name : "Capture Card",
@@ -699,7 +699,7 @@ AddSubClass("cardcaster", "jack of beasts", {
 				"It's friendly and obeys me as Dominate Monster; As an action, I can return it to the card",
 				"If it dies, I can restore it with 8 hours meditation; Unwilling Int 12+ save each long rest"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 });

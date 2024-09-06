@@ -71,7 +71,7 @@ var theCoD = AddSubClass("druid", "circle of deathbloom", {
 			additional : levels.map(function (n) { return n < 2 ? "" : "max total CR " + Math.floor(n/4*2)/2; }),
 			usages : 1,
 			recovery : "long rest",
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature6" : {
 			name : "Return to the Earth",
@@ -82,7 +82,7 @@ var theCoD = AddSubClass("druid", "circle of deathbloom", {
 				"I can also do this as a reaction when one of those summons is reduced to 0 HP",
 				"All within 5 ft of the destroyed creature heal 1d8 per CR of it; CR has to be 1 or more"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			eval : "AddAction('reaction', 'Return to the Earth (at 0 HP)', 'Druid (Circle of Deathbloom)');",
 			removeeval : "RemoveAction('reaction', 'Return to the Earth (at 0 HP)', 'Druid (Circle of Deathbloom)');"
 		},
@@ -109,7 +109,7 @@ var theCoD = AddSubClass("druid", "circle of deathbloom", {
 				"\u2022 Siphon its trapped life energy, giving me temp. HP equal to the corpse's number of HD",
 				"\u2022 Enrich the land for one season, causing all plants in 50 ft of it to double their harvest"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 });

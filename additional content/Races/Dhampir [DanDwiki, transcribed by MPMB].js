@@ -68,10 +68,10 @@ RaceList["dhampir"] = {
 		usages : 1,
 		recovery : "short rest"
 	}],
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Vampiric Gaze",
 		spells : ["charm person"],
 		selection : ["charm person"],
 		firstCol : 'oncesr'
-	}
+	}]
 };

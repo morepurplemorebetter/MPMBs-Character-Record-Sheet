@@ -41,7 +41,7 @@ AddSubClass("warlock", "the dead king", {
 				"Additionally, I can choose to have it deal necrotic damage instead of its normal damage",
 				"Targets reduced to 0 HP with it can only be raised as undead with a high spell slot"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			calcChanges : {
 				atkAdd : ["if (isMeleeWeapon && (/\\breaping\\b/i).test(WeaponText)) { fields.Mod = What('Cha Mod') > What(AbilityScores.abbreviations[fields.Mod - 1] + ' Mod') ? 6 : fields.Mod; fields.Damage_Type = fields.Damage_Type + '/Necrotic'; }; ", "If I include either the word 'Reaping' in a melee weapon's name, it gets treated as the weapon I imbued to use Charisma instead of Strength or Dexterity, if my Charisma modifier is higher than the ability it would otherwise use. Additionally, I can choose to have the weapon deal necrotic damage instead of its normal damage."]
 			},
@@ -61,7 +61,7 @@ AddSubClass("warlock", "the dead king", {
 				"Its heals all its HP on a long rest, as I can reanimate parts of it that have been damaged",
 				"As a bonus action, I can command it and any other undead under my control"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			eval : "warlock_the_dead_king_functions.add(newClassLvl.warlock);",
 			removeeval : "warlock_the_dead_king_functions.remove();",
 			changeeval : "warlock_the_dead_king_functions.update(newClassLvl.warlock);"

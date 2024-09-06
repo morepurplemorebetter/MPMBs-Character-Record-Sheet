@@ -68,14 +68,14 @@ AddSubClass("ranger", "corsair", {
 			source : ["HB", 0],
 			minlevel : 11,
 			description : "\n   " + "When a creature misses me or an ally within range, I can use my reaction to retaliate" + "\n   " + "I can make an immediate attack with a melee or loaded firearm against the creature",
-			action : ["reaction", ""]
+			action : [["reaction", ""]]
 		},
 		"subclassfeature15" : {
 			name : "Lightning Reload",
 			source : ["HB", 0],
 			minlevel : 15,
 			description : "\n   " + "I can reload any firearm as a bonus action",
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		}
 	}
 });

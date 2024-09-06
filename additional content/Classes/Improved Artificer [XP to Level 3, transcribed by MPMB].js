@@ -165,7 +165,7 @@ ClassList["improved artificer"] = {
 				additional : levels.map(function (n) {
 					return "2 points; " + Math.ceil(n / 2) + "d6 acid damage";
 				}),
-				action : ["action", ""],
+				action : [["action", ""]],
 				weaponOptions : {
 					regExpSearch : /^(?=.*alchemical)(?=.*acid).*$/i,
 					name : "Alchemical Acid",
@@ -203,7 +203,7 @@ ClassList["improved artificer"] = {
 				additional : levels.map(function (n) {
 					return "2 points; " + Math.ceil(n / 3) + "d6 fire damage";
 				}),
-				action : ["action", ""],
+				action : [["action", ""]],
 				weaponOptions : {
 					regExpSearch : /^(?=.*alchemical)(?=.*fire).*$/i,
 					name : "Alchemical Fire",
@@ -238,7 +238,7 @@ ClassList["improved artificer"] = {
 					"One vial heals a number of d8 equal to half my artificer level (rounded up) in HP",
 					"After being healed this way, a creature can't do so again until it finishes a long rest"
 				]),
-				action : ["action", ""],
+				action : [["action", ""]],
 				additional : levels.map(function (n) {
 					return "2 points; " + "Heals " + Math.ceil(n / 2) + "d8";
 				})
@@ -251,7 +251,7 @@ ClassList["improved artificer"] = {
 					"The stick produces smoke in a 10-ft radius around it, blocking vision, incl. darkvision",
 					"It disappears after 1 minute; After creating one, I can't create a new one for 1 minute"
 				]),
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"swift step draught (2 invention points)" : {
 				name : "Swift Step Draught",
@@ -261,7 +261,7 @@ ClassList["improved artificer"] = {
 					"Any creature can drink this vial as an action, gaining +20 ft speed for 1 minute",
 					"After creating one, I can't create a new one for 1 minute"
 				]),
-				action : ["bonus action", ""],
+				action : [["bonus action", ""]],
 				additional : "2 points"
 			},
 			"tanglefoot bag (2 invention points)" : {
@@ -274,7 +274,7 @@ ClassList["improved artificer"] = {
 					"Anyone starting its turn in the area has its speed halved for the remainder of that turn",
 					"This lasts for 1 minute; After creating one, I can't create a new one for 1 minute"
 				]),
-				action : ["action", ""],
+				action : [["action", ""]],
 				additional : "2 points"
 			},
 			"thunderstone (2 invention points)" : {
@@ -286,7 +286,7 @@ ClassList["improved artificer"] = {
 					"If failed, a creature is knocked prone and pushed 10 ft away from the point of impact",
 					"Spellcasters caught in it must make on a concentration save with disadv. to maintain conc."
 				]),
-				action : ["action", ""],
+				action : [["action", ""]],
 				additional : "2 points"
 			}
 		},
@@ -333,7 +333,7 @@ ClassList["improved artificer"] = {
 				},
 				weaponsAdd : ['Dual Pistols'],
 				additional : "2 points",
-				action : ["bonus action", "off-hand"],
+				action : [["bonus action", "off-hand"]],
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
@@ -425,7 +425,7 @@ ClassList["improved artificer"] = {
 				usages: "Int mod per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
 				recovery: "long rest",
-				action : ["action", ""],
+				action : [["action", ""]],
 				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: arcanic firearms', true).indexOf('dual pistols (2 invention points)') != -1; }
 			},
 			"blunderbuss (2 invention points)" : {
@@ -683,12 +683,12 @@ ClassList["improved artificer"] = {
 				"I can use spell slots to augment Mending, adding 1d8 healing per spell slot level used"
 			]),
 			extraname : "Clockwork Construct",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Clockwork Constructs",
 				spells : ["mending"],
 				selection : ["mending"],
 				firstCol : "atwill"
-			},
+			}],
 			extrachoices : [
 				"Drone (2 invention points)", "Drone: Increase AC by 1 (2 invention points)", "Drone: Increase Carrying Capacity by 50 lb (2 invention points)", "Drone: Increase Hit Points by 10 (1 invention point)", "Drone: Lockpick (2 invention points)", "Drone: Remote Detonation (1 invention point)", "Drone: Shrink (3 invention points)", "Drone: Stealth Field (2 invention points)",
 				"Fighter (2 invention points)", "Fighter: Increase AC by 1 (2 invention points)", "Fighter: Increase Attack Bonus by 1 (1 invention point)", "Fighter: Increase Damage Dice to d10 (3 invention points)", "Fighter: Increase Hit Points by 10 (1 invention point)",  "Fighter: Multiattack (2 invention points)", "Fighter: Grapple Hands (3 invention points)", "Fighter: Head Bomb (1 invention point)", "Fighter: Shrink (3 invention points)",
@@ -964,7 +964,7 @@ ClassList["improved artificer"] = {
 				name : "Mechanical Sense: Perimeter Sense",
 				source : ["XPtL3:IA", 8],
 				description : "\n   As a bonus action, I can activate my perimeter sense which lasts for 10 minutes\n   I can't be surprised or be snuck up on while my perimeter sense is active",
-				action : ["bonus action", ""],
+				action : [["bonus action", ""]],
 				additional : "3 p",
 				usages: "Int mod/",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
@@ -996,7 +996,7 @@ ClassList["improved artificer"] = {
 				name : "Robotic Eye: See Invisible",
 				source : ["XPtL3:IA", 8],
 				description : "\n   As a bonus action, I can activate this to be able to see invisible creature for 10 minutes",
-				action : ["bonus action", ""], // added bonus action as no activation method was given
+				action : [["bonus action", ""]], // added bonus action as no activation method was given
 				additional : "3 points",
 				usages: "Int mod per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
@@ -1018,58 +1018,58 @@ ClassList["improved artificer"] = {
 				name : "Arcane Hand",
 				source : ["XPtL3:IA", 9],
 				description : " [2 points]\n   My magical hand can cast 3 1st-level sorcerer spells of my choice each once per long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Arcane Hand",
 					"class" : "sorcerer",
 					level : [1,1],
 					firstCol : "oncelr",
 					times : 3
-				}
+				}]
 			},
 			"arcane hand: 2nd-level spells (2 invention points)" : {
 				name : "Arcane Hand: 2nd-level spells",
 				source : ["XPtL3:IA", 9],
 				description : " [2 points]\n   My magical hand can cast 2 2nd-level sorcerer spells of my choice each once per long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Arcane Hand",
 					"class" : "sorcerer",
 					level : [2,2],
 					firstCol : "oncelr",
 					times : 2
-				},
+				}],
 				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane hand (2 invention points)') != -1; }
 			},
 			"arcane hand: 3rd-level spells (2 invention points)" : {
 				name : "Arcane Hand: 3rd-level spells",
 				source : ["XPtL3:IA", 9],
 				description : " [2 points]\n   My magical hand can cast 2 3rd-level sorcerer spells of my choice each once per long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Arcane Hand",
 					"class" : "sorcerer",
 					level : [3,3],
 					firstCol : "oncelr",
 					times : 2
-				},
+				}],
 				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane hand: 2nd-level spells (2 invention points)') != -1; }
 			},
 			"arcane hand: 4th-level spells (2 invention points)" : {
 				name : "Arcane Hand: 4th-level spells",
 				source : ["XPtL3:IA", 9],
 				description : " [2 points]\n   My magical hand can cast 2 4th-level sorcerer spells of my choice each once per long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Arcane Hand",
 					"class" : "sorcerer",
 					level : [4,4],
 					firstCol : "oncelr",
 					times : 2
-				},
+				}],
 				prereqeval : function(v) { return GetFeatureChoice('class', 'improved artificer', 'inventions: mechanical limbs', true).indexOf('arcane hand: 3rd-level spells (2 invention points)') != -1; }
 			},
 			"arm guard (2 invention points)" : {
 				name : "Arm Guard",
 				source : ["XPtL3:IA", 9],
 				description : " [2 points]\n   As an action I can spend a spell slot to active my arm guard to generate a shield of force\n   It works like a normal shield but I can use it even though I'm not proficient; It has 30 HP\n   If the bonus from this is the reason an attack missed, the force shield takes the damage",
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"arm guard: amplify (1 invention point)" : {
 				name : "Arm Guard: Amplify",
@@ -1106,7 +1106,7 @@ ClassList["improved artificer"] = {
 				name : "Calibrated Legs: Tremorsense",
 				source : ["XPtL3:IA", 9],
 				description : "\n   As a bonus action, I can gain termorsense for 10 minutes",
-				action : ["bonus action", ""],
+				action : [["bonus action", ""]],
 				additional : "3 pnts",
 				usages: "Int mod per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",

@@ -32,7 +32,7 @@ AddSubClass("warlock", "inner darkness", {
 			additional : ["as 1st-level spell", "as 1st-level spell", "as 2nd-level spell", "as 2nd-level spell", "as 3rd-level spell", "as 3rd-level spell", "as 4th-level spell", "as 4th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell", "as 5th-level spell"],
 			usagescalc : "event.value = Math.max(1, this.getField(\"Cha Mod\").value);",
 			recovery : "long rest",
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			spellcastingBonus : {
 				name : "Prey Sense (Hunter's Mark)",
 				spells : ["hunter's mark"],
@@ -43,7 +43,7 @@ AddSubClass("warlock", "inner darkness", {
 			name : "Signature Weapon",
 			source : ["HB", 0],
 			minlevel : 1,
-			description : "\n   " + "I gain proficiency in a weapon of my choice that does not have the “heavy” property" + "\n   " + "While wielding this weapon and nothing else I may use Cha for to hit and damage rolls" + "\n   " + "My signature weapon counts as magical for the purpose of overcoming resistances" + "\n   " + "I may use my signature weapon as a spellcasting focus",
+			description : "\n   " + "I gain proficiency in a weapon of my choice that does not have the ï¿½heavyï¿½ property" + "\n   " + "While wielding this weapon and nothing else I may use Cha for to hit and damage rolls" + "\n   " + "My signature weapon counts as magical for the purpose of overcoming resistances" + "\n   " + "I may use my signature weapon as a spellcasting focus",
 		},
 		"subclassfeature6" : {
 			name : "Relentless",
@@ -68,7 +68,7 @@ AddSubClass("warlock", "inner darkness", {
 			source : ["HB", 0],
 			minlevel : 14,
 			description : "\n   " + "As a bonus action, I can spend a spell slot to teleport to the target of my Prey Sense" + "\n   " + "I appear within 5 ft of the target, in a space of my choice" + "\n   " + "If the target did not see me before I teleported, it must make a Wisdom saving throw" + "\n   " + "On a failed save, the creature is frightened of me until the end of my next turn",
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		}
 	}
 });

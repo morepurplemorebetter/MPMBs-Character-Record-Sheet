@@ -45,7 +45,7 @@ AddSubClass("monk", "swordsage", {
 				name : "Commander's Strike",
 				source : ["P", 74],
 				description : "\n   " + "I forgo one attack of my Attack action to use a bonus action to direct an ally I see/hear" + "\n   " + "The ally can use a reaction to make an attack, adding the superiority die to damage",
-				action : ["bonus action", " (with Attack action)"]
+				action : [["bonus action", " (with Attack action)"]]
 			},
 			"disarming attack" : {
 				name : "Disarming Attack",
@@ -66,7 +66,7 @@ AddSubClass("monk", "swordsage", {
 				name : "Feinting Attack",
 				source : ["P", 74],
 				description : "\n   " + "As a bonus action, I can feint to gain adv. on my next attack against a target within 5 ft" + "\n   " + "If the attack hits, I add the superiority die to my attack's damage",
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"goading attack" : {
 				name : "Goading Attack",
@@ -92,7 +92,7 @@ AddSubClass("monk", "swordsage", {
 				name : "Parry",
 				source : ["P", 74],
 				description : "\n   " + "When damaged in melee, I can use a reaction to reduce it by superiority die + Dex mod",
-				action : ["reaction", " (when damaged in melee)"]
+				action : [["reaction", " (when damaged in melee)"]]
 			},
 			"precision attack" : {
 				name : "Precision Attack",
@@ -108,13 +108,13 @@ AddSubClass("monk", "swordsage", {
 				name : "Rally",
 				source : ["P", 74],
 				description : "\n   " + "Ally that can see/hear me gets temporary HP equal to superiority die + Wis mod",
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"riposte" : {
 				name : "Riposte",
 				source : ["P", 74],
 				description : "\n   " + "When missed in melee, I can use my reaction to make one melee attack vs. the attacker" + "\n   " + "If the attack hits, I add the superiority die to my attack's damage",
-				action : ["reaction", " (after missed in melee)"]
+				action : [["reaction", " (after missed in melee)"]]
 			},
 			"sweeping attack" : {
 				name : "Sweeping Attack",
@@ -139,7 +139,7 @@ AddSubClass("monk", "swordsage", {
 			source : ["HB", 0],
 			minlevel : 6,
 			description : "\n   " + "I can heal myself or an ally with a superiority die, healing twice the die result on touch",
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"subclassfeature17" : {
 			name : "Relentless",

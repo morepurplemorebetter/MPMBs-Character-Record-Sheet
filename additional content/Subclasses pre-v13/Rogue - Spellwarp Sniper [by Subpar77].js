@@ -68,7 +68,7 @@ AddSubClass("rogue", "spellwarp sniper", {
             source : ["HB", 0],
             minlevel : 9,
             description : "\n   " + "As a bonus action, I can apply one of the following effects to a ray attack." + "\n    " + "Push target back 10'" + "\n    " + "Knock target prone." + "\n    " + "Stun target until end of my next turn.",
-            action : ["bonus action", ""]
+            action : [["bonus action", ""]]
         },
         "subclassfeature13" : {
             name : "Reposition",

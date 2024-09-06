@@ -129,7 +129,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 			description : "\n   " + "I can throw a number of bombs using Dexterity for my attack and damage rolls",
 			usages : "Int mod + 1/2 lvl per ",
 			usagescalc : "event.value = Math.floor(classes.known['dawnforgedcast-alchemist'].level/2) + What('Int Mod');",
-			action : ["action", ""],
+			action : [["action", ""]],
 			recovery : "long rest",
 			eval : "AddWeapon('Bomb');",
 			removeeval : "RemoveWeapon('Bomb');",
@@ -158,7 +158,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 			]),
 			usages : 1,
 			recovery : "long rest",
-			action : ["action", ""],
+			action : [["action", ""]],
 			eval : "AddWeapon(\"Natural Weapons Mutagen\"); AddString(\"Extra.Notes\", \"Mutagen features:\\n\\u25C6 While I am in this new form, I gain the following features:\\n\\u25C6 Natural Weapons (Mutagen 2, HB:DF A 5)\\n   I grow claws, fangs, and all sorts of natural weapons.  I am now proficient in unarmed strike that deal 1d6 damage\\n   I can use my Strength bonus to determine attack and damage rolls\\n\\u25C6 Monstrous Power (Mutagen 2, HB:DF A 5)\\n   I gain advantage on Charisma (Intimidation) checks and get one of the following 3 benefits\\n    - Bear's Endurance: I gain 2d6 temp HP and advantage on Con checks\\n    - Bull's Strength: I gain double carrying capacity and advantage on Str checks\\n    - Cat's Grace: I don't take damage falling 20 ft or less unless incapacitated and gain advantage on Dex checks\\n\\u25C6 Toughened Hide (Mutagen 2, HB:DF A 5)\\n   My skin is hardened and AC is now 13 + Dex Mod\\n\u25C6 Monstrous Cost (Mutagen 2, HB:DF A 5)\\n   I have disadvantage on Intelligence and Charisma checks and saving throws\\n   I can not use my extracts or cast spells through other means\\n   I cannot wear armor, wield a shield, or use a weapon\", true);",
 			removeeval : "RemoveWeapon(\"Natural Weapons Mutagen\"); RemoveString(\"Extra.Notes\", \"Mutagen features:\\n\\u25C6 While I am in this new form, I gain the following features:\\n\\u25C6 Natural Weapons (Mutagen 2, HB:DF A 5)\\n   I grow claws, fangs, and all sorts of natural weapons.  I am now proficient in unarmed strike that deal 1d6 damage\\n   I can use my Strength bonus to determine attack and damage rolls\\n\\u25C6 Monstrous Power (Mutagen 2, HB:DF A 5)\\n   I gain advantage on Charisma (Intimidation) checks and get one of the following 3 benefits\\n      Bear's Endurance: I gain 2d6 temp HP and advantage on Con checks\\n      Bull's Strength: I gain double carrying capacity and advantage on Str checks\\n      Cat's Grace: I don't take damage falling 20 ft or less unless incapacitated and gain advantage on Dex checks\\n\\u25C6 Toughened Hide (Mutagen 2, HB:DF A 5)\\n   My skin is hardened and AC is now 13 + Dex Mod\\n\u25C6 Monstrous Cost (Mutagen 2, HB:DF A 5)\\n   I have disadvantage on Intelligence and Charisma checks and saving throws\\n   I can not use my extracts or cast spells through other means\\n   I cannot wear armor, wield a shield, or use a weapon\", true);",
 		},
@@ -209,7 +209,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Permanent Mutation: Rigid Horns",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "Mess with the horns, ya get the bull" + "\n   " + "As a bonus action, I can try to shove a creatuere when I make a melee attack" + "\n   " + "I can not knock a creature prone using this",
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"suckers" : {
 				name : "Permanent Mutation: Suckers",
@@ -275,7 +275,7 @@ ClassList["dawnforgedcast-alchemist"] = {
 				name : "Second Mutation: Rigid Horns",
 				source : ["DFC:AC", 5],
 				description : "\n   " + "Mess with the horns, ya get the bull" + "\n   " + "As a bonus action, I can try to shove a creatuere when I make a melee attack" + "\n   " + "I can not knock a creature prone using this",
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"suckers" : {
 				name : "Second Mutation: Suckers",
@@ -315,7 +315,7 @@ ClassSubList["dawnforgedcast-alchemist-arcane distiller"] = {
 			description : "\n   " + "I can provide my extracts to be used by others" + "\n   " + "I still roll any concentration saving throws, others use an action to consume",
 			usages : "Int mod per ",
 			usagescalc : "event.value = What('Int Mod');",
-			action : ["action", ""],
+			action : [["action", ""]],
 			recovery : "long rest"
 		},
 		"subclassfeature3.1" : {
@@ -323,17 +323,17 @@ ClassSubList["dawnforgedcast-alchemist-arcane distiller"] = {
 			source : ["DFC:AC", 8],
 			minlevel : 3,
 			description : "\n   " + "I can now coat a weapon or ammo in a spell" + "\n   " + "The effect requires no concentration to cast" + "\n   " + "The spells lasts a number of rounds equal to my Prof Bonus or the spell duration, whichever is less",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Arcane Poisons",
 				spells : ["bane", "command", "faerie fire", "hideous laughter", "blindness", "crown of madness", "hold person", "ray of enfeeblement", "bestow curse", "dispel magic", "fear", "slow", "blight", "confusion", "elemental bane", "polymorph"]
-			}
+			}]
 		},
 		"subclassfeature1" : {
 			name : "Combine Extracts",
 			source : ["DFC:AC", 8],
 			minlevel : 5,
 			description : "\n   " + "I can combine 2 spells by expending 2 spell slots to create a single extract" + "\n   " + "Can use this in conjunction with infusion",
-			action : ["action", ""],
+			action : [["action", ""]],
 		},
 		"subclassfeature5.1" : {
 			name : "Bottled Ooze",
@@ -386,12 +386,12 @@ ClassSubList["dawnforgedcast-alchemist-arcane distiller"] = {
 				name : "Grand Discovery: Secret Formula",
 				source : ["DFC:AC", 8],
 				description : "\n   " + "I gain 8th level spells I can now use or expend the spell slot to create an Ooze",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Secret Formula",
 					spells : ["antipathy/sympathy", "clone", "glibness", "mind blank", "telepathy"],
 					selection : ["antipathy/sympathy", "clone", "glibness", "mind blank", "telepathy"],
 					times : 5
-				}
+				}]
 			}
 		}
 	}
@@ -409,7 +409,7 @@ ClassSubList["dawnforgedcast-alchemist-grenadier"] = {
 			description : "\n   " + "I can throw a number of explosives per day" + "\n   " + "As a Grenadier I gain an additional 3 bombs",
 			usages : "Int mod + 3 + 1/2 lvl per ",
 			usagescalc : "event.value = Math.floor(classes.known['dawnforgedcast-alchemist'].level/2) + 3 + tDoc.getField('Int Mod').value;",
-			action : ["action", ""],
+			action : [["action", ""]],
 			recovery : "long rest",
 			eval : "AddWeapon(\"Bomb\");",
 			removeeval : "RemoveWeapon(\"Bomb\");"
@@ -419,11 +419,11 @@ ClassSubList["dawnforgedcast-alchemist-grenadier"] = {
 			source : ["DFC:AC", 7],
 			minlevel : 3,
 			description : "\n   " + "I can admix extra ingredients to my bombs to give them spell like effects" + "\n   " + "Admixed bombs deal half damage, or none if I wish" + "\n   " + "The effect lasts only my proficiency bonus in rounds, but doesn't require concentration" + "\n   " + "The spells are now accessible in your formula book",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Bomb Admixture",
 				spells : ["entangle", "faerie fire", "fog", "cloud", "grease", "darkness", "silence", "spike growth", "zone of truth", "hungering void", "sleet storm", "stinking cloud", "wind wall", "black tentacles", "hallucinatory terrain", "storm sphere", "wall of fire"],
 				times : 2
-			},
+			}],
 			spellFirstColTitle : "BA",
 		},
 		"subclassfeature5" : {
@@ -504,17 +504,17 @@ ClassSubList["dawnforgedcast-alchemist-metamorph"] = {
 				]),
 			usages : 1,
 			recovery : "short rest",
-			action : ["action", ""],
+			action : [["action", ""]],
 		},
 		"subclassfeature3.1" : {
 			name : "Mutagen Admixture",
 			source : ["DFC:AC", 6],
 			minlevel : 3,
 			description : "\n   " + "I can admix extra ingredients to my mutagen" + "\n   " + "Doing so allows me to use the spell for as long as my mutation lasts, no concentration required",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Mutagen Admixture",
 				spells : ["disguise self", "jump", "longstrider", "speak with animals", "barkskin", "darkvision", "enlarge/reduce", "spider climb", "elemental weapon", "protection from energy", "water walk", "freedom of movement", "stoneskin"]
-			}
+			}]
 		},
 		"subclassfeature5" : {
 			name : "Feral Mutagen",

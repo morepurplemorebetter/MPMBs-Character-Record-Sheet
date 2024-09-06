@@ -78,7 +78,7 @@ AddSubClass("fighter", "amazon", {
 				name : "Amazon Skill: Tunnel Fighter",
 				source : ["UA:LDU", 1],
 				description : "\n   " + "As a bonus action, I enter a defensive stance that lasts until the start of my next turn" + "\n   " + "While in the stance, I can make opportunity attacks without using my reaction" + "\n   " + "While I'm in this defensive stance I gain the following two benefits:" + "\n    - " + "I can make opportunity attacks without using my reaction" + "\n    - " + "I can make a melee attack as a reaction if a hostile moves >5 ft while in my reach",
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"elemental arrow" : {
 				name : "Amazon Skill: Elemental Arrow",
@@ -94,19 +94,19 @@ AddSubClass("fighter", "amazon", {
 				name : "Amazon Skill: Fend",
 				source : ["CS:A", 1],
 				description : "\n   " + "As an action, I can make an attack with my spear or glaive vs. all within my reach",
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"strafe" : {
 				name : "Amazon Skill: Strafe",
 				source : ["CS:A", 1],
 				description : "\n   " + "As an action, I can make a ranged attack vs. all within range of my bow/javelin/spear" + "\n   " + "I can only do this while wearing no, light, or medium armor, and have the ammunition",
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"uncanny dodge" : {
 				name : "Amazon Skill: Uncanny Dodge",
 				source : ["CS:A", 1],
 				description : "\n   " + "As a reaction when hit by an attacker that I can see, I can halve the attack's damage",
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
         },
         "subclassfeature15" : {
@@ -144,7 +144,7 @@ AddSubClass("fighter", "amazon", {
 				name : "Additional Amazon Skill: Tunnel Fighter",
 				source : ["UA:LDU", 1],
 				description : "\n   " + "As a bonus action, I enter a defensive stance that lasts until the start of my next turn" + "\n   " + "While in the stance, I can make opportunity attacks without using my reaction" + "\n   " + "While I'm in this defensive stance I gain the following two benefits:" + "\n    - " + "I can make opportunity attacks without using my reaction" + "\n    - " + "I can make a melee attack as a reaction if a hostile moves >5 ft while in my reach",
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"elemental arrow" : {
 				name : "Additional Amazon Skill: Elemental Arrow",
@@ -160,19 +160,19 @@ AddSubClass("fighter", "amazon", {
 				name : "Additional Amazon Skill: Fend",
 				source : ["CS:A", 1],
 				description : "\n   " + "As an action, I can make an attack with my spear or glaive vs. all within my reach",
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"strafe" : {
 				name : "Additional Amazon Skill: Strafe",
 				source : ["CS:A", 1],
 				description : "\n   " + "As an action, I can make a ranged attack vs. all within range of my bow/javelin/spear" + "\n   " + "I can only do this while wearing no, light, or medium armor, and have the ammunition",
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"uncanny dodge" : {
 				name : "Additional Amazon Skill: Uncanny Dodge",
 				source : ["CS:A", 1],
 				description : "\n   " + "As a reaction when hit by an attacker that I can see, I can halve the attack's damage",
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
         },
         "subclassfeature15.1" : {

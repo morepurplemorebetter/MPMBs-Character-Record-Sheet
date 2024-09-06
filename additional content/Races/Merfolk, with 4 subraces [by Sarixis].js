@@ -36,12 +36,12 @@ RaceList["ocean merfolk"] = {
 	scores : [0, 0, 0, 0, 2, 2],
 	trait : "Ocean Merfolk (+2 Wisdom, +2 Charisma) Amphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nMusical Aptitude: I can use my voice as a spell focus instead of a musical instrument\nSiren Song: As an action, I can use my singing to affect a creature that can hear and understand me as the Friends spell. The target isn't immediately hostile when the effect ends but they can still be angry with me. I can use this ability once per short rest",
 	spellcastingAbility : 5,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Aquitect (level 1)",
 		spells : ["shape water"],
 		selection : ["shape water"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"create or destroy water" : {
 			name : "Aquitect",
@@ -49,12 +49,12 @@ RaceList["ocean merfolk"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Aquitect (level 3)",
 				spells : ["create or destroy water"],
 				selection : ["create or destroy water"],
 				firstCol : 'oncelr'
-			},
+			}],
 		},
 		"siren song" : {
 			name : "Siren Song",
@@ -86,12 +86,12 @@ RaceList["river merfolk"] = {
 	scores : [0, 2, 0, 0, 2, 0],
 	trait : "River Merfolk (+2 Dexterity, +2 Wisdom)\nAmphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nFarming Experience: I have advantage on Animal Handling checks regarding farm animals\nSwamp Camouflage: I have advantage on Dexterity (Stealth) checks made to hide in forested terrain or fresh water",
 	spellcastingAbility : 5,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Aquitect (level 1)",
 		spells : ["shape water"],
 		selection : ["shape water"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"create or destroy water" : {
 			name : "Aquitect",
@@ -99,12 +99,12 @@ RaceList["river merfolk"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Aquitect (level 3)",
 				spells : ["create or destroy water"],
 				selection : ["create or destroy water"],
 				firstCol : 'oncelr'
-			}
+			}]
 		}
 	}
 };
@@ -130,12 +130,12 @@ RaceList["deep merfolk"] = {
 	scores : [0, 0, 2, 0, 2, 0],
 	trait : "Deep Merfolk (+2 Constitution, +2 Wisdom)\nAmphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nBioluminescent: I emit dim light in a 5-foot radius around myself. This can be covered with opaque cloth or objects",
 	spellcastingAbility : 5,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Aquitect (level 1)",
 		spells : ["shape water"],
 		selection : ["shape water"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"create or destroy water" : {
 			name : "Aquitect",
@@ -143,12 +143,12 @@ RaceList["deep merfolk"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Aquitect (level 3)",
 				spells : ["create or destroy water"],
 				selection : ["create or destroy water"],
 				firstCol : 'oncelr'
-			}
+			}]
 		}
 	}
 };
@@ -178,12 +178,12 @@ RaceList["awakened merrow"] = {
 		text : "As an Awakened Merrow, I gain a +1 bonus to AC from my scales."
 	}],
 	spellcastingAbility : 5,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Aquitect (level 1)",
 		spells : ["shape water"],
 		selection : ["shape water"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"create or destroy water" : {
 			name : "Aquitect",
@@ -191,12 +191,12 @@ RaceList["awakened merrow"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Aquitect (level 3)",
 				spells : ["create or destroy water"],
 				selection : ["create or destroy water"],
 				firstCol : 'oncelr'
-			}
+			}]
 		}
 	}
 };

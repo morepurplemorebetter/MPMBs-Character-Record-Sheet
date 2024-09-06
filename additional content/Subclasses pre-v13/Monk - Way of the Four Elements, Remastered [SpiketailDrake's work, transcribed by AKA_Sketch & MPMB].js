@@ -82,12 +82,12 @@ var WotFEremastered = function() {
 				name : "Become the Teapot",
 				source : ["IB:WotFE", 2],
 				description : " [1-5 ki points]" + "\n   " + "As a reaction, I can cast Absorb Elements",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Become the Teapot",
 					spells : ["absorb elements"],
 					selection : ["absorb elements"],
 					firstCol : 1
-				},
+				}],
 				spellFirstColTitle : "Ki"
 			},
 			"effortless step" : {
@@ -112,24 +112,24 @@ var WotFEremastered = function() {
 				name : "Fang of the Frost Wolf",
 				source : ["IB:WotFE", 2],
 				description : " [1-5 ki points]" + "\n   " + "As an action, I can cast Ice Knife without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Fang of the Frost Wolf",
 					spells : ["ice knife"],
 					selection : ["ice knife"],
 					firstCol : 1
-				},
+				}],
 				spellFirstColTitle : "Ki"
 			},
 			"fist of four thunders" : {
 				name : "Fist of Four Thunders",
 				source : ["IB:WotFE", 2],
 				description : " [1-5 ki points]" + "\n   " + "As an action, I can cast Thunderwave",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Fist of Four Thunders",
 					spells : ["thunderwave"],
 					selection : ["thunderwave"],
 					firstCol : 1
-				},
+				}],
 				spellFirstColTitle : "Ki"
 			},
 			"fist of unbroken air" : {
@@ -149,48 +149,48 @@ var WotFEremastered = function() {
 				name : "Rumbling Badger",
 				source : ["IB:WotFE", 2],
 				description : " [1-5 ki points]" + "\n   " + "As an action, I can cast Earth Tremor",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Rumbling Badger",
 					spells : ["earth tremor"],
 					selection : ["earth tremor"],
 					firstCol : 1
-				},
+				}],
 				spellFirstColTitle : "Ki"
 			},
 			"rush of the gale spirits" : {
 				name : "Rush of the Gale Spirits",
 				source : ["IB:WotFE", 2],
 				description : " [2 ki points]" + "\n   " + "As an action, I can cast Gust of Wind without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Rush of the Gale Spirits",
 					spells : ["gust of wind"],
 					selection : ["gust of wind"],
 					firstCol : 2
-				},
+				}],
 				spellFirstColTitle : "Ki"
 			},
 			"shape the raincloud" : {
 				name : "Shape the Raincloud",
 				source : ["IB:WotFE", 2],
 				description : " [1-5 ki points]" + "\n   " + "As an action, I can cast Create or Destroy Water without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Shape the Raincloud",
 					spells : ["create or destroy water"],
 					selection : ["create or destroy water"],
 					firstCol : 1
-				},
+				}],
 				spellFirstColTitle : "Ki"
 			},
 			"sweeping cinder strike" : {
 				name : "Sweeping Cinder Strike",
 				source : ["IB:WotFE", 2],
 				description : " [1-5 ki points]" + "\n   " + "As an action, I can cast Burning Hands",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Sweeping Cinder Strike",
 					spells : ["burning hands"],
 					selection : ["burning hands"],
 					firstCol : 1
-				},
+				}],
 				spellFirstColTitle : "Ki"
 			},
 			"water whip" : {
@@ -203,7 +203,7 @@ var WotFEremastered = function() {
 					"On a successful save, the target takes only half damage and isn't knocked prone or moved",
 					"I can't use Water Whip and cast a spell in the same turn"
 				]),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"a leaf on the wind (prereq: level 6 monk)" : {
 				name : "A Leaf on the Wind",
@@ -220,12 +220,12 @@ var WotFEremastered = function() {
 				name : "Burning Ember Flourish",
 				source : ["IB:WotFE", 2],
 				description : " [2 ki points]" + "\n   " + "As an action, I can cast Pyrotechnics",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Burning Ember Flourish",
 					spells : ["pyrotechnics"],
 					selection : ["pyrotechnics"],
 					firstCol : 2
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 6"
 			},
@@ -233,12 +233,12 @@ var WotFEremastered = function() {
 				name : "Crushing Hand of the Mountain",
 				source : ["IB:WotFE", 2],
 				description : " [2 ki points]" + "\n   " + "As an action, I can cast Maximilian's Earthen Grasp without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Crushing Hand of the Mountain",
 					spells : ["maximilian's earthen grasp"],
 					selection : ["maximilian's earthen grasp"],
 					firstCol : 2
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 6"
 			},
@@ -246,12 +246,12 @@ var WotFEremastered = function() {
 				name : "Curtain of Unyielding Wind",
 				source : ["IB:WotFE", 2],
 				description : " [2 ki points]" + "\n   " + "As an action, I can cast Warding Wind",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Curtain of Unyielding Wind",
 					spells : ["warding wind"],
 					selection : ["warding wind"],
 					firstCol : 2
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 6"
 			},
@@ -259,12 +259,12 @@ var WotFEremastered = function() {
 				name : "Gong of the Summit",
 				source : ["IB:WotFE", 2],
 				description : " [2-5 ki points]" + "\n   " + "As an action, I can cast Shatter without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Gong of the Summit",
 					spells : ["shatter"],
 					selection : ["shatter"],
 					firstCol : 2
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 6"
 			},
@@ -272,12 +272,12 @@ var WotFEremastered = function() {
 				name : "Hatchling's Flame",
 				source : ["IB:WotFE", 2],
 				description : " [2-5 ki points]" + "\n   " + "As an action, I can cast Aganazzar's Scorcher without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Hatchling's Flame",
 					spells : ["aganazzar's scorcher"],
 					selection : ["aganazzar's scorcher"],
 					firstCol : 2
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 6"
 			},
@@ -285,12 +285,12 @@ var WotFEremastered = function() {
 				name : "Mote of the Sun",
 				source : ["IB:WotFE", 2],
 				description : " [2-5 ki points]" + "\n   " + "As an action, I can cast Flaming Sphere without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Mote of the Sun",
 					spells : ["flaming sphere"],
 					selection : ["flaming sphere"],
 					firstCol : 2
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 6"
 			},
@@ -307,12 +307,12 @@ var WotFEremastered = function() {
 				name : "Red Dragon's Claws",
 				source : ["IB:WotFE", 2],
 				description : " [2-5 ki points]" + "\n   " + "As an action, I can cast Scorching Ray",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Red Dragon's Claws",
 					spells : ["scorching ray"],
 					selection : ["scorching ray"],
 					firstCol : 2
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 6"
 			},
@@ -320,12 +320,12 @@ var WotFEremastered = function() {
 				name : "Swarming Ice Rabbit",
 				source : ["IB:WotFE", 2],
 				description : " [2-5 ki points]" + "\n   " + "As an action, I can cast Snilloc's Snowball Swarm without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Swarming Ice Rabbit",
 					spells : ["snilloc's snowball swarm"],
 					selection : ["snilloc's snowball swarm"],
 					firstCol : 2
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 6"
 			},
@@ -333,12 +333,12 @@ var WotFEremastered = function() {
 				name : "Dance of Three Ways",
 				source : ["IB:WotFE", 3],
 				description : " [3-5 ki points]" + "\n   " + "As an action, I can cast Melf's Minute Meteors without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Dance of Three Ways",
 					spells : ["melf's minute meteors"],
 					selection : ["melf's minute meteors"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -346,12 +346,12 @@ var WotFEremastered = function() {
 				name : "Earth Reaches for Sky",
 				source : ["IB:WotFE", 3],
 				description : " [3-5 ki points]" + "\n   " + "As an action, I can cast Erupting Earth without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Earth Reaches for Sky",
 					spells : ["erupting earth"],
 					selection : ["erupting earth"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -359,12 +359,12 @@ var WotFEremastered = function() {
 				name : "Eternal Mountain Defense",
 				source : ["IB:WotFE", 3],
 				description : " [4 ki points]" + "\n   " + "As an action, I can cast Stoneskin on myself without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Eternal Mountain Defense",
 					spells : ["stoneskin"],
 					selection : ["stoneskin"],
 					firstCol : 4
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -372,12 +372,12 @@ var WotFEremastered = function() {
 				name : "Flames of the Phoenix",
 				source : ["IB:WotFE", 3],
 				description : " [3-5 ki points]" + "\n   " + "As an action, I can cast Fireball without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Flames of the Phoenix",
 					spells : ["fireball"],
 					selection : ["fireball"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -385,12 +385,12 @@ var WotFEremastered = function() {
 				name : "Fist of the Elements",
 				source : ["IB:WotFE", 3],
 				description : " [3-5 ki points]" + "\n   " + "As an action, I can cast Elemental Weapon (cold/fire/thunder); I can target my fists",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Fist of the Elements",
 					spells : ["elemental weapon"],
 					selection : ["elemental weapon"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -398,12 +398,12 @@ var WotFEremastered = function() {
 				name : "Hua's Water Prison",
 				source : ["IB:WotFE", 3],
 				description : " [4 ki points]" + "\n   " + "As an action, I can cast Watery Sphere without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Hua's Water Prison",
 					spells : ["watery sphere"],
 					selection : ["watery sphere"],
 					firstCol : 4
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -411,12 +411,12 @@ var WotFEremastered = function() {
 				name : "Mist Stance",
 				source : ["IB:WotFE", 3],
 				description : " [3 ki points]" + "\n   " + "As an action, I can cast Gaseous Form without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Mist Stance",
 					spells : ["gaseous form"],
 					selection : ["gaseous form"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -433,12 +433,12 @@ var WotFEremastered = function() {
 				name : "Rain of the Frigid Glacier",
 				source : ["IB:WotFE", 3],
 				description : " [3 ki points]" + "\n   " + "As an action, I can cast Sleet Storm without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Rain of the Frigid Glacier",
 					spells : ["sleet storm"],
 					selection : ["sleet storm"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -446,12 +446,12 @@ var WotFEremastered = function() {
 				name : "Raise the Troubled Earth",
 				source : ["IB:WotFE", 3],
 				description : " [3 ki points]" + "\n   " + "As an action, I can cast Wall of Sand without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Raise the Troubled Earth",
 					spells : ["wall of sand"],
 					selection : ["wall of sand"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -459,12 +459,12 @@ var WotFEremastered = function() {
 				name : "Raise the Still Waters",
 				source : ["IB:WotFE", 3],
 				description : " [3 ki points]" + "\n   " + "As an action, I can cast Wall of Water without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Raise the Still Waters",
 					spells : ["wall of water"],
 					selection : ["wall of water"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -472,12 +472,12 @@ var WotFEremastered = function() {
 				name : "Ride the Wind",
 				source : ["IB:WotFE", 3],
 				description : " [3 ki points]" + "\n   " + "As an action, I can cast Fly on myself without material components; Fly at my own speed",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Ride the Wind",
 					spells : ["fly"],
 					selection : ["fly"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -485,12 +485,12 @@ var WotFEremastered = function() {
 				name : "River of Hungry Flame",
 				source : ["IB:WotFE", 3],
 				description : " [4-5 ki points]" + "\n   " + "As an action, I can cast Wall of Fire without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "River of Hungry Flame",
 					spells : ["wall of fire"],
 					selection : ["wall of fire"],
 					firstCol : 4
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -498,12 +498,12 @@ var WotFEremastered = function() {
 				name : "Sweeping Crosswind",
 				source : ["IB:WotFE", 3],
 				description : " [3 ki points]" + "\n   " + "As an action, I can cast Wind Wall without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Sweeping Crosswind",
 					spells : ["wind wall"],
 					selection : ["wind wall"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -511,12 +511,12 @@ var WotFEremastered = function() {
 				name : "Tears of the North Wind",
 				source : ["IB:WotFE", 3],
 				description : " [3-5 ki points]" + "\n   " + "As an action, I can cast Ice Storm without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Tears of the North Wind",
 					spells : ["ice storm"],
 					selection : ["ice storm"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -524,12 +524,12 @@ var WotFEremastered = function() {
 				name : "Tsunami",
 				source : ["IB:WotFE", 3],
 				description : " [3 ki points]" + "\n   " + "As an action, I can cast Tidal Wave without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Tsunami",
 					spells : ["tidal wave"],
 					selection : ["tidal wave"],
 					firstCol : 3
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 11"
 			},
@@ -537,12 +537,12 @@ var WotFEremastered = function() {
 				name : "Avatar of Flame",
 				source : ["IB:WotFE", 3],
 				description : " [6 ki points]" + "\n   " + "As an action, I can cast Investiture of Flame",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Avatar of Flame",
 					spells : ["investiture of flame"],
 					selection : ["investiture of flame"],
 					firstCol : 6
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 17"
 			},
@@ -550,12 +550,12 @@ var WotFEremastered = function() {
 				name : "Avatar of Ice",
 				source : ["IB:WotFE", 3],
 				description : " [6 ki points]" + "\n   " + "As an action, I can cast Investiture of Ice",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Avatar of Ice",
 					spells : ["investiture of ice"],
 					selection : ["investiture of ice"],
 					firstCol : 6
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 17"
 			},
@@ -563,12 +563,12 @@ var WotFEremastered = function() {
 				name : "Avatar of Stone",
 				source : ["IB:WotFE", 3],
 				description : " [6 ki points]" + "\n   " + "As an action, I can cast Investiture of Stone",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Avatar of Stone",
 					spells : ["investiture of stone"],
 					selection : ["investiture of stone"],
 					firstCol : 6
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 17"
 			},
@@ -576,12 +576,12 @@ var WotFEremastered = function() {
 				name : "Avatar of Wind",
 				source : ["IB:WotFE", 3],
 				description : " [6 ki points]" + "\n   " + "As an action, I can cast Investiture of Wind",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Avatar of Wind",
 					spells : ["investiture of wind"],
 					selection : ["investiture of wind"],
 					firstCol : 6
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 17"
 			},
@@ -617,12 +617,12 @@ var WotFEremastered = function() {
 				name : "Breath of Winter",
 				source : ["IB:WotFE", 3],
 				description : " [5 ki points]" + "\n   " + "As an action, I can cast Cone of Cold without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Breath of Winter",
 					spells : ["cone of cold"],
 					selection : ["cone of cold"],
 					firstCol : 5
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 17"
 			},
@@ -630,12 +630,12 @@ var WotFEremastered = function() {
 				name : "Eye of the Hurricane",
 				source : ["IB:WotFE", 3],
 				description : " [5 ki points]" + "\n   " + "As an action, I can cast Control Winds",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Eye of the Hurricane",
 					spells : ["control winds"],
 					selection : ["control winds"],
 					firstCol : 5
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 17"
 			},
@@ -643,12 +643,12 @@ var WotFEremastered = function() {
 				name : "Mold the Mountain",
 				source : ["IB:WotFE", 3],
 				description : " [5 ki points]" + "\n   " + "As an action, I can cast Transmute Rock without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Mold the Mountain",
 					spells : ["transmute rock"],
 					selection : ["transmute rock"],
 					firstCol : 5
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 17"
 			},
@@ -656,12 +656,12 @@ var WotFEremastered = function() {
 				name : "Moth's Demise",
 				source : ["IB:WotFE", 3],
 				description : " [5 ki points]" + "\n   " + "As an action, I can cast Immolation",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Moth's Demise",
 					spells : ["immolation"],
 					selection : ["immolation"],
 					firstCol : 5
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 17"
 			},
@@ -669,12 +669,12 @@ var WotFEremastered = function() {
 				name : "Swirling Crab's Revenge",
 				source : ["IB:WotFE", 3],
 				description : " [5 ki points]" + "\n   " + "As an action, I can cast Maelstrom without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Swirling Crab's Revenge",
 					spells : ["maelstrom"],
 					selection : ["maelstrom"],
 					firstCol : 5
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 17"
 			},
@@ -682,12 +682,12 @@ var WotFEremastered = function() {
 				name : "Wave of Rolling Earth",
 				source : ["IB:WotFE", 3],
 				description : " [5 ki points]" + "\n   " + "As an action, I can cast Wall of Stone without material components",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Wave of Rolling Earth",
 					spells : ["wall of stone"],
 					selection : ["wall of stone"],
 					firstCol : 5
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				prereqeval : "classes.known.monk.level >= 17"
 			}

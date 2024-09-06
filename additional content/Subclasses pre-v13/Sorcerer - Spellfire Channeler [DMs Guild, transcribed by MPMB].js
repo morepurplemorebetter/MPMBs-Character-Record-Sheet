@@ -46,13 +46,13 @@ AddSubClass("sorcerer", "spellfire channeler", {
 				"I learn Produce Flame, Detect Magic, and Identify in addition to my spells known",
 				"As an action, I can ignite a flammable object with the touch of my hand"
 			]),
-			action : ["action", " (ignite)"],
-			spellcastingBonus : {
+			action : [["action", " (ignite)"]],
+			spellcastingBonus : [{
 				name : "Bonus Spells",
 				spells : ["produce flame", "detect magic", "identify"],
 				selection : ["produce flame", "detect magic", "identify"],
 				times : 3
-			}
+			}]
 		},
 		"subclassfeature1.1" : {
 			name : "Channel Spellfire",
@@ -81,7 +81,7 @@ AddSubClass("sorcerer", "spellfire channeler", {
 				description : " [1 or more spellfire dice]" + desc([
 					"As a reaction when I take cold or spell damage, I can expend die to regain the result in HP"
 				]),
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"burn projectiles" : {
 				name : "Burn Projectiles",
@@ -90,7 +90,7 @@ AddSubClass("sorcerer", "spellfire channeler", {
 					"As a reaction when I'm hit by a ranged weapon attack, I can expend die to melt the missile",
 					"I reduce the damage taken by my sorcerer level + the number rolled on the expended dice"
 				]),
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"empowered fire" : {
 				name : "Empowered Fire",
@@ -99,7 +99,7 @@ AddSubClass("sorcerer", "spellfire channeler", {
 					"As a bonus action when I inflict fire damage with a spell or cantrip, I can do extra damage",
 					"The target takes force damage equal to the roll of the expended dice and is pushed 10 ft"
 				]),
-				action : ["bonus action", ""],
+				action : [["bonus action", ""]],
 				additional : levels.map(function (n) {
 					return "1 or more spellfire dice; up to " + (n < 5 ? 1 : n < 11 ? 2 : n < 17 ? 3 : 4) + " target" + (n < 5 ? "" : "s");
 				})
@@ -110,7 +110,7 @@ AddSubClass("sorcerer", "spellfire channeler", {
 				description : " [1 or more spellfire dice]" + desc([
 					"As an action, I can heal a creature I touch for the roll of the expended dice"
 				]),
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			eval : "var CSopt = ['reactive healing', 'burn projectiles', 'empowered fire', 'healing spellfire']; for (var csf = 0; csf < CSopt.length; csf++) {ClassFeatureOptions(['sorcerer', 'subclassfeature1.1', CSopt[csf], 'extra']); };",
 			removeeval : "var CSopt = ['reactive healing', 'burn projectiles', 'empowered fire', 'healing spellfire']; for (var csf = 0; csf < CSopt.length; csf++) {ClassFeatureOptions(['sorcerer', 'subclassfeature1.1', CSopt[csf], 'extra'], 'remove'); };"
@@ -124,7 +124,7 @@ AddSubClass("sorcerer", "spellfire channeler", {
 				"If the item is in a creature's possession, it can make a Wis save (DC 8+Prof B.)",
 				"If I succeed in draining, I can use a bonus action to regain one expended spellfire die"
 			]),
-			action : ["action", ""],
+			action : [["action", ""]],
 			usages : "Proficiency bonus per ",
 			usagescalc : "event.value = Math.max(1, tDoc.getField('Proficiency Bonus').submitName);",
 			recovery : "long rest"
@@ -139,13 +139,13 @@ AddSubClass("sorcerer", "spellfire channeler", {
 				"As a reaction when I make a save against a spell, I can expend 1 or more spellfire dice",
 				"Doing this grants me adv. on the save and heals me equal to the result of the dice rolled"
 			]),
-			action : ["reaction", ""],
-			spellcastingBonus : {
+			action : [["reaction", ""]],
+			spellcastingBonus : [{
 				name : "Absorb Magic",
 				spells : ["counterspell", "dispel magic"],
 				selection : ["counterspell", "dispel magic"],
 				times : 2
-			}
+			}]
 		},
 		"subclassfeature6.1" : {
 			name : "Spellfire Sorcery",
@@ -155,7 +155,7 @@ AddSubClass("sorcerer", "spellfire channeler", {
 				"As a bonus action, I can spend 2 sorcery points to regain 1 expended spellfire die",
 				"Alternatively, I can expend 2 spellfire dice to regain 1 sorcery point"
 			]),
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"subclassfeature14" : {
 			name : "Spellfire Mastery",
@@ -180,7 +180,7 @@ AddSubClass("sorcerer", "spellfire channeler", {
 			]),
 			recovery : "long rest",
 			usages : 1,
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 });

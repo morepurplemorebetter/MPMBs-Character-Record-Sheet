@@ -46,11 +46,11 @@ RaceList["nature genasi"] = {
 	scores : [0, 0, 2, 0, 0, 1],
 	trait : "Nature Genasi (+2 Constitution, +1 Charisma)\n   Environmental Attunement: I learn a cantrip determined by the environment I'm attuned to, see 'Notes' page. I attune to an environment after spending 200 consecutive days in it. I then change which cantrip I know to the one of the new environment.\n   One with the World: From 3rd level onwards, I can cast Pass without Trace once per long rest without material components.\n   Constitution is my spellcasting ability for these spells.",
 	spellcastingAbility : 3,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Environmental Att.",
 		spells : ["blade ward", "chill touch", "create bonfire", "dancing lights", "druidcraft", "eldritch blast", "fire bolt", "frostbite", "guidance", "gust", "magic stone", "mending", "message", "minor illusion", "mold earth", "poison spray", "prestidigitation", "primal savagery", "produce flame", "ray of frost", "resistance", "shape water", "thaumaturgy", "thorn whip", "thunderclap", "toll the dead", "true strike", "word of radiance"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"pass without trace" : {
 			name : "One with the World",
@@ -58,12 +58,12 @@ RaceList["nature genasi"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "One with the World",
 				spells : ["pass without trace"],
 				selection : ["pass without trace"],
 				firstCol : "oncelr"
-			},
+			}],
 			spellChanges : {
 				"pass without trace" : {
 					components : "V,S",
@@ -134,12 +134,12 @@ if (RaceList["earth genasi"]) {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Merge with Stone (level 3)",
 				spells : ["earthbind"],
 				selection : ["earthbind"],
 				firstCol : 'oncelr'
-			}
+			}]
 		}
 	};
 }

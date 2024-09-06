@@ -466,14 +466,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "earth";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft",
 					spells : ["mold earth", "earth tremor", "animal friendship", "maximilian's earthen grasp", "pass without trace", "erupting earth", "wall of sand", "stoneskin", "stone shape"],
 					selection : ["mold earth", "earth tremor", "animal friendship", "maximilian's earthen grasp", "pass without trace", "erupting earth", "wall of sand", "stoneskin", "stone shape"],
 					times : levels.map(function (n) {
 						return n < 15 ? 5 : n < 18 ? 7 : 9;
 					})
-				}
+				}]
 			},
 			"fire" : {
 				name : "Alternate Fire Craft",
@@ -484,14 +484,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "fire";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft",
 					spells : ["produce flame", "burning hands", "charm person", "suggestion", "scorching ray", "melf's minute meteors", "fireball", "wall of fire", "fire shield"],
 					selection : ["produce flame", "burning hands", "charm person", "suggestion", "scorching ray", "melf's minute meteors", "fireball", "wall of fire", "fire shield"],
 					times : levels.map(function (n) {
 						return n < 15 ? 5 : n < 18 ? 7 : 9;
 					})
-				}
+				}]
 			},
 			"metal" : {
 				name : "Alternate Metal Craft",
@@ -502,14 +502,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "metal";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft",
 					spells : ["true strike", "compelled duel", "wrathful smite", "magic weapon", "blur", "protection from energy", "conjure barrage", "staggering smite", "stoneskin"],
 					selection : ["true strike", "compelled duel", "wrathful smite", "magic weapon", "blur", "protection from energy", "conjure barrage", "staggering smite", "stoneskin"],
 					times : levels.map(function (n) {
 						return n < 15 ? 5 : n < 18 ? 7 : 9;
 					})
-				}
+				}]
 			},
 			"water" : {
 				name : "Alternate Water Craft",
@@ -520,14 +520,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "water";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft",
 					spells : ["shape water", "cure wounds", "create or destroy water", "snilloc's snowball swarm", "alter self", "tidal wave", "revivify", "control water", "ice storm"],
 					selection : ["shape water", "cure wounds", "create or destroy water", "snilloc's snowball swarm", "alter self", "tidal wave", "revivify", "control water", "ice storm"],
 					times : levels.map(function (n) {
 						return n < 15 ? 5 : n < 18 ? 7 : 9;
 					})
-				}
+				}]
 			},
 			"wind" : {
 				name : "Alternate Wind Craft",
@@ -538,14 +538,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "wind";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft",
 					spells : ["gust", "catapult", "expeditious retreat", "invisibility", "levitate", "call lightning", "fly", "greater invisibility", "storm sphere"],
 					selection : ["gust", "catapult", "expeditious retreat", "invisibility", "levitate", "call lightning", "fly", "greater invisibility", "storm sphere"],
 					times : levels.map(function (n) {
 						return n < 15 ? 5 : n < 18 ? 7 : 9;
 					})
-				}
+				}]
 			},
 			"wood" : {
 				name : "Alternate Wood Craft",
@@ -556,14 +556,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "wood";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft",
 					spells : ["druidcraft", "entangle", "goodberry", "pass without trace", "spike growth", "plant growth", "speak with plants", "grasping vine", "hallucinatory terrain"],
 					selection : ["druidcraft", "entangle", "goodberry", "pass without trace", "spike growth", "plant growth", "speak with plants", "grasping vine", "hallucinatory terrain"],
 					times : levels.map(function (n) {
 						return n < 15 ? 5 : n < 18 ? 7 : 9;
 					})
-				}
+				}]
 			}
 		},
 		"subclassfeature15" : {
@@ -581,14 +581,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "earth" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "earth";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft Evolved",
 					spells : ["mold earth", "earth tremor", "animal friendship", "maximilian's earthen grasp", "pass without trace", "erupting earth", "wall of sand"],
 					selection : ["mold earth", "earth tremor", "animal friendship", "maximilian's earthen grasp", "pass without trace", "erupting earth", "wall of sand"],
 					times : levels.map(function (n) {
 						return n < 20 ? 5 : 7;
 					})
-				}
+				}]
 			},
 			"earth evolved (prereq: alternate earth craft)" : {
 				name : "Alternate Earth Craft Evolved",
@@ -621,14 +621,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "fire" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "fire";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft Evolved",
 					spells : ["produce flame", "burning hands", "charm person", "suggestion", "scorching ray", "melf's minute meteors", "fireball"],
 					selection : ["produce flame", "burning hands", "charm person", "suggestion", "scorching ray", "melf's minute meteors", "fireball"],
 					times : levels.map(function (n) {
 						return n < 20 ? 5 : 7;
 					})
-				}
+				}]
 			},
 			"fire evolved (prereq: alternate fire craft)" : {
 				name : "Alternate Fire Craft Evolved",
@@ -661,14 +661,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "metal" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "metal";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft Evolved",
 					spells : ["true strike", "compelled duel", "wrathful smite", "magic weapon", "blur", "protection from energy", "conjure barrage"],
 					selection : ["true strike", "compelled duel", "wrathful smite", "magic weapon", "blur", "protection from energy", "conjure barrage"],
 					times : levels.map(function (n) {
 						return n < 20 ? 5 : 7;
 					})
-				}
+				}]
 			},
 			"metal evolved (prereq: alternate metal craft)" : {
 				name : "Alternate Metal Craft Evolved",
@@ -701,14 +701,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "water" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "water";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft Evolved",
 					spells : ["shape water", "cure wounds", "create or destroy water", "snilloc's snowball swarm", "alter self", "tidal wave", "revivify"],
 					selection : ["shape water", "cure wounds", "create or destroy water", "snilloc's snowball swarm", "alter self", "tidal wave", "revivify"],
 					times : levels.map(function (n) {
 						return n < 20 ? 5 : 7;
 					})
-				}
+				}]
 			},
 			"water evolved (prereq: alternate water craft)" : {
 				name : "Alternate Water Craft Evolved",
@@ -741,14 +741,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "wind" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "wind";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft Evolved",
 					spells : ["gust", "catapult", "expeditious retreat", "invisibility", "levitate", "call lightning", "fly"],
 					selection : ["gust", "catapult", "expeditious retreat", "invisibility", "levitate", "call lightning", "fly"],
 					times : levels.map(function (n) {
 						return n < 20 ? 5 : 7;
 					})
-				}
+				}]
 			},
 			"wind evolved (prereq: alternate wind craft)" : {
 				name : "Alternate Wind Craft Evolved",
@@ -782,14 +782,14 @@ AddSubClass("furycrafter", "innate force", {
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "wood" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "wood";
 				},
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Alternate Craft Evolved",
 					spells : ["druidcraft", "entangle", "goodberry", "pass without trace", "spike growth", "plant growth", "speak with plants"],
 					selection : ["druidcraft", "entangle", "goodberry", "pass without trace", "spike growth", "plant growth", "speak with plants"],
 					times : levels.map(function (n) {
 						return n < 20 ? 5 : 7;
 					})
-				}
+				}]
 			},
 			"wood evolved (prereq: alternate wood craft)" : {
 				name : "Alternate Wood Craft Evolved",

@@ -38,7 +38,7 @@ AddSubClass("fighter", "pact knight", {
 			source : ["HB", 0],
 			minlevel : 3,
 			description : "\n   " + "As a bonus action, I can create a pact weapon in my empty hand; I'm proficient in its use" + "\n   " + "I can choose the type of melee weapon every time I create it, and it has those statistics" + "\n   " + "The weapon disappears if it is more than 5 ft away from me for 1 minute" + "\n   " + "The weapon counts as magical; I can transform a magic weapon Chao my pact weapon" + "\n   " + "This occurs over an hour-long ritual that I can perform during a short rest" + "\n   " + "I can use an action to re-summon it in any form and can dismiss it as no action",
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			calcChanges : {
 				atkAdd : ["if (isMeleeWeapon && (/\\bpact\\b/i).test(inputText)) {fields.Proficiency = true; fields.Description += thisWeapon[1] ? '' : (fields.Description ? '; ' : '') + 'Counts as magical'; }; ", "If I include the word 'Pact' in a melee weapon's name, it gets treated as my Pact Weapon."]
 			}
@@ -62,34 +62,34 @@ AddSubClass("fighter", "pact knight", {
 				name : "Armor of Shadows",
 				description : "\n   " + "I can cast Mage Armor on myself at will, without spell slots or material comp. (PHB 256)",
 				source : ["P", 110],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Armor of Shadows",
 					spells : ["mage armor"],
 					selection : ["mage armor"],
 					atwill : true
-				}
+				}]
 			},
 			"ascendant step (prereq: level 9 pact knight)" : {
 				name : "Ascendant Step",
 				description : "\n   " + "I can cast Levitate on myself at will, without spell slots or material comp. (PHB 255)",
 				source : ["P", 110],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Ascendant Step",
 					spells : ["levitate"],
 					selection : ["levitate"],
 					atwill : true
-				}
+				}]
 			},
 			"beast speech" : {
 				name : "Beast Speech",
 				description : "\n   " + "I can cast Speak with Animals at will, without using spell slots (PHB 277)",
 				source : ["P", 110],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Beast Speech",
 					spells : ["speak with animals"],
 					selection : ["speak with animals"],
 					atwill : true
-				}
+				}]
 			},
 			"beguiling influence" : {
 				name : "Beguiling Influence",
@@ -108,12 +108,12 @@ AddSubClass("fighter", "pact knight", {
 				name : "Eldritch Sight",
 				description : "\n   " + "I can cast Detect Magic at will, without using spell slots (PHB 231)",
 				source : ["P", 110],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Eldritch Sight",
 					spells : ["detect magic"],
 					selection : ["detect magic"],
 					atwill : true
-				}
+				}]
 			},
 			"eldritch spear (prereq: eldritch blast cantrip)" : {
 				name : "Eldritch Spear",
@@ -131,12 +131,12 @@ AddSubClass("fighter", "pact knight", {
 				name : "Fiendish Vigor",
 				description : "\n   " + "I can cast False Life on myself at will, without spell slots or material comp. (PHB 239)",
 				source : ["P", 111],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Fiendish Vigor",
 					spells : ["false life"],
 					selection : ["false life"],
 					atwill : true
-				}
+				}]
 			},
 			"gaze of two minds" : {
 				name : "Gaze of Two Minds",
@@ -155,51 +155,51 @@ AddSubClass("fighter", "pact knight", {
 				name : "Mask of Many Faces",
 				description : "\n   " + "I can cast Disguise Self on myself at will, without using spell slots (PHB 233)",
 				source : ["P", 111],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Mask of Many Faces",
 					spells : ["disguise self"],
 					selection : ["disguise self"],
 					atwill : true,
-				},
+				}],
 			},
 			"master of myriad forms (prereq: level 15 pact knight)" : {
 				name : "Master of Myriad Forms",
 				description : "\n   " + "I can cast Alter Self on myself at will, without using spell slots (PHB 211)",
 				source : ["P", 111],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Mask of Myriad Forms",
 					spells : ["alter self"],
 					selection : ["alter self"],
 					atwill : true,
-				},
+				}],
 			},
 			"misty visions" : {
 				name : "Misty Visions",
 				description : "\n   " + "I can cast Silent Image at will, without using spell slots or material comp. (PHB 276)",
 				source : ["P", 111],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Misty Visions",
 					spells : ["silent image"],
 					selection : ["silent image"],
 					atwill : true,
-				},
+				}],
 			},
 			"one with shadows (prereq: level 5 pact knight)" : {
 				name : "One with Shadows",
 				description : "\n   " + "As an action, when I'm in an area of dim light or darkness, I can become invisible" + "\n   " + "I become visible again when I move or take an action or reaction",
 				source : ["P", 111],
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"otherworldly leap (prereq: level 9 pact knight)" : {
 				name : "Otherworldly Leap",
 				description : "\n   " + "I can cast Jump on myself at will, without using spell slots or material comp. (PHB 254)",
 				source : ["P", 111],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Otherworldly Leap",
 					spells : ["jump"],
 					selection : ["jump"],
 					atwill : true
-				}
+				}]
 			},
 			"repelling blast (prereq: eldritch blast cantrip)" : {
 				name : "Repelling Blast",
@@ -213,23 +213,23 @@ AddSubClass("fighter", "pact knight", {
 				name : "Visions of Distant Realms",
 				description : "\n   " + "I can cast Arcane Eye at will, without using spell slots (PHB 214)",
 				source : ["P", 111],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Visions of Distant Realms",
 					spells : ["arcane eye"],
 					selection : ["arcane eye"],
 					atwill : true
-				}
+				}]
 			},
 			"whispers of the grave (prereq: level 9 pact knight)" : {
 				name : "Whispers of the Grave",
 				description : "\n   " + "I can cast Speak with Dead at will, without using spell slots (PHB 277)",
 				source : ["P", 111],
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Whispers of the Grave",
 					spells : ["speak with dead"],
 					selection : ["speak with dead"],
 					atwill : true
-				}
+				}]
 			},
 			"witch sight (prereq: level 15 pact knight)" : {
 				name : "Witch Sight",
@@ -248,11 +248,11 @@ AddSubClass("fighter", "pact knight", {
 				var spca = n < 7 ? 1 : n < 15 ? 2 : n < 19 ? 3 : 4;
 				return spca + " cantrip" + (spca > 1 ? "s" : "") + " \u0026 " + spca + " spell" + (spca > 1 ? "s" : "") + " known";
 			}),
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Hex",
 				spells : ["hex"],
 				selection : ["hex"]
-			}
+			}]
 		},
 		"subclassfeature7" : {
 			name : "Deny the Grave",

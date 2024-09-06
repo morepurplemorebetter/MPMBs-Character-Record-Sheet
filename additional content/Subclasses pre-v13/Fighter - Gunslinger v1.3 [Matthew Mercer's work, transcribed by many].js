@@ -174,14 +174,14 @@ AddSubClass("fighter", "gunslinger-v1.3", {
 			minlevel : 10,
 			description : "\n   " + "As a bonus action, I can repair a misfired (not broken) firearm by spending 1 grit point",
 			additional : "1 grit point",
-			action : ["bonus action", " (1 grit point)"]
+			action : [["bonus action", " (1 grit point)"]]
 		},
 		"subclassfeature15" : {
 			name : "Lightning Reload",
 			source : ["MM:GMA", 2],
 			minlevel : 15,
 			description : "\n   " + "I can reload any firearm as a bonus action",
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"subclassfeature18" : {
 			name : "Vicious Intent",

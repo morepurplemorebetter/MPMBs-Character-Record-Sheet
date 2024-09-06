@@ -62,12 +62,12 @@ RaceList["satyr"] = {
 	scores : [0, 1, 0, 0, 0, 2],
 	trait : "Satyr (+1 Dexterity, +2 Charisma)\nHeadbutt: I can use my head to make an attack, dealing 1d4 damage of a type determined by my horns.\nFlute: I know the Vicious Mockery cantrip.\n   At 3rd level, I can cast Sleep once per long rest as a 2nd-level spell.\n   At 5th level, I can also cast Charm Person once per long rest.\n   Charisma is my spellcasting ability for these spells",
 	spellcastingAbility : 6,
-	spellcastingBonus : {
+	spellcastingBonus : [{
 		name : "Flute (level 1)",
 		spells : ["vicious mockery"],
 		selection : ["vicious mockery"],
 		firstCol : 'atwill'
-	},
+	}],
 	features : {
 		"sleep" : {
 			name : "Flute (level 3)",
@@ -75,12 +75,12 @@ RaceList["satyr"] = {
 			minlevel : 3,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Flute (level 3)",
 				spells : ["sleep"],
 				selection : ["sleep"],
 				firstCol : "oncelr"
-			}
+			}]
 		},
 		"charm person" : {
 			name : "Flute (level 5)",
@@ -88,12 +88,12 @@ RaceList["satyr"] = {
 			minlevel : 5,
 			usages : 1,
 			recovery : "long rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Flute (level 5)",
 				spells : ["charm person"],
 				selection : ["charm person"],
 				firstCol : "oncelr"
-			}
+			}]
 		}
 	}
 };

@@ -42,7 +42,7 @@ AddSubClass("rogue", "shadowdancer", {
 				"I can cast Silent Image without using a spell slot my Cha mod per short rest (min 1)",
 				"I learn the Minor Illusion cantrip; Charisma is my spellcasting ability score for these"
 			]),
-			action : ["action", ""],
+			action : [["action", ""]],
 			usages : "Charisma modifier per ",
 			usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
 			recovery : "short rest",
@@ -63,7 +63,7 @@ AddSubClass("rogue", "shadowdancer", {
 			minlevel : 3,
 			description : "\n   " + "As a bonus action, I can teleport from and into dim light or darkness within range",
 			additional : levels.map( function(n) { return n < 3 ? "" : "teleport " + (n < 6 ? "30 ft" : "60 ft"); }),
-			action : ["bonus action", ""]
+			action : [["bonus action", ""]]
 		},
 		"subclassfeature9" : {
 			name : "Improved Shadowdancing",
@@ -86,7 +86,7 @@ AddSubClass("rogue", "shadowdancer", {
 				"As an action while I am in dim light or darkness, I can become invisible",
 				"This invisibility ends if I attack, cast a spell, or enter an area of bright light"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature15" : {
 			name : "Shadow Puppetmaster",
@@ -97,7 +97,7 @@ AddSubClass("rogue", "shadowdancer", {
 				"As a bonus action, I can move it 30 ft to a space I can see within 120 ft of me",
 				"If both in dim light or darkness, I can switch places with it as part of the bonus action"
 			]),
-			action : ["action", ""],
+			action : [["action", ""]],
 			usages : 1,
 			recovery : "long rest",
 			eval : "AddAction('bonus action', 'Move Duplicate(s)', 'Cleric (Trickery Domain) - Channel Divinity: Invoke Duplicity')",

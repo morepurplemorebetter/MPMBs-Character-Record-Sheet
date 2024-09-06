@@ -55,7 +55,7 @@ AddSubClass("cleric", "fate domain", {
 			source : ["CF:FD", 0],
 			minlevel : 2,
 			description : "\n   " + "As an action, I gain adv. to all Perception, Investigation, and Insight checks for 10 min",
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature6" : {
 			name : "Fate Foretold",

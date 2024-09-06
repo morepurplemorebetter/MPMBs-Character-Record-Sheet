@@ -72,7 +72,7 @@ AddSubClass("cleric", "blood domain-tdcs", {
 				"Also, it makes one weapon attack against a target of my choice within its range",
 				"Dead or unconscious creatures automatically fail their saving throw"
 			]),
-			action : ["action", ""],
+			action : [["action", ""]],
 			additional : levels.map( function(n) {
 				if (n < 2) return "";
 				return (n < 8 ? "Large " : "Huge") + "or smaller creature";
@@ -91,7 +91,7 @@ AddSubClass("cleric", "blood domain-tdcs", {
 				"If failed, it takes 2d6 necrotic damage and I can either see or hear what the target does",
 				"This lasts for my Wis mod in round, for which I'm blinded or deafened (respectively)"
 			]),
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature8" : {
 			name : "Sanguine Recall",
@@ -103,7 +103,7 @@ AddSubClass("cleric", "blood domain-tdcs", {
 			]),
 			usages : 1,
 			recovery : "long rest",
-			action : ["action", ""],
+			action : [["action", ""]],
 			additional : levels.map( function(n) {
 				if (n < 8) return "";
 				return Math.ceil(n/2) + " levels of spell slots";
@@ -120,7 +120,7 @@ AddSubClass("cleric", "blood domain-tdcs", {
 			]),
 			usages : 1,
 			recovery : "long rest",
-			action : ["action", ""]
+			action : [["action", ""]]
 		}
 	}
 });
@@ -170,7 +170,7 @@ AddSubClass("barbarian", "juggernaut-tdcs", {
 				"As a bonus action after making a weapon attack while raging, I can do an extra attack",
 				"This extra attack has to be against another target, within 5 ft of the original target"
 			]),
-			action : ["bonus action", " (after attack)"]
+			action : [["bonus action", " (after attack)"]]
 		},
 		"subclassfeature14" : {
 			name : "Unstoppable",
@@ -203,7 +203,7 @@ AddSubClass("sorcerer", "runechild-tdcs", {
 				"If I have 5+ charged runes, I emit bright light in 5 ft and dim light in another 5 ft",
 				"All charged runes become inert after a long rest; Inert runes are invisible"
 			]),
-			action : ["bonus action", " (charge)"],
+			action : [["bonus action", " (charge)"]],
 			additional : levels.map( function(n) {
 				return n + " rune" + (n > 1 ? "s" : "") + " on my body";
 			}),
@@ -219,7 +219,7 @@ AddSubClass("sorcerer", "runechild-tdcs", {
 				"As a reaction when I take damage, I can expend charged runes, rolling 1d6 for each",
 				"The damage of the attack, hazard, or spell is reduced by the total of the roll"
 			]),
-			action : ["reaction", ""],
+			action : [["reaction", ""]],
 			additional : "Any number of charged runes"
 		},
 		"subclassfeature6" : {
@@ -230,7 +230,7 @@ AddSubClass("sorcerer", "runechild-tdcs", {
 				"As an action, I can expend one charged rune to give an ally a protective ward for 1 hour",
 				"The next time that ally takes damage, the ward goes off and reduces the damage by 1d6"
 			]),
-			action : ["action", ""],
+			action : [["action", ""]],
 			additional : "1 charged rune"
 		},
 		"subclassfeature6.1" : {
@@ -242,7 +242,7 @@ AddSubClass("sorcerer", "runechild-tdcs", {
 				"While boosted, I gain adv. with either my Strength, Dexterity, or Constitution checks",
 				"I can maintain this benefit by expending a charged rune at the start of each of my turns"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			additional : "1 charged rune"
 		},
 		"subclassfeature6.2" : {
@@ -253,7 +253,7 @@ AddSubClass("sorcerer", "runechild-tdcs", {
 				"As an action, I can expend a charged rune to reveal hidden magical writing within 15 ft",
 				"Magical marks, runes, wards, or glyphs light up with 5-ft radius dim light for 1 round"
 			]),
-			action : ["action", ""],
+			action : [["action", ""]],
 			additional : "1 charged rune"
 		},
 		"subclassfeature14" : {
@@ -277,7 +277,7 @@ AddSubClass("sorcerer", "runechild-tdcs", {
 				"This lasts for 3 rounds, plus 1 round for each rune expended above 6",
 				"When this ends, I can't move or take actions until after my next turn"
 			]),
-			action : ["bonus action", ""],
+			action : [["bonus action", ""]],
 			usages : 1,
 			recovery: "long rest",
 			additional : "6+ charged runes"
@@ -364,7 +364,7 @@ AddSubClass("monk", "way of the cobalt soul-tdcs", {
 			source : ["TDCS", 104],
 			minlevel : 11,
 			description : "\n   " + "As a reaction when an attack misses me, I can make a melee attack against the attacker",
-			action : ["reaction", ""],
+			action : [["reaction", ""]],
 			eval : "processLanguages(true, 'Monk (Way of the Cobalt Soul 11)', [1]);",
 			removeeval : "processLanguages(false, 'Monk (Way of the Cobalt Soul 11)', [1]);",
 			changeeval : "if (newClassLvl.monk >= 17 && oldClassLvl.monk < 17) { ClassFeatureOptions(['monk', 'subclassfeature11', 'debilitating barrage', 'extra']); processLanguages(true, 'Monk (Way of the Cobalt Soul 17)', [1]); } else if (newClassLvl.monk < 17 && oldClassLvl.monk >= 17) { ClassFeatureOptions(['monk', 'subclassfeature11', 'debilitating barrage', 'extra'], 'remove'); processLanguages(false, 'Monk (Way of the Cobalt Soul 17)', [1]); };",
@@ -488,7 +488,7 @@ FeatsList["dual-focused-tdcs"] = {
 	name : "Dual-Focused",
 	source : ["TDCS", 108],
 	description : "As an action, I can concentrate on 2 spells. Con save (DC 10 + rounds concentrating) at the end of each turn to keep concentration on 2 spells or lose both. When taking damage, the DC to keep concentration is DC 10 + both spells' levels or half damage, whichever is higher.",
-	action : ["action", ""],
+	action : [["action", ""]],
 	prerequisite : "The ability to cast at least one spell",
 	prereqeval : "CurrentSpells.toSource() !== '({})'"
 };
@@ -496,7 +496,7 @@ FeatsList["flash recall-tdcs"] = {
 	name : "Flash Recall",
 	source : ["TDCS", 109],
 	description : "As an action, I can swap one prepared spell from my class list or spellbook to another of the same or lower spell level. I can do this only once per short rest.",
-	action : ["action", ""],
+	action : [["action", ""]],
 	usages : 1,
 	recovery : "short rest",
 	prerequisite : "The ability to prepare spells and cast at least one spell",
@@ -526,7 +526,7 @@ FeatsList["rapid drinker-tdcs"] = {
 	name : "Rapid Drinker",
 	source : ["TDCS", 109],
 	description : "I can drink a potion as a bonus action rather than an action. I have advantage on saving throws triggered by drinking an alcoholic or dangerous substance.",
-	action : ["bonus action", " (potion)"],
+	action : [["bonus action", " (potion)"]],
 	savetxt : { adv_vs : ["drinking a substance"] }
 };
 FeatsList["spelldriver-tdcs"] = {

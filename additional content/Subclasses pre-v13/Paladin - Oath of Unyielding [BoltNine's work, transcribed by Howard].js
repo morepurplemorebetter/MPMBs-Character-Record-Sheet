@@ -37,14 +37,14 @@ AddSubClass("paladin", "unyielding", {
 			source : ["IB:OotU", 1],
 			minlevel : 3,
 			description : "\n   " + "As an action, I can make myself an impenetrable wall" + "\n   " + "For 1 minute, I can take one extra reaction each round" + "\n   " + "In addition, any enemy I hit must make a Str save or be knocked prone and back 5 ft",
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature3.1" : {
 			name : "Channel Divinity: Hold the Weaks",
 			source : ["IB:OotU", 1],
 			minlevel : 3,
 			description : "\n   " + "As an action, I can make every enemy within 15 ft of me make a Wisdom saving throw" + "\n   " + "If failed, the enemy can't move on their turn, until the beginning of my next turn",
-			action : ["action", ""]
+			action : [["action", ""]]
 		},
 		"subclassfeature7" : {
 			name : "Aura of Unyielding",

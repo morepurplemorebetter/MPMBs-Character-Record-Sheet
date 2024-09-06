@@ -30,12 +30,12 @@ AddRacialVariant("half-elf", "fey step", {
 			minlevel : 1,
 			usages : 1,
 			recovery : "short rest",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Fey Step",
 				spells : ["misty step"],
 				selection : ["misty step"],
 				firstCol : 'oncesr'
-			}
+			}]
 		}
 	}
 });
