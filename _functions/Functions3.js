@@ -1221,7 +1221,7 @@ function processAddShield(AddRemove, shield, weight) {
 
 // set attacks or remove the attacks
 function processAddWeapons(AddRemove, weaponsAdd, srcNm) {
-	if (!weaponsAdd ) return;
+	if (!weaponsAdd) return;
 	if (typeof weaponsAdd === "string") {
 		weaponsAdd = { select : [weaponsAdd] };
 	} else if (isArray(weaponsAdd)) {
@@ -1230,30 +1230,25 @@ function processAddWeapons(AddRemove, weaponsAdd, srcNm) {
 	srcNm = srcNm ? srcNm.toLowerCase() : 'unknownSource';
 	if (weaponsAdd.options) {
 		if (!CurrentVars.extraWeaponsDisplay) CurrentVars.extraWeaponsDisplay = {};
-		for (var i = 0; i < weaponsAdd.options.length; i++) {
-			var weaOption = weaponsAdd.options[i];
-			var newName = srcNm + "-" + weaOption.toLowerCase();
-			if (AddRemove) {
-				CurrentVars.extraWeaponsDisplay[newName] = weaOption;
-			} else {
-				delete CurrentVars.extraWeaponsDisplay[newName];
-			}
+		if (!isArray(weaponsAdd.options)) weaponsAdd.options = [weaponsAdd.options];
+		if (AddRemove) {
+			CurrentVars.extraWeaponsDisplay[srcNm] = weaponsAdd.options;
+			// if adding, update the dropdowns before adding selection
+			if (AddRemove) UpdateDropdown("weapons");
+		} else {
+			delete CurrentVars.extraWeaponsDisplay[srcNm];
 		}
-		// if adding, update the dropdowns before adding selection
-		if (AddRemove) UpdateDropdown("weapons");
+		if (weaponsAdd.options) SetStringifieds("vars"); // Save the new settings to a field
 	}
 	if (weaponsAdd.select) {
 		for (var w = 0; w < weaponsAdd.select.length; w++) {
 			tDoc[(AddRemove ? "Add" : "Remove") + "Weapon"](weaponsAdd.select[w]);
 		}
 	}
-	if (weaponsAdd.options) {
+	if (weaponsAdd.options && !AddRemove) {
 		// if removing, update the weapon dropdowns after removing the selection
-		if (!AddRemove) {
-			UpdateDropdown("weapons");
-			if (!ObjLength(CurrentVars.extraWeaponsDisplay)) delete CurrentVars.extraWeaponsDisplay;
-		}
-		SetStringifieds("vars"); // Save the new settings to a field
+		if (!ObjLength(CurrentVars.extraWeaponsDisplay)) delete CurrentVars.extraWeaponsDisplay;
+		UpdateDropdown("weapons");
 	}
 }
 

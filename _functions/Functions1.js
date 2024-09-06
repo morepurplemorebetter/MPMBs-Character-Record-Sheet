@@ -3085,7 +3085,9 @@ function SetWeaponsdropdown(forceTooltips, aCompPrefixes) {
 	setweapons = addWeaList(setweapons, oWeaponLists.altList.concat(oWeaponLists.altListExtra));
 	// Add weapons added by `weaponsAdd.options` to the startlist
 	if (CurrentVars.extraWeaponsDisplay) {
-		oWeaponLists.startlist = oWeaponLists.startlist.concat(CurrentVars.extraWeaponsDisplay);
+		for (var sOption in CurrentVars.extraWeaponsDisplay) {
+			oWeaponLists.startlist.push(CurrentVars.extraWeaponsDisplay[sOption]);
+		}
 	}
 	// Add the startlist weapons to the final array
 	setweapons = addWeaList(setweapons, oWeaponLists.startlist, false, false, true);
@@ -7063,7 +7065,7 @@ function createSmallCaps(input, fontSize, extraObj) {
 			updateTxts(aTxt == "^", sp+txt[t+1]);
 			t++;
 		} else {
-			updateTxts(!isNaN(aTxt) || ((/\w/).test(aTxt) && aTxt == aTxt.toUpperCase()), sp+aTxt);
+			updateTxts(!isNaN(aTxt) || (/\w/.test(aTxt) && aTxt == aTxt.toUpperCase()), sp+aTxt);
 		};
 	}
 	if (nSmall) updateTxts(true, "");
@@ -10041,4 +10043,18 @@ function GetProfDice(ProfB) {
 		theReturn = "d4";
 	}
 	return theReturn;
+}
+
+// Return the current total proficiency bonus. `bIgnoreProfDice = true` returns the total as if the "Use Proficiency Bonus Dice" checkbox is unchecked.
+function getProfBonus(bIgnoreProfDice, prefix) {
+	if (prefix) {
+		if (!bIgnoreProfDice && tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0)) {
+			return 0;
+		} else {
+			return Number(What(prefix + "Comp.Use.Proficiency Bonus"));
+		}
+	} else {
+		var fld = tDoc.getField("Proficiency Bonus");
+		return Number(fld[bIgnoreProfDice ? 'submitName' : 'value']);
+	}
 }

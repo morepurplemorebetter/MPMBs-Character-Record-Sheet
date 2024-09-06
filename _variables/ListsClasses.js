@@ -56,7 +56,7 @@ var FightingStyles = {
 			"As a reaction, I can give disadv. on an attack made vs. someone within 5 ft of me",
 			"I need to be wielding a shield and be able to see the attacker to do this"
 		]),
-		action : ["reaction", ""]
+		action : [["reaction", ""]]
 	},
 	two_weapon : {
 		name : "Two-Weapon Fighting Style",
@@ -139,7 +139,7 @@ var Base_ClassList = {
 				}),
 				usages : [2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, "\u221E\xD7 per "],
 				recovery : "long rest",
-				action : ["bonus action", " (start/end)"],
+				action : [["bonus action", " (start/end)"]],
 				dmgres : [["Bludgeoning", "Bludgeon. (in rage)"], ["Piercing", "Piercing (in rage)"], ["Slashing", "Slashing (in rage)"]],
 				savetxt : { text : ["Adv. on Str saves in rage"] },
 				calcChanges : {
@@ -334,7 +334,7 @@ var Base_ClassList = {
 				recovery : levels.map(function (n) {
 					return n < 5 ? "long rest" : "short rest";
 				}),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"jack of all trades" : {
 				name : "Jack of All Trades",
@@ -399,7 +399,7 @@ var Base_ClassList = {
 					"As an action, I can do a performance that lasts until the end of my next turn",
 					"While it lasts, any friend in earshot \u0026 30 ft has adv. on saves vs. frightened/charmed"
 				]),
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"magical secrets" : {
 				name : "Magical Secrets",
@@ -409,13 +409,13 @@ var Base_ClassList = {
 				additional : levels.map(function (n) {
 					return n < 10 ? "" : (n < 14 ? 2 : n < 18 ? 4 : 6) + " spells/cantrips";
 				}),
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Magical Secret",
 					"class" : "any",
 					times : levels.map(function (n) {
 						return n < 10 ? 0 : n < 14 ? 2 : n < 18 ? 4 : 6;
 					})
-				}
+				}]
 			},
 			"superior inspiration" : {
 				name : "Superior Inspiration",
@@ -499,7 +499,7 @@ var Base_ClassList = {
 					"Turned: move away, never within 30 ft of me, no reactions or actions other than Dash",
 					"Turned: may Dodge instead of Dash when nowhere to move and unable to escape bonds"
 				]),
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"destroy undead" : {
 				name : "Destroy Undead",
@@ -519,7 +519,7 @@ var Base_ClassList = {
 					"As an action, I can implore my deity for help; the DM determines the form of help",
 					"Without intervention, I can retry after a long rest; otherwise, I have to wait a week"
 				]),
-				action : ["action", ""]
+				action : [["action", ""]]
 			}
 		}
 	},
@@ -700,7 +700,7 @@ var Base_ClassList = {
 				}),
 				usages : 1,
 				recovery : "short rest",
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"action surge" : {
 				name : "Action Surge",
@@ -832,21 +832,21 @@ var Base_ClassList = {
 					extraname : "Ki Feature",
 					source : [["SRD", 27], ["P", 78]],
 					description : " [1 ki point]" + desc("After taking the Attack action, I can make 2 unarmed attacks as a bonus action"),
-					action : ["bonus action", " (after Attack action)"]
+					action : [["bonus action", " (after Attack action)"]]
 				},
 				"patient defense" : {
 					name : "Patient Defense",
 					extraname : "Ki Feature",
 					source : [["SRD", 27], ["P", 78]],
 					description : " [1 ki point]" + desc("As a bonus action, I can take the Dodge action"),
-					action : ["bonus action", ""]
+					action : [["bonus action", ""]]
 				},
 				"step of the wind" : {
 					name : "Step of the Wind",
 					extraname : "Ki Feature",
 					source : [["SRD", 27], ["P", 78]],
 					description : " [1 ki point]" + desc("As a bonus action, I can either Dash or Disengage; My jump distance doubles when I do so"),
-					action : ["bonus action", ""]
+					action : [["bonus action", ""]]
 				},
 				autoSelectExtrachoices : [{
 					extrachoice : "flurry of blows"
@@ -886,7 +886,7 @@ var Base_ClassList = {
 					"As a reaction, I can reduce ranged weapon attack damage done to me",
 					"If the damage is negated, I catch and may throw it back (20/60 ft) as a monk weapon"
 				]),
-				action : ["reaction", ""],
+				action : [["reaction", ""]],
 				additional : levels.map(function (n) {
 					return n < 3 ? "" : "1d10 + " + n + " + Dexterity modifier; 1 ki to throw";
 				})
@@ -897,7 +897,7 @@ var Base_ClassList = {
 				minlevel : 4,
 				description : desc("As a reaction, I can reduce any falling damage I take by five times my monk level"),
 				additional : levels.map(function (n) { return n < 4 ? "" : (n*5) + " less falling damage" }),
-				action : ["reaction", ""],
+				action : [["reaction", ""]],
 				"stunning strike" : {
 					name : "Stunning Strike",
 					extraname : "Monk 5",
@@ -940,7 +940,7 @@ var Base_ClassList = {
 				source : [["SRD", 28], ["P", 79]],
 				minlevel : 7,
 				description : desc("As an action, I can end one effect on me that causes me to be charmed or frightened"),
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"purity of body" : {
 				name : "Purity of Body",
@@ -975,13 +975,13 @@ var Base_ClassList = {
 				minlevel : 18,
 				description : desc("Be invisible and resist non-force damage for 1 min or cast Astral Projection on self"),
 				additional : "Invisible: 4 ki points; Astral Projection: 8 ki points",
-				action : ["action", ""],
-				spellcastingBonus : {
+				action : [["action", ""]],
+				spellcastingBonus : [{
 					name : "Empty Body",
 					spells : ["astral projection"],
 					selection : ["astral projection"],
 					firstCol : 8
-				},
+				}],
 				spellFirstColTitle : "Ki",
 				spellChanges : {
 					"astral projection" : {
@@ -1047,7 +1047,7 @@ var Base_ClassList = {
 				usages : "1 + Charisma modifier per ",
 				usagescalc : "event.value = 1 + What('Cha Mod');",
 				recovery : "long rest",
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"lay on hands" : {
 				name : "Lay on Hands",
@@ -1059,7 +1059,7 @@ var Base_ClassList = {
 				]),
 				usages : [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100],
 				recovery : "long rest",
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"fighting style" : {
 				name : "Fighting Style",
@@ -1149,7 +1149,7 @@ var Base_ClassList = {
 				usages : "Charisma modifier per ",
 				usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
 				recovery : "long rest",
-				action : ["action", ""]
+				action : [["action", ""]]
 			}
 		}
 	},
@@ -1392,7 +1392,7 @@ var Base_ClassList = {
 					"Out to 1 mile (6 in favored terrain), I sense if certain types of creatures are present"
 				]),
 				additional : "aber./celest./dragon/elem./fey/fiend/undead",
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"land's stride" : {
 				name : "Land's Stride",
@@ -1418,7 +1418,7 @@ var Base_ClassList = {
 				source : [["SRD", 37], ["P", 92]],
 				minlevel : 14,
 				description : desc("I can't be nonmagically tracked if I don't want to be and can Hide as a bonus action"),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"feral senses" : {
 				name : "Feral Senses",
@@ -1558,7 +1558,7 @@ var Base_ClassList = {
 				source : [["SRD", 40], ["P", 96]],
 				minlevel : 2,
 				description : desc("I can use a bonus action to take the Dash, Disengage, or Hide action"),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"subclassfeature3" : {
 				name : "Roguish Archetype",
@@ -1571,7 +1571,7 @@ var Base_ClassList = {
 				source : [["SRD", 40], ["P", 96]],
 				minlevel : 5,
 				description : desc("As a reaction, I can halve the damage of an attack from an attacker that I can see"),
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"evasion" : {
 				name : "Evasion",
@@ -1680,7 +1680,7 @@ var Base_ClassList = {
 				]),
 				usages : [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
 				recovery : "long rest",
-				action : ["bonus action", "Font of Magic"],
+				action : [["bonus action", "Font of Magic"]],
 				additional : "Sorcery Points",
 				limfeaname : "Sorcery Points"
 			},
@@ -1735,7 +1735,7 @@ var Base_ClassList = {
 					name : "Quickened Spell",
 					source : [["SRD", 44], ["P", 102]],
 					description : " [2 sorcery points]" + desc("If the spell has a casting time of 1 action, I can cast it as a bonus action"),
-					action : ["bonus action", ""]
+					action : [["bonus action", ""]]
 				},
 				"subtle spell" : {
 					name : "Subtle Spell",
@@ -1863,12 +1863,12 @@ var Base_ClassList = {
 					name : "Armor of Shadows",
 					description : desc("I can cast Mage Armor on myself at will, without using a spell slot or material components"),
 					source : [["SRD", 48], ["P", 110]],
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Armor of Shadows",
 						spells : ["mage armor"],
 						selection : ["mage armor"],
 						firstCol : "atwill"
-					},
+					}],
 					spellChanges : {
 						"mage armor" : {
 							range : "Self",
@@ -1884,12 +1884,12 @@ var Base_ClassList = {
 					description : desc("I can cast Levitate on myself at will, without using a spell slot or material components"),
 					source : [["SRD", 48], ["P", 110]],
 					submenu : "[warlock level  9+]",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Ascendant Step",
 						spells : ["levitate"],
 						selection : ["levitate"],
 						firstCol : "atwill"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 9; },
 					spellChanges : {
 						"levitate" : {
@@ -1905,12 +1905,12 @@ var Base_ClassList = {
 					name : "Beast Speech",
 					description : desc("I can cast Speak with Animals at will, without using a spell slots"),
 					source : [["SRD", 48], ["P", 110]],
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Beast Speech",
 						spells : ["speak with animals"],
 						selection : ["speak with animals"],
 						firstCol : "atwill"
-					}
+					}]
 				},
 				"beguiling influence" : {
 					name : "Beguiling Influence",
@@ -1925,12 +1925,12 @@ var Base_ClassList = {
 					submenu : "[warlock level  7+]",
 					usages : 1,
 					recovery : "long rest",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Bewitching Whispers",
 						spells : ["compulsion"],
 						selection : ["compulsion"],
 						firstCol : "oncelr"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 7; }
 				},
 				"book of ancient secrets (prereq: pact of the tome)" : {
@@ -1990,12 +1990,12 @@ var Base_ClassList = {
 					]),
 					source : [["SRD", 49], ["P", 110]],
 					submenu : "[improves Pact of the Chain]",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Chains of Carceri",
 						spells : ["hold monster"],
 						selection : ["hold monster"],
 						firstCol : "atwill"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 15 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'; },
 					spellChanges : {
 						"speak with animals" : {
@@ -2019,24 +2019,24 @@ var Base_ClassList = {
 					submenu : "[warlock level  7+]",
 					usages : 1,
 					recovery : "long rest",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Dreadful Word",
 						spells : ["confusion"],
 						selection : ["confusion"],
 						firstCol : "oncelr"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 7; }
 				},
 				"eldritch sight" : {
 					name : "Eldritch Sight",
 					description : desc("I can cast Detect Magic at will, without using a spell slot"),
 					source : [["SRD", 49], ["P", 110]],
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Eldritch Sight",
 						spells : ["detect magic"],
 						selection : ["detect magic"],
 						firstCol : "atwill"
-					}
+					}]
 				},
 				"eldritch spear (prereq: eldritch blast cantrip)" : {
 					name : "Eldritch Spear",
@@ -2073,12 +2073,12 @@ var Base_ClassList = {
 					name : "Fiendish Vigor",
 					description : desc("I can cast False Life on myself at will, without using a spell slot or material components"),
 					source : [["SRD", 49], ["P", 111]],
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Fiendish Vigor",
 						spells : ["false life"],
 						selection : ["false life"],
 						firstCol : "atwill"
-					},
+					}],
 					spellChanges : {
 						"false life" : {
 							components : "V,S",
@@ -2120,24 +2120,24 @@ var Base_ClassList = {
 					name : "Mask of Many Faces",
 					description : desc("I can cast Disguise Self on myself at will, without using a spell slot"),
 					source : [["SRD", 49], ["P", 111]],
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Mask of Many Faces",
 						spells : ["disguise self"],
 						selection : ["disguise self"],
 						firstCol : "atwill"
-					}
+					}]
 				},
 				"master of myriad forms (prereq: level 15 warlock)" : {
 					name : "Master of Myriad Forms",
 					description : desc("I can cast Alter Self at will, without using a spell slot"),
 					source : [["SRD", 49], ["P", 111]],
 					submenu : "[warlock level 15+]",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Mask of Myriad Forms",
 						spells : ["alter self"],
 						selection : ["alter self"],
 						firstCol : "atwill"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 15; }
 				},
 				"minions of chaos (prereq: level 9 warlock)" : {
@@ -2147,12 +2147,12 @@ var Base_ClassList = {
 					submenu : "[warlock level  9+]",
 					usages : 1,
 					recovery : "long rest",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Minions of Chaos",
 						spells : ["conjure elemental"],
 						selection : ["conjure elemental"],
 						firstCol : "oncelr"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 9; }
 				},
 				"mire the mind (prereq: level 5 warlock)" : {
@@ -2162,24 +2162,24 @@ var Base_ClassList = {
 					submenu : "[warlock level  5+]",
 					usages : 1,
 					recovery : "long rest",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Mire the Mind",
 						spells : ["slow"],
 						selection : ["slow"],
 						firstCol : "oncelr"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 5; }
 				},
 				"misty visions" : {
 					name : "Misty Visions",
 					description : desc("I can cast Silent Image at will, without using a spell slot or material components"),
 					source : [["SRD", 49], ["P", 111]],
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Misty Visions",
 						spells : ["silent image"],
 						selection : ["silent image"],
 						firstCol : "atwill"
-					},
+					}],
 					spellChanges : {
 						"silent image" : {
 							components : "V,S",
@@ -2196,7 +2196,7 @@ var Base_ClassList = {
 					]),
 					source : [["SRD", 49], ["P", 111]],
 					submenu : "[warlock level  5+]",
-					action : ["action", ""],
+					action : [["action", ""]],
 					prereqeval : function(v) { return classes.known.warlock.level >= 5; }
 				},
 				"otherworldly leap (prereq: level 9 warlock)" : {
@@ -2204,12 +2204,12 @@ var Base_ClassList = {
 					description : desc("I can cast Jump on myself at will, without using a spell slot or material components"),
 					source : [["SRD", 49], ["P", 111]],
 					submenu : "[warlock level  9+]",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Otherworldly Leap",
 						spells : ["jump"],
 						selection : ["jump"],
 						firstCol : "atwill"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 9; },
 					spellChanges : {
 						"jump" : {
@@ -2255,12 +2255,12 @@ var Base_ClassList = {
 					submenu : "[warlock level  7+]",
 					usages : 1,
 					recovery : "long rest",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Sculptor of Flesh",
 						spells : ["polymorph"],
 						selection : ["polymorph"],
 						firstCol : "oncelr"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 7; }
 				},
 				"sign of ill omen (prereq: level 5 warlock)" : {
@@ -2270,12 +2270,12 @@ var Base_ClassList = {
 					submenu : "[warlock level  5+]",
 					usages : 1,
 					recovery : "long rest",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Sign of Ill Omen",
 						spells : ["bestow curse"],
 						selection : ["bestow curse"],
 						firstCol : "oncelr"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 5; }
 				},
 				"thief of five fates" : {
@@ -2284,12 +2284,12 @@ var Base_ClassList = {
 					source : [["SRD", 50], ["P", 111]],
 					usages : 1,
 					recovery : "long rest",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Thief of Five Fates",
 						spells : ["bane"],
 						selection : ["bane"],
 						firstCol : "oncelr"
-					}
+					}]
 				},
 				"thirsting blade (prereq: level 5 warlock, pact of the blade)" : {
 					name : "Thirsting Blade",
@@ -2304,12 +2304,12 @@ var Base_ClassList = {
 					description : desc("I can cast Arcane Eye at will, without using a spell slot"),
 					source : [["SRD", 50], ["P", 111]],
 					submenu : "[warlock level 15+]",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Visions of Distant Realms",
 						spells : ["arcane eye"],
 						selection : ["arcane eye"],
 						firstCol : "atwill"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 15; }
 				},
 				"voice of the chain master (prereq: pact of the chain)" : {
@@ -2327,12 +2327,12 @@ var Base_ClassList = {
 					description : desc("I can cast Speak with Dead at will, without using a spell slot"),
 					source : [["SRD", 50], ["P", 111]],
 					submenu : "[warlock level  9+]",
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Whispers of the Grave",
 						spells : ["speak with dead"],
 						selection : ["speak with dead"],
 						firstCol : "atwill"
-					},
+					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 9; }
 				},
 				"witch sight (prereq: level 15 warlock)" : {
@@ -2360,7 +2360,7 @@ var Base_ClassList = {
 						"This occurs over an hour-long ritual that I can perform during a short rest",
 						"I can use an action to re-summon it in any form and can dismiss it as no action"
 					]),
-					action : ["action", ""],
+					action : [["action", ""]],
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
@@ -2390,12 +2390,12 @@ var Base_ClassList = {
 						"When taking the attack action, I can forgo 1 attack to have my familiar attack instead",
 						"It makes this 1 attack by using its reaction"
 					]),
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Pact of the Chain",
 						spells : ["find familiar"],
 						selection : ["find familiar"],
 						firstCol : "(R)"
-					}
+					}]
 				},
 				"pact of the tome" : {
 					name : "Pact of the Tome",
@@ -2406,12 +2406,12 @@ var Base_ClassList = {
 						"Regardless of the lists they come from, these count as warlock cantrips to me",
 						"I can get a replacement book with a 1-hour ceremony during a short or long rest"
 					]),
-					spellcastingBonus : {
+					spellcastingBonus : [{
 						name : "Pact of the Tome",
 						"class" : "any",
 						level : [0, 0],
 						times : 3
-					}
+					}]
 				}
 			},
 			"mystic arcanum" : {
@@ -2561,7 +2561,7 @@ var Base_ClassSubList = {
 					"As a bonus action each turn while raging, I can make a melee attack",
 					"After my rage is over, I suffer one level of exhaustion"
 				]),
-				action : ["bonus action", " attack (while raging)"]
+				action : [["bonus action", " attack (while raging)"]]
 			},
 			"subclassfeature6" : {
 				name : "Mindless Rage",
@@ -2579,14 +2579,14 @@ var Base_ClassSubList = {
 					"This effect ends if the creature is out of line of sight or more than 60 ft away",
 					"If a creature succeeds its saving throw, it is immune for 24 hours"
 				]),
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"subclassfeature14" : {
 				name : "Retaliation",
 				source : [["SRD", 10], ["P", 50]],
 				minlevel : 14,
 				description : desc("When an enemy within 5 ft damages me, I can make a melee attack as a reaction"),
-				action : ["reaction", " (after taking damage)"]
+				action : [["reaction", " (after taking damage)"]]
 			}
 		}
 	},
@@ -2610,18 +2610,18 @@ var Base_ClassSubList = {
 					"As a reaction, when a foe within earshot & 60 ft rolls ability check, attack or damage,",
 					"I can subtract a Bardic Inspiration die from the result unless the foe can't be charmed"
 				]),
-				action : ["reaction", ""]
+				action : [["reaction", ""]]
 			},
 			"subclassfeature6" : {
 				name : "Additional Magical Secrets",
 				source : [["SRD", 13], ["P", 55]],
 				minlevel : 6,
 				description : desc("I can add two spells/cantrips from any class to my Spells Known"),
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Additional Magical Secret",
 					"class" : "any",
 					times : 2
-				}
+				}]
 			},
 			"subclassfeature14" : {
 				name : "Peerless Skill",
@@ -2689,7 +2689,7 @@ var Base_ClassSubList = {
 					"I divide the number of hit points among the creatures as I see fit"
 				]),
 				additional : ["", "10 hit points", "15 hit points", "20 hit points", "25 hit points", "30 hit points", "35 hit points", "40 hit points", "45 hit points", "50 hit points", "55 hit points", "60 hit points", "65 hit points", "70 hit points", "75 hit points", "80 hit points", "85 hit points", "90 hit points", "95 hit points", "100 hit points"],
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"subclassfeature6" : {
 				name : "Blessed Healer",
@@ -2780,11 +2780,11 @@ var Base_ClassSubList = {
 				source : [["SRD", 21], ["P", 68]],
 				minlevel : 2,
 				description : desc("I know one additional druid cantrip of my choice"),
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Bonus Druid Cantrip",
 					"class" : "druid",
 					level : [0, 0]
-				}
+				}]
 			},
 			"subclassfeature2.1" : {
 				name : "Natural Recovery",
@@ -2991,7 +2991,7 @@ var Base_ClassSubList = {
 				additional : levels.map(function (n) { return n < 6 ? "" : (n*3) + " hit points" }),
 				usages : 1,
 				recovery : "long rest",
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"subclassfeature11" : {
 				name : "Tranquility",
@@ -3028,7 +3028,7 @@ var Base_ClassSubList = {
 					"As an action, for 1 minute, I add my Cha modifier to hit for one weapon I'm holding",
 					"It also counts as magical and emits bright light in a 20-ft radius and equal dim light"
 				]),
-				action : ["action", ""],
+				action : [["action", ""]],
 				calcChanges : {
 					atkCalc : [
 						function (fields, v, output) {
@@ -3051,7 +3051,7 @@ var Base_ClassSubList = {
 					"Turned: move away, never within 30 ft of me, no reactions or actions other than Dash",
 					"Turned: may Dodge instead of Dash when nowhere to move and unable to escape bonds"
 				]),
-				action : ["action", ""]
+				action : [["action", ""]]
 			},
 			"subclassfeature7" : {
 				name : "Aura of Devotion",
@@ -3078,7 +3078,7 @@ var Base_ClassSubList = {
 				]),
 				recovery : "long rest",
 				usages : 1,
-				action : ["action", ""]
+				action : [["action", ""]]
 			}
 		}
 	},
@@ -3101,7 +3101,7 @@ var Base_ClassSubList = {
 				"giant killer" : {
 					name : "Hunter's Prey: Giant Killer",
 					description : desc("As a reaction, when a Large or larger enemy in 5 ft attacks me, I can attack it once"),
-					action : ["reaction", ""]
+					action : [["reaction", ""]]
 				},
 				"horde breaker" : {
 					name : "Hunter's Prey: Horde Breaker",
@@ -3137,12 +3137,12 @@ var Base_ClassSubList = {
 				"volley" : {
 					name : "Multiattack: Volley",
 					description : desc("As an action, I can make ranged attacks vs. all within a 10-ft radius of a point in range"),
-					action : ["action", ""]
+					action : [["action", ""]]
 				},
 				"whirlwind attack" : {
 					name : "Multiattack: Whirlwind Attack",
 					description : desc("As an action, I can make melee attacks vs. all creatures within 5 ft of me"),
-					action : ["action", ""]
+					action : [["action", ""]]
 				}
 			},
 			"subclassfeature15" : {
@@ -3162,12 +3162,12 @@ var Base_ClassSubList = {
 						"When a creature misses me with a melee attack, I can use my reaction on the attack",
 						"I force the attacker to repeat it vs. another (not attacker) of my choice within range"
 					]),
-					action : ["reaction", ""]
+					action : [["reaction", ""]]
 				},
 				"uncanny dodge" : {
 					name : "Uncanny Dodge",
 					description : desc("As a reaction, I halve the damage of an attack from an attacker that I can see"),
-					action : ["reaction", ""]
+					action : [["reaction", ""]]
 				}
 			}
 		}
@@ -3188,7 +3188,7 @@ var Base_ClassSubList = {
 					" \u2022 Use my thieves' tools to disarm a trap or open a lock",
 					" \u2022 Take the Use an Object action"
 				]),
-				action : ["bonus action", ""]
+				action : [["bonus action", ""]]
 			},
 			"subclassfeature3.1" : {
 				name : "Second-Story Work",
@@ -3480,7 +3480,7 @@ var Base_ClassSubList = {
 					"As a bonus action, unless armor is in the way, I can sprout dragon wings from my back",
 					"I gain a fly speed equal to my current speed until I dismiss the wings as a bonus action"
 				]),
-				action : ["bonus action", " (start/stop)"],
+				action : [["bonus action", " (start/stop)"]],
 				speed : { fly : { spd : "walk", enc : "walk" } }
 			},
 			"subclassfeature18" : {
@@ -3494,7 +3494,7 @@ var Base_ClassSubList = {
 					"A creature that succeeds on the save is immune to my aura for 24 hours"
 				]),
 				additional : "5 sorcery points",
-				action : ["action", ""]
+				action : [["action", ""]]
 			}
 		}
 	},

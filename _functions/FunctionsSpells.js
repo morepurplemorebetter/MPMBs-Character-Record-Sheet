@@ -670,7 +670,7 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, forceT
 				Value(headerArray[2], caster); //set the name of the class
 				if (!spCast.abilityToUse) spCast.abilityToUse = getSpellcastingAbility(caster);
 				PickDropdown(headerArray[3], spCast.abilityToUse[0]); //set the ability score to use
-				AddTooltip(headerArray[3], undefined, spCast.fixedDC || spCast.fixedSpAttack ? "fixed" : ""); //set fixed DC to use, if any
+				AddTooltip(headerArray[3], undefined, spCast.fixedDC || spCast.fixedSpAttack !== undefined ? "fixed" : ""); //set fixed DC to use, if any
 				if (spCast.blueTxt) { //set the remembered bluetext values, if at all present
 					Value(headerArray[7], spCast.blueTxt.prep ? spCast.blueTxt.prep : 0); //set the bluetext for preparing
 					Value(headerArray[8], spCast.blueTxt.atk ? spCast.blueTxt.atk : 0); //set the bluetext for attack
@@ -742,8 +742,8 @@ function CalcSpellScores() {
 	var modFldName = Fld.replace("DINGDONG", "ability");
 	var modFld = What(modFldName);
 	var theMod = Number(What(modFld));
-	var aClass = What(Fld.replace("DINGDONG", "class")); //find the associated class
-	var cSpells = aClass && CurrentSpells[aClass] ? CurrentSpells[aClass] : false;
+	var sCaster = What(Fld.replace("DINGDONG", "class")); //find the associated class
+	var cSpells = sCaster && CurrentSpells[sCaster] ? CurrentSpells[sCaster] : false;
 	var fixedDC = cSpells && !isNaN(cSpells.fixedDC) ? Number(cSpells.fixedDC) : false;
 	var fixedSpAttack = cSpells && !isNaN(cSpells.fixedSpAttack) ? Number(cSpells.fixedSpAttack) : false;
 	var modIpvDC = tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0);
@@ -810,12 +810,9 @@ function CalcSpellScores() {
 	// do custom calculations
 	if (CurrentEvals.spellCalc) {
 		var iAbiScore = tDoc.getField(modFldName).currentValueIndices;
-		var aCasters = cSpells ? [aClass] : [];
-		if (cSpells && cSpells.ability && isNaN(cSpells.ability) && CurrentSpells[cSpells.ability]) aCasters.push(cSpells.ability);
-
 		for (var sType in theResult) {
 			if ((fixedDC && sType != "prepare") || (sType == "prepare" && !isPrepareVis)) continue;
-			theResult[sType] += runSpellCalc(sType, aCasters, iAbiScore, "");
+			theResult[sType] += runSpellCalc(sType, sCaster, iAbiScore, "");
 		}
 	}
 
@@ -824,16 +821,24 @@ function CalcSpellScores() {
 }
 
 // Run the calcChanges.spellCalc for the given variables
-function runSpellCalc(sType, aCasters, iAbiScore, sSpell) {
+function runSpellCalc(sType, sCaster, iAbiScore, sSpell) {
 	var iReturn = 0;
 	if (CurrentEvals.spellCalc) {
+		// Add referenced caster classes
+		var aCasters = sCaster ? [sCaster] : [];
+		var oCast = CurrentSpells[sCaster];
+		while (oCast && oCast.ability && isNaN(oCast.ability) && CurrentSpells[oCast.ability]) {
+			aCasters.push(oCast.ability);
+			oCast = CurrentSpells[oCast.ability];
+		}
+		// Loop through the spellCalcs
 		for (var i = 0; i < CurrentEvals.spellCalcOrder.length; i++) {
 			var evalName = CurrentEvals.spellCalcOrder[i][1];
 			var evalThing = CurrentEvals.spellCalc[evalName];
 			if (!evalThing || typeof evalThing !== 'function') continue;
 			try {
 				var evalResult = evalThing(sType, aCasters, iAbiScore, sSpell);
-				if (!isNaN(evalResult)) iReturn = Number(evalResult);
+				if (!isNaN(evalResult)) iReturn += Number(evalResult);
 			} catch (error) {
 				var eText = "The custom spell attack/DC (spellCalc) script from '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
@@ -5338,7 +5343,7 @@ function isSpellUsed(spll, returnBoolean) {
 					break;
 				};
 			};
-			if (rtrnA.indexOf(aClass) === -1 && SpellsList[spll].level && (/list/i).test(spCast.typeSp)) {
+			if (rtrnA.indexOf(aClass) === -1 && SpellsList[spll].level && /list/i.test(spCast.typeSp)) {
 				var spObj = newObj(spCast.list);
 				spObj.level = [1, 9];
 				var theSpList = CreateSpellList(spObj, false, spCast.extra, false, aClass, spCast.typeSp);
@@ -5566,9 +5571,9 @@ function getSpellcastingAbility(theCast) {
 	var curAbiScore = 0;
 	var spObj = CurrentSpells[theCast];
 	var casterArray = [];
-	var testFixedDC = (/race|class/i).test(spObj.abilityBackup);
+	var testFixedDC = /race|class/i.test(spObj.abilityBackup);
 	var bContinueAsClass = false;
-	if (spObj && spObj.ability && isNaN(spObj.ability) && !(/race|class/i).test(spObj.ability) && spObj.ability !== theCast) {
+	if (spObj && spObj.ability && isNaN(spObj.ability) && !/race|class/i.test(spObj.ability) && spObj.ability !== theCast) {
 		// First delete the fixedDC if previously added because the ability resulted in 0
 		if (spObj.fixedDC_becauseAbi0) {
 			delete spObj.fixedDC;

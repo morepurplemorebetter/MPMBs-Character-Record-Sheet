@@ -2312,11 +2312,11 @@ function MakeXFDFExport(partial) {
 function AddUserScript(retResDia) {
 	var theUserScripts = What("User Script").match(/(.|\r){1,65500}/g);
 	if (!theUserScripts) theUserScripts = [];
-	var defaultTxt = toUni("The JavaScript") + " you paste into the field below will be run now and whenever the sheet is opened, using eval(). If that script results in an error you will be informed immediately and the script will not be added to the sheet.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet using this dialog.\n" + toUni("Resetting the sheet is recommended") + " before you enter any custom content into it.";
+	var defaultTxt = toUni("The JavaScript") + " you paste into the field below will be run now and whenever the sheet is opened, using eval(). If that add-on script results in an error you will be informed immediately and the script will not be added to the sheet.\n" + toUni("This overwrites") + " whatever code you have previously added to the sheet using this dialog.\n" + toUni("Resetting the sheet is recommended") + " before you enter any custom content into it.";
 	var defaultTxt2 = "Be warned, things you do here can break the sheet! You can ask MorePurpleMoreBetter for help using the contact bookmarks.";
 	var extraTxt = toUni("A character limit of 65642") + " applies to the area below. You can add longer scripts with the \"Open Another Dialog\" button. When you press \"Add Script to Sheet\", the code of all dialogs will be joined together (with no characters put inbetween!), is subsequently run/tested and added to the sheet as a whole.";
 	var extraTxt2 = "An error will result in all content being lost, so please save it somewhere else before exiting this dialog!";
-	var getTxt = toUni("Pre-Written Scripts") + " can be found using the \"Get Content\" buttons.\n- MPMB has scripts for 3rd-party materials, including Matt Mercer's Blood Hunter, Gunslinger, and College of the Maestro.\n- The community has created scripts for more content, including links to all those made by MPMB.";
+	var getTxt = toUni("Pre-Written Add-on Scripts") + " can be found using the \"Get Add-on Scripts\" button.\nIt will bring you to the MPMB Community Add-on Script Index, which is a listing of links to all content add-on scripts made by fans and MPMB.";
 	var getTxt2 = toUni("Using the proper JavaScript syntax") + ", you can add homebrew classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has information and links to resources about creating your own additions, as does the \"I don't get it?\" button.";
 	var getTxt3 = toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JavaScript Console\" button).";
 	var diaIteration = 1;
@@ -2378,7 +2378,6 @@ function AddUserScript(retResDia) {
 			},
 			bWhy: function(dialog) { contactMPMB("how to add content"); },
 			bCoC: function(dialog) { contactMPMB("community content"); },
-			bCoM: function(dialog) { contactMPMB("mpmb content"); },
 			bCon: function(dialog) {
 				var results = dialog.store();
 				this.script = results["jscr"];
@@ -2440,13 +2439,7 @@ function AddUserScript(retResDia) {
 								elements : [{
 									type : "button",
 									item_id : "bCoC",
-									name : "Get Content: Community",
-									font : "dialog",
-									bold : true
-								}, {
-									type : "button",
-									item_id : "bCoM",
-									name : "Get Content: MPMB",
+									name : "Get Add-on Scripts",
 									font : "dialog",
 									bold : true
 								}, {
@@ -2610,23 +2603,27 @@ function RunUserScript(atStartup, manualUserScripts) {
 			if (ScriptAtEnd.length > 0) ScriptsAtEnd = ScriptsAtEnd.concat(ScriptAtEnd);
 			if (sheetVersion < minSheetVersion[0]) {
 				var failedTestMsg = {
-					cMsg : 'The script "' + scriptName + '" says it was made for a newer version of the sheet (v' + minSheetVersion[1] + "), and might thus not be compatible with this version of the sheet (v" + semVers + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
+					cMsg : 'The add-on script "' + scriptName + '" says it was made for a newer version of the sheet (v' + minSheetVersion[1] + "), and might thus not be compatible with this version of the sheet (v" + semVers + ").\n\nDo you want to continue using this add-on script in the sheet? If you select no, the add-on script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
 					nIcon : 2,
-					cTitle : "Script was made for newer version!",
+					cTitle : "Add-on script was made for newer version!",
 					nType : 2
 				};
 				if (app.alert(failedTestMsg) !== 4) return false;
 			};
 			return true;
-		} catch (e) {
+		} catch (err) {
 			if ((/out of memory/i).test(e.toSource())) return "outOfMemory";
 			IsNotUserScript = true;
 			var forNewerVersion = sheetVersion < minSheetVersion[0];
-			var wrongVersion = forNewerVersion ? " says it was made for a newer version of the sheet (v" + minSheetVersion[1] + "; this sheet is only v" + semVers + "). That is probably why " : " is faulty, ";
+			var eText = "The add-on script "+ (isManual ? "you entered" : '"' + scriptName + '"');
+			eText += forNewerVersion ? " says it was made for a newer version of the sheet (v" + minSheetVersion[1] + "; this sheet is only v" + semVers + "). That is probably why " : " is faulty, ";
+			eText += "it returns the following error when run:\n\"" + e;
+			for (var e in err) eText += "\n " + e + ": " + err[e];
+			eText += '"\n\n' + (isManual ? "Your add-on script has not been added to the sheet, please try again after fixing the problem." : "The add-on script has been removed from this pdf.") + "\n\nFor a more specific error, that includes the line number of the error, try running the add-on script from the JavaScript Console.\n\nPlease contact the author of the add-on script";
 			app.alert({
-				cMsg : isManual ? "The script you entered" + wrongVersion + "it returns the following error when run:\n\"" + e + "\"\n\nYour script has not been added to the sheet, please try again after fixing the problem.\n\nIf you run your code from the console, it will give you a line number for where the error is. You can open this console from inside the \"Add Custom Script\" dialog." : 'The script "' + scriptName + '"' + wrongVersion + "it returns the following error when run:\n\"" + e + "\"\n\nThe script has been removed from this pdf.\n\nFor a more specific error, that includes the line number of the error, try running the script from the JavaScript console (with the 'JS Console' button).",
+				cMsg : eText,
 				nIcon : 0,
-				cTitle : forNewerVersion ? "Script was made for newer version!" : "Error in running user script"
+				cTitle : forNewerVersion ? "Add-on script was made for newer version!" : "Error in running user add-on script"
 			});
 			return false;
 		};
@@ -3044,11 +3041,11 @@ function ImportUserScriptFile(filePath) {
 
 // Open the dialog for importing whole files with content
 function ImportScriptFileDialog(retResDia) {
-	var defaultTxt = "Import or delete files that add content and/or custom scripts to the sheet.";
+	var defaultTxt = "Import or delete files that add content and/or custom add-on scripts to the sheet.";
 	var defaultTxt2 = "In modern operating systems, you can enter a URL in the 'Open' dialog directly instead of first downloading a file and then navigating to it.";
-	var defaultTxt3 = "Use the \"Get Content\" buttons below to get pre-written files!";
+	var defaultTxt3 = "Use the \"Get Add-on Scripts\" buttons below to get pre-written files!";
 	var getTxt2 = toUni("Using the proper JavaScript syntax") + ", you can add homebrew classes, races, weapons, feats, spells, backgrounds, creatures, etc. etc.\nSection 3 of the " + toUni("FAQ") + " has information and links to resources about creating your own additions, as does the \"I don't get it?\" button.";
-	var getTxt = toUni("Pre-Written Scripts") + " can be found using the \"Get Content\" buttons.\n- MPMB has scripts for 3rd-party materials, including Matt Mercer's Blood Hunter, Gunslinger, and College of the Maestro.\n- The community has created scripts for more content, including links to all those made by MPMB.";
+	var getTxt = toUni("Pre-Written Add-on Scripts") + " can be found using the \"Get Add-on Scripts\" button.\nIt will bring you to the MPMB Community Add-on Script Index, which is a listing of links to all content add-on scripts made by fans and MPMB.";
 	var getTxt3 = toUni("Use the JavaScript Console") + " to better determine errors in your script (with the \"JavaScript Console\" button).";
 	var filesScriptRem = What("User_Imported_Files.Stringified");
 	var dialogObj = {};
@@ -3079,7 +3076,6 @@ function ImportScriptFileDialog(retResDia) {
 		},
 		bWhy: function(dialog) { contactMPMB("how to add content"); },
 		bCoC: function(dialog) { contactMPMB("community content"); },
-		bCoM: function(dialog) { contactMPMB("mpmb content"); },
 		bCon: function(dialog) {
 			var results = dialog.store();
 			this.script = results["jscr"];
@@ -3229,13 +3225,7 @@ function ImportScriptFileDialog(retResDia) {
 							elements : [{
 								type : "button",
 								item_id : "bCoC",
-								name : "Get Content: Community",
-								font : "dialog",
-								bold : true
-							}, {
-								type : "button",
-								item_id : "bCoM",
-								name : "Get Content: MPMB",
+								name : "Get Add-on Scripts",
 								font : "dialog",
 								bold : true
 							}, {

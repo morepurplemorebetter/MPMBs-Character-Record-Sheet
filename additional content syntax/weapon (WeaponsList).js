@@ -511,7 +511,7 @@ WeaponsList["purple sword"] = {
 	When set to `false`, the sheet will never apply the spellcasting ability,
 	even if the prerequisites are met. It will instead always use the ability set by the `ability` attribute.
 	It will still apply weapon special rules like 'Finesse'.
-	The sheet will also not apply any bonuses from calcchanges.atkCalc that increase
+	The sheet will also not apply any bonuses from calcChanges.spellCalc that increase
 	spell attacks or spell DCs to the attack.
 
 	UNDEFINED

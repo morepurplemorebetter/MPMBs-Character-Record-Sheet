@@ -116,12 +116,12 @@ var Base_MagicItemsList = {
 		attunement : true,
 		weight : 1,
 		spellcastingAbility : "class",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "DC 15 Int check",
 			spells : ["plane shift"],
 			selection : ["plane shift"],
 			firstCol : "atwill"
-		},
+		}],
 		spellChanges : {
 			"plane shift" : {
 				description : "DC 15 Int to cast; Me + 8 willing transport to other plane, or spell atk + save to move to random plane",
@@ -619,12 +619,12 @@ var Base_MagicItemsList = {
 		attunement : true,
 		description : "While I wear these boots, I can cast Levitate on myself at will.",
 		descriptionFull : "While you wear these boots, you can use an action to cast the Levitate spell on yourself at will.",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Self Only",
 			spells : ["levitate"],
 			selection : ["levitate"],
 			firstCol : "atwill"
-		},
+		}],
 		spellChanges : {
 			"levitate" : {
 				range : "Self",
@@ -679,12 +679,12 @@ var Base_MagicItemsList = {
 		description : "While this bowl is filled with water, I can speak the bowl's command word as an action and summon a water elemental, as if I had cast Conjure Elemental. The bowl can't be used again until the next dawn. The bowl is about 1 foot in diameter and half as deep, and holds about 3 gallons of water.",
 		descriptionFull : "While this bowl is filled with water, you can use an action to speak the bowl's command word and summon a water elemental, as if you had cast the Conjure Elemental spell. The bowl can't be used this way again until the next dawn.\n   The bowl is about 1 foot in diameter and half as deep. It weighs 3 pounds and holds about 3 gallons.",
 		weight : 3,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Water Elemental only",
 			spells : ["conjure elemental"],
 			selection : ["conjure elemental"],
 			firstCol : "oncelr"
-		},
+		}],
 		usages : 1,
 		recovery : "dawn",
 		spellChanges : {
@@ -743,12 +743,12 @@ var Base_MagicItemsList = {
 		description : "While a fire burns in this brass brazier, I can use an action to speak the brazier's command word and summon a fire elemental, as if I had cast the Conjure Elemental spell. The brazier can't be used this way again until the next dawn.",
 		descriptionFull : "While a fire burns in this brass brazier, you can use an action to speak the brazier's command word and summon a fire elemental, as if you had cast the Conjure Elemental spell. The brazier can't be used this way again until the next dawn.\n   The brazier weighs 5 pounds.",
 		weight : 5,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Fire Elemental only",
 			spells : ["conjure elemental"],
 			selection : ["conjure elemental"],
 			firstCol : "oncelr"
-		},
+		}],
 		usages : 1,
 		recovery : "dawn",
 		spellChanges : {
@@ -797,12 +797,12 @@ var Base_MagicItemsList = {
 		allowDuplicates : true,
 		usages : "240 min",
 		recovery : "Never",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1\xD7 \u0026\u0026 candle is destroyed",
 			spells : ["gate"],
 			selection : ["gate"],
 			firstCol : "1\xD7"
-		},
+		}],
 		action : [["action", " (light)"]],
 		choices : ["Chaotic Evil", "Chaotic Neutral", "Chaotic Good", "Neutral Evil", "Neutral", "Neutral Good", "Lawful Evil", "Lawful Neutral", "Lawful Good"],
 		choicesNotInMenu : true,
@@ -844,12 +844,12 @@ var Base_MagicItemsList = {
 		descriptionFull : "This cape smells faintly of brimstone. While wearing it, you can use it to cast the Dimension Door spell as an action. This property of the cape can't be used again until the next dawn.\n   When you disappear, you leave behind a cloud of smoke, and you appear in a similar cloud of smoke at your destination. The smoke lightly obscures the space you left and the space you appear in, and it dissipates at the end of your next turn. A light or stronger wind disperses the smoke.",
 		usages : 1,
 		recovery : "dawn",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name: "Cape of the Mountebank",
 			spells: ["dimension door"],
 			selection: ["dimension door"],
 			firstCol : "oncelr"
-		}
+		}]
 	},
 	"carpet of flying" : {
 		name : "Carpet of Flying",
@@ -892,12 +892,12 @@ var Base_MagicItemsList = {
 		description : "While incense is burning in this censer, I can use an action to speak the censer's command word and summon an air elemental, as if I had cast Conjure Elemental. The censer can't be used this way again until the next dawn. This 6\" wide, 1' high vessel resembles a chalice with a decorated lid.",
 		descriptionFull : "While incense is burning in this censer, you can use an action to speak the censer's command word and summon an air elemental, as if you had cast the Conjure Elemental spell. The censer can't be used this way again until the next dawn.\n   This 6-inch-wide, 1-foot-high vessel resembles a chalice with a decorated lid. It weighs 1 pound.",
 		weight : 1,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Air Elemental only",
 			spells : ["conjure elemental"],
 			selection : ["conjure elemental"],
 			firstCol : "oncelr"
-		},
+		}],
 		usages : 1,
 		recovery : "dawn",
 		spellChanges : {
@@ -934,12 +934,12 @@ var Base_MagicItemsList = {
 		usages : 1,
 		recovery : "dawn",
 		fixedDC : 13,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Once per dawn",
 			spells : ["scorching ray"],
 			selection : ["scorching ray"],
 			firstCol : "oncelr"
-		}
+		}]
 	},
 	"cloak of arachnida" : {
 		name : "Cloak of Arachnida",
@@ -956,12 +956,12 @@ var Base_MagicItemsList = {
 		additional : "cast Web",
 		fixedDC : 13,
 		speed : { climb : { spd : "walk", enc : "walk" } },
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Once per dawn",
 			spells : ["web"],
 			selection : ["web"],
 			firstCol : "oncelr"
-		},
+		}],
 		spellChanges : {
 			"web" : {
 				description : "2\xD7 20-ft cubes, anchored, all save or restrained; dif. ter.; lightly obscures; Str check vs. DC 13 to free"
@@ -1022,12 +1022,12 @@ var Base_MagicItemsList = {
 		recovery : "dawn",
 		additional : "Polymorph",
 		advantages : [["Stealth", true]],
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Only self into bat",
 			spells : ["polymorph"],
 			selection : ["polymorph"],
 			firstCol : "oncelr"
-		},
+		}],
 		spellChanges : {
 			"polymorph" : {
 				range : "Self",
@@ -1062,12 +1062,12 @@ var Base_MagicItemsList = {
 			rarity : "very rare",
 			magicItemTable : "H",
 			fixedDC : 17,
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "DC 17",
 				spells : ["scrying"],
 				selection : ["scrying"],
 				firstCol : "atwill"
-			}
+			}]
 		},
 		"crystal ball of mind reading" : {
 			name : "Crystal Ball of Mind Reading",
@@ -1076,13 +1076,13 @@ var Base_MagicItemsList = {
 			description : "I can cast Scrying (DC 17) at will while touching this crystal ball of 6\" diameter. While scrying, I can cast Detect Thoughts (DC 17) to target creatures I can see within 30 ft of the spell's sensor. I don't need to concentrate on this Detect Thoughts, but it ends when the scrying ends.",
 			descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   You can use an action to cast the Detect Thoughts spell (save DC 17) while you are Scrying with the crystal ball, targeting creatures you can see within 30 feet of the spell's sensor. You don't need to concentrate on this Detect Thoughts to maintain it during its duration, but it ends if Scrying ends.",
 			fixedDC : 17,
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "DC 17",
 				spells : ["scrying", "detect thoughts"],
 				selection : ["scrying", "detect thoughts"],
 				firstCol : "atwill",
 				times : 2
-			},
+			}],
 			spellChanges : {
 				"detect thoughts" : {
 					duration : "1 min",
@@ -1129,12 +1129,12 @@ var Base_MagicItemsList = {
 			description : "I can cast Scrying (save DC 17) at will while touching this ball of about 6 inches in diameter. While scrying, I can see out from the spell's sensor with truesight out to 120 ft.",
 			descriptionFull : "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   While Scrying with the crystal ball, you have truesight with a radius of 120 feet centered on the spell's sensor.",
 			fixedDC : 17,
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "DC 17",
 				spells : ["scrying"],
 				selection : ["scrying"],
 				firstCol : "atwill"
-			},
+			}],
 			spellChanges : {
 				"scrying" : {
 					description : "1 crea save or sensor follows it around; or sensor in familiar location; truesight 120 ft on sensor; see B",
@@ -1193,13 +1193,13 @@ var Base_MagicItemsList = {
 		additional : "regains 1d3",
 		spellFirstColTitle : "Ch",
 		fixedDC : 17,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1 charge",
 			spells : ["gate", "plane shift"],
 			selection : ["gate", "plane shift"],
 			times : 2,
 			firstCol : 1
-		},
+		}],
 		spellChanges : {
 			"plane shift" : {
 				description : "Me + 8 willing crea teleport to, or spell attack + save to transport unwilling to plane keyed to the side",
@@ -1889,11 +1889,11 @@ var Base_MagicItemsList = {
 			name : "Elemental Gem [Blue Sapphire]",
 			description : "This gem contains a mote of air elemental energy. Once as an action, I can break this gem to summon an air elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
 			descriptionFull : "This gem contains a mote of elemental energy. When you use an action to break the gem, an air elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Air Elemental only",
 				spells : ["conjure elemental"],
 				selection : ["conjure elemental"]
-			},
+			}],
 			spellChanges : {
 				"conjure elemental" : {
 					time : "1 a",
@@ -1906,11 +1906,11 @@ var Base_MagicItemsList = {
 			name : "Elemental Gem [Emerald]",
 			description : "This gem contains a mote of water elemental energy. Once as an action, I can break this gem to summon a water elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
 			descriptionFull : "This gem contains a mote of elemental energy. When you use an action to break the gem, a water elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Water Elemental only",
 				spells : ["conjure elemental"],
 				selection : ["conjure elemental"]
-			},
+			}],
 			spellChanges : {
 				"conjure elemental" : {
 					time : "1 a",
@@ -1923,11 +1923,11 @@ var Base_MagicItemsList = {
 			name : "Elemental Gem [Red Corundum]",
 			description : "This gem contains a mote of fire elemental energy. Once as an action, I can break this gem to summon a fire elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
 			descriptionFull : "This gem contains a mote of elemental energy. When you use an action to break the gem, a fire elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Fire Elemental only",
 				spells : ["conjure elemental"],
 				selection : ["conjure elemental"]
-			},
+			}],
 			spellChanges : {
 				"conjure elemental" : {
 					time : "1 a",
@@ -1940,11 +1940,11 @@ var Base_MagicItemsList = {
 			name : "Elemental Gem [Yellow Diamond]",
 			description : "This gem contains a mote of earth elemental energy. Once as an action, I can break this gem to summon an earth elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
 			descriptionFull : "This gem contains a mote of elemental energy. When you use an action to break the gem, an earth elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "Earth Elemental only",
 				spells : ["conjure elemental"],
 				selection : ["conjure elemental"]
-			},
+			}],
 			spellChanges : {
 				"conjure elemental" : {
 					time : "1 a",
@@ -1995,12 +1995,12 @@ var Base_MagicItemsList = {
 		attunement : true,
 		usages : 3,
 		recovery : "dawn",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1 charge",
 			spells : ["charm person"],
 			selection : ["charm person"],
 			firstCol : 1
-		},
+		}],
 		fixedDC : 13,
 		spellFirstColTitle : "Ch"
 	},
@@ -2153,12 +2153,12 @@ var Base_MagicItemsList = {
 			descriptionFull : "This figurine of wondrous power is as sliver statuette of a raven, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living raven. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 12 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.\n   While in raven form, the figurine allows you to cast the Animal Messenger spell on it at will.",
 			usages : 1,
 			recovery : "2 days",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "At will",
 				spells : ["animal messenger"],
 				selection : ["animal messenger"],
 				firstCol : "atwill"
-			},
+			}],
 			spellChanges : {
 				"animal messenger" : {
 					description : "The raven delivers a 25 word message up to 50 miles away to chosen location and recipient",
@@ -2545,12 +2545,12 @@ var Base_MagicItemsList = {
 		magicItemTable : "B",
 		description : "While wearing this helm, I can cast Comprehend Languages at will.",
 		descriptionFull : "While wearing this helm, you can use an action to cast the Comprehend Languages spell from it at will.",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "At will",
 			spells : ["comprehend languages"],
 			selection : ["comprehend languages"],
 			firstCol : "atwill"
-		}
+		}]
 	},
 	"helm of telepathy" : {
 		name : "Helm of Telepathy",
@@ -2590,12 +2590,12 @@ var Base_MagicItemsList = {
 		recovery : "dawn",
 		additional : "regains 1d3",
 		spellFirstColTitle : "Ch",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1 charge",
 			spells : ["teleport"],
 			selection : ["teleport"],
 			firstCol : "1"
-		}
+		}]
 	},
 	"holy avenger" : {
 		name : "Holy Avenger",
@@ -3247,12 +3247,12 @@ var Base_MagicItemsList = {
 		usages : 3,
 		recovery : "dawn",
 		additional : "regains 1d3",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1 charge",
 			spells : ["detect thoughts"],
 			selection : ["detect thoughts"],
 			firstCol : 1
-		},
+		}],
 		fixedDC : 13,
 		spellFirstColTitle : "Ch"
 	},
@@ -3321,11 +3321,11 @@ var Base_MagicItemsList = {
 		weight : 1,
 		usages : "1d6+3",
 		recovery : "Never",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Fireball",
 			spells : ["fireball"],
 			selection : ["fireball"]
-		},
+		}],
 		fixedDC : 15,
 		spellChanges : {
 			"fireball" : {
@@ -3351,11 +3351,11 @@ var Base_MagicItemsList = {
 		recovery : "dawn",
 		spellcastingAbility : "class",
 		spellFirstColTitle : "Us",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Bead Spell",
 			spells : ["bless", "cure wounds", "lesser restoration", "greater restoration", "branding smite", "planar ally", "wind walk"],
 			times : 12
-		},
+		}],
 		calcChanges : {
 			spellAdd : [
 				function (spellKey, spellObj, spName) {
@@ -3602,12 +3602,12 @@ var Base_MagicItemsList = {
 			strReq : 15,
 			selectNow : true
 		}],
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "once per dawn",
 			spells : ["etherealness"],
 			selection : ["etherealness"],
 			firstCol : "oncelr"
-		},
+		}],
 		spellChanges : {
 			"etherealness" : {
 				components : "V,M\u0192",
@@ -4039,12 +4039,12 @@ var Base_MagicItemsList = {
 			languageProfs : ["Auran"],
 			fixedDC : 17,
 			spellFirstColTitle : "Ch",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "2 charges",
 				spells : ["dominate monster"],
 				selection : ["dominate monster"],
 				firstCol : 2
-			},
+			}],
 			spellChanges : {
 				"dominate monster" : {
 					description : "Air elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
@@ -4094,12 +4094,12 @@ var Base_MagicItemsList = {
 			languageProfs : ["Terran"],
 			fixedDC : 17,
 			spellFirstColTitle : "Ch",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "2 charges",
 				spells : ["dominate monster"],
 				selection : ["dominate monster"],
 				firstCol : 2
-			},
+			}],
 			spellChanges : {
 				"dominate monster" : {
 					description : "Earth elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
@@ -4145,12 +4145,12 @@ var Base_MagicItemsList = {
 			dmgres : ["Fire"],
 			fixedDC : 17,
 			spellFirstColTitle : "Ch",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "2 charges",
 				spells : ["dominate monster"],
 				selection : ["dominate monster"],
 				firstCol : 2
-			},
+			}],
 			spellChanges : {
 				"dominate monster" : {
 					description : "Fire elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
@@ -4199,12 +4199,12 @@ var Base_MagicItemsList = {
 			languageProfs : ["Aquan"],
 			fixedDC : 17,
 			spellFirstColTitle : "Ch",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				name : "2 charges",
 				spells : ["dominate monster"],
 				selection : ["dominate monster"],
 				firstCol : 2
-			},
+			}],
 			spellChanges : {
 				"dominate monster" : {
 					description : "Water elemental save or charmed, follows telepathic commands, 1 a for complete control; save on dmg",
@@ -4303,12 +4303,12 @@ var Base_MagicItemsList = {
 		descriptionFull : "While wearing this ring, you can cast the Jump spell from it as a bonus action at will, but can target only yourself when you do so.",
 		attunement : true,
 		action : [["bonus action", ""]],
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Self Only",
 			spells : ["jump"],
 			selection : ["jump"],
 			firstCol : "atwill"
-		},
+		}],
 		spellChanges : {
 			"jump" : {
 				time : "1 bns",
@@ -4559,12 +4559,12 @@ var Base_MagicItemsList = {
 		description : "While wearing this ring, I can cast Telekinesis at will, but I can target only an object up to 1000 lb that isn't being worn or carried. I can move it up to 30 ft in any direction, but not more than 60 ft away from me. I can exert fine control on it, such as manipulating a tool, opening a door, or pouring out its contents.",
 		descriptionFull : "While wearing this ring, you can cast the Telekinesis spell at will, but you can target only objects that aren't being worn or carried.",
 		attunement : true,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "At will",
 			spells : ["telekinesis"],
 			selection : ["telekinesis"],
 			firstCol : "atwill"
-		},
+		}],
 		spellChanges : {
 			"telekinesis" : {
 				description : "Move 1 object up to 1000 lb 30 ft and exert fine control over it; as 1 a following rounds",
@@ -4611,12 +4611,12 @@ var Base_MagicItemsList = {
 		usages : 3,
 		recovery : "Never",
 		spellFirstColTitle : "Ch",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1 charge",
 			spells : ["wish"],
 			selection : ["wish"],
 			firstCol : 1
-		}
+		}]
 	},
 	"ring of warmth" : {
 		name : "Ring of Warmth",
@@ -4766,7 +4766,7 @@ var Base_MagicItemsList = {
 		description : "As an action while donned, I can detach one patch, causing it to become the thing it represents. The robe becomes ordinary if it runs out of patches. It has two each of: dagger, bullseye lantern (filled and lit), steel mirror, 10-ft pole, 50 ft hempen rope, sack. In addition, it has 4d4 patches that are determined by the DM.",
 		descriptionFull : "This robe has cloth patches of various shapes and colors covering it. While wearing the robe. you can use an action to detach one of the patches, causing it to become the object or creature it represents. Once the last patch is removed, the robe becomes an ordinary garment.\n\nThe robe has two of each of the following patches:\n \u2022 Dagger\n \u2022 Bullseye lantern (filled and lit)\n \u2022 Steel mirror\n \u2022 10-foot pole\n \u2022 Hempen rope (50 feet, coiled)\n \u2022 Sack\n\nIn addition, the robe has 4d4 other patches. The DM chooses the patches or determines them randomly.\n\n" + toUni("d100\tPatch") + "\n01-08\tBag of 100 gp\n09-15\tSilver coffer (1 foot long, 6 inches wide and deep) worth 500 gp\n16-22\tIron door (up to 10 feet wide and 10 feet high, barred on one side of your choice), which you can place in an opening you can reach; it conforms to fit the opening, attaching and hinging itself\n23-30\t10 gems worth 100 gp each\n31-44\tWooden ladder (24 feet long)\n45-51\tA riding horse with saddle bags\n52-59\tPit (a cube 10 feet on a side), which you can place on the ground within 10 feet of you\n60-68\t4 potions of healing\n69-75\tRowboat (12 feet long)\n76-83\tSpell scroll containing one spell of 1st to 3rd level\n84-90\t2 mastiffs\n91-96\tWindow (2 feet by 4 feet, up to 2 feet deep), which you can place on a vertical surface you can reach\n97-00\tPortable ram",
 		weight : 4,
-		action : ["action", ""]
+		action : [["action", ""]]
 	},
 	"rod of absorption" : {
 		name : "Rod of Absorption",
@@ -5107,13 +5107,13 @@ var Base_MagicItemsList = {
 			extraTooltip : "AL: can always be bought for 25 gp",
 			fixedDC : 13,
 			spellFirstColTitle : "Us", // used
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				level : [0,0],
 				psionic : false,
 				times : 20,
 				firstCol : "checkbox",
 				magicItemComponents : false
-			}
+			}]
 		},
 		"1st-level" : {
 			rarity : "common",
@@ -5123,13 +5123,13 @@ var Base_MagicItemsList = {
 			extraTooltip : "AL: can always be bought for 75 gp",
 			fixedDC : 13,
 			spellFirstColTitle : "Us", // used
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				level : [1,1],
 				psionic : false,
 				times : 20,
 				firstCol : "checkbox",
 				magicItemComponents : false
-			}
+			}]
 		},
 		"2nd-level" : {
 			rarity : "uncommon",
@@ -5139,13 +5139,13 @@ var Base_MagicItemsList = {
 			extraTooltip : "AL: can always be bought for 150 gp",
 			fixedDC : 13,
 			spellFirstColTitle : "Us", // used
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				level : [2,2],
 				psionic : false,
 				times : 20,
 				firstCol : "checkbox",
 				magicItemComponents : false
-			}
+			}]
 		},
 		"3rd-level" : {
 			rarity : "uncommon",
@@ -5155,13 +5155,13 @@ var Base_MagicItemsList = {
 			extraTooltip : "AL: can always be bought for 300 gp",
 			fixedDC : 15,
 			spellFirstColTitle : "Us", // used
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				level : [3,3],
 				psionic : false,
 				times : 20,
 				firstCol : "checkbox",
 				magicItemComponents : false
-			}
+			}]
 		},
 		"4th-level" : {
 			rarity : "rare",
@@ -5171,13 +5171,13 @@ var Base_MagicItemsList = {
 			extraTooltip : "AL: can always be bought for 500 gp",
 			fixedDC : 15,
 			spellFirstColTitle : "Us", // used
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				level : [4,4],
 				psionic : false,
 				times : 20,
 				firstCol : "checkbox",
 				magicItemComponents : false
-			}
+			}]
 		},
 		"5th-level" : {
 			rarity : "rare",
@@ -5187,13 +5187,13 @@ var Base_MagicItemsList = {
 			extraTooltip : "AL: can always be bought for 1000 gp",
 			fixedDC : 17,
 			spellFirstColTitle : "Us", // used
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				level : [5,5],
 				psionic : false,
 				times : 20,
 				firstCol : "checkbox",
 				magicItemComponents : false
-			}
+			}]
 		},
 		"6th-level" : {
 			rarity : "very rare",
@@ -5202,13 +5202,13 @@ var Base_MagicItemsList = {
 			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 16. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 16 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			fixedDC : 17,
 			spellFirstColTitle : "Us", // used
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				level : [6,6],
 				psionic : false,
 				times : 20,
 				firstCol : "checkbox",
 				magicItemComponents : false
-			}
+			}]
 		},
 		"7th-level" : {
 			rarity : "very rare",
@@ -5217,13 +5217,13 @@ var Base_MagicItemsList = {
 			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 17. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 17 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			fixedDC : 18,
 			spellFirstColTitle : "Us", // used
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				level : [7,7],
 				psionic : false,
 				times : 20,
 				firstCol : "checkbox",
 				magicItemComponents : false
-			}
+			}]
 		},
 		"8th-level" : {
 			rarity : "very rare",
@@ -5232,13 +5232,13 @@ var Base_MagicItemsList = {
 			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 18. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 18 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			fixedDC : 18,
 			spellFirstColTitle : "Us", // used
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				level : [8,8],
 				psionic : false,
 				times : 20,
 				firstCol : "checkbox",
 				magicItemComponents : false
-			}
+			}]
 		},
 		"9th-level" : {
 			rarity : "legendary",
@@ -5247,23 +5247,23 @@ var Base_MagicItemsList = {
 			descriptionFull : "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 19. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 19 and an attack bonus of +11.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 19 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
 			fixedDC : 19,
 			spellFirstColTitle : "Us", // used
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				level : [9,9],
 				psionic : false,
 				times : 20,
 				firstCol : "checkbox",
 				magicItemComponents : false
-			}
+			}]
 		},
 		"mixed levels" : {
 			description : "If the spell on this scroll is on my class' spell list, I can cast it, having the scroll crumble to dust afterwards. If the spell's level is higher than I can cast, I need to make a DC 10 + spell level check with my spellcasting ability, destroying it if I fail. The DC will be listed on the spell sheet's first column (spell attack = DC - 8).",
 			spellFirstColTitle : "DC",
-			spellcastingBonus : {
+			spellcastingBonus : [{
 				level : [0,9],
 				psionic : false,
 				times : 20,
 				magicItemComponents : false
-			},
+			}],
 			calcChanges : {
 				spellAdd : [
 					function (spellKey, spellObj, spName) {
@@ -5333,13 +5333,13 @@ var Base_MagicItemsList = {
 		additional : "charges, regains 1d8+2",
 		spellcastingAbility : "class",
 		spellFirstColTitle : "Ch",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1 charge",
 			spells : ["charm person", "command", "comprehend languages"],
 			selection : ["charm person", "command", "comprehend languages"],
 			firstCol : 1,
 			times : 3
-		},
+		}],
 		action : [["reaction", ""]]
 	},
 	"staff of fire" : {
@@ -5862,12 +5862,12 @@ var Base_MagicItemsList = {
 		description : "While the stone is touching the ground, I can use an action to speak its command word and summon an earth elemental, as if I had cast the Conjure Elemental spell. The stone can't be used this way again until the next dawn.",
 		descriptionFull : "If the stone is touching the ground, you can use an action to speak its command word and summon an earth elemental, as if you had cast the Conjure Elemental spell. The stone can't be used this way again until the next dawn. The stone weighs 5 pounds.",
 		weight : 5,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Earth Elemental only",
 			spells : ["conjure elemental"],
 			selection : ["conjure elemental"],
 			firstCol : "oncelr"
-		},
+		}],
 		usages : 1,
 		recovery : "dawn",
 		spellChanges : {
@@ -6147,12 +6147,12 @@ var Base_MagicItemsList = {
 		}],
 		fixedDC : 15,
 		spellFirstColTitle : "Ch",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1 charge",
 			spells : ["dominate beast"],
 			selection : ["dominate beast"],
 			firstCol : 1
-		},
+		}],
 		spellChanges : {
 			"dominate beast" : {
 				description : "1 beast with swim speed save or charmed, follows telepathic commands, 1 a for complete control",
@@ -6298,12 +6298,12 @@ var Base_MagicItemsList = {
 		additional : "regains 1d6+1",
 		spellFirstColTitle : "Ch",
 		fixedDC : 15,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1 charge",
 			spells : ["command"],
 			selection : ["command"],
 			firstCol : 1
-		},
+		}],
 		spellChanges : {
 			"command" : {
 				description : '1 creature save or has to follow an one-word command on its next turn, either "flee" or "grovel"',
@@ -6328,12 +6328,12 @@ var Base_MagicItemsList = {
 		additional : "regains 1d6+1",
 		spellFirstColTitle : "Ch",
 		fixedDC : 15,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1+ charges",
 			spells : ["fireball"],
 			selection : ["fireball"],
 			firstCol : "1+"
-		},
+		}],
 		spellChanges : {
 			"fireball" : {
 				description : "20-ft rad all crea 8d6+1d6/extra charge Fire dmg; save halves; unattended flammable objects ignite",
@@ -6358,12 +6358,12 @@ var Base_MagicItemsList = {
 		additional : "regains 1d6+1",
 		spellFirstColTitle : "Ch",
 		fixedDC : 15,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1+ charges",
 			spells : ["lightning bolt"],
 			selection : ["lightning bolt"],
 			firstCol : "1+"
-		},
+		}],
 		spellChanges : {
 			"lightning bolt" : {
 				description : "100-ft long 5-ft wide all 8d6+1d6/extra charge Lightn. dmg; save halves; unattended objects ignite",
@@ -6380,12 +6380,12 @@ var Base_MagicItemsList = {
 		description : "This wand has 3 charges. While holding it, I can expend 1 charge as an action to cast Detect Magic from it. The wand regains 1d3 expended charges daily at dawn.",
 		descriptionFull : "This wand has 3 charges. While holding it, you can expend 1 charge as an action to cast the Detect Magic spell from it. The wand regains 1d3 expended charges daily at dawn.",
 		weight : 1,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1 charge",
 			spells : ["detect magic"],
 			selection : ["detect magic"],
 			firstCol : 1
-		},
+		}],
 		usages : 3,
 		recovery : "dawn",
 		additional : "regains 1d3",
@@ -6404,12 +6404,12 @@ var Base_MagicItemsList = {
 		recovery : "dawn",
 		additional : "regains 1d6+1",
 		spellFirstColTitle : "Ch",
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1+ charges",
 			spells : ["magic missile"],
 			selection : ["magic missile"],
 			firstCol : "1+"
-		},
+		}],
 		spellChanges : {
 			"magic missile" : {
 				description : "3+1/extra charge darts hit creature(s) I can see for 1d4+1 Force dmg per dart",
@@ -6451,12 +6451,12 @@ var Base_MagicItemsList = {
 		additional : "regains 1d6+1",
 		spellFirstColTitle : "Ch",
 		fixedDC : 15,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1 charge",
 			spells : ["polymorph"],
 			selection : ["polymorph"],
 			firstCol : 1
-		}
+		}]
 	},
 	"wand of secrets" : {
 		name : "Wand of Secrets",
@@ -6548,12 +6548,12 @@ var Base_MagicItemsList = {
 		additional : "regains 1d6+1",
 		spellFirstColTitle : "Ch",
 		fixedDC : 15,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "1 charge",
 			spells : ["web"],
 			selection : ["web"],
 			firstCol : 1
-		}
+		}]
 	},
 	"wand of wonder" : {
 		name : "Wand of Wonder",
@@ -6629,12 +6629,12 @@ var Base_MagicItemsList = {
 			]
 		}],
 		fixedDC : 15,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Random option",
 			spells : ["slow", "faerie fire", "gust of wind", "detect thoughts", "stinking cloud", "lightning bolt", "enlarge/reduce", "darkness", "fireball", "invisibility"],
 			selection : ["slow", "faerie fire", "gust of wind", "detect thoughts", "stinking cloud", "lightning bolt", "enlarge/reduce", "darkness", "fireball", "invisibility"],
 			times : 10
-		},
+		}],
 		spellChanges : {
 			"darkness" : { range : "120 ft", changes : "All Wand of Wonder spells have a range of 120 ft." },
 			"enlarge/reduce" : { range : "120 ft", changes : "All Wand of Wonder spells have a range of 120 ft." },
@@ -6704,12 +6704,12 @@ var Base_MagicItemsList = {
 		recovery : "dawn",
 		additional : "more uses +20% to destroy",
 		fixedDC : 13,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Once per dawn",
 			spells : ["gust of wind"],
 			selection : ["gust of wind"],
 			firstCol : "oncelr"
-		}
+		}]
 	},
 	"winged boots" : {
 		name : "Winged Boots",

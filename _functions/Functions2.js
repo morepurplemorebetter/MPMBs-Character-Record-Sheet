@@ -5358,10 +5358,7 @@ function contactMPMB(medium) {
 			app.launchURL("https://www.flapkan.com/how-to/add-more-content", true);
 			break;
 		case "community content" :
-			app.launchURL("https://www.flapkan.com/mpmb/fanforum", true);
-			break;
-		case "mpmb content" :
-			app.launchURL("https://www.flapkan.com/mpmb/extracontent", true);
+			app.launchURL("https://www.flapkan.com/mpmb/index", true);
 			break;
 		case "character sheet" :
 		case "latest version" :
@@ -5747,49 +5744,77 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 		fields.Damage_Bonus = isReCalc ? What(fldBaseBT + "Damage Bonus") :
 			theWea.modifiers && theWea.modifiers[1] ? theWea.modifiers[1] : 0;
 
-		//add mod
+		// Select the ability score
 		var StrDex = What(QI ? "Str" : prefix + "Comp.Use.Ability.Str.Score") < What(QI ? "Dex" : prefix + "Comp.Use.Ability.Dex.Score") ? 2 : 1;
 		var weaponMod = /finesse/i.test(theWea.description) ? StrDex : theWea.ability;
-		//special cases
-		var fixedCaster = theWea.useSpellMod && CurrentSpells[theWea.useSpellMod] ? theWea.useSpellMod : false;
+
+		// Change the selected ability to that of a spellcaster, if so defined
+		var useSpellModRem = theWea.useSpellMod && CurrentSpells[theWea.useSpellMod] ? theWea.useSpellMod : undefined;
 		var forceUseSpellcastingMod = theWea.useSpellcastingAbility === undefined ? false : theWea.useSpellcastingAbility ? "y" : "n";
-		
-		if (fixedCaster) {
-			//if the weapon has `useSpellMod`, set the ability to the matching spellcaster
-			weaponMod = CurrentSpells[theWea.useSpellMod].abilityToUse ? CurrentSpells[theWea.useSpellMod].abilityToUse[0] : getSpellcastingAbility(theWea.useSpellMod)[0];
-		} else if ((thisWeapon[3] || forceUseSpellcastingMod == "y") && forceUseSpellcastingMod != "n") {
+		var isDC = /dc/i.test(fields.To_Hit_Bonus);
+		var getCasterSpellAbi = function(sCast, iCurrentAbi, iToBeat) {
+			var oCast = CurrentSpells[sCast];
+			if (!oCast) return iToBeat === undefined ? iCurrentAbi : false;
+			if (!oCast.abilityToUse) oCast.abilityToUse = getSpellcastingAbility(sCast);
+			var iCastAbi = oCast.abilityToUse[0];
+			if (iToBeat === undefined) {
+				return iCastAbi;
+			} else {
+				// Get the DC / Spell attack for the caster to compare, unless it hasn't been calculated or this is not a recognized spell, then just get the ability score
+				var iScore = thisWeapon[4].length && oCast.calcSpellScores ? oCast.calcSpellScores[isDC ? "dc" : "attack"] : getAbiModValue(iCastAbi, false, false, true) - 10; // prefer the calculated value, so -10 for scores
+				return iScore > iToBeat ? { ability : iCastAbi, iToBeat : iScore } : false;
+			}
+		}
+		if (useSpellModRem) {
+			// If the weapon has `useSpellMod`, set the ability to the matching spellcaster
+			weaponMod = getCasterSpellAbi(useSpellModRem, weaponMod);
+		} else if (QI && (thisWeapon[3] || forceUseSpellcastingMod === "y") && forceUseSpellcastingMod !== "n") {
+	// TESTING - new way
+			// Get an array of all the caster classes that can cast the spell (or just all cast classes for non-recognized spells)
+			var aCasters = thisWeapon[4].length ? thisWeapon[4] : Object.keys(CurrentSpells);
+			// Loop through these and get the ability of the caster with the highest bonus
+			var iToBeat = 0;
+			for (var i = 0; i < aCasters.length; i++) {
+				var oTest = getCasterSpellAbi(aCasters[i], weaponMod, iToBeat);
+				if (oTest) {
+					weaponMod = oTest.ability;
+					iToBeat = oTest.iToBeat;
+				}
+			}
+/* TESTING - old way below
 			//change mod if this is concerning a spell/cantrip
 			if (thisWeapon[4].length) {
-				var abiArr = thisWeapon[4].map( function(sClass) {
-					return CurrentSpells[sClass] && CurrentSpells[sClass].ability && !isNaN(CurrentSpells[sClass].ability) ? CurrentSpells[sClass].ability : 0;
+				var abiArr = thisWeapon[4].map( function(sCast) {
+					return getCasterSpellAbi(sCast);
 				});
 			} else {
 				// the spell is not known by any class, so just gather the ability scores from all spellcasting entries so we can select the highest
 				var abiArr = [];
-				for (var aCast in CurrentSpells) {
-					if (!isNaN(CurrentSpells[aCast].ability)) abiArr.push(CurrentSpells[aCast].ability);
+				for (var sCast in CurrentSpells) {
+					abiArr.push(getCasterSpellAbi(sCast));
 				}
 			}
 			var abiDone = [];
 			var abiModArr = [];
 			for (var i = 0; i < abiArr.length; i++) {
-				if (!abiArr[i] || abiDone.indexOf(abiArr[i]) !== -1) continue;
+				if (abiDone.indexOf(abiArr[i]) !== -1) continue;
 				abiDone.push(abiArr[i]);
-				var thisMod = What(AbilityScores.abbreviations[abiArr[i] - 1]);
-				if (thisMod > Math.max.apply(Math, abiModArr)) weaponMod = abiArr[i];
+				var thisMod = !abiArr[i] ? 0 : Number(What(AbilityScores.abbreviations[abiArr[i] - 1]));
+				if (thisMod >= Math.max.apply(Math, abiModArr)) weaponMod = abiArr[i];
 				abiModArr.push(thisMod);
 			}
+*/
 		}
 		fields.Mod = weaponMod;
 
-		if (theWea.ammo) fields.Ammo = theWea.ammo; //add ammo
+		//add ammo
+		if (theWea.ammo) fields.Ammo = theWea.ammo;
 
 		//now run the code that was added by class/race/feat
 		if (QI && CurrentEvals.atkAdd) {
 
 			// define some variables that we can check against later or with the CurrentEvals
 			var WeaponText = inputText + " " + fields.Description;
-			var isDC = /dc/i.test(fields.To_Hit_Bonus);
 			var isSpell = thisWeapon[3] || (theWea && /cantrip|spell/i.test(theWea.type)) || (!theWea && /\b(cantrip|spell)\b/i.test(WeaponText)) ? true : false;
 			var isWeapon = theWea && theWea.isNotWeapon ? false : !isSpell || (isSpell && theWea && !/cantrip|spell/i.test(theWea.type));
 			var isMeleeWeapon = isWeapon && /melee/i.test(fields.Range);
@@ -5835,9 +5860,9 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 				}
 			}
 
-			// if the `useSpellMod` was changed, change the ability to match
-			if (fixedCaster !== theWea.useSpellMod && CurrentSpells[theWea.useSpellMod]) {
-				weaponMod = CurrentSpells[theWea.useSpellMod].abilityToUse ? CurrentSpells[theWea.useSpellMod].abilityToUse[0] : getSpellcastingAbility(theWea.useSpellMod)[0];
+			// if the `useSpellMod` was changed, change the ability to match unless something already changed the ability to select
+			if (useSpellModRem !== theWea.useSpellMod && CurrentSpells[theWea.useSpellMod] && fields.Mod === weaponMod) {
+				fields.Mod = getCasterSpellAbi(theWea.useSpellMod, fields.Mod);
 			}
 		};
 
@@ -5944,8 +5969,9 @@ function CalcAttackDmgHit(fldName) {
 		for (var attr in WeaponsList[aWea.baseWeapon]) theWea[attr] = WeaponsList[aWea.baseWeapon][attr];
 	}
 	if (aWea) for (var attr in aWea) theWea[attr] = aWea[attr];
-	var fixedCaster = theWea.useSpellMod && CurrentSpells[theWea.useSpellMod] ? CurrentSpells[theWea.useSpellMod] : false;
-	var aWeaNoAbi = theWea.ability === 0 || (fixedCaster && fixedCaster.fixedDC && fixedCaster.abilityToUse && !fixedCaster.abilityToUse[0]);
+	var oFixedCaster = theWea.useSpellMod && CurrentSpells[theWea.useSpellMod] ? CurrentSpells[theWea.useSpellMod] : false;
+	if (oFixedCaster && !oFixedCaster.abilityToUse) oFixedCaster.abilityToUse = getSpellcastingAbility(theWea.useSpellMod); // make sure this exists
+	var aWeaNoAbi = theWea.ability === 0 || (oFixedCaster && (oFixedCaster.fixedDC || oFixedCaster.fixedSpAttack !== undefined) && oFixedCaster.abilityToUse[0] === 0);
 
 	if (!WeaponTextName || (/^(| |empty)$/.test(fields.Mod) && !aWeaNoAbi)) {
 		Value(fldBase + "Damage", "");
@@ -5956,7 +5982,7 @@ function CalcAttackDmgHit(fldName) {
 
 	// get the damage bonuses from the selected modifier, magic, and the blueText field
 	var output = {
-		prof : !fields.Proficiency ? 0 : (QI ? (tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) ? 0 : Number(How("Proficiency Bonus"))) : (tDoc.getField(prefix + "BlueText.Comp.Use.Proficiency Bonus Dice").isBoxChecked(0) ? 0 : What(prefix + "Comp.Use.Proficiency Bonus"))),
+		prof : !fields.Proficiency ? 0 : getProfBonus(false, prefix),
 		die : fields.Damage_Die,
 		modToDmg : thisWeapon[2],
 		mod : getAbiModValue(fields.Mod, prefix),
@@ -5968,7 +5994,9 @@ function CalcAttackDmgHit(fldName) {
 	};
 
 	// define some variables that we can check against later or with the CurrentEvals
-	var isDC = /dc/i.test(fields.To_Hit_Bonus), spTypeShort = isDC ? "dc" : "atk";
+	var isDC = /dc/i.test(fields.To_Hit_Bonus);
+	var spType = isDC ? "dc" : "attack", spTypeShort = isDC ? "dc" : "atk";
+	var notUseSpellcastingAbility = theWea && theWea.useSpellcastingAbility === false;
 
 	// Gather some information on the weapon
 	var isSpell = thisWeapon[3] || (theWea && /cantrip|spell/i.test(theWea.type)) || (!theWea && /\b(cantrip|spell)\b/i.test(WeaponText)) ? true : false;
@@ -6028,58 +6056,88 @@ function CalcAttackDmgHit(fldName) {
 		}
 
 		// The useSpellMod might've been changed
-		fixedCaster = theWea.useSpellMod && CurrentSpells[theWea.useSpellMod] ? CurrentSpells[theWea.useSpellMod] : false;
+		oFixedCaster = theWea.useSpellMod && CurrentSpells[theWea.useSpellMod] ? CurrentSpells[theWea.useSpellMod] : false;
 	};
 
-	// Add the BlueText field value of the corresponding spellcasting class
-	var spCaster = false;
-	var abiScoreNo = tDoc.getField(fldBase + "Mod").currentValueIndices;
-	if (fixedCaster) {
-		spCaster = [theWea.useSpellMod];
-		if (fixedCaster.blueTxt && fixedCaster.blueTxt[spTypeShort]) {
-			// Add the modifier bonus field for the specific caster
-			output.extraHit += EvalBonus(fixedCaster.blueTxt[spTypeShort], true);
-		}
-		if (fixedCaster && fixedCaster.abilityToUse && fixedCaster.abilityToUse[0] != abiScoreNo) {
-			// Set the ability modifier to use the modifier of the ability score
-			abiScoreNo = fixedCaster.abilityToUse[0];
-			tDoc.getField(fldBase + "Mod").currentValueIndices = abiScoreNo;
-		}
-		if (!abiScoreNo) output.mod = 0; // if ability is 0, set the modifier to 0 as well
-		if (!abiScoreNo && fixedCaster.fixedDC) {
-			// If fixedDC, we need to replace the ability modifier and proficiency bonus with the fixed value
-			// abilityToUse[0] / abiScoreNo is going to be 0, so we will only have to change the Prof
-			output.prof = fixedCaster.fixedDC - 8;
+	// If this is a spell (or weapon with useSpellMod), determine which spellcasting bonus to use
+	var aCasters = [], spType = isDC ? "dc" : "attack";
+	if (oFixedCaster) {
+		// Weapon has a fixed affeliated spellcasting class that exists
+		aCasters.push(theWea.useSpellMod);
+		// If this uses a different ability score, fix the field and output to match
+		if (oFixedCaster.abilityToUse[0] !== fields.Mod) {
+			fields.Mod = oFixedCaster.abilityToUse[0];
+			tDoc.getField(fldBase + "Mod").currentValueIndices = fields.Mod;
+			output.mod = getAbiModValue(fields.Mod); // of the main character
 		} else if (!QI) {
 			// If on the companion page, use the ability modifier and proficiency bonus from the main character
-			if (abiScoreNo) output.mod = Number( What( ["", "Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"][abiScoreNo] + " Mod" ) );
-			output.prof = tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) ? 0 : Number(How("Proficiency Bonus"));
+			output.mod = getAbiModValue(fields.Mod);
 		}
-	} else if (QI && thisWeapon[3] && thisWeapon[4].length) {
-		var abiBonArr = thisWeapon[4].map( function(sClass) {
-			var ExtraBonus = CurrentSpells[sClass] && CurrentSpells[sClass].abilityToUse && CurrentSpells[sClass].abilityToUse[0] == abiScoreNo && CurrentSpells[sClass].blueTxt && CurrentSpells[sClass].blueTxt[spTypeShort] ? CurrentSpells[sClass].blueTxt[spTypeShort] : 0;
-			return EvalBonus(ExtraBonus, true);
-		});
-		var highestBon = Math.max.apply(Math, abiBonArr);
-		if (highestBon) {
-			spCaster = [];
-			for (var i = 0; i < abiBonArr.length; i++) {
-				if (abiBonArr[i] == highestBon) spCaster.push(thisWeapon[4][i]);
+		// Always considered proficient and using the main character's proficiency bonus
+		output.prof = getProfBonus();
+	} else if (QI && thisWeapon[3] && thisWeapon[4].length && !notUseSpellcastingAbility) {
+		// Weapon is recognized as a cantrip/spell that the character can cast, loop over all found matches and keep only those with the same spellcasting ability
+		for (var i = 0; i < thisWeapon[4].length; i++) {
+			var sCast = thisWeapon[4][i];
+			var oCast = CurrentSpells[sCast];
+			if (!oCast) continue;
+			if (!oCast.abilityToUse) oCast.abilityToUse = getSpellcastingAbility(sCast);
+			if ( (oCast.abilityToUse[0] === fields.Mod) ||
+				 (oCast.abilityToUse[0] === 0 && (oCast.fixedDC || oCast.fixedSpAttack !== undefined)) ) {
+				aCasters.push(sCast);
 			}
-			output.extraHit += highestBon;
 		}
-	};
-	// Now the spellCalc custom functions
-	if ( CurrentEvals.spellCalc && (!theWea || theWea.useSpellcastingAbility !== false) &&
-		( (fixedCaster && !fixedCaster.fixedDC) || (QI && isSpell && !fixedCaster) )
-	) {
-		// get the variables we need to pass to the function
-		var aCasters = spCaster ? spCaster : !thisWeapon[4].length ? [] : thisWeapon[4].map( function(sClass) {
-			return CurrentSpells[sClass] && CurrentSpells[sClass].ability == abiScoreNo ? sClass : "";
-		});
-		var sType = isDC ? "dc" : "attack";
-
-		output.extraHit += runSpellCalc(sType, aCasters, abiScoreNo, thisWeapon[3]);
+	}
+	// If this is a spell, but not one with a recognized caster, make sure the array has an entry so we do process CurrentEvals.spellCalc
+	if (!aCasters.length && QI && isSpell && !notUseSpellcastingAbility) {
+		aCasters.push("Pl@c3h0ld3r");
+	}
+	// Now loop over the caster options, if any, to see which produces the highest total
+	if (aCasters.length) {
+		var oCasterRef = { highestTotal : false, currentHighest : "" };
+		for (var i = 0; i < aCasters.length; i++) {
+			var sCast = aCasters[i];
+			var oCast = CurrentSpells[sCast];
+			oCasterRef[sCast] = {
+				// If a fixed total DC or spell attack
+				bFixed : oCast && oCast.abilityToUse[0] === 0 && (oCast.fixedDC || oCast.fixedSpAttack !== undefined),
+				// Get bluetext modifiers from the spell sheets
+				blueTxt : oCast && oCast.blueTxt && oCast.blueTxt[spTypeShort] ? EvalBonus(oCast.blueTxt[spTypeShort], true) : 0,
+				spellCalc : 0, total : 0
+			};
+			// Get spellCalc bonus, if appropriate
+			if (!oCasterRef[sCast].bFixed && CurrentEvals.spellCalc) {
+				var sCaster = oCast ? sCast : false;
+				oCasterRef[sCast].spellCalc += runSpellCalc(spType, sCaster, fields.Mod, thisWeapon[3]);
+			}
+			// Set the total
+			if (oCasterRef[sCast].bFixed) {
+				var fixedDC = !isNaN(oCast.fixedDC) ? Number(oCast.fixedDC) - 8 : 0;
+				var fixedSpAttack = !isNaN(oCast.fixedSpAttack) ? Number(oCast.fixedSpAttack) : 0;
+				if (isDC) {
+					oCasterRef[sCast].prof = fixedDC ? fixedDC : fixedSpAttack;
+				} else {
+					oCasterRef[sCast].prof = fixedSpAttack ? fixedSpAttack : fixedDC;
+				}
+				oCasterRef[sCast].total = oCasterRef[sCast].blueTxt + oCasterRef[sCast].prof;
+			} else {
+				oCasterRef[sCast].total = oCasterRef[sCast].blueTxt + output.prof + output.mod + oCasterRef[sCast].spellCalc;
+			}
+			if (oCasterRef.highestTotal === false || oCasterRef[sCast].total > oCasterRef.highestTotal) {
+				oCasterRef.highestTotal = oCasterRef[sCast].total;
+				oCasterRef.currentHighest = sCast;
+			}
+		}
+		// Now we know which one gives the highest bonus, so apply those bonuses
+		if (oCasterRef.currentHighest) {
+			var oCastRef = oCasterRef[oCasterRef.currentHighest];
+			output.extraHit += oCastRef.blueTxt;
+			if (oCastRef.bFixed) {
+				output.prof = oCastRef.prof;
+			} else {
+				output.extraHit += oCastRef.spellCalc;
+			}
+		}
 	}
 
 	// Now we parse all that information to a total
@@ -6267,16 +6325,17 @@ function FunctionIsNotAvailable() {
 // this can be based on index number Str = 1, Dex = 2, etc.
 // or on the abbreviation string "Str", "Dex", etc.
 // wildshapeNo is the index of the monser on wild shape page, starting with 1
-function getAbiModValue(ability, prefix, wildshapeNo) {
+function getAbiModValue(ability, prefix, wildshapeNo, bReturnScore) {
 	var mod = 0;
 	var abi = !isNaN(ability) && ability > 0 && ability <= AbilityScores.abbreviations.length ?  AbilityScores.abbreviations[ability - 1] : AbilityScores.abbreviations.indexOf(ability) !== -1 ? ability : "error";
 	if (abi === "error") return mod;
+	var suffix = bReturnScore ? (prefix ? ".Score" : "") : (prefix ? ".Mod" : " Mod");
 	if (!prefix) {
-		mod = Number(What(abi + " Mod"));
+		mod = Number(What(abi + suffix));
 	} else if (wildshapeNo) {
-		mod = Number(What(prefix + "Wildshape." + wildshapeNo + ".Ability." + abi + ".Mod"));
+		mod = Number(What(prefix + "Wildshape." + wildshapeNo + ".Ability." + abi + suffix));
 	} else {
-		mod = Number(What(prefix + "Comp.Use.Ability." + abi + ".Mod"));
+		mod = Number(What(prefix + "Comp.Use.Ability." + abi + suffix));
 	}
 	return mod;
 }

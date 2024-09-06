@@ -114,12 +114,12 @@ var Base_RaceList = {
 		scores : [0, 2, 0, 1, 0, 0],
 		trait : "High Elf (+2 Dexterity, +1 Intelligence)\nTrance: Elves don't need to sleep, but meditate semiconsciously, for 4 hours a day. While meditating, I can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, I gain the same benefit that a human does from 8 hours of sleep, thus needing only 4 hours for a long rest.\nCantrip: I know one cantrip of my choice from the wizard spell list. Intelligence is my spellcasting ability for it.",
 		spellcastingAbility : 4,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "High Elf Cantrip",
 			"class" : "wizard",
 			level : [0, 0],
 			firstCol : 'atwill'
-		}
+		}]
 	},
 	"rock gnome" : {
 		regExpSearch : /^((?=.*\bgnomes?\b)(?=.*\b(rocks?|tinker|tinkering)\b)).*$/i,
@@ -277,12 +277,12 @@ var Base_RaceList = {
 		scores : [0, 0, 0, 1, 0, 2],
 		trait : "Tiefling (+1 Intelligence, +2 Charisma)\n\nInfernal Legacy:\n   I know the Thaumaturgy cantrip.\n   At 3rd level, I can cast Hellish Rebuke once per long rest as a 2nd-level spell.\n   At 5th level, I can also cast Darkness once per long rest.\n   Charisma is my spellcasting ability for these spells.",
 		spellcastingAbility : 6,
-		spellcastingBonus : {
+		spellcastingBonus : [{
 			name : "Infernal Legacy (level 1)",
 			spells : ["thaumaturgy"],
 			selection : ["thaumaturgy"],
 			firstCol : 'atwill'
-		},
+		}],
 		features : {
 			"hellish rebuke" : {
 				name : "Infernal Legacy (level 3)",
@@ -290,12 +290,12 @@ var Base_RaceList = {
 				minlevel : 3,
 				usages : 1,
 				recovery : "long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Infernal Legacy (level 3)",
 					spells : ["hellish rebuke"],
 					selection : ["hellish rebuke"],
 					firstCol : "oncelr"
-				},
+				}],
 				spellChanges : {
 					"hellish rebuke" : {
 						description : "Cast when taking damage, creature that dealt damage takes 3d10 Fire damage; save halves",
@@ -309,12 +309,12 @@ var Base_RaceList = {
 				minlevel : 5,
 				usages : 1,
 				recovery : "long rest",
-				spellcastingBonus : {
+				spellcastingBonus : [{
 					name : "Infernal Legacy (level 5)",
 					spells : ["darkness"],
 					selection : ["darkness"],
 					firstCol : "oncelr"
-				}
+				}]
 			}
 		}
 	}

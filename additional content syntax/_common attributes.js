@@ -1680,7 +1680,7 @@ calcChanges : {
 
 	atkAdd : [
 		function (fields, v) {
-			if (v.WeaponName == 'eldritch blast') fields.Description += '; Target pushed back 10 ft';
+			if (v.WeaponName == 'eldritch blast') fields.Description += (fields.Description ? '; ' : '') + 'Target pushed back 10 ft';
 		},
 		"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me."
 	],
