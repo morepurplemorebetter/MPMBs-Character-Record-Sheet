@@ -25,14 +25,14 @@
 	result in the wrong amount of spells/cantrips being asked for in the spell selection dialogues.
 */
 
-var iFileName = "Blood Hunter 2020 [Matthew Mercer's work, transcribed by Smashman & MPMB].js";
+var iFileName = "Blood Hunter 2023 [Matthew Mercer's work, transcribed by Smashman & MPMB].js";
 RequiredSheetVersion("13.0.6");
 
 SourceList["MM:BH"] = {
-	name : "Matthew Mercer: Blood Hunter Class 2020",
+	name : "Matthew Mercer: Blood Hunter Class 2023",
 	abbreviation : "MM:BH",
 	group : "Dungeon Masters Guild",
-	url : "https://www.dmsguild.com/product/301641/Blood-Hunter-Class-for-DD-5e-2020",
+	url : "https://www.dndbeyond.com/classes/357975-blood-hunter",
 	date : "2020/02/11"
 };
 
@@ -45,7 +45,7 @@ ClassList["blood hunter"] = {
 	regExpSearch : /^(?=.*blood)(?=.*hunter).*$/i,
 	name : "Blood Hunter",
 	source : [["MM:BH", 0]],
-	primaryAbility : "Strength or Dexterity, and Intelligence",
+	primaryAbility : "Strength or Dexterity, and Intelligence/Wisdom",
 	prereqs : "Strength 13 or Dexterity 13, and Intelligence 13",
 	die : 10,
 	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
@@ -66,7 +66,7 @@ ClassList["blood hunter"] = {
 		primary : [true, true],
 		secondary : [true, true]
 	},
-	equipment : "Blood Hunter starting equipment:\n \u2022 Scale mail -or- studded leather armor;\n \u2022 A martial weapon -or- two simple weapons;\n \u2022 A light crossbow and 20 bolts -or- a hand crossbow and 20 bolts;\n \u2022 An explorer's pack.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+	equipment : "Blood Hunter starting equipment:\n \u2022 Scale mail -or- studded leather armor;\n \u2022 A martial weapon -or- two simple weapons;\n \u2022 A light crossbow and 20 bolts -or- a hand crossbow and 20 bolts;\n \u2022 An explorer's pack and alchemist's supplies.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 	subclasses : ["Blood Hunter Orders", []],
 	attacks : levels.map(function(n){return n < 5 ? 1 : 2}),
 	abilitySave : 4,
