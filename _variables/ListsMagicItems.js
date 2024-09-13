@@ -4744,17 +4744,17 @@ var Base_MagicItemsList = {
 		"good" : {
 			description : "While wearing this elegant robe made from exquisite white cloth adorned with silvery runes, I have advantage on saves against spells and magical effects and add +2 to both my spell save DC and spell attack rolls. Also, if I'm not wearing armor, it makes my base AC 15 + my Dexterity modifier.",
 			prerequisite : "Requires attunement by a good sorcerer, warlock, or wizard",
-			prereqeval : function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && (/good/i).test(What("Alignment")); }
+			prereqeval : function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && /good/i.test(What("Alignment")); }
 		},
 		"neutral" : {
 			description : "While wearing this elegant robe made from exquisite gray cloth adorned with silvery runes, I have advantage on saves against spells and magical effects and add +2 to both my spell save DC and spell attack rolls. Also, if I'm not wearing armor, it makes my base AC 15 + my Dexterity modifier.",
 			prerequisite : "Requires attunement by a neutral sorcerer, warlock, or wizard",
-			prereqeval : function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && !(/good|evil/i).test(What("Alignment")); }
+			prereqeval : function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && !/good|evil/i.test(What("Alignment")); }
 		},
 		"evil" : {
 			description : "While wearing this elegant robe made from exquisite black cloth adorned with silvery runes, I have advantage on saves against spells and magical effects and add +2 to both my spell save DC and spell attack rolls. Also, if I'm not wearing armor, it makes my base AC 15 + my Dexterity modifier.",
 			prerequisite : "Requires attunement by an evil sorcerer, warlock, or wizard",
-			prereqeval : function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && (/evil/i).test(What("Alignment")); }
+			prereqeval : function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && /evil/i.test(What("Alignment")); }
 		}
 	},
 	"robe of useful items" : {
@@ -4995,6 +4995,7 @@ var Base_MagicItemsList = {
 		description : "While holding this shield, I have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
 		descriptionFull : "While holding this shield, you have a bonus to AC. This bonus is in addition to the shield's normal bonus to AC. The bonus is determined by the rarity of the shield: uncommon (+1), rare (+2), or very rare (+3).",
 		allowDuplicates : true,
+		weight : 6,
 		choices : ["+1 Shield (uncommon)", "+2 Shield (rare)", "+3 Shield (very rare)"],
 		"+1 shield (uncommon)" : {
 			name : "Shield +1",
@@ -6037,14 +6038,14 @@ var Base_MagicItemsList = {
 		attunement : true,
 		weight : 1,
 		prerequisite : "Requires attunement by a creature of good alignment",
-		prereqeval : function(v) { return (/good/i).test(What("Alignment")); },
+		prereqeval : function(v) { return /good/i.test(What("Alignment")); },
 		usages : 7,
 		recovery : "Never",
 		action : [["action", ""]],
 		calcChanges : {
 			spellCalc : [
 				function (type, spellcasters, ability) {
-					if (type == "attack" && (classes.known.paladin || classes.known.cleric) && (/good/i).test(What("Alignment"))) return 2;
+					if (type == "attack" && (classes.known.paladin || classes.known.cleric) && /good/i.test(What("Alignment"))) return 2;
 				},
 				"If I'm a good cleric or paladin, I gain a +2 bonus on my spell attack rolls while wearing or holding the Talisman of Pure Good."
 			]
@@ -6073,14 +6074,14 @@ var Base_MagicItemsList = {
 		attunement : true,
 		weight : 1,
 		prerequisite : "Requires attunement by a creature of evil alignment",
-		prereqeval : function(v) { return (/evil/i).test(What("Alignment")); },
+		prereqeval : function(v) { return /evil/i.test(What("Alignment")); },
 		usages : 6,
 		recovery : "Never",
 		action : [["action", ""]],
 		calcChanges : {
 			spellCalc : [
 				function (type, spellcasters, ability) {
-					if (type == "attack" && (classes.known.paladin || classes.known.cleric) && (/evil/i).test(What("Alignment"))) return 2;
+					if (type == "attack" && (classes.known.paladin || classes.known.cleric) && /evil/i.test(What("Alignment"))) return 2;
 				},
 				"If I'm an evil cleric or paladin, I gain a +2 bonus on my spell attack rolls while wearing or holding the Talisman of Ultimate Evil."
 			]
