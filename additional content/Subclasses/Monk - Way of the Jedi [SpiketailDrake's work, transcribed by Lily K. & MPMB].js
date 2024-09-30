@@ -18,7 +18,7 @@
 */
 
 var iFileName = "Monk - Way of the Jedi [SpiketailDrake's work, transcribed by Lily K. & MPMB].js";
-RequiredSheetVersion("13.1.1");
+RequiredSheetVersion("13.2.1");
 
 SourceList["SD:WotJ"] = {
 	name : "SpiketailDrake: Way of the Jedi (v2.2)",
