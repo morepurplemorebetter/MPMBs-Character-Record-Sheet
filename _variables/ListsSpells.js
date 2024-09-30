@@ -594,8 +594,8 @@ var Base_SpellsList = {
 		components : "V,S",
 		duration : "Conc, 10 min",
 		save : "Con",
-		description : "20-ft rad 5d8+1d8/SL Poison dmg; save halves; move 10 ft/rnd; heavily obscured, difficult terrain",
-		descriptionShorter : "20-ft rad 5d8+1d8/SL Poison dmg; save halves; move 10 ft/rnd; heavily obscured, dif. ter.",
+		description : "20-ft rad, if crea start/enter, 5d8+1d8/SL Poison dmg; save halves; move 10 ft/rnd; heavily obscured",
+		descriptionShorter : "20-ft rad crea start/enter 5d8+1d8/SL Poison dmg; save half; move 10 ft/rnd; heavily obsc.",
 		descriptionFull : "You create a 20-foot-radius sphere of poisonous, yellow-green fog centered on a point you choose within range. The fog spreads around corners. It lasts for the duration or until strong wind disperses the fog, ending the spell. Its area is heavily obscured." + "\n   " + "When a creature enters the spell's area for the first time on a turn or starts its turn there, that creature must make a Constitution saving throw. The creature takes 5d8 poison damage on a failed save, or half as much damage on a successful one. Creatures are affected even if they hold their breath or don't need to breathe." + "\n   " + "The fog moves 10 feet away from you at the start of each of your turns, rolling along the surface of the ground. The vapors, being heavier than air, sink to the lowest level of the land, even pouring down openings." + AtHigherLevels + "When you cast this spell using a spell slot of 6th level or higher, the damage increases by 1d8 for each slot level above 5th."
 	},
 	"color spray" : {
@@ -1314,7 +1314,7 @@ var Base_SpellsList = {
 		range : "30 ft",
 		components : "V,S",
 		duration : "Instantaneous",
-		description : "Small nature effect; predict weather, expedite small plant growth, snuff light, harmless sensory effect",
+		description : "Small nature effect; predict weather, hasten tiny plant growth, snuff/light fire, harmless sensory effect",
 		descriptionFull : "Whispering to the spirits of nature, you create one of the following effects within range." + "\n " + "\u2022 You create a tiny, harmless sensory effect that predicts what the weather will be at your location for the next 24 hours. The effect might manifest as a golden orb for clear skies, a cloud for rain, falling snowflakes for snow, and so on. This effect persists for 1 round." + "\n " + "\u2022 You instantly make a flower blossom, a seed pod open, or a leaf bud bloom." + "\n " + "\u2022 You create an instantaneous, harmless sensory effect, such as falling leaves, a puff of wind, the sound of a small animal, or the faint odor of skunk. The effect must fit in a 5-foot cube." + "\n " + "\u2022 You instantly light or snuff out a candle, a torch, or a small campfire."
 	},
 	"earthquake" : {
@@ -1587,7 +1587,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u0192",
 		compMaterial : "A set of divinatory tools - such as bones, ivory sticks, cards, teeth, or carved runes - worth 100 gp and an object from the location you wish to find",
 		duration : "Conc, 1 day",
-		description : "Know the shortest route to a location I am familiar with and are on the same plane with (100gp)",
+		description : "Know the shortest route to a location I am familiar with and on the same plane with (100gp)",
 		descriptionFull : "This spell allows you to find the shortest, most direct physical route to a specific fixed location that you are familiar with on the same plane of existence. If you name a destination on another plan of existence, a destination that moves (such as a mobile fortress), or a destination that isn't specific (such as a green dragon's lair), the spell fails." + "\n   " + "For the duration, as long as you are on the same plane of existence as the destination, you know how far it is and in what direction it lies. While you are traveling there, whenever you are presented with a choice of paths along the way, you automatically determine which path is the shortest and most direct route (but not necessarily the safest route) to the destination."
 	},
 	"find traps" : {
@@ -2609,7 +2609,7 @@ var Base_SpellsList = {
 		compMaterial : "A piece of cured leather",
 		duration : "8 h (D)",
 		description : "1 crea that isn't wearing armor has AC 13 + Dex modifier for the duration; spell ends if it dons armor",
-		descriptionFull : "You touch a willing creature who isn't wearing armor, and a protective magical force surrounds it until the spell ends. The target's base AC becomes 13 + its Dexterity modifier. The spell ends it if the target dons armor or if you dismiss the spell as an action."
+		descriptionFull : "You touch a willing creature who isn't wearing armor, and a protective magical force surrounds it until the spell ends. The target's base AC becomes 13 + its Dexterity modifier. The spell ends if the target dons armor or if you dismiss the spell as an action."
 	},
 	"mage hand" : {
 		name : "Mage Hand",
@@ -3890,7 +3890,7 @@ var Base_SpellsList = {
 		time : "1 a",
 		range : "90 ft",
 		components : "V,S,M",
-		compMaterial : "A pinch of find sand, rose petals, or a cricket",
+		compMaterial : "A pinch of fine sand, rose petals, or a cricket",
 		duration : "1 min",
 		description : "20-ft rad 5d8+2d8/SL HP of conscious creatures fall asleep, starting with the lowest current HP crea",
 		descriptionFull : "This spell sends creatures into a magical slumber. Roll 5d8, the total is how many hit points of creatures this spell can affect. Creatures within 20 feet of a point you choose within range are affected in ascending order of their current hit points (ignoring unconscious creatures)." + "\n   " + "Starting with the creature that has the lowest current hit points, each creature affected by this spell falls unconscious until the spell ends, the sleeper takes damage, or someone uses an action to shake or slap the sleeper awake. Subtract each creature's hit points from the total before moving on to the creature with the next lowest hit points. A creature's hit points must be equal to or less than the remaining total for that creature to be affected." + "\n   " + "Undead and creatures immune to being charmed aren't affected by this spell." + AtHigherLevels + "When you cast this spell using a spell slot of 2nd level or higher, roll an additional 2d8 for each slot level above 1st."

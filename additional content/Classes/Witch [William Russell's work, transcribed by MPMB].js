@@ -77,7 +77,7 @@ ClassList['witch-wr'] = {
 		primary : ["Herbalism Kit"]
 	},
 	weaponProfs : {
-		primary : [false, true]
+		primary : [true, false]
 	},
 	equipment : "Witch starting equipment:" +
 		"\n \u2022 A Quaterstaff -or- a dagger" +

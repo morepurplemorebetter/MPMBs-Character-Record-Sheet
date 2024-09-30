@@ -24,7 +24,7 @@ SourceList["SD:WotJ"] = {
 	name : "SpiketailDrake: Way of the Jedi (v2.2)",
 	abbreviation : "SD:WotJ",
 	group : "Reddit/r/UnearthedArcana",
-	url : "https://drive.google.com/file/d/0B1pdYIcfHauweWdfcFZNaVF4Zjg/view",
+	url : "https://criticalkits.wordpress.com/wp-content/uploads/2016/02/wayofthejedi_latestversion.pdf",
 	date : "2016/03/19"
 };
 
@@ -39,15 +39,20 @@ AddSubClass("monk", "jedi-spiketaildrake", {
 	},
 	spellcastingKnown : {
 		cantrips : [0, 0, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-		spells : [0, 0, 3, 4, 4, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 11, 11, 12, 13],
+		spells : [0, 0, 3, 4, 4, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 11, 11, 12, 13]
 	},
-	feature : {
+	features : {
 		"subclassfeature3": {
 			name : "Spellcasting",
 			source : [["SD:WotJ", 1]],
 			minlevel : 3,
 			description : desc("I can cast known Jedi cantrips/spells, using Wisdom as my spellcasting ability"),
-			additional: ["", "", "3 cantrips \u0026 3 spells known", "3 cantrips \u0026 4 spells known", "3 cantrips \u0026 4 spells known", "3 cantrips \u0026 4 spells known", "3 cantrips \u0026 5 spells known", "3 cantrips \u0026 6 spells known", "3 cantrips \u0026 6 spells known", "4 cantrips \u0026 7 spells known", "4 cantrips \u0026 8 spells known", "4 cantrips \u0026 8 spells known", "4 cantrips \u0026 9 spells known", "4 cantrips \u0026 10 spells known", "4 cantrips \u0026 10 spells known", "4 cantrips \u0026 11 spells known", "4 cantrips \u0026 11 spells known", "4 cantrips \u0026 11 spells known", "4 cantrips \u0026 12 spells known", "4 cantrips \u0026 13 spells known"]
+			additional : levels.map(function (n, idx) {
+				if (n < 3) return "";
+				var cantr = [0, 0, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4][idx];
+				var splls = [0, 0, 3, 4, 4, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 11, 11, 12, 13][idx];
+				return cantr + " cantrips \u0026 " + splls + " spells known";
+			})
 		},
 		"subclassfeature3.1": {
 			name : "Lightsaber",
@@ -57,7 +62,6 @@ AddSubClass("monk", "jedi-spiketaildrake", {
 				"With an 1 hour ritual, I make an one-handed melee weapon into a lightsaber (max 2)"
 			]),
 			additional : "Magic weapon retains magic properties",
-			weaponsAdd : ['Lightsaber'],
 			weaponProfs : [false, false, ["lightsaber"]],
 			weaponOptions : [{
 				regExpSearch : /lightsaber/i,
@@ -69,7 +73,8 @@ AddSubClass("monk", "jedi-spiketaildrake", {
 				range : "Melee",
 				description : "Finesse, light; Emits dim light in 15-ft radius",
 				abilitytodamage : true,
-				monkweapon : true
+				monkweapon : true,
+				selectNow : true
 			}]
 		},
 		"subclassfeature6": {
