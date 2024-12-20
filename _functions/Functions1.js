@@ -1320,7 +1320,26 @@ function ApplyArmor(input) {
 
 	if (CurrentArmour.known !== undefined && ArmourList[CurrentArmour.known] !== undefined) {
 		var ArmorType = ArmourList[CurrentArmour.known].type ? ArmourList[CurrentArmour.known].type.toLowerCase() : "";
-		var ArmorStealth = (ArmorType === "medium" && What("Medium Armor Max Mod") === 3) || (/mithral|vind rune/i).test(CurrentArmour.field) ? false : ArmourList[CurrentArmour.known].stealthdis ? ArmourList[CurrentArmour.known].stealthdis : false;
+		var ArmorStealth = (ArmorType === "medium" && What("Medium Armor Max Mod") === 3) ? false : ArmourList[CurrentArmour.known].stealthdis ? ArmourList[CurrentArmour.known].stealthdis : false;
+		// See if something magic is overwritting the Stealth disadvantage for the armour
+		if (ArmorStealth && CurrentVars.armour_noStealthDis) {
+			for (var key in CurrentVars.armour_noStealthDis) {
+				var exception = CurrentVars.armour_noStealthDis[key];
+				if (exception.test(CurrentArmour.field)) {
+					ArmorStealth = false;
+					break;
+				}
+			}
+		}
+		if (!ArmorStealth && CurrentVars.armour_forceStealthDis) {
+			for (var key in CurrentVars.armour_forceStealthDis) {
+				var exception = CurrentVars.armour_forceStealthDis[key];
+				if (exception.test(CurrentArmour.field)) {
+					ArmorStealth = true;
+					break;
+				}
+			}
+		}
 		Checkbox(ArmorFields[3], ArmorStealth);
 		Checkbox(ArmorFields[1], ArmorType === "medium");
 		Checkbox(ArmorFields[2], ArmorType === "heavy");
@@ -7656,7 +7675,7 @@ function ParseAmmo(input, onlyInv, bReturnLength) {
 		// now see if the parent is a (better) match
 		if (found == key // stop if one of the alternatives already matched
 			|| key.length < foundLen || (key == foundLen && tempDate < foundDat) // only go on with if this entry is a better match (longer name) or is at least an equal match but with a newer source. This differs from the regExpSearch objects
-			|| input.indexOf(key) === -1 // see if string matches
+			|| (input.indexOf(key) === -1 && input.indexOf(AmmoList[key].name.toLowerCase()) === -1) // see if string matches
 		) continue;
 
 		// we have a match, set the values
@@ -8710,11 +8729,24 @@ function ConvertToMetric(inputString, rounded, exact) {
 			total = amount * UnitsList[ratio].lengthInch;
 			unit = "cm";
 			break;
-		 case "cu ft" : case "cubic foot" : case "cubic feet" :
+		 case "cu ft" : case "cubic foot" : case "cubic feet" : case "cu foot" : case "cu feet" : case "cubic ft" :
 			total = amount * UnitsList[ratio].volume;
 			unit = "m3";
+			if (total < 0.25) {
+				// for very small volumes, we are going to use dm3
+				total *= 1000;
+				unit = 'dm3';
+			} else if (total < 1 && rounding > 0.03) {
+				// for relatively small volumes, we are going to round to 0.03 accuracy
+				total = RoundTo(total, 0.03, false, true);
+				isRounded = true;
+			} else if (rounding > 0.3) {
+				// for higer volumes we are going to round to 0.3 accuracy, to avoid issues when converting them back to cubic feet
+				total = RoundTo(total, 0.3, false, true);
+				isRounded = true;
+			}
 			break;
-		 case "sq ft" : case "square foot" : case "square feet" :
+		 case "sq ft" : case "square foot" : case "square feet" : case "sq feet" : case "sq foot" : case "square ft" :
 			total = amount * UnitsList[ratio].surface;
 			unit = "m2";
 			break;
@@ -8740,7 +8772,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|(in|inch|inches|miles?|ft|foot|feet|sq ft|square foot|square feet|cu ft|cubic foot|cubic feet|lbs?|pounds?|gal|gallons?|qts?|quarts?|\u00B0 ?f|degrees? fahrenheit|fahrenheit)\b)/ig);
+	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|(in|inch|inches|miles?|(?:cubic|cu|square|sq)? ?f(?:oo|ee)?t|lbs?|pounds?|gal(?:lons?)?|q(?:uar)ts?|\u00B0 ?f|(?:degrees? )?fahrenheit)\b)/ig);
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
@@ -8784,9 +8816,6 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 	var ratio = exact ? "metricExact" : "metric";
 	var rounding = rounded ? rounded : 1;
 	var fraction;
-	var INofCM = function (unit) {
-		return unit;
-	}
 
 	var theConvert = function (amount, units) {
 		amount = Number(amount);
@@ -8807,9 +8836,15 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 			total = amount / UnitsList[ratio].distance;
 			unit = total === 1 ? "mile" : "miles";
 			break;
+		 case "dm3" : case "cubic decimeter" : case "cubic decimeters" : case "cubic decimetre" : case "cubic decimetres" :
+			amount /= 1000;
 		 case "m3" : case "cubic meter" : case "cubic meters" : case "cubic metre" : case "cubic metres" :
 			total = amount / UnitsList[ratio].volume;
 			unit = "cu ft";
+			if (total > 41 && rounding < 2) {
+				// make it a nice whole number of cubic feet
+				rounding = 10;
+			}
 			break;
 		 case "m2" : case "square metre" : case "square metres" : case "square meter" : case "square meters" :
 			total = amount / UnitsList[ratio].surface;
@@ -8830,7 +8865,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 			total = amount / UnitsList[ratio].liquid;
 			unit = "gal";
 			break;
-		 case "\u00B0 c" : case "\u00B0c" : case "degree celcius" : case "degrees celcius" : case "celcius" :
+		 case "\u00B0 c" : case "\u00B0c" : case "degree celsius" : case "degrees celsius" : case "celsius" :
 			total = RoundTo((amount * 9/5) + 32, exact ? 0.01 : 1, false, true);
 			unit = "\u00B0F";
 			isRounded = true;
@@ -8840,12 +8875,12 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?(m2|square meters?|square metres?|m3|cubic meters?|cubic metres?|cm|km|m|meters?|metres?|l|liters?|litres?|kg|g|kilos?|\u00B0 ?c|degrees? celcius|celcius)\b/ig);
+	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?(m2|d?m3|(?:square )?met(?:re|er)s?|cubic (?:deci)?met(?:re|er)s?|(?:c|k)?m|l|lit(?:er|re)s?|k?g|kilo(?:gram)?s?|\u00B0 ?c|(?:degrees? )?celsius)\b/ig);
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
 			var org = measurements[i].replace(/,/g, ".");
-			var orgUnit = org.match(/[-\s]*([\u00B0 A-z']+)$/)[1].toLowerCase();
+			var orgUnit = org.match(/[-\s]*([\u00B0 A-z']+[23]?)$/)[1].toLowerCase();
 			var fraction;
 
 			if (fraction = org.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/)){

@@ -2852,6 +2852,9 @@ function deletePage(fldNm, onTemplate, ignoreError) {
 			} catch (error) {
 				var eText = "Error while deleting page. Please contact MPMB and share the following error text:\n Adobe Acrobat version: " + app.viewerVersion + "\n " + error;
 				for (var e in error) eText += "\n " + e + ": " + error[e];
+				eText += "\n>> ERROR END <<";
+				eText += "\n\nYou are now left with a non-functional page. You can try to remedy this issue by manually executing the code below. To do so, select the line with `tDoc.deletePages(X);` and press CTRL+ENTER.";
+				eText += "\n\ttDoc.deletePages(" + tempPage + ");";
 				console.println(eText);
 				console.show();
 			}
@@ -6726,12 +6729,12 @@ function processMods(AddRemove, NameEntity, items, prefix) {
 // ["action", " (with Attac)"] or [["action", " (start)"], ["bonus action", " (end)"]]
 function processActions(AddRemove, srcNm, itemArr, itemNm) {
 	if (!itemArr) return;
-	if (!isArray(itemArr) || (itemArr.length === 2 && !isArray(itemArr[0]) && !isArray(itemArr[1]) && (/^(?!.*action).*$|\(.*\)|\[.*\]/i).test(itemArr[1]))) {
+	if (!isArray(itemArr) || (itemArr.length === 2 && !isArray(itemArr[0]) && !isArray(itemArr[1]) && /^(?!.*action).*$|\(.*\)|\[.*\]/i.test(itemArr[1]))) {
 		itemArr = [itemArr];
 	};
 	for (var i = 0; i < itemArr.length; i++) {
 		var theAct = isArray(itemArr[i]) ? itemArr[i] : [itemArr[i], ""];
-		var actNm = theAct[1] && !(/^( |-|,|\(|\[|\{|'|"|\/)/).test(theAct[1]) ? theAct[1] : itemNm + (theAct[1] == undefined ? "" : theAct[1]);
+		var actNm = theAct[1] && !/^[ /,;:'+-]/.test(theAct[1]) ? theAct[1] : itemNm + (theAct[1] == undefined ? "" : theAct[1]);
 		if (AddRemove) {
 			AddAction(theAct[0], actNm, srcNm, theAct[2] ? theAct[2] : false);
 		} else if (theAct[2]) {

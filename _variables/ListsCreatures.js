@@ -2552,7 +2552,7 @@ var Base_CreatureList = {
 	},
 	"elk" : {
 		name : "Elk",
-		nameAlt : ["Reindeer"], // from Icewind Dale: Rime of the Frostmaiden
+		nameAlt : ["Reindeer", "Yak"], // Reindeer from Icewind Dale: Rime of the Frostmaiden, Yak from Storm King's Thunder
 		source : [["SRD", 372], ["M", 322], ["RotF", 107]],
 		size : 2, //Large
 		type : "Beast",
@@ -2605,7 +2605,7 @@ var Base_CreatureList = {
 		attacksAction : 1,
 		attacks : [{
 			name : "Bite",
-			ability : 1,
+			ability : 2,
 			damage : [1, "", "piercing"],
 			range : "Melee (5 ft)",
 			description : "Target also takes 3d4 poison damage",

@@ -804,7 +804,7 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 			var nameObj = fObjP && !fObj.name ? fObjP : fObj;
 			if (fObj.chooseGear || (fObjP && fObjP.chooseGear)) {
 				// For a chooseGear item, just use its full name to avoid weird names
-				sObj.name = nameObj.name
+				sObj.name = nameObj.name;
 			} else {
 				// Otherwise, use the shortest name
 				sObj.name =  MagicItemGetShortestName(nameObj);
@@ -1143,6 +1143,7 @@ function processAddArmour(AddRemove, armorAdd, srcNm) {
 	if (typeof armorAdd === "string") {
 		armorAdd = { select : armorAdd };
 	}
+	var updateVars = false;
 	srcNm = srcNm ? srcNm.toLowerCase() : 'unknownSource';
 	if (armorAdd.options) {
 		if (!CurrentVars.extraArmourDisplay) CurrentVars.extraArmourDisplay = {};
@@ -1157,6 +1158,25 @@ function processAddArmour(AddRemove, armorAdd, srcNm) {
 		}
 		// if adding, update the dropdown before adding selection
 		if (AddRemove) UpdateDropdown("armour");
+		updateVars = true;
+	}
+	var stealOverrides = ["noStealthDis", "forceStealthDis"];
+	for (var i = 0; i < stealOverrides.length; i++) {
+		var override = stealOverrides[i];
+		if (!armorAdd[override]) continue;
+		if (!CurrentVars["armour_"+override]) CurrentVars["armour_"+override] = {};
+		if (AddRemove) {
+			var exception = armorAdd[override];
+			// make sure this is a regular expression
+			if (exception instanceof RegExp !== true) {
+				exception = RegExp(exception.toString().RegEscape(), "i");
+			}
+			CurrentVars["armour_"+override][srcNm] = exception;
+		} else if (CurrentVars["armour_"+override][srcNm]) {
+			delete CurrentVars["armour_"+override][srcNm];
+			if (!ObjLength(CurrentVars["armour_"+override])) delete CurrentVars["armour_"+override];
+		}
+		updateVars = true;
 	}
 	if (armorAdd.select) {
 		if (!AddRemove) { // remove
@@ -1183,8 +1203,9 @@ function processAddArmour(AddRemove, armorAdd, srcNm) {
 			UpdateDropdown("armour");
 			if (!ObjLength(CurrentVars.extraArmourDisplay)) delete CurrentVars.extraArmourDisplay;
 		}
-		SetStringifieds("vars"); // Save the new settings to a field
 	}
+	// Save the new settings to a field
+	if (updateVars) SetStringifieds("vars");
 }
 
 // set the shield (if more AC than current shield) or remove the shield
@@ -3732,7 +3753,14 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	}
 	// get the new name of the magic item
 	var theItemNameCap = theItemName.capitalize();
-	var newMIname = selectedItem ? createString(typeObj.prefixOrSuffix, theItemNameCap, useName) : useVal;
+	var newMIname = useVal;
+	if (selectedItem && typeObj.prefixOrSuffix) {
+		if (isArray(typeObj.prefixOrSuffix)) {
+			newMIname = createString(typeObj.prefixOrSuffix[0], theItemNameCap, typeObj.prefixOrSuffix.slice(1));
+		} else {
+			newMIname = createString(typeObj.prefixOrSuffix, theItemNameCap, useName);
+		}
+	}
 	// See if there is a special string set for how the item should appear on the 1st page
 	if (typeObj.itemName1stPage) {
 		itemToProcess = createString(typeObj.itemName1stPage[0], theItemNameCap, typeObj.itemName1stPage.slice(1));
@@ -3741,15 +3769,21 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	if (!correctingDescrLong) {
 		switch (typeNm) {
 			case "ammunition":
-				processAddAmmo(AddRemove, [[itemToProcess ? itemToProcess : newMIname.replace(/ammunition (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2"), typeObj.ammoAmount && !isNaN(typeObj.ammoAmount) ? typeObj.ammoAmount : 1]]);
+				var ammoName = itemToProcess ? itemToProcess : newMIname.replace(/ammunition (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2");
+				processAddAmmo(AddRemove, [[ammoName, typeObj.ammoAmount && !isNaN(typeObj.ammoAmount) ? typeObj.ammoAmount : 1]]);
 				break;
 			case "weapon":
 				var weaponName = itemToProcess ? itemToProcess : newMIname.replace(/weapon (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2");
-				processAddWeapons(AddRemove, {select : [weaponName], options : [weaponName]});
+				processAddWeapons(AddRemove, {select : [weaponName], options : [weaponName]}, weaponName);
 				break;
 			case "armor":
 				var armourName = itemToProcess ? itemToProcess : newMIname.replace(/armou?r (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2");
-				processAddArmour(AddRemove, {select : armourName, options : [armourName]});
+				processAddArmour(AddRemove, {
+					"select": armourName,
+					"options": [armourName],
+					"noStealthDis": typeObj.noStealthDis,
+					"forceStealthDis": typeObj.forceStealthDis
+				}, armourName);
 				break;
 		}
 	}

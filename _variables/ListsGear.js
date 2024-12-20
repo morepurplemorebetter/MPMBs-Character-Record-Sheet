@@ -685,11 +685,11 @@ var Base_WeaponsList = {
 		list : "improvised",
 		ability : 2,
 		type : "Improvised Weapons",
-		damage : [1, 4, "fire"],
+		damage : [1, 4, "bludgeoning"], // the damage from the flask's impact, which does get Dex added as it is a ranged (improvised) weapon attack
 		range : "20 ft",
 		weight : 1,
-		description : "Target +1d4 damage at the start of each of its turn; Can end it as an action with a DC 10 Dex check",
-		abilitytodamage : false,
+		description : "Target starts burning: 1d4 fire damage at the start of its turns; DC 10 Dex check to end as an action",
+		abilitytodamage : true,
 		ammo : "alchemist fire",
 		isNotWeapon : true
 	},
@@ -704,7 +704,7 @@ var Base_WeaponsList = {
 		range : "20 ft",
 		weight : 1,
 		description : "",
-		abilitytodamage : false,
+		abilitytodamage : true, // ranged (improvised) weapon attack, so follow generic rule
 		ammo : "vials of acid",
 		isNotWeapon : true
 	},
@@ -719,7 +719,7 @@ var Base_WeaponsList = {
 		range : "20 ft",
 		weight : 1,
 		description : "Only does damage against fiends and undead; Comes in flasks",
-		abilitytodamage : false,
+		abilitytodamage : true, // ranged (improvised) weapon attack, so follow generic rule
 		ammo : "holy water",
 		isNotWeapon : true
 	},

@@ -127,6 +127,10 @@ function setPrototypes() {
 	Number.prototype.capitalize = function () {
 		return this.toString().capitalize();
 	};
+	Number.prototype.countDecimals = function () {
+		// this method only works up to 6 decimal places
+		return (this.toString()+'.').split('.')[1].length;
+	};
 	RegExp.prototype.capitalize = function () {
 		return this.toString().capitalize();
 	};
@@ -469,6 +473,9 @@ function RoundTo(inputNmbr, roundNmbr, emptyAtZero, applyDec) {
 		} else if (roundNmbr > 0 && roundNmbr < 1) {
 			result = Math.round(input * Math.pow(roundNmbr,-1)) / Math.pow(roundNmbr,-1);
 		}
+		// Make sure the result has no more decimals than the roundNmbr (floating point error)
+		var roundDecimals = roundNmbr.countDecimals();
+		if (result.countDecimals() > roundDecimals) result = result.toFixed(roundDecimals);
 	}
 	if (emptyAtZero && result === 0) {
 		result = "";

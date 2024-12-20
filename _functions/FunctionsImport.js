@@ -2612,12 +2612,12 @@ function RunUserScript(atStartup, manualUserScripts) {
 			};
 			return true;
 		} catch (err) {
-			if ((/out of memory/i).test(e.toSource())) return "outOfMemory";
+			if ((/out of memory/i).test(err.toSource())) return "outOfMemory";
 			IsNotUserScript = true;
 			var forNewerVersion = sheetVersion < minSheetVersion[0];
 			var eText = "The add-on script "+ (isManual ? "you entered" : '"' + scriptName + '"');
 			eText += forNewerVersion ? " says it was made for a newer version of the sheet (v" + minSheetVersion[1] + "; this sheet is only v" + semVers + "). That is probably why " : " is faulty, ";
-			eText += "it returns the following error when run:\n\"" + e;
+			eText += "it returns the following error when run:\n\"" + err;
 			for (var e in err) eText += "\n " + e + ": " + err[e];
 			eText += '"\n\n' + (isManual ? "Your add-on script has not been added to the sheet, please try again after fixing the problem." : "The add-on script has been removed from this pdf.") + "\n\nFor a more specific error, that includes the line number of the error, try running the add-on script from the JavaScript Console.\n\nPlease contact the author of the add-on script";
 			app.alert({

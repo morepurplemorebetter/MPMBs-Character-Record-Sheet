@@ -456,6 +456,8 @@ function AbilityScores_Button(onlySetTooltip) {
 				var res = dialog.store();
 				// Save to the global variable
 				this.setCurrentStats(dialog);
+				// Update the Honor/Sanity
+				if (this.fieldHoS !== curHoS) ShowHonorSanity(this.fieldHoS);
 				// See if any stats changed
 				var statChange = { any : false, con : false, mental : false };
 				for (var s = 0; s < 7; s++) {
@@ -469,7 +471,8 @@ function AbilityScores_Button(onlySetTooltip) {
 						}
 					}
 				}
-				if (!statChange.any) return; // no totals changed
+				// Stop now if no totals changed
+				if (!statChange.any) return;
 				// Start progress bar and stop calculations
 				var thermoTxt = thermoM("Applying stats...");
 				calcStop();
@@ -479,8 +482,6 @@ function AbilityScores_Button(onlySetTooltip) {
 					Value(asab3[s], theAbi);
 					Value(asab3[s] + " Mod", Math.round((theAbi - 10.5) * 0.5));
 				}
-				// Update the Honor/Sanity
-				if (this.fieldHoS !== curHoS) ShowHonorSanity(this.fieldHoS);
 				// Apply HP tooltips if Con changed
 				if (statChange.con) CurrentUpdates.types.push("hp");
 				// Recalculate attack entries, as they might have changed (Finesse)

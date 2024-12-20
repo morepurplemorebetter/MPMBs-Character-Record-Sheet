@@ -39,7 +39,7 @@
 				You will also need the syntax for adding a source if you want the magic item
 				to have a source that doesn't yet exist in the sheet.
 
-	Sheet:		v13.0.9 and newer
+	Sheet:		v13.2.3 and newer
 
 */
 
@@ -425,22 +425,48 @@ MagicItemsList["staff of purple"] = {
 		The above example returns true for the ArmourList 'hide' entry, making sure that the Hide armour is not part of the pop-up.
 	*/
 		prefixOrSuffix : "suffix",
+		prefixOrSuffix : ["between", "Efreeti", "Armor"],
 	/*	prefixOrSuffix // OPTIONAL //
 		TYPE:	string
 		USE:	determine how the name of the selected gear is added to the name of the magic item
+		CHANGE: v13.2.3 (added "between" option)
 
-		This attribute can be one of three options:
+		This attribute can be one of four options:
+		(with examples for the magic item "Armor of Resistance" and the armour "Breastplate")
 		1. "prefix" 	// Add the name of selected gear before the name of the magic item
+				Example: "Breastplate Armor of Resistance"
+
 		2. "suffix" 	// Add the name of selected gear after the name of the magic item
+				Example: "Armor of Resistance Breastplate"
+
 		3. "brackets"	// Add the name of selected gear in brackets after the name of the magic item
+				Example: "Armor of Resistance (Breastplate)"
+
+		4. An array with three strings, a way to put text around the name of the selected gear:
+			4.1 "between"	The first entry must always be exactly this, so that it mirrors how
+			                `itemName1stPage` works, see below.
+			4.2 A string that is put in front of the selected gear's name.
+			4.3 A string that is put behind the selected gear's name.
+
+			The sheet will add spaces.
+
+			For example, this code:
+				prefixOrSuffix : ["between", "Efreeti", "Armor"],
+			when selecting "Padded" armour, will result in:
+				"Efreeti Padded Armor"
+
+			-IMPORTANT-
+			If you use this method, you need to make sure that all possible options still
+			match either the `name`, `nameAlt`, or `nameTest` of the magic item.
+			The best way to do that is by adding the `nameTest` attribute with a regular
+			expression, which can be as simple as:
+				/efreeti.*armor/i
+			N.B. `.*` in a regular expression means any number of characters of any type.
+
 		If this attribute is not present, the sheet will use the option "prefix".
 
-		Examples with the magic item "Armor of Resistance" and the armor "Breastplate":
-		1. "prefix" 	- would result in: "Breastplate Armor of Resistance"
-		2. "suffix" 	- would result in: "Armor of Resistance Breastplate"
-		3. "brackets"	- would result in: "Armor of Resistance (Breastplate)"
-
-		Unless the 'itemName1stPage' attribute is present, see below, the resulting name is also used to populate the 1st page.
+		Unless the 'itemName1stPage' attribute is present, see below, the resulting name
+		is also used to populate the 1st page.
 	*/
 		descriptionChange : ["prefix", "armor"],
 	/*	descriptionChange // OPTIONAL //
@@ -465,6 +491,7 @@ MagicItemsList["staff of purple"] = {
 			"armor", "weapon", or "ammunition".
 	*/
 		itemName1stPage : ["prefix", "of Purple"],
+		itemName1stPage : ["between", "Purple", "of Sparkles"],
 	/*	itemName1stPage // OPTIONAL //
 		TYPE:	array
 		USE:	how the name added to the 1st page should look like
@@ -498,6 +525,38 @@ MagicItemsList["staff of purple"] = {
 
 		If this attribute is not included, the sheet will default to adding 1 of the magic
 		ammunition in the ammunition section.
+	*/
+		noStealthDis : /mithral/i,
+	/*	noStealthDis // OPTIONAL //
+		TYPE:	regular expression
+		USE:	armours matching this never impose disadvantage on stealth checks
+		ADDED:	v13.2.2
+
+		This attribute can only be used if the `chooseGear.type` attribute above is set to "armor".
+
+		If the content entered into the armour field matches the provided regular expression,
+		the checkbox for the armour granting disadvantage will always be unchecked.
+		N.B. this checkbox is a "modifier field" on the printer friendly sheets, and thus
+		only visible when the modifier fields are toggled to be shown.
+
+		Use this if you are adding an armour that normally imposes disadvantage on stealth,
+		but the variation added by the feature doesn't.
+	*/
+		forceStealthDis : /oversized/i,
+	/*	forceStealthDis // OPTIONAL //
+		TYPE:	regular expression
+		USE:	armours matching this always impose disadvantage on stealth checks
+		ADDED:	v13.2.2
+
+		This attribute can only be used if the `chooseGear.type` attribute above is set to "armor".
+
+		If the content entered into the armour field matches the provided regular expression,
+		the checkbox for the armour granting disadvantage will always be checked.
+		N.B. this checkbox is a "modifier field" on the printer friendly sheets, and thus
+		only visible when the modifier fields are toggled to be shown.
+
+		Use this if you are adding an armour that normally doesn't impose disadvantage on
+		stealth, but the variation added by the feature does.
 	*/
 	},
 /*
