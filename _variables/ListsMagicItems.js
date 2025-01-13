@@ -55,7 +55,10 @@ var Base_MagicItemsList = {
 		chooseGear : {
 			type : "ammo",
 			prefixOrSuffix : "brackets",
-			descriptionChange : ["replace", "ammunition"]
+			descriptionChange : ["replace", "ammunition"],
+			excludeCheck : function (inObjKey, inObj) {
+				return /vials|flasks/i.test(inObj.icon);
+			}
 		},
 		choices : ["+1 Ammunition (uncommon)", "+2 Ammunition (rare)", "+3 Ammunition (very rare)"],
 		"+1 ammunition (uncommon)" : {
