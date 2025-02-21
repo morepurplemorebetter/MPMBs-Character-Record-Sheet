@@ -39,7 +39,7 @@
 				You will also need the syntax for adding a source if you want the feat
 				to have a source that doesn't yet exist in the sheet.
 
-	Sheet:		v13.0.6 and newer
+	Sheet:		v14.0.0 and newer (PHB'24)
 
 */
 
@@ -235,6 +235,18 @@ FeatsList["purple power"] = {
 		description : "",
 */
 
+	isOriginFeat : true,
+/*	isOriginFeat // OPTIONAL //
+	TYPE:	boolean
+	USE:	set to `true` if this feat is an origin feat
+	ADDED:	v14.0.0
+
+	If this attribute is set to true, the feat will be considered eligible to select
+	as a feat gained at 1st level (from a background).
+
+	Setting this attribute to false is the same as not including this attribute.
+*/
+
 /*
 	>>>>>>>>>>>>>>>>>>>>>>>>>
 	>>> Common Attributes >>>
@@ -326,7 +338,9 @@ FeatsList["purple power"] = {
 		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 		All the attributes described above can also be used inside a choice object, except:
-			'choices'	- you can't have options inside options
+			'choices'		- you can't have options inside options
+			'selfChoosing'	- you can't have options inside options
+			'isOriginFeat'	- sub-options can't be separate origin feats
 
 		The sheet will look in both choice and parent to determine what attribute to use,
 		with the choice being preferred over the parent.

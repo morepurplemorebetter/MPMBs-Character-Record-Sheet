@@ -17,8 +17,8 @@ function processStats(AddRemove, inType, NameEntity, inScoresA, dialogTxt, isSpe
 			break;
 		}
 	}
-	if (!curStat && type === "background") {
-		ASaddColumn("Backgr-\nound", true);
+	if (!curStat && type === "race") {
+		ASaddColumn("Racial Bonus", type);
 		i = CurrentStats.cols.length - 1;
 		curStat = CurrentStats.cols[i];
 	} else if (!curStat) {
@@ -132,8 +132,8 @@ function initiateCurrentStats(forceIt) {
 			name : "Score Base",
 			scores : [8,8,8,8,8,8,8]
 		}, {
-			type : 'race',
-			name : "Racial Bonus",
+			type : 'background',
+			name : "Backgr-\nound",
 			scores : [0,0,0,0,0,0,0]
 		}, {
 			type : 'feats',
@@ -167,6 +167,7 @@ function initiateCurrentStats(forceIt) {
 		"txts" : {
 			"classes" : {},
 			"race" : {},
+			"feats" : {},
 			"feats" : {},
 			"items" : {},
 			"magic" : {},
@@ -219,6 +220,11 @@ function AbilityScores_Button(onlySetTooltip) {
 		ref : {
 			title : "Primary class abilities \u0026 Multiclassing prerequisites",
 			loc : "left",
+			txt : ""
+		},
+		background : {
+			title : "Background ability score improvements",
+			loc : "right",
 			txt : ""
 		},
 		race : {
@@ -1157,7 +1163,7 @@ function AbilityScores_Button(onlySetTooltip) {
 }
 
 // a function to ask the user for a new column caption and add that column
-function ASaddColumn(inputName, isBackground) {
+function ASaddColumn(inputName, typeName) {
 	var diaHead = "Give the new column an unique caption";
 	var diaText = "The field is intentionally small so that you have an idea of how big the caption can be. If something doesn't fit nicely, it will definitely not display correctly in the ability score dialog.\n\nIf you include the word 'override' in the caption, the column will be treated as an overriding column instead of an adding column. This means that a value will be used if higher than the other values added together.";
 	var diaText2 = "If you leave the above field blank, no column will be created.";
@@ -1227,7 +1233,7 @@ function ASaddColumn(inputName, isBackground) {
 	var newColName = inputName ? inputName : app.execDialog(theDialog) === "ok" && theDialog.column ? theDialog.column : false;
 	if (newColName) {
 		CurrentStats.cols.push({
-			type : isBackground ? 'background' : 'extra',
+			type : typeName ? typeName : 'extra',
 			name : newColName,
 			scores : [0,0,0,0,0,0,0]
 		});

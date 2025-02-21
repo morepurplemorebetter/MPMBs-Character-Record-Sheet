@@ -671,7 +671,7 @@ function MakeCompMenu_CompOptions(prefix, MenuSelection, force) {
 		}
 
 		var aCompMenu = [], bAddMenuDivider = false;
-		if (CurrentSources.globalExcl.indexOf("SRD") !== -1 && (!SourceList.M || (SourceList.M && CurrentSources.globalExcl.indexOf("M") !== -1))) {
+		if ((CurrentSources.globalExcl.indexOf("SRD") !== -1 || CurrentSources.globalExcl.indexOf("free") !== -1) && ((!SourceList.M || (SourceList.M && CurrentSources.globalExcl.indexOf("M") !== -1)) || (!SourceList.M24 || (SourceList.M && CurrentSources.globalExcl.indexOf("M24") !== -1)))) {
 			// If the SRD is excluded (and the MM if it exists), add a warning here
 			aCompMenu = [{
 				cName : "Be aware: the SRD " + (SourceList.M ? "and Monster Manual are" : "is") + " excluded from the sources!",

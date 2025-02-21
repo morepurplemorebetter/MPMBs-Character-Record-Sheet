@@ -100,7 +100,7 @@ var Base_ClassList = {
 	"barbarian" : {
 		regExpSearch : /^((?=.*(marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n))|((?=.*(warrior|fighter))(?=.*(feral|tribal)))).*$/i,
 		name : "Barbarian",
-		source : [["SRD", 8], ["P", 46]],
+		source : [["free", 0], ["P24", 51]],
 		primaryAbility : "Strength",
 		prereqs : "Strength 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
@@ -115,13 +115,21 @@ var Base_ClassList = {
 		},
 		weaponProfs : {
 			primary : [true, true],
-			secondary : [true, true]
+			secondary : [false, true]
 		},
-		equipment : "Barbarian starting equipment:" +
-			"\n \u2022 A greataxe -or- any martial melee weapon;" +
-			"\n \u2022 Two handaxes -or- any simple weapon;" +
-			"\n \u2022 An explorer's pack and four javelins." +
-			"\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
+		startingEquipment : {
+			gold : 15,
+			pack : "explorer",
+			equipright: [
+				["Greataxe", "", 7],
+				["Handaxe", 4, 2]
+			],
+			equip1stPage : {
+				weapons : ["Greataxe", "Handaxe"],
+				ammo : [["Handaxes", 4]]
+			},
+			goldAlt : 75
+		},
 		subclasses : ["Primal Path", ["barbarian-berserker"]],
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		features : {
@@ -730,7 +738,7 @@ var Base_ClassList = {
 	"monk" : {
 		regExpSearch : /^((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
 		name : "Monk",
-		source : [["SRD", 26], ["P", 76]],
+		source : [["free", 0], ["P24", 101]],
 		primaryAbility : "Dexterity and Wisdom",
 		abilitySave : 5,
 		prereqs : "Dexterity 13 and Wisdom 13",
@@ -738,7 +746,7 @@ var Base_ClassList = {
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 		saves : ["Str", "Dex"],
 		toolProfs : {
-			primary : [["Artisan's tool or musical instrument", 1]]
+			primary : [["Artisan's tool or Musical instrument", 1]]
 		},
 		skillstxt : {
 			primary : "Choose two from Acrobatics, Athletics, History, Insight, Religion, and Stealth"
@@ -760,13 +768,13 @@ var Base_ClassList = {
 		features : {
 			"unarmored defense" : {
 				name : "Unarmored Defense",
-				source : [["SRD", 26], ["P", 78]],
+				source : [["free", 0], ["P24", 101]],
 				minlevel : 1,
 				description : desc("Without armor and no shield, my AC is 10 + Dexterity modifier + Wisdom modifier"),
 				armorOptions : [{
 					regExpSearch : /justToAddToDropDownAndEffectWildShape/,
 					name : "Unarmored Defense (Wis)",
-					source : [["SRD", 26], ["P", 78]],
+					source : [["free", 0], ["P24", 101]],
 					ac : "10+Wis",
 					affectsWildShape : true,
 					selectNow : true
@@ -777,14 +785,14 @@ var Base_ClassList = {
 				source : [["SRD", 26], ["P", 78]],
 				minlevel : 1,
 				description : desc([
-					"Monk weapons: any simple melee (not two-handed/heavy), unarmed strike, shortsword",
+					"Monk weapons: unarmed strike, simple melee, martial light melee",
 					"With monk weapons, I can use Dex instead of Str and use the Martial Arts damage die",
 					"When taking an Attack action with these, I get one unarmed strike as a bonus action"
 				]),
 				additional : levels.map(function (n) {
-					return "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
+					return "1d" + (n < 5 ? 6 : n < 11 ? 8 : n < 17 ? 10 : 12);
 				}),
-				action : [["bonus action", "Unarmed Strike (with Attack action)"]],
+				action : [["bonus action", "Unarmed Strike"]],
 				eval : function() {
 					AddString('Extra.Notes', 'Monk features:\n\u25C6 If I wear armor/shield, I lose Unarmored Defense, Martial Arts, and Unarmored Movement');
 					show3rdPageNotes();
@@ -795,15 +803,16 @@ var Base_ClassList = {
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
-							if (classes.known.monk && classes.known.monk.level && (v.theWea.monkweapon || v.baseWeaponName == "unarmed strike" || v.baseWeaponName == "shortsword" || (v.isMeleeWeapon && (/simple/i).test(v.theWea.type) && !(/heavy|((^|[^+-]\b)2|\btwo).?hand(ed)?s?/i).test(fields.Description)))) {
+							if (!classes.known.monk || !classes.known.monk.level || v.theWea.monkweapon === false) return;
+							if (v.theWea.monkweapon || ( v.isMeleeWeapon && /simple/i.test(v.theWea.type) ) || ( v.isMeleeWeapon && /martial/i.test(v.theWea.type) && /\blight\b/i.test(fields.Description) )) {
 								v.theWea.monkweapon = true;
-								var aMonkDie = function (n) { return n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10; }(classes.known.monk.level);
+								var aMonkDie = function (n) { return n < 5 ? 6 : n < 11 ? 8 : n < 17 ? 10 : 12; }(classes.known.monk.level);
 								try {
 									var curDie = eval_ish(fields.Damage_Die.replace('d', '*'));
 								} catch (e) {
 									var curDie = 'x';
 								};
-								if (isNaN(curDie) || curDie < aMonkDie) {
+								if ( !v.isDC && (isNaN(curDie) || curDie < aMonkDie) ) {
 									fields.Damage_Die = '1d' + aMonkDie;
 								};
 								if (fields.Mod === 1 || fields.Mod === 2 || What(AbilityScores.abbreviations[fields.Mod - 1] + " Mod") < What(AbilityScores.abbreviations[v.StrDex - 1] + " Mod")) {

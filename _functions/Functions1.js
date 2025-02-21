@@ -296,7 +296,7 @@ function ResetTooltips() {
 		AddTooltip(clearCalcs[i], undefined, "");
 		tDoc.getField(clearCalcs[i]).setAction("Calculate", "");
 	};
-	AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
+	SetEquipmentMenuTooltip();
 	AddTooltip("Background Extra", 'First fill out a background in the field to the left.\n\nOnce a background is recognized that offers additional options, those additional options will be displayed here. For example, the "Origin" for the "Outlander" background.');
 	SetHPTooltip("reset");
 	setSkillTooltips(true);
@@ -1871,7 +1871,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 				// remove the class base features if removing the class
 				ApplyClassBaseAttributes(false, oClass, classes.primary == oClass);
 				// reset the tooltip of the equipment menu if this was the primary class
-				if (classes.primary == oClass) AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
+				// if (classes.primary == oClass) AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.");
 				// remove the class from the CurrentSpells variable
 				delete CurrentSpells[oClass];
 			} else if (classesTemp[oClass].subclass !== classes.old[oClass].subclass) {
@@ -2125,9 +2125,9 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 		// process its attributes
 		ApplyClassBaseAttributes(true, aClass, classes.primary == aClass);
 		// set the tooltip if the new primary class
-		if (classes.primary == aClass) {
-			AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.\n\n" + CurrentClasses[classes.primary].equipment);
-		}
+		// if (classes.primary == aClass) {
+		// 	AddTooltip("Equipment.menu", "Click here to add equipment to the adventuring gear section, or to reset it (this button does not print).\n\nIt is recommended to pick a pack first before you add any background's items.\n\n" + CurrentClasses[classes.primary].equipment);
+		// }
 	}
 
 	thermoM(3/4); // Increment the progress bar
@@ -2171,6 +2171,7 @@ function ApplyClasses(inputclasstxt, isFieldVal) {
 	SetTheAbilitySaveDCs();
 	AddAttacksPerAction();
 	ClassMenuVisibility();
+	SetEquipmentMenuTooltip();
 };
 
 // update the HD fields using the classes.oldhd and classes.hd objects
@@ -2521,15 +2522,10 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 		}
 		// if set, apply some generic defaults (age/height/weight/scores/languages) if nothing was set for those attributes. These defaults were added with the introduction of VRGtR
 		if (CurrentRace.scoresGeneric) {
-			if (!CurrentRace.scores && !CurrentRace.scorestxt) {
-				// No fixed stat increases, so list the generic one
-				CurrentRace.scorestxt = "+2 to one ability score and +1 to a different score, -or- +1 to three different scores";
-			}
 			var genericHeightWeight = " vary in size. If you'd like to determine your character's height or weight randomly, consult the Random Height and Weight table in the PHB, and choose the row in the table that best represents the build you imagine for your character.";
 			if (!CurrentRace.height) CurrentRace.height = genericHeightWeight;
 			if (!CurrentRace.weight) CurrentRace.weight = genericHeightWeight;
 			if (!CurrentRace.age) CurrentRace.age = " typically live to be around 100 years old";
-			if (!CurrentRace.languageProfs) CurrentRace.languageProfs = ["Common", 1];
 		}
 		// if the abilitySave is an array, have the user select which one to use and remember that
 		if (CurrentRace.abilitySave && (isArray(CurrentRace.abilitySave) || isNaN(CurrentRace.abilitySave))) {
@@ -2545,6 +2541,11 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 				SetStringifieds("vars");
 			}
 		}
+		// delete attributes from legacy races that are no longer applicable in 2024 rules
+		delete CurrentRace.scores;
+		delete CurrentRace.scorestxt;
+		// add the default languages if none are known
+		if (!CurrentRace.languageProfs) CurrentRace.languageProfs = ["Common", 2];
 	}
 
 	// set the current race level when loading the sheet
@@ -2860,7 +2861,7 @@ function ParseWeapon(input, onlyInv) {
 		var bObj = kObj.baseWeapon ? WeaponsList[kObj.baseWeapon] : false;
 		if ((onlyInv && kObj.weight == undefined) // see if only doing equipable items
 			|| (kObj.baseWeapon && !bObj) // see if it has a baseWeapon, but that baseWeapon doesn't exist
-			|| !kObj.regExpSearch || !(kObj.regExpSearch).test(input) // see if the regex matches
+			|| !kObj.regExpSearch || !kObj.regExpSearch.test(input) // see if the regex matches
 			|| testSource(key, kObj, "weapExcl") // test if the armour or its source isn't excluded
 		) continue;
 
@@ -2979,7 +2980,7 @@ function SetWeaponsdropdown(forceTooltips, aCompPrefixes) {
 		altList : [], // nameAlt for regular WeaponList entries
 		melee : [],
 		ranged : [],
-		improvised : [],
+		gear : [],
 		spell : []
 	};
 
@@ -3039,7 +3040,13 @@ function SetWeaponsdropdown(forceTooltips, aCompPrefixes) {
 	var addWeaList = function (setweapons, weArr, addFirst, noSort, addAtStart) {
 		if (!weArr || !weArr.length) return setweapons;
 		if (!noSort) weArr.sort();
-		if (addFirst) weArr.unshift(addFirst);
+		if (addFirst) {
+			if (isArray(addFirst)) {
+				weArr = addFirst.concat(weArr);
+			} else {
+				weArr.unshift(addFirst);
+			}
+		}
 		if (weArr.length) {
 			weArr.unshift("");
 			setweapons = !addAtStart ? setweapons.concat(weArr) : weArr.concat(setweapons);
@@ -3047,9 +3054,9 @@ function SetWeaponsdropdown(forceTooltips, aCompPrefixes) {
 		return setweapons;
 	};
 	// add the normal weapons
-	setweapons = addWeaList(setweapons, oWeaponLists.melee.concat(oWeaponLists.ranged), "Unarmed Strike");
-	// add the improvised weapons
-	setweapons = addWeaList(setweapons, oWeaponLists.improvised, "Improvised Weapon");
+	setweapons = addWeaList(setweapons, oWeaponLists.melee.concat(oWeaponLists.ranged), ["Unarmed strike (Damage)", "Unarmed Strike (DC)"]);
+	// add the gear that function as weapons
+	setweapons = addWeaList(setweapons, oWeaponLists.gear, "Improvised Weapon");
 	// add the spells/cantrips
 	setweapons = addWeaList(setweapons, oWeaponLists.spell, "Spell Attack");
 
@@ -3578,11 +3585,53 @@ function SetGearVariables() {
 	};
 };
 
+// set the tooltip for the equipment menu
+function SetEquipmentMenuTooltip() {
+	var sText = "Recommended: add a pack/class equipment before adding background items.";
+
+	// function to create a string of all starting equipment
+	var reduceEquipToNames = function(array) {
+		return (array[1] ? array[1] + " " : "") + array[0];
+	}
+	var parseStartingEquipment = function(oInput, sName, sGoldAlternative) {
+		var aEquipNames = [];
+		if (oInput.pack && PacksList[oInput.pack]) aEquipNames.push(PacksList[oInput.pack].name.replace(/ ?\(.*\)/g, '').toLowerCase());
+		if (oInput.equipleft) aEquipNames = aEquipNames.concat(oInput.equipleft.map(reduceEquipToNames));
+		if (oInput.equipright) aEquipNames = aEquipNames.concat(oInput.equipright.map(reduceEquipToNames));
+		aEquipNames.sort();
+		if (oInput.gold) aEquipNames.push(oInput.gold + " gp");
+		// If nothing was added, return an empty array
+		if (!aEquipNames.length) return "";
+		// Otherwise, add some defaults to the array
+		var bUseOr = false;
+		var sCaption = "\n\n" + sName + "'s starting equipment:";
+		if (oInput.goldAlt || sGoldAlternative) {
+			sGoldAlternative = sGoldAlternative ? sGoldAlternative : oInput.goldAlt;
+			aEquipNames.push("(B) " + sGoldAlternative + " gp.");
+			bUseOr = true;
+			sCaption += " Choose A or B: (A)"
+		}
+		// and then return a formatted line list
+		return formatLineList(sCaption, aEquipNames, bUseOr);
+	}
+	if (classes.primary) {
+		var oClass = CurrentClasses[classes.primary];
+		if (oClass.startingEquipment) {
+			sText += parseStartingEquipment(oClass.startingEquipment, oClass.name);
+		} else if (oClass.equipment) {
+			sText += "\n\n" + oClass.equipment;
+		}
+	}
+	if (CurrentBackground.known) {
+		sText += parseStartingEquipment(CurrentBackground, CurrentBackground.name, 50);
+	}
+
+	AddTooltip("Equipment.menu", sText);
+}
+
 //Make menu for 'add equipment' button and parse it to Menus.inventory
 function MakeInventoryMenu() {
 	var InvMenu = [];
-
-	var backgroundKn = CurrentBackground.name ? CurrentBackground.name : "Background";
 
 	//first make the top three entries (Pack, Gear, Tool)
 	var itemMenu = function(menu, name, array, object) {
@@ -3619,37 +3668,82 @@ function MakeInventoryMenu() {
 	itemMenu(InvMenu, "Gear", menuExtraTypes, GearMenus.gear);
 	itemMenu(InvMenu, "Tool", menuExtraTypes, GearMenus.tools);
 
-	//add the other single-level options to the menu
-	var menuLVL1 = function (item, array) {
-		for (i = 0; i < array.length; i++) {
-			var isMarked = array[i][1] === "attuned" ? What("Adventuring Gear Remember") == false :
-				array[i][1] === "location2" ? What("Gear Location Remember").split(",")[0] == "true" :
-				array[i][1] === "location3" ? What("Gear Location Remember").split(",")[1] == "true" : false;
-			var isEnabled = array[i][1] === "location3" ? isTemplVis("ASfront") : array[i][1].indexOf("background") !== -1 ? backgroundKn !== "Background" : true;
-			item.push({
-				cName : array[i][0],
-				cReturn : array[i][1],
-				bMarked : isMarked,
-				bEnabled : isEnabled
-			});
-		}
-	};
+	var hasBackgrEquip = CurrentBackground.equipleft || CurrentBackground.equipright || CurrentBackground.gold;
+	var hasBackgr1st = CurrentBackground.equip1stPage;
+	var sBackgrName = CurrentBackground.known ? CurrentBackground.name : "Background";
 
-	menuLVL1(InvMenu, [
-		["-", "-"],
-		[backgroundKn + "'s items and gold", "background"],
-		["Armor && Shield (from 1st page) [only adds new]", "armour"],
-		["Weapons && Ammunition (from 1st page) [only updates/adds new]", "weapon"],
-		["-", "-"],
-		["All three of the above (" + backgroundKn + ", armour, weapons)", "background-armour-weapon"],
-		["Just two of the above (armour, weapons)", "armour-weapon"],
-		["-", "-"],
-		["Reset equipment section", "reset"],
-		["-", "-"],
-		["Show 'Attuned Magical Items' subsection", "attuned"],
-		["Show location column for Equipment (this page)", "location2"],
-		["Show location column for Extra Equipment (3rd page)", "location3"]
-	]);
+	var oPrimaryClass = classes.primary ? CurrentClasses[classes.primary].startingEquipment : {};
+	var hasPriClassEquip = oPrimaryClass.pack || oPrimaryClass.equipleft || oPrimaryClass.equipright || oPrimaryClass.gold;
+	var hasPriClass1st = oPrimaryClass.equip1stPage;
+	var sPriClassName = classes.primary ? CurrentClasses[classes.primary].name : "Class";
+
+	var aLocationColumns = What("Gear Location Remember").split(",");
+
+	InvMenu = InvMenu.concat([{
+		cName : ["-"]
+	}, {
+		cName : sPriClassName + "'s equipment and gold to this equipment section",
+		cReturn : "primaryclass#equipment",
+		bEnabled : hasPriClassEquip
+	}, {
+		cName : sPriClassName + "'s weapons, armor, and ammo to the 1st page",
+		cReturn : "primaryclass#1stpage",
+		bEnabled : hasPriClass1st
+	}, {
+		cName : "Both of the above (" + sPriClassName + "'s gear)",
+		cReturn : "primaryclass#equipment_1stpage",
+		bEnabled : hasPriClassEquip && hasPriClass1st
+	}, {
+		cName : ["-"]
+	}, {
+		cName : sBackgrName + "'s equipment and gold to this equipment section",
+		cReturn : "background#equipment",
+		bEnabled : hasBackgrEquip
+	}, {
+		cName : sBackgrName + "'s weapons, armor, and ammo to the 1st page",
+		cReturn : "background#1stpage",
+		bEnabled : hasBackgr1st
+	}, {
+		cName : "Both of the above (" + sBackgrName + "'s gear)",
+		cReturn : "background#equipment_1stpage",
+		bEnabled : hasBackgrEquip && hasBackgr1st
+	}, {
+		cName : ["-"]
+	}, {
+		cName : "Armor && Shield (from 1st page) [only adds new]",
+		cReturn : "armour"
+	}, {
+		cName : "Weapons && Ammunition (from 1st page) [only updates/adds new]",
+		cReturn : "weapon"
+	}, {
+		cName : "Both the above (armor, weapons)",
+		cReturn : "armour#weapon"
+	}, {
+		cName : ["-"]
+	}, {
+		cName : "Reset equipment section",
+		cReturn : "reset"
+	}, {
+		cName : ["-"]
+	}, {
+		cName : "Show 'Attuned Magical Items' subsection",
+		cReturn : "attuned",
+		bMarked : What("Adventuring Gear Remember") == false
+	}, {
+		cName : "Show location column for Equipment (this page)",
+		cReturn : "location2",
+		bMarked : aLocationColumns[0] == "true"
+	}, {
+		cName : "Show location column for Equipment (3rd page)",
+		cReturn : "location3",
+		bMarked : aLocationColumns[1] == "true",
+		bEnabled : isTemplVis("ASfront")
+	}, {
+		cName : ["-"]
+	}, {
+		cName : "Change carried weight options (encumbrance rules)",
+		cReturn : "weight"
+	}]);
 
 	Menus.inventory = InvMenu;
 };
@@ -3665,69 +3759,97 @@ function InventoryOptions(input) {
 	thermoM(0.5); // Increment the progress bar
 	calcStop();
 
-	if (MenuSelection[0] === "pack") {
-		var thePack = PacksList[MenuSelection[1]];
-		thermoTxt = thermoM("Adding pack " + thePack.name + "...", false); //change the progress dialog text
-		var columnCalc = typePF ? (MenuSelection[2].indexOf("r") !== -1 ? 1.5 : MenuSelection[2].indexOf("m") !== -1 ? 3 : false) : (MenuSelection[2].indexOf("r") !== -1 ? 2 : false);
-		var startRow = columnCalc ? Math.round(FieldNumbers.gear / columnCalc + 1) : 1;
-		if (What("Adventuring Gear Row " + startRow)) InvInsert("Adventuring ", startRow);
-		for (var i = 0; i < thePack.items.length; i++) {
-			var theGear = thePack.items[i];
-			AddToInv("gear", MenuSelection[2], theGear[0], theGear[1], theGear[2]);
-		};
-	} else if (MenuSelection[0] === "gear" || MenuSelection[0] === "tool") {
-		var theGear = MenuSelection[0] === "gear" ? GearList[MenuSelection[1]] : ToolsList[MenuSelection[1]];
-		thermoTxt = thermoM("Adding '" + theGear.name + "' to the adventuring gear...", false); //change the progress dialog text
-		AddToInv("gear", MenuSelection[2], theGear.name, theGear.amount, theGear.weight);
-	} else if (MenuSelection[0] === "reset") {
-		thermoTxt = thermoM("Resetting the equipment section...", false); //change the progress dialog text
-		var tempArray = ["Platinum Pieces", "Gold Pieces", "Electrum Pieces", "Silver Pieces", "Copper Pieces"];
-		if (!typePF) {
-			for (var i = 1; i < 5; i++) { tempArray.push("Valuables" + i); };
-			tempArray = tempArray.concat(["Lifestyle", "Lifestyle daily cost"]);
-		};
-		for (var i = 1; i <= FieldNumbers.gear; i++) {
-			tempArray.push("Adventuring Gear Row " + i);
-			tempArray.push("Adventuring Gear Location.Row " + i);
-			tempArray.push("Adventuring Gear Amount " + i);
-			tempArray.push("Adventuring Gear Weight " + i);
-		};
-		tDoc.resetForm(tempArray);
-	} else if (MenuSelection[0] === "attuned") {
-		thermoTxt = thermoM("Toggling the visibility of the Attuned Magical Items subsection...", false);
-		ShowAttunedMagicalItems(What("Adventuring Gear Remember") === true);
-	} else if (MenuSelection[0] === "location2") {
-		thermoTxt = thermoM("Toggling the visibility of the location column on page 2...", false);
-		HideInvLocationColumn("Adventuring Gear ", What("Gear Location Remember").split(",")[0] === "true");
-	} else if (MenuSelection[0] === "location3") {
-		thermoTxt = thermoM("Toggling the visibility of the location column on page 3...", false);
-		HideInvLocationColumn("Extra.Gear ", What("Gear Location Remember").split(",")[1] === "true");
-	} else if (MenuSelection[0].indexOf("background") !== -1) {
-		thermoTxt = thermoM("Adding background items to equipment section...", false);
-		AddInvBackgroundItems();
-	};
-	if (MenuSelection[0].indexOf("armour") !== -1) {
-		thermoTxt = thermoM("Adding/updating armor and shield in equipment section...", false);
-		AddInvArmorShield();
-	};
-	if (MenuSelection[0].indexOf("weapon") !== -1) {
-		thermoTxt = thermoM("Adding/updating weapons and ammunition in equipment section...", false);
-		AddInvWeaponsAmmo();
-	};
+	switch (MenuSelection[0]) {
+		case "pack":
+			var thePack = PacksList[MenuSelection[1]];
+			thermoTxt = thermoM("Adding pack " + thePack.name + "...", false);
+			var columnCalc = typePF ? (MenuSelection[2].indexOf("r") !== -1 ? 1.5 : MenuSelection[2].indexOf("m") !== -1 ? 3 : false) : (MenuSelection[2].indexOf("r") !== -1 ? 2 : false);
+			var startRow = columnCalc ? Math.round(FieldNumbers.gear / columnCalc + 1) : 1;
+			if (What("Adventuring Gear Row " + startRow)) InvInsert("Adventuring ", startRow);
+			for (var i = 0; i < thePack.items.length; i++) {
+				var theGear = thePack.items[i];
+				AddToInv("gear", MenuSelection[2], theGear[0], theGear[1], theGear[2]);
+			};
+			break;
+		case "gear":
+		case "tool":
+			var theGear = MenuSelection[0] === "gear" ? GearList[MenuSelection[1]] : ToolsList[MenuSelection[1]];
+			thermoTxt = thermoM("Adding '" + theGear.name + "' to the adventuring gear...", false);
+			AddToInv("gear", MenuSelection[2], theGear.name, theGear.amount, theGear.weight);
+			break;
+		case "reset":
+			thermoTxt = thermoM("Resetting the equipment section...", false);
+			var tempArray = ["Platinum Pieces", "Gold Pieces", "Electrum Pieces", "Silver Pieces", "Copper Pieces"];
+			if (!typePF) {
+				for (var i = 1; i < 5; i++) { tempArray.push("Valuables" + i); };
+				tempArray = tempArray.concat(["Lifestyle", "Lifestyle daily cost"]);
+			};
+			for (var i = 1; i <= FieldNumbers.gear; i++) {
+				tempArray.push("Adventuring Gear Row " + i);
+				tempArray.push("Adventuring Gear Location.Row " + i);
+				tempArray.push("Adventuring Gear Amount " + i);
+				tempArray.push("Adventuring Gear Weight " + i);
+			};
+			tDoc.resetForm(tempArray);
+			break;
+		case "attuned":
+			thermoTxt = thermoM("Toggling the visibility of the Attuned Magical Items subsection...", false);
+			ShowAttunedMagicalItems(What("Adventuring Gear Remember") === true);
+			break;
+		case "location2":
+			thermoTxt = thermoM("Toggling the visibility of the location column on page 2...", false);
+			HideInvLocationColumn("Adventuring Gear ", What("Gear Location Remember").split(",")[0] === "true");
+			break;
+		case "location3":
+			thermoTxt = thermoM("Toggling the visibility of the location column on page 3...", false);
+			HideInvLocationColumn("Extra.Gear ", What("Gear Location Remember").split(",")[1] === "true");
+			break;
+		case "weight":
+			WeightToCalc_Button();
+			break;
+		case "armour":
+			thermoTxt = thermoM("Adding/updating armor and shield in equipment section...", false);
+			AddInvArmorShield();
+			if (!MenuSelection[1]) break;
+		case "weapon":
+			thermoTxt = thermoM("Adding/updating weapons and ammunition in equipment section...", false);
+			AddInvWeaponsAmmo();
+			break;
+		case "primaryclass":
+			var bEquipment = MenuSelection[1].indexOf("equipment") !== -1;
+			var b1stPage = MenuSelection[1].indexOf("1stpage") !== -1;
+			thermoTxt = thermoM("Adding background items...", false);
+			AddInvStartingItems(CurrentClasses[classes.primary].startingEquipment, bEquipment, b1stPage);
+			break;
+		case "background":
+			var bEquipment = MenuSelection[1].indexOf("equipment") !== -1;
+			var b1stPage = MenuSelection[1].indexOf("1stpage") !== -1;
+			thermoTxt = thermoM("Adding background items...", false);
+			AddInvStartingItems(CurrentBackground, bEquipment, b1stPage);
+			break;
+	}
 
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
-function AddInvBackgroundItems() {
-	if (!CurrentBackground.known) return;
-	if (CurrentBackground.gold) Value("Gold Pieces", Number(What("Gold Pieces").replace(",", ".")) + CurrentBackground.gold);
-	var addEquip = function (array, LR) {
-		for (var i = 0; i < array.length; i++) {
-			AddToInv("gear", LR, array[i][0], array[i][1], array[i][2]);
+function AddInvStartingItems(oInput, bEquipment, b1stPage) {
+	if (bEquipment) {
+		var addEquip = function (array, LR) {
+			for (var i = 0; i < array.length; i++) {
+				AddToInv("gear", LR, array[i][0], array[i][1], array[i][2]);
+			};
 		};
-	};
-	if (CurrentBackground.equipleft) addEquip(CurrentBackground.equipleft, "l");
-	if (CurrentBackground.equipright) addEquip(CurrentBackground.equipright, "r");
+		if (oInput.pack && PacksList[oInput.pack]) InventoryOptions(["pack", oInput.pack, "lonly"]);
+		if (oInput.equipleft) addEquip(oInput.equipleft, "l");
+		if (oInput.equipright) addEquip(oInput.equipright, "r");
+		if (oInput.gold) Value("Gold Pieces", Number(What("Gold Pieces").replace(",", ".")) + oInput.gold);
+	}
+	if (b1stPage && oInput.equip1stPage) {
+		if (oInput.equip1stPage.weapons) processAddWeapons(true, oInput.equip1stPage.weapons);
+		if (oInput.equip1stPage.armor) processAddArmour(true, oInput.equip1stPage.armor);
+		if (oInput.equip1stPage.shield) processAddShield(true, oInput.equip1stPage.shield)
+		if (oInput.equip1stPage.ammo) processAddAmmo(true, oInput.equip1stPage.ammo)
+	}
 };
 
 function AddInvArmorShield() {
@@ -4179,7 +4301,7 @@ function ParseBackground(input) {
 		}
 
 		// continue with the background object, maybe it is a (better) match
-		if (!(kObj.regExpSearch).test(input) // see if regex matches
+		if (!kObj.regExpSearch.test(input) // see if regex matches
 			|| testSource(key, kObj, "backgrExcl") // test if the background or its source isn't excluded
 		) continue;
 
@@ -4204,12 +4326,7 @@ function FindBackground(input) {
 	CurrentBackground = {
 		known : tempFound[0],
 		variant : tempFound[1],
-		name : "", //must exist
-		source : [], //must exist
-		trait : [], //must exist
-		ideal : [], //must exist
-		bond : [], //must exist
-		flaw : [] //must exist
+		name : "" // must exist
 	};
 
 	// set the properties of the CurrentBackground object
@@ -4225,6 +4342,10 @@ function FindBackground(input) {
 				if ((/^(known|variants?|level)$/i).test(prop)) continue;
 				CurrentBackground[prop] = BackgroundSubList[tempFound[1]][prop];
 			}
+		}
+		// set a default ability score improvement text for legacy backgrounds
+		if (!CurrentBackground.scorestxt && !CurrentBackground.scores) {
+			CurrentBackground.scorestxt = "+2 to one ability score and +1 to a different score, -or- +1 to three different scores";
 		}
 	}
 };
@@ -4254,7 +4375,7 @@ function ApplyBackground(input) {
 			);
 
 			// reset the background feature
-			if (CurrentBackground.feature) Value("Background Feature", "");
+			if (CurrentBackground.feature && What("Background Feature") === CurrentBackground.feature) Value("Background Feature", "");
 
 			// reset the background extra field
 			xtrFld.clearItems();
@@ -4301,64 +4422,115 @@ function ApplyBackground(input) {
 };
 
 //Make menu for 'background traits' button and parse it to Menus.background
-function MakeBackgroundMenu() {
-	var backMenu = [];
-
-	var menuLVL1 = function (item, array) {
-		for (i = 0; i < array.length; i++) {
-			item.push({
-				cName : array[i][0],
-				cReturn : item + "#" + array[i][1],
-				bEnabled : array[i][1] !== "nothing"
-			});
-		}
-	};
-
-	var menuLVL2 = function (menu, name, array) {
-		var temp = {
-			cName : name + (name == "Personality Trait" ? " (select 2)" : ""),
-			oSubMenu : []
+function MakeBackgroundMenu_BackgroundOptions(MenuSelection) {
+	if (!MenuSelection || MenuSelection === "justMenu") {
+		var menuLVL2 = function (menu, type, listType, key, array) {
+			var traitName = traitTypes[type];
+			if (type === "trait") traitName += " (select 2)";
+			var temp = {
+				cName : traitName,
+				oSubMenu : [],
+				bMarked : false
+			};
+			var areAnyMarked = false;
+			for (i = 0; i < array.length; i++) {
+				var toUse = isArray(array[i]) ? array[i][1] : array[i];
+				var isMarked = !currentVals[type] ? false : currentVals[type].indexOf(toUse.toLowerCase()) !== -1;
+				temp.oSubMenu.push({
+					cName : toUse,
+					cReturn : "backgroundtraits#" + listType + "#" + key + "#" + type + "#" + i,
+					bMarked : isMarked
+				})
+				if (isMarked) areAnyMarked = true;
+			}
+			if (areAnyMarked) temp.bMarked = true;
+			menu.push(temp);
+			return areAnyMarked;
 		};
-		var theEntry = What(name);
-		for (i = 0; i < array.length; i++) {
-			var toUse = isArray(array[i]) ? array[i][1] : array[i];
-			temp.oSubMenu.push({
-				cName : toUse,
-				cReturn : name + "#" + i,
-				bMarked : (RegExp(toUse.RegEscape(), "i")).test(theEntry)
-			})
+
+		var traitTypes = {
+			trait : "Personality Trait",
+			ideal : "Ideal",
+			bond : "Bond",
+			flaw : "Flaw"
+		};
+		var backMenu = [];
+		var currentVals = {};
+		for (var sType in traitTypes) {
+			currentVals[sType] = What(traitTypes[sType]).toLowerCase();
 		}
-		menu.push(temp);
-	};
 
-	if (CurrentBackground.known) {
-		menuLVL2(backMenu, "Personality Trait", CurrentBackground.trait);
-		menuLVL2(backMenu, "Ideal", CurrentBackground.ideal);
-		menuLVL2(backMenu, "Bond", CurrentBackground.bond);
-		menuLVL2(backMenu, "Flaw", CurrentBackground.flaw);
-	} else {
-		menuLVL1(backMenu, [["No background entry has been detected on the first page", "nothing"]]);
-	};
+		// Loop through all backgrounds and add any options found in them
+		var createMenuEntry = function(menu, sListType, key) {
+			var oList = sListType === "main" ? BackgroundList : BackgroundSubList;
+			var oBack = oList[key];
+			// Don't process if source is excluded
+			if ( testSource(key, oBack, "backgrExcl") ) return;
+			var sSrc = oBack.traitsSourceString ? "\t   [" + oBack.traitsSourceString + "]" : oBack.source ? stringSource(oBack, "first,abbr", "\t   [", "]") : "";
+			var sName = oBack.traitsOriginName ? oBack.traitsOriginName : oBack.name;
+			var entry = {
+				cName : sName + sSrc,
+				sSortname : (sName + sSrc).toLowerCase(),
+				oSubMenu : [],
+				bMarked : false
+			};
+			for (var sType in traitTypes) {
+				if (!oBack[sType]) return;
+				var markParent = menuLVL2(entry.oSubMenu, sType, sListType, key, oBack[sType]);
+				if (markParent) entry.bMarked = true;
+			}
+			if (entry.oSubMenu.length) menu.push(entry);
+		}
+		for (var sBackground in BackgroundList) {
+			createMenuEntry(backMenu, "main", sBackground);
+		}
+		for (var sBackground in BackgroundSubList) {
+			createMenuEntry(backMenu, "sub", sBackground);
+		}
 
-	menuLVL1(backMenu, ["-", ["Reset the four fields", "reset"]]);
+		// Sort these options alphabetically
+		backMenu.sort(function(a, b) {
+			return a.sSortname < b.sSortname ? -1 : a.sSortname > b.sSortname ? 1 : 0;
+		});
 
-	Menus.background = backMenu;
-};
+		// Create the final menu entry
+		Menus.background = [{
+			cName : "[Taken from 2014 rules]",
+			cReturn : "",
+			bEnabled : false
+		}, {
+			cName : "Reset the four fields",
+			cReturn : "backgroundtraits#reset"
+		}, {
+			cName : "-"
+		}].concat(backMenu);
 
-//call the background menu and do something with the results
-function BackgroundOptions() {
-	var MenuSelection = getMenu("background");
-	if (!MenuSelection || MenuSelection[0] == "nothing") return;
-	if (MenuSelection[0] === "personality trait") {
-		AddString("Personality Trait", CurrentBackground.trait[MenuSelection[1]], " ");
-	} else if (MenuSelection[0] === "ideal") {
-		Value("Ideal", CurrentBackground.ideal[MenuSelection[1]][1]);
-	} else if (MenuSelection[0] === "bond") {
-		Value("Bond", CurrentBackground.bond[MenuSelection[1]]);
-	} else if (MenuSelection[0] === "flaw") {
-		Value("Flaw", CurrentBackground.flaw[MenuSelection[1]]);
-	} else if (MenuSelection[1] === "reset") {
+		if (MenuSelection == "justMenu") return;
+	}
+
+	MenuSelection = MenuSelection ? MenuSelection : getMenu("background");
+	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "backgroundtraits") return;
+
+	if (MenuSelection[1] === "reset") {
 		tDoc.resetForm(["Personality Trait", "Ideal", "Bond", "Flaw"]);
+	} else {
+		var sListType = MenuSelection[1];
+		var key = MenuSelection[2];
+		var traitType = MenuSelection[3];
+		var index = MenuSelection[4];
+		var oList = sListType === "main" ? BackgroundList : BackgroundSubList;
+		// make sure the entry exists
+		if (oList[key] && oList[key][traitType] && oList[key][traitType][index]) {
+			// get the string
+			var traitString = oList[key][traitType][index];
+			// add it to the sheet
+			if (traitType === "trait") {
+				// Personality Trait can have multiple, so do that differently
+				AddString("Personality Trait", traitString, " ");
+			} else {
+				Value(traitTypes[traitType], traitString);
+			}
+		}
 	}
 };
 
@@ -4499,7 +4671,7 @@ function AddString(field, inputstring, newline) {
 	var multithestring = "\r" + thestring;
 	var multilines = thefield.type === "text" && thefield.multiline && newline === true && thefield.value !== "";
 	var separator = (newline !== true && newline !== false && thefield.value !== "") ? (newline ? newline : " ") : "";
-	if (!(RegExp(regExString, "i")).test(thefield.value) && thefield.value.toLowerCase().indexOf(thestring.toLowerCase()) === -1) {
+	if (!(RegExp(regExString, "i")).test(thefield.value) && thefield.value.toString().toLowerCase().indexOf(thestring.toLowerCase()) === -1) {
 		if (!multilines && thefield.value !== "") {
 			var cleanSep = clean(separator, " ");
 			var cleanFld = clean(thefield.value, " ");
@@ -5341,7 +5513,7 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 		Menus.feats = featMenu;
 		if (MenuSelection == "justMenu") return;
 	}
-	MenuSelection = getMenu("feats");
+	MenuSelection = MenuSelection ? MenuSelection : getMenu("feats");
 	if (!MenuSelection || MenuSelection[0] == "nothing" || MenuSelection[0] != "feat") return;
 
 	// Start progress bar and stop calculations
@@ -5491,7 +5663,7 @@ function FeatDelete(itemNmbr) {
 }
 
 // Add a feat to the second/third page or overflow page
-function AddFeat(sFeat, sFeatNote, sFeatDescr, bIgnoreCurrent) {
+function AddFeat(sFeat, sFeatNote, sFeatDescr, bIgnoreCurrent, sExtraNote) {
 	// Check if this feat is recognized and if so, quit if it already exists
 	if (!bIgnoreCurrent) {
 		var aParsedFeat = ParseFeat(sFeat);
@@ -5525,6 +5697,7 @@ function AddFeat(sFeat, sFeatNote, sFeatDescr, bIgnoreCurrent) {
 					if (sFeatNote !== undefined) Value("Feat Note " + i, sFeatNote);
 					if (sFeatDescr !== undefined) Value("Feat Description " + i, sFeatDescr);
 				}
+				if (sExtraNote) AddString("Feat Note " + i, sExtraNote);
 				return; // feat was successfully added
 			}
 		}
@@ -8595,6 +8768,7 @@ function ParseBackgroundFeature(input) {
 function ApplyBackgroundFeature(input, inputForceOld) {
 	if (IsSetDropDowns || CurrentVars.manual.backgroundFeature) return; // when just changing the dropdowns, don't do anything
 
+	var sFeatureType = "background feature";
 	var sCurSel = ParseBackgroundFeature(inputForceOld ? inputForceOld : What("Background Feature"));
 	var sParseFeature = ParseBackgroundFeature(input);
 	if (sParseFeature === sCurSel) return; // No changes were made, so stop now
@@ -8606,25 +8780,65 @@ function ApplyBackgroundFeature(input, inputForceOld) {
 	var sTooltip = stringSource(CurrentBackground, "full,page", "The \"" + CurrentBackground.name + "\" background is found in ", ".\n");
 	var sNewDescr = input === "" ? "" : What(sFldNm);
 
+	var askUserOriginFeat = function() {
+		var aOriginFeats = [];
+		for (var sFeatKey in FeatsList) {
+			if (FeatsList[sFeatKey].isOriginFeat && !testSource(sFeatKey, FeatsList, "featsExcl")) {
+				var sFeatName = FeatsList[sFeatKey].name;
+				aOriginFeats.push(sFeatName);
+			}
+		}
+		if (aOriginFeats.length) {
+			return AskUserOptions("Select Origin Feat", "The background feature you selected doesn't have a fixed origin feat, so pick one of the options below.", aOriginFeats, "radio", true, false);
+		} else {
+			return false;
+		}
+	}
+	var setOriginFeat = function(bAddRemove, sBackF) {
+		var sChoiceName = "origin feat";
+		// If this background feature already adds a feat using an eval, do nothing
+		var oBackF = BackgroundFeatureList[sBackF];
+		if (oBackF.eval && oBackF.eval.toSource().indexOf("AddFeat") !== -1) return;
+		if (bAddRemove) {
+			var sOriginFeat = oBackF.originFeat ? oBackF.originFeat : askUserOriginFeat();
+			if (sOriginFeat) {
+				// Add the selected/fixed feat
+				AddFeat(sOriginFeat, undefined, undefined, undefined, "[origin]");
+				// Save this selection
+				SetFeatureChoice(sFeatureType, sChoiceName, false, sOriginFeat);
+			}
+		} else {
+			var sOriginFeat = GetFeatureChoice(sFeatureType, sChoiceName);
+			if (sOriginFeat) {
+				// Remove the feat
+				RemoveFeat(sOriginFeat);
+				// Delete this feat
+				SetFeatureChoice(sFeatureType, sChoiceName, false, false);
+			}
+		}
+	}
+
 	if (sCurSel) {
 		// Remove the old background feature common attributes
 		var Fea = ApplyFeatureAttributes(
-			"background feature", // type
+			sFeatureType, // type
 			sCurSel, // fObjName [aParent, fObjName]
 			[1, 0, false], // lvlA [old-level, new-level, force-apply]
 			false, // choiceA [old-choice, new-choice, "only"|"change"]
 			false // forceNonCurrent
 		);
+		setOriginFeat(false, sCurSel);
 	}
 	if (sParseFeature) {
 		// Add the new background feature common attributes
 		var Fea = ApplyFeatureAttributes(
-			"background feature", // type
+			sFeatureType, // type
 			sParseFeature, // fObjName [aParent, fObjName]
 			[0, 1, false], // lvlA [old-level, new-level, force-apply]
 			false, // choiceA [old-choice, new-choice, "only"|"change"]
 			false // forceNonCurrent
 		);
+		setOriginFeat(true, sParseFeature);
 		var sFeaCap = sParseFeature.capitalize();
 		var oBackFea = BackgroundFeatureList[sParseFeature];
 		var sNewDescr = What("Unit System") === "imperial" ? oBackFea.description : ConvertToMetric(oBackFea.description, 0.5);
@@ -8655,6 +8869,13 @@ function SetBackgroundFeaturesdropdown(forceTooltips) {
 	var theFldVal = What("Background Feature");
 	tDoc.getField("Background Feature").setItems(tempArray);
 	Value("Background Feature", theFldVal, tempString);
+}
+
+// Add the origin feat for a background
+function processOriginFeat(bAddRemove, sFeatReference) {
+	if (!BackgroundFeatureList[sFeatReference]) sFeatReference = false;
+	var oBackFea = BackgroundFeatureList[sParseFeature];
+	
 }
 
 //Make menu for 'choose race feature' button and parse it to Menus.raceoptions

@@ -1,4 +1,5 @@
-var AtHigherLevels = "\n   " + toUni("At Higher Levels") + ": ";
+var AtHigherLevels = "\n   " + toUni("Using a Higher-Level Spell Slot") + ". ";
+var CantripUpgrade = "\n   " + toUni("Cantrip Upgrade") + ". ";
 
 var Base_spellLevelList = ["Cantrips (0-level)", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level", "Talents", "Disciplines"];
 
@@ -10,12 +11,7 @@ var Base_spellSchoolList = {
 	"Evoc" : "evocation",
 	"Illus" : "illusion",
 	"Necro" : "necromancy",
-	"Trans" : "transmutation",
-	"Avatar" : "avatar",
-	"Awake" : "awakened",
-	"Immor" : "immortal",
-	"Nomad" : "nomad",
-	"Wu Jen" : "wu jen"
+	"Trans" : "transmutation"
 }
 
 var Base_SpellsList = {

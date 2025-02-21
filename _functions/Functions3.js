@@ -1534,7 +1534,7 @@ function UpdateSheetWeapons() {
 		for (addEval in CurrentEvals.atkAdd) {
 			var evalThing = CurrentEvals.atkAdd[addEval];
 			if (typeof evalThing == 'function') evalThing = evalThing.toSource();
-			if ((/\.level|Proficiency Bonus/).test(evalThing)) {
+			if ((/\.(total)?level|Proficiency Bonus/).test(evalThing)) {
 				isLvlDepAtkAdd = true;
 				break;
 			}

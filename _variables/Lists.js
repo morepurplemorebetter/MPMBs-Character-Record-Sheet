@@ -80,9 +80,9 @@ function spellsAfterUserScripts(reDoAllSpells) {
 };
 
 function setGlobalVars() {
-	tDoc.typePF = (/printer friendly/i).test(tDoc.info.SheetType);
-	tDoc.typeA4 = (/a4/i).test(tDoc.info.SheetType);
-	tDoc.typeLR = (/letter/i).test(tDoc.info.SheetType);
+	tDoc.typePF = /printer friendly/i.test(tDoc.info.SheetType);
+	tDoc.typeA4 = /a4/i.test(tDoc.info.SheetType);
+	tDoc.typeLR = /letter/i.test(tDoc.info.SheetType);
 	tDoc.minVer = tDoc.info.SpellsOnly || tDoc.info.AdvLogOnly;
 	tDoc.semVers = getSemVers(tDoc.info.SheetVersion, tDoc.info.SheetVersionType, tDoc.info.SheetVersionBuild);
 	tDoc.sheetVersion = semVersToNmbr(semVers);

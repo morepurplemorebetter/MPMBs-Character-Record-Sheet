@@ -2,7 +2,7 @@ var Base_ArmourList = {
 	"unarmored" : {
 		regExpSearch : /(unarmou?red|naked|nothing|bare|no.?armou?r)/i,
 		name : "Unarmored",
-		source : [["SRD", 62], ["P", 14]],
+		source : [["free", 0], ["P24", 51]],
 		ac : 10,
 		addMod : true,
 		list : "firstlist"
@@ -10,7 +10,7 @@ var Base_ArmourList = {
 	"mage armor" : {
 		regExpSearch : /^(?=.*(mage|magic))(?=.*armou?r).*$/i,
 		name : "Mage armor",
-		source : [["SRD", 160], ["P", 256]],
+		source : [["free", 0], ["P24", 293]],
 		ac : 13,
 		list : "magic",
 		affectsWildShape : true
@@ -18,45 +18,49 @@ var Base_ArmourList = {
 	"padded" : {
 		regExpSearch : /^(?!.*(plate|hide))(?=.*(padding|padded)).*$/i,
 		name : "Padded",
-		source : [["SRD", 63], ["P", 145]],
+		invName : "Padded armor",
+		infoname: "Padded armor [5 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "light",
 		ac : 11,
 		stealthdis : true,
-		weight : 8,
-		strReq : 0,
-		invName : "Padded armor"
+		weight : 8
 	},
 	"leather" : {
 		regExpSearch : /^(?!.*(padding|padded|studded|studs))(?=.*leather).*$/i,
 		name : "Leather",
-		source : [["SRD", 63], ["P", 145]],
+		invName : "Leather armor",
+		infoname: "Leather armor [10 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "light",
 		ac : 11,
-		weight : 10,
-		invName : "Leather armor"
+		weight : 10
 	},
 	"studded leather" : {
 		regExpSearch : /^(?=.*(studded|studs))(?=.*leather).*$/i,
 		name : "Studded leather",
-		source : [["SRD", 63], ["P", 145]],
+		invName : "Studded leather armor",
+		infoname: "Studded leather armor [45 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "light",
 		ac : 12,
-		weight : 13,
-		invName : "Studded leather armor"
+		weight : 13
 	},
 	"hide" : {
 		regExpSearch : /^(?!.*(dragon|draconic|molten bronze))(?=.*(hide|skin)).*$/i,
 		name : "Hide",
-		source : [["SRD", 63], ["P", 145]],
+		invName : "Hide armor",
+		infoname: "Hide armor [10 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "medium",
 		ac : 12,
-		weight : 12,
-		invName : "Hide armor"
+		weight : 12
 	},
 	"chain shirt" : {
 		regExpSearch : /^(?=.*chain)(?=.*shirt).*$/i,
 		name : "Chain shirt",
-		source : [["SRD", 63], ["P", 145]],
+		infoname: "Chain shirt [50 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "medium",
 		ac : 13,
 		weight : 20
@@ -64,7 +68,8 @@ var Base_ArmourList = {
 	"scale mail" : {
 		regExpSearch : /^(?=.*scale)(?=.*mail).*$/i,
 		name : "Scale mail",
-		source : [["SRD", 63], ["P", 145]],
+		infoname: "Scale mail [50 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "medium",
 		ac : 14,
 		stealthdis : true,
@@ -73,7 +78,8 @@ var Base_ArmourList = {
 	"breastplate" : {
 		regExpSearch : /^(?=.*breast)(?=.*plate).*$/i,
 		name : "Breastplate",
-		source : [["SRD", 63], ["P", 145]],
+		infoname: "Breastplate [400 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "medium",
 		ac : 14,
 		weight : 20
@@ -81,17 +87,19 @@ var Base_ArmourList = {
 	"half plate" : {
 		regExpSearch : /^(?=.*half)(?=.*plate).*$/i,
 		name : "Half plate",
-		source : [["SRD", 63], ["P", 145]],
+		invName : "Half plate armor",
+		infoname: "Half plate armor [750 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "medium",
 		ac : 15,
 		stealthdis : true,
-		weight : 40,
-		invName : "Half plate armor"
+		weight : 40
 	},
 	"ring mail" : {
 		regExpSearch : /^(?=.*ring)(?=.*mail).*$/i,
 		name : "Ring mail",
-		source : [["SRD", 63], ["P", 145]],
+		infoname: "Ring mail [30 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "heavy",
 		ac : 14,
 		stealthdis : true,
@@ -100,7 +108,8 @@ var Base_ArmourList = {
 	"chain mail" : {
 		regExpSearch : /^(?!.*(scale|plate|ring|shirt))(?=.*chain)(?=.*mail).*$/i,
 		name : "Chain mail",
-		source : [["SRD", 63], ["P", 145]],
+		infoname: "Chain mail [75 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "heavy",
 		ac : 16,
 		stealthdis : true,
@@ -110,24 +119,26 @@ var Base_ArmourList = {
 	"splint" : {
 		regExpSearch : /splint/i,
 		name : "Splint",
-		source : [["SRD", 63], ["P", 145]],
+		invName : "Splint armor",
+		infoname: "Splint armor [200 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "heavy",
 		ac : 17,
 		stealthdis : true,
 		weight : 60,
-		strReq : 15,
-		invName : "Splint armor"
+		strReq : 15
 	},
 	"plate" : {
 		regExpSearch : /^(?!.*(half|breast))(?=.*plate).*$/i,
 		name : "Plate",
-		source : [["SRD", 63], ["P", 145]],
+		invName : "Plate armor",
+		infoname: "Plate armor [1500 gp]",
+		source : [["free", 0], ["P24", 219]],
 		type : "heavy",
 		ac : 18,
 		stealthdis : true,
 		weight : 65,
-		strReq : 15,
-		invName : "Plate armor"
+		strReq : 15
 	}
 };
 
@@ -135,20 +146,36 @@ var Base_WeaponsList = {
 	// Basic weapons
 	"unarmed strike" : {
 		regExpSearch : /\b(fists?|arms?|legs?|foot|feet|claws?|talons?)\b|^(?=.*unarmed)(?=.*strike).*$|^(?=.*martial)(?=.*arts).*$|^(?=.*tavern)(?=.*brawler).*$/i,
-		name : "Unarmed strike",
-		source : [["SRD", 66], ["P", 149]],
+		name : "Unarmed strike (Damage)",
+		source : [["free", 0], ["P24", 377]],
+		// list : "melee", // Hardcoded in dropdown
 		ability : 1,
 		type : "Natural",
 		damage : [1, "", "bludgeoning"],
 		range : "Melee",
-		description : "",
+		description : "Instead of damage, can Shove or Grapple (with DC)",
 		monkweapon : true,
 		abilitytodamage : true
+	},
+	"unarmed strike dc" : {
+		regExpSearch : /\b(fists?|arms?|legs?|foot|feet|claws?|talons?)\b|^(?=.*unarmed)(?=.*strike).*$|^(?=.*martial)(?=.*arts).*$|^(?=.*tavern)(?=.*brawler).*$/i,
+		name : "Unarmed strike (DC)",
+		// list : "melee", // Hardcoded in dropdown
+		source : [["free", 0], ["P24", 377]],
+		ability : 1,
+		type : "Natural",
+		damage : ["Str save", "", "Shove/Grapple"],
+		range : "Melee",
+		description : "Up to 1 size larger; Push 5 ft or prone or grappled condition; Can damage instead (with attack roll)",
+		monkweapon : true,
+		abilitytodamage : true,
+		dc : true
 	},
 	"club" : {
 		regExpSearch : /^(?!.*(great|heavy|big))(?=.*\b(club|bian|tonfa)s?\b).*$/i,
 		name : "Club",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Club [1 sp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Simple",
@@ -157,55 +184,60 @@ var Base_WeaponsList = {
 		weight : 2,
 		description : "Light",
 		abilitytodamage : true,
-		monkweapon : true
+		mastery : "Slow"
 	},
 	"dagger" : {
 		regExpSearch : /dagger|bishou|\btamos?\b|kozuka|\btantos?\b/i,
 		name : "Dagger",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Dagger [2 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Simple",
 		damage : [1, 4, "piercing"],
 		range : "Melee, 20/60 ft",
 		weight : 1,
-		description : "Finesse, light, thrown",
+		description : "Finesse, Light, Thrown",
 		abilitytodamage : true,
-		monkweapon : true
+		mastery : "Nick"
 	},
 	"greatclub" : {
 		regExpSearch : /^(?=.*(great|heavy|big|weida))(?=.*(club|bian|tonfa)s?\b).*$|tetsubo/i,
 		name : "Greatclub",
+		infoname: "Greatclub [2 sp]",
 		nameAlt : ["Club, Great"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Simple",
 		damage : [1, 8, "bludgeoning"],
 		range : "Melee",
 		weight : 10,
-		description : "Two-handed",
-		abilitytodamage : true
+		description : "Two-Handed",
+		abilitytodamage : true,
+		mastery : "Push"
 	},
 	"handaxe" : {
 		regExpSearch : /^(?=.*(light|hand|short|small|throw))(?=.*(axe|\bfu)s?\b).*$|\bonos?\b/i,
 		name : "Handaxe",
+		infoname: "Handaxe [5 gp]",
 		nameAlt : ["Axe, Hand"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Simple",
 		damage : [1, 6, "slashing"],
 		range : "Melee, 20/60 ft",
 		weight : 2,
-		description : "Light, thrown",
+		description : "Light, Thrown",
 		abilitytodamage : true,
-		monkweapon : true
+		mastery : "Vex"
 	},
 	"javelin" : {
 		regExpSearch : /javelin|\bmaus?\b|uchi-ne/i,
 		name : "Javelin",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Javelin [5 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Simple",
@@ -214,27 +246,29 @@ var Base_WeaponsList = {
 		weight : 2,
 		description : "Thrown",
 		abilitytodamage : true,
-		monkweapon : true
+		mastery : "Slow"
 	},
 	"light hammer" : {
 		regExpSearch : /^(?=.*(light|hand|short|small|throw))(?=.*hammer).*$/i,
 		name : "Light hammer",
+		infoname: "Light hammer [2 gp]",
 		nameAlt : ["Hammer, Light"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Simple",
 		damage : [1, 4, "bludgeoning"],
 		range : "Melee, 20/60 ft",
 		weight : 2,
-		description : "Light, thrown",
+		description : "Light, Thrown",
 		abilitytodamage : true,
-		monkweapon : true
+		mastery : "Nick"
 	},
 	"mace" : {
 		regExpSearch : /maces?\b|\bchuis?\b|kanabo/i,
 		name : "Mace",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Mace [5 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Simple",
@@ -242,14 +276,15 @@ var Base_WeaponsList = {
 		range : "Melee",
 		weight : 4,
 		description : "",
-		monkweapon : true,
-		abilitytodamage : true
+		abilitytodamage : true,
+		mastery : "Sap"
 	},
 	"quarterstaff" : {
 		regExpSearch : /quarterstaff|\bstaffs?\b|\bbos?\b|^gun(.?(\+|-)\d+)?$/i,
 		name : "Quarterstaff",
+		infoname: "Quarterstaff [2 sp]",
 		nameAlt : ["Staff"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Simple",
@@ -257,14 +292,15 @@ var Base_WeaponsList = {
 		range : "Melee",
 		weight : 4,
 		description : "Versatile (1d8)",
-		monkweapon : true,
-		abilitytodamage : true
+		abilitytodamage : true,
+		mastery : "Topple"
 	},
 	"sickle" : {
 		regExpSearch : /sickle|\bkamas?\b/i,
 		name : "Sickle",
+		infoname: "Sickle [1 gp]",
 		nameAlt : ["Kama"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Simple",
@@ -272,71 +308,79 @@ var Base_WeaponsList = {
 		range : "Melee",
 		weight : 2,
 		description : "Light",
-		monkweapon : true,
-		abilitytodamage : true
+		abilitytodamage : true,
+		mastery : "Nick"
 	},
 	"spear" : {
 		regExpSearch : /^(?!.*agonizing)(?!.*eldritch)(?=.*(spear|qiang|\byaris?\b)).*$/i,
 		name : "Spear",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Spear [1 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Simple",
 		damage : [1, 6, "piercing"],
 		range : "Melee, 20/60 ft",
 		weight : 3,
-		description : "Thrown, versatile (1d8)",
-		monkweapon : true,
-		abilitytodamage : true
-	},
-	"light crossbow" : {
-		regExpSearch : /^(((?=.*light)(?=.*crossbow))|((?!.*(hand|short|great|heavy|bolt))(?=.*\bcrossbows?\b))).*$/i,
-		name : "Light crossbow",
-		nameAlt : ["Crossbow, Light"],
-		source : [["SRD", 66], ["P", 149]],
-		list : "ranged",
-		ability : 2,
-		type : "Simple",
-		damage : [1, 8, "piercing"],
-		range : "80/320 ft",
-		weight : 5,
-		description : "Ammunition, loading, two-handed",
+		description : "Thrown, Versatile (1d8)",
 		abilitytodamage : true,
-		ammo : "bolt"
+		mastery : "Sap"
 	},
 	"dart" : {
 		regExpSearch : /dart|shuriken/i,
 		name : "Dart",
+		infoname: "Dart [5 cp]",
 		nameAlt : ["Shuriken"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "ranged",
 		ability : 2,
 		type : "Simple",
 		damage : [1, 4, "piercing"],
 		range : "20/60 ft",
 		weight : 0.25,
-		description : "Finesse, thrown",
-		abilitytodamage : true
+		description : "Finesse, Thrown",
+		abilitytodamage : true,
+		mastery : "Vex"
+	},
+	"light crossbow" : {
+		regExpSearch : /^(((?=.*light)(?=.*crossbow))|((?!.*(hand|short|great|heavy|bolt))(?=.*\bcrossbows?\b))).*$/i,
+		name : "Light crossbow",
+		infoname: "Light crossbow [25 gp]",
+		nameAlt : ["Crossbow, Light"],
+		source : [["free", 0], ["P24", 215]],
+		list : "ranged",
+		ability : 2,
+		type : "Simple",
+		damage : [1, 8, "piercing"],
+		range : "80/320 ft",
+		weight : 5,
+		description : "Ammunition, Loading, Two-Handed",
+		abilitytodamage : true,
+		ammo : "bolt",
+		mastery : "Slow"
 	},
 	"shortbow" : {
 		regExpSearch : /^(?!.*crossbow)(((?=.*short)(?=.*bow))|((?!.*(moon|long))(?=.*\bbows?\b))).*$|hankyus?/i,
 		name : "Shortbow",
+		infoname: "Shortbow [25 gp]",
 		nameAlt : ["Bow, Short"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "ranged",
 		ability : 2,
 		type : "Simple",
 		damage : [1, 6, "piercing"],
 		range : "80/320 ft",
 		weight : 2,
-		description : "Ammunition, two-handed",
+		description : "Ammunition, Two-Handed",
 		abilitytodamage : true,
-		ammo : "arrow"
+		ammo : "arrow",
+		mastery : "Vex"
 	},
 	"sling" : {
 		regExpSearch : /sling/i,
 		name : "Sling",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Sling [1 sp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "ranged",
 		ability : 2,
 		type : "Simple",
@@ -345,13 +389,15 @@ var Base_WeaponsList = {
 		weight : 0.001,
 		description : "Ammunition",
 		abilitytodamage : true,
-		ammo : "bullet"
+		ammo : "sling bullet",
+		mastery : "Slow"
 	},
 	"battleaxe" : {
 		regExpSearch : /^(((?=.*battle)(?=.*(axe|\bono|\bfu)s?\b))|((?!.*(light|hand|short|small|great|heavy|throw))(?=.*\b(axe|fu|masakari)s?\b))).*$/i,
 		name : "Battleaxe",
+		infoname: "Battleaxe [10 gp]",
 		nameAlt : ["Axe, Battle"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
@@ -359,12 +405,14 @@ var Base_WeaponsList = {
 		range : "Melee",
 		weight : 4,
 		description : "Versatile (1d10)",
-		abilitytodamage : true
+		abilitytodamage : true,
+		mastery : "Topple"
 	},
 	"flail" : {
 		regExpSearch : /flail|nunchaku/i,
 		name : "Flail",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Flail [10 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
@@ -372,82 +420,92 @@ var Base_WeaponsList = {
 		range : "Melee",
 		weight : 2,
 		description : "",
-		abilitytodamage : true
+		abilitytodamage : true,
+		mastery : "Sap"
 	},
 	"glaive" : {
 		regExpSearch : /glaive|guandao|bisento|naginata/i,
 		name : "Glaive",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Glaive [20 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
 		damage : [1, 10, "slashing"],
 		range : "Melee",
 		weight : 6,
-		description : "Heavy, reach, two-handed",
-		abilitytodamage : true
+		description : "Heavy, Reach, Two-Handed",
+		abilitytodamage : true,
+		mastery : "Graze"
 	},
 	"greataxe" : {
 		regExpSearch : /^(?=.*(great|heavy|weida))(?=.*(axe|\bono|\bfu|masakari)s?\b).*$/i,
 		name : "Greataxe",
+		infoname: "Greataxe [30 gp]",
 		nameAlt : ["Axe, Great"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
 		damage : [1, 12, "slashing"],
 		range : "Melee",
 		weight : 7,
-		description : "Heavy, two-handed",
-		abilitytodamage : true
+		description : "Heavy, Two-Handed",
+		abilitytodamage : true,
+		mastery : "Cleave"
 	},
 	"greatsword" : {
 		regExpSearch : /^(?=.*(great|heavy))(?=.*sword).*$|changdao|nodachi/i,
 		name : "Greatsword",
+		infoname: "Greatsword [50 gp]",
 		nameAlt : ["Sword, Great"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
 		damage : [2, 6, "slashing"],
 		range : "Melee",
 		weight : 6,
-		description : "Heavy, two-handed",
-		abilitytodamage : true
+		description : "Heavy, Two-Handed",
+		abilitytodamage : true,
+		mastery : "Graze"
 	},
 	"halberd" : {
 		regExpSearch : /halberd|\bjis?\b|kamayari/i,
 		name : "Halberd",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Halberd [20 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
 		damage : [1, 10, "slashing"],
 		range : "Melee",
 		weight : 6,
-		description : "Heavy, reach, two-handed",
-		abilitytodamage : true
+		description : "Heavy, Reach, Two-Handed",
+		abilitytodamage : true,
+		mastery : "Cleave"
 	},
 	"lance" : {
 		regExpSearch : /lance|umayari/i,
 		name : "Lance",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Lance [10 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
-		damage : [1, 12, "piercing"],
+		damage : [1, 10, "piercing"],
 		range : "Melee",
 		weight : 6,
-		description : "Reach, disadvantage to attack within 5 ft, two-handed when not mounted",
-		tooltip : "Special: I have disadvantage when I use a lance to attack a target within 5 feet. Also, a lance requires two hands to wield when I'm not mounted.",
-		special : true,
-		abilitytodamage : true
+		description : "Heavy, Reach, Two-Handed (unless mounted)",
+		abilitytodamage : true,
+		mastery : "Topple"
 	},
 	"longsword" : {
 		regExpSearch : /katana|\bjians?\b|^(((?=.*long)(?=.*sword))|((?!.*(burst|light|hand|short|small|great|heavy))(?=.*\bswords?\b))).*$/i,
 		name : "Longsword",
+		infoname: "Longsword [15 gp]",
 		nameAlt : ["Sword, Long", "Katana"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
@@ -455,26 +513,30 @@ var Base_WeaponsList = {
 		range : "Melee",
 		weight : 3,
 		description : "Versatile (1d10)",
-		abilitytodamage : true
+		abilitytodamage : true,
+		mastery : "Sap"
 	},
 	"maul" : {
 		regExpSearch : /^((?=.*maul)|((?=.*(great|heavy))(?=.*hammer))).*$/i,
 		name : "Maul",
+		infoname: "Maul [10 gp]",
 		nameAlt : ["Greathammer", "Hammer, Heavy"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
 		damage : [2, 6, "bludgeoning"],
 		range : "Melee",
 		weight : 10,
-		description : "Heavy, two-handed",
-		abilitytodamage : true
+		description : "Heavy, Two-Handed",
+		abilitytodamage : true,
+		mastery : "Topple"
 	},
 	"morningstar" : {
 		regExpSearch : /morningstar/i,
 		name : "Morningstar",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Morningstar [15 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
@@ -482,25 +544,29 @@ var Base_WeaponsList = {
 		range : "Melee",
 		weight : 4,
 		description : "",
-		abilitytodamage : true
+		abilitytodamage : true,
+		mastery : "Sap"
 	},
 	"pike" : {
 		regExpSearch : /^(?!.*armou?r)(?!.*\bspike)(?=.*(pike|\bmaos?\b|nagaeyari)).*$/i,
 		name : "Pike",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Pike [5 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
 		damage : [1, 10, "piercing"],
 		range : "Melee",
 		weight : 18,
-		description : "Heavy, reach, two-handed",
-		abilitytodamage : true
+		description : "Heavy, Reach, Two-Handed",
+		abilitytodamage : true,
+		mastery : "Push"
 	},
 	"rapier" : {
 		regExpSearch : /rapier/i,
 		name : "Rapier",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Rapier [25 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
@@ -508,169 +574,206 @@ var Base_WeaponsList = {
 		range : "Melee",
 		weight : 2,
 		description : "Finesse",
-		abilitytodamage : true
+		abilitytodamage : true,
+		mastery : "Vex"
 	},
 	"scimitar" : {
 		regExpSearch : /scimitar|liuyedao|wakizashi/i,
 		name : "Scimitar",
+		infoname: "Scimitar [25 gp]",
 		nameAlt : ["Wakizashi"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
 		damage : [1, 6, "slashing"],
 		range : "Melee",
 		weight : 3,
-		description : "Finesse, light",
+		description : "Finesse, Light",
 		abilitytodamage : true
 	},
 	"shortsword" : {
 		regExpSearch : /^(?=.*short)(?=.*sword).*$|shuangdao/i,
 		name : "Shortsword",
+		infoname: "Shortsword [10 gp]",
 		nameAlt : ["Sword, Short"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
 		damage : [1, 6, "piercing"],
 		range : "Melee",
 		weight : 2,
-		description : "Finesse, light",
+		description : "Finesse, Light",
 		abilitytodamage : true,
-		monkweapon : true
+		mastery : "Vex"
 	},
 	"trident" : {
 		regExpSearch : /trident|\bchas?\b|magariyari/i,
 		name : "Trident",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Trident [5 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
-		damage : [1, 6, "piercing"],
+		damage : [1, 8, "piercing"], // PHB'24 changed
 		range : "Melee, 20/60 ft",
 		weight : 4,
-		description : "Thrown, versatile (1d8)",
-		abilitytodamage : true
+		description : "Thrown, Versatile (1d10)", // PHB'24 changed
+		abilitytodamage : true,
+		mastery : "Topple"
+	},
+	"warhammer" : {
+		regExpSearch : /^(((?=.*hammer)(?=.*war))|((?!.*(light|hand|short|small|great|heavy|throw|maul))(?=.*\bhammers?\b))).*$/i,
+		name : "Warhammer",
+		infoname: "Warhammer [15 gp]",
+		nameAlt : ["Hammer, War"],
+		source : [["free", 0], ["P24", 215]],
+		list : "melee",
+		ability : 1,
+		type : "Martial",
+		damage : [1, 8, "bludgeoning"],
+		range : "Melee",
+		weight : 5, // PHB'24 changed
+		description : "Versatile (1d10)",
+		abilitytodamage : true,
+		mastery : "Push"
 	},
 	"war pick" : {
 		regExpSearch : /^(((?=.*pick)(?=.*war))|((?!.*(heavy|great|light))(?=.*\bpicks?\b))).*$|\bkuwas?\b/i,
 		name : "War pick",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "War Pick [5 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
 		damage : [1, 8, "piercing"],
 		range : "Melee",
 		weight : 2,
-		description : "",
-		abilitytodamage : true
-	},
-	"warhammer" : {
-		regExpSearch : /^(((?=.*hammer)(?=.*war))|((?!.*(light|hand|short|small|great|heavy|throw|maul))(?=.*\bhammers?\b))).*$/i,
-		name : "Warhammer",
-		nameAlt : ["Hammer, War"],
-		source : [["SRD", 66], ["P", 149]],
-		list : "melee",
-		ability : 1,
-		type : "Martial",
-		damage : [1, 8, "bludgeoning"],
-		range : "Melee",
-		weight : 2,
-		description : "Versatile (1d10)",
-		abilitytodamage : true
+		description : "Versatile (1d10)", // PHB'24 changed
+		abilitytodamage : true,
+		mastery : "Sap"
 	},
 	"whip" : {
 		regExpSearch : /^(?!.*thorn)(?=.*whip).*$/i,
 		name : "Whip",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Whip [2 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
 		damage : [1, 4, "slashing"],
 		range : "Melee",
 		weight : 3,
-		description : "Finesse, reach",
-		abilitytodamage : true
+		description : "Finesse, Reach",
+		abilitytodamage : true,
+		mastery : "Slow"
 	},
 	"blowgun" : {
 		regExpSearch : /blowgun/i,
 		name : "Blowgun",
-		source : [["SRD", 66], ["P", 149]],
+		infoname: "Blowgun [10 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "ranged",
 		ability : 2,
 		type : "Martial",
 		damage : [1, "", "piercing"],
 		range : "25/100 ft",
 		weight : 1,
-		description : "Ammunition, loading",
+		description : "Ammunition, Loading",
 		abilitytodamage : true,
-		ammo : "needle"
+		ammo : "needle",
+		mastery : "Vex"
 	},
 	"hand crossbow" : {
 		regExpSearch : /^(?=.*hand)(?=.*crossbow).*$/i,
 		name : "Hand crossbow",
+		infoname: "Hand crossbow [75 gp]",
 		nameAlt : ["Crossbow, Hand"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "ranged",
 		ability : 2,
 		type : "Martial",
 		damage : [1, 6, "piercing"],
 		range : "30/120 ft",
 		weight : 3,
-		description : "Ammunition, light, loading",
+		description : "Ammunition, Light, Loading",
 		abilitytodamage : true,
-		ammo : "bolt"
+		ammo : "bolt",
+		mastery : "Vex"
 	},
 	"heavy crossbow" : {
 		regExpSearch : /^(?=.*(great|heavy))(?=.*crossbow).*$/i,
 		name : "Heavy crossbow",
+		infoname: "Heavy crossbow [50 gp]",
 		nameAlt : ["Crossbow, Heavy"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "ranged",
 		ability : 2,
 		type : "Martial",
 		damage : [1, 10, "piercing"],
 		range : "100/400 ft",
 		weight : 18,
-		description : "Ammunition, heavy, loading, two-handed",
+		description : "Ammunition, Heavy, Loading, Two-Handed",
 		abilitytodamage : true,
-		ammo : "bolt"
+		ammo : "bolt",
+		mastery : "Push"
 	},
 	"longbow" : {
 		regExpSearch : /^(?!.*crossbow)(?=.*long)(?=.*bow).*$|daikyu/i,
 		name : "Longbow",
+		infoname: "Longbow [50 gp]",
 		nameAlt : ["Bow, Long"],
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		list : "ranged",
 		ability : 2,
 		type : "Martial",
 		damage : [1, 8, "piercing"],
 		range : "150/600 ft",
 		weight : 2,
-		description : "Ammunition, heavy, two-handed",
+		description : "Ammunition, Heavy, Two-Handed",
 		abilitytodamage : true,
-		ammo : "arrow"
+		ammo : "arrow",
+		mastery : "Slow"
 	},
-	"net" : {
-		regExpSearch : /\bnet(ting)?s?\b/i,
-		name : "Net",
-		source : [["SRD", 66], ["P", 149]],
+	"musket" : {
+		regExpSearch : /musket/i,
+		name : "Musket",
+		infoname: "Musket [500 gp]",
+		source : [["free", 0], ["P24", 215]],
 		list : "ranged",
 		ability : 2,
 		type : "Martial",
-		damage : ["\u2015", "", "Restrained"],
-		range : "5/15 ft",
-		weight : 3,
-		description : "Thrown, only 1 attack, up to large creature hit is restrained",
-		tooltip : "Special: A Large or smaller creature hit by a net is restrained until it is freed. A net has no effect on creatures that are formless, or creatures that are Huge or larger. A creature can use its action to make a DC 10 Strength check, freeing itself or another creature within its reach on a success. Dealing 5 slashing damage to the net (AC 10) also frees the creature without harming it, ending the effect and destroying the net. When I use an action, bonus action, or reaction to attack with a net, I can make only one attack regardless of the number of attacks I can normally make.",
-		special : true,
-		abilitytodamage : false
+		damage : [1, 12, "piercing"],
+		range : "40/120 ft",
+		weight : 10,
+		description : "Ammunition, Loading, Two-Handed",
+		abilitytodamage : true,
+		ammo : "firearm bullet",
+		mastery : "Slow"
 	},
-	// Improvised Weapons
+	"pistol" : {
+		regExpSearch : /^(?!.*(automatic|laser|antimatter|needler|paralysis))(?=.*\bpistols?\b).*$/i,
+		name : "Pistol",
+		infoname: "Pistol [250 gp]",
+		source : [["free", 0], ["P24", 215]],
+		list : "ranged",
+		ability : 2,
+		type : "Martial",
+		damage : [1, 10, "piercing"],
+		range : "30/90 ft",
+		weight : 3,
+		description : "Ammunition, Loading",
+		abilitytodamage : true,
+		ammo : "firearm bullet",
+		mastery : "Vex"
+	},
+	// Adventuring gear that functions as a weapon
 	"improvised weapon" : {
 		regExpSearch : /improvised/i,
-		name : "Improvised weapon",
+		name : "Improvised Weapon",
 		source : [["SRD", 65], ["P", 147]],
+		// list : "gear", // Hardcoded in dropdown
 		ability : 1,
 		type : "Improvised Weapons",
 		damage : [1, 4, "bludgeoning"],
@@ -678,70 +781,112 @@ var Base_WeaponsList = {
 		description : "Damage die, type, range, etc. are at the DM's discretion",
 		abilitytodamage : true
 	},
-	"alchemist fire" : {
-		regExpSearch : /^(?=.*alchemist)(?=.*fire).*$/i,
-		name : "Alchemist's Fire",
-		source : [["SRD", 66], ["P", 148]],
-		list : "improvised",
-		ability : 2,
-		type : "Improvised Weapons",
-		damage : [1, 4, "bludgeoning"], // the damage from the flask's impact, which does get Dex added as it is a ranged (improvised) weapon attack
-		range : "20 ft",
-		weight : 1,
-		description : "Target starts burning: 1d4 fire damage at the start of its turns; DC 10 Dex check to end as an action",
-		abilitytodamage : true,
-		ammo : "alchemist fire",
-		isNotWeapon : true
-	},
-	"vials of acid" : {
+	"vials of acid" : { // PHB'24 changed
 		regExpSearch : /^(?=.*vial)(?=.*acid).*$/i,
 		name : "Vial of Acid",
-		source : [["SRD", 66], ["P", 148]],
-		list : "improvised",
+		source : [["free", 0], ["P24", 222]],
+		list : "gear",
 		ability : 2,
-		type : "Improvised Weapons",
+		type : "Adventuring Gear",
 		damage : [2, 6, "acid"],
 		range : "20 ft",
 		weight : 1,
-		description : "",
-		abilitytodamage : true, // ranged (improvised) weapon attack, so follow generic rule
+		description : "Dex save to avoid",
+		abilitytodamage : false,
 		ammo : "vials of acid",
+		dc : true,
+		isAlwaysProf : true,
+		isNotWeapon : true
+	},
+	"alchemist fire" : { // PHB'24 changed
+		regExpSearch : /^(?=.*alchemist)(?=.*fire).*$/i,
+		name : "Alchemist's Fire",
+		source : [["free", 0], ["P24", 222]],
+		list : "gear",
+		ability : 2,
+		type : "Adventuring Gear",
+		damage : [1, 4, "fire"],
+		range : "20 ft",
+		weight : 1,
+		description : "Target starts Burning; Dex save to avoid",
+		abilitytodamage : false,
+		ammo : "alchemist fire",
+		dc : true,
+		isAlwaysProf : true,
 		isNotWeapon : true
 	},
 	"holy water" : {
 		regExpSearch : /^(?=.*holy)(?=.*water).*$/i,
 		name : "Holy Water",
-		source : [["SRD", 67], ["P", 151]],
-		list : "improvised",
+		source : [["free", 0], ["P24", 226]],
+		list : "gear",
 		ability : 2,
-		type : "Improvised Weapons",
-		damage : [2, 6, "radiant"],
+		type : "Adventuring Gear",
+		damage : [2, 8, "radiant"], // PHB'24 changed
 		range : "20 ft",
 		weight : 1,
-		description : "Only does damage against fiends and undead; Comes in flasks",
-		abilitytodamage : true, // ranged (improvised) weapon attack, so follow generic rule
+		description : "Dex save to avoid; Only affects Fiend \u0026 Undead",
+		abilitytodamage : false,
 		ammo : "holy water",
+		dc : true,
+		isAlwaysProf : true,
+		isNotWeapon : true
+	},
+	"net" : { // PHB'24 changed
+		regExpSearch : /\bnet(ting)?s?\b/i,
+		name : "Net",
+		infoname: "Net [1 gp]",
+		source : [["free", 0], ["P24", 227]],
+		list : "gear",
+		ability : 2,
+		type : "Adventuring Gear",
+		damage : ["Dex save", "", "Restrained"],
+		range : "15 ft",
+		weight : 3,
+		description : "Up to Large target; DC 10 Athletics to escape as an Action",
+		tooltip : "When you take the Attack action, you can replace one of your attacks with throwing a Net. Target a creature you can see within 15 feet of yourself. The target must succeed on a Dexterity saving throw (DC 8 plus your Dexterity modifier and Proficiency Bonus) or have the Restrained condition until it escapes. The target succeeds automatically if it is Huge or larger."+
+		"\nTo escape, the target or a creature within 5 feet of it must take an action to make a DC 10 Strength (Athletics) check, freeing the Restrained creature on a success. Destroying the Net (AC 10; 5 HP; Immunity to Bludgeoning, Poison, and Psychic damage) also frees the target, ending the effect.",
+		abilitytodamage : false,
+		dc : true,
+		isAlwaysProf : true,
+		isNotWeapon : true
+	},
+	"oil" : { // PHB'24 new
+		regExpSearch : /oil/i,
+		name : "Oil",
+		source : [["free", 0], ["P24", 227]],
+		list : "gear",
+		ability : 2,
+		type : "Adventuring Gear",
+		damage : ["Dex save", "", "Covered"],
+		range : "20 ft",
+		weight : 1,
+		description : "If covered target takes fire damage in next minute, the oil burns for 5 fire damage",
+		abilitytodamage : false,
+		ammo : "oil",
+		dc : true,
+		isAlwaysProf : true,
 		isNotWeapon : true
 	},
 	"burning torch" : {
 		regExpSearch : /^(?=.*torch)(?=.*burning).*$/i,
 		name : "Torch, Burning",
-		source : [["SRD", 68], ["P", 153]],
-		list : "improvised",
+		source : [["free", 0], ["P24", 229]],
+		list : "gear",
 		ability : 1,
-		type : "Improvised Weapons",
+		type : "Simple", // PHB'24 changed
 		damage : [1, "", "fire"],
 		range : "Melee",
 		weight : 1,
-		description : "Only does damage while burning",
-		abilitytodamage : false,
-		isNotWeapon : true
+		description : "Only damages if burning",
+		abilitytodamage : false
 	},
 	// Cantrips
 	"spell attack" : {
 		regExpSearch : /^(?=.*spell)(?=.*attack).*$/i,
 		name : "Spell attack",
-		source : [["SRD", 103], ["P", 205]],
+		source : [["free", 0], ["P24", 374]],
+		// list : "spell", // Hardcoded in dropdown
 		ability : 0,
 		type : "Spell",
 		damage : ["", "", ""],
@@ -752,81 +897,93 @@ var Base_WeaponsList = {
 	"acid splash" : {
 		regExpSearch : /^(?=.*acid)(?=.*splash).*$/i,
 		name : "Acid Splash",
-		source : [["SRD", 114], ["P", 211]],
+		source : [["free", 0], ["P24", 239]],
 		list : "spell",
 		ability : 4,
 		type : "Cantrip",
 		damage : ["C", 6, "acid"],
 		range : "60 ft",
-		description : "Dex save, success - no damage; 1 or 2 creatures within 5 ft of each other",
+		description : "All creatures in a 5-ft radius sphere; Dex save to avoid",
 		abilitytodamage : false,
 		dc : true
 	},
 	"chill touch" : {
 		regExpSearch : /^(?=.*chill)(?=.*touch).*$/i,
 		name : "Chill Touch",
-		source : [["SRD", 124], ["P", 221]],
+		source : [["free", 0], ["P24", 249]],
 		list : "spell",
 		ability : 6,
 		type : "Cantrip",
-		damage : ["C", 8, "necrotic"],
-		range : "120 ft",
-		description : "Target can't regain HP; Undead dis. on attacks vs. me until my next turn",
+		damage : ["C", 10, "necrotic"],
+		range : "Melee",
+		description : "Target can't regain HP until my next turn ends",
 		abilitytodamage : false
 	},
 	"eldritch blast" : {
 		regExpSearch : /(agonizing|eldritch|repelling).(spear|blast)/i,
 		name : "Eldritch Blast",
-		source : [["SRD", 139], ["P", 237]],
+		source : [["free", 0], ["P24", 267]],
 		list : "spell",
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C\xD7" + 1, 10, "force"],
 		range : "120 ft",
-		description : "Each d10 is a separate beam requiring separate rolls",
+		description : "Each d10 is a separate beam with its own attack roll",
 		abilitytodamage : false
 	},
 	"fire bolt" : {
 		regExpSearch : /^(?=.*fire)(?=.*bolt).*$/i,
 		name : "Fire Bolt",
-		source : [["SRD", 144], ["P", 241]],
+		source : [["free", 0], ["P24", 274]],
 		list : "spell",
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 10, "fire"],
 		range : "120 ft",
-		description : "Unattended flammable objects ignite",
+		description : "Unattended flammable object starts Burning",
 		abilitytodamage : false
+	},
+	"mind sliver" : { // NB not in free rules
+		regExpSearch : /^(?=.*mind)(?=.*sliver).*$/i,
+		name : "Mind Sliver",
+		source : [["P24", 298]],
+		list : "spell",
+		ability : 6,
+		type : "Cantrip",
+		damage : ["C", 6, "psychic"],
+		range : "60 ft",
+		description : "Target has -1d4 on next save before my next turn ends; Int save to avoid",
+		abilitytodamage : false,
+		dc : true
 	},
 	"poison spray" : {
 		regExpSearch : /^(?=.*poison)(?=.*spray).*$/i,
 		name : "Poison Spray",
-		source : [["SRD", 169], ["P", 266]],
+		source : [["free", 0], ["P24", 306]],
 		list : "spell",
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 12, "poison"],
-		range : "10 ft",
-		description : "Con save, success - no damage; 1 creature",
-		abilitytodamage : false,
-		dc : true
+		range : "30 ft",
+		description : "",
+		abilitytodamage : false
 	},
 	"produce flame" : {
 		regExpSearch : /^(?=.*produce)(?=.*flame).*$/i,
 		name : "Produce Flame",
-		source : [["SRD", 172], ["P", 269]],
+		source : [["free", 0], ["P24", 308]],
 		list : "spell",
 		ability : 5,
 		type : "Cantrip",
 		damage : ["C", 8, "fire"],
-		range : "30 ft",
-		description : "10-ft radius bright light and 10-ft radius dim light until thrown",
+		range : "60 ft",
+		description : "20-ft radius bright light and 20-ft radius dim light until thrown",
 		abilitytodamage : false
 	},
 	"ray of frost" : {
 		regExpSearch : /^(?=.*ray)(?=.*frost).*$/i,
 		name : "Ray of Frost",
-		source : [["SRD", 174], ["P", 271]],
+		source : [["free", 0], ["P24", 311]],
 		list : "spell",
 		ability : 6,
 		type : "Cantrip",
@@ -838,146 +995,172 @@ var Base_WeaponsList = {
 	"sacred flame" : {
 		regExpSearch : /^(?=.*sacred)(?=.*flame).*$/i,
 		name : "Sacred Flame",
-		source : [["SRD", 176], ["P", 272]],
+		source : [["free", 0], ["P24", 313]],
 		list : "spell",
 		ability : 5,
 		type : "Cantrip",
 		damage : ["C", 8, "radiant"],
 		range : "60 ft",
-		description : "Dex save, no bonus from cover, success - no damage; 1 creature",
+		description : "Dex save to avoid, no save bonus for cover",
 		abilitytodamage : false,
 		dc : true
 	},
-	"shillelagh" : {
-		baseWeapon : "quarterstaff",
-		regExpSearch : /shillelagh/i,
-		name : "Shillelagh",
-		source : [["SRD", 179], ["P", 275]],
+	"shillelagh-club" : {
+		baseWeapon : "club",
+		regExpSearch : /^(?=.*shillelagh)(?=.*\b(club|bian|tonfa)s?\b).*$/i,
+		name : "Shillelagh (club)",
+		source : [["free", 0], ["P24", 316]],
 		list : "spell",
 		ability : 5,
-		type : "Simple",
-		damage : [1, 8, "bludgeoning"],
-		range : "Melee",
-		description : "Imbued club or quarterstaff; Counts as a magical weapon",
-		monkweapon : true,
-		abilitytodamage : true
+		damage : [1, 8, "force"],
+		description : "Light; Imbued club or quarterstaff",
+	},
+	"shillelagh-quarterstaff" : {
+		baseWeapon : "quarterstaff",
+		regExpSearch : /^(?=.*shillelagh)(?=.*(quarterstaff|\bstaffs?\b|\bbos?\b)).*$/i,
+		name : "Shillelagh (staff)",
+		source : [["free", 0], ["P24", 316]],
+		list : "spell",
+		ability : 5,
+		damage : [1, 8, "force"],
+		description : "Imbued club or quarterstaff"
 	},
 	"shocking grasp" : {
 		regExpSearch : /^(?=.*shocking)(?=.*grasp).*$/i,
 		name : "Shocking Grasp",
-		source : [["SRD", 179], ["P", 275]],
+		source : [["free", 0], ["P24", 316]],
 		list : "spell",
 		ability : 6,
 		type : "Cantrip",
 		damage : ["C", 8, "lightning"],
 		range : "Melee",
-		description : "Advantage if target is wearing metal armor, target cannot take reactions until its next turn",
+		description : "Target cannot take reactions until its next turn starts",
 		abilitytodamage : false
 	},
 	"vicious mockery" : {
 		regExpSearch : /^(?=.*vicious)(?=.*mockery).*$/i,
 		name : "Vicious Mockery",
-		source : [["SRD", 189], ["P", 285]],
+		source : [["free", 0], ["P24", 337]],
 		list : "spell",
 		ability : 6,
 		type : "Cantrip",
-		damage : ["C", 4, "psychic"],
+		damage : ["C", 6, "psychic"],
 		range : "60 ft",
-		description : "Wis save, success - no damage, fail - also disadv. on next attack roll in next turn; 1 creature",
+		description : "Target has disadv. on its next attack roll before its next turn ends; Wis save to avoid",
 		abilitytodamage : false,
 		dc : true
 	}
 };
 
+// Add weapon die scaling for shillelagh
+addEvals({ atkAdd : [
+	function (fields, v) {
+		if (v.WeaponName === "shillelagh-club" || v.WeaponName === "shillelagh-quarterstaff") {
+			fields.Damage_Die = function(n){ return n < 5 ? '1d8' : n < 11 ? '1d10' : n < 17 ? '1d12' : '2d6'}(classes.totallevel);
+		}
+	},
+	"The damage die of the imbued Club or Quarterstaff increments when you reach levels 5 (d10), 11 (d12), and 17 (2d6). This is a default attribute that is always present.",
+	1
+] }, "Shillelagh damage progression", true, "items");
+CurrentUpdates.types = []; // don't trigger the changes dialog for this
+
 //A list of all types of 'ammo' for the ammunition section on the first page
 var Base_AmmoList = {
 	"arrow" : {
 		name : "Arrows",
-		source : [["SRD", 69], ["P", 150]],
+		source : [["free", 0], ["P24", 222]],
 		weight : 0.05,
 		icon : "Arrows"
 	},
 	"bolt" : {
 		name : "Bolts",
 		weight : 0.075,
-		source : [["SRD", 69], ["P", 150]],
+		source : [["free", 0], ["P24", 222]],
 		icon : "Arrows",
-		invName : "Crossbow bolts"
+		invName : "Crossbow bolts" // incorrect, but clearer than the PHB'24 "bolt"
 	},
-	"bullet" : {
-		name : "Bullets",
+	"sling bullet" : { // PHB'24 changed
+		name : "Bullets, Sling",
 		weight : 0.075,
-		source : [["SRD", 69], ["P", 150]],
+		source : [["free", 0], ["P24", 222]],
 		icon : "Bullets",
 		invName : "Sling bullets",
 		alternatives : [/^(?=.*bullet)(?=.*sling).*$/i]
 	},
+	"firearm bullet" : { // PHB'24 new
+		name : "Bullets, Firearm",
+		weight : 0.2,
+		source : [["free", 0], ["P24", 222]],
+		icon : "Bullets",
+		invName : "Firearm bullets",
+		alternatives : [/^(?=.*bullet)(?=.*firearm).*$/i]
+	},
 	"dagger" : {
 		name : "Daggers",
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 222]],
 		weight : 1,
 		icon : "Daggers"
 	},
 	"dart" : {
 		name : "Darts",
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		weight : 0.25,
 		icon : "Arrows"
 	},
 	"flask" : {
 		name : "Flasks (1 pint)",
-		source : [["SRD", 69], ["P", 150]],
+		source : [["free", 0], ["P24", 222]],
 		weight : 1,
 		icon : "Flasks"
 	},
 	"handaxe" : {
 		name : "Handaxes",
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		weight : 2,
 		icon : "Axes",
 		alternatives : ["axe"]
 	},
 	"javelin" : {
 		name : "Javelins",
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		weight : 2,
 		icon : "Spears"
 	},
 	"light hammer" : {
 		name : "Light Hammers",
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		weight : 2,
 		icon : "Hammers",
 		alternatives : ["hammer"]
 	},
 	"needle" : {
 		name : "Needles",
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 222]],
 		weight : 0.02,
 		icon : "Bullets",
 		invName : "Blowgun needles"
 	},
 	"spear" : {
 		name : "Spears",
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		weight : 3,
 		icon : "Spears"
 	},
 	"trident" : {
 		name : "Tridents",
-		source : [["SRD", 66], ["P", 149]],
+		source : [["free", 0], ["P24", 215]],
 		weight : 4,
 		icon : "Spears"
 	},
 	"vial" : {
 		name : "Vials (4 ounces)",
-		source : [["SRD", 69], ["P", 150]],
+		source : [["free", 0], ["P24", 222]],
 		weight : 0.25,
 		icon : "Vials"
 	},
 	"alchemist fire" : {
 		name : "Alchemist's Fire, flasks",
-		source : [["SRD", 66], ["P", 148]],
+		source : [["free", 0], ["P24", 222]],
 		weight : 1,
 		icon : "Flasks",
 		invName : "Alchemist's fire, flasks of",
@@ -985,7 +1168,7 @@ var Base_AmmoList = {
 	},
 	"vials of acid" : {
 		name : "Vials of Acid",
-		source : [["SRD", 66], ["P", 148]],
+		source : [["free", 0], ["P24", 222]],
 		weight : 1,
 		icon : "Vials",
 		invName : "Acid, vials of",
@@ -993,139 +1176,146 @@ var Base_AmmoList = {
 	},
 	"holy water" : {
 		name : "Holy Water, flasks",
-		source : [["SRD", 67], ["P", 151]],
+		source : [["free", 0], ["P24", 226]],
 		weight : 1,
 		icon : "Flasks",
 		invName : "Holy Water, flasks of",
 		alternatives : [/^(?=.*holy)(?=.*water).*$/i]
+	},
+	"oil" : {
+		name : "Oil, flasks",
+		source : [["free", 0], ["P24", 227]],
+		weight : 1,
+		icon : "Flasks",
+		invName : "Oil, flasks of",
+		alternatives : [/oil/i]
 	}
 };
 
 var Base_PacksList = {
 	burglar : {
 		name : "Burglar's pack (16 gp)",
-		source : [["SRD", 70], ["P", 151]],
+		source : [["free", 0], ["P24", 224]],
 		items : [
 			["Backpack, with:", "", 5],
-			["Bag of 1000 ball bearings", 1, 2],
-			["String, feet of", 10, ""],
+			["Ball bearings, pouches of", "", 2],
 			["Bell", "", ""],
-			["Candles", 5, ""],
+			["Candles", 10, ""],
 			["Crowbar", "", 5],
-			["Hammer", "", 3],
-			["Pitons", 10, .25],
+			["Rope", "", 5],
 			["Hooded lantern", "", 2],
-			["Oil, flasks of", 2, 1],
-			["Rations, days of", 5, 2],
+			["Oil, flasks of", 7, 1],
 			["Tinderbox", "", 1],
-			["Waterskin", "", 5],
-			["Hempen rope, feet of", 50, 0.2]
+			["Rations, days of", 5, 2],
+			["Waterskin", "", 5]
 		]
 	},
 	diplomat : {
 		name : "Diplomat's pack (39 gp)",
-		source : [["SRD", 70], ["P", 151]],
+		source : [["free", 0], ["P24", 225]],
 		items : [
 			["Chest, with:", "", 25],
-			["Map or scroll case", 2, 1],
 			["Fine clothes", "", 6],
-			["Ink, 1 ounce bottle of", "", ""],
-			["Ink pen", "", ""],
-			["Lamp", "", 1],
-			["Oil, flasks of", 2, 1],
+			["Perfume, vials of", "", ""],
+			["Ink, 1 ounce bottles of", "", ""],
+			["Ink pen", 5, ""],
 			["Paper, sheets of", 5, ""],
-			["Perfume, vial of", "", ""],
-			["Sealing Wax", "", ""],
-			["Soap", "", ""]
+			["Parchment, sheets of", 5, ""],
+			["Map or scroll case", 2, 1],
+			["Lamp", "", 1],
+			["Oil, flasks of", 4, 1],
+			["Tinderbox", "", 1]
 		]
 	},
 	dungeoneer : {
 		name : "Dungeoneer's pack (12 gp)",
-		source : [["SRD", 70], ["P", 151]],
+		source : [["free", 0], ["P24", 225]],
 		items : [
 			["Backpack, with:", "", 5],
+			["Caltrops, bags of", "", 2],
 			["Crowbar", "", 5],
-			["Hammer", "", 3],
-			["Pitons", 10, .25],
-			["Torches", 10, 1],
+			["Oil, flasks of", 2, 1],
 			["Tinderbox", "", 1],
+			["Torches", 10, 1],
 			["Rations, days of", 10, 2],
-			["Waterskin", "", 5],
-			["Hempen rope, feet of", 50, 0.2]
+			["Waterskin", "", 5]
 		]
 	},
 	entertainer : {
 		name : "Entertainer's pack (40 gp)",
-		source : [["SRD", 70], ["P", 151]],
+		source : [["free", 0], ["P24", 225]],
 		items : [
 			["Backpack, with:", "", 5],
 			["Bedroll", "", 7],
-			["Costumes", 2, 4],
-			["Candles", 5, ""],
-			["Rations, days of", 5, 2],
-			["Waterskin", "", 5],
-			["Disguise kit", "", 3]
+			["Costume clothes", 3, 4],
+			["Bell", "", ""],
+			["Mirror", "", 0.5],
+			["Bullseye lantern", "", 2],
+			["Oil, flasks of", 8, 1],
+			["Tinderbox", "", 1],
+			["Rations, days of", 9, 2],
+			["Waterskin", "", 5]
 		]
 	},
 	explorer : {
 		name : "Explorer's pack (10 gp)",
-		source : [["SRD", 70], ["P", 151]],
+		source : [["free", 0], ["P24", 225]],
 		items : [
 			["Backpack, with:", "", 5],
 			["Bedroll", "", 7],
-			["Mess kit", "", 1],
+			["Rope", "", 5],
+			["Oil, flasks of", 2, 1],
 			["Tinderbox", "", 1],
 			["Torches", 10, 1],
 			["Rations, days of", 10, 2],
-			["Waterskin", "", 5],
-			["Hempen rope, feet of", 50, 0.2]
+			["Waterskin", "", 5]
 		]
 	},
 	priest : {
-		name : "Priest's pack (19 gp)",
-		source : [["SRD", 70], ["P", 151]],
+		name : "Priest's pack (33 gp)",
+		source : [["free", 0], ["P24", 228]],
 		items : [
 			["Backpack, with:", "", 5],
 			["Blanket", "", 3],
-			["Candles", 10, ""],
+			["Robe", "", 4],
+			["Holy water, flasks of", "", 1],
+			["Lamp", "", 1],
 			["Tinderbox", "", 1],
-			["Alms box", "", 1],
-			["Incense, blocks of", 2, ""],
-			["Censer", "", 1],
-			["Vestments", "", 4],
-			["Rations, days of", 2, 2],
-			["Waterskin", "", 5]
+			["Rations, days of", 7, 2]
 		]
 	},
 	scholar : {
 		name : "Scholar's pack (40 gp)",
-		source : [["SRD", 70], ["P", 151]],
+		source : [["free", 0], ["P24", 228]],
 		items : [
 			["Backpack, with:", "", 5],
-			["Book of lore", "", 5],
+			["Book", "", 5],
 			["Ink, 1 ounce bottle of", "", ""],
 			["Ink pen", "", ""],
 			["Parchment, sheets of", 10, ""],
-			["Little bag of sand", "", 1],
-			["Small knife", "", 0.25]
+			["Lamp", "", 1],
+			["Oil, flasks of", 10, 1],
+			["Tinderbox", "", 1]
 		]
 	}
 };
 
 var Base_GearList = {
+/* removed in PHB'24
 	"abacus" : {
 		infoname : "Abacus [2 gp]",
 		name : "Abacus",
 		amount : "",
 		weight : 2
 	},
-	"acid (vial)" : {
+*/
+	"acid" : {
 		infoname : "Acid (vial) [25 gp]",
 		name : "Acid, vials of",
 		amount : "",
 		weight : 1
 	},
-	"alchemist's fire (flask)" : {
+	"alchemist's fire" : {
 		infoname : "Alchemist's fire (flask) [50 gp]",
 		name : "Alchemist's fire, flasks of",
 		amount : "",
@@ -1137,35 +1327,42 @@ var Base_GearList = {
 		amount : 1,
 		weight : 10
 	},
-	"arrows (20)" : {
+	"arrows" : {
 		infoname : "Arrows (20) [1 gp]",
 		name : "Arrows",
 		amount : 20,
 		weight : 0.05,
 		type : "ammunition"
 	},
-	"blowgun needles (50)" : {
+	"needles" : {
 		infoname : "Blowgun needles (50) [1 gp]",
-		name : "Blowgun needles",
+		name : "Blowgun needles", // incorrect, but clearer than the PHB'24 "needles"
 		amount : 50,
 		weight : 0.02,
 		type : "ammunition"
 	},
-	"crossbow bolts (20)" : {
+	"bolts" : {
 		infoname : "Crossbow bolts (20) [1 gp]",
-		name : "Crossbow bolts",
+		name : "Crossbow bolts", // incorrect, but clearer than the PHB'24 "bolts"
 		amount : 20,
 		weight : 0.075,
 		type : "ammunition"
 	},
-	"sling bullets (20)" : {
-		infoname : "Sling bullets (20) [4 cp]",
+	"bullets, sling" : {
+		infoname : "Bullets, sling (20) [4 cp]",
 		name : "Sling bullets",
 		amount : 20,
 		weight : 0.075,
 		type : "ammunition"
 	},
-	"antitoxin (vial)" : {
+	"bullets, firearm" : {
+		infoname : "Bullets, firearm (10) [3 gp]",
+		name : "Firearm bullets",
+		amount : 10,
+		weight : 0.2,
+		type : "ammunition"
+	},
+	"antitoxin" : {
 		infoname : "Antitoxin (vial) [50 gp]",
 		name : "Antitoxin, vials of",
 		amount : "",
@@ -1212,9 +1409,9 @@ var Base_GearList = {
 		amount : "",
 		weight : 5
 	},
-	"ball bearings (bag of 1,000)" : {
-		infoname : "Ball bearings (bag of 1,000) [1 gp]",
-		name : "Bag of 1000 ball bearings",
+	"ball bearings" : {
+		infoname : "Ball bearings (pouch) [1 gp]",
+		name : "Ball bearings, pouches of",
 		amount : "",
 		weight : 2
 	},
@@ -1242,12 +1439,14 @@ var Base_GearList = {
 		amount : "",
 		weight : ""
 	},
+/* removed in PHB'24, now included with a saddle
 	"bit and bridle" : {
 		infoname : "Bit and bridle [2 gp]",
 		name : "Bit and bridle",
 		amount : "",
 		weight : 1
 	},
+*/
 	"blanket" : {
 		infoname : "Blanket [5 sp]",
 		name : "Blanket",
@@ -1273,16 +1472,16 @@ var Base_GearList = {
 		weight : 2
 	},
 	"bucket" : {
-		infoname : "Bucket [5 sp]",
+		infoname : "Bucket [5 cp]",
 		name : "Bucket",
 		amount : "",
 		weight : 2
 	},
 	"caltrops" : {
-		infoname : "Caltrops [1 gp]",
-		name : "Caltrops",
-		amount : 20,
-		weight : 0.1
+		infoname : "Caltrops (bag) [1 gp]",
+		name : "Caltrops, bags of",
+		amount : "",
+		weight : 2
 	},
 	"candle" : {
 		infoname : "Candle [1 cp]",
@@ -1302,18 +1501,20 @@ var Base_GearList = {
 		amount : "",
 		weight : 1
 	},
-	"chain (10 feet)" : {
-		infoname : "Chain (10 feet) [5 gp]",
-		name : "Chain, feet of",
-		amount : 10,
-		weight : 1
+	"chain" : {
+		infoname : "Chain [5 gp]",
+		name : "Chain",
+		amount : "",
+		weight : 10
 	},
+/* removed in PHB'24
 	"chalk (1 piece)" : {
 		infoname : "Chalk (1 piece) [1 cp]",
 		name : "Chalk, pieces of",
 		amount : "",
 		weight : ""
 	},
+*/
 	"chest" : {
 		infoname : "Chest [5 gp]",
 		name : "Chest",
@@ -1326,6 +1527,7 @@ var Base_GearList = {
 		amount : "",
 		weight : 12
 	},
+/* removed in PHB'24
 	"common" : {
 		infoname : "Common [5 sp]",
 		name : "Common clothes",
@@ -1333,6 +1535,7 @@ var Base_GearList = {
 		weight : 3,
 		type : "clothes"
 	},
+*/
 	"costume" : {
 		infoname : "Costume [5 gp]",
 		name : "Costume clothes",
@@ -1340,14 +1543,14 @@ var Base_GearList = {
 		weight : 4,
 		type : "clothes"
 	},
-	"fine" : {
+	"clothes, fine" : {
 		infoname : "Fine [15 gp]",
 		name : "Fine clothes",
 		amount : "",
 		weight : 6,
 		type : "clothes"
 	},
-	"traveler's" : {
+	"clothes, traveler's" : {
 		infoname : "Traveler's [2 gp]",
 		name : "Traveler's clothes",
 		amount : "",
@@ -1373,6 +1576,7 @@ var Base_GearList = {
 		weight : "",
 		type : "druidic focus"
 	},
+/* removed in PHB'24
 	"totem" : {
 		infoname : "Totem [1 gp]",
 		name : "Totem druidic focus",
@@ -1380,6 +1584,7 @@ var Base_GearList = {
 		weight : "",
 		type : "druidic focus"
 	},
+*/
 	"wooden staff" : {
 		infoname : "Wooden staff [5 gp]",
 		name : "Wooden staff druidic focus",
@@ -1394,15 +1599,17 @@ var Base_GearList = {
 		weight : 1,
 		type : "druidic focus"
 	},
+/* removed in PHB'24
 	"fishing tackle" : {
 		infoname : "Fishing tackle [1 gp]",
 		name : "Fishing tackle",
 		amount : "",
 		weight : 4
 	},
-	"flask or tankard" : {
-		infoname : "Flask or tankard [2 cp]",
-		name : "Flask or tankard",
+*/
+	"flask" : {
+		infoname : "Flask [2 cp]",
+		name : "Flask",
 		amount : "",
 		weight : 1
 	},
@@ -1412,6 +1619,7 @@ var Base_GearList = {
 		amount : "",
 		weight : 4
 	},
+/* removed in PHB'24
 	"hammer" : {
 		infoname : "Hammer [1 gp]",
 		name : "Hammer",
@@ -1424,6 +1632,7 @@ var Base_GearList = {
 		amount : "",
 		weight : 10
 	},
+*/
 	"healer's kit" : {
 		infoname : "Healer's kit [5 gp]",
 		name : "Healer's kit",
@@ -1451,27 +1660,29 @@ var Base_GearList = {
 		weight : 2,
 		type : "holy symbol"
 	},
-	"holy water (flask)" : {
+	"holy water" : {
 		infoname : "Holy water (flask) [25 gp]",
 		name : "Holy water, flasks of",
 		amount : "",
 		weight : 1
 	},
+/* removed in PHB'24
 	"hourglass" : {
 		infoname : "Hourglass [25 gp]",
 		name : "Hourglass",
 		amount : "",
 		weight : 1
 	},
+*/
 	"hunting trap" : {
 		infoname : "Hunting trap [5 gp]",
 		name : "Hunting trap",
 		amount : "",
 		weight : 25
 	},
-	"ink (1 ounce bottle)" : {
+	"ink" : {
 		infoname : "Ink (1 ounce bottle) [10 gp]",
-		name : "Ink, 1 ounce bottle of",
+		name : "Ink, 1 ounce bottles of",
 		amount : "",
 		weight : ""
 	},
@@ -1481,21 +1692,23 @@ var Base_GearList = {
 		amount : "",
 		weight : ""
 	},
-	"jug or pitcher" : {
-		infoname : "Jug or pitcher [2 cp]",
-		name : "Jug or pitcher",
+	"jug" : {
+		infoname : "Jug [2 cp]",
+		name : "Jug",
 		amount : "",
 		weight : 4
 	},
+/* removed in PHB'24
 	"small knife" : {
 		infoname : "Small Knife [1 sp]",
 		name : "Small Knife",
 		amount : "",
 		weight : 0.25
 	},
-	"ladder (10-foot)" : {
-		infoname : "Ladder (10-foot) [1 sp]",
-		name : "10-foot ladder",
+*/
+	"ladder" : {
+		infoname : "Ladder (10 ft) [1 sp]",
+		name : "10-ft ladder",
 		amount : "",
 		weight : 25
 	},
@@ -1535,42 +1748,51 @@ var Base_GearList = {
 		amount : "",
 		weight : 6
 	},
+	"map" : {
+		infoname : "Map [1 gp]",
+		name : "Map",
+		amount : "",
+		weight : ""
+	},
+/* removed in PHB'24
 	"mess kit" : {
 		infoname : "Mess kit [2 sp]",
 		name : "Mess kit",
 		amount : "",
 		weight : 1
 	},
-	"mirror, steel" : {
-		infoname : "Mirror, steel [5 gp]",
-		name : "Steel mirror",
+*/
+	"mirror" : {
+		infoname : "Mirror [5 gp]",
+		name : "Mirror",
 		amount : "",
 		weight : 0.5
 	},
-	"oil (flask)" : {
+	"oil" : {
 		infoname : "Oil (flask) [1 sp]",
 		name : "Oil, flasks of",
 		amount : "",
 		weight : 1
 	},
-	"paper (one sheet)" : {
+	"paper" : {
 		infoname : "Paper (one sheet) [2 sp]",
 		name : "Paper, sheets of",
 		amount : "",
 		weight : ""
 	},
-	"parchment (one sheet)" : {
+	"parchment" : {
 		infoname : "Parchment (one sheet) [1 sp]",
 		name : "Parchment, sheets of",
 		amount : "",
 		weight : ""
 	},
-	"perfume (vial)" : {
+	"perfume" : {
 		infoname : "Perfume (vial) [5 gp]",
 		name : "Perfume, vials of",
 		amount : "",
 		weight : ""
 	},
+/* removed in PHB'24
 	"pick, miner's" : {
 		infoname : "Pick, miner's [2 gp]",
 		name : "Miner's pick",
@@ -1583,15 +1805,16 @@ var Base_GearList = {
 		amount : "",
 		weight : 0.25
 	},
-	"poison, basic (vial)" : {
+*/
+	"poison, basic" : {
 		infoname : "Poison, basic (vial) [100 gp]",
 		name : "Basic poison, vials of",
 		amount : "",
 		weight : ""
 	},
-	"pole (10-foot)" : {
-		infoname : "Pole (10-foot) [5 cp]",
-		name : "10-foot pole",
+	"pole" : {
+		infoname : "Pole (10 ft) [5 cp]",
+		name : "10-ft pole",
 		amount : "",
 		weight : 7
 	},
@@ -1625,18 +1848,19 @@ var Base_GearList = {
 		amount : "",
 		weight : 35
 	},
-	"rations (1 day)" : {
+	"rations" : {
 		infoname : "Rations (1 day) [5 sp]",
 		name : "Rations, days of",
 		amount : 1,
 		weight : 2
 	},
-	"robes" : {
-		infoname : "Robes [1 gp]",
-		name : "Robes",
+	"robe" : {
+		infoname : "Robe [1 gp]",
+		name : "Robe",
 		amount : "",
 		weight : 4
 	},
+/* removed in PHB'24, now just "Rope"
 	"rope, hempen (50 feet)" : {
 		infoname : "Rope, hempen (50 feet) [1 gp]",
 		name : "Hempen rope, feet of",
@@ -1649,26 +1873,34 @@ var Base_GearList = {
 		amount : 50,
 		weight : 0.1
 	},
+*/
+	"rope" : {
+		infoname : "Rope [1 gp]",
+		name : "Rope",
+		amount : "",
+		weight : 5
+	},
 	"sack" : {
 		infoname : "Sack [1 cp]",
 		name : "Sack",
 		amount : "",
 		weight : 0.5
 	},
-	"exotic" : {
+	"saddle, exotic" : {
 		infoname : "Exotic [60 gp]",
 		name : "Exotic saddle",
 		amount : "",
 		weight : 40,
 		type : "saddle"
 	},
-	"military" : {
+	"saddle, military" : {
 		infoname : "Military [20 gp]",
 		name : "Military saddle",
 		amount : "",
 		weight : 30,
 		type : "saddle"
 	},
+/* removed in PHB'24
 	"pack" : {
 		infoname : "Pack [5 gp]",
 		name : "Pack saddle",
@@ -1676,13 +1908,15 @@ var Base_GearList = {
 		weight : 15,
 		type : "saddle"
 	},
-	"riding" : {
+*/
+	"saddle, riding" : {
 		infoname : "Riding [10 gp]",
 		name : "Riding saddle",
 		amount : "",
 		weight : 25,
 		type : "saddle"
 	},
+/* removed in PHB'24
 	"saddlebags" : {
 		infoname : "Saddlebags [4 gp]",
 		name : "Saddlebags",
@@ -1701,6 +1935,7 @@ var Base_GearList = {
 		amount : "",
 		weight : ""
 	},
+*/
 	"shovel" : {
 		infoname : "Shovel [2 gp]",
 		name : "Shovel",
@@ -1713,6 +1948,7 @@ var Base_GearList = {
 		amount : "",
 		weight : ""
 	},
+/* removed in PHB'24
 	"signet ring" : {
 		infoname : "Signet ring [5 gp]",
 		name : "Signet ring",
@@ -1725,15 +1961,28 @@ var Base_GearList = {
 		amount : "",
 		weight : ""
 	},
+*/
 	"spellbook" : {
-		infoname : "Spellbook [50 gp]",
+		infoname : "Spellbook [50 gp]", // No price mentioned in PHB'24
 		name : "Spellbook",
 		amount : "",
 		weight : 3
 	},
-	"spikes, iron (10)" : {
+	"spell scroll (cantrip)" : { // PHB'24 new
+		infoname : "Spell Scroll (Cantrip) [30 gp]",
+		name : "Spell Scroll (Cantrip)",
+		amount : "",
+		weight : "",
+	},
+	"spell scroll (level 1)" : { // PHB'24 new
+		infoname : "Spell Scroll (Level 1) [50 gp]",
+		name : "Spell Scroll (Level 1)",
+		amount : "",
+		weight : "",
+	},
+	"spikes, iron" : {
 		infoname : "Spikes, iron (10) [1 gp]",
-		name : "Iron spike",
+		name : "Iron spikes",
 		amount : 10,
 		weight : 0.5
 	},
@@ -1743,7 +1992,7 @@ var Base_GearList = {
 		amount : "",
 		weight : 1
 	},
-	"tent, two-person" : {
+	"tent" : {
 		infoname : "Tent, two-person [2 gp]",
 		name : "Two-person tent",
 		amount : "",
@@ -1773,12 +2022,14 @@ var Base_GearList = {
 		amount : "",
 		weight : 5
 	},
+/* removed in PHB'24
 	"whetstone" : {
 		infoname : "Whetstone [1 cp]",
 		name : "Whetstone",
 		amount : "",
 		weight : 1
 	}
+*/
 };
 
 var Base_ToolsList = {
@@ -1913,28 +2164,28 @@ var Base_ToolsList = {
 		amount : "",
 		weight : 5
 	},
-	"dice set" : {
-		infoname : "Dice set [1 sp]",
-		name : "Dice set",
+	"dice" : {
+		infoname : "Dice [1 sp]",
+		name : "Dice",
 		amount : "",
 		weight : "",
 		type : "gaming set"
 	},
-	"dragonchess set" : {
+	"dragonchess" : {
 		infoname : "Dragonchess set [1 gp]",
 		name : "Dragonchess set",
 		amount : "",
 		weight : 0.5,
 		type : "gaming set"
 	},
-	"playing card set" : {
-		infoname : "Playing card set [5 sp]",
-		name : "Playing card set",
+	"playing cards" : {
+		infoname : "Playing cards [5 sp]",
+		name : "Playing cards",
 		amount : "",
 		weight : "",
 		type : "gaming set"
 	},
-	"three-dragon ante set" : {
+	"three-dragon ante" : {
 		infoname : "Three-Dragon Ante set [1 gp]",
 		name : "Three-Dragon Ante set",
 		amount : "",
