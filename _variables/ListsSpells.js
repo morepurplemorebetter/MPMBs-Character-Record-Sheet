@@ -10,12 +10,7 @@ var Base_spellSchoolList = {
 	"Evoc" : "evocation",
 	"Illus" : "illusion",
 	"Necro" : "necromancy",
-	"Trans" : "transmutation",
-	"Avatar" : "avatar",
-	"Awake" : "awakened",
-	"Immor" : "immortal",
-	"Nomad" : "nomad",
-	"Wu Jen" : "wu jen"
+	"Trans" : "transmutation"
 }
 
 var Base_SpellsList = {

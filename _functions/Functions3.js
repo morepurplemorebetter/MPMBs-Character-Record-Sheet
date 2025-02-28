@@ -281,6 +281,9 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		// magic item additions
 		if (uObj.magicitemsAdd) processAddMagicItems(addIt, uObj.magicitemsAdd);
 
+		// feat additions
+		if (uObj.featsAdd) processAddFeats(addIt, uObj.featsAdd, type, tipNmF, uniqueObjNm);
+
 		// options for other class extrachoices
 		if (uObj.bonusClassExtrachoices) processBonusClassExtraChoices(addIt, type, uObj.bonusClassExtrachoices);
 
@@ -1534,7 +1537,7 @@ function UpdateSheetWeapons() {
 		for (addEval in CurrentEvals.atkAdd) {
 			var evalThing = CurrentEvals.atkAdd[addEval];
 			if (typeof evalThing == 'function') evalThing = evalThing.toSource();
-			if ((/\.level|Proficiency Bonus/).test(evalThing)) {
+			if ((/\.(total)?level|Proficiency Bonus/).test(evalThing)) {
 				isLvlDepAtkAdd = true;
 				break;
 			}
@@ -3021,7 +3024,7 @@ function ParseMagicItemMenu() {
 		var sMainItemName = iObj.sortname ? iObj.sortname : iObj.name;
 		var itemName = amendSrc(RemoveZeroWidths(!sObj ? sMainItemName : sObj.sortname ? sObj.sortname : sObj.name ? sObj.name : sMainItemName + " [" + subItem + "]"), iSrc);
 		var firstLetter = itemName[0].toUpperCase();
-		// If this is a subitem and it has the exact same name as a previously added subitem, we have to make sure it 
+		// If this is a subitem and it has the exact same name as a previously added subitem, we have to make sure it is unique
 		if (sObj && sObj.name && iMenus.ref[itemName]) {
 			itemName = amendSrc(RemoveZeroWidths(sMainItemName + " [" + subItem + "]"), iSrc);
 			firstLetter = itemName[0].toUpperCase();
@@ -3097,7 +3100,7 @@ function ParseMagicItemMenu() {
 				var aSubItem = anItem[aChL];
 				if (!aSubItem || testSource(item + "-" + aChL, aSubItem, "magicitemExcl")) continue;
 				for (var attr in aSubItem) {
-					if (!(/^(description.*|name.*|source|notLegalAL|magicItemTable|storyItemAL|extraTooltip|attunement|weight|prereq.*|allowDuplicates|calculate)$/i).test(attr)) {
+					if (!/^(description.*|name.*|type|source|notLegalAL|magicItemTable|storyItemAL|extraTooltip|attunement|weight|prereq.*|allowDuplicates|calculate)$/i.test(attr)) {
 						justDoMainItem = false;
 						sortItem(item, anItem.choices[c]);
 						break;

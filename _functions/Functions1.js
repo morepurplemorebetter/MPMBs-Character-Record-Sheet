@@ -1625,22 +1625,19 @@ function classesFieldVal() {
 
 // search the string for possible class and subclass
 function ParseClass(input) {
-	var classFound = "", classFoundLen = 0, classFoundDat = 0;
+	if (!input) return false;
+	var mainFound = "", mainFoundLen = 0, mainFoundDat = 0;
 	var subFound = "", subFoundLen = 0, subFoundDat = 0;
 	input = removeDiacritics(input);
 
 	// Loop through all the classes and see if any of them match and then look for its subclasses
 	// If that doesn't yield anything, look if any of the subclasses match regardless of class' names
 	for (var i = 1; i <= 2; i++) {
-		if (i == 2 && classFound) break; // something was already found in round 1, so no need for round 2
-		for (var key in ClassList) { //scan string for all classes, choosing subclasses over classes
+		if (i == 2 && mainFound) break; // something was already found in round 1, so no need for round 2
+		for (var key in ClassList) {
 			var kObj = ClassList[key];
-			if (i == 1) { // reset the subs for every class we look through if still looking at classes mainly
-				subFoundLen = 0;
-				subFoundDat = 0;
-			}
 
-			if ((i == 1 && !(kObj.regExpSearch).test(input)) // see if the class regex matches (round 1 only)
+			if ((i == 1 && !kObj.regExpSearch.test(input)) // see if the class regex matches (round 1 only)
 				|| testSource(key, kObj, "classExcl") // test if the class or its source isn't excluded
 				|| (key === "ranger" && !testSource("rangerua", ClassList.rangerua, "classExcl")) // ignore the PHB ranger if the UA ranger is present
 			) continue;
@@ -1649,12 +1646,12 @@ function ParseClass(input) {
 			// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
 			// or if we are not using the search length, just look at the newest source date
 			var tempDate = sourceDate(kObj.source);
-			if (i == 1 && ((!ignoreSearchLength && kObj.name.length < classFoundLen) || (!ignoreSearchLength && kObj.name.length == classFoundLen && tempDate < classFoundDat) || (ignoreSearchLength && tempDate <= classFoundDat))) continue;
+			if (i == 1 && ((!ignoreSearchLength && kObj.name.length < mainFoundLen) || (!ignoreSearchLength && kObj.name.length == mainFoundLen && tempDate < mainFoundDat) || (ignoreSearchLength && tempDate <= mainFoundDat))) continue;
 
-			if (i == 1) { // we have a matching class! (round 1 only)
-				classFound = key;
-				classFoundLen = kObj.name.length;
-				classFoundDat = tempDate;
+			if (i == 1) { // we have a (better) matching class! (round 1 only)
+				mainFound = key;
+				mainFoundLen = kObj.name.length;
+				mainFoundDat = tempDate;
 				subFound = "";
 				subFoundLen = 0;
 				subFoundDat = 0;
@@ -1666,7 +1663,7 @@ function ParseClass(input) {
 				var sObj = ClassSubList[subKey];
 
 				if (!sObj // skip if the subclass isn't known in the ClassSubList object
-					|| !(sObj.regExpSearch).test(input) // see if the subclass regex matches (round 1 only)
+					|| !sObj.regExpSearch.test(input) // see if the subclass regex matches (round 1 only)
 					|| testSource(subKey, sObj, "classExcl") // test if the subclass or its source isn't excluded
 				) continue;
 
@@ -1677,16 +1674,16 @@ function ParseClass(input) {
 				if ((!ignoreSearchLength && sObj.subname.length < subFoundLen) || (!ignoreSearchLength && sObj.subname.length == subFoundLen && tempSubDate < subFoundDat) || (ignoreSearchLength && tempSubDate <= subFoundDat)) continue;
 
 				// we have a match for both the class and the subclass!
-				classFound = key;
-				classFoundLen = kObj.name.length;
-				classFoundDat = tempDate;
+				mainFound = key;
+				mainFoundLen = kObj.name.length;
+				mainFoundDat = tempDate;
 				subFound = subKey;
 				subFoundLen = sObj.subname.length;
 				subFoundDat = tempSubDate;
 			}
 		}
 	}
-	return classFound ? [classFound, subFound] : false;
+	return mainFound ? [mainFound, subFound] : false;
 };
 
 // detects classes entered and parses information to global classes variable
@@ -2364,6 +2361,18 @@ function AddExperiencePoints() {
 	CalcExperienceLevel(true);
 };
 
+// apply the Race field change (field validation)
+function raceFieldVal() {
+	if (event.target.remVal === undefined) {
+		ApplyRace(event.value);
+	}
+	// Now check if it is still undefined, as the previous could have changed that
+	if (event.target.remVal !== undefined) {
+		event.value = event.target.remVal;
+		delete event.target.remVal;
+	}
+}
+
 function ParseRace(input) {
 	var resultArray = ["", "", []];
 	if (!input) return resultArray;
@@ -2481,29 +2490,58 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 			for (var i = 0; i < tempFound[2].length; i++) {
 				var varR = tempFound[2][i];
 				var varRobj = RaceSubList[tempFound[0] + "-" + varR];
-				var varRname = varR.capitalize() + " " + aRace.name.toLowerCase();
+				var varRname = varRobj.sortname ? varRobj.sortname : varRobj.name ? varRobj.name : varR.capitalize() + " " + aRace.name.toLowerCase();
 				var varRsrc = varRobj && varRobj.source ? stringSource(varRobj, 'first,abbr', "    [", "]") : rSource;
 				rVarNames.push(varRname + varRsrc);
 				rVarObj[varRname + varRsrc] = varR;
 			}
-			var aResp = AskUserOptions("Select Racial Variant", "The '" + aRace.name + "' race offers a choice of variants. Note that variants are not the same as subraces. If you want to select a different subrace, use the drop-down box in the Race field.\n\nYou can change the selected variant by typing the full name of another variant into the Race field, or with the Racial Options button in the Racial Traits section on the second page.", rVarNames, "radio", true);
-			if (rVarObj[aResp]) CurrentRace.variant = rVarObj[aResp];
+			var aResp = AskUserOptions("Select Racial Variant", "The '" + aRace.name + "' race offers a choice of variants. Note that variants are not the same as subraces. If you want to select a different subrace, use the drop-down box in the Race field.\n\nYou can change the selected variant by typing the full name of another variant into the Race field, or with the Racial Options button in the Racial Traits section on the second page.\n\nThe name on the first page will be changed to the selected variant's name.", rVarNames, "radio", true);
+			if (rVarObj[aResp]) {
+				CurrentRace.variant = rVarObj[aResp];
+				// Change the Race field on the 1st page to the selected variant's name (if any)
+				varRobj = RaceSubList[tempFound[0] + "-" + CurrentRace.variant];
+				if (varRobj.name) {
+					tDoc.getField("Race").remVal = varRobj.name;
+				}
+			}
 		}
 	}
 
 	// set the properties of the CurrentRace object
 	if (CurrentRace.known) {
+		var rxIgnoreProps = /^(known(Old)?|variants?(Old)?|level|features)$/i;
 		// the properties of the main race
 		for (var prop in RaceList[CurrentRace.known]) {
-			if ((/^(known(Old)?|variants?(Old)?|level)$/i).test(prop)) continue;
+			if (rxIgnoreProps.test(prop)) continue;
 			CurrentRace[prop] = RaceList[CurrentRace.known][prop];
+		}
+		// Do the features separately, so we don't merge them with the subrace later
+		if (RaceList[CurrentRace.known].features) {
+			CurrentRace.features = {};
+			for (var feature in RaceList[CurrentRace.known].features) {
+				CurrentRace.features[feature] = RaceList[CurrentRace.known].features[feature];
+			}
 		}
 		// the properties of the variant (overriding anything from the main)
 		if (CurrentRace.variant) {
 			var subrace = CurrentRace.known + "-" + CurrentRace.variant;
 			for (var prop in RaceSubList[subrace]) {
-				if ((/^(known(Old)?|variants?(Old)?|level)$/i).test(prop)) continue;
+				if (rxIgnoreProps.test(prop)) continue;
 				CurrentRace[prop] = RaceSubList[subrace][prop];
+			}
+			// merge features, if any
+			if (RaceSubList[subrace].features) {
+				if (!CurrentRace.features) {
+					CurrentRace.features = RaceSubList[subrace].features;
+				} else {
+					for (var feature in RaceSubList[subrace].features) {
+						CurrentRace.features[feature] = RaceSubList[subrace].features[feature];
+						if (!CurrentRace.features[feature]) {
+							// This feature is not valid, possibly because it is set to `null` to deliberately invalidate a feature from the parent RaceList. Thus, delete this entry from the CurrentRace.features
+							delete CurrentRace.features[feature];
+						} 
+					}
+				}
 			}
 			// --- backwards compatibility --- //
 			// if an old attribute exists in the racial variant, but the RaceList object uses the new attribute name, make sure the variant's version is used
@@ -4254,7 +4292,7 @@ function ApplyBackground(input) {
 			);
 
 			// reset the background feature
-			if (CurrentBackground.feature) Value("Background Feature", "");
+			if (CurrentBackground.feature && What("Background Feature") === CurrentBackground.feature) Value("Background Feature", "");
 
 			// reset the background extra field
 			xtrFld.clearItems();
@@ -5574,6 +5612,43 @@ function FeatClear(itemNmbr, doAutomation) {
 		AddTooltip(Fflds[2], "", "");
 		tDoc.getField(Fflds[2]).setAction("Calculate", "");
 		if (IsNotReset) tDoc.resetForm(Fflds);
+	}
+}
+
+// Processing the generic `featsAdd` attribute
+function processAddFeats(bAddRemove, featsAdd) {
+	if (!featsAdd) return;
+	if (!isArray(featsAdd)) featsAdd = [featsAdd];
+
+	var sFeatName;
+	// loop through all the entries
+	for (var i = 0; i < featsAdd.length; i++) {
+		// reset variable
+		sFeatName = false;
+		// each entry can be a string or an object
+		if (typeof featsAdd[i] === "string") {
+			sFeatName = featsAdd[i];
+		} else if (featsAdd[i].name || featsAdd[i].select) {
+			sFeatName = featsAdd[i].name ? featsAdd[i].name : featsAdd[i].select;
+		} else if (featsAdd[i].key && FeatsList[featsAdd[i].key]) {
+			var oFeat = FeatsList[featsAdd[i].key];
+			sFeatName = oFeat.name;
+			if (featsAdd[i].choice && oFeat.choices && oFeat[featsAdd[i].choice]) {
+				var sChoice = oFeat.choices.filter(function (n) { return n.toLowerCase() === featsAdd[i].choice; });
+				var oChoice = oFeat[featsAdd[i].choice];
+				if (typeof oChoice === "object" && sChoice.length) {
+					sFeatsName = oChoice.name ? oChoice.name : sFeatName + " [" + sChoice.toString() + "]";
+				}
+			}
+		}
+		// If a feat name was detected, add or remove it
+		if (sFeatname) {
+			if (bAddRemove) {
+				AddFeat(sFeatname);
+			} else {
+				RemoveFeat(sFeatname);
+			}
+		}
 	}
 }
 
@@ -8703,7 +8778,15 @@ function RaceFeatureOptions() {
 	var MenuSelection = getMenu("raceoptions");
 
 	if (MenuSelection && MenuSelection[0] !== "nothing") {
-		ApplyRace(MenuSelection.toString(), true);
+		var key = MenuSelection.join("-");
+		if (RaceSubList[key]) {
+			var varName = RaceSubList[key].name ? RaceSubList[key].name : MenuSelection[1].capitalize() + " " + RaceList[MenuSelection[0]].name.toLowerCase();
+			if (What("Race") !== varName) {
+				Value("Race", varName);
+			} else {
+				ApplyRace(MenuSelection.toString(), true);
+			}
+		}
 	}
 }
 

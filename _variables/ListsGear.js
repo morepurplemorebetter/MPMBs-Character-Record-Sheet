@@ -1273,7 +1273,7 @@ var Base_GearList = {
 		weight : 2
 	},
 	"bucket" : {
-		infoname : "Bucket [5 sp]",
+		infoname : "Bucket [5 cp]",
 		name : "Bucket",
 		amount : "",
 		weight : 2
