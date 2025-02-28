@@ -18,7 +18,7 @@ function processStats(AddRemove, inType, NameEntity, inScoresA, dialogTxt, isSpe
 		}
 	}
 	if (!curStat && type === "race") {
-		ASaddColumn("Racial Bonus", type);
+		ASaddColumn("Species Bonus", type);
 		i = CurrentStats.cols.length - 1;
 		curStat = CurrentStats.cols[i];
 	} else if (!curStat) {
@@ -228,7 +228,7 @@ function AbilityScores_Button(onlySetTooltip) {
 			txt : ""
 		},
 		race : {
-			title : "Racial ability score improvements",
+			title : "Species ability score improvements",
 			loc : "right",
 			txt : ""
 		},

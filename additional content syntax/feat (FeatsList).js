@@ -40,7 +40,6 @@
 				to have a source that doesn't yet exist in the sheet.
 
 	Sheet:		v14.0.0 and newer (PHB'24)
-
 */
 
 var iFileName = "Homebrew Syntax - FeatsList.js";
@@ -93,6 +92,15 @@ FeatsList["purple power"] = {
 
 	This name will also be used to recognize what is selected in the feat drop-down.
 */
+	sortname : "Staff, Purple",
+/*	name // OPTIONAL //
+	TYPE:	string
+	USE:	name of the feat as it will be shown in the menu for selecting feats
+	ADDED:	v14.0.0
+
+	This name will only be used to display the feat in the menu.
+	This attribute is not used to recognize the feats or fill the field on the sheet.
+*/
 	source : ["SRD", 204],
 	source : [["E", 7], ["S", 115]],
 /*	source // REQUIRED //
@@ -117,6 +125,30 @@ FeatsList["purple power"] = {
 	If a feat is completely homebrew, or you don't want to make a custom source, just put the following:
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
+*/
+	type : "origin",
+/*	type // OPTIONAL, but RECOMMENDED //
+	TYPE:	string
+	USE:	define which type of feat this is
+	ADDED:	v14.0.0
+
+	This attribute is used to sort the feats in the drop-down, to populate the feat's tooltip,
+	and it is used by the `featsAdd` common attribute (see "_common attributes.js").
+
+	The `featsAdd` attribute can offer the player a choice of feats that have a certain `type`.
+	If the provided `type` in the `featsAdd` attribute is (case-insensitive) included in this
+	`type` attribute string, then the feat will be shown in the options.
+
+	Common feat types are:
+		"origin"
+		"general"
+		"fighting style"
+		"epic boon"
+		"supernatural gift"
+
+	You can also define a custom type, or even a subtype.
+	For example, "origin (dwarf)" would have the feat appear both when `featsAdd.type` is
+	set to `type: "origin"` and `type: "origin (dwarf)"`.
 */
 	defaultExcluded : true,
 /*	defaultExcluded // OPTIONAL //
@@ -235,18 +267,6 @@ FeatsList["purple power"] = {
 		description : "",
 */
 
-	isOriginFeat : true,
-/*	isOriginFeat // OPTIONAL //
-	TYPE:	boolean
-	USE:	set to `true` if this feat is an origin feat
-	ADDED:	v14.0.0
-
-	If this attribute is set to true, the feat will be considered eligible to select
-	as a feat gained at 1st level (from a background).
-
-	Setting this attribute to false is the same as not including this attribute.
-*/
-
 /*
 	>>>>>>>>>>>>>>>>>>>>>>>>>
 	>>> Common Attributes >>>
@@ -303,6 +323,27 @@ FeatsList["purple power"] = {
 	This function doesn't get passed any variables.
 	This attribute will be ignored if the 'choices' attribute is not present.
 	Even with this attribute present, the player can always change the 'choice' using the button on the sheet.
+*/
+	choicesNotInMenu : true,
+/*	choicesNotInMenu // OPTIONAL //
+	TYPE:	boolean
+	USE:	omit the choices from the feat (i.e. only list the main feat's name)
+	ADDED:	v14.0.0
+
+	If this attribute is set to true and the feat has the `choices` attribute,
+	the feat will only be listed by the given `name` in the menu.
+	Normally, a feat with the `choices` attribute will have each choice listed
+	separately in the feat menu if any of these choices contain anything mechanically
+	different than the feat (e.g. anything more than a name or description attribute).
+	If so, the main name is not listed at all, just the choices.
+	If you want to be sure only the main feat is listed, regardless of the choices and their
+	attributes, set this attribute to true.
+
+	Also, if a feat has the `selfChoosing` attribute, only the main feat will be listed.
+
+	This attribute has no effect if the parent object has no `choices` attribute or if
+	it has the `selfChoosing` attribute.
+	Setting this attribute to false is the same as not including this attribute.
 */
 
 	"fire" : {

@@ -1625,22 +1625,19 @@ function classesFieldVal() {
 
 // search the string for possible class and subclass
 function ParseClass(input) {
-	var classFound = "", classFoundLen = 0, classFoundDat = 0;
+	if (!input) return false;
+	var mainFound = "", mainFoundLen = 0, mainFoundDat = 0;
 	var subFound = "", subFoundLen = 0, subFoundDat = 0;
 	input = removeDiacritics(input);
 
 	// Loop through all the classes and see if any of them match and then look for its subclasses
 	// If that doesn't yield anything, look if any of the subclasses match regardless of class' names
 	for (var i = 1; i <= 2; i++) {
-		if (i == 2 && classFound) break; // something was already found in round 1, so no need for round 2
-		for (var key in ClassList) { //scan string for all classes, choosing subclasses over classes
+		if (i == 2 && mainFound) break; // something was already found in round 1, so no need for round 2
+		for (var key in ClassList) {
 			var kObj = ClassList[key];
-			if (i == 1) { // reset the subs for every class we look through if still looking at classes mainly
-				subFoundLen = 0;
-				subFoundDat = 0;
-			}
 
-			if ((i == 1 && !(kObj.regExpSearch).test(input)) // see if the class regex matches (round 1 only)
+			if ((i == 1 && !kObj.regExpSearch.test(input)) // see if the class regex matches (round 1 only)
 				|| testSource(key, kObj, "classExcl") // test if the class or its source isn't excluded
 				|| (key === "ranger" && !testSource("rangerua", ClassList.rangerua, "classExcl")) // ignore the PHB ranger if the UA ranger is present
 			) continue;
@@ -1649,12 +1646,12 @@ function ParseClass(input) {
 			// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
 			// or if we are not using the search length, just look at the newest source date
 			var tempDate = sourceDate(kObj.source);
-			if (i == 1 && ((!ignoreSearchLength && kObj.name.length < classFoundLen) || (!ignoreSearchLength && kObj.name.length == classFoundLen && tempDate < classFoundDat) || (ignoreSearchLength && tempDate <= classFoundDat))) continue;
+			if (i == 1 && ((!ignoreSearchLength && kObj.name.length < mainFoundLen) || (!ignoreSearchLength && kObj.name.length == mainFoundLen && tempDate < mainFoundDat) || (ignoreSearchLength && tempDate <= mainFoundDat))) continue;
 
-			if (i == 1) { // we have a matching class! (round 1 only)
-				classFound = key;
-				classFoundLen = kObj.name.length;
-				classFoundDat = tempDate;
+			if (i == 1) { // we have a (better) matching class! (round 1 only)
+				mainFound = key;
+				mainFoundLen = kObj.name.length;
+				mainFoundDat = tempDate;
 				subFound = "";
 				subFoundLen = 0;
 				subFoundDat = 0;
@@ -1666,7 +1663,7 @@ function ParseClass(input) {
 				var sObj = ClassSubList[subKey];
 
 				if (!sObj // skip if the subclass isn't known in the ClassSubList object
-					|| !(sObj.regExpSearch).test(input) // see if the subclass regex matches (round 1 only)
+					|| !sObj.regExpSearch.test(input) // see if the subclass regex matches (round 1 only)
 					|| testSource(subKey, sObj, "classExcl") // test if the subclass or its source isn't excluded
 				) continue;
 
@@ -1677,16 +1674,16 @@ function ParseClass(input) {
 				if ((!ignoreSearchLength && sObj.subname.length < subFoundLen) || (!ignoreSearchLength && sObj.subname.length == subFoundLen && tempSubDate < subFoundDat) || (ignoreSearchLength && tempSubDate <= subFoundDat)) continue;
 
 				// we have a match for both the class and the subclass!
-				classFound = key;
-				classFoundLen = kObj.name.length;
-				classFoundDat = tempDate;
+				mainFound = key;
+				mainFoundLen = kObj.name.length;
+				mainFoundDat = tempDate;
 				subFound = subKey;
 				subFoundLen = sObj.subname.length;
 				subFoundDat = tempSubDate;
 			}
 		}
 	}
-	return classFound ? [classFound, subFound] : false;
+	return mainFound ? [mainFound, subFound] : false;
 };
 
 // detects classes entered and parses information to global classes variable
@@ -2365,71 +2362,101 @@ function AddExperiencePoints() {
 	CalcExperienceLevel(true);
 };
 
+// apply the Race field change (field validation)
+function raceFieldVal() {
+	if (event.target.remVal === undefined) {
+		ApplyRace(event.value);
+	}
+	// Now check if it is still undefined, as the previous could have changed that
+	if (event.target.remVal !== undefined) {
+		event.value = event.target.remVal;
+		delete event.target.remVal;
+	}
+}
+
 function ParseRace(input) {
-	var resultArray = ["", "", []];
-	if (!input) return resultArray;
+	var mainFound = "", subFound  = "", availableVariants = false;
+	if (!input) return [mainFound, subFound, availableVariants];
 
 	input = removeDiacritics(input);
-	var foundLen = 0;
-	var foundDat = 0;
+	var mainFoundLen = 0, mainFoundDat = 0;
+	var subFoundLen  = 0, subFoundDat  = 0, subFoundVariants = [];
 
-	for (var key in RaceList) {
-		var kObj = RaceList[key];
+	for (var i = 1; i <= 2; i++) {
+		// Loop over this twice, once to see if a race match and it it doesn't, a second time to see if a subrace matches
+		if (i == 2 && mainFound) break; // something was already found in round 1, so no need for round 2
+		for (var key in RaceList) {
+			var kObj = RaceList[key];
 
-		if (!kObj.regExpSearch.test(input) // see if race regex matches
-			|| testSource(key, kObj, "racesExcl") // test if the race or its source isn't excluded
-		) continue;
+			if ((i == 1 && !kObj.regExpSearch.test(input)) // see if race regex matches (round 1 only)
+				|| testSource(key, kObj, "racesExcl") // test if the race or its source isn't excluded
+			) continue;
 
-		// only go on with this entry if:
-		// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
-		// or if we are not using the search length, just look at the newest source date
-		var tempDate = sourceDate(kObj.source);
-		if ((!ignoreSearchLength && kObj.name.length < foundLen) || (!ignoreSearchLength && kObj.name.length == foundLen && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
+			// only go on with this entry if:
+			// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
+			// or if we are not using the search length, just look at the newest source date
+			// console.println("\n"+i+". RaceList["+key+ "] mainFoundLen: "+mainFoundLen+"; kObj.name.length:"+kObj.name.length)
+			var tempDate = sourceDate(kObj.source);
+			if (i == 1 && ((!ignoreSearchLength && kObj.name.length < mainFoundLen) || (!ignoreSearchLength && kObj.name.length == mainFoundLen && tempDate < mainFoundDat) || (ignoreSearchLength && tempDate <= mainFoundDat))) continue;
 
-		// we have a match, set the values
-		resultArray = [key, "", []];
-		foundLen = kObj.name.length;
-		foundDat = tempDate;
-
-		// now see if we need to look for racial variants
-		if (kObj.variants) {
-			var foundLen2 = 0;
-			var foundDat2 = 0;
-			for (var i = 0; i < kObj.variants.length; i++) { // scan string for all variants of the race
-				var theR = key + "-" + kObj.variants[i];
-				var rVars = RaceSubList[theR];
-				if (!rVars) {
-					console.println("The racial variant '" + kObj.variants[i] + "' for the '" + kObj.name + "' race missing from the RaceSubList object. Please contact its author to have this issue corrected. The variant will be ignored for now.");
-					console.show();
-					// Remove this array entry, but make sure we don't skip an entry
-					kObj.variants.splice(i, 1);
-					i--;
-					continue;
-				}
-				var theRname = rVars.name ? rVars.name : kObj.variants[i];
-
-				// test if the racial variant or its source isn't excluded
-				if (testSource(theR, rVars, "racesExcl")) continue;
-
-				resultArray[2].push(kObj.variants[i]);
-
-				// see if racial variant regex matches
-				if (!(rVars.regExpSearch).test(input)) continue;
-
-				// only go on with this entry if:
-				// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
-				// or if we are not using the search length, just look at the newest source date
-				var tempDate = sourceDate(rVars.source);
-				if ((!ignoreSearchLength && theRname.length < foundLen2) || (!ignoreSearchLength && theRname.length == foundLen2 && tempDate < foundDat) || (ignoreSearchLength && tempDate <= foundDat)) continue;
-
-				// we have a match, set the values
-				resultArray[1] = kObj.variants[i];
-				foundLen2 = theRname.length;
-				foundDat2 = tempDate;
+			// we have a match, set the values
+			if (i == 1) { // we have a (better) matching race! (round 1 only)
+				mainFound = key;
+				mainFoundLen = kObj.name.length;
+				mainFoundDat = tempDate;
+				subFound = "";
+				subFoundLen = 0;
+				subFoundDat = 0;
 			}
+
+			// see if there are any variants and if any match
+			subFoundVariants = [];
+			if (kObj.variants && kObj.variants.length) {
+				for (var v = 0; v < kObj.variants.length; v++) {
+					var sVar = kObj.variants[v];
+					var subKey = key + "-" + sVar;
+					var sObj = RaceSubList[subKey];
+					if (!sObj) {
+						console.println("The racial variant '" + sVar + "' for the '" + kObj.name + "' race missing from the RaceSubList object. Please contact its author to have this issue corrected. The variant will be ignored for now.");
+						console.show();
+						// Remove this array entry, but make sure we don't skip an entry
+						kObj.variants.splice(v, 1);
+						v--;
+						if (!kObj.variants.length) break; // in case all are invalid
+						continue;
+					}
+					var subName = sObj.name ? sObj.name : sVar;
+
+					// test if the racial variant or its source isn't excluded
+					if (testSource(subKey, sObj, "racesExcl")) continue;
+
+					// not excluded, so add to list of variants available for selection
+					subFoundVariants.push(sVar);
+
+					// see if racial variant regex matches
+					if (!sObj.regExpSearch.test(input)) continue;
+
+					// only go on with this entry if:
+					// we are using the search length (default) and this entry has a longer name or this entry has an equal length name but has a newer source
+					// or if we are not using the search length, just look at the newest source date
+					var tempSubDate = sObj.source ? sourceDate(sObj.source) : tempDate;
+					if ((!ignoreSearchLength && subName.length < subFoundLen) || (!ignoreSearchLength && subName.length == subFoundLen && tempSubDate < subFoundDat) || (ignoreSearchLength && tempSubDate <= subFoundDat)) continue;
+
+					// we have a match, set the values
+					mainFound = key;
+					mainFoundLen = kObj.name.length;
+					mainFoundDat = tempDate;
+					subFound = sVar;
+					subFoundLen = subName.length;
+					subFoundDat = tempSubDate;
+					availableVariants = subFoundVariants;
+				}
+			}
+			// Fill the availableVariants variable if the RaceList entry matches, but no variant did
+			if (i == 1 && mainFound === key && !subFound) availableVariants = subFoundVariants.length ? subFoundVariants : false;
 		}
 	}
-	return resultArray;
+	return [mainFound, subFound, availableVariants];
 };
 
 //detects race entered and put information to global CurrentRace variable
@@ -2462,49 +2489,78 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 		height : "", //must exist
 		weight : "", //must exist
 		trait : "", //must exist
-		features : "" //must exist
+		features : "", //must exist
+		languageProfs : ["Common", 2] // the default since the 2024 rules
 	};
 
 
-	//show the option button if the race has selectable variants
-	if (!tempFound[2].length) {
-		Hide("Race Features Menu");
-	} else {
+	// Show the option button if the race has (more than 1) selectable variants
+	if (tempFound[2] && tempFound[2].length) {
 		DontPrint("Race Features Menu");
 		// if no variant was found, ask the user if he wants to select one
 		if (!novardialog && IsNotImport && inputracetxt && !tempFound[1] && !CurrentVars.manual.race) {
 			var aRace = RaceList[tempFound[0]];
 			var rSource = stringSource(aRace, 'first,abbr', "    [", "]");
-			var aBasic = "Basic " + aRace.name.toLowerCase() + rSource;
-			var rVarNames = [aBasic];
+			// v14 change: no longer allow just selecting the RaceList entry if linked RaceSubList exist
+			var rVarNames = [];
 			var rVarObj = {};
-			rVarObj[aBasic] = "";
 			for (var i = 0; i < tempFound[2].length; i++) {
 				var varR = tempFound[2][i];
 				var varRobj = RaceSubList[tempFound[0] + "-" + varR];
-				var varRname = varR.capitalize() + " " + aRace.name.toLowerCase();
+				var varRname = varRobj.sortname ? varRobj.sortname : varRobj.name ? varRobj.name : varR.capitalize() + " " + aRace.name.toLowerCase();
 				var varRsrc = varRobj && varRobj.source ? stringSource(varRobj, 'first,abbr', "    [", "]") : rSource;
 				rVarNames.push(varRname + varRsrc);
 				rVarObj[varRname + varRsrc] = varR;
 			}
-			var aResp = AskUserOptions("Select Racial Variant", "The '" + aRace.name + "' race offers a choice of variants. Note that variants are not the same as subraces. If you want to select a different subrace, use the drop-down box in the Race field.\n\nYou can change the selected variant by typing the full name of another variant into the Race field, or with the Racial Options button in the Racial Traits section on the second page.", rVarNames, "radio", true);
-			if (rVarObj[aResp]) CurrentRace.variant = rVarObj[aResp];
+			var aResp = AskUserOptions("Select Species Variant", "The '" + aRace.name + "' species offers a choice of variants, please select the one you want here.\n\nYou can change the selected variant by typing the full name of another variant into the Species field, or with the Racial Options button in the Racial Traits section on the second page.\n\nThe name on the first page will be changed to the selected variant's name.", rVarNames, "radio", true);
+			if (rVarObj[aResp]) {
+				CurrentRace.variant = rVarObj[aResp];
+				// Change the Species field on the 1st page to the selected variant's name (if any)
+				varRobj = RaceSubList[tempFound[0] + "-" + CurrentRace.variant];
+				if (varRobj.name) {
+					tDoc.getField("Race").remVal = varRobj.name;
+				}
+			}
 		}
+	} else {
+		Hide("Race Features Menu");
 	}
 
 	// set the properties of the CurrentRace object
 	if (CurrentRace.known) {
+		var rxIgnoreProps = /^(known(Old)?|variants?(Old)?|level|features)$/i;
 		// the properties of the main race
 		for (var prop in RaceList[CurrentRace.known]) {
-			if ((/^(known(Old)?|variants?(Old)?|level)$/i).test(prop)) continue;
+			if (rxIgnoreProps.test(prop)) continue;
 			CurrentRace[prop] = RaceList[CurrentRace.known][prop];
+		}
+		// Do the features separately, so we don't merge them with the subrace later
+		if (RaceList[CurrentRace.known].features) {
+			CurrentRace.features = {};
+			for (var feature in RaceList[CurrentRace.known].features) {
+				CurrentRace.features[feature] = RaceList[CurrentRace.known].features[feature];
+			}
 		}
 		// the properties of the variant (overriding anything from the main)
 		if (CurrentRace.variant) {
 			var subrace = CurrentRace.known + "-" + CurrentRace.variant;
 			for (var prop in RaceSubList[subrace]) {
-				if ((/^(known(Old)?|variants?(Old)?|level)$/i).test(prop)) continue;
+				if (rxIgnoreProps.test(prop)) continue;
 				CurrentRace[prop] = RaceSubList[subrace][prop];
+			}
+			// merge features, if any
+			if (RaceSubList[subrace].features) {
+				if (!CurrentRace.features) {
+					CurrentRace.features = RaceSubList[subrace].features;
+				} else {
+					for (var feature in RaceSubList[subrace].features) {
+						CurrentRace.features[feature] = RaceSubList[subrace].features[feature];
+						if (!CurrentRace.features[feature]) {
+							// This feature is not valid, possibly because it is set to `null` to deliberately invalidate a feature from the parent RaceList. Thus, delete this entry from the CurrentRace.features
+							delete CurrentRace.features[feature];
+						} 
+					}
+				}
 			}
 			// --- backwards compatibility --- //
 			// if an old attribute exists in the racial variant, but the RaceList object uses the new attribute name, make sure the variant's version is used
@@ -2544,8 +2600,6 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 		// delete attributes from legacy races that are no longer applicable in 2024 rules
 		delete CurrentRace.scores;
 		delete CurrentRace.scorestxt;
-		// add the default languages if none are known
-		if (!CurrentRace.languageProfs) CurrentRace.languageProfs = ["Common", 2];
 	}
 
 	// set the current race level when loading the sheet
@@ -5395,6 +5449,7 @@ function ApplyFeat(input, FldNmbr) {
 
 		// Create the tooltip
 		var tooltipStr = toUni(theFeat.name);
+		if (theFeat.type) tooltipStr += "\n \u2022 Type: " + theFeat.type[0].toUpperCase() +  theFeat.type.substr(1) + (/gift/i.test(theFeat.type) ? "" :" feat");
 		if (theFeat.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theFeat.prerequisite;
 		tooltipStr += stringSource(theFeat, "full,page", "\n \u2022 Source: ", ".");
 		if (theFeat.descriptionFull) tooltipStr += isArray(theFeat.descriptionFull) ? desc(theFeat.descriptionFull).replace(/^\n   /i, "\n\n") : "\n\n" + theFeat.descriptionFull;
@@ -5427,29 +5482,232 @@ function ApplyFeat(input, FldNmbr) {
 };
 
 function SetFeatsdropdown(forceTooltips) {
-	var ArrayDing = [""];
+	var aFeatCheck = [];
+	var oFeatTypes = {
+		"origin": { name: "Origin Feats", entries: [] },
+		"general": { name: "General Feats", entries: [] },
+		"fighting style": { name: "Fighting Style Feats", entries: [] },
+		"epic boon": { name: "Epic Boon Feats", entries: [] },
+		"supernatural gift": { name: "Supernatural Gifts", entries: [] }
+	};
+	var arrDropdown = [];
 	var tempString = "Type in the name of the feat (or select it from the drop-down menu) and its text and features will be filled out automatically, provided it is a recognized feat.\n\nAbility scores will not be automatically altered other than their tool tips (mouseover texts) and in the Scores dialog.";
+	// Loop over the feats to fill the oFeatTypes object
 	for (var key in FeatsList) {
-		if (testSource(key, FeatsList[key], "featsExcl")) continue;
-		var feaNm = FeatsList[key].name;
-		if (ArrayDing.indexOf(feaNm) === -1) ArrayDing.push(feaNm);
+		var oFeat = FeatsList[key];
+		if (testSource(key, oFeat, "featsExcl")) continue; // excluded
+		var sFeatName = oFeat.name;
+		if (aFeatCheck.indexOf(sFeatName) !== -1) continue; // already processed
+		aFeatCheck.push(sFeatName);
+		var sTypeLC = oFeat.type ? oFeat.type.toLowerCase() : "general";
+		if (!oFeatTypes[sTypeLC]) { // create type entry if not recognized
+			oFeatTypes[sTypeLC] = {
+				name: oFeat.type.capitalize() + (/gift/i.test(tObj.type) ? "s" : " Feats"),
+				entries: []
+			}
+		}
+		oFeatTypes[sTypeLC].entries.push(sFeatName);
 	}
-	ArrayDing.sort();
-
-	var ArrayDingSource = ArrayDing.toSource();
-	var applyItems = tDoc.getField("Feat Name 1").submitName !== ArrayDingSource;
-	if (applyItems) tDoc.getField("Feat Name 1").submitName = ArrayDingSource;
-
+	// Parse the oFeatTypes object into a singular array
+	for (var type in oFeatTypes) {
+		if (!oFeatTypes[type].entries.length) continue;
+		oFeatTypes[type].entries.sort();
+		oFeatTypes[type].entries.unshift("", " >> " + oFeatTypes[type].name + " << ");
+		arrDropdown = arrDropdown.concat(oFeatTypes[type].entries);
+	}
+	// See if this exact drop down configuration isn't already applied
+	var arrDropdownSource = arrDropdown.toSource();
+	var applyItems = tDoc.getField("Feat Name 1").submitName !== arrDropdownSource;
+	if (applyItems) tDoc.getField("Feat Name 1").submitName = arrDropdownSource;
+	if (!applyItems && !forceTooltips) return; // nothing to do
+	// update all the dropdown fields
 	for (var i = 1; i <= FieldNumbers.feats; i++) {
 		var theFeatFld = "Feat Name " + i;
 		var theFeati = What(theFeatFld);
 		if (applyItems) {
-			tDoc.getField(theFeatFld).setItems(ArrayDing);
+			tDoc.getField(theFeatFld).setItems(arrDropdown);
 			Value(theFeatFld, theFeati, tempString);
 		} else if (forceTooltips) {
 			AddTooltip(theFeatFld, tempString);
 		}
 	}
+}
+
+//Make a generic menu entry for all feats, sorted by different criteria
+function ParseFeatMenu() {
+	AddFeatsMenu = []; // reset the global variable
+	var featName; // needs to be at this namespace for `forEachScores`
+	var fMenus = {
+		alphabetical: {},
+		source: { namesArr: [] },
+		type: {
+			"origin": { name: "Origin Feat", entries: [] },
+			"general": { name: "General Feat", entries: [] },
+			"fighting style": { name: "Fighting Style Feat", entries: [] },
+			"epic boon": { name: "Epic Boon Feat", entries: [] },
+			"supernatural gift": { name: "Supernatural Gift", entries: [] }
+		},
+		asi: [
+			{ name: "Strength increase", entries: [] },
+			{ name: "Dexterity increase", entries: [] },
+			{ name: "Constitution increase", entries: [] },
+			{ name: "Intelligence increase", entries: [] },
+			{ name: "Wisdom increase", entries: [] },
+			{ name: "Charisma increase", entries: [] }
+		],
+		ref: {}
+	};
+	var spaceArr = new Array(38).join("\u2002");
+	var amendSrc = function(nameTxt, srcTxt) {
+		if (!srcTxt) return nameTxt;
+		return nameTxt + spaceArr.slice(0, nameTxt.length < 35 ? 38 - nameTxt.length : 4) + srcTxt;
+	}
+	var forEachScores = function (value, index) {
+		if (value && fMenus.asi[index].entries.indexOf(featName) === -1) fMenus.asi[index].entries.push(featName);
+	}
+	var mapFeatEntries = function(sFeatEntry) {
+		return {
+			cName: sFeatEntry,
+			cReturn: "feat#set#" + fMenus.ref[sFeatEntry]
+		};
+	}
+	var sortFeat = function(mainFeat, subFeat) {
+		var fObj = FeatsList[mainFeat];
+		var sObj = subFeat ? fObj[subFeat.toLowerCase()] : false;
+		var tObj = sObj ? {} : fObj;
+		if (sObj) {
+			for (var attr in fObj) tObj[attr] = fObj[attr];
+			for (var attr in sObj) tObj[attr] = sObj[attr];
+		}
+		var iSrc = tObj.source ? stringSource(tObj, "first,abbr", "(", ")") : false;
+		var sMainFeatName = fObj.sortname ? fObj.sortname : fObj.name;
+		featName = amendSrc(RemoveZeroWidths(!sObj ? sMainFeatName : sObj.sortname ? sObj.sortname : sObj.name ? sObj.name : sMainFeatName + " [" + subFeat + "]"), iSrc);
+		var firstLetter = featName[0].toUpperCase();
+		// If this is a subfeat and it has the exact same name as a previously added subfeat, we have to make sure it is unique
+		if (sObj && sObj.name && fMenus.ref[featName]) {
+			featName = amendSrc(RemoveZeroWidths(sMainFeatName + " [" + subFeat + "]"), iSrc);
+			firstLetter = featName[0].toUpperCase();
+		}
+		fMenus.ref[featName] = subFeat ? mainFeat + "#" + subFeat : mainFeat;
+		// Add the entry for the alphabetical and source listings
+		if (!fMenus.alphabetical[firstLetter]) fMenus.alphabetical[firstLetter] = [];
+		fMenus.alphabetical[firstLetter].push(featName);
+		if (tObj.source) {
+			var aSrcs = parseSource(tObj.source);
+			for (var a = 0; a < aSrcs.length; a++) {
+				var aSrc = SourceList[aSrcs[a][0]];
+				var uSrc = aSrc.name + " (" + aSrc.abbreviation + ")";
+				if (!fMenus.source[uSrc]) {
+					fMenus.source[uSrc] = [];
+					fMenus.source.namesArr.push(uSrc);
+				}
+				fMenus.source[uSrc].push(featName);
+			}
+		}
+		// Add the entry for the listing per type
+		var sFeatType = tObj.type ? tObj.type : "general";
+		var sTypeLC = sFeatType.toLowerCase();
+		if (!fMenus.type[sTypeLC]) {
+			fMenus.type[sTypeLC] = {
+				name: sFeatType.capitalize() + (/gift/i.test(sFeatType) ? "" : " Feat"),
+				entries: []
+			}
+		};
+		fMenus.type[sTypeLC].entries.push(featName);
+		// Add the entry for the ability score improvements
+		if (tObj.scores) tObj.scores.forEach(forEachScores);
+		if (tObj.scoresOverride) tObj.scoresOverride.forEach(forEachScores);
+		if (tObj.scoresMaximum) tObj.scoresMaximum.forEach(forEachScores);
+		if (tObj.scorestxt) {
+			if (/strength|\bstr\b/i.test(tObj.scorestxt)) forEachScores(true, 0);
+			if (/dexterity|\bdex\b/i.test(tObj.scorestxt)) forEachScores(true, 1);
+			if (/constitution|\bcon\b/i.test(tObj.scorestxt)) forEachScores(true, 2);
+			if (/intelligence|\bint\b/i.test(tObj.scorestxt)) forEachScores(true, 3);
+			if (/wisdom|\bwis\b/i.test(tObj.scorestxt)) forEachScores(true, 4);
+			if (/charisma|\bcha\b/i.test(tObj.scorestxt)) forEachScores(true, 5);
+		}
+	}
+	// Loop over all the feats and add them to the fMenus object where appropriate
+	for (var key in FeatsList) {
+		var oFeat = FeatsList[key];
+		if (oFeat.source && testSource(key, oFeat, "featsExcl")) continue;
+		var bJustDoMainFeat = true;
+		if (oFeat.choices && !oFeat.selfChoosing && !oFeat.choicesNotInMenu) {
+			for (var i = 0; i < oFeat.choices.length; i++) {
+				var sChoice = oFeat.choices[i].toLowerCase();
+				var oSubFeat = oFeat[sChoice];
+				if (!oSubFeat || testSource(key + "-" + sChoice, oSubFeat, "featsExcl")) continue;
+				for (var attr in oSubFeat) {
+					if (!/^(description.*|name.*|type|source|allowDuplicates|calculate)$/i.test(attr)) {
+						bJustDoMainFeat = false;
+						sortFeat(key, oFeat.choices[i]);
+						break;
+					}
+				}
+			}
+		}
+		if (bJustDoMainFeat) sortFeat(key);
+	}
+	// Process the fMenus object into usable menu entries
+	// First add the alphabetical listing of all the feats
+	var aMenuAlpha = [], aMenuAlphaSub, arrAlphabeta = [];
+	for (var letter in fMenus.alphabetical) {
+		arrAlphabeta.push(letter);
+		fMenus.alphabetical[letter].sort();
+	}
+	arrAlphabeta.sort();
+	for (var i = 0; i < arrAlphabeta.length; i++) {
+		letter = arrAlphabeta[i];
+		aMenuAlphaSub = fMenus.alphabetical[letter].map(mapFeatEntries)
+		aMenuAlpha.push({ cName: letter, oSubMenu: aMenuAlphaSub });
+	}
+	AddFeatsMenu.push({
+		cName: "Alphabetically",
+		oSubMenu: aMenuAlpha
+	});
+	// Add the listing per source
+	var aMenuSource = [], aMenuSourceSub;
+	fMenus.source.namesArr.sort();
+	for (var i = 0; i < fMenus.source.namesArr.length; i++) {
+		var sSourceName = fMenus.source.namesArr[i];
+		var aSourceFeats = fMenus.source[sSourceName];
+		if (!aSourceFeats || !aSourceFeats.length || sSourceName == "namesArr") continue;
+		aSourceFeats.sort();
+		aMenuSourceSub = aSourceFeats.map(mapFeatEntries)
+		aMenuSource.push({ cName: sSourceName, oSubMenu: aMenuSourceSub });
+	}
+	AddFeatsMenu.push({
+		cName: "By source",
+		oSubMenu: aMenuSource
+	}, { cName : "-" });
+	// Add the listing per type
+	var aMenuType = [], aMenuTypeSub;
+	for (var sTypeLC in fMenus.type) {
+		if (!fMenus.type[sTypeLC].entries.length) continue;
+		fMenus.type[sTypeLC].entries.sort();
+		aMenuTypeSub = fMenus.type[sTypeLC].entries.map(mapFeatEntries);
+		aMenuType.push({
+			cName: fMenus.type[sTypeLC].name,
+			oSubMenu: aMenuTypeSub
+		})
+	}
+	if (aMenuType.length) {
+		aMenuType.push({ cName : "-" });
+		AddFeatsMenu = AddFeatsMenu.concat(aMenuType);
+	}
+	// Add the listing per ability score
+	var aMenuAsi = [], aMenuAsiSub;
+	for (var i = 0; i < fMenus.asi.length; i++) {
+		var oAsi = fMenus.asi[i];
+		if (!oAsi.entries.length) continue;
+		oAsi.entries.sort();
+		aMenuAsiSub = oAsi.entries.map(mapFeatEntries);
+		aMenuAsi.push({
+			cName: oAsi.name,
+			oSubMenu: aMenuAsiSub
+		})
+	}
+	if (aMenuAsi.length) AddFeatsMenu = AddFeatsMenu.concat(aMenuAsi);
 }
 
 //Make menu for the button on each Feat line and parse it to Menus.feats
@@ -5463,7 +5721,15 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 	var noDown = itemNmbr === FieldNumbers.feats;
 	var upToOtherPage = itemNmbr !== (FieldNumbers.featsD + 1) ? "" : typePF ? " (to third page)" : " (to second page)";
 	var downToOtherPage = itemNmbr === FieldNumbers.featsD ? " (to overflow page)" : "";
-	var aFeat, keyFeat = CurrentFeats.known[ArrayNmbr];
+	var aFeat, fullFeatName, keyFeat = CurrentFeats.known[ArrayNmbr];
+
+	var getChoiceName = function(keyFeat, choice) {
+		var aFeat = FeatsList[keyFeat];
+		if (!choice || !aFeat[choice]) return aFeat.name;
+		if (aFeat[choice].name) return aFeat[choice].name;
+		var choiceEntry = aFeat.choices.filter(function (n) { return n.toLowerCase() === choice; });
+		return aFeat.name + (choiceEntry ? " [" + choiceEntry + "]" : "");
+	}
 
 	if (!MenuSelection || MenuSelection === "justMenu") {
 		// a function to add the other items
@@ -5479,6 +5745,7 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 		// if this feat allows for a choice, add that option as the first thing in the menu
 		if (keyFeat) {
 			aFeat = FeatsList[keyFeat];
+			fullFeatName = getChoiceName(keyFeat, CurrentFeats.choices[ArrayNmbr]);
 			if (aFeat.choices) {
 				var aFeatOpts = aFeat.choices;
 				var choiceMenu = {
@@ -5498,10 +5765,17 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 				if (choiceMenu.oSubMenu.length > 1) featMenu.push(choiceMenu);
 			}
 			// an option to read the whole description
-			if (Who(Fflds[2])) menuLVL1([["Show full text of " + aFeat.name, "popup"]]);
+			if (Who(Fflds[2])) menuLVL1([["Show full text of " + fullFeatName, "popup"]]);
 			// add a separator if we have any items in the menu so far
 			if (featMenu.length) featMenu.push({cName : "-"});
 		}
+		// a way to select another feat
+		if (!AddFeatsMenu) ParseFeatMenu();
+		featMenu.push({
+			cName : keyFeat ? "Change feat to" : "Apply feat",
+			oSubMenu : AddFeatsMenu
+		},{ cName : "-" });
+		// now all the default options
 		menuLVL1([
 			["Move up" + upToOtherPage, "up", !noUp],
 			["Move down" + downToOtherPage, "down", !noDown],
@@ -5520,6 +5794,9 @@ function MakeFeatMenu_FeatOptions(MenuSelection, itemNmbr) {
 	var thermoTxt = thermoM("Apply feat menu option...");
 
 	switch (MenuSelection[1]) {
+		case "set" :
+			Value(Fflds[0], getChoiceName(MenuSelection[2], MenuSelection[3]));
+			break;
 		case "popup" :
 			ShowDialog("Feat's full description", Who(Fflds[2]));
 			break;
@@ -5663,7 +5940,7 @@ function FeatDelete(itemNmbr) {
 }
 
 // Add a feat to the second/third page or overflow page
-function AddFeat(sFeat, sFeatNote, sFeatDescr, bIgnoreCurrent, sExtraNote) {
+function AddFeat(sFeat, sFeatNote, sFeatDescr, bIgnoreCurrent) {
 	// Check if this feat is recognized and if so, quit if it already exists
 	if (!bIgnoreCurrent) {
 		var aParsedFeat = ParseFeat(sFeat);
@@ -5697,7 +5974,6 @@ function AddFeat(sFeat, sFeatNote, sFeatDescr, bIgnoreCurrent, sExtraNote) {
 					if (sFeatNote !== undefined) Value("Feat Note " + i, sFeatNote);
 					if (sFeatDescr !== undefined) Value("Feat Description " + i, sFeatDescr);
 				}
-				if (sExtraNote) AddString("Feat Note " + i, sExtraNote);
 				return; // feat was successfully added
 			}
 		}
@@ -5747,6 +6023,74 @@ function FeatClear(itemNmbr, doAutomation) {
 		AddTooltip(Fflds[2], "", "");
 		tDoc.getField(Fflds[2]).setAction("Calculate", "");
 		if (IsNotReset) tDoc.resetForm(Fflds);
+	}
+}
+
+// Processing the generic `featsAdd` attribute
+function processAddFeats(bAddRemove, featsAdd, srcType, srcName, srcNameUnique) {
+	if (!featsAdd) return;
+	if (!isArray(featsAdd)) featsAdd = [featsAdd];
+
+	var askUserFeat = function(sFeatType) {
+		var aFeats = [];
+		var rxFeatType = RegExp(sFeatType, "i");
+		for (var key in FeatsList) {
+			var sType = FeatsList[key].type ? FeatsList[key].type : "general";
+			if (rxFeatType.test(sType) && !testSource(key, FeatsList, "featsExcl") && CurrentFeats.known.indexOf(key) === -1) {
+				aFeats.push(FeatsList[key].name);
+			}
+		}
+		if (aFeats.length) {
+			var sFeatTypeUC = sFeatType.capitalize();
+			var sFeatTypeLC = sFeatType.toLowerCase();
+			return AskUserOptions("Select " + sFeatTypeUC + " Feat", srcName + " offers you a choice of " + sFeatTypeLC + " feat, so pick one of the options below. Known feats have been excluded from this list.", aFeats, "radio", true, false);
+		} else {
+			return false;
+		}
+	}
+
+	var sFeatName;
+	// loop through all the entries
+	for (var i = 0; i < featsAdd.length; i++) {
+		// reset variable
+		sFeatName = false;
+		// each entry can be a string or an object
+		if (typeof featsAdd[i] === "string") {
+			sFeatName = featsAdd[i];
+		} else if (featsAdd[i].name || featsAdd[i].select) {
+			sFeatName = featsAdd[i].name ? featsAdd[i].name : featsAdd[i].select;
+		} else if (featsAdd[i].key && FeatsList[featsAdd[i].key]) {
+			var oFeat = FeatsList[featsAdd[i].key];
+			sFeatName = oFeat.name;
+			if (featsAdd[i].choice && oFeat.choices && oFeat[featsAdd[i].choice]) {
+				var sChoice = oFeat.choices.filter(function (n) { return n.toLowerCase() === featsAdd[i].choice; });
+				var oChoice = oFeat[featsAdd[i].choice];
+				if (typeof oChoice === "object" && sChoice.length) {
+					sFeatsName = oChoice.name ? oChoice.name : sFeatName + " [" + sChoice.toString() + "]";
+				}
+			}
+		} else if (featsAdd[i].type) {
+			// Add a type of feat
+			var sSaveName = srcNameUnique ? srcNameUnique : srcName;
+			var sSaveFeature = "featsAdd_"+i;
+			if (bAddRemove) {
+				// Adding a feat, so let the user pick which feat of the matching type
+				sFeatName = askUserFeat(featsAdd[i].type);
+				// Store the selection if anything was chosen
+				if (sFeatName) SetFeatureChoice(srcType, sSaveName, sSaveFeature, sFeatName);
+			} else {
+				// Removing a feat, so use the stored selection
+				sFeatName = GetFeatureChoice(srcType, sSaveName, sSaveFeature);
+			}
+		}
+		// If a feat name was detected, add or remove it
+		if (sFeatName) {
+			if (bAddRemove) {
+				AddFeat(sFeatName);
+			} else {
+				RemoveFeat(sFeatName);
+			}
+		}
 	}
 }
 
@@ -8780,43 +9124,13 @@ function ApplyBackgroundFeature(input, inputForceOld) {
 	var sTooltip = stringSource(CurrentBackground, "full,page", "The \"" + CurrentBackground.name + "\" background is found in ", ".\n");
 	var sNewDescr = input === "" ? "" : What(sFldNm);
 
-	var askUserOriginFeat = function() {
-		var aOriginFeats = [];
-		for (var sFeatKey in FeatsList) {
-			if (FeatsList[sFeatKey].isOriginFeat && !testSource(sFeatKey, FeatsList, "featsExcl")) {
-				var sFeatName = FeatsList[sFeatKey].name;
-				aOriginFeats.push(sFeatName);
-			}
-		}
-		if (aOriginFeats.length) {
-			return AskUserOptions("Select Origin Feat", "The background feature you selected doesn't have a fixed origin feat, so pick one of the options below.", aOriginFeats, "radio", true, false);
-		} else {
-			return false;
-		}
-	}
-	var setOriginFeat = function(bAddRemove, sBackF) {
-		var sChoiceName = "origin feat";
-		// If this background feature already adds a feat using an eval, do nothing
-		var oBackF = BackgroundFeatureList[sBackF];
-		if (oBackF.eval && oBackF.eval.toSource().indexOf("AddFeat") !== -1) return;
-		if (bAddRemove) {
-			var sOriginFeat = oBackF.originFeat ? oBackF.originFeat : askUserOriginFeat();
-			if (sOriginFeat) {
-				// Add the selected/fixed feat
-				AddFeat(sOriginFeat, undefined, undefined, undefined, "[origin]");
-				// Save this selection
-				SetFeatureChoice(sFeatureType, sChoiceName, false, sOriginFeat);
-			}
-		} else {
-			var sOriginFeat = GetFeatureChoice(sFeatureType, sChoiceName);
-			if (sOriginFeat) {
-				// Remove the feat
-				RemoveFeat(sOriginFeat);
-				// Delete this feat
-				SetFeatureChoice(sFeatureType, sChoiceName, false, false);
-			}
-		}
-	}
+	// Make sure the background feature adds an origin feat
+	[sCurSel, sParseFeature].forEach(function(key) {
+		var oBackF = BackgroundFeatureList[key];
+		// if this feature exists and doesn't have an eval to add a feat, add an origin feat
+		if (!oBackF || oBackF.featsAdd || (oBackF && oBackF.eval && oBackF.eval.toSource().indexOf("AddFeat") !== -1)) return;
+		oBackF.featsAdd = [{ type: "origin" }];
+	})
 
 	if (sCurSel) {
 		// Remove the old background feature common attributes
@@ -8827,7 +9141,6 @@ function ApplyBackgroundFeature(input, inputForceOld) {
 			false, // choiceA [old-choice, new-choice, "only"|"change"]
 			false // forceNonCurrent
 		);
-		setOriginFeat(false, sCurSel);
 	}
 	if (sParseFeature) {
 		// Add the new background feature common attributes
@@ -8838,7 +9151,6 @@ function ApplyBackgroundFeature(input, inputForceOld) {
 			false, // choiceA [old-choice, new-choice, "only"|"change"]
 			false // forceNonCurrent
 		);
-		setOriginFeat(true, sParseFeature);
 		var sFeaCap = sParseFeature.capitalize();
 		var oBackFea = BackgroundFeatureList[sParseFeature];
 		var sNewDescr = What("Unit System") === "imperial" ? oBackFea.description : ConvertToMetric(oBackFea.description, 0.5);
@@ -8871,17 +9183,10 @@ function SetBackgroundFeaturesdropdown(forceTooltips) {
 	Value("Background Feature", theFldVal, tempString);
 }
 
-// Add the origin feat for a background
-function processOriginFeat(bAddRemove, sFeatReference) {
-	if (!BackgroundFeatureList[sFeatReference]) sFeatReference = false;
-	var oBackFea = BackgroundFeatureList[sParseFeature];
-	
-}
-
 //Make menu for 'choose race feature' button and parse it to Menus.raceoptions
 function MakeRaceMenu() {
 	//make an array of the variants that are not excluded by the resource settings
-	var racialVarArr = ["basic"];
+	var racialVarArr = [];
 	if (CurrentRace.known && CurrentRace.variants) {
 		for (var r = 0; r < CurrentRace.variants.length; r++) {
 			var theR = CurrentRace.known + "-" + CurrentRace.variants[r];
@@ -8891,15 +9196,17 @@ function MakeRaceMenu() {
 	};
 
 	var menuLVL1R = function (item, array) {
-		var isCurrent = CurrentRace.variant;
-		var raceSrc = stringSource(RaceList[CurrentRace.known], "first,abbr", "\t   [", "]");
+		var rSource = stringSource(RaceList[CurrentRace.known], "first,abbr", "\t   [", "]");
 		for (var i = 0; i < array.length; i++) {
-			var varR = RaceSubList[CurrentRace.known + "-" + array[i]];
-			var varSrc = varR && varR.source ? stringSource(varR, "first,abbr", "\t   [", "]") : raceSrc;
+			var varR = array[i];
+			var key = CurrentRace.known + "-" + varR;
+			var varRobj = RaceSubList[key];
+			var varRsrc = varRobj && varRobj.source ? stringSource(varRobj, 'first,abbr', "\t   [", "]") : rSource;
+			var varName = varRobj.sortname ? varRobj.sortname : varRobj.name ? varRobj.name : varR.capitalize() + " " + aRace.name.toLowerCase();
 			item.push({
-				cName : array[i].capitalize() + " " + RaceList[CurrentRace.known].name + varSrc,
-				cReturn : CurrentRace.known + "#" + array[i],
-				bMarked : (isCurrent === "" && array[i] === "basic") || isCurrent === array[i]
+				cName : varName + varRsrc,
+				cReturn : CurrentRace.known + "#" + varR,
+				bMarked : CurrentRace.variant === varR
 			});
 		}
 	};
@@ -8924,7 +9231,15 @@ function RaceFeatureOptions() {
 	var MenuSelection = getMenu("raceoptions");
 
 	if (MenuSelection && MenuSelection[0] !== "nothing") {
-		ApplyRace(MenuSelection.toString(), true);
+		var key = MenuSelection.join("-");
+		if (RaceSubList[key]) {
+			var varName = RaceSubList[key].name ? RaceSubList[key].name : MenuSelection[1].capitalize() + " " + RaceList[MenuSelection[0]].name.toLowerCase();
+			if (What("Race") !== varName) {
+				Value("Race", varName);
+			} else {
+				ApplyRace(MenuSelection.toString(), true);
+			}
+		}
 	}
 }
 

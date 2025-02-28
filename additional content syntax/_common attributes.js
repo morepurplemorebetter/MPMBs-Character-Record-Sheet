@@ -49,7 +49,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v13.2.3 and newer
+	Sheet:		v14.0.0 and newer (PHB'24)
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -2660,7 +2660,6 @@ toNotesPage : [{
 	*/
 }],
 
-
 magicitemsAdd : [ "Hat of Disguise", ["Staff of Power", true] ],
 /*	magicitemsAdd // OPTIONAL //
 	TYPE:	array (variable length) of strings or arrays (with a string and a boolean)
@@ -2685,6 +2684,68 @@ magicitemsAdd : [ "Hat of Disguise", ["Staff of Power", true] ],
 
 	If a feature with this attribute is removed, these magic items will be removed as well.
 */
+
+featsAdd : [
+	"Grappler",
+	{ key: "lucky" },
+	{ key: "magic initiate", choice: "wizard" },
+	{ type: "origin" }
+],
+/*	featsAdd // OPTIONAL //
+	TYPE:	array (variable length) of strings or objects
+	USE:	adds each entry in the array to one of the feat drop-downs
+	ADDED:	v13.3.0
+	CHANGE: v14.0.0 (added option 4)
+
+	Each entry in the array is to add a single feat. Each entry must consist of either:
+	1) String with the name of the feat
+		The string is added to the feat selection, regardless if this matches a feat.
+		The strings will be added exactly as written, capitalisation and all.
+
+	2) Object with `key` attribute
+		If the provided `key` attribute is present in the FeatsList, that feat's name
+		will be added, i.e. `FeatsList[key].name`.
+
+	3) Object with `key` and `choice` attributes
+		This works the same as 2) above, except that the sheet then tries to luck for
+		the `choice` inside the feat (i.e. `FeatsList[key][choice]`).
+
+		If that `choice` is viable, the choice's name will be added,
+		i.e. `FeatsList[key][choice].name` or if not present, its auto-generated name:
+		the parent feat's name and the choice in square brackets.
+
+		If that `choice` is not viable, the parent feat's name will be added just like
+		with 2), i.e. `FeatsList[key].name`.
+
+	4) Object with `type` attribute
+		The player will be presented with a pop-up dialog to choose a feat with
+		a matching `type`.
+
+		Common feat types are:
+			"origin"
+			"general"
+			"fighting style"
+			"epic boon"
+			"supernatural gift"
+
+		You can define more types of feats by making a feat with something else set for their
+		`type` attribute. See the "feat (FeatsList).js" file for more details.
+
+		Already known feats and those excluded through Source Selection dialog won't be 
+		provided as options.
+
+
+	The sheet test for the presence of attributes in the same order as presented above.
+	Thus, if an object has both the `key` and the `type` attribute,
+	the `type` attribute will be ignored.
+
+	An entry will only be added if there is space left in the feat section and the feat isn't already present.
+
+	If a feature with this attribute is removed, these feats will be removed as well.
+	If this attribute included an entry in the array with the fourth option,
+	the sheet will then try to remove the originally selected feat.
+*/
+
 
 // >>>>>>>>>>>>>>>>>>>>>>> //
 // >>> Run Custom Code >>> //

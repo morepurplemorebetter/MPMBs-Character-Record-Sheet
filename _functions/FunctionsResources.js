@@ -947,7 +947,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 
 		// Set the visibility of the Choose Feature and Racial Options button
 		ClassMenuVisibility();
-		if (ParseRace(What("Race"))[2].length) {
+		if (ParseRace(What("Race"))[2]) {
 			DontPrint("Race Features Menu");
 		} else {
 			Hide("Race Features Menu");
@@ -1037,7 +1037,7 @@ function resourceSelectionDialog(type) {
 				if (!exclObj[uGroup]) exclObj[uGroup] = {};
 				if (!inclObj[uGroup]) inclObj[uGroup] = {};
 				var rLen = RaceList[u].variants.length;
-				for (var z = 0; z < rLen + 1; z++) {
+				for (var z = 0; z < rLen; z++) {
 					var uSub = z === rLen ? u : u + "-" + RaceList[u].variants[z];
 					var uRaceVar = z === rLen ? RaceList[u] : RaceSubList[uSub];
 					if (!uRaceVar) continue;
@@ -1045,7 +1045,7 @@ function resourceSelectionDialog(type) {
 					if (uSubTest === "source") continue;
 					doAny = z !== rLen ? true : doAny;
 					if (z === rLen && !doAny) continue;
-					var uName = z === rLen ? " basic " + useName : (uRaceVar && uRaceVar.name ? uRaceVar.name : RaceList[u].variants[z].capitalize() + " " + useName);
+					var uName = uRaceVar && uRaceVar.name ? uRaceVar.name : RaceList[u].variants[z].capitalize() + " " + useName;
 					uName = amendSource(uName, uRaceVar, RaceList[u]);
 					refObj[uName] = uSub;
 					if (uSubTest) {

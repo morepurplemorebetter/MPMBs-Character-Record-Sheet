@@ -633,7 +633,8 @@ MagicItemsList["staff of purple"] = {
 
 	Also, if an item has the `selfChoosing` attribute, only the main item will be listed.
 
-	This attribute has no effect if the parent object has no `choices` attribute.
+	This attribute has no effect if the parent object has no `choices` attribute or if
+	it has the `selfChoosing` attribute.
 	Setting this attribute to false is the same as not including this attribute.
 */
 

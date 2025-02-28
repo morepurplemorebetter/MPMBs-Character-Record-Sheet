@@ -2750,10 +2750,15 @@ function RunFunctionAtEnd(inFunc) {
 // a way to add a racial variant without conflicts
 function AddRacialVariant(race, variantName, variantObj) {
 	race = race.toLowerCase();
-	variantName = variantName.toLowerCase();
 	if (!RaceList[race]) return;
-	if (!RaceList[race].variants || !isArray(RaceList[race].variants)) RaceList[race].variants = [];
+	if (!RaceList[race].variants || !isArray(RaceList[race].variants)) {
+		// With v14 change, turn the race itself in a variant so it remains selectable
+		var sBaseVarKey = race + "-basic";
+		RaceSubList[sBaseVarKey] = newObj(RaceList[race]);
+		RaceList[race].variants = [sBaseVarKey];
+	}
 	var suffix = 1;
+	variantName = variantName.toLowerCase();
 	while (RaceList[race].variants.indexOf(variantName) !== -1) {
 		suffix += 1;
 		variantName += suffix;
