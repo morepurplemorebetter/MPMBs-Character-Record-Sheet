@@ -2362,18 +2362,6 @@ function AddExperiencePoints() {
 	CalcExperienceLevel(true);
 };
 
-// apply the Race field change (field validation)
-function raceFieldVal() {
-	if (event.target.remVal === undefined) {
-		ApplyRace(event.value);
-	}
-	// Now check if it is still undefined, as the previous could have changed that
-	if (event.target.remVal !== undefined) {
-		event.value = event.target.remVal;
-		delete event.target.remVal;
-	}
-}
-
 function ParseRace(input) {
 	var mainFound = "", subFound  = "", availableVariants = false;
 	if (!input) return [mainFound, subFound, availableVariants];
@@ -2518,7 +2506,7 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 				// Change the Species field on the 1st page to the selected variant's name (if any)
 				varRobj = RaceSubList[tempFound[0] + "-" + CurrentRace.variant];
 				if (varRobj.name) {
-					tDoc.getField("Race").remVal = varRobj.name;
+					tDoc.getField("Race").setVal = varRobj.name;
 				}
 			}
 		}
@@ -3726,7 +3714,7 @@ function MakeInventoryMenu() {
 	var hasBackgr1st = CurrentBackground.equip1stPage;
 	var sBackgrName = CurrentBackground.known ? CurrentBackground.name : "Background";
 
-	var oPrimaryClass = classes.primary ? CurrentClasses[classes.primary].startingEquipment : {};
+	var oPrimaryClass = classes.primary && CurrentClasses[classes.primary] && CurrentClasses[classes.primary].startingEquipment ? CurrentClasses[classes.primary].startingEquipment : {};
 	var hasPriClassEquip = oPrimaryClass.pack || oPrimaryClass.equipleft || oPrimaryClass.equipright || oPrimaryClass.gold;
 	var hasPriClass1st = oPrimaryClass.equip1stPage;
 	var sPriClassName = classes.primary ? CurrentClasses[classes.primary].name : "Class";

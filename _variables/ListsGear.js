@@ -168,7 +168,7 @@ var Base_WeaponsList = {
 		range: "Melee",
 		description: "Up to 1 size larger; Push 5 ft or prone or grappled condition; Can damage instead (with attack roll)",
 		monkweapon: true,
-		abilitytodamage: true,
+		abilitytodamage: false,
 		dc: true
 	},
 	"club": {

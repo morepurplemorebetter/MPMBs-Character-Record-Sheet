@@ -2375,7 +2375,9 @@ function doDropDownValCalcWithChoices() {
 			// only in case of a validation event and not changing the value
 			var fldName = event.target.name;
 			var fldNmbr = parseFloat(fldName.slice(-2));
-			if (fldName.toLowerCase().indexOf("magic item") !== -1) {
+			if (fldName === "Race") {
+				ApplyRace(event.value);
+			} else if (fldName.toLowerCase().indexOf("magic item") !== -1) {
 				ApplyMagicItem(event.value, fldNmbr);
 			} else if (fldName.toLowerCase().indexOf("feat") !== -1) {
 				ApplyFeat(event.value, fldNmbr);
