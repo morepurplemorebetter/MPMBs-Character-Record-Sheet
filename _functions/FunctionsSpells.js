@@ -205,7 +205,10 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 		}
 	}
 
-	//make the tooltip for the description field
+	// Backwards compatibility - update the time attribute from the old to the new way
+	ttSpellObj.time = ttSpellObj.time.replace("1 a", "Act").replace("1 bns", "Bns Act").replace("1 rea", "React");
+
+	// Make the tooltip for the description field
 	var spTooltip = "";
 	var ttSpellObj = aSpell.completeRewrite ? aSpell : foundSpell;
 	if (ttSpellObj.descriptionFull || tipShortDescr) {
@@ -235,7 +238,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 		if (ttSpellObj.timeFull) {
 			spTooltip += "\n  Casting Time:  " + ttSpellObj.timeFull;
 		} else if (ttSpellObj.time) {
-			spTooltip += "\n  Casting Time:  " + ttSpellObj.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
+			spTooltip += "\n  Casting Time:  " + ttSpellObj.time.replace(/bns\b/i, 'Bonus Action').replace(/\bact\b/i, 'Action').replace(/react\b/i, 'Reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
 		}
 
 		if (ttSpellObj.range) spTooltip += "\n  Range:  " + ttSpellObj.range.replace(/s: *(.*)/i, "Self ($1)").replace(/rad\b/i, "radius").replace(/(\d+)(ft|m)/i, "$1-$2");
@@ -244,7 +247,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 
 		if (ttSpellObj.duration) spTooltip += "\n  Duration:  " + ttSpellObj.duration.replace(/\b(conc), \b/i, '$1entration, up to ').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours').replace(/\(d\)/i, "(dismiss as 1 action)").replace(/(instant)\./i, "$1aneous");
 
-		if (ttSpellObj.descriptionFull) spTooltip += "\n\n" + ttSpellObj.descriptionFull;
+		if (ttSpellObj.descriptionFull) spTooltip += "\n\n" + formatDescriptionFull(ttSpellObj.descriptionFull);
 
 		if (tipShortDescr) spTooltip += "\n\n__________\n\n" + toUni("Short Description") + '  (how it will appear on the sheet)\n  ' + aSpell.description;
 		
@@ -264,8 +267,15 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 
 // under certain conditions, the range of a spell might not fit on the colourful sheet
 function fixSpellRangeOverflow(rangeStr) {
-	var testRx = typePF ? /S:\d+[,.]\d+[- /]?m (cone|cube)/i : /S:\d+[,.]?\d+[- /]?m (cone|cube)|S:\d+[,.]\d+[- /]?m rad/i;
-	return (testRx).test(rangeStr) ? rangeStr.trim().replace(/[- /]?m (con|cub)e/i, "m $1").replace(/[- /]?m rad/i, "m rad") : rangeStr;
+	rangeStr = rangeStr.trim();
+	if (What("Unit System") === "metric") {
+		var testRx = typePF ? /S:\d+[,.]\d+[- /]?m (cone|cube)/i : /S:\d+[,.]?\d+[- /]?m (cone|cube|line)|S:\d+[,.]\d+[- /]?m rad/i;
+		if (testRx.test(rangeStr)) rangeStr = rangeStr.replace(/[- /]?m ((con|cub)e|line)/i, "m $1").replace(/[- /]?m rad/i, "m rad");
+	} else if (!typePF) {
+		var testRx = /S:\d+[,.]?\d+[- /]?ft (cone|cube|line)|S:\d+[- /]?miles? rad/i;
+		if (testRx.test(rangeStr)) rangeStr = rangeStr.replace(/[- /]?ft (cone|cube|line)/i, "ft $1").replace(/[- /]?miles? rad/i, "mile rad");
+	}
+	return rangeStr;
 }
 
 // under certain conditions, we want to remove any upcasting from the spell's short description
@@ -434,10 +444,10 @@ function ApplySpell(FldValue, rememberFldName) {
 			// if the name used is a shortened version, set the full name as a tooltip
 			var NameFld = base.replace("remember", "name");
 			var NameFldValue = What(NameFld);
-			var NameFldRitual = NameFldValue.indexOf("(R)") !== -1;
+			var NameFldRitual = NameFldValue.indexOf(SpellRitualTag) !== -1;
 			if (input[0] !== NameFldValue || (aSpell.ritual && !NameFldRitual)) {
 				var spName = getSpNm(theSpl, true, aSpell);
-				spName[0] += aSpell.ritual ? " (R)" : "";
+				if (aSpell.ritual) spName[0] += " "+SpellRitualTag;
 				Value(NameFld, spName[0], spName[1]);
 			}
 
@@ -460,8 +470,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "time"), aSpell.time ? aSpell.time : emptyCell, aSpell.timeFull ? aSpell.timeFull : "");
 
 			//set the spell range
-			var spellRange = aSpell.range ? aSpell.range : emptyCell;
-			if (aSpell.range && What("Unit System") === "metric") spellRange = fixSpellRangeOverflow(spellRange);
+			var spellRange = aSpell.range ? fixSpellRangeOverflow(aSpell.range) : emptyCell;
 			Value(base.replace("remember", "range"), spellRange);
 
 			//set the spell components
@@ -1045,7 +1054,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 		var rSpLevel = (!rSpell.psionic ? "sp" : "ps") + rSpell.level;
 		var rSpName = getSpNm(inSp);
 		if (toDisplay) {
-			spByLvl[rSpLevel].splice(spByLvl[rSpLevel].indexOf(rSpName + (rSpell.ritual ? " (R)" : "")), 1);
+			spByLvl[rSpLevel].splice(spByLvl[rSpLevel].indexOf(rSpName + (rSpell.ritual ? " "+SpellRitualTag : "")), 1);
 		} else {
 			if (returnOrdered) {
 				spByLvl[rSpLevel].splice(spByLvl[rSpLevel].indexOf(rSpName), 1);
@@ -1113,7 +1122,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 			};
 			refspObj[spName] = key;
 			if (toDisplay) {
-				if (aSpell.ritual) spName += " (R)";
+				if (aSpell.ritual) spName += " "+SpellRitualTag;
 				refDisplObj[spName] = key;
 				spByLvl[SpPs + aSpell.level].push(spName);
 			} else {
@@ -1213,7 +1222,7 @@ function manualInputToSpellObj(dialog, id) {
 	var acroDumb = "\n\nThink this pop-up is unnecessary? MPMB agrees with you, but Acrobat requires it, funny stuff...";
 
 	var displaySpName = function(sObj) {
-		var name = getSpNm(false, false, sObj) + (sObj.ritual ? " (R)" : "");
+		var name = getSpNm(false, false, sObj) + (sObj.ritual ? " "+SpellRitualTag : "");
 		if (sObj.level !== undefined && spellLevelList[sObj.level]) {
 			name += " [" + (sObj.psionic ? "psionic " : "") +
 					spellLevelList[sObj.level + (sObj.psionic ? 9 : 0)].toLowerCase().replace(/s\b/, '') +
@@ -3980,7 +3989,7 @@ function ParseSpellMenu() {
 				var spellsTemp = {cName : nameArray[y], oSubMenu : []};
 				for (var i = 0; i < spellsArray.length; i++) {
 					spellsTemp.oSubMenu.push({
-						cName : SpellsList[spellsArray[i]].name + (SpellsList[spellsArray[i]].ritual ? " (R)" : ""),
+						cName : SpellsList[spellsArray[i]].name + (SpellsList[spellsArray[i]].ritual ? " "+SpellRitualTag : ""),
 						cReturn : "spell" + "#" + spellsArray[i] + "#"
 					})
 				}

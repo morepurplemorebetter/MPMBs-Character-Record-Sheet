@@ -1,5 +1,8 @@
-var AtHigherLevels = "\n   " + toUni("Using a Higher-Level Spell Slot") + ". ";
-var CantripUpgrade = "\n   " + toUni("Cantrip Upgrade") + ". ";
+var AtHigherLevels = "\n   " + toUni("At Higher Levels") + ". ";
+var UsingHigherLvl = toUni("Using a Higher-Level Spell Slot") + ". ";
+var CantripUpgrade = toUni("Cantrip Upgrade") + ". ";
+var SpellRitualTag = '\xAE'; // registered trademark symbol
+var SpellLosTag    = '\xB0'; // degree symbol
 
 var Base_spellLevelList = ["Cantrips (0-level)", "1st-level", "2nd-level", "3rd-level", "4th-level", "5th-level", "6th-level", "7th-level", "8th-level", "9th-level", "Talents", "Disciplines"];
 

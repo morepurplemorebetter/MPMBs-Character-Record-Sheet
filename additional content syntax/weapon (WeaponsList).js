@@ -150,7 +150,7 @@ WeaponsList["purple sword"] = {
 	TYPE:	regular expression
 	USE:	used to match the text in the weapon field to see if this weapon is present
 
-	This has to be a match for the name given earlier, or the weapon will never by recognized.
+	This has to be a match for the name given earlier, or the weapon will never be recognized.
 	Now it looks for any entry that has both the words "sword" and "purple" in it,
 	disregarding capitalization or word order.
 	If this looks too complicated, or you want to match only a single word, or a fixed order of words, just write it like this:

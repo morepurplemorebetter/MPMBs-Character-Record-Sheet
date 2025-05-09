@@ -38,7 +38,7 @@
 				If you want attack cantrips or spells to be added to the attack section,
 				use the syntax for adding a weapon (as well), see "weapon (WeaponsList).js".
 
-	Sheet:		v13.1.0 and newer
+	Sheet:		v14.0.0 and newer
 
 */
 
@@ -85,14 +85,14 @@ SpellsList["sindering purple"] = {
 	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
-	name : "Sindering Purple",
+	name: "Sindering Purple",
 /*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the spell as it will be used by the sheet
 
 	This name will be used to recognize what is entered in a spell name field if the 'regExpSearch' attribute is not present.
 */
-	nameAlt : "Sindering Colour",
+	nameAlt: "Sindering Colour",
 /*	nameAlt // OPTIONAL //
 	TYPE:	string
 	USE:	alternative setting-independent name with which the sheet can recognize the spell
@@ -104,7 +104,7 @@ SpellsList["sindering purple"] = {
 
 	This name will also be used to recognize what is typed into the spell name field if the 'regExpSearch' attribute is not present.
 */
-	nameShort : "Sind. Purple",
+	nameShort: "Sind. Purple",
 /*	nameShort // OPTIONAL //
 	TYPE:	string
 	USE:	name of the spell that fits in the spell name field
@@ -114,13 +114,13 @@ SpellsList["sindering purple"] = {
 
 	This name will also be used to recognize what is typed into the spell name field if the 'regExpSearch' attribute is not present.
 */
-	regExpSearch : /^(?=.*sind(\.|ering))(?=.*(colou?r|purple)).*$/i,
+	regExpSearch: /^(?=.*sind(\.|ering))(?=.*(colou?r|purple)).*$/i,
 /*	regExpSearch // OPTIONAL //
 	TYPE:	regular expression
 	USE:	used to match the text in the spell field to see if this spell is present
 
 	This has to be a match for the name given earlier, as well as the 'nameAlt' and 'nameShort' if present,
-	or the spell will never by recognized.
+	or the spell will never be recognized.
 	If you include this attribute, the 'name', 'nameAlt', and 'nameShort' will not be used to recognize the spell,
 	solely the regular expression entered here.
 
@@ -128,8 +128,8 @@ SpellsList["sindering purple"] = {
 	"purple" (or "color" or "colour") in it, disregarding capitalization or word order.
 	If this looks too complicated, simply do not use this attribute.
 */
-	source : ["SRD", 204],
-	source : [["E", 7], ["S", 115]],
+	source: ["SRD", 204],
+	source: [["E", 7], ["S", 115]],
 /*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the spell is found
@@ -150,10 +150,10 @@ SpellsList["sindering purple"] = {
 	on page 115 of the Sword Coast Adventure Guide.
 
 	If a spell is completely homebrew, or you don't want to make a custom source, just put the following:
-		source : ["HB", 0],
+		source: ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
-	defaultExcluded : true,
+	defaultExcluded: true,
 /*	defaultExcluded // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this spell should be excluded by default (true) or included by default (false)
@@ -167,7 +167,7 @@ SpellsList["sindering purple"] = {
 
 	Setting this attribute to false is the same as not including this attribute.
 */
-	classes : ["druid", "ranger", "sorcerer", "wizard"],
+	classes: ["druid", "ranger", "sorcerer", "wizard"],
 /*	classes // OPTIONAL, but almost always NECESSARY //
 	TYPE:	array (variable length)
 	USE:	define for which classes this spell appears on their spell list
@@ -183,12 +183,12 @@ SpellsList["sindering purple"] = {
 	If you the spell doesn't appear on any class' spell list, but should be available as
 	a manually added bonus spell, or through the 'spellcastingBonus' or 'spellcastingExtra'
 	attributes, have this be an empty array:
-		classes : [],
+		classes: [],
 	For an explanation of the 'spellcastingBonus' and 'spellcastingExtra' attributes, see "_common attributes.js".
 
 	If you omit this attribute, the spell will only be selectable through the 'dependencies' attribute, see below.
 */
-	level : 5,
+	level: 5,
 /*	level // REQUIRED //
 	TYPE:	number (0-9)
 	USE:	define what the level of the spell is
@@ -196,7 +196,7 @@ SpellsList["sindering purple"] = {
 	Use level 0 for a cantrip or psionic talent.
 	Use level 1 for a psionic discipline.
 */
-	school : "Necro",
+	school: "Necro",
 /*	school // OPTIONAL //
 	TYPE:	string
 	USE:	the school the spell belongs to
@@ -226,10 +226,11 @@ SpellsList["sindering purple"] = {
 		spellSchoolList["NewSc"] = "new school";
 	Be aware that the object name can use capitalization but the entered sting can't.
 */
-	time : "1 min",
+	time: "1 min",
 /*	time // REQUIRED //
 	TYPE:	string
 	USE:	the casting time of the spell as it should appear on the sheet
+	CHANGE: v14.0.0 (update recommended abbreviations to be more in line with PHB'24)
 
 	The text you add here will be put in the appropriate field on the sheet literally,
 	thus it is important to check that it fits in the field.
@@ -237,13 +238,24 @@ SpellsList["sindering purple"] = {
 	This entry uses abbreviations to make it fit on the sheet and to make everything look uniform.
 	Please always use the following abbreviations:
 		ABBREVIATION	MEANING
-		1 a				1 action
-		1 bns			1 bonus action
-		1 rea			1 reaction
+		Act				Action
+		Bns				Bonus Action
+		React			Reaction
 		min				minute(s)
 		h				hours(s)
+
+	>> 2024 changes
+	The above recommended abbreviations have been changed to be more in line with the 2024
+	rules as presented in the PHB'24. For backwards compatibility, the sheet automatically
+	changes the old abbreviations to the new format.
+	Old way of abbreviating:
+		OLD		NEW			MEANING
+		1 a		Act			Action
+		1 bns	Bns			Bonus Action
+		1 rea	React		Reaction
+
 */
-	timeFull : "1 reaction, which you take when you see a creature within 60 feet of you casting a spell",
+	timeFull: "Reaction, which you take when you see a creature within 60 feet of you casting a spell",
 /*	timeFull // OPTIONAL //
 	TYPE:	string
 	USE:	the casting time of the spell as should appear in the spell's full description
@@ -259,7 +271,7 @@ SpellsList["sindering purple"] = {
 	In the official spells, this `timeFull` attribute is only used for the spells with a casting time
 	of 1 reaction, as those have extra explanatory text.
 */
-	range : "60 ft",
+	range: "60 ft",
 /*	range // REQUIRED //
 	TYPE:	string
 	USE:	the range of the spell
@@ -279,7 +291,7 @@ SpellsList["sindering purple"] = {
 	Thus, "30-feet radius" is abbreviated to "30-ft rad".
 	And, "Self (15-ft cone)" is written as "S:15-ft cone".
 */
-	rangeMetric : "S:8-km rad",
+	rangeMetric: "S:8-km rad",
 /*	range // REQUIRED //
 	TYPE:	string
 	USE:	the range of the spell when using the metric system
@@ -296,7 +308,7 @@ SpellsList["sindering purple"] = {
 	It is only for cases like the latter that `rangeMetric` is necessary,
 	all other things can be converted by the sheet on the fly.
 */
-	components : "V,S,M",
+	components: "V,S,M",
 /*	components // OPTIONAL //
 	TYPE:	string
 	USE:	the components required to cast the spell
@@ -310,14 +322,14 @@ SpellsList["sindering purple"] = {
 	Note how the string doesn't use any spaces, as those would make the text too long to fit in the field.
 	Please never use spaces, just commas.
 */
-	compMaterial : "A purple gem",
+	compMaterial: "A purple gem",
 /*	compMaterial // OPTIONAL //
 	TYPE:	string
 	USE:	an explanation of the material component required to cast the spell
 
 	This attribute is only used in tooltips and pop-ups, so there are no length constraints.
 */
-	duration : "Instantaneous",
+	duration: "Instantaneous",
 /*	duration // REQUIRED //
 	TYPE:	string
 	USE:	the duration of the spell
@@ -335,7 +347,7 @@ SpellsList["sindering purple"] = {
 
 	Thus, "Concentration, up to 10 minutes" is abbreviated to "Conc, 10 min".
 */
-	save : "Int",
+	save: "Int",
 /*	save // OPTIONAL //
 	TYPE:	string
 	USE:	the ability score that the spell's saving throw uses
@@ -348,7 +360,7 @@ SpellsList["sindering purple"] = {
 
 	If the spell doesn't require a saving throw, don't include this attribute.
 */
-	description : "20-ft rad all crea 5d6+1d6/SL Psychic dmg; save half; all flames in area are purple for the duration",
+	description: "20-ft rad all crea 5d6+1d6/SL Psychic dmg; save half; all flames in area are purple for the duration",
 /*	description // REQUIRED //
 	TYPE:	string
 	USE:	the text to be filled in the description field of the spell
@@ -387,7 +399,7 @@ SpellsList["sindering purple"] = {
 	If the damage (or only some of the damage) in the description doesn't match this syntax,
 	you can use the `dynamicDamageBonus` object (see below) to tell the script how to find the damage string.
 */
-	descriptionCantripDie : "1 creature save or `CD`d12 Poison dmg",
+	descriptionCantripDie: "1 creature save or `CD`d12 Poison dmg",
 /*	descriptionCantripDie // OPTIONAL //
 	TYPE:	string
 	USE:	the text to be filled in the description field of a cantrip,
@@ -401,7 +413,7 @@ SpellsList["sindering purple"] = {
 	You can also add modifiers to this, as long as they are after the CD and between the back ticks.
 	For example, `CD-1` will produce the cantrip die minus 1, so 0 at level 2, 1 at level 5, 4 at level 15, etc.
 */
-	descriptionMetric : "6-m rad all crea 5d6+1d6/SL Psychic dmg; save half; all flames in area are purple for the duration",
+	descriptionMetric: "6-m rad all crea 5d6+1d6/SL Psychic dmg; save half; all flames in area are purple for the duration",
 /*	descriptionMetric // OPTIONAL //
 	TYPE:	string
 	USE:	the text to be filled in the description field of the spell when the sheet is set to use the metric system
@@ -419,34 +431,76 @@ SpellsList["sindering purple"] = {
 
 	// DOES NOT WORK TOGETHER WITH descriptionCantripDie //
 	If the spell has both this attribute and the 'descriptionCantripDie' attribute,
-	the sheet will still use this attribute and disregard the 'descriptionCantripDie' attribute
-	when set to use the metric system.
+	the sheet will use the 'descriptionCantripDie' attribute when the appropriate checkbox
+	is checked (see 'descriptionCantripDie' explanation above),
+	regardless of the unit system being set to metric.
 */
-	descriptionFull : "This spell repairs a single break or tear in an object you touch, such as broken chain link, two halves of a broken key, a torn clack, or a leaking wineskin. As long as the break or tear is no larger than 1 foot in any dimension, you mend it, leaving no trace of the former damage." + "\n   " + "This spell can physically repair a magic item or construct, but the spell can't restore magic to such an object.",
+	descriptionFull: "This spell repairs a single break or tear in an object you touch, such as broken chain link, two halves of a broken key, a torn clack, or a leaking wineskin. As long as the break or tear is no larger than 1 foot in any dimension, you mend it, leaving no trace of the former damage." + "\n   " + "This spell can physically repair a magic item or construct, but the spell can't restore magic to such an object.",
+	descriptionFull: [
+		"Introduction text of the spell. This line will not be preceded by a line break or three spaces as this is the first line.",
+		"Second entry, which will be preceded by a line break and three spaces.",
+		" \u2022 Bullet point entry. This will be preceded by a line break, but not with three spaces, as this entry starts with a space.",
+		" \u2022 Another bullet point entry.",
+		[ // This will render as a table (i.e. a tab between each column)
+			["Column 1 header", "Column 2 header", "Column 3 header"], // The first row, which will be made bold and italic
+			["Column 1 entry", "Column 2 entry", "Column 3 entry"], // The rest of the rows won't be changed
+			["Column 1 entry II", "Column 2 entry II", "Column 3 entry II"], // Table row 2
+		],
+		">>Header Paragraph<<. This paragraph will be preceded by a line break and three spaces. The text 'Header Paragraph' will be rendered with unicode as being bold and italic.",
+	],
 /*	descriptionFull // OPTIONAL //
-	TYPE:	string
+	TYPE:	array or string
 	USE:	description of the spell as it appears in its source
+	CHANGE: v14.0.0 (array option & `>>[...]<<` tags)
 
 	This text is used to populate the tooltip of the spell so that the original description can be read.
 	This description will also be available in a pop-up by using the button in the spell's line.
 	There is no limit to how big this description can be,
 	but very long descriptions will not always display correctly.
+
+	From v14.0.0 onwards, this attribute can be an array. Each entry in the array will be put
+	on a new line. Each entry can be one of the following:
+		1. String.
+		   If the entry is a string that doesn't start with a space character and
+		   it is not the first entry, it will be added on a new line,
+		   proceeded by three spaces (i.e. `\n   `).
+		   If the entry is a string that starts with a space character, it will be added
+		   on a new line, but without any preceding spaces.
+		   For example, to make a bullet point list, you would use ` \u2022 list entry`
+		   (N.B. `u2022` is unicode for a bullet point).
+		2. Array of arrays, which contain only strings
+		   The entry is in itself an array, it is treated as a table.
+		   Each entry in that array is a row in the table, with the first being the headers.
+		   The headers will be made bold and italic. This is done with unicode. If unicode is
+		   disabled, the sheet will capitalize this instead.
+		   Each subarray is rendered with a tab between each column (i.e. `Array.join("\t")`).
+		   The table will be preceded by two line breaks and followed by one line break.
+
+	You can see an example of this array method above.
+
+	From v14.0.0 onwards, if you put '>>' and '<<' around a part of the string,
+	that part will be made bold and italic in the displayed description. This is done with
+	unicode. If unicode is disabled, the sheet will capitalize this instead.
 */
-	ritual : true,
+	ritual: true,
 /*	ritual // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this spell can be cast as a ritual
+	CHANGE: v14.0.0 (now adds registered trademark symbol instead of "(R)")
+
+	Spells with the ritual tag will gain a "®" (registered trademark symbol)
+	after their name on the spell sheet.
 
 	Setting this attribute to false is the same as not including this attribute.
 */
-	psionic : true,
+	psionic: true,
 /*	psionic // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this spell is a psionic talent/discipline
 
 	Setting this attribute to false is the same as not including this attribute.
 */
-	firstCol : "6",
+	firstCol: "6",
 /*	firstCol // OPTIONAL //
 	TYPE:	string
 	USE:	force the first column of the spell line to be set to this
@@ -469,7 +523,7 @@ SpellsList["sindering purple"] = {
 
 	Setting this attribute to an empty string ("") is the same as not including this attribute.
 */
-	dependencies : ["te1-tremorsense", "te2-unwavering eye", "te3-piercing sight", "te4-truesight"],
+	dependencies: ["te1-tremorsense", "te2-unwavering eye", "te3-piercing sight", "te4-truesight"],
 /*	dependencies // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	define spells that always will be added to the spell list after this spell
@@ -485,7 +539,7 @@ SpellsList["sindering purple"] = {
 
 	Setting this attribute to an empty array ([]) is the same as not including this attribute, but doing so will slow the sheet down considerably.
 */
-	allowUpCasting : false,
+	allowUpCasting: false,
 /*	allowUpCasting // OPTIONAL //
 	TYPE:	boolean
 	USE:	limit spell to only be cast at their lowest level
@@ -523,7 +577,7 @@ SpellsList["sindering purple"] = {
 	will add the damage to the first part of the description that matches.
 */
 
-	descriptionShorter : "20-ft rad all crea 5d6+1d6/SL Psychic dmg; save half; flames in area are purple",
+	descriptionShorter: "20-ft rad all crea 5d6+1d6/SL Psychic dmg; save half; flames in area are purple",
 /*	descriptionShorter // OPTIONAL //
 	TYPE:	string
 	USE:	shorter version of the description of the spell to be filled in the description field
@@ -580,9 +634,10 @@ SpellsList["sindering purple"] = {
 
 	// DOES NOT WORK TOGETHER WITH descriptionCantripDie //
 	If the spell has both this attribute and the 'descriptionCantripDie' attribute,
-	the sheet will still use the 'descriptionCantripDie' attribute.
+	the sheet will use the 'descriptionCantripDie' attribute when the appropriate checkbox
+	is checked (see 'descriptionCantripDie' explanation above).
 */
-	descriptionShorterMetric : "6-m rad all crea 5d6+1d6/SL Psychic dmg; save half; flames in area are purple",
+	descriptionShorterMetric: "6-m rad all crea 5d6+1d6/SL Psychic dmg; save half; flames in area are purple",
 /*	descriptionShorterMetric // OPTIONAL //
 	TYPE:	string
 	USE:	shorter version of the description of the spell to be filled in the description field when the sheet is set to use the metric system
@@ -601,10 +656,11 @@ SpellsList["sindering purple"] = {
 
 	// DOES NOT WORK TOGETHER WITH descriptionCantripDie //
 	If the spell has both this attribute and the 'descriptionCantripDie' attribute,
-	the sheet will still use this attribute and disregard the 'descriptionCantripDie' attribute
-	when set to use the metric system.
+	the sheet will use the 'descriptionCantripDie' attribute when the appropriate checkbox
+	is checked (see 'descriptionCantripDie' explanation above),
+	regardless of the unit system being set to metric.
 */
-	dynamicDamageBonus : {
+	dynamicDamageBonus: {
 /*	dynamicDamageBonus // OPTIONAL //
 	TYPE:	object (optional attributes)
 	USE:	instructions for the `genericSpellDmgEdit` function
@@ -613,7 +669,7 @@ SpellsList["sindering purple"] = {
 	See above for an explanation what the `genericSpellDmgEdit` function does.
 	This object can have several pre-defined attributes, which are explained below.
 */
-		doNotProcess : true,
+		doNotProcess: true,
 	/*	doNotProcess // OPTIONAL //
 		TYPE:	boolean
 		USE:	tell the `genericSpellDmgEdit` function not to process this spell
@@ -628,7 +684,7 @@ SpellsList["sindering purple"] = {
 
 		Setting this attribute to false is the same as not including it.
 	*/
-		multipleDmgMoments : true,
+		multipleDmgMoments: true,
 	/*	multipleDmgMoments // OPTIONAL //
 		TYPE:	boolean
 		USE:	force the `genericSpellDmgEdit` function to treat this spell as a single damage instance (false) or as one with multiple damage instances (true)
@@ -651,7 +707,7 @@ SpellsList["sindering purple"] = {
 		targets, that spell doesn't have a single damage roll.
 		For this spell, you should set this attribute to true.
 	*/
-		allDmgTypesSingleMoment : true,
+		allDmgTypesSingleMoment: true,
 	/*	allDmgTypesSingleMoment // OPTIONAL //
 		TYPE:	boolean
 		USE:	force the `genericSpellDmgEdit` function to treat multiple damage listings as a single damage instance
@@ -670,7 +726,7 @@ SpellsList["sindering purple"] = {
 
 		Setting this attribute to false is the same as not including it.
 	*/
-		extraDmgGroupsSameType : /((?:\+?\d+d?\d*)+)( crit)/i,
+		extraDmgGroupsSameType: /((?:\+?\d+d?\d*)+)( crit)/i,
 	/*	allDmgTypesSingleMoment // OPTIONAL //
 		TYPE:	regular expression
 		USE:	regex to match other damage instances in the description of the same damage type that doesn't adhere to the normal syntax
@@ -697,9 +753,9 @@ SpellsList["sindering purple"] = {
 		The `genericSpellDmgEdit` function would not see this second damage group and thus not account for it.
 		For this spell, you should set this attribute to /(and |\u0026 )((?:\+?\d+d?\d*)+)/i.
 	*/
-		multipleDmgTypes : {
-			dmgTypes : ["acid", "cold", "fire", "lightning", "thunder"],
-			inDescriptionAs : 'Acid, Cold, Fire, Lightning, or Thunder|Acid/Cold/Fire/Lightning/Thunder'
+		multipleDmgTypes: {
+			dmgTypes: ["acid", "cold", "fire", "lightning", "thunder"],
+			inDescriptionAs: 'Acid, Cold, Fire, Lightning, or Thunder|Acid/Cold/Fire/Lightning/Thunder'
 		},
 	/*	multipleDmgTypes // OPTIONAL //
 		TYPE:	object (with exactly two attributes)
@@ -725,7 +781,7 @@ SpellsList["sindering purple"] = {
 		See also the explanation for `descriptionShorter` above for how the `genericSpellDmgEdit` function
 		for the implications of having multiple damage types.
 	*/
-		skipDmgGroupIfNotMultiple : /(atk .*piercing dmg.*?)/i,
+		skipDmgGroupIfNotMultiple: /(atk .*piercing dmg.*?)/i,
 	/*	skipDmgGroupIfNotMultiple // OPTIONAL //
 		TYPE:	regular expression
 		USE:	the spell has multiple damage instances and/or types and if the bonus should only be added to a single roll the `genericSpellDmgEdit` function, skip one or more damage instances before adding the bonus

@@ -587,8 +587,8 @@ function MakeRegex(inputString, extraRegex) {
 	return RegExp("^(?=.*\\b" + inputString.replace(/\W/g, " ").replace(/^ +| +$/g, "").RegEscape().replace(/('?s'?)\b/ig, "\($1\)?").replace(/ +/g, "s?\\b)(?=.*\\b") + "s?\\b)" + (extraRegex ? extraRegex : "") + ".*$", "i");
 };
 
-function toUni(input) {
-	if (!What("UseUnicode")) return input;
+function toUni(input, altCap) {
+	if (!What("UseUnicode")) return altCap ? input.toUpperCase() : input;
 	input = input.toString();
 	var UniBoldItal = {
 		"0" : "\uD835\uDFCE",
@@ -1279,7 +1279,7 @@ function sourceDate(srcArr) {
 	for (var i = 0; i < srcArr.length; i++) {
 		var src = srcArr[i];
 		if (!SourceList[src] || CurrentSources.globalExcl.indexOf(src) !== -1) continue;
-		var srcDate = src === "SRD" ? 1 : src === "HB" ? 90001231 : SourceList[src].date ? Number(SourceList[src].date.replace(/\D/g, "")) : 'stop';
+		var srcDate = /^SRD/.test(src) ? 1 : src === "HB" ? 90001231 : SourceList[src].date ? Number(SourceList[src].date.replace(/\D/g, "")) : 'stop';
 		if (!isNaN(srcDate)) dateArr.push(srcDate);
 	};
 	return Math.max.apply(Math, dateArr);
@@ -1327,3 +1327,35 @@ function getLetterRange(str, aOpt) {
 	}
 	return sRng; // higher than the last, so just return the last
 };
+
+// format a descriptionFull attribute
+function formatDescriptionFull(sDescFull) {
+	if (isArray(sDescFull)) {
+		var sReturn = ttSpellObj.descriptionFull.reduce( function (renderDescription, n) {
+			var lineBreak = renderDescription ? '\n' : '';
+			if (isArray(n)) {
+				// Table, every entry in the array is a row, with the first one being the headers
+				var renderTable = n.reduce(function (finalStr, t, idx) {
+					var tableRow = typeof t === "string" ? t :
+									isArray(t) ? t.join("\t") : false;
+					if (!tableRow) return finalStr;
+					if (idx === 0) tableRow = toUni(tableRow, true);
+					var lineBreakT = finalStr ? '\n' : '';
+					return finalStr + lineBreakT + tableRow;
+				}, '');
+				return renderDescription + lineBreak + lineBreak + renderTable + '\n';
+			} else {
+				// Only add three starting spaces if the first character is not a space
+				if (n[0] !== ' ') lineBreak += '   ';
+				return renderDescription + lineBreak + n;
+			}
+		}, '' );
+	} else {
+		var sReturn = sDescFull;
+	}
+	// Add the headers in unicode bold/italic
+	sReturn = sReturn.replace(/>>(.*?)<</g, function (n) {
+		return toUni(n, true);
+	});
+	return sReturn;
+}

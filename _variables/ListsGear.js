@@ -2,7 +2,7 @@ var Base_ArmourList = {
 	"unarmored": {
 		regExpSearch: /(unarmou?red|naked|nothing|bare|no.?armou?r)/i,
 		name: "Unarmored",
-		source: [["free", 0], ["P24", 51]],
+		source: [["SRD24", 177], ["P24", 361]],
 		ac: 10,
 		addMod: true,
 		list: "firstlist"
@@ -10,7 +10,7 @@ var Base_ArmourList = {
 	"mage armor": {
 		regExpSearch: /^(?=.*(mage|magic))(?=.*armou?r).*$/i,
 		name: "Mage armor",
-		source: [["free", 0], ["P24", 293]],
+		source: [["SRD24", 145], ["P24", 293]],
 		ac: 13,
 		list: "magic",
 		affectsWildShape: true
@@ -20,7 +20,7 @@ var Base_ArmourList = {
 		name: "Padded",
 		invName: "Padded armor",
 		infoname: "Padded armor [5 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "light",
 		ac: 11,
 		stealthdis: true,
@@ -31,7 +31,7 @@ var Base_ArmourList = {
 		name: "Leather",
 		invName: "Leather armor",
 		infoname: "Leather armor [10 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "light",
 		ac: 11,
 		weight: 10
@@ -41,7 +41,7 @@ var Base_ArmourList = {
 		name: "Studded leather",
 		invName: "Studded leather armor",
 		infoname: "Studded leather armor [45 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "light",
 		ac: 12,
 		weight: 13
@@ -51,7 +51,7 @@ var Base_ArmourList = {
 		name: "Hide",
 		invName: "Hide armor",
 		infoname: "Hide armor [10 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "medium",
 		ac: 12,
 		weight: 12
@@ -60,7 +60,7 @@ var Base_ArmourList = {
 		regExpSearch: /^(?=.*chain)(?=.*shirt).*$/i,
 		name: "Chain shirt",
 		infoname: "Chain shirt [50 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "medium",
 		ac: 13,
 		weight: 20
@@ -69,7 +69,7 @@ var Base_ArmourList = {
 		regExpSearch: /^(?=.*scale)(?=.*mail).*$/i,
 		name: "Scale mail",
 		infoname: "Scale mail [50 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "medium",
 		ac: 14,
 		stealthdis: true,
@@ -79,7 +79,7 @@ var Base_ArmourList = {
 		regExpSearch: /^(?=.*breast)(?=.*plate).*$/i,
 		name: "Breastplate",
 		infoname: "Breastplate [400 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "medium",
 		ac: 14,
 		weight: 20
@@ -89,7 +89,7 @@ var Base_ArmourList = {
 		name: "Half plate",
 		invName: "Half plate armor",
 		infoname: "Half plate armor [750 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "medium",
 		ac: 15,
 		stealthdis: true,
@@ -99,7 +99,7 @@ var Base_ArmourList = {
 		regExpSearch: /^(?=.*ring)(?=.*mail).*$/i,
 		name: "Ring mail",
 		infoname: "Ring mail [30 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "heavy",
 		ac: 14,
 		stealthdis: true,
@@ -109,7 +109,7 @@ var Base_ArmourList = {
 		regExpSearch: /^(?!.*(scale|plate|ring|shirt))(?=.*chain)(?=.*mail).*$/i,
 		name: "Chain mail",
 		infoname: "Chain mail [75 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "heavy",
 		ac: 16,
 		stealthdis: true,
@@ -121,7 +121,7 @@ var Base_ArmourList = {
 		name: "Splint",
 		invName: "Splint armor",
 		infoname: "Splint armor [200 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "heavy",
 		ac: 17,
 		stealthdis: true,
@@ -133,7 +133,7 @@ var Base_ArmourList = {
 		name: "Plate",
 		invName: "Plate armor",
 		infoname: "Plate armor [1500 gp]",
-		source: [["free", 0], ["P24", 219]],
+		source: [["SRD24", 92], ["P24", 219]],
 		type: "heavy",
 		ac: 18,
 		stealthdis: true,
@@ -143,11 +143,11 @@ var Base_ArmourList = {
 };
 
 var Base_WeaponsList = {
-	// Basic weapons
+	// Unarmed strikes
 	"unarmed strike": {
 		regExpSearch: /\b(fists?|arms?|legs?|foot|feet|claws?|talons?)\b|^(?=.*unarmed)(?=.*strike).*$|^(?=.*martial)(?=.*arts).*$|^(?=.*tavern)(?=.*brawler).*$/i,
 		name: "Unarmed strike (Damage)",
-		source: [["free", 0], ["P24", 377]],
+		source: [["SRD24", 190], ["P24", 377]],
 		// list : "melee", // Hardcoded in dropdown
 		ability: 1,
 		type: "Natural",
@@ -161,7 +161,7 @@ var Base_WeaponsList = {
 		regExpSearch: /\b(fists?|arms?|legs?|foot|feet|claws?|talons?)\b|^(?=.*unarmed)(?=.*strike).*$|^(?=.*martial)(?=.*arts).*$|^(?=.*tavern)(?=.*brawler).*$/i,
 		name: "Unarmed strike (DC)",
 		// list : "melee", // Hardcoded in dropdown
-		source: [["free", 0], ["P24", 377]],
+		source: [["SRD24", 190], ["P24", 377]],
 		ability: 1,
 		type: "Natural",
 		damage: ["Str save", "", "Shove/Grapple"],
@@ -171,11 +171,12 @@ var Base_WeaponsList = {
 		abilitytodamage: false,
 		dc: true
 	},
+	// Simple melee weapons
 	"club": {
 		regExpSearch: /^(?!.*(great|heavy|big))(?=.*\b(club|bian|tonfa)s?\b).*$/i,
 		name: "Club",
 		infoname: "Club [1 sp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Simple",
@@ -190,7 +191,7 @@ var Base_WeaponsList = {
 		regExpSearch: /dagger|bishou|\btamos?\b|kozuka|\btantos?\b/i,
 		name: "Dagger",
 		infoname: "Dagger [2 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Simple",
@@ -206,7 +207,7 @@ var Base_WeaponsList = {
 		name: "Greatclub",
 		infoname: "Greatclub [2 sp]",
 		nameAlt: ["Club, Great"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Simple",
@@ -222,7 +223,7 @@ var Base_WeaponsList = {
 		name: "Handaxe",
 		infoname: "Handaxe [5 gp]",
 		nameAlt: ["Axe, Hand"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Simple",
@@ -237,7 +238,7 @@ var Base_WeaponsList = {
 		regExpSearch: /javelin|\bmaus?\b|uchi-ne/i,
 		name: "Javelin",
 		infoname: "Javelin [5 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Simple",
@@ -253,7 +254,7 @@ var Base_WeaponsList = {
 		name: "Light hammer",
 		infoname: "Light hammer [2 gp]",
 		nameAlt: ["Hammer, Light"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Simple",
@@ -268,7 +269,7 @@ var Base_WeaponsList = {
 		regExpSearch: /maces?\b|\bchuis?\b|kanabo/i,
 		name: "Mace",
 		infoname: "Mace [5 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Simple",
@@ -284,7 +285,7 @@ var Base_WeaponsList = {
 		name: "Quarterstaff",
 		infoname: "Quarterstaff [2 sp]",
 		nameAlt: ["Staff"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Simple",
@@ -300,7 +301,7 @@ var Base_WeaponsList = {
 		name: "Sickle",
 		infoname: "Sickle [1 gp]",
 		nameAlt: ["Kama"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Simple",
@@ -315,7 +316,7 @@ var Base_WeaponsList = {
 		regExpSearch: /^(?!.*agonizing)(?!.*eldritch)(?=.*(spear|qiang|\byaris?\b)).*$/i,
 		name: "Spear",
 		infoname: "Spear [1 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Simple",
@@ -326,12 +327,13 @@ var Base_WeaponsList = {
 		abilitytodamage: true,
 		mastery: "Sap"
 	},
+	// Simple ranged weapons
 	"dart": {
 		regExpSearch: /dart|shuriken/i,
 		name: "Dart",
 		infoname: "Dart [5 cp]",
 		nameAlt: ["Shuriken"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "ranged",
 		ability: 2,
 		type: "Simple",
@@ -347,7 +349,7 @@ var Base_WeaponsList = {
 		name: "Light crossbow",
 		infoname: "Light crossbow [25 gp]",
 		nameAlt: ["Crossbow, Light"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "ranged",
 		ability: 2,
 		type: "Simple",
@@ -364,7 +366,7 @@ var Base_WeaponsList = {
 		name: "Shortbow",
 		infoname: "Shortbow [25 gp]",
 		nameAlt: ["Bow, Short"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "ranged",
 		ability: 2,
 		type: "Simple",
@@ -380,7 +382,7 @@ var Base_WeaponsList = {
 		regExpSearch: /sling/i,
 		name: "Sling",
 		infoname: "Sling [1 sp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "ranged",
 		ability: 2,
 		type: "Simple",
@@ -392,12 +394,13 @@ var Base_WeaponsList = {
 		ammo: "sling bullet",
 		mastery: "Slow"
 	},
+	// Martial melee weapons
 	"battleaxe": {
 		regExpSearch: /^(((?=.*battle)(?=.*(axe|\bono|\bfu)s?\b))|((?!.*(light|hand|short|small|great|heavy|throw))(?=.*\b(axe|fu|masakari)s?\b))).*$/i,
 		name: "Battleaxe",
 		infoname: "Battleaxe [10 gp]",
 		nameAlt: ["Axe, Battle"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -412,7 +415,7 @@ var Base_WeaponsList = {
 		regExpSearch: /flail|nunchaku/i,
 		name: "Flail",
 		infoname: "Flail [10 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -427,7 +430,7 @@ var Base_WeaponsList = {
 		regExpSearch: /glaive|guandao|bisento|naginata/i,
 		name: "Glaive",
 		infoname: "Glaive [20 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -443,7 +446,7 @@ var Base_WeaponsList = {
 		name: "Greataxe",
 		infoname: "Greataxe [30 gp]",
 		nameAlt: ["Axe, Great"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -459,7 +462,7 @@ var Base_WeaponsList = {
 		name: "Greatsword",
 		infoname: "Greatsword [50 gp]",
 		nameAlt: ["Sword, Great"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -474,7 +477,7 @@ var Base_WeaponsList = {
 		regExpSearch: /halberd|\bjis?\b|kamayari/i,
 		name: "Halberd",
 		infoname: "Halberd [20 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -489,7 +492,7 @@ var Base_WeaponsList = {
 		regExpSearch: /lance|umayari/i,
 		name: "Lance",
 		infoname: "Lance [10 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -505,7 +508,7 @@ var Base_WeaponsList = {
 		name: "Longsword",
 		infoname: "Longsword [15 gp]",
 		nameAlt: ["Sword, Long", "Katana"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -521,7 +524,7 @@ var Base_WeaponsList = {
 		name: "Maul",
 		infoname: "Maul [10 gp]",
 		nameAlt: ["Greathammer", "Hammer, Heavy"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -536,7 +539,7 @@ var Base_WeaponsList = {
 		regExpSearch: /morningstar/i,
 		name: "Morningstar",
 		infoname: "Morningstar [15 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -551,7 +554,7 @@ var Base_WeaponsList = {
 		regExpSearch: /^(?!.*armou?r)(?!.*\bspike)(?=.*(pike|\bmaos?\b|nagaeyari)).*$/i,
 		name: "Pike",
 		infoname: "Pike [5 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -566,7 +569,7 @@ var Base_WeaponsList = {
 		regExpSearch: /rapier/i,
 		name: "Rapier",
 		infoname: "Rapier [25 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -582,7 +585,7 @@ var Base_WeaponsList = {
 		name: "Scimitar",
 		infoname: "Scimitar [25 gp]",
 		nameAlt: ["Wakizashi"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -597,7 +600,7 @@ var Base_WeaponsList = {
 		name: "Shortsword",
 		infoname: "Shortsword [10 gp]",
 		nameAlt: ["Sword, Short"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -612,7 +615,7 @@ var Base_WeaponsList = {
 		regExpSearch: /trident|\bchas?\b|magariyari/i,
 		name: "Trident",
 		infoname: "Trident [5 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -628,7 +631,7 @@ var Base_WeaponsList = {
 		name: "Warhammer",
 		infoname: "Warhammer [15 gp]",
 		nameAlt: ["Hammer, War"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -643,7 +646,7 @@ var Base_WeaponsList = {
 		regExpSearch: /^(((?=.*pick)(?=.*war))|((?!.*(heavy|great|light))(?=.*\bpicks?\b))).*$|\bkuwas?\b/i,
 		name: "War pick",
 		infoname: "War Pick [5 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -658,7 +661,7 @@ var Base_WeaponsList = {
 		regExpSearch: /^(?!.*thorn)(?=.*whip).*$/i,
 		name: "Whip",
 		infoname: "Whip [2 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "melee",
 		ability: 1,
 		type: "Martial",
@@ -669,11 +672,12 @@ var Base_WeaponsList = {
 		abilitytodamage: true,
 		mastery: "Slow"
 	},
+	// Martial ranged weapons
 	"blowgun": {
 		regExpSearch: /blowgun/i,
 		name: "Blowgun",
 		infoname: "Blowgun [10 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "ranged",
 		ability: 2,
 		type: "Martial",
@@ -690,7 +694,7 @@ var Base_WeaponsList = {
 		name: "Hand crossbow",
 		infoname: "Hand crossbow [75 gp]",
 		nameAlt: ["Crossbow, Hand"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "ranged",
 		ability: 2,
 		type: "Martial",
@@ -707,7 +711,7 @@ var Base_WeaponsList = {
 		name: "Heavy crossbow",
 		infoname: "Heavy crossbow [50 gp]",
 		nameAlt: ["Crossbow, Heavy"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "ranged",
 		ability: 2,
 		type: "Martial",
@@ -724,7 +728,7 @@ var Base_WeaponsList = {
 		name: "Longbow",
 		infoname: "Longbow [50 gp]",
 		nameAlt: ["Bow, Long"],
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "ranged",
 		ability: 2,
 		type: "Martial",
@@ -740,7 +744,7 @@ var Base_WeaponsList = {
 		regExpSearch: /musket/i,
 		name: "Musket",
 		infoname: "Musket [500 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "ranged",
 		ability: 2,
 		type: "Martial",
@@ -756,7 +760,7 @@ var Base_WeaponsList = {
 		regExpSearch: /^(?!.*(automatic|laser|antimatter|needler|paralysis))(?=.*\bpistols?\b).*$/i,
 		name: "Pistol",
 		infoname: "Pistol [250 gp]",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		list: "ranged",
 		ability: 2,
 		type: "Martial",
@@ -772,7 +776,7 @@ var Base_WeaponsList = {
 	"improvised weapon": {
 		regExpSearch: /improvised/i,
 		name: "Improvised Weapon",
-		source: [["SRD", 65], ["P", 147]],
+		source: [["SRD24", 183], ["P24", 369]],
 		// list : "gear", // Hardcoded in dropdown
 		ability: 1,
 		type: "Improvised Weapons",
@@ -784,7 +788,7 @@ var Base_WeaponsList = {
 	"vials of acid": { // PHB'24 changed
 		regExpSearch: /^(?=.*vial)(?=.*acid).*$/i,
 		name: "Vial of Acid",
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 94], ["P24", 222]],
 		list: "gear",
 		ability: 2,
 		type: "Adventuring Gear",
@@ -801,7 +805,7 @@ var Base_WeaponsList = {
 	"alchemist fire": { // PHB'24 changed
 		regExpSearch: /^(?=.*alchemist)(?=.*fire).*$/i,
 		name: "Alchemist's Fire",
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 94], ["P24", 222]],
 		list: "gear",
 		ability: 2,
 		type: "Adventuring Gear",
@@ -818,7 +822,7 @@ var Base_WeaponsList = {
 	"holy water": {
 		regExpSearch: /^(?=.*holy)(?=.*water).*$/i,
 		name: "Holy Water",
-		source: [["free", 0], ["P24", 226]],
+		source: [["SRD24", 97], ["P24", 226]],
 		list: "gear",
 		ability: 2,
 		type: "Adventuring Gear",
@@ -836,7 +840,7 @@ var Base_WeaponsList = {
 		regExpSearch: /\bnet(ting)?s?\b/i,
 		name: "Net",
 		infoname: "Net [1 gp]",
-		source: [["free", 0], ["P24", 227]],
+		source: [["SRD24", 98], ["P24", 227]],
 		list: "gear",
 		ability: 2,
 		type: "Adventuring Gear",
@@ -854,7 +858,7 @@ var Base_WeaponsList = {
 	"oil": { // PHB'24 new
 		regExpSearch: /oil/i,
 		name: "Oil",
-		source: [["free", 0], ["P24", 227]],
+		source: [["SRD24", 98], ["P24", 227]],
 		list: "gear",
 		ability: 2,
 		type: "Adventuring Gear",
@@ -871,7 +875,7 @@ var Base_WeaponsList = {
 	"burning torch": {
 		regExpSearch: /^(?=.*torch)(?=.*burning).*$/i,
 		name: "Torch, Burning",
-		source: [["free", 0], ["P24", 229]],
+		source: [["SRD24", 100], ["P24", 229]],
 		list: "gear",
 		ability: 1,
 		type: "Simple", // PHB'24 changed
@@ -885,7 +889,7 @@ var Base_WeaponsList = {
 	"spell attack": {
 		regExpSearch: /^(?=.*spell)(?=.*attack).*$/i,
 		name: "Spell attack",
-		source: [["free", 0], ["P24", 374]],
+		source: [["SRD24", 188], ["P24", 374]],
 		// list : "spell", // Hardcoded in dropdown
 		ability: 0,
 		type: "Spell",
@@ -897,7 +901,7 @@ var Base_WeaponsList = {
 	"acid splash": {
 		regExpSearch: /^(?=.*acid)(?=.*splash).*$/i,
 		name: "Acid Splash",
-		source: [["free", 0], ["P24", 239]],
+		source: [["SRD24", 107], ["P24", 239]],
 		list: "spell",
 		ability: 4,
 		type: "Cantrip",
@@ -910,7 +914,7 @@ var Base_WeaponsList = {
 	"chill touch": {
 		regExpSearch: /^(?=.*chill)(?=.*touch).*$/i,
 		name: "Chill Touch",
-		source: [["free", 0], ["P24", 249]],
+		source: [["SRD24", 115], ["P24", 249]],
 		list: "spell",
 		ability: 6,
 		type: "Cantrip",
@@ -922,7 +926,7 @@ var Base_WeaponsList = {
 	"eldritch blast": {
 		regExpSearch: /(agonizing|eldritch|repelling).(spear|blast)/i,
 		name: "Eldritch Blast",
-		source: [["free", 0], ["P24", 267]],
+		source: [["SRD24", 127], ["P24", 267]],
 		list: "spell",
 		ability: 6,
 		type: "Cantrip",
@@ -934,7 +938,7 @@ var Base_WeaponsList = {
 	"fire bolt": {
 		regExpSearch: /^(?=.*fire)(?=.*bolt).*$/i,
 		name: "Fire Bolt",
-		source: [["free", 0], ["P24", 274]],
+		source: [["SRD24", 132], ["P24", 274]],
 		list: "spell",
 		ability: 6,
 		type: "Cantrip",
@@ -943,23 +947,10 @@ var Base_WeaponsList = {
 		description: "Unattended flammable object starts Burning",
 		abilitytodamage: false
 	},
-	"mind sliver": { // NB not in free rules
-		regExpSearch: /^(?=.*mind)(?=.*sliver).*$/i,
-		name: "Mind Sliver",
-		source: [["P24", 298]],
-		list: "spell",
-		ability: 6,
-		type: "Cantrip",
-		damage: ["C", 6, "psychic"],
-		range: "60 ft",
-		description: "Target has -1d4 on next save before my next turn ends; Int save to avoid",
-		abilitytodamage: false,
-		dc: true
-	},
 	"poison spray": {
 		regExpSearch: /^(?=.*poison)(?=.*spray).*$/i,
 		name: "Poison Spray",
-		source: [["free", 0], ["P24", 306]],
+		source: [["SRD24", 153], ["P24", 306]],
 		list: "spell",
 		ability: 6,
 		type: "Cantrip",
@@ -971,7 +962,7 @@ var Base_WeaponsList = {
 	"produce flame": {
 		regExpSearch: /^(?=.*produce)(?=.*flame).*$/i,
 		name: "Produce Flame",
-		source: [["free", 0], ["P24", 308]],
+		source: [["SRD24", 156], ["P24", 308]],
 		list: "spell",
 		ability: 5,
 		type: "Cantrip",
@@ -983,7 +974,7 @@ var Base_WeaponsList = {
 	"ray of frost": {
 		regExpSearch: /^(?=.*ray)(?=.*frost).*$/i,
 		name: "Ray of Frost",
-		source: [["free", 0], ["P24", 311]],
+		source: [["SRD24", 157], ["P24", 311]],
 		list: "spell",
 		ability: 6,
 		type: "Cantrip",
@@ -995,7 +986,7 @@ var Base_WeaponsList = {
 	"sacred flame": {
 		regExpSearch: /^(?=.*sacred)(?=.*flame).*$/i,
 		name: "Sacred Flame",
-		source: [["free", 0], ["P24", 313]],
+		source: [["SRD24", 159], ["P24", 313]],
 		list: "spell",
 		ability: 5,
 		type: "Cantrip",
@@ -1009,7 +1000,7 @@ var Base_WeaponsList = {
 		baseWeapon: "club",
 		regExpSearch: /^(?=.*shillelagh)(?=.*\b(club|bian|tonfa)s?\b).*$/i,
 		name: "Shillelagh (club)",
-		source: [["free", 0], ["P24", 316]],
+		source: [["SRD24", 162], ["P24", 316]],
 		list: "spell",
 		ability: 5,
 		damage: [1, 8, "force"],
@@ -1019,7 +1010,7 @@ var Base_WeaponsList = {
 		baseWeapon: "quarterstaff",
 		regExpSearch: /^(?=.*shillelagh)(?=.*(quarterstaff|\bstaffs?\b|\bbos?\b)).*$/i,
 		name: "Shillelagh (staff)",
-		source: [["free", 0], ["P24", 316]],
+		source: [["SRD24", 162], ["P24", 316]],
 		list: "spell",
 		ability: 5,
 		damage: [1, 8, "force"],
@@ -1028,7 +1019,7 @@ var Base_WeaponsList = {
 	"shocking grasp": {
 		regExpSearch: /^(?=.*shocking)(?=.*grasp).*$/i,
 		name: "Shocking Grasp",
-		source: [["free", 0], ["P24", 316]],
+		source: [["SRD24", 162], ["P24", 316]],
 		list: "spell",
 		ability: 6,
 		type: "Cantrip",
@@ -1040,7 +1031,7 @@ var Base_WeaponsList = {
 	"vicious mockery": {
 		regExpSearch: /^(?=.*vicious)(?=.*mockery).*$/i,
 		name: "Vicious Mockery",
-		source: [["free", 0], ["P24", 337]],
+		source: [["SRD24", 171], ["P24", 337]],
 		list: "spell",
 		ability: 6,
 		type: "Cantrip",
@@ -1068,21 +1059,21 @@ CurrentUpdates.types = []; // don't trigger the changes dialog for this
 var Base_AmmoList = {
 	"arrow": {
 		name: "Arrows",
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 96], ["P24", 222]],
 		weight: 0.05,
 		icon: "Arrows"
 	},
 	"bolt": {
 		name: "Bolts",
 		weight: 0.075,
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 96], ["P24", 222]],
 		icon: "Arrows",
 		invName: "Crossbow bolts" // incorrect, but clearer than the PHB'24 "bolt"
 	},
 	"sling bullet": { // PHB'24 changed
 		name: "Bullets, Sling",
 		weight: 0.075,
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 96], ["P24", 222]],
 		icon: "Bullets",
 		invName: "Sling bullets",
 		alternatives: [/^(?=.*bullet)(?=.*sling).*$/i]
@@ -1090,77 +1081,77 @@ var Base_AmmoList = {
 	"firearm bullet": { // PHB'24 new
 		name: "Bullets, Firearm",
 		weight: 0.2,
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 96], ["P24", 222]],
 		icon: "Bullets",
 		invName: "Firearm bullets",
 		alternatives: [/^(?=.*bullet)(?=.*firearm).*$/i]
 	},
 	"dagger": {
 		name: "Daggers",
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 91], ["P24", 215]],
 		weight: 1,
 		icon: "Daggers"
 	},
 	"dart": {
 		name: "Darts",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		weight: 0.25,
 		icon: "Arrows"
 	},
 	"flask": {
 		name: "Flasks (1 pint)",
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 97], ["P24", 225]],
 		weight: 1,
 		icon: "Flasks"
 	},
 	"handaxe": {
 		name: "Handaxes",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		weight: 2,
 		icon: "Axes",
 		alternatives: ["axe"]
 	},
 	"javelin": {
 		name: "Javelins",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		weight: 2,
 		icon: "Spears"
 	},
 	"light hammer": {
 		name: "Light Hammers",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		weight: 2,
 		icon: "Hammers",
 		alternatives: ["hammer"]
 	},
 	"needle": {
 		name: "Needles",
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 96], ["P24", 222]],
 		weight: 0.02,
 		icon: "Bullets",
 		invName: "Blowgun needles"
 	},
 	"spear": {
 		name: "Spears",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		weight: 3,
 		icon: "Spears"
 	},
 	"trident": {
 		name: "Tridents",
-		source: [["free", 0], ["P24", 215]],
+		source: [["SRD24", 91], ["P24", 215]],
 		weight: 4,
 		icon: "Spears"
 	},
 	"vial": {
 		name: "Vials (4 ounces)",
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 100], ["P24", 229]],
 		weight: 0.25,
 		icon: "Vials"
 	},
 	"alchemist fire": {
 		name: "Alchemist's Fire, flasks",
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 94], ["P24", 222]],
 		weight: 1,
 		icon: "Flasks",
 		invName: "Alchemist's fire, flasks of",
@@ -1168,7 +1159,7 @@ var Base_AmmoList = {
 	},
 	"vials of acid": {
 		name: "Vials of Acid",
-		source: [["free", 0], ["P24", 222]],
+		source: [["SRD24", 94], ["P24", 222]],
 		weight: 1,
 		icon: "Vials",
 		invName: "Acid, vials of",
@@ -1176,7 +1167,7 @@ var Base_AmmoList = {
 	},
 	"holy water": {
 		name: "Holy Water, flasks",
-		source: [["free", 0], ["P24", 226]],
+		source: [["SRD24", 97], ["P24", 226]],
 		weight: 1,
 		icon: "Flasks",
 		invName: "Holy Water, flasks of",
@@ -1184,7 +1175,7 @@ var Base_AmmoList = {
 	},
 	"oil": {
 		name: "Oil, flasks",
-		source: [["free", 0], ["P24", 227]],
+		source: [["SRD24", 98], ["P24", 227]],
 		weight: 1,
 		icon: "Flasks",
 		invName: "Oil, flasks of",
@@ -1195,7 +1186,7 @@ var Base_AmmoList = {
 var Base_PacksList = {
 	burglar: {
 		name: "Burglar's pack (16 gp)",
-		source: [["free", 0], ["P24", 224]],
+		source: [["SRD24", 96], ["P24", 224]],
 		items: [
 			["Backpack, with:", "", 5],
 			["Ball bearings, pouches of", "", 2],
@@ -1212,7 +1203,7 @@ var Base_PacksList = {
 	},
 	diplomat: {
 		name: "Diplomat's pack (39 gp)",
-		source: [["free", 0], ["P24", 225]],
+		source: [["SRD24", 97], ["P24", 225]],
 		items: [
 			["Chest, with:", "", 25],
 			["Fine clothes", "", 6],
@@ -1229,7 +1220,7 @@ var Base_PacksList = {
 	},
 	dungeoneer: {
 		name: "Dungeoneer's pack (12 gp)",
-		source: [["free", 0], ["P24", 225]],
+		source: [["SRD24", 97], ["P24", 225]],
 		items: [
 			["Backpack, with:", "", 5],
 			["Caltrops, bags of", "", 2],
@@ -1243,7 +1234,7 @@ var Base_PacksList = {
 	},
 	entertainer: {
 		name: "Entertainer's pack (40 gp)",
-		source: [["free", 0], ["P24", 225]],
+		source: [["SRD24", 97], ["P24", 225]],
 		items: [
 			["Backpack, with:", "", 5],
 			["Bedroll", "", 7],
@@ -1259,7 +1250,7 @@ var Base_PacksList = {
 	},
 	explorer: {
 		name: "Explorer's pack (10 gp)",
-		source: [["free", 0], ["P24", 225]],
+		source: [["SRD24", 97], ["P24", 225]],
 		items: [
 			["Backpack, with:", "", 5],
 			["Bedroll", "", 7],
@@ -1273,7 +1264,7 @@ var Base_PacksList = {
 	},
 	priest: {
 		name: "Priest's pack (33 gp)",
-		source: [["free", 0], ["P24", 228]],
+		source: [["SRD24", 99], ["P24", 228]],
 		items: [
 			["Backpack, with:", "", 5],
 			["Blanket", "", 3],
@@ -1286,7 +1277,7 @@ var Base_PacksList = {
 	},
 	scholar: {
 		name: "Scholar's pack (40 gp)",
-		source: [["free", 0], ["P24", 228]],
+		source: [["SRD24", 99], ["P24", 228]],
 		items: [
 			["Backpack, with:", "", 5],
 			["Book", "", 5],

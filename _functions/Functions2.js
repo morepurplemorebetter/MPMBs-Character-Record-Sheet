@@ -671,7 +671,7 @@ function MakeCompMenu_CompOptions(prefix, MenuSelection, force) {
 		}
 
 		var aCompMenu = [], bAddMenuDivider = false;
-		if ((CurrentSources.globalExcl.indexOf("SRD") !== -1 || CurrentSources.globalExcl.indexOf("free") !== -1) && ((!SourceList.M || (SourceList.M && CurrentSources.globalExcl.indexOf("M") !== -1)) || (!SourceList.M24 || (SourceList.M && CurrentSources.globalExcl.indexOf("M24") !== -1)))) {
+		if ((CurrentSources.globalExcl.indexOf("SRD") !== -1 || CurrentSources.globalExcl.indexOf("SRD24") !== -1) && ((!SourceList.M || (SourceList.M && CurrentSources.globalExcl.indexOf("M") !== -1)) || (!SourceList.M24 || (SourceList.M && CurrentSources.globalExcl.indexOf("M24") !== -1)))) {
 			// If the SRD is excluded (and the MM if it exists), add a warning here
 			aCompMenu = [{
 				cName : "Be aware: the SRD " + (SourceList.M ? "and Monster Manual are" : "is") + " excluded from the sources!",
@@ -8603,8 +8603,8 @@ function getFAQ(input, delay) {
 			if (delay) return true;
 			tDoc.exportDataObject({ cName: 'FAQ.pdf', nLaunch: 2 });
 			break;
-		case "ogl" :
-			ShowDialog("Open Gaming License, for use of the SRD", licenseOGL.join("\n\n"));
+		case "srd" :
+			ShowDialog("System Reference Document 5.2.1 Attribution Statement", licenseSRD);
 			break;
 		case "gplv3" :
 			ShowDialog("GNU License, for the software by MPMB", licenseGPLV3.join("\n\n"));

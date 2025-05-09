@@ -100,7 +100,7 @@ var Base_ClassList = {
 	"barbarian" : {
 		regExpSearch : /^((?=.*(marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n))|((?=.*(warrior|fighter))(?=.*(feral|tribal)))).*$/i,
 		name : "Barbarian",
-		source : [["free", 0], ["P24", 51]],
+		source : [["SRD24", 28], ["P24", 51]],
 		primaryAbility : "Strength",
 		prereqs : "Strength 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
@@ -163,13 +163,13 @@ var Base_ClassList = {
 			},
 			"unarmored defense" : {
 				name : "Unarmored Defense",
-				source : [["SRD", 8], ["P", 48]],
+				source : [["SRD24", 29], ["P24", 51]],
 				minlevel : 1,
 				description : desc("Without armor, my AC is 10 + Dexterity modifier + Constitution modifier + shield"),
 				armorOptions : [{
 					regExpSearch : /justToAddToDropDownAndEffectWildShape/,
 					name : "Unarmored Defense (Con)",
-					source : [["SRD", 8], ["P", 48]],
+					source : [["SRD24", 29], ["P24", 51]],
 					ac : "10+Con",
 					affectsWildShape : true,
 					selectNow : true
@@ -738,7 +738,7 @@ var Base_ClassList = {
 	"monk" : {
 		regExpSearch : /^((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
 		name : "Monk",
-		source : [["free", 0], ["P24", 101]],
+		source : [["SRD24", 49], ["P24", 101]],
 		primaryAbility : "Dexterity and Wisdom",
 		abilitySave : 5,
 		prereqs : "Dexterity 13 and Wisdom 13",
@@ -768,13 +768,13 @@ var Base_ClassList = {
 		features : {
 			"unarmored defense" : {
 				name : "Unarmored Defense",
-				source : [["free", 0], ["P24", 101]],
+				source : [["SRD24", 50], ["P24", 101]],
 				minlevel : 1,
 				description : desc("Without armor and no shield, my AC is 10 + Dexterity modifier + Wisdom modifier"),
 				armorOptions : [{
 					regExpSearch : /justToAddToDropDownAndEffectWildShape/,
 					name : "Unarmored Defense (Wis)",
-					source : [["free", 0], ["P24", 101]],
+					source : [["SRD24", 50], ["P24", 101]],
 					ac : "10+Wis",
 					affectsWildShape : true,
 					selectNow : true
@@ -1978,7 +1978,7 @@ var Base_ClassList = {
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
 								if (spName == "book of ancient secrets") {
-									spellObj.firstCol = "(R)";
+									spellObj.firstCol = '\xAE';
 									if (!(/.*(\d+ ?h\b|special|see b).*/i).test(spellObj.time)) {
 										var numMinutes = Number(spellObj.time.replace(/(\d+) ?min.*/, "$1"));
 										if (isNaN(numMinutes)) numMinutes = 0;
@@ -2403,7 +2403,7 @@ var Base_ClassList = {
 						name : "Pact of the Chain",
 						spells : ["find familiar"],
 						selection : ["find familiar"],
-						firstCol : "(R)"
+						firstCol : '\xAE'
 					}]
 				},
 				"pact of the tome" : {

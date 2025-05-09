@@ -1,12 +1,12 @@
 var Base_SourceList = {
 	// Basic sources
-	"free" : {
-		name : "D&D Free Rules (2024)",
-		abbreviation : "Free'24",
-		abbreviationSpellsheet : "Fr",
+	"SRD24" : {
+		name : "System Reference Document 5.2.1",
+		abbreviation : "SRD'24",
+		abbreviationSpellsheet : "SR",
 		group : "Primary Sources",
-		url : "https://www.dndbeyond.com/sources/dnd/free-rules",
-		date : "2024/09/17"
+		url : "https://www.dndbeyond.com/srd#SystemReferenceDocumentv52",
+		date : "2025/04/22" // SRD 5.2 release date
 	},
 /*
 	"P" : {
