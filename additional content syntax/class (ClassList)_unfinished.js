@@ -96,7 +96,7 @@ ClassList["purplemancer"] = {
 	TYPE:	regular expression
 	USE:	used to match the text in the class field to see if this class is present
 
-	This has to be a match for the name given earlier, or the class will never by recognized.
+	This has to be a match for the name given earlier, or the class will never be recognized.
 	Now it looks for any entry that has both the words "purple" and "mancer" in it,
 	 disregarding capitalization or word order.
 	If this looks too complicated, or you want to match only a single word, just write:

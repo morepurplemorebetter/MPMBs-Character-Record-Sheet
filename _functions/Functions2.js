@@ -8603,8 +8603,8 @@ function getFAQ(input, delay) {
 			if (delay) return true;
 			tDoc.exportDataObject({ cName: 'FAQ.pdf', nLaunch: 2 });
 			break;
-		case "ogl" :
-			ShowDialog("Open Gaming License, for use of the SRD", licenseOGL.join("\n\n"));
+		case "srd" :
+			ShowDialog("System Reference Document 5.1 Attribution Statement", licenseSRD);
 			break;
 		case "gplv3" :
 			ShowDialog("GNU License, for the software by MPMB", licenseGPLV3.join("\n\n"));

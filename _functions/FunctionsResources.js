@@ -633,8 +633,8 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		},
 		bWhy : function (dialog) {
 			var goToWeb = {
-				cTitle : "Why does this sheet only include content from the System Reference Document?",
-				cMsg : "This sheet only includes content from the System Reference Document (SRD), because including any other material from Wizards of the Coast (WotC) would be a violation of their copyright. MorePurpleMoreBetter (MPMB) can't provide you with anything more from WotC other than the SRD, which is covered under the Open Gaming License (OGL).\n\nHowever, using the 'Get more' button, you can add content to the sheet that you or somebody else made.\n\nMPMB has some pre-written 3rd-party materials such as the 'Remastered: Way of the Four Elements', DMs Guild creations by Matt Mercer (Blood Hunter, Gunslinger, College of the Maestro), Michael Wolf (Shaman), and more...\nThere is also a subreddit dedicated to sharing people's own creations.\n\nWould you like to go a website where you can learn more about how this works and find more content?",
+				cTitle : "Why do I only see content from the SRD?",
+				cMsg : "This sheet only includes content from the System Reference Document (SRD), because including any other material from Wizards of the Coast (WotC) would be a violation of their copyright. MorePurpleMoreBetter (MPMB) can't provide you with anything more from WotC other than the SRD, which is published under the Creative Commons Attribution 4.0 International License (CC-BY-4.0) and thus free to use.\n\nHowever, using the 'Get more' button, you can add content to the sheet that you or somebody else made.\n\nMPMB has some pre-written 3rd-party materials such as the Blood Hunter by Matt Mercer and fans have made many more. You can find all those in the Community Add-on Script Index.\n\nWould you like to go a website where you can learn more about how this works and where you can find more content?",
 				nIcon : 2,
 				nType : 2
 			};
@@ -712,7 +712,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 									}, {
 										type : "button",
 										item_id : "bWhy",
-										name : "Why only SRD?",
+										name : "Missing content?",
 										font : "dialog",
 										bold : true
 									}, {

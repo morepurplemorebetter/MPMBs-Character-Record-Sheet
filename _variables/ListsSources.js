@@ -5,7 +5,7 @@ var Base_SourceList = {
 		abbreviation : "SRD",
 		abbreviationSpellsheet : "SR",
 		group : "Primary Sources",
-		url : "https://media.wizards.com/2016/downloads/DND/SRD-OGL_V5.1.pdf",
+		url : "https://www.dndbeyond.com/srd#SystemReferenceDocumentv51",
 		date : "2016/05/04"
 	},
 	// Sources for custom scripts

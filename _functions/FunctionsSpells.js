@@ -264,8 +264,15 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 
 // under certain conditions, the range of a spell might not fit on the colourful sheet
 function fixSpellRangeOverflow(rangeStr) {
-	var testRx = typePF ? /S:\d+[,.]\d+[- /]?m (cone|cube)/i : /S:\d+[,.]?\d+[- /]?m (cone|cube)|S:\d+[,.]\d+[- /]?m rad/i;
-	return (testRx).test(rangeStr) ? rangeStr.trim().replace(/[- /]?m (con|cub)e/i, "m $1").replace(/[- /]?m rad/i, "m rad") : rangeStr;
+	rangeStr = rangeStr.trim();
+	if (What("Unit System") === "metric") {
+		var testRx = typePF ? /S:\d+[,.]\d+[- /]?m (cone|cube)/i : /S:\d+[,.]?\d+[- /]?m (cone|cube|line)|S:\d+[,.]\d+[- /]?m rad/i;
+		if (testRx.test(rangeStr)) rangeStr = rangeStr.replace(/[- /]?m ((con|cub)e|line)/i, "m $1").replace(/[- /]?m rad/i, "m rad");
+	} else if (!typePF) {
+		var testRx = /S:\d+[,.]?\d+[- /]?ft (cone|cube|line)|S:\d+[- /]?miles? rad/i;
+		if (testRx.test(rangeStr)) rangeStr = rangeStr.replace(/[- /]?ft (cone|cube|line)/i, "ft $1").replace(/[- /]?miles? rad/i, "mile rad");
+	}
+	return rangeStr;
 }
 
 // under certain conditions, we want to remove any upcasting from the spell's short description
@@ -460,8 +467,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			Value(base.replace("remember", "time"), aSpell.time ? aSpell.time : emptyCell, aSpell.timeFull ? aSpell.timeFull : "");
 
 			//set the spell range
-			var spellRange = aSpell.range ? aSpell.range : emptyCell;
-			if (aSpell.range && What("Unit System") === "metric") spellRange = fixSpellRangeOverflow(spellRange);
+			var spellRange = aSpell.range ? fixSpellRangeOverflow(aSpell.range) : emptyCell;
 			Value(base.replace("remember", "range"), spellRange);
 
 			//set the spell components

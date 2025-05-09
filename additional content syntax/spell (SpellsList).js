@@ -120,7 +120,7 @@ SpellsList["sindering purple"] = {
 	USE:	used to match the text in the spell field to see if this spell is present
 
 	This has to be a match for the name given earlier, as well as the 'nameAlt' and 'nameShort' if present,
-	or the spell will never by recognized.
+	or the spell will never be recognized.
 	If you include this attribute, the 'name', 'nameAlt', and 'nameShort' will not be used to recognize the spell,
 	solely the regular expression entered here.
 
@@ -419,8 +419,9 @@ SpellsList["sindering purple"] = {
 
 	// DOES NOT WORK TOGETHER WITH descriptionCantripDie //
 	If the spell has both this attribute and the 'descriptionCantripDie' attribute,
-	the sheet will still use this attribute and disregard the 'descriptionCantripDie' attribute
-	when set to use the metric system.
+	the sheet will use the 'descriptionCantripDie' attribute when the appropriate checkbox
+	is checked (see 'descriptionCantripDie' explanation above),
+	regardless of the unit system being set to metric.
 */
 	descriptionFull : "This spell repairs a single break or tear in an object you touch, such as broken chain link, two halves of a broken key, a torn clack, or a leaking wineskin. As long as the break or tear is no larger than 1 foot in any dimension, you mend it, leaving no trace of the former damage." + "\n   " + "This spell can physically repair a magic item or construct, but the spell can't restore magic to such an object.",
 /*	descriptionFull // OPTIONAL //
@@ -580,7 +581,8 @@ SpellsList["sindering purple"] = {
 
 	// DOES NOT WORK TOGETHER WITH descriptionCantripDie //
 	If the spell has both this attribute and the 'descriptionCantripDie' attribute,
-	the sheet will still use the 'descriptionCantripDie' attribute.
+	the sheet will use the 'descriptionCantripDie' attribute when the appropriate checkbox
+	is checked (see 'descriptionCantripDie' explanation above).
 */
 	descriptionShorterMetric : "6-m rad all crea 5d6+1d6/SL Psychic dmg; save half; flames in area are purple",
 /*	descriptionShorterMetric // OPTIONAL //
@@ -601,8 +603,9 @@ SpellsList["sindering purple"] = {
 
 	// DOES NOT WORK TOGETHER WITH descriptionCantripDie //
 	If the spell has both this attribute and the 'descriptionCantripDie' attribute,
-	the sheet will still use this attribute and disregard the 'descriptionCantripDie' attribute
-	when set to use the metric system.
+	the sheet will use the 'descriptionCantripDie' attribute when the appropriate checkbox
+	is checked (see 'descriptionCantripDie' explanation above),
+	regardless of the unit system being set to metric.
 */
 	dynamicDamageBonus : {
 /*	dynamicDamageBonus // OPTIONAL //
