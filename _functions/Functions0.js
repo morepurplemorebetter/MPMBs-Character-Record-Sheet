@@ -662,8 +662,8 @@ function toUni(input) {
 	return output;
 };
 
-function toSup(inString) {
-	if (!What("UseUnicode")) return " ["+inString+"]";
+function toSup(inString, forceNoUnicode) {
+	if (forceNoUnicode || !What("UseUnicode")) return " ["+inString+"]";
 	var doChar = function(aChar) {
 		switch(aChar) {
 			case "0" : return "\u2070";
@@ -1179,7 +1179,7 @@ function getSemVers(version, preRelease, build) {
 		arrV.push(strV[i]);
 	}
 	// Return a semantic versioning (x.y.z-preRelease+build)
-	if (preRelease && !(/\d/).test(preRelease)) preRelease += 1; // Make sure "beta" is written as "beta1"
+	if (version < 14 && preRelease && !(/\d/).test(preRelease)) preRelease += 1; // Make sure "beta" is written as "beta1" for v13 and earlier
 	return arrV.join(".") + (preRelease ? "-" + preRelease : "") + (build ? "+" + build : "");
 }
 
@@ -1219,8 +1219,8 @@ function semVersToNmbr(inSemV) {
 	];
 	// Get the pre-release part
 	var preRelease = inSemV.match(/-([^\+]+)/);
-	if (preRelease && /\d/.test(preRelease[1])) {
-		var preRelBase = Number(preRelease[1].match(/\d+/)[0]);
+	if (preRelease) {
+		var preRelBase = Number(preRelease[1].replace(/.*?(\d+).*?|.+/, "$1"));
 		if (/beta|b\d/i.test(preRelease[1])) {
 			preRelBase += 500;
 		} else if (/alpha|alfa|a\d/i.test(preRelease[1])) {

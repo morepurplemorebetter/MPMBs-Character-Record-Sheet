@@ -969,21 +969,37 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 function resourceSelectionDialog(type) {
 	var exclObj = {}, inclObj = {}, inclInArr = "elements", refObj = {}, theExtra = ["", 0];
 
+	// Check if using the newer Acrobat layout, because it doesn't allow for unicode in user interaction elements in `execDialog`
+	var isNewAcrobat = false;
+	try {
+		isNewAcrobat = /hamburger/i.test(app.listMenuItems().toSource());
+	} catch (e) {}
+
 	for (var aSrc in SourceList) {
 		if (SourceList[aSrc].uniS) continue;
-		SourceList[aSrc].uniS = toSup(SourceList[aSrc].abbreviation);
+		SourceList[aSrc].uniS = toSup(SourceList[aSrc].abbreviation, isNewAcrobat);
 	};
 
 	//a way to add the source abbreviation to the string
 	var amendSource = function(uString, uObj, altObj) {
 		var theSrc = uObj.source ? uObj.source : (altObj && altObj.source ? altObj.source : false);
 		theSrc = parseSource(theSrc);
+		var aSrcAbbr = [];
 		if (theSrc) {
 			for (var i = 0; i < theSrc.length; i++) {
-				if (CurrentSources.globalExcl.indexOf(theSrc[i][0]) !== -1) continue;
-				uString += " " + SourceList[theSrc[i][0]].uniS;
+				var sSrcI = theSrc[i][0];
+				var oSrcI = SourceList[sSrcI];
+				if (CurrentSources.globalExcl.indexOf(sSrcI) !== -1) continue;
+				if (isNewAcrobat) {
+					aSrcAbbr.push(oSrcI.abbreviation);
+				} else {
+					uString += " " + oSrcI.uniS;
+				}
 			};
 		};
+		if (isNewAcrobat && aSrcAbbr.length) {
+			uString += " [" + aSrcAbbr.join(", ") + "]";
+		}
 		return uString;
 	};
 
@@ -1470,14 +1486,10 @@ function testSource(key, obj, CSatt, concise) {
 	if (!obj) return true;
 	if (!obj.source && (!CSatt || CSatt == "classExcl")) return false;
 	var theRe = false;
-	var tSrc = !obj.source && CSatt && CSatt !== "classExcl" ? false : parseSource(obj.source);
-	if (tSrc && tSrc.length > 0) {
-		var srcExcluded = function(srcObj) {
-			return !SourceList[srcObj[0]] || CurrentSources.globalExcl.indexOf(srcObj[0]) !== -1;
-		};
-		var isExcl = tSrc.every(srcExcluded);
-		theRe = isExcl && concise ? "source" : isExcl;
-	};
+	if (obj.source && !parseSource(obj.source, true)) {
+		// if obj.source exists, but none of the sources are valid/included
+		theRe = concise ? "source" : true;
+	}
 	if (!theRe && CSatt && CurrentSources[CSatt]) {
 		theRe = CurrentSources[CSatt].indexOf(key) !== -1;
 		if (!theRe && obj.choices && CSatt !== "classExcl") {
@@ -1493,7 +1505,7 @@ function testSource(key, obj, CSatt, concise) {
 };
 
 //a function to make the source attribute into a consistent array [[source, page]] and move excluded sources to the end
-function parseSource(srcObj) {
+function parseSource(srcObj, bInclOnly) {
 	if (!srcObj) return false;
 	var uObj = false;
 	if (typeof srcObj == "string") {
@@ -1513,15 +1525,17 @@ function parseSource(srcObj) {
 		var toUse = !isArray(uObj[i]) ? [uObj[i], 0] : uObj[i].length > 1 ? uObj[i] : [uObj[i][0], 0];
 		if (!toUse[0] || !SourceList[toUse[0]]) {
 			continue;
-		} else if (uObj[i][0] === "SRD") {
-			theSRD.push(toUse);
 		} else if (CurrentSources.globalExcl.indexOf(toUse[0]) !== -1) {
 			areExcl.push(toUse);
+		} else if (/^SRD/.test(uObj[i][0])) {
+			theSRD.push(toUse);
 		} else {
 			theRe.push(toUse);
 		};
 	};
-	return theRe.concat(theSRD).concat(areExcl);
+	var returnArray = theRe.concat(theSRD);
+	if (!bInclOnly) returnArray = returnArray.concat(areExcl);
+	return returnArray.length ? returnArray : false;
 };
 
 //a function to make a readable string of the source
@@ -1535,12 +1549,11 @@ function stringSource(obj, verbosity, prefix, suffix) {
 		var pFull = verbosity.indexOf("page") !== -1;
 		for (var i = 0; i < theSrc.length; i++) {
 			if (CurrentSources.globalExcl.indexOf(theSrc[i][0]) !== -1) continue;
-			if (theRe) theRe += !pFull ? ", " : verbosity.indexOf("multi") !== -1 ? ";\n" : "; ";
+			if (theRe) theRe += !pFull ? ", " : verbosity.indexOf("multi") !== -1 ? "\n" : "; ";
 			theRe += sFull ? SourceList[theSrc[i][0]].name : SourceList[theSrc[i][0]].abbreviation;
 			theRe += !theSrc[i][1] ? "" : (pFull ? ", page " : " ") + theSrc[i][1];
 			if (verbosity.indexOf("first") !== -1) break;
 		};
-		if (theRe && theRe.indexOf("\n") !== -1) theRe += ".";
 		return theRe ? (prefix ? prefix : "") + theRe + (suffix ? suffix : "") : "";
 	} else {
 		return "";

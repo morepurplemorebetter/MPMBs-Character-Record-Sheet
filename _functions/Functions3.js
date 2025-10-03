@@ -3030,10 +3030,12 @@ function ParseMagicItemMenu() {
 			firstLetter = itemName[0].toUpperCase();
 		}
 		iMenus.ref[itemName] = subItem ? mainItem + "#" + subItem : mainItem;
+		// Add the entry for the alphabetical
 		if (!iMenus.alphabetical[firstLetter]) iMenus.alphabetical[firstLetter] = [];
 		iMenus.alphabetical[firstLetter].push(itemName);
-		if (tObj.source) {
-			var aSrcs = parseSource(tObj.source);
+		// Add to its source listing
+		var aSrcs = parseSource(tObj.source);
+		if (aSrcs) {
 			for (var a = 0; a < aSrcs.length; a++) {
 				var aSrc = SourceList[aSrcs[a][0]];
 				var uSrc = aSrc.name + " (" + aSrc.abbreviation + ")";

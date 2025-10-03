@@ -41,7 +41,7 @@
 				Note that if you want a class feature, race, racial trait, feat, background, or magic item to
 				add a weapon/attack, you should be using the 'weaponOptions' attribute.
 
-	Sheet:		v13.2.0 and newer
+	Sheet:		v14.0.0 and newer
 */
 
 var iFileName = "Homebrew Syntax - WeaponsList.js";
@@ -519,11 +519,13 @@ WeaponsList["purple sword"] = {
 
 	Setting this to false is NOT the same as not including this attribute!
 */
+	useSpellMod : ["wizard", "cleric"],
 	useSpellMod : "wizard",
 /*	useSpellMod // OPTIONAL //
 	TYPE:	string
 	USE:	the object name of a spellcasting object that this attack will use the spell attack/DC from
 	ADDED:	v13.0.6
+	CHANGE:	v14.0.0 (can now be an array of strings)
 
 	If the attack you are adding used the spell attack (or DC) of a fixed spellcasting entity
 	(class, race, feat, or magic item), then you can use this attribute.
@@ -531,6 +533,10 @@ WeaponsList["purple sword"] = {
 	when a feature adds an attack option, or creature option with attacks linked to the original feature.
 	For example, if a magic item grants an attack that uses the `fixedDC` of that magic item,
 	or a class feature grants a companion option that uses the spell attack of the class.
+
+	If this is an array, the sheet will pick the ability that results in the highest value.
+	This works bests when the spell sheet has been generated, otherwise the sheet won't look
+	at bonuses other than the ability modifier (e.g. no bonus from `calcChanges.spellCalc`).
 
 	Make sure that the string is an object name for a spellcasting object.
 	Spellcasting objects are created when something has spells that are displayed on the spell sheet pages.

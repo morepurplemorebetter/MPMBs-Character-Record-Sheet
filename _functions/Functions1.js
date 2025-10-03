@@ -194,18 +194,13 @@ function OpeningStatement() {
 	if (What("Opening Remember") === "No") {
 		tDoc.dirty = false;
 		tDoc.pane = "bookmarks"; //open the bookmarks so that on the first opening people can see its existence
-		var sheetTitle = "MorePurpleMoreBetter's " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " (" + tDoc.info.SheetType + ") v" + semVers;
+		var sheetTitle = "MorePurpleMoreBetter's D&D 5e " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " (" + tDoc.info.SheetType + ") v" + semVers;
 		var Text = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
 		Text += "Welcome to " + toUni(sheetTitle);
-		Text += " (get the latest version using the bookmark).";
-		Text += patreonVersion ? "" : "\n\n" + toUni("Only SRD") + ": This sheet is only allowed to contain content from the System Reference Document and no other Wizards of the Coast publications, as they are protected by copyright. If you want to get more content to use with the sheet, see the \"Add Extra Materials\" bookmark.";
-		Text += "\n\n" + toUni("Tooltips") + ": This sheet makes extensive use of tooltips (mouseover texts). Hover your cursor over a field to find how you can enter things into the field, reference to the source, explanatory text, or even a list of options your selection offers you.";
-		Text += "\n\n" + toUni("Functions") + ": Check out the buttons in the \'JavaScript Window\'-toolbar and the bookmarks. Hover your cursor over a button in the \'JavaScript Window\'-toolbar to see what it does.";
-		Text += minVer ? "" : "\n\n" + toUni("Modifiers") + ": With the \"Mods\" button you can add modifiers to the calculated values.";
-		Text += tDoc.info.SpellsOnly ? "" : "\n\n" + toUni("Layout") + ": With the \"Layout\" button you can hide, add, and remove certain pages.";
-		Text += tDoc.info.AdvLogOnly ? "" : "\n\n" + toUni("Spells") + ": With the \"Spells\" button you can have the sheet generate a spell sheet based on your character, or manually create one.";
-		Text += !typePF ? "\n\n" + toUni("Color Options") + ": With the \"Color\" button or the top right logo on the first page, you can change the graphical elements of this sheet to 11 different colors." : "";
-		Text += tDoc.info.AdvLogOnly ? "" : "\n\n" + toUni("Sources") + ": With the \"Sources\" button you can set which resources you want the sheet to use, including most Unearthed Arcana material (e.g. the Revised Ranger). You can also get more using the \"Get Additional Content\" bookmark, like the Gunslinger, Blood Hunter, College of the Maestro by Matthew Mercer, and many others...";
+		Text += ".\n>> get the latest version using the bookmark.";
+		Text += patreonVersion ? "" : "\n\n" + toUni("SRD only") + '. The System Reference Document content is the only Wizards of the Coast publication this sheet is allowed to contain. The rest is protected by WotC\'s copyright. Use the "Get More Content" bookmark to get add-on scripts to increase the available options.';
+		Text += "\n\n" + toUni("5e version") + ". The 5th edition (2014) of Dungeons & Dragons is what this sheet is made for. Visit MPMB's website to get a sheet for 2024 (5.5e) D&D.";
+		Text += "\n\n" + toUni("Advanced features") + ". The buttons in the \'JavaScript Window\'-toolbar and the bookmarks by the same name allow for many customization options. Please try them out. They are reversible.";
 		Text += "\n\nHave fun with the sheet and the adventures you embark on with its help!\n - MorePurpleMoreBetter - ";
 		var oCk = {
 			bInitialValue : true,
@@ -8812,13 +8807,13 @@ function ConvertToMetric(inputString, rounded, exact) {
 			total = amount * UnitsList[ratio].lengthInch;
 			unit = "cm";
 			break;
-		 case "cu ft" : case "cubic foot" : case "cubic feet" : case "cu foot" : case "cu feet" : case "cubic ft" :
+		 case "cu ft" : case "cubic foot" : case "cubic feet" : case "cu foot" : case "cu feet" : case "cubic ft" : case "ft3" : case "ft\u00B3" :
 			total = amount * UnitsList[ratio].volume;
-			unit = "m3";
+			unit = "m\u00B3"; // m³
 			if (total < 0.25) {
 				// for very small volumes, we are going to use dm3
 				total *= 1000;
-				unit = 'dm3';
+				unit = 'dm\u00B3'; // dm³
 			} else if (total < 1 && rounding > 0.03) {
 				// for relatively small volumes, we are going to round to 0.03 accuracy
 				total = RoundTo(total, 0.03, false, true);
@@ -8829,9 +8824,9 @@ function ConvertToMetric(inputString, rounded, exact) {
 				isRounded = true;
 			}
 			break;
-		 case "sq ft" : case "square foot" : case "square feet" : case "sq feet" : case "sq foot" : case "square ft" :
+		 case "sq ft" : case "square foot" : case "square feet" : case "sq feet" : case "sq foot" : case "square ft" : case "ft2" : case "ft\u00B2" :
 			total = amount * UnitsList[ratio].surface;
-			unit = "m2";
+			unit = "m\u00B2"; // m²
 			break;
 		 case "lb" : case "lbs" : case "pound" : case "pounds" :
 			total = amount * UnitsList[ratio].mass;
@@ -8847,7 +8842,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 			break;
 		 case "\u00B0 f" : case "\u00B0f" : case "degree fahrenheit" : case "degrees fahrenheit" : case "fahrenheit" :
 			total = RoundTo((amount - 32) * 5/9, exact ? 0.01 : 1, false, true);
-			unit = "\u00B0C";
+			unit = "\u00B0C"; //°C
 			isRounded = true;
 			break;
 		}
@@ -8855,23 +8850,23 @@ function ConvertToMetric(inputString, rounded, exact) {
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|(in|inch|inches|miles?|(?:cubic|cu|square|sq)? ?f(?:oo|ee)?t|lbs?|pounds?|gal(?:lons?)?|q(?:uar)ts?|\u00B0 ?f|(?:degrees? )?fahrenheit)\b)/ig);
+	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|f(?:oo|ee)?t[\u00B2\u00B3]|(in|inch|inches|miles?|(?:cubic|cu|square|sq)? ?f(?:oo|ee)?t[23]?|lbs?|pounds?|gal(?:lons?)?|q(?:uar)?ts?|\u00B0 ?f|(?:degrees? )?fahrenheit)\b)/ig);
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
-			if ((/'.+"/).test(measurements[i])) {
-				if ((/'.+"\W/).test(measurements[i])) {
+			if (/'.+"/.test(measurements[i])) {
+				if (/'.+"\W/.test(measurements[i])) {
 					measurements[i] = measurements[i].substr(0, measurements[i].length - 1);
 				}
 				var orgFT = parseFloat(measurements[i].substring(0,measurements[i].indexOf("'")));
 				var orgIN = parseFloat(measurements[i].substring(measurements[i].indexOf("'") + 1, measurements[i].indexOf('"')));
 				var resulted = theConvert(parseFloat(orgIN/12) + parseFloat(orgFT), "ft");
 			} else {
-				if ((/\d+('|")\W/).test(measurements[i])) {
+				if (/\d+('|")\W/.test(measurements[i])) {
 					measurements[i] = measurements[i].substr(0, measurements[i].length - 1);
 				}
 				var org = measurements[i].replace(/,/g, ".");
-				var orgUnit = org.match(/[-\s]*([\u00B0 A-z'"]+)$/)[1].toLowerCase();
+				var orgUnit = org.match(/[-\s]*([\u00B0 A-z'"]+[\u00B22\u00B33]?)$/)[1].toLowerCase();
 				var fraction;
 
 				if (fraction = org.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/) ){
@@ -8881,7 +8876,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 				}
 			}
 	
-			var delimiter = (/.*\d+([\s- ]*?)\w/).test(measurements[i]) ? measurements[i].match(/.*\d+([\s- ]*?)\w/)[1] : " ";
+			var delimiter = /.*\d+([\s- ]*?)\w/.test(measurements[i]) ? measurements[i].match(/.*\d+([\s- ]*?)\w/)[1] : " ";
 
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
@@ -8919,9 +8914,9 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 			total = amount / UnitsList[ratio].distance;
 			unit = total === 1 ? "mile" : "miles";
 			break;
-		 case "dm3" : case "cubic decimeter" : case "cubic decimeters" : case "cubic decimetre" : case "cubic decimetres" :
+		 case "dm3" : case "dm\u00B3" : case "cubic decimeter" : case "cubic decimeters" : case "cubic decimetre" : case "cubic decimetres" :
 			amount /= 1000;
-		 case "m3" : case "cubic meter" : case "cubic meters" : case "cubic metre" : case "cubic metres" :
+		 case "m3" : case "m\u00B3" : case "cubic meter" : case "cubic meters" : case "cubic metre" : case "cubic metres" :
 			total = amount / UnitsList[ratio].volume;
 			unit = "cu ft";
 			if (total > 41 && rounding < 2) {
@@ -8929,7 +8924,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 				rounding = 10;
 			}
 			break;
-		 case "m2" : case "square metre" : case "square metres" : case "square meter" : case "square meters" :
+		 case "m2" : case "m\u00B2" : case "square metre" : case "square metres" : case "square meter" : case "square meters" :
 			total = amount / UnitsList[ratio].surface;
 			unit = "sq ft";
 			break;
@@ -8950,7 +8945,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 			break;
 		 case "\u00B0 c" : case "\u00B0c" : case "degree celsius" : case "degrees celsius" : case "celsius" :
 			total = RoundTo((amount * 9/5) + 32, exact ? 0.01 : 1, false, true);
-			unit = "\u00B0F";
+			unit = "\u00B0F"; // °F
 			isRounded = true;
 			break;
 		}
@@ -8958,12 +8953,12 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?(m2|d?m3|(?:square )?met(?:re|er)s?|cubic (?:deci)?met(?:re|er)s?|(?:c|k)?m|l|lit(?:er|re)s?|k?g|kilo(?:gram)?s?|\u00B0 ?c|(?:degrees? )?celsius)\b/ig);
+	var measurements = inputString.match(/(\b|-)\d+[,./]?\d*\/?(-?\d+?[,./]?\d*)?\s?-?([dck]?m[\u00B2\u00B3]|([dck]?m[23]?|(?:sq |square )?met(?:re|er)s?|(?:cu |cubic )(?:deci)?met(?:re|er)s?|l|lit(?:er|re)s?|k?g|grams?|kilo(?:gram)?s?|\u00B0 ?c|(?:degrees? )?celsius)\b)/ig);
 
 	if (measurements) {
 		for (var i = 0; i < measurements.length; i++) {
 			var org = measurements[i].replace(/,/g, ".");
-			var orgUnit = org.match(/[-\s]*([\u00B0 A-z']+[23]?)$/)[1].toLowerCase();
+			var orgUnit = org.match(/[-\s]*([\u00B0 A-z']+[\u00B22\u00B33]?)$/)[1].toLowerCase();
 			var fraction;
 
 			if (fraction = org.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/)){
@@ -8972,7 +8967,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 				var resulted = theConvert(parseFloat(org), orgUnit);
 			}
 
-			var delimiter = (/.*\d+([\s- ]*?)\w/).test(measurements[i]) ? measurements[i].match(/.*\d+([\s- ]*?)\w/)[1] : " ";
+			var delimiter = /.*\d+([\s- ]*?)\w/.test(measurements[i]) ? measurements[i].match(/.*\d+([\s- ]*?)\w/)[1] : " ";
 
 			if (isArray(resulted[0])) {
 				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];

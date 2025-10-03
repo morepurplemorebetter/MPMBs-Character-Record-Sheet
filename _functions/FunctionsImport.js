@@ -2562,7 +2562,7 @@ function AddUserScript(retResDia) {
 	if (askForScripts === "ok") {
 		InitiateLists();
 		theUserScripts = theUserScripts.join("");
-		if (RunUserScript(false, theUserScripts)) {
+		if (!theUserScripts || RunUserScript(false, theUserScripts)) {
 			Value("User Script", theUserScripts);
 			app.alert({
 				cMsg : "Your script has been successfully added/changed in the sheet!\n\nYou will now be returned to the Source Selection Dialog so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialog, all drop-down boxes will be updated so that your changes will be visible on the sheet. This can take some time.",

@@ -108,9 +108,15 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	if (!foundSpell) return aSpell;
 	var aDescrAttr = ["description", "descriptionMetric", "descriptionShorter", "descriptionShorterMetric"];
 	var aCast = theCast && CurrentSpells[theCast] ? CurrentSpells[theCast] : "";
+	var isMetric = What("Unit System") === "metric";
 	for (var key in foundSpell) {
 		if (key === 'allowUpCasting') continue;
 		aSpell[key] = foundSpell[key];
+	}
+	if (CurrentCasters.useDependencies === false && aSpell.withoutDependencies) {
+		for (var key in aSpell.withoutDependencies) {
+			aSpell[key] = aSpell.withoutDependencies[key];
+		}
 	}
 	// set the firstCol attribute so the CurrentEval can change it
 	aSpell.firstCol = firstCol ? firstCol : aSpell.firstCol ? aSpell.firstCol : "";
@@ -147,7 +153,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	if (aSpell.allowUpCasting === false) removeSpellUpcasting(aSpell);
 
 	// Change some things into metric if set to do so
-	if (What("Unit System") === "metric") {
+	if (isMetric) {
 		aSpell.description = aSpell.descriptionMetric ? aSpell.descriptionMetric : ConvertToMetric(aSpell.description, 0.5);
 		aSpell.range = aSpell.rangeMetric ? aSpell.rangeMetric : ConvertToMetric(aSpell.range, 0.5);
 	}
@@ -157,7 +163,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 		// apply cantrip die
 		if (aSpell.descriptionCantripDie) {
 			var cDie = cantripDie[Math.min(CurrentFeats.level, cantripDie.length) - 1];
-			var newCantripDieDescr = aSpell.descriptionCantripDie;
+			var newCantripDieDescr = isMetric && aSpell.descriptionCantripDieMetric ? aSpell.descriptionCantripDieMetric : aSpell.descriptionCantripDie;
 			var rxCanDie = /`CD([\-+*]*\d*\.?\d*)`/;
 			var execCanDie = rxCanDie.exec(newCantripDieDescr);
 			while (execCanDie !== null) {
@@ -166,6 +172,9 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 				execCanDie = rxCanDie.exec(newCantripDieDescr);
 			}
 			aSpell.description = newCantripDieDescr.replace(/\b0d\d+/g, "0");
+			if (isMetric && !aSpell.descriptionCantripDieMetric) {
+				aSpell.description = ConvertToMetric(aSpell.description, 0.5);
+			}
 		}
 		// apply ability score modifier or check
 		var spellAbiDescr = applySpellcastingAbility(aSpell, aCast);
@@ -267,7 +276,7 @@ function fixSpellRangeOverflow(rangeStr) {
 	rangeStr = rangeStr.trim();
 	if (What("Unit System") === "metric") {
 		var testRx = typePF ? /S:\d+[,.]\d+[- /]?m (cone|cube)/i : /S:\d+[,.]?\d+[- /]?m (cone|cube|line)|S:\d+[,.]\d+[- /]?m rad/i;
-		if (testRx.test(rangeStr)) rangeStr = rangeStr.replace(/[- /]?m ((con|cub)e|line)/i, "m $1").replace(/[- /]?m rad/i, "m rad");
+		if (testRx.test(rangeStr)) rangeStr = rangeStr.replace(/[- /]?m ((con|cub)e|(line))/i, "m $2").replace(/[- /]?m rad/i, "m rad");
 	} else if (!typePF) {
 		var testRx = /S:\d+[,.]?\d+[- /]?ft (cone|cube|line)|S:\d+[- /]?miles? rad/i;
 		if (testRx.test(rangeStr)) rangeStr = rangeStr.replace(/[- /]?ft (cone|cube|line)/i, "ft $1").replace(/[- /]?miles? rad/i, "mile rad");
@@ -300,16 +309,18 @@ function applySpellcastingAbility(oSpell, oCast) {
 	if (theAbi) {
 		var theAbiMod = Number(What(theAbi + " Mod"));
 		var newSpellDescr = oSpell.description;
-		if (/spell(casting)? (ability )?mod(ifier)?/i.test(newSpellDescr)) { // modifier
-			newSpellDescr = newSpellDescr.replace(/\+? ?(my )?spell(casting)? (ability )?mod(ifier)?/i, (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + " (" + theAbi + ")");
-		} else if (/spell(casting)? (ability )?check/i.test(newSpellDescr)) { // check
+		var spellAbiModRx = /(\+ ?)?(my )?spell(casting)? (ability )?mod(ifier)?/i;
+		var spellAbiChkRx = /spell(casting)? (ability )?check/i;
+		if (spellAbiModRx.test(newSpellDescr)) { // modifier
+			newSpellDescr = newSpellDescr.replace(spellAbiModRx, (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + " (" + theAbi + ")");
+		} else if (spellAbiChkRx.test(newSpellDescr)) { // check
 			var theAbiName = AbilityScores.names[castAbi -1];
 			// Bonus from Jack of All Trades and/or Remarkable Athlete
 			var jackOf = tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1;
 			var remAth = tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1 && ["Str", "Dex", "Con"].indexOf(theAbi) !== -1;
 			var profB = Number(How("Proficiency Bonus"));
 			theAbiMod += remAth ? Math.ceil(profB/2) : jackOf ? Math.floor(profB/2) : 0;
-			newSpellDescr = newSpellDescr.replace(/spell(casting)? (ability )?check/i, theAbiName + " check (" + (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + ")");
+			newSpellDescr = newSpellDescr.replace(spellAbiChkRx, theAbiName + " check (" + (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + ")");
 		}
 		return newSpellDescr !== oSpell.description ? newSpellDescr : false;
 	}
@@ -392,9 +403,11 @@ function ApplySpell(FldValue, rememberFldName) {
 		var okChecks = ["checkbox", "checkedbox", "markedbox", "atwill", "oncelr", "oncesr"];
 		var currentCheck = What(spFlds[0]).toLowerCase();
 		var input1 = input[1] ? input[1].toLowerCase() : "";
-		if (!input1 || okChecks.indexOf(input1) === -1) {
+		if (currentCheck === input1) return;
+		var isImage = okChecks.indexOf(input1) !== -1;
+		if (!input1 || !isImage) {
 			Value(spFlds[0], input1 ? input1.toUpperCase().substring(0, (/\(.\)|\d-\d/).test(input1) ? 3 : 2) : "");
-		} else if (input1 !== currentCheck && okChecks.indexOf(input1) !== -1 && (input1.substring(0, 4) !== currentCheck.substring(0, 4) || okChecks.indexOf(input1) > 1)) {
+		} else if (isImage && !( /^check/.test(currentCheck) && /^check/.test(input1) )) {
 			Value(spFlds[0], input1);
 		}
 	}
@@ -791,7 +804,7 @@ function CalcSpellScores() {
 		}
 	}
 
-	if (modFld == "nothing" && !fixedDC) {
+	if (modFld == "nothing" && !fixedDC && !fixedSpAttack) {
 		setResults(false);
 		return;
 	}
@@ -1383,6 +1396,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 		dashEmptyFields : true,
 		amendSpellDescriptions : true,
 		allowSpellAdd : true,
+		useDependencies : true,
 
 		initialize : function (dialog) {
 			//set the ExcLuded list
@@ -1397,7 +1411,8 @@ function DefineSpellSheetDialogs(force, formHeight) {
 				"Glos" : this.glossary,
 				"Dash" : this.dashEmptyFields,
 				"Amnd" : this.amendSpellDescriptions,
-				"SAdd" : this.allowSpellAdd
+				"SAdd" : this.allowSpellAdd,
+				"SDep" : this.useDependencies,
 			});
 
 			//set the IncLuded list
@@ -1433,6 +1448,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			this.dashEmptyFields = oResult["Dash"];
 			this.amendSpellDescriptions = oResult["Amnd"];
 			this.allowSpellAdd = oResult["SAdd"];
+			this.useDependencies = oResult["SDep"];
 		},
 
 		BTRA : function (dialog) {
@@ -1686,6 +1702,10 @@ function DefineSpellSheetDialogs(force, formHeight) {
 					type : "check_box",
 					item_id : "SAdd",
 					name : "Allow features to dynamically change spells (e.g. allow a feature to add Charisma modifier to fire damage spells)"
+				}, {
+					type : "check_box",
+					item_id : "SDep",
+					name : "Allow spells to take up multiple lines"
 				}, {
 					type : "check_box",
 					item_id : "Dash",
@@ -3357,6 +3377,7 @@ function AskUserSpellSheet() {
 		spDias.sheetOrder.dashEmptyFields = CurrentCasters.emptyFields ? false : true;
 		spDias.sheetOrder.amendSpellDescriptions = CurrentCasters.amendSpDescr || CurrentCasters.amendSpDescr === undefined ? true : false;
 		spDias.sheetOrder.allowSpellAdd = CurrentCasters.allowSpellAdd || CurrentCasters.allowSpellAdd === undefined ? true : false;
+		spDias.sheetOrder.useDependencies = CurrentCasters.useDependencies || CurrentCasters.useDependencies === undefined ? true : false;
 		if (app.execDialog(spDias.sheetOrder) !== "ok") {
 			toReturn = "stop"; //don't continue with the rest of the function and let the other function know not to continue either
 		} else {
@@ -3382,6 +3403,7 @@ function AskUserSpellSheet() {
 			CurrentCasters.emptyFields = !spDias.sheetOrder.dashEmptyFields;
 			CurrentCasters.amendSpDescr = spDias.sheetOrder.amendSpellDescriptions;
 			CurrentCasters.allowSpellAdd = spDias.sheetOrder.allowSpellAdd;
+			CurrentCasters.useDependencies = spDias.sheetOrder.useDependencies;
 		}
 		thermoM(0.5); //progress the progress dialog so that it looks like something is happening (don't close it yet)
 	}
@@ -3985,8 +4007,11 @@ function ParseSpellMenu() {
 			if (spellsArray.length > 0) {
 				var spellsTemp = {cName : nameArray[y], oSubMenu : []};
 				for (var i = 0; i < spellsArray.length; i++) {
+					var spellObj = SpellsList[spellsArray[i]];
 					spellsTemp.oSubMenu.push({
-						cName : SpellsList[spellsArray[i]].name + (SpellsList[spellsArray[i]].ritual ? " (R)" : ""),
+						cName : spellObj.name+
+							(spellObj.ritual ? " (R)" : "")+
+							(spellObj.dependencies && CurrentCasters.useDependencies !== false ? " [uses " + (1 + spellObj.dependencies.length) + " rows]" : ""),
 						cReturn : "spell" + "#" + spellsArray[i] + "#"
 					})
 				}
@@ -4112,8 +4137,11 @@ function ParsePsionicsMenu() {
 			if (spellsArray.length > 0) {
 				var spellsTemp = {cName : nameArray[y > 1 ? 2 : y], oSubMenu : []};
 				for (var i = 0; i < spellsArray.length; i++) {
+					var spellObj = SpellsList[spellsArray[i]];
 					spellsTemp.oSubMenu.push({
-						cName : SpellsList[spellsArray[i]].name + (SpellsList[spellsArray[i]].dependencies ? " [uses " + (1 + SpellsList[spellsArray[i]].dependencies.length) + " rows]" : ""),
+						cName : spellObj.name+
+							(spellObj.ritual ? " (R)" : "")+
+							(spellObj.dependencies && CurrentCasters.useDependencies !== false ? " [uses " + (1 + spellObj.dependencies.length) + " rows]" : ""),
 						cReturn : "spell" + "#" + spellsArray[i] + (SpellsList[spellsArray[i]].firstCol ? "#" : SpellsList[spellsArray[i]].level ? "#checkbox" : "#atwill")
 					})
 				}
@@ -4302,7 +4330,9 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	// add a way to see the spell's full description in a dialog
 	var fullDescr = Who(base.replace("checkbox", "description"));
 	if (fullDescr) {
-		menuLVL1(spellsLineMenu, [["Show full text of " + What(base.replace("checkbox", "name")), "popup"]])
+		var spellNameFld = base.replace("checkbox", "name");
+		var spellName = Who(spellNameFld) ? Who(spellNameFld) : What(spellNameFld).replace(" (R)", "");
+		menuLVL1(spellsLineMenu, [["Show full text of " + spellName, "popup"]])
 		spellsLineMenu.push({cName : "-"});
 	}
 
@@ -4399,7 +4429,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			MenuSelection[2] = AskUserTwoLetters(false);
 		};
 		Value(RemLine, MenuSelection[1] + "##" + MenuSelection[2]);
-		if (SpellsList[MenuSelection[1]] && SpellsList[MenuSelection[1]].dependencies) {
+		if (CurrentCasters.useDependencies !== false && SpellsList[MenuSelection[1]] && SpellsList[MenuSelection[1]].dependencies) {
 			theDeps = SpellsList[MenuSelection[1]].dependencies;
 			var theNextLineValue = What(RemLine.replace("." + lineNmbr, "." + (lineNmbr + 1)));
 			insertSpellRow(prefix, lineNmbr + 1, theDeps.length - (theNextLineValue ? 0 : 1));
@@ -5467,6 +5497,7 @@ function testSpellArray(spArr) {
 
 //a way to add dependencies of spells to an array of spells at the right spot
 function addSpellDependencies(spArr) {
+	if (CurrentCasters.useDependencies === false) return spArr;
 	var returnArray = [];
 	spArr.forEach(function (sp) {
 		if (SpellsList[sp]) {
@@ -5689,6 +5720,116 @@ function getSpellcastingAbility(theCast) {
 	return [spAbility, casterArray];
 };
 
+// A function to return the spellcasting ability
+function getSpellcastingAbility(theCast) {
+	var spAbility = 0;
+	var curAbiScore = 0;
+	var spObj = CurrentSpells[theCast];
+	var casterArray = [];
+	var testFixedDC = /race|class/i.test(spObj.abilityBackup);
+	var bContinueAsClass = false;
+	if (spObj && spObj.ability && isNaN(spObj.ability) && !/race|class/i.test(spObj.ability) && spObj.ability !== theCast) {
+		// First delete the fixedDC if previously added because the ability resulted in 0
+		if (spObj.fixedDC_becauseAbi0) {
+			delete spObj.fixedDC;
+			delete spObj.fixedDC_becauseAbi0;
+		}
+		// It is a string, but not "race" or "class", so it must be made to match another
+		// Make sure it doesn't match this CurrentSpells entry name to avoid recursion
+		if (CurrentSpells[spObj.ability] && CurrentSpells[spObj.ability].ability && CurrentSpells[spObj.ability].ability !== theCast) {
+			return !isNaN(CurrentSpells[spObj.ability].ability) ? [CurrentSpells[spObj.ability].ability, [spObj.ability]] : getSpellcastingAbility(spObj.ability);
+		} else {
+			// No match found, so continue as if it would've said "class"
+			testFixedDC = true;
+			bContinueAsClass = true;
+		}
+	}
+	if (spObj && spObj.ability && !isNaN(spObj.ability)) {
+		spAbility = Number(spObj.ability);
+	} else if (spObj && (spObj.ability == "class" || bContinueAsClass)) {
+		var abiModArr = ["", "Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
+		for (aCast in CurrentSpells) {
+			// Test if this CurrentSpells entry is a class with spellcasting abilities
+			if (aCast == theCast || !CurrentSpells[aCast].ability || isNaN(CurrentSpells[aCast].ability) || !CurrentClasses[aCast] || !CurrentClasses[aCast].spellcastingFactor) continue;
+			var aCastAbility = Number(CurrentSpells[aCast].ability);
+			if (spAbility == aCastAbility) {
+				casterArray.push(aCast);
+				continue;
+			}
+			var tempAbiScore = Number(What(abiModArr[aCastAbility]));
+			if (tempAbiScore > curAbiScore) {
+				spAbility = aCastAbility;
+				curAbiScore = tempAbiScore;
+				casterArray = [aCast];
+			}
+		}
+		testFixedDC = true;
+	} else if (spObj && spObj.ability == "race") {
+		if (CurrentRace.known && CurrentSpells[CurrentRace.known] && CurrentSpells[CurrentRace.known].ability && !isNaN(CurrentSpells[CurrentRace.known].ability)) {
+			spAbility = Number(CurrentSpells[CurrentRace.known].ability);
+			casterArray = [CurrentRace.known];
+		}
+		testFixedDC = true;
+	}
+	// if the spellcasting ability is still 0 after testing class/race, set a fixed DC as if a +0 ability modifier, so just 8 + Prof
+	if (testFixedDC) {
+		if (spAbility == 0) {
+			// a fixed DC of 8 will always get the prof bonus added
+			spObj.fixedDC = 8;
+			spObj.fixedDC_becauseAbi0 = true;
+		} else {
+			delete spObj.fixedDC;
+		}
+	}
+	return [spAbility, casterArray];
+};
+
+/** Compare casters' spellcasting ability with another ability and return ability with the highest bonus
+ * @param {string[]|string} aCasters CurrentSpells object key(s)
+ * @param {number} [fallbackAbi] ability to beat (1=Str, 2=Dex, 3=Con, 4=Int, 5=Wis, 6=Cha)
+ * @param {boolean} [isDC] [optional] set to `true` if this is concerning a dc and not an attack bonus (default)
+ * 
+ * @returns {object} {ability[number], bonus[number], caster[string]}
+ */
+function getHighestSpellcastingAbility(aCasters, fallbackAbi, isDC) {
+	if (!isArray(aCasters)) aCasters = [aCasters];
+	var sCast;
+	var flatBonus = getProfBonus() + (isDC ? 8 : 0);
+	// include the score so thie higer scores is preferred even if modifiers are equal
+	var iToBeat = !fallbackAbi ? 0 : getAbiModValue(fallbackAbi, false, false, "tiebreak") + flatBonus;
+	var iAbility = fallbackAbi ? fallbackAbi : 0;
+	// loop through aCasters and overwrite the variables if it returns a higher value
+	for (var i = 0; i < aCasters.length; i++) {
+		// Get the CurrentSpells object or return the input if it doesn't exist
+		var oCast = CurrentSpells[aCasters[i]];
+		if (!oCast) continue;
+
+		// Get the oCast's spellcasting ability, create it if it hasn't been generated
+		if (!oCast.abilityToUse) oCast.abilityToUse = getSpellcastingAbility(aCasters[i]);
+		var iCastAbi = oCast.abilityToUse[0];
+
+		// Get the DC / Spell attack for the caster to compare, or calulated its likely value if it hasn't been calculated because no spell sheet has been generated
+		var iScore = oCast.calcSpellScores ? oCast.calcSpellScores[isDC ? "dc" : "attack"] + (getAbiModValue(iCastAbi, false, false, true) / 100) : getAbiModValue(iCastAbi, false, false, "tiebreak") + flatBonus;
+
+		if (iScore > iToBeat) {
+			iAbility = iCastAbi;
+			iToBeat = iScore;
+			sCast = aCasters[i];
+		}
+	}
+
+	return { ability: iAbility, bonus: iToBeat, caster: sCast };
+}
+
+/** Test if these casters are currently present
+ * @param {string[]|string} aCasters CurrentSpells object key(s)
+ * @returns {boolean} true if any of the entries in the array are a valid CurrentSpels object key
+ */
+function existsInCurrentSpells(aCasters) {
+	if (!isArray(aCasters)) aCasters = [aCasters];
+	return aCasters.some(function(n) { return CurrentSpells[n] });
+}
+
 // A generic function to call from a calcChanges.spellAdd object to add a certain ability score
 // dmgType has to be already escaped for use in regular expressions
 // ability has to be the three-letter abbreviation of an ability starting with a capital, a number, or dice type (e.g. '1d8'). Anything else will cause the function call to fail (nothing happens)
@@ -5790,11 +5931,11 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 	// The function to fix a string of multiple constants not being added together
 	var fixMultiConstants = function(strSl) {
 		var qRx = /([\+\-]?\b\d+\b)(?![)/])(?: \((?:Str|Dex|Con|Int|Wis|Cha)\))?/ig;
-		var qExec = qRx.exec(strSl);
-		if (qExec) {
-			var qMatch = strSl.match(qRx);
+		var qMatch = strSl.match(qRx);
+		if (qMatch && qMatch.length > 1) {
 			var qTotal = qMatch.reduce((a, b) => a + Number(b.match(/[\+\-]?\d+/)[0]), 0);
 			// remove all the matches from their string (but use exec, as we could easily get false positives)
+			var qExec = qRx.exec(strSl);
 			var isStart = !isNaN(qExec[0][0])
 			var qInsertIdx = [];
 			do {
@@ -5973,6 +6114,7 @@ function getSpellShortDescription(spellKey, spellObj) {
 	}
 	// Do some common replacements to save space for the very limited short description
 	var arrTxtReplace = [
+		[/\bdamaged?\b/ig, 'dmg'],
 		[/ and /ig, ' \u0026 '],
 		[/(dif)ficult (ter)(rain|\.)|(dif)(ficult|\.) (ter)rain/ig, '$1. $2.'],
 		[/(crea)tures?/ig, '$1'],

@@ -1781,7 +1781,7 @@ var Base_SpellsList = {
 		description : "40k sq ft 30-ft high no extraplanar travel; 1 crea type 5d10 Radiant/Necrotic dmg per rnd (1000gp)",
 		descriptionMetric : "3,7k m2 9-m high no extraplanar travel; 1 crea type 5d10 Radiant or Necrotic dmg per rnd (1000gp)",
 		descriptionShorter : "40k sq ft 30ft high no planar travel; 1 crea type 5d10 Radiant/Necro. dmg/rnd (1k gp)",
-		descriptionShorterMetric : "3,6k m2 9-m high no planar travel; 1 crea type 5d10 Radiant/Necrotic dmg/rnd (1k gp)",
+		descriptionShorterMetric : "3,7k m2 9-m high no planar travel; 1 crea type 5d10 Radiant/Necrotic dmg/rnd (1k gp)",
 		descriptionFull : "You create a ward against magical travel that protects up to 40,000 square feet of floor space to a height of 30 feet above the floor. For the duration, creatures can't teleport into the area or use portals, such as those created by the gate spell, to enter the area. The spell proofs the area against planar travel, and therefore prevents creatures from accessing the area by way of the Astral Plane, Ethereal Plane, Feywild, Shadowfell, or the plane shift spell." + "\n   " + "In addition, the spell damages types of creatures that you choose when you cast it. Choose one or more of the following - celestials, elementals, fey, fiends, and undead. When a chosen creature enters the spell's area for the first time on a turn or starts its turn there, the creature takes 5d10 radiant or necrotic damage (your choice when you cast this spell)." + "\n   " + "When you cast this spell, you can designate a password. A creature that speaks the password as it enters the area takes no damage from the spell." + "\n   " + "The spell's area can't overlap with the area of another forbiddance spell. If you cast forbiddance every day for 30 days in the same location, the spell lasts until it is dispelled, and the material components are consumed on the last casting.",
 		dynamicDamageBonus : {
 			multipleDmgTypes : {
@@ -4452,10 +4452,10 @@ var Base_SpellsList = {
 		compMaterial : "A small piece of phosphorus",
 		duration : "Conc, 1 min",
 		save : "Dex",
-		description : "60\xD71\xD720ft (l\xD7w\xD7h) or 10-ft rad all in and 10 ft on 1 side 5d8+1d8/SL Fire dmg; save halves; see B",
-		descriptionMetric : "18\xD70,3\xD76m (l\xD7w\xD7h) or 3-m rad all in and 3 m on 1 side 5d8+1d8/SL Fire dmg; save halves; see B",
-		descriptionShorter : "60|1|20ft (l|w|h) or 10-ft rad all + 10 ft on 1 side 5d8+1d8/SL Fire dmg; save half; see B",
-		descriptionShorterMetric : "18|0,3|6m (l|w|h) or 3-m rad all + 3 m on 1 side 5d8+1d8/SL Fire dmg; save half; see B",
+		description : "60\xD71\xD720ft (l\xD7w\xD7h) or 10ft rad; all enter/end in 10ft 1 side 5d8+1d8/SL Fire dmg; cast: all in save \xBD",
+		descriptionMetric : "18\xD70,3\xD76m (l\xD7w\xD7h) or 3m rad; all enter/end in 3m 1 side 5d8+1d8/SL Fire dmg; cast: all in save \xBD",
+		descriptionShorter : "60|1|20 (l|w|h) or 10ft rad; 5d8+1d8/SL Fire dmg; cast:all in save \xBD; enter/end 10ft dmg",
+		descriptionShorterMetric : "18|0,3|6 (l|w|h) or 3m rad; 5d8+1d8/SL Fire dmg; cast: all in save \xBD; enter/end 3m dmg",
 		descriptionFull : "You create a wall of fire on a solid surface within range. You can make the wall up to 60 feet long, 20 feet high, and 1 foot thick, or a ringed wall up to 20 feet in diameter, 20 feet high, and 1 foot thick. The wall is opaque and lasts for the duration." + "\n   " + "When the wall appears, each creature within its area must make a Dexterity saving throw. On a failed save, a creature takes 5d8 fire damage, or half as much damage on a successful save." + "\n   " + "One side of the wall, selected by you when you cast this spell, deals 5d8 fire damage to each creature that ends its turn within 10 feet of that side or inside the wall. A creature takes the same damage when it enters the wall for the first time on a turn or ends its turn there. The other side of the wall deals no damage." + AtHigherLevels + "When you cast this spell using a spell slot of 5th level or higher, the damage increases by 1d8 for each slot level above 4th."
 	},
 	"wall of force" : {
@@ -4469,7 +4469,7 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A pinch of powder made by crushing a clear gemstone",
 		duration : "Conc, 10 min",
-		description : "10 10\xD710-ft panels or 10-ft rad (hemi)sphere invisible, impenetrable wall; can float in air; see book",
+		description : "10 10ft\xD710ft panels or 10-ft rad (hemi)sphere invisible, impenetrable wall; can float in air; see book",
 		descriptionFull : "An invisible wall of force springs into existence at a point you choose within range. The wall appears in any orientation you choose, as a horizontal or vertical barrier or at an angle. It can be free floating or resting on a solid surface. You can form it into a hemispherical dome or a sphere with a radius of up to 10 feet, or you can shape a flat surface made up of ten 10-foot-by-10-foot panels. Each panel must be contiguous with another panel. In any form, the wall is 1/4 inch thick. It lasts for the duration. If the wall cuts through a creature's space when it appears, the creature is pushed to one side of the wall (your choice which side)." + "\n   " + "Nothing can physically pass through the wall. It is immune to all damage and can't be dispelled by dispel magic. A disintegrate spell destroys the wall instantly, however. The wall also extends into the Ethereal Plane, blocking ethereal travel through the wall."
 	},
 	"wall of ice" : {
@@ -4484,7 +4484,10 @@ var Base_SpellsList = {
 		compMaterial : "A small piece of quartz",
 		duration : "Conc, 10 min",
 		save : "Dex",
-		description : "10 10\xD710-ft panels 1-ft thick wall; at casting 10d6 Cold dmg; save halves; can cut through; see book",
+		description: "1ft thick wall, 10ft rad or 10 10ft square; at cast all 10d6+2d6/SL Cold dmg; save \xBD; can break, see B",
+		descriptionShorter: "1ft thick, 10ft rad or 10 10ft square; at cast all 10d6+2d6/SL Cold dmg; save \xBD; can break, see B",
+		descriptionMetric: "0,3m thick wall, 3m rad or 10 3m square; at cast all 10d6+2d6/SL Cold dmg; save \xBD; can break, see B",
+		descriptionShorterMetric: "0,3m thick 3m rad or 10 3m square; at cast all 10d6+2d6/SL Cold dmg; save \xBD; can break, see B",
 		descriptionFull : "You create a wall of ice on a solid surface within range. You can form it into a hemispherical dome or a sphere with radium of up to 10 feet, or you can shape a flat surface made up of ten 10-foot-square panels. Each panel must be contiguous with another panel. In any form, the wall is 1 foot thick and lasts for the duration." + "\n   " + "If the wall cuts through a creature's space when it appears, the creature within its area is pushed to one side of the wall and must make a Dexterity saving throw. On a failed save, the creature takes 10d6 cold damage, or half as much damage on a successful save." + "\n   " + "The wall is an object that can be damaged and thus breached. It has AC 12 and 30 hit points per 10-foot section, and it is vulnerable to fire damage. Reducing a 10-foot section of wall to 0 hit points destroys it and leaves behind a sheet of frigid air in the space the wall occupied. A creature moving through the sheet of frigid air for the first time on a turn must make a Constitution saving throw. The creature takes 5d6 cold damage on a failed save, or half as much damage on a successful one." + AtHigherLevels + "When you cast this spell using a spell slot of 7th level or higher, the damage the wall deals when it appears increases by 2d6, and the damage from passing through the sheet of frigid air increases by 1d6 for each slot level above 6th.",
 		dynamicDamageBonus : { multipleDmgMoments : false }
 	},
@@ -4499,8 +4502,8 @@ var Base_SpellsList = {
 		components : "V,S,M",
 		compMaterial : "A small block of granite",
 		duration : "Conc, 10 min",
-		description : "10 10\xD710-ft panels 6\" thick wall connected with existing stone; half thickness, double surface; see B",
-		descriptionMetric : "10 10\xD73m panels 15cm thick wall connected with existing stone; half thickness, double surface; see B",
+		description: '10 10\xD710ft panels 6" thick wall connects to stone; 15 AC, 180 HP; \xBD thick/HP to double surface; see B',
+		descriptionMetric: "10 3\xD73m panels 15cm thick connected to stone; 15 AC, 180 HP; half thick/HP to double surface; see B",
 		descriptionFull : "A nonmagical wall of solid stone springs into existence at a point you choose within range. The wall is 6 inches thick and is composed of ten 10-foot-by-10-foot panels. Each panel must be contiguous with at least on other panel. Alternatively, you can create 10-foot-by-20-foot panels that are only 3 inches thick." + "\n   " + "If the wall cuts through a creature's space when it appears, the creature is pushed to one side of the wall (your choice). If a creature would be surrounded on all sides by the wall (or the wall and another solid surface), that creature can make a Dexterity saving throw. On a success, it can use its reaction to move up to its speed so that it is no longer enclosed by the wall." + "\n   " + "The wall can have any shape you desire, though it can't occupy the same space as a creature or object. the wall doesn't need to be vertical or resting on any firm foundation. It must, however, merge with and be solidly supported by existing stone. Thus you can use this spell to bridge a chasm or create a ramp." + "\n   " + "If you create a span greater than 20 feet in length, you must halve the size of each panel to create supports. You can crudely shape the wall to create crenellations, battlements, and so on." + "\n   " + "The wall is an object made of stone that can be damaged and thus breached. Each panel has AC 15 and 30 hit points per inch of thickness. Reducing a panel to 0 hit points destroys it and might cause connected panels to collapse at the DM's discretion." + "\n   " + "If you maintain your concentration on this spell for its whole duration, the wall becomes permanent and can't be dispelled. Otherwise, the wall disappears when the spell ends."
 	},
 	"wall of thorns" : {
@@ -4515,8 +4518,10 @@ var Base_SpellsList = {
 		compMaterial : "A handful of thorns",
 		duration : "Conc, 10 min",
 		save : "Dex",
-		description : "60\xD75\xD720ft (l\xD7w\xD7h) or 10-ft rad all 7d8+1d8/SL Piercing dmg; save halves; 1/4 move; see book",
-		descriptionMetric : "18\xD71,5\xD76m (l\xD7w\xD7h) or 3-m rad all 7d8+1d8/SL Piercing dmg; save halves; 1/4 move; see book",
+		description : "60|5|10ft (l|w|h) or 10|20ft (rad|h); cast/enter/end 7d8+1d8/SL Piercing dmg, save \xBD; 1/4 move",
+		descriptionShorter : "60:5:10 (l:w:h) or 10:20ft (rad:h); cast/enter/end 7d8+1d8/SL Pierc. dmg, save \xBD; \xBC move",
+		descriptionMetric : "18|1,5|6m (l|w|h) or 3|6m (rad|h); cast/enter/end 7d8+1d8/SL Piercing dmg; save \xBD; 1/4 move",
+		descriptionShorterMetric : "18:1,5:6m (l:w:h) or 3:6m (rad:h); cast/enter/end 7d8+1d8/SL Pierc. dmg; save \xBD; \xBC move",
 		descriptionFull : "You create a wall of tough, pliable, tangled brush bristling with needle-sharp thorns. The wall appears within range on a solid surface and lasts for the duration. You choose to make the wall up to 60 feet long, 10 feet high, and 5 feet thick or a circle that has a 20-foot diameter and is up to 20 feet high and 5 feet thick. The wall blocks line of sight." + "\n   " + "When the wall appears, each creature within its area must make a Dexterity saving throw. On a failed save, a creature takes 7d8 piercing damage, or half as much damage on a successful save." + "\n   " + "A creature can move through the wall, albeit slowly and painfully. For every 1 foot a creature moves through the wall, it must spend 4 feet of movement. Furthermore, the first time a creature enters the wall on a turn or ends its turn there, the creature must make a Dexterity saving throw. It takes 7d8 slashing damage on a failed save, or half as much on a successful save." + AtHigherLevels + "When you cast this spell using a spell slot of 7th level or higher, both types of damage increase by 1d8 for each slot level above 6th."
 	},
 	"warding bond" : {

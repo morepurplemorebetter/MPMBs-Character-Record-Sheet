@@ -49,7 +49,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v13.3.0 and newer
+	Sheet:		v14.0.0 and newer
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -1184,7 +1184,6 @@ fixedDC : 13,
 	use this value or this value minus 8 for the spell attack.
 	Unless the "fixedSpAttack" is also present, in which case that will be used for spell attacks.
 	This attribute is mostly used by magic items.
-	This attribute has no affect on cantrips/spells in the attack section.
 
 	Setting this to 0 or false is the same as not including this attribute.
 
@@ -1213,7 +1212,6 @@ fixedSpAttack : 5,
 	use this value or this value plus 8 for the spell save DC.
 	Unless the "fixedDC" is also present, in which case that will be used for spell save DC.
 	This attribute is mostly used by magic items.
-	This attribute has no affect on cantrips/spells in the attack section.
 
 	Setting this to 0 or false is the same as not including this attribute.
 
@@ -2694,7 +2692,7 @@ featsAdd : [
 /*	featsAdd // OPTIONAL //
 	TYPE:	array (variable length) of strings or objects
 	USE:	adds each entry in the array to one of the feat drop-downs
-	ADDED:	v13.3.0
+	ADDED:	v14.0.0
 
 	Each entry in the array is to add a single feat. Each entry must consist of either:
 	1) String with the name of the feat

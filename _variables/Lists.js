@@ -245,8 +245,8 @@ var Menus = {
 		cName : "GitHub",
 		cReturn : "contact#github"
 	}, {
-		cName : "Twitter",
-		cReturn : "contact#twitter"
+		cName : "Bluesky",
+		cReturn : "contact#bluesky"
 	}],
 	"feats" : "",
 	"attacks" : "",
