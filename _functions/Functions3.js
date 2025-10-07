@@ -2774,7 +2774,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		if (theMI.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theMI.prerequisite;
 		tooltipStr += stringSource(theMI, "full,page", "\n \u2022 Source: ", ".");
 
-		if (theMI.descriptionFull) tooltipStr += isArray(theMI.descriptionFull) ? desc(theMI.descriptionFull).replace(/^\n   /i, "\n\n") : "\n\n" + theMI.descriptionFull;
+		if (theMI.descriptionFull) tooltipStr += "\n\n" + formatDescriptionFull(theMI.descriptionFull);
 
 		// Get the description
 		var theDesc = "";
@@ -3076,7 +3076,7 @@ function ParseMagicItemMenu() {
 				iMenus.special["Spellcasting improvement"].push(itemName);
 			}
 		}
-		if (tObj.speed || (/(flying|climbing|burrowing|swimming|walking) speed/i).test(tObj.descriptionFull) || (/of (flying|climbing|burrowing|swimming)/i).test(tObj.name)) {
+		if (tObj.speed || /(flying|climbing|burrowing|swimming|walking) speed/i.test(tObj.descriptionFull) || /of (flying|climbing|burrowing|swimming)/i.test(tObj.name)) {
 			iMenus.special.Movement.push(itemName);
 		}
 		if (tObj.dmgres || (tObj.savetxt && tObj.savetxt.immune)) {

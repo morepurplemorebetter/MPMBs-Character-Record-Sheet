@@ -38,7 +38,7 @@
 				If you want attack cantrips or spells to be added to the attack section,
 				use the syntax for adding a weapon (as well), see "weapon (WeaponsList).js".
 
-	Sheet:		v13.1.0 and newer
+	Sheet:		v14.0.0 and newer
 
 */
 
@@ -423,15 +423,53 @@ SpellsList["sindering purple"] = {
 	is checked (see 'descriptionCantripDie' explanation above),
 	regardless of the unit system being set to metric.
 */
-	descriptionFull : "This spell repairs a single break or tear in an object you touch, such as broken chain link, two halves of a broken key, a torn clack, or a leaking wineskin. As long as the break or tear is no larger than 1 foot in any dimension, you mend it, leaving no trace of the former damage." + "\n   " + "This spell can physically repair a magic item or construct, but the spell can't restore magic to such an object.",
+	descriptionFull: "This spell repairs a single break or tear in an object you touch, such as broken chain link, two halves of a broken key, a torn clack, or a leaking wineskin. As long as the break or tear is no larger than 1 foot in any dimension, you mend it, leaving no trace of the former damage." + "\n   " + "This spell can physically repair a magic item or construct, but the spell can't restore magic to such an object.",
+	descriptionFull: [
+		"Introduction text of the spell. This line will not be preceded by a line break or three spaces as this is the first line.",
+		"Second entry, which will be preceded by a line break and three spaces.",
+		" \u2022 Bullet point entry. This will be preceded by a line break, but not with three spaces, as this entry starts with a space.",
+		" \u2022 Another bullet point entry.",
+		[ // This will render as a table (i.e. a tab between each column)
+			["Column 1 header", "Column 2 header", "Column 3 header"], // The first row, which will be made bold and italic
+			["Column 1 entry", "Column 2 entry", "Column 3 entry"], // The rest of the rows won't be changed
+			["Column 1 entry II", "Column 2 entry II", "Column 3 entry II"], // Table row 2
+		],
+		">>Header Paragraph<<. This paragraph will be preceded by a line break and three spaces. The text 'Header Paragraph' will be rendered with unicode as being bold and italic.",
+	],
 /*	descriptionFull // OPTIONAL //
-	TYPE:	string
+	TYPE:	array or string
 	USE:	description of the spell as it appears in its source
+	CHANGE: v14.0.0 (array option & `>>[...]<<` tags)
 
 	This text is used to populate the tooltip of the spell so that the original description can be read.
 	This description will also be available in a pop-up by using the button in the spell's line.
 	There is no limit to how big this description can be,
 	but very long descriptions will not always display correctly.
+
+	From v14.0.0 onwards, this attribute can be an array. Each entry in the array will be put
+	on a new line. Each entry can be one of the following:
+		1. String.
+		   If the entry is a string that doesn't start with a space character and
+		   it is not the first entry, it will be added on a new line,
+		   proceeded by three spaces (i.e. `\n   `).
+		   If the entry is a string that starts with a space character, it will be added
+		   on a new line, but without any preceding spaces.
+		   For example, to make a bullet point list, you would use ` \u2022 list entry`
+		   (N.B. `\u2022` is unicode for a bullet point).
+		2. Array of arrays, which contain only strings
+		   If the entry is in itself an array, it is treated as a table.
+		   Each entry in that array is a row in the table, with the first row being the headers.
+		   The headers will be made bold and italic. This is done with unicode. If unicode is
+		   disabled, the sheet will capitalize this instead.
+		   Each subarray is rendered with a tab between each column (i.e. `Array.join("\t")`).
+		   If instead of a subarray there is a string, it will be added as is.
+		   The table will be preceded by two line breaks and followed by one line break.
+
+	You can see an example of this array method above.
+
+	From v14.0.0 onwards, if you put '>>' and '<<' around a part of the string,
+	that part will be made bold and italic in the displayed description. This is done with
+	unicode. If unicode is disabled, the sheet will capitalize this instead.
 */
 	ritual : true,
 /*	ritual // OPTIONAL //

@@ -1327,3 +1327,35 @@ function getLetterRange(str, aOpt) {
 	}
 	return sRng; // higher than the last, so just return the last
 };
+
+// format a descriptionFull attribute
+function formatDescriptionFull(sDescFull, bIgnoreUnicode) {
+	if (!bIgnoreUnicode && !What("UseUnicode")) bIgnoreUnicode = true;
+	var sReturn = sDescFull;
+	if (isArray(sDescFull)) {
+		sReturn = sDescFull.reduce( function (renderDescription, n) {
+			var lineBreak = renderDescription ? '\n' : '';
+			if (isArray(n)) {
+				// Table, every entry in the array is a row, with the first one being the headers
+				var renderTable = n.reduce(function (finalStr, t, idx) {
+					var tableRow = typeof t === "string" ? t :
+									isArray(t) ? t.join("\t") : false;
+					if (!tableRow) return finalStr;
+					if (idx === 0) tableRow = bIgnoreUnicode ? tableRow.toUpperCase() : toUni(tableRow);
+					var lineBreakT = finalStr ? '\n' : '';
+					return finalStr + lineBreakT + tableRow;
+				}, '');
+				return renderDescription + lineBreak + lineBreak + renderTable + '\n';
+			} else {
+				// Only add three starting spaces if the first character is not a space
+				if (n[0] !== ' ' && lineBreak) lineBreak += '   ';
+				return renderDescription + lineBreak + n;
+			}
+		}, '' );
+	}
+	// Add the headers in unicode bold/italic
+	sReturn = sReturn.replace(/>>(.*?)<</g, function (n, match) {
+		return bIgnoreUnicode ? match.toUpperCase() : toUni(match);
+	});
+	return sReturn;
+};

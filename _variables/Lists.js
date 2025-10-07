@@ -156,21 +156,7 @@ var Menus = {
 	"color" : "",
 	"raceoptions" : "",
 	"faqextended" : "",
-	"faq" : [{
-			cName : "Go to the online FAQ (more up to date)",
-			cReturn : "faq#online"
-		}, {
-			cName : "Open the built-in FAQ.pdf",
-			cReturn : "faq#pdf"
-		}, {
-			cName : "-"
-		}, {
-			cName : "See the license used for distributing WotC material (SRD)",
-			cReturn : "faq#srd"
-		}, {
-			cName : "See the license under which this document is distributed",
-			cReturn : "faq#gplv3"
-		}],
+	"faq" : "",
 	"importscripts" : [{
 			cName : "Import a file with additional material",
 			cReturn : "go#script#file"

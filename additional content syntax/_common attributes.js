@@ -1168,11 +1168,13 @@ spellcastingAbility : [4, 5, 6],
 	This attribute will do nothing when included in a class or racial feature.
 	The reason for this is that the class/race sets its spellcasting ability in the parent object (for race that uses this same attribute).
 
-	If for some reason the parent class/race object didn't set the spellcasting ability or you need to change it,
-	you can still set it by including this attribute in one of the spellcastingBonus objects.
-	If you do that, this attribute will overwrite the spellcasting ability score used for the parent object (if any).
-	For example, if you include this in a class feature for a cleric subclass and set it to `1`,
-	the cleric will be casting spells using Strength from then on out.
+	If for some reason the parent class/race object didn't set the spellcasting ability or
+	you need to change it, you can still set it by including this attribute in one of
+	the spellcastingBonus objects.
+	If you do that, this attribute will overwrite the spellcasting ability score used
+	for the parent object (if any).
+	For example, if you include this in a level 5 class feature for a cleric subclass and set it to `1`,
+	the cleric will be casting spells using Strength from level 5 onwards.
 */
 
 fixedDC : 13,
