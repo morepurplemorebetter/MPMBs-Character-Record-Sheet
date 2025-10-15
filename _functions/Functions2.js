@@ -6205,7 +6205,7 @@ function ShowDialog(hdr, strng) {
 	var ShowString_dialog = {
 		initialize : function(dialog) {
 			dialog.load({
-				"Eval" : strng.replace(/^(\r|\n)*/, "")
+				"Eval" : strng.replace(/^[\r\n]*/, "")
 			});
 		},
 		description : {
@@ -8038,7 +8038,7 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sB
 		if (knownOpt === "radio") {
 			selectionLines.push({
 				type : "radio",
-				item_id : "sl" + ("0" + i).slice(-2),
+				item_id : "r" + ("00" + i).slice(-3),
 				group_id : "slct",
 				name : optSubj[i]
 			});
@@ -8050,13 +8050,13 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sB
 				elements : [{
 					type : "edit_text",
 					alignment : "align_left",
-					item_id : "sl" + ("0" + i).slice(-2),
+					item_id : "r" + ("00" + i).slice(-3),
 					char_width : 30,
 					height : 20
 				}, {
 					type : "static_text",
 					alignment : "align_right",
-					item_id : "st" + ("0" + i).slice(-2),
+					item_id : "t" + ("00" + i).slice(-3),
 					font : "dialog",
 					name : "Already known!"
 				}]
@@ -8128,8 +8128,8 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sB
 			var toLoad = {};
 			var toShow = {};
 			for (var i = 0; i < this.subj.length; i++) {
-				toLoad["sl" + ("0" + i).slice(-2)] = this.subj[i];
-				var stTxt = "st" + ("0" + i).slice(-2);
+				toLoad["r" + ("00" + i).slice(-3)] = this.subj[i];
+				var stTxt = "t" + ("00" + i).slice(-3);
 				toShow[stTxt] = false;
 				dialog.setForeColorRed(stTxt);
 			};
@@ -8140,7 +8140,7 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sB
 			var oResult = dialog.store();
 			this.choices = [];
 			for (var i = 0; i < this.subj.length; i++) {
-				var theResult = oResult["sl" + ("0" + i).slice(-2)];
+				var theResult = oResult["r" + ("00" + i).slice(-3)];
 				if (this.already === "radio") {
 					if (theResult) {
 						this.choices = this.subj[i];
@@ -8153,8 +8153,8 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sB
 		},
 		check : function (dialog, nmbr) {
 			if (!this.already || this.already === "radio") return;
-			var toChk = "sl" + ("0" + nmbr).slice(-2);
-			var tTxt = "st" + ("0" + nmbr).slice(-2);
+			var toChk = "r" + ("00" + nmbr).slice(-3);
+			var tTxt = "t" + ("00" + nmbr).slice(-3);
 			var tResult = dialog.store()[toChk].toLowerCase();
 			var toShow = {};
 			toShow[tTxt] = this.already.indexOf(tResult) !== -1;
@@ -8249,7 +8249,7 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sB
 		}
 	};
 	if (knownOpt !== "radio") { for (var i = 0; i < optSubj.length; i++) {
-		theDialog["sl" + ("0" + i).slice(-2)] = Function("dialog", "this.check(dialog, " + i + ");");
+		theDialog["r" + ("00" + i).slice(-3)] = Function("dialog", "this.check(dialog, " + i + ");");
 	}; };
 	app.execDialog(theDialog)
 	if (bReturnIndex && knownOpt === "radio" && typeof theDialog.choices == 'string') {

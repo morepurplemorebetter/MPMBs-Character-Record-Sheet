@@ -2568,7 +2568,7 @@ var Base_ClassSubList = {
 				source : [["SRD", 10], ["P", 49]],
 				minlevel : 6,
 				description : desc("While raging, I can't be charmed or frightened, and such effects are suspended"),
-				savetxt : { text : ["Immune to being charmed/frightened in rage"] }
+				savetxt: { immune: ["Charmed (in rage)", "Frightened (in rage)"] },
 			},
 			"subclassfeature10" : {
 				name : "Intimidating Presence",

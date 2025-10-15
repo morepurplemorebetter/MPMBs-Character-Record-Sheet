@@ -6117,7 +6117,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						var doTextAction = applyClassFeatureText(textAction, ["Class Features"], FeaOldString, FeaNewString, LastProp);
 						if (doTextAction === false && textAction !== "remove") {
 							// This failed, so just add it to the end of the field
-							AddString("Class Features", FeaNewString[1], true);
+							AddString("Class Features", FeaNewString[1].replace(/^[\r\n]*/, ''), true);
 						}
 					}
 
@@ -6163,7 +6163,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						if (IsNotImport && xtrTextAction) {
 							applyClassFeatureText(xtrTextAction, ["Extra.Notes", "Class Features"], xtrFeaOldString, xtrFeaNewString, false);
 						} else if (propFea.extrachoices && !IsNotImport) {
-							AddString("Extra.Notes", xtrFeaNewString[1].replace(/^(\r|\n)*/, ''), true);
+							AddString("Extra.Notes", xtrFeaNewString[1].replace(/^[\r\n]*/, ''), true);
 						}
 					}
 				}
@@ -6253,15 +6253,19 @@ function MakeClassMenu() {
 			};
 			// test if the menu entry shouldn't be another layer deeper
 			if (feaObjA.submenu) {
-				// create entry for this submenu if it doesn't already exist
-				if (!toSub[feaObjA.submenu]) {
-					toSub[feaObjA.submenu] = [];
-					temp.push({
-						cName : feaObjA.submenu,
-						oSubMenu : []
-					})
+				var submenus = isArray(feaObjA.submenu) ? feaObjA.submenu : [feaObjA.submenu];
+				for (var s = 0; s < submenus.length; s++) {
+					var submenu = submenus[s];
+					// create entry for this submenu if it doesn't already exist
+					if (!toSub[submenu]) {
+						toSub[submenu] = [];
+						temp.push({
+							cName : submenu,
+							oSubMenu : []
+						})
+					}
+					toSub[submenu].push(mItem);
 				}
-				toSub[feaObjA.submenu].push(mItem);
 			} else {
 				temp.push(mItem);
 			}
@@ -6451,7 +6455,7 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 			prop, choice, Fea, !addIt, ForceExtraname);
 
 		if (addIt) { // add the string to the third page
-			AddString("Extra.Notes", feaString[1].replace(/^(\r|\n)*/, ''), true);
+			AddString("Extra.Notes", feaString[1].replace(/^[\r\n]*/, ''), true);
 			show3rdPageNotes(); // for a Colourful sheet, show the notes section on the third page
 			var extraNm = propFeaCs.extraname ? propFeaCs.extraname : ForceExtraname ? ForceExtraname : propFea.extraname ? propFea.extraname : propFea.name;
 			var changeMsg = "The " + extraNm + ' "' + propFeaCs.name + '" has been added to the Notes section on the third page' + (!typePF ? ", while the Rules section on the third page has been hidden" : "") + ". They wouldn't fit in the Class Features section if the class is taken to level 20.";
@@ -7805,15 +7809,17 @@ function ApplyAmmo(inputtxt, Fld) {
 function AddAmmo(inputtxt, amount) {
 	var AmmoFlds = [ "AmmoLeftDisplay.Name", "AmmoRightDisplay.Name" ];
 	var AmountFlds = [ "AmmoLeftDisplay.Amount", "AmmoRightDisplay.Amount" ];
+	var AmmoName = AmmoList[inputtxt] ? AmmoList[inputtxt].name : inputtxt;
+	var AmmoRx = RegExp(inputtxt.RegEscape() + '|' + AmmoName.RegEscape(), "i");
 	amount = amount && !isNaN(Number(amount)) ? Number(amount) : 0;
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 0; i < AmmoFlds.length; i++) {
 			var next = tDoc.getField(AmmoFlds[i]);
-			if (n === 1 && ((RegExp(inputtxt.RegEscape(), "i")).test(next.value) || next.value.toLowerCase().indexOf(inputtxt.toLowerCase()) !== -1)) {
+			if (n === 1 && (AmmoRx.test(next.value) || (next.value.toLowerCase().indexOf(AmmoName.toLowerCase()) !== -1))) {
 				if (amount) tDoc.getField(AmountFlds[i]).value += amount;
 				return;
 			} else if (n === 2 && next.value === "") {
-				next.value = AmmoList[inputtxt] ? AmmoList[inputtxt].name : inputtxt;
+				next.value = AmmoName;
 				if (amount) Value(AmountFlds[i], amount);
 				return;
 			}

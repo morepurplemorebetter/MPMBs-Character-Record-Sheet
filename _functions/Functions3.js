@@ -2275,7 +2275,7 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 		} else {
 			nextElem.elements[0].type = "static_text";
 			nextElem.elements[0].wrap_name = true;
-			nextElem.elements[0].name = arr[i][1].replace(/^(\r|\n)*/, "");
+			nextElem.elements[0].name = arr[i][1].replace(/^[\r\n]*/, "");
 		}
 		clusterArr.push(nextElem);
 	}
@@ -2290,7 +2290,7 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 			if (!canBeLong) return;
 			var toLoad = {};
 			for (var i = 0; i < arr.length; i++) {
-				toLoad["tx" + ("0" + i).slice(-2)] = arr[i][1].replace(/^(\r|\n)*/, "");
+				toLoad["tx" + ("0" + i).slice(-2)] = arr[i][1].replace(/^[\r\n]*/, "");
 			}
 			dialog.load(toLoad);
 		},
