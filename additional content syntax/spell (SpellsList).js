@@ -439,7 +439,7 @@ SpellsList["sindering purple"] = {
 /*	descriptionFull // OPTIONAL //
 	TYPE:	array or string
 	USE:	description of the spell as it appears in its source
-	CHANGE: v14.0.0 (array option & `>>[...]<<` tags)
+	CHANGE: v14.0.0 (array option & formatting characters)
 
 	This text is used to populate the tooltip of the spell so that the original description can be read.
 	This description will also be available in a pop-up by using the button in the spell's line.
@@ -465,11 +465,26 @@ SpellsList["sindering purple"] = {
 		   If instead of a subarray there is a string, it will be added as is.
 		   The table will be preceded by two line breaks and followed by one line break.
 
-	You can see an example of this array method above.
+	FORMATTING CHARACTERS (since v14.0.0)
+	Regardless if you use a string or an array, the `descriptionFull` can be formatted
+	using the Rich Text formatting characters. Text between these formatting characters
+	will be displayed differently. The formatting characters are as follows:
+		*text*   = italic
+		**text** = bold
+		_text_   = underlined [doesn't work in tooltips/pop-ups]
+		~text~   = strikethrough [doesn't work in tooltips/pop-ups]
+		#text#   = Header 1:
+		           - bold and theme color (Colourful)
+		           - bold and 15% size increase (Printer Friendly)
+		##text## = Header 2:
+		           - italic, bold, and theme color (Colourful)
+		           - italic and bold (Printer Friendly)
 
-	From v14.0.0 onwards, if you put '>>' and '<<' around a part of the string,
-	that part will be made bold and italic in the displayed description. This is done with
-	unicode. If unicode is disabled, the sheet will capitalize this instead.
+	The `descriptionFull` of spells is only used to populate the tooltip and pop-up dialogs,
+	which don't support formatting except through unicode.
+	This means that only the bold and italic formatting will have any effect.
+	Other formatting characters will be ignored (e.g. no underlining or strikethrough).
+	If unicode is disabled, the sheet will instead capitalize everything between formatting characters.
 */
 	ritual : true,
 /*	ritual // OPTIONAL //

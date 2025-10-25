@@ -2574,24 +2574,86 @@ toNotesPage : [{
 		so that it will read, in this example:
 			Wild Magic Surge Table from "Wild Mage"
 	*/
-	note : "\n   Various strange things can happen whenever I cast a spell.",
+	note : "\nVarious strange things can happen whenever I cast a spell.",
 	note : [
-		"d10  Effect",
-		"01-02 Roll on this table at the start of each of your turns for the next minute, ignoring this result on subsequent rolls.",
-		"03-04 For the next minute, you can see any invisible creature if you have line of sight to it.",
-		"05-06 A modron chosen and controlled by the DM appears in an unoccupied space within 5 ft of you, then disappears 1 minute later.",
-		"07-08 You cast fireball as a 3rd-level spell centered on yourself.",
-		"09-10 You cast magic missile as a 5th-level spell."
+		"Introduction text of the note. This will be preceded by a line break, but not three spaces as this is the first paragraph.",
+		"Second paragraph, which will be preceded by a line break and three spaces.",
+		" \u2022 Bullet point entry. This will be preceded by a line break, but not with three spaces, as this entry starts with a space.",
+		" \u2022 Another bullet point entry.",
+		[ // This will render as a table (i.e. a tab between each column)
+			["Column 1 header", "Column 2 header", "Column 3 header"], // The first row, which will be made bold
+			["Column 1 entry", "Column 2 entry", "Column 3 entry"], // The rest of the rows won't be changed
+			["Column 1 entry II", "Column 2 entry II", "Column 3 entry II"], // Table row 2
+		],
+		"***Header Paragraph***. This paragraph will be preceded by a line break and three spaces. The text 'Header Paragraph' will be made bold and italic because of the three asterisks around it.",
 	],
 	/*	note // REQUIRED //
 		TYPE:	string or array
 		USE:	the text of the feature to add to the notes section
+		CHANGE: v14.0.0 (arrays now formatted using `formatDescriptionFull`)
 
+		STRING
 		The string will be put on the notes section exactly as presented here, after the 'name' attribute.
-		If you are writing this as a string, it is recommended to start with a line break (\r or \n).
+		If you are writing this as a string, it is recommended to start with a line break (`\r` or `\n`).
 
-		If this attribute is an array, it will be joined using the desc() function, meaning that
-		each entry in the array will be on its own line, preceded by three spaces.
+		ARRAY
+		If this attribute is an array, it will be formatted using `formatDescriptionFull`.
+		This means that each entry in the array will be put on a new line.
+		Each entry can be one of the following:
+			1. String
+			   If the entry is a string that doesn't start with a space character and
+			   it is not the first entry, it will be added on a new line proceeded by
+			   three spaces (i.e. `\n   `).
+			   If the entry is a string that starts with a space character,
+			   it will be added on a new line without any preceding spaces.
+			   For example, to make a bullet point list, you would use ` \u2022 list entry`
+			   (N.B. `\u2022` is unicode for a bullet point).
+			2. Array of arrays, which contain only strings
+			   If the entry is in itself an array, it is treated as a table.
+			   Each entry in that array is a row in the table, with the first row being 
+			   considered headers that will be made bold.
+			   Making it bold is done using the `**` formatting character, see below.
+			   Each subarray is rendered with a tab between each column (i.e. `Array.join("\t")`).
+			   If instead of a subarray there is a string, it will be added as is.
+			   The table will be preceded by two line breaks and followed by one line break.
+
+		FORMATTING CHARACTERS (since v14.0.0)
+		Regardless if you use a string or an array, the note can be formatted using the
+		Rich Text formatting characters. Text between the formatting characters will be
+		displayed differently. The formatting characters are as follows:
+			*text*   = italic
+			**text** = bold
+			_text_   = underlined
+			~text~   = strikethrough
+			#text#   = Header 1:
+			           - bold and theme color (Colourful)
+			           - bold and 15% size increase (Printer Friendly)
+			##text## = Header 2:
+			           - italic, bold, and theme color (Colourful)
+			           - italic and bold (Printer Friendly)
+
+		You can combine these to apply multiple formatting options to one string, but there
+		are some limitations to consider.
+			1. Formatting characters don't work across line breaks (`\r` and `\n`).
+				This won't work:
+					"**text before and" + "\n" + "text after line break**""
+				Instead do this:
+					"**text before and**" + "\n" + "**text after line break**"
+			2. Combining formatting characters requires them to be in the same or reversed order.
+				This won't work:
+					"_**~underlined, strikethrough, and bold**_~"
+				Instead do this:
+					"_**~underlined, strikethrough, and bold~**_"
+				or this:
+					"_**~underlined, strikethrough, and bold_**~"
+			3. Tabs (`\t`) and multiple spaces will break the formatting if the field is edited manually.
+				This should be avoided:
+					"**text before and" + "\t" + "text after tab**""
+				Instead do this:
+					"**text before and**" + "\t" + "**text after tab**
+
+		Be aware that the default font on the Colourful sheets is already italic,
+		so making something only italic won't be visible on the Colourful sheets.
 	*/
 	page3notes : true,
 	/*	page3notes // OPTIONAL //

@@ -316,11 +316,11 @@ function PickDropdown(field, FldValue) {
 };
 
 function isArray(input) {
-	var giveback = false;
-	if (Object.prototype.toString.call(input) === "[object Array]") {
-		giveback = true;
+	try {
+		return Array.isArray(input);
+	} catch (e) {
+		return Object.prototype.toString.call(input) === "[object Array]";
 	}
-	return giveback;
 };
 
 //remove the empty values from an array (removes all things that are considered false, such as 0, "", undefined, false)
@@ -587,77 +587,223 @@ function MakeRegex(inputString, extraRegex) {
 	return RegExp("^(?=.*\\b" + inputString.replace(/\W/g, " ").replace(/^ +| +$/g, "").RegEscape().replace(/('?s'?)\b/ig, "\($1\)?").replace(/ +/g, "s?\\b)(?=.*\\b") + "s?\\b)" + (extraRegex ? extraRegex : "") + ".*$", "i");
 };
 
-function toUni(input) {
+function toUni(input, format) {
 	if (!What("UseUnicode")) return input;
 	input = input.toString();
-	var UniBoldItal = {
-		"0" : "\uD835\uDFCE",
-		"1" : "\uD835\uDFCF",
-		"2" : "\uD835\uDFD0",
-		"3" : "\uD835\uDFD1",
-		"4" : "\uD835\uDFD2",
-		"5" : "\uD835\uDFD3",
-		"6" : "\uD835\uDFD4",
-		"7" : "\uD835\uDFD5",
-		"8" : "\uD835\uDFD6",
-		"9" : "\uD835\uDFD7",
-		"A" : "\uD835\uDE3C",
-		"B" : "\uD835\uDE3D",
-		"C" : "\uD835\uDE3E",
-		"D" : "\uD835\uDE3F",
-		"E" : "\uD835\uDE40",
-		"F" : "\uD835\uDE41",
-		"G" : "\uD835\uDE42",
-		"H" : "\uD835\uDE43",
-		"I" : "\uD835\uDE44",
-		"J" : "\uD835\uDE45",
-		"K" : "\uD835\uDE46",
-		"L" : "\uD835\uDE47",
-		"M" : "\uD835\uDE48",
-		"N" : "\uD835\uDE49",
-		"O" : "\uD835\uDE4A",
-		"P" : "\uD835\uDE4B",
-		"Q" : "\uD835\uDE4C",
-		"R" : "\uD835\uDE4D",
-		"S" : "\uD835\uDE4E",
-		"T" : "\uD835\uDE4F",
-		"U" : "\uD835\uDE50",
-		"V" : "\uD835\uDE51",
-		"W" : "\uD835\uDE52",
-		"X" : "\uD835\uDE53",
-		"Y" : "\uD835\uDE54",
-		"Z" : "\uD835\uDE55",
-		"a" : "\uD835\uDE56",
-		"b" : "\uD835\uDE57",
-		"c" : "\uD835\uDE58",
-		"d" : "\uD835\uDE59",
-		"e" : "\uD835\uDE5A",
-		"f" : "\uD835\uDE5B",
-		"g" : "\uD835\uDE5C",
-		"h" : "\uD835\uDE5D",
-		"i" : "\uD835\uDE5E",
-		"j" : "\uD835\uDE5F",
-		"k" : "\uD835\uDE60",
-		"l" : "\uD835\uDE61",
-		"m" : "\uD835\uDE62",
-		"n" : "\uD835\uDE63",
-		"o" : "\uD835\uDE64",
-		"p" : "\uD835\uDE65",
-		"q" : "\uD835\uDE66",
-		"r" : "\uD835\uDE67",
-		"s" : "\uD835\uDE68",
-		"t" : "\uD835\uDE69",
-		"u" : "\uD835\uDE6A",
-		"v" : "\uD835\uDE6B",
-		"w" : "\uD835\uDE6C",
-		"x" : "\uD835\uDE6D",
-		"y" : "\uD835\uDE6E",
-		"z" : "\uD835\uDE6F"
+	var typesAllowed = ["bold", "italic", "bold_italic"];
+	var type = "bold_italic";
+	if (format && typesAllowed.indexOf(format) !== -1) {
+		type = format;
+	} else if (format && typeof format === "string" && !/\*{3}|##/.test(format)) {
+		var types = [];
+		if (/\*{2}|#/.test(format)) {
+			format = format.replace('**', '');
+			types.push("bold");
+		}
+		if (format.indexOf('*') !== -1) {
+			types.push("italic");
+		}
+		// If the format didn't indicate bold or italic, just return the original string
+		if (!types.length) return input;
+		type = types.join("_");
+	}
+	var UniNumbers = {
+		bold: { // Mathematical Bold Digit
+			"0" : "\uD835\uDFCE",
+			"1" : "\uD835\uDFCF",
+			"2" : "\uD835\uDFD0",
+			"3" : "\uD835\uDFD1",
+			"4" : "\uD835\uDFD2",
+			"5" : "\uD835\uDFD3",
+			"6" : "\uD835\uDFD4",
+			"7" : "\uD835\uDFD5",
+			"8" : "\uD835\uDFD6",
+			"9" : "\uD835\uDFD7",
+		},
+		italic: { // italic numbers don't exist
+			"0": "0",
+			"1": "1",
+			"2": "2",
+			"3": "3",
+			"4": "4",
+			"5": "5",
+			"6": "6",
+			"7": "7",
+			"8": "8",
+			"9": "9",
+		},
 	};
+	UniNumbers.bold_italic = UniNumbers.bold; // boldItalic same as just bold, because italic numbers don't exist
+	var UniChars = {
+		bold: { // Mathematical Bold
+			"A" : "\uD835\uDC00",
+			"B" : "\uD835\uDC01",
+			"C" : "\uD835\uDC02",
+			"D" : "\uD835\uDC03",
+			"E" : "\uD835\uDC04",
+			"F" : "\uD835\uDC05",
+			"G" : "\uD835\uDC06",
+			"H" : "\uD835\uDC07",
+			"I" : "\uD835\uDC08",
+			"J" : "\uD835\uDC09",
+			"K" : "\uD835\uDC0A",
+			"L" : "\uD835\uDC0B",
+			"M" : "\uD835\uDC0C",
+			"N" : "\uD835\uDC0D",
+			"O" : "\uD835\uDC0E",
+			"P" : "\uD835\uDC0F",
+			"Q" : "\uD835\uDC10",
+			"R" : "\uD835\uDC11",
+			"S" : "\uD835\uDC12",
+			"T" : "\uD835\uDC13",
+			"U" : "\uD835\uDC14",
+			"V" : "\uD835\uDC15",
+			"W" : "\uD835\uDC16",
+			"X" : "\uD835\uDC17",
+			"Y" : "\uD835\uDC18",
+			"Z" : "\uD835\uDC19",
+			"a" : "\uD835\uDC1A",
+			"b" : "\uD835\uDC1B",
+			"c" : "\uD835\uDC1C",
+			"d" : "\uD835\uDC1D",
+			"e" : "\uD835\uDC1E",
+			"f" : "\uD835\uDC1F",
+			"g" : "\uD835\uDC20",
+			"h" : "\uD835\uDC21",
+			"i" : "\uD835\uDC22",
+			"j" : "\uD835\uDC23",
+			"k" : "\uD835\uDC24",
+			"l" : "\uD835\uDC25",
+			"m" : "\uD835\uDC26",
+			"n" : "\uD835\uDC27",
+			"o" : "\uD835\uDC28",
+			"p" : "\uD835\uDC29",
+			"q" : "\uD835\uDC2A",
+			"r" : "\uD835\uDC2B",
+			"s" : "\uD835\uDC2C",
+			"t" : "\uD835\uDC2D",
+			"u" : "\uD835\uDC2E",
+			"v" : "\uD835\uDC2F",
+			"w" : "\uD835\uDC30",
+			"x" : "\uD835\uDC31",
+			"y" : "\uD835\uDC32",
+			"z" : "\uD835\uDC33",
+		},
+		italic: { // Mathematical Italic
+			"A" : "\uD835\uDC34",
+			"B" : "\uD835\uDC35",
+			"C" : "\uD835\uDC36",
+			"D" : "\uD835\uDC37",
+			"E" : "\uD835\uDC38",
+			"F" : "\uD835\uDC39",
+			"G" : "\uD835\uDC3A",
+			"H" : "\uD835\uDC3B",
+			"I" : "\uD835\uDC3C",
+			"J" : "\uD835\uDC3D",
+			"K" : "\uD835\uDC3E",
+			"L" : "\uD835\uDC3F",
+			"M" : "\uD835\uDC40",
+			"N" : "\uD835\uDC41",
+			"O" : "\uD835\uDC42",
+			"P" : "\uD835\uDC43",
+			"Q" : "\uD835\uDC44",
+			"R" : "\uD835\uDC45",
+			"S" : "\uD835\uDC46",
+			"T" : "\uD835\uDC47",
+			"U" : "\uD835\uDC48",
+			"V" : "\uD835\uDC49",
+			"W" : "\uD835\uDC4A",
+			"X" : "\uD835\uDC4B",
+			"Y" : "\uD835\uDC4C",
+			"Z" : "\uD835\uDC4D",
+			"a" : "\uD835\uDC4E",
+			"b" : "\uD835\uDC4F",
+			"c" : "\uD835\uDC50",
+			"d" : "\uD835\uDC51",
+			"e" : "\uD835\uDC52",
+			"f" : "\uD835\uDC53",
+			"g" : "\uD835\uDC54",
+			"h" : "\uD835\uDC55",
+			"i" : "\uD835\uDC56",
+			"j" : "\uD835\uDC57",
+			"k" : "\uD835\uDC58",
+			"l" : "\uD835\uDC59",
+			"m" : "\uD835\uDC5A",
+			"n" : "\uD835\uDC5B",
+			"o" : "\uD835\uDC5C",
+			"p" : "\uD835\uDC5D",
+			"q" : "\uD835\uDC5E",
+			"r" : "\uD835\uDC5F",
+			"s" : "\uD835\uDC60",
+			"t" : "\uD835\uDC61",
+			"u" : "\uD835\uDC62",
+			"v" : "\uD835\uDC63",
+			"w" : "\uD835\uDC64",
+			"x" : "\uD835\uDC65",
+			"y" : "\uD835\uDC66",
+			"z" : "\uD835\uDC67",
+		},
+		bold_italic: { // Mathematical Bold Italic
+			"A" : "\uD835\uDC68",
+			"B" : "\uD835\uDC69",
+			"C" : "\uD835\uDC6A",
+			"D" : "\uD835\uDC6B",
+			"E" : "\uD835\uDC6C",
+			"F" : "\uD835\uDC6D",
+			"G" : "\uD835\uDC6E",
+			"H" : "\uD835\uDC6F",
+			"I" : "\uD835\uDC70",
+			"J" : "\uD835\uDC71",
+			"K" : "\uD835\uDC72",
+			"L" : "\uD835\uDC73",
+			"M" : "\uD835\uDC74",
+			"N" : "\uD835\uDC75",
+			"O" : "\uD835\uDC76",
+			"P" : "\uD835\uDC77",
+			"Q" : "\uD835\uDC78",
+			"R" : "\uD835\uDC79",
+			"S" : "\uD835\uDC7A",
+			"T" : "\uD835\uDC7B",
+			"U" : "\uD835\uDC7C",
+			"V" : "\uD835\uDC7D",
+			"W" : "\uD835\uDC7E",
+			"X" : "\uD835\uDC7F",
+			"Y" : "\uD835\uDC80",
+			"Z" : "\uD835\uDC81",
+			"a" : "\uD835\uDC82",
+			"b" : "\uD835\uDC83",
+			"c" : "\uD835\uDC84",
+			"d" : "\uD835\uDC85",
+			"e" : "\uD835\uDC86",
+			"f" : "\uD835\uDC87",
+			"g" : "\uD835\uDC88",
+			"h" : "\uD835\uDC89",
+			"i" : "\uD835\uDC8A",
+			"j" : "\uD835\uDC8B",
+			"k" : "\uD835\uDC8C",
+			"l" : "\uD835\uDC8D",
+			"m" : "\uD835\uDC8E",
+			"n" : "\uD835\uDC8F",
+			"o" : "\uD835\uDC90",
+			"p" : "\uD835\uDC91",
+			"q" : "\uD835\uDC92",
+			"r" : "\uD835\uDC93",
+			"s" : "\uD835\uDC94",
+			"t" : "\uD835\uDC95",
+			"u" : "\uD835\uDC96",
+			"v" : "\uD835\uDC97",
+			"w" : "\uD835\uDC98",
+			"x" : "\uD835\uDC99",
+			"y" : "\uD835\uDC9A",
+			"z" : "\uD835\uDC9B",
+		},
+	}
 	var output = "";
+	var nmbrs = UniNumbers[type];
+	var chars = UniChars[type];
 	for (var i = 0; i < input.length; i++) {
 		var tempChar = input.charAt(i);
-		output += UniBoldItal[tempChar] ? UniBoldItal[tempChar] : tempChar;
+		output += nmbrs[tempChar] ? nmbrs[tempChar] : chars[tempChar] ? chars[tempChar] : tempChar;
 	}
 	return output;
 };
@@ -1329,8 +1475,8 @@ function getLetterRange(str, aOpt) {
 };
 
 // format a descriptionFull attribute
-function formatDescriptionFull(sDescFull, bIgnoreUnicode) {
-	if (!bIgnoreUnicode && !What("UseUnicode")) bIgnoreUnicode = true;
+function formatDescriptionFull(sDescFull, bReturnRichTextStyled) {
+	var bIgnoreUnicode = !What("UseUnicode");
 	var sReturn = sDescFull;
 	if (isArray(sDescFull)) {
 		sReturn = sDescFull.reduce( function (renderDescription, n) {
@@ -1341,7 +1487,11 @@ function formatDescriptionFull(sDescFull, bIgnoreUnicode) {
 					var tableRow = typeof t === "string" ? t :
 									isArray(t) ? t.join("\t") : false;
 					if (!tableRow) return finalStr;
-					if (idx === 0) tableRow = bIgnoreUnicode ? tableRow.toUpperCase() : toUni(tableRow);
+					if (idx === 0) {
+						tableRow = bReturnRichTextStyled ? "**" + tableRow + "**" :
+						           bIgnoreUnicode ? tableRow.toUpperCase() :
+						           toUni(tableRow, "**");
+					}
 					var lineBreakT = finalStr ? '\n' : '';
 					return finalStr + lineBreakT + tableRow;
 				}, '');
@@ -1353,9 +1503,188 @@ function formatDescriptionFull(sDescFull, bIgnoreUnicode) {
 			}
 		}, '' );
 	}
-	// Add the headers in unicode bold/italic
+	// Add the >>headers<< in unicode bold/italic (for backward compatibility)
 	sReturn = sReturn.replace(/>>(.*?)<</g, function (n, match) {
-		return bIgnoreUnicode ? match.toUpperCase() : toUni(match);
+		return bReturnRichTextStyled ? "***" + match + "***" : bIgnoreUnicode ? match.toUpperCase() : toUni(match);
 	});
+	// Add unicode bold/italic as set by format characters
+	if (!bReturnRichTextStyled) {
+		sReturn = sReturn.replace(/([*_~#]+)(.+?)\1/g, function (n, formatChars, string) {
+			return bIgnoreUnicode ? string.toUpperCase() : toUni(string, formatChars);
+		});
+	}
 	return sReturn;
 };
+
+// Remove all formatting characters from a string
+function removeFormatChars(string) {
+	var formatCharRx = /([*_~#]+)(.+?)\1/g
+	while (formatCharRx.test(string)) {
+		string = string.replace(formatCharRx, '$2');
+	};
+	return string;
+}
+/** Rich Text formatting of multiline fields
+ *text*   = italic
+ **text** = bold
+ _text_   = underlined
+ ~text~   = strikethrough
+ #text#   = header 1: bold and theme color (colourful) or 15% size increase (printer friendly)
+ ##text## = header 2: italic, bold, and theme color (colourful) or italic and bold (printer friendly)
+ */
+// Create a singular span from an existing span, but with given text and formatting
+function formatSpan(parentSpan, newText, formatChars, idx) {
+	var span = newObj(parentSpan);
+	span.text = newText;
+	if (formatChars) {
+		if (formatChars.indexOf('**') !== -1) {
+			formatChars = formatChars.replace('**', '');
+			span.fontWeight = 700;
+		}
+		if (formatChars.indexOf('*') !== -1) {
+			span.fontStyle = 'italic';
+		}
+		if (formatChars.indexOf('_') !== -1) {
+			span.underline = true;
+		}
+		if (formatChars.indexOf('~') !== -1) {
+			span.strikethrough = true;
+		}
+		if (formatChars.indexOf('##') !== -1) {
+			formatChars = formatChars.replace('##', '');
+			span.fontStyle = 'italic';
+			span.fontWeight = 700;
+			if (!typePF) {
+				span.textColor = ColorList[What("Color.Theme")].RGB;
+				if (event.target) event.target.mpmbRtColor = true;
+			}
+		}
+		if (formatChars.indexOf('#') !== -1) {
+			span.fontWeight = 700;
+			if (!typePF) {
+				span.textColor = ColorList[What("Color.Theme")].RGB;
+				if (event.target) event.target.mpmbRtColor = true;
+			} else if (!event.target || !event.target.firstParagraph
+				|| event.target.processedChars > event.target.charsPerLine) {
+				/* Do not do this for the first X number of characters of the first paragraph,
+				 * as making anything on the first line of a field bigger will result in text
+				 * no longer aligning with the writing lines in the background.
+				 */
+				span.textSize = span.textSize * 1.15;
+			}
+		}
+	}
+	return span;
+}
+// Pick out the formatting characters and create separate spans for them
+function richTextReduce(spans, span, idx, orig) {
+	if (span.linespacing === undefined) span.linespacing = CurrentVars.linespacing !== undefined ? CurrentVars.linespacing : typePF ? 11 : 10;
+	if (idx !== orig.length - 1 && span.endParagraph && !/[\r\n]$/.test(span.text)) span.text += '\r';
+	var matches = span.text.match(/(([*_~#]+).+?\2)/g);
+	if (matches) {
+		var remainingText = span.text;
+		var i = 0;
+		while (remainingText.length) {
+			var match = matches[i];
+			i++;
+			if (match) {
+				var matchIndex = remainingText.indexOf(match);
+				var preMatch = remainingText.substr(0, matchIndex);
+				var matchParts = match.match(/^([*_~#]+)(.+?)\1$/);
+				var formatChars = matchParts[1];
+				var cleanedMatch = matchParts[2];
+				if (preMatch) {
+					if (/^\s+$/.test(preMatch)) {
+						// Just whitespace, no point making it its own span
+						match = preMatch + match;
+						cleanedMatch = preMatch + cleanedMatch;
+					} else {
+						// String part without any matches, so no formatting characters
+						spans.push(formatSpan(span, preMatch));
+						remainingText = remainingText.substr(preMatch.length);
+						if (event.target.firstParagraph) event.target.processedChars += preMatch.length;
+					}
+				}
+				var postMatch = remainingText.substr(matchIndex + match.length);
+				if (postMatch && /^\s+$/.test(postMatch)) {
+					// Just whitespace, no point making it its own span
+					match += postMatch;
+					cleanedMatch += postMatch;
+				}
+				// The matched string can still contain formatting characters for sub-strings, so put it through this reducer again
+				var newSpan = formatSpan(span, cleanedMatch, formatChars, idx);
+				spans = spans.concat([newSpan].reduce(richTextReduce, []));
+				remainingText = remainingText.substr(match.length);
+				if (event.target.firstParagraph) event.target.processedChars += match.length;
+			} else {
+				// String part without any matches, so no formatting characters
+				spans.push(formatSpan(span, remainingText));
+				remainingText = "";
+			}
+		}
+	} else {
+		spans.push(span);
+	}
+	// Store if we are done with the first paragraph
+	if (event.target.firstParagraph && /[\r\n]$/.test(span.text)) event.target.firstParagraph = false;
+	return spans;
+}
+// Field Format event, i.e.: .setAction("Format", "formatRichText();");
+function formatRichText() {
+	// Make it easier to query which fields use this method with a custom attribute
+	event.target.mpmbRtFormat = true;
+	event.target.mpmbRtColor  = undefined;
+	if (event.target.richText && event.richValue) {
+		if (typePF) {
+			// Correct issue if the first line has its size increased (Printer Friendly only)
+			event.target.firstParagraph = true;
+			event.target.processedChars = 0;
+			if (!event.target.charsPerLine) {
+				event.target.charsPerLine = 75;
+				var rect = false;
+				if (isArray(event.target.page)) {
+					// field exists on multiple pages, get the one that is visible
+					var visibleIndex = event.target.page.find(/^\d+$/); // first number, i.e. not -1
+					if (visibleIndex !== -1) rect = getField(event.target.name + '.' + visibleIndex).rect;
+				} else if (event.target.page !== -1) {
+					// field exists on one visible page
+					rect = event.target.rect;
+				}
+				// If we have dimensions, roughly estimate the amount of characters on the first line
+				if (rect) event.target.charsPerLine = Math.round((rect[2]-rect[0]) / 3);
+			}
+		}
+		// Format the rich text using the formatting characters
+		var spans = event.richValue.reduce(richTextReduce, []);
+		event.richValue = spans;
+	} else {
+		// Remove formatting characters from displayed string
+		event.value = removeFormatChars(event.value);
+	}
+}
+// Field Validate event, i.e.: `.setAction("Validate", "correctRichTextLineSpacing();");`
+function correctRichTextLineSpacing() {
+	if (!event.target.richText) return;
+	// Make sure the linespacing adheres to the sheet
+	var val = event.richValue;
+	if (!val) return;
+	var processed = val.every(function(span) { return span.linespacing !== undefined; });
+	if (processed) return;
+	var spans = val.map(function(span, idx, spans) {
+		if (span.linespacing === undefined) span.linespacing = CurrentVars.linespacing !== undefined ? CurrentVars.linespacing : typePF ? 11 : 10;
+		if (idx !== spans.length - 1 && span.endParagraph && !/[\r\n]$/.test(span.text)) {
+			span.endParagraph = false;
+			span.text += '\n';
+		}
+		return span;
+	});
+	event.richValue = spans;
+}
+// Redo all format events for all Rich Text fields with the custom `mpmbRtColor` attribute
+function redoFieldFormatIfColored() {
+	for (var F = 0; F < this.numFields; F++) {
+		var Fname = this.getNthFieldName(F);
+		var Ffield = this.getField(Fname);
+		if (Ffield.mpmbRtColor) Ffield.password = false;
+	}
+}

@@ -196,7 +196,7 @@ function OpeningStatement() {
 		tDoc.pane = "bookmarks"; //open the bookmarks so that on the first opening people can see its existence
 		var sheetTitle = "MorePurpleMoreBetter's D&D 5e " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " (" + tDoc.info.SheetType + ") v" + semVers;
 		var Text = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
-		Text += "Welcome to " + toUni(sheetTitle);
+		Text += "Welcome to " + toUni(sheetTitle, "bold");
 		Text += ".\n>> get the latest version using the bookmark.";
 		Text += patreonVersion ? "" : "\n\n" + toUni("SRD only") + '. The System Reference Document content is the only Wizards of the Coast publication this sheet is allowed to contain. The rest is protected by WotC\'s copyright. Use the "Get More Content" bookmark to get add-on scripts to increase the available options.';
 		Text += "\n\n" + toUni("5e version") + ". The 5th edition (2014) of Dungeons & Dragons is what this sheet is made for. Visit MPMB's website to get a sheet for 2024 (5.5e) D&D.";
@@ -511,7 +511,7 @@ function ResetAll(GoOn, noTempl, deleteImports) {
 	ShowCalcBoxesLines();
 	ToggleWhiteout(false);
 	ChangeFont();
-	ToggleTextSize();
+	ToggleTextSize(false, false, true);
 	ToggleAttacks(false);
 	ToggleBlueText(false);
 	Toggle2ndAbilityDC("hide");
@@ -558,17 +558,28 @@ function ResetAll(GoOn, noTempl, deleteImports) {
 };
 
 // Select the text size to use (0 for auto), or if left empty, select the default text size of 5.74 (7 for Printer Friendly)
-function ToggleTextSize(size) {
-	if (CurrentVars.fontsize == undefined) CurrentVars.fontsize = typePF ? 7 : 5.74;
-	var fontSize = size == undefined || isNaN(size) ? (typePF ? 7 : 5.74) : parseFloat(size);
-	if (fontSize == CurrentVars.fontsize) return;
+function ToggleTextSize(size, linespacingSize, forceReset) {
+	if (CurrentVars.fontsize === undefined) CurrentVars.fontsize = typePF ? 7 : 5.74;
+	if (CurrentVars.linespacing === undefined) CurrentVars.linespacing = typePF ? 11 : 10;
+
+	var fontSize = forceReset || size == undefined || isNaN(size) ? (typePF ? 7 : 5.74) : parseFloat(size);
+	var linespacing = forceReset || linespacingSize == undefined || isNaN(linespacingSize) ? (typePF ? 11 : 10) : parseFloat(linespacingSize);
+
+	var fontChange = forceReset || fontSize != CurrentVars.fontsize;
+	var linespacingChange = forceReset || linespacing != CurrentVars.linespacing;
+	if (!fontChange && !linespacingChange) return;
 
 	// Start progress bar and stop calculations
-	var thermoTxt = thermoM("Changing the font size to " + (fontSize ? fontSize : "'Auto'") + "...");
+	var thermoTxt = thermoM("Changing the " + (fontChange ? "font size" : "linespacing") + " to " + (fontChange ? (fontSize ? fontSize : "'Auto'") : (linespacing ? linespacing : "'Auto'")) + "...");
 	calcStop();
 
+	if (fontChange) CurrentVars.fontsize = fontSize;
+	if (linespacingChange) CurrentVars.linespacing = linespacing;
+	SetStringifieds("vars"); // Save the settings to a field
+
+	var LinesFld = [];
 	if (!tDoc.info.AdvLogOnly) {
-		var LinesFld = [
+		LinesFld = [
 			"Vision",
 			"Saving Throw advantages / disadvantages",
 			"HP Current",
@@ -631,8 +642,6 @@ function ToggleTextSize(size) {
 				]);
 			}
 		}
-	} else {
-		var LinesFld = []
 	}
 
 	//add the lines for all the logsheet pages
@@ -645,12 +654,19 @@ function ToggleTextSize(size) {
 	}
 
 	for (var i = 0; i < LinesFld.length; i++) {
-		tDoc.getField(LinesFld[i]).textSize = fontSize;
+		var fieldName = LinesFld[i];
+		var lineFld = tDoc.getField(fieldName);
+		if (!fontChange && lineFld.value === "") continue;
+		// Disable rich text before updating the textSize/linespacing so it actually gets applied
+		lineFld.richText = false;
+		if (fontChange) lineFld.textSize = fontSize;
+		// If not setting auto size, re-enable rich text for those fields with controlled formatting
+		if (lineFld.mpmbRtFormat && lineFld.textSize) {
+			lineFld.richText = true;
+		}
 		thermoM((i+1)/LinesFld.length); // Increment the progress bar
 	};
 
-	CurrentVars.fontsize = fontSize;
-	SetStringifieds("vars"); // Save the settings to a field
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
@@ -1994,20 +2010,20 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		//see if this class is a spellcaster and what we need to do with that
 		if (Temps.spellcastingFactor) {
 			var casterType = !isNaN(Temps.spellcastingFactor) ? "default" : Temps.spellcastingFactor.replace(/\d/g, "");
-			var casterFactor = !isNaN(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor) : (/\d/g).test(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
+			var casterFactor = !isNaN(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor) : /\d/g.test(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
 			// now only continue if the class level is the factor or higher
-			var isCasterAtLvl = function(lvl) {
-				var theRe = Math.max(casterFactor, 1) <= lvl;
+			var isCasterAtLvl = function(lvl, factor, table, roundUp) {
+				var theRe = 0 < Math[roundUp ? "ceil" : "floor"](lvl / factor);
 				// or if the class has its own spell slot progression, check against that
-				if (!theRe && Temps.spellcastingTable && Temps.spellcastingTable[lvl]) {
-					theRe = 0 < Temps.spellcastingTable[lvl].reduce(function (total, num) {
+				if (!theRe && table && table[lvl]) {
+					theRe = 0 < table[lvl].reduce(function (total, num) {
 						return total + num;
 					});
 				}
 				return theRe;
 			}
-			var casterAtCurLvl = isCasterAtLvl(classes.known[aClass].level);
-			var casterAtOldLvl = classes.old[aClass] ? isCasterAtLvl(classes.old[aClass].classlevel) : 0;
+			var casterAtCurLvl = isCasterAtLvl(classes.known[aClass].level, casterFactor, Temps.spellcastingTable, Temps.spellcastingFactorRoundupMulti);
+			var casterAtOldLvl = classes.old[aClass] && isCasterAtLvl(classes.old[aClass].classlevel, casterFactor, Temps.spellcastingTable, Temps.spellcastingFactorRoundupMulti);
 			if (casterAtCurLvl) {
 				// add one to the casterType for seeing if this casterType is multiclassing later on
 				if (multiCaster[casterType]) {
@@ -2024,7 +2040,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 						cSpells.known = Temps.spellcastingKnown ? Temps.spellcastingKnown : "";
 						cSpells.typeSp = !cSpells.known || !cSpells.known.spells || isArray(cSpells.known.spells) || !isNaN(cSpells.known.spells) ? "known" : cSpells.known.spells;
 						cSpells.factor = [casterFactor, casterType];
-						cSpells.spellsTable = Temps.spellcastingTable ? Temps.spellcastingTable : false;
+						cSpells.spellsTable = isArray(Temps.spellcastingTable) ? Temps.spellcastingTable : false;
 						if (Temps.spellcastingExtra && deletedCurrentSpells.indexOf(aClass) !== -1) {
 							// Set the extra (and extraSpecial) attributes if we had to recreate this CurrentSpells object
 							processSpellcastingExtra(true, aClass, 0, "", Temps.spellcastingExtra, Temps.spellcastingExtraApplyNonconform);
@@ -2041,7 +2057,9 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		}
 
 		//add number of attacks to temp array
-		temp.push(Temps.attacks[Math.min(classes.known[aClass].level, Temps.attacks.length) - 1]);
+		if (Temps.attacks && isArray(Temps.attacks)) {
+			temp.push(Temps.attacks[Math.min(classes.known[aClass].level, Temps.attacks.length) - 1]);
+		}
 	}
 	//pick highest number of attacks in temp array and put that into global classes variable
 	classes.attacks = Math.max.apply(Math, temp);
@@ -2052,22 +2070,29 @@ function FindClasses(NotAtStartup, isFieldVal) {
 	for (var aClass in classes.known) {
 		var Temps = CurrentClasses[aClass];
 		var cSpells = CurrentSpells[aClass];
-		// don't go on if this is not a spellcaster or its factor is lower than its level (thus, no spell slots at this level)
-		if (!cSpells || !cSpells.factor || (!Temps.spellcastingTable && cSpells.factor[0] > cSpells.level)) continue;
+		// don't go on if this is not a spellcasting class with spell slot progression
+		if (!cSpells || !cSpells.factor) continue;
+		// don't go on if this spellcasting class is not at a level with access to spells
+		var casterLevel = cSpells.level; 
 		var casterFactor = cSpells.factor[0];
 		var casterType = cSpells.factor[1];
+		var customSlotTable = cSpells.spellsTable;
+		var multiRoundUp = Temps.spellcastingFactorRoundupMulti;
+		var isCasterAtCurrentLvl = isCasterAtLvl(casterLevel, casterFactor, customSlotTable, multiRoundUp);
+		if (!isCasterAtCurrentLvl) continue;
 		// Now calculate the effective caster level and add it to the casterType
-		if (Temps.spellcastingTable && multiCaster[casterType] === 1) {
-			var casterLvl = Math.min(Temps.spellcastingTable.length - 1, classes.known[aClass].level);
+		if (customSlotTable && multiCaster[casterType] === 1) {
+			var slotLevel = Math.min(customSlotTable.length - 1, casterLevel);
 			// Sum the values in the row at the current caster level and add it to the otherTables
-			classes.spellcastlvl.otherTables = !classes.spellcastlvl.otherTables ? Temps.spellcastingTable[casterLvl] : classes.spellcastlvl.otherTables.map(function (num, idx) {
-				return num + Temps.spellcastingTable[casterLvl][idx];
+			classes.spellcastlvl.otherTables = !classes.spellcastlvl.otherTables ? customSlotTable[slotLevel] : classes.spellcastlvl.otherTables.map(function (num, idx) {
+				return num + customSlotTable[slotLevel][idx];
 			});
 		} else {
 			if (classes.spellcastlvl[casterType] == undefined) classes.spellcastlvl[casterType] = 0;
-			classes.spellcastlvl[casterType] += Math[multiCaster[casterType] > 1 && !Temps.spellcastingFactorRoundupMulti ? "floor" : "ceil"](cSpells.level / casterFactor);
+			classes.spellcastlvl[casterType] += Math[multiCaster[casterType] > 1 && !multiRoundUp ? "floor" : "ceil"](casterLevel / casterFactor);
 		}
-		if (casterType === "default") classes.spellcastlvl.spellpoints += Math[!Temps.spellcastingFactorRoundupMulti ? "floor" : "ceil"](cSpells.level / casterFactor);
+		// Count for spell points optional rule if this is a default caster type
+		if (casterType === "default") classes.spellcastlvl.spellpoints += Math[multiRoundUp ? "ceil" : "floor" ](casterLevel / casterFactor);
 	}
 
 	if (!NotAtStartup) { // add the current classes.known into classes.old on startup of the sheet
@@ -2686,7 +2711,7 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 			nIcon : 2, // Question
 			nType : 2, // Yes (return = 4), No (return = 3)
 			cTitle : "Use traits from " + sOldRaceName + " for " + CurrentRace.name,
-			cMsg : "The " + CurrentRace.name + " race has the option to use some specific traits from another race. As you had previously selected " + sOldRaceName + " as the race, would you want to use its features?\n\n" + toUni("Press 'Yes' to use traits from " + sOldRaceName + " or\npress 'No' to use the default traits for " + CurrentRace.name + ".") + (oInstr.message ? "\n\n" + oInstr.message : "")
+			cMsg : "The " + CurrentRace.name + " race has the option to use some specific traits from another race. As you had previously selected " + sOldRaceName + " as the race, would you want to use its features?\n\n" + toUni("Press 'Yes' to use traits from " + sOldRaceName + " or\npress 'No' to use the default traits for " + CurrentRace.name + ".", "bold") + (oInstr.message ? "\n\n" + oInstr.message : "")
 		});
 		CurrentVars.oldRaceAmendRemember = iAskUser === 4;
 		SetStringifieds("vars");
@@ -4356,7 +4381,7 @@ function MakeBackgroundMenu() {
 		for (i = 0; i < array.length; i++) {
 			var toUse = isArray(array[i]) ? array[i][1] : array[i];
 			temp.oSubMenu.push({
-				cName : toUse,
+				cName : removeFormatChars(toUse),
 				cReturn : name + "#" + i,
 				bMarked : (RegExp(toUse.RegEscape(), "i")).test(theEntry)
 			})
@@ -4385,7 +4410,9 @@ function BackgroundOptions() {
 	if (MenuSelection[0] === "personality trait") {
 		AddString("Personality Trait", CurrentBackground.trait[MenuSelection[1]], " ");
 	} else if (MenuSelection[0] === "ideal") {
-		Value("Ideal", CurrentBackground.ideal[MenuSelection[1]][1]);
+		var bckgrndIdeal = CurrentBackground.ideal[MenuSelection[1]];
+		var idealRichText = bckgrndIdeal[1].replace(bckgrndIdeal[0], "**" + bckgrndIdeal[0] + "**");
+		Value("Ideal", idealRichText);
 	} else if (MenuSelection[0] === "bond") {
 		Value("Bond", CurrentBackground.bond[MenuSelection[1]]);
 	} else if (MenuSelection[0] === "flaw") {
@@ -4544,14 +4571,17 @@ function AddString(field, inputstring, newline) {
 	}
 };
 
-function RemoveString(field, toremove, newline) {
+function RemoveString(field, toremove, newline, alreadyRegExp) {
 	if (!toremove && toremove !== 0) return;
 	var thestring = toremove.replace(/\n/g, "\r");
-	var regExString = thestring.RegEscape();
+	var regExString = alreadyRegExp ? thestring : thestring.RegEscape();
 	var thefield = tDoc.getField(field);
 	if (!thefield || !thefield.value) return;
 	var stringsArray, regExStringsArray;
-	if (newline === false || typeof newline === "string") {
+	if (newline === false ) {
+		stringsArray = [thestring];
+		regExStringsArray = [regExString];
+	} else if (typeof newline === "string") {
 		stringsArray = [newline + thestring, thestring];
 		regExStringsArray = [(newline + thestring).RegEscape(), regExString];
 	} else {
@@ -4580,7 +4610,7 @@ function RemoveString(field, toremove, newline) {
 	}
 	for (var i = 0; i < stringsArray.length; i++) {
 		var regex = RegExp(regExStringsArray[i], "i");
-		if ((regex).test(thefield.value)) {
+		if (regex.test(thefield.value)) {
 			thefield.value = thefield.value.replace(regex, "");
 			break;
 		} else if (thefield.value.indexOf(stringsArray[i]) !== -1) {
@@ -5255,7 +5285,7 @@ function ApplyFeat(input, FldNmbr) {
 		}
 
 		// Create the tooltip
-		var tooltipStr = toUni(theFeat.name);
+		var tooltipStr = toUni(theFeat.name, "bold");
 		if (theFeat.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theFeat.prerequisite;
 		tooltipStr += stringSource(theFeat, "full,page", "\n \u2022 Source: ", ".");
 		if (theFeat.descriptionFull) tooltipStr += "\n\n" + formatDescriptionFull(theFeat.descriptionFull);
@@ -5632,7 +5662,7 @@ function processAddFeats(bAddRemove, featsAdd) {
 				var sChoice = oFeat.choices.filter(function (n) { return n.toLowerCase() === featsAdd[i].choice; });
 				var oChoice = oFeat[featsAdd[i].choice];
 				if (typeof oChoice === "object" && sChoice.length) {
-					sFeatsName = oChoice.name ? oChoice.name : sFeatName + " [" + sChoice.toString() + "]";
+					sFeatName = oChoice.name ? oChoice.name : sFeatName + " [" + sChoice.toString() + "]";
 				}
 			}
 		}
@@ -5795,7 +5825,7 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice, Fe
 	// First make sure we know where the feature comes from (if it exists in both class and subclass, use subclass, unless ForceOld is true)
 	var aSubClass = classes.known[theClass].subclass;
 	var FeaList = ClassList[theClass].features[theFeature] && (ForceOld || !aSubClass || !ClassSubList[aSubClass].features[theFeature]) ? 'ClassList' : ClassSubList[aSubClass].features[theFeature] ? 'ClassSubList' : false;
-	if (!FeaList) return ["", ""];
+	if (!FeaList) return ["", "", ""];
 
 	var FeaKey = FeaList == 'ClassList' ? ClassList[theClass].features[theFeature] : ClassSubList[aSubClass].features[theFeature];
 	var old = (ForceOld || ForceFeaOld) && Fea ? "Old" : "";
@@ -5803,31 +5833,34 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice, Fe
 	var FeaClass = FeaList == 'ClassSubList' && CurrentClasses[theClass].subname ? CurrentClasses[theClass].subname : CurrentClasses[theClass].name;
 	if (!Fea) Fea = GetLevelFeatures(FeaKey, FeaLvl, SubChoice, "", "");
 
-	if (!Fea.UseName) return ["", ""]; // return empty strings if there is no name
+	if (!Fea.UseName) return ["", "", ""]; // return empty strings if there is no name
 
 	var FeaSource = stringSource(Fea, "first,abbr", ", ");
 	var FeaRef = " (" + FeaClass + " " + FeaKey.minlevel + FeaSource + ")";
 	var FeaUse = Fea["Use" + old] + (Fea["Use" + old] && !isNaN(Fea["Use" + old]) ? "\xD7 per " : "") + Fea["Recov" + old] + (Fea["AltRecov" + old] ? " or " + Fea["AltRecov" + old] : "");
 	var FeaPost = "";
 	if (Fea["Add" + old] && FeaUse) {
-		FeaPost = " [" + Fea["Add" + old] + ", " + FeaUse + "]";
+		FeaPost = " #[" + Fea["Add" + old] + ", " + FeaUse + "]#";
 	} else if (Fea["Add" + old]) {
-		FeaPost = " [" + Fea["Add" + old] + "]";
+		FeaPost = " #[" + Fea["Add" + old] + "]#";
 	} else if (FeaUse) {
-		FeaPost = " [" + FeaUse + "]";
+		FeaPost = " #[" + FeaUse + "]#";
 	}
 
 	var FeaName = SubChoice && FeaKey[SubChoice] ? FeaKey[SubChoice].name : FeaKey.name;
-	var FeaFirstLine = "\u25C6 " + FeaName + FeaRef;
+	var FeaFirstLine = "#\u25C6 " + FeaName + "#" + FeaRef;
 	var FeaDescr = Fea["Descr" + old];
 	if (isArray(FeaDescr)) FeaDescr = desc(FeaDescr);
 	if (What("Unit System") == "metric") {
 		FeaPost = ConvertToMetric(FeaPost, 0.5);
 		FeaDescr = ConvertToMetric(FeaDescr, 0.5);
 	}
-	var FeaOtherLines = FeaPost + FeaDescr;
 
-	return [FeaFirstLine + (Fea.extFirst ? FeaPost : ""), "\r" + FeaFirstLine + FeaOtherLines, FeaFirstLine];
+	return [
+		FeaFirstLine + (Fea.extFirst ? FeaPost : ""),
+		"\r" + FeaFirstLine + FeaPost + FeaDescr,
+		FeaFirstLine
+	];
 };
 
 function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld, ForceExtraname) {
@@ -5842,23 +5875,26 @@ function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld
 	var FeaUse = Fea["Use" + old] + (Fea["Use" + old] && !isNaN(Fea["Use" + old]) ? "\xD7 per " : "") + Fea["Recov" + old] + (Fea["AltRecov" + old] ? " or " + Fea["AltRecov" + old] : "");
 	var FeaPost = "";
 	if (Fea["Add" + old] && FeaUse) {
-		FeaPost = " [" + Fea["Add" + old] + ", " + FeaUse + "]";
+		FeaPost = " #[" + Fea["Add" + old] + ", " + FeaUse + "]#";
 	} else if (Fea["Add" + old]) {
-		FeaPost = " [" + Fea["Add" + old] + "]";
+		FeaPost = " #[" + Fea["Add" + old] + "]#";
 	} else if (FeaUse) {
-		FeaPost = " [" + FeaUse + "]";
+		FeaPost = " #[" + FeaUse + "]#";
 	};
 
-	var FeaFirstLine = "\u25C6 " + FeaKey.name + FeaRef;
+	var FeaFirstLine = "#\u25C6 " + FeaKey.name + "#" + FeaRef;
 	var FeaDescr = Fea["Descr" + old];
 	if (isArray(FeaDescr)) FeaDescr = desc(FeaDescr);
 	if (What("Unit System") == "metric") {
 		FeaPost = ConvertToMetric(FeaPost, 0.5);
 		FeaDescr = ConvertToMetric(FeaDescr, 0.5);
 	}
-	var FeaOtherLines = FeaPost + FeaDescr;
 
-	return [FeaFirstLine + (ForceOld ? "" : FeaPost), "\r" + FeaFirstLine + FeaOtherLines, FeaFirstLine];
+	return [
+		FeaFirstLine + (ForceOld ? "" : FeaPost),
+		"\r" + FeaFirstLine + FeaPost + FeaDescr,
+		FeaFirstLine
+	];
 };
 
 //change all the level-variables gained from classes and races
@@ -6061,17 +6097,16 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			thermoM(1/5);
 
 			// process the class heading
+			var newHeaderString = "**" + cl.fullname + ", level " + newClassLvl[aClass] + ":**";
 			if (newClassLvl[aClass] == 0) { // remove the heading
-				var oldHeaderString = cl.fullname + ", level " + oldClassLvl[aClass] + ":";
-				if (What("Class Features").indexOf("\r\r" + oldHeaderString) !== -1) oldHeaderString = "\r\r" + oldHeaderString;
-				RemoveString("Class Features", oldHeaderString, false);
+				var oldHeaderString = ".*[*_~#]+" + cl.fullname.RegEscape() + ".*, level \\d+.*";
+				if (RegExp("\\r\\r" + oldHeaderString, "i").test(What("Class Features"))) oldHeaderString = "\\r\\r" + oldHeaderString;
+				RemoveString("Class Features", oldHeaderString, false, true);
 			} else if (oldClassLvl[aClass] == 0) { // add the heading
-				var newHeaderString = cl.fullname + ", level " + newClassLvl[aClass] + ":";
 				if (What("Class Features")) newHeaderString = "\r\r" + newHeaderString;
 				AddString("Class Features", newHeaderString, false);
 			} else { // update the heading
-				var newHeaderString = cl.fullname + ", level " + newClassLvl[aClass] + ":";
-				var oldHeaderString = !classes.old[aClass] ? "" : classes.old[aClass].fullname.RegEscape() + ".*, level \\d+:";
+				var oldHeaderString = !classes.old[aClass] ? "" : ".*[*_~#]+" + classes.old[aClass].fullname.RegEscape() + ".*, level \\d+.*";
 				ReplaceString("Class Features", newHeaderString, false, oldHeaderString, true);
 			}
 
@@ -8264,7 +8299,10 @@ function ApplyColorScheme(aColour) {
 	}
 	// See if any of the Ability Save DC's or the HP Dragons have the color connected to this
 	if (What("Color.DC").indexOf("headers") != -1) ApplyDCColorScheme();
-	if (What("Color.HPDragon") == "headers") ApplyHPDragonColorScheme();
+	
+
+	// Refresh field that use headers
+	redoFieldFormatIfColored();
 
 	thermoM(thermoTxt, true); // Stop progress bar
 }
@@ -9288,11 +9326,13 @@ function SetUnitDecimals_Button() {
 }
 
 function SetTextOptions_Button() {
-	var FontSize = CurrentVars.fontsize !== undefined ? CurrentVars.fontsize : typePF ? 7 : 5.74;
+	var FontDefSize = typePF ? 7 : 5.74;
+	var FontSize = CurrentVars.fontsize !== undefined ? CurrentVars.fontsize : FontDefSize;
 	var nowFont = tDoc.getField((tDoc.info.AdvLogOnly ? "AdvLog." : "") + "Player Name").textFont;
 	var FontDef = typePF ? "SegoeUI" : "SegoePrint";
-	var FontDefSize = typePF ? 7 : 5.74;
 	if (FontList[nowFont]) FontDefSize = FontList[nowFont];
+	var linespacingDefSize = typePF ? 11 : 10;
+	var linespacingSize = CurrentVars.linespacing !== undefined ? CurrentVars.linespacing : linespacingDefSize;
 
 	var fontArray = {};
 	for (var fo in FontList) {
@@ -9309,12 +9349,18 @@ function SetTextOptions_Button() {
 	SetTextOptions_Dialog.bFont = nowFont;
 	SetTextOptions_Dialog.bFontsArray = fontArray;
 
+	// linespacing
+	SetTextOptions_Dialog.linespacingDefSize = linespacingDefSize.toString();
+	SetTextOptions_Dialog.linespacingSize = linespacingSize.toString();
+
 	// Call the dialog and do something if ok is pressed
 	if (app.execDialog(SetTextOptions_Dialog) === "ok") {
-		if (SetTextOptions_Dialog.bSize !== FontSize) {
-			ToggleTextSize(SetTextOptions_Dialog.bSize);
+		var newFontSize = SetTextOptions_Dialog.bSize != FontSize ? SetTextOptions_Dialog.bSize : FontSize;
+		var newLinespacing = SetTextOptions_Dialog.linespacingSize != linespacingSize ? SetTextOptions_Dialog.linespacingSize : linespacingSize;
+		if (newFontSize || newLinespacing) {
+			ToggleTextSize(newFontSize, newLinespacing);
 		}
-		if (SetTextOptions_Dialog.bFont !== nowFont) {
+		if (SetTextOptions_Dialog.bFont != nowFont) {
 			ChangeFont(SetTextOptions_Dialog.bFont);
 		}
 	}

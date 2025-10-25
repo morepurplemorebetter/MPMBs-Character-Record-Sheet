@@ -1466,28 +1466,30 @@ function processExtraLimitedFeatures(AddRemove, srcNm, objArr) {
 }
 
 // add/remove a class feature text, replace the first line of it, or insert it after another
-// the string is assumed to start with "\u25C6" (ParseClassFeature | ParseClassFeatureExtra)
+// the string is assumed to start with "#" (ParseClassFeature | ParseClassFeatureExtra)
 // for possible values of 'act', see the switch statement
 // each ...TxtA is [firstline, completetext]
 function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 	if (!oldTxtA || !oldTxtA[0]) return false; // no oldTxt, so we can't do anything
 
 	// make some regex objects
-	var fReplaceLinebreaks = function(str) {
+	var getRx = function(str) {
 		var sEscaped = str.replace(/\n/g, '\r').replace(/^\r+/, '').RegEscape();
 		var sJustLine = RegExp(sEscaped + ".*", "i");
-		var sFullSection = RegExp("\\r?" + sEscaped + "(.|\\r\\s\\s|\\r\\w)*", "i"); // everything until the first line that doesn't start with two spaces or a letter/number (e.g. an empty line or a new bullet point)
-		return [sJustLine, sFullSection];
+		// Regex for everything until the first empty line or the first line that doesn't start with a "#" (the header format character)
+		var sFullSection = RegExp("\\r?" + sEscaped + ".*(\r[^\r#].*)*", "i"); 
+		return {
+			head: sJustLine,
+			full: sFullSection,
+		};
 	}
-	var oldFrstLnRx = fReplaceLinebreaks(oldTxtA[0]);
-	var oldRxHead = oldFrstLnRx[0];
-	var oldRx = oldFrstLnRx[1];
+	var oldRx = getRx(oldTxtA[0]);
 
 	// find the field we are supposed to update
 	var fld = fldA[0];
 	if (fldA.length > 1) {
 		for (var i = 0; i < fldA.length; i++) {
-			if (oldRx.test(What(fldA[i]))) {
+			if (oldRx.full.test(What(fldA[i]))) {
 				fld = fldA[i];
 				break;
 			}
@@ -1499,19 +1501,19 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 	// apply the change
 	switch (act) {
 		case "first" : // update just the first line (usages, recovery, or additional changed)
-			var changeTxt = fldTxt.replace(oldRxHead, newTxtA[0]);
+			var changeTxt = fldTxt.replace(oldRx.head, newTxtA[0]);
 			break;
 		case "replace" : // replace the oldTxt with the newTxt
-			var changeTxt = fldTxt.replace(oldRx, newTxtA[1]);
+			var changeTxt = fldTxt.replace(oldRx.full, newTxtA[1]);
 			break;
 		case "insert" : // add the newTxt after the prevTxt
 			if (!prevTxt) return false; // no prevTxt, so we can't do anything
-			var prevFrstLnRx = fReplaceLinebreaks(prevTxt);
-			var prevTxtFound = fldTxt.match(prevFrstLnRx[1]);
+			var prevRx = getRx(prevTxt);
+			var prevTxtFound = fldTxt.match(prevRx.full);
 			var changeTxt = prevTxtFound ? fldTxt.replace(prevTxtFound[0], prevTxtFound[0] + newTxtA[1]) : fldTxt;
 			break;
 		case "remove" : // remove the oldTxt
-			var changeTxt = fldTxt.replace(oldRx, '').replace(/^\r+/, '');
+			var changeTxt = fldTxt.replace(oldRx.full, '').replace(/^\r+/, '');
 			break;
 		default :
 			return false;
@@ -2743,7 +2745,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		// Create the tooltip
 		var tooltipStr = (theMI.type ? theMI.type + ", " : "") + (theMI.rarity ? theMI.rarity : "");
 		if (theMI.attunement) tooltipStr += tooltipStr ? " (requires attunement)" : "requires attunement";
-		tooltipStr = toUni(theMI.name) + (tooltipStr ? "\n" + tooltipStr[0].toUpperCase() + tooltipStr.substr(1) : "");
+		tooltipStr = toUni(theMI.name, "bold") + (tooltipStr ? "\n" + tooltipStr[0].toUpperCase() + tooltipStr.substr(1) : "");
 
 		if (theMI.notLegalAL) {
 			tooltipStr += "\n \u2022 Illegal in Adventurers League play";

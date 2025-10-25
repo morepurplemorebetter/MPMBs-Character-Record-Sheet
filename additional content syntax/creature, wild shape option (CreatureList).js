@@ -42,7 +42,7 @@
 	        	You will also need the syntax for common attributes if you want to use a
 	        	custom calculation for hit points (calcChanges.hp).
 
-	Sheet:		v13.1.11 and newer
+	Sheet:		v14.0.0 and newer
 
 */
 
@@ -553,18 +553,35 @@ CreatureList["purple crawler"] = {
 	languages             	// OPTIONAL //
 	TYPE:	string
 	USE:	add text to the Features section on the Companion/Wild Shape page
+	CHANGE: v14.0.0 (formatting characters)
 
 	All of these optional attributes are strings that get their content added to the Features section.
-	Each will be preceded with a bullet point and the appropriate name, for example:
+	Each will be preceded with a bullet point and the appropriate name, with the name made
+	into a "header 2", for example:
 		languages : "Sylvan and Elvish",
 	Will result in:
-		◆ Languages: Sylvan and Elvish.
+		##◆ Languages##. Sylvan and Elvish.
  
 	These text are also displayed on the wild shape page, but all together in the singular Traits & Features section,
 	together with all other descriptive string, traits, features, and action attributes.
 	As the wild shape pages offer limited space, it is recommended to test if all of these and
 	the other attributes together will fit.
 	If they don't fit (well), consider using the `wildshapeString` attribute, see below.
+
+	FORMATTING CHARACTERS (since v14.0.0)
+	These can be formatted using the Rich Text formatting characters.
+	Text between the formatting characters will be displayed differently on the sheet.
+	The formatting characters are as follows:
+		*text*   = italic
+		**text** = bold
+		_text_   = underlined [doesn't work in tooltips/pop-ups]
+		~text~   = strikethrough [doesn't work in tooltips/pop-ups]
+		#text#   = Header 1:
+		           - bold and theme color (Colourful)
+		           - bold and 15% size increase (Printer Friendly)
+		##text## = Header 2:
+		           - italic, bold, and theme color (Colourful)
+		           - italic and bold (Printer Friendly)
 */
 	features : [{
 		name : "False Appearance",
@@ -607,6 +624,7 @@ CreatureList["purple crawler"] = {
 	USE:	add text to the Traits and Features sections on the Companion page
 	CHANGE:	v13.1.0 (added `joinString` attribute)
 	CHANGE:	v13.1.11 (added `notes`)
+	CHANGE: v14.0.0 (formatting characters)
 
 	Each of these three attributes work in the same way.
 	Each is an array with objects that have at least two attributes, `name` and `description`, that each contain a string.
@@ -620,24 +638,24 @@ CreatureList["purple crawler"] = {
 	For a more detailed explanation of these attributes, see below in the
 	Companion Page Only section.
 
-	Each name is preceded by a bullet point and, by default, followed by a colon and the description when
-	added to the right section, for example:
+	Each name is preceded by a bullet point, made into a "header 2" and, by default, followed
+	by a period and the description, for example:
 		{
 			name : "Invisibility",
 			description : "As an action, the purple crawler magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell)."
 		}
 	Will result in:
-		◆ Invisibility: As an action, the purple crawler magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell).
+		##◆ Invisibility##. As an action, the purple crawler magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell).
 	
-	If you want something else than a colon, you can change it to anything you like by adding the
-	`joinString` attribute. For example:
+	If you want something else than a period, you can change it to anything you like by
+	adding the `joinString` attribute. For example:
 		{
 			name : "False Appearance",
 			description : "While the purple crawler remains motionless, it is indistinguishable from an ordinary purple flower.",
 			joinString : "\n   "
 		}
 	Will result in:
-		◆ False Appearance
+		##◆ False Appearance##
 		   While the purple crawler remains motionless, it is indistinguishable from an ordinary purple flower.
 
 	If the `description` attribute is not present, no string will be added to the field.
@@ -673,6 +691,21 @@ CreatureList["purple crawler"] = {
 	As the wild shape pages offer limited space, it is recommended to test if all of
 	these and the other attributes together will fit.
 	If they don't fit (well), consider using the `wildshapeString` attribute, see below.
+
+	FORMATTING CHARACTERS (since v14.0.0)
+	The `description` can be formatted using the Rich Text formatting characters.
+	Text between the formatting characters will be displayed differently on the sheet.
+	The formatting characters are as follows:
+		*text*   = italic
+		**text** = bold
+		_text_   = underlined [doesn't work in tooltips/pop-ups]
+		~text~   = strikethrough [doesn't work in tooltips/pop-ups]
+		#text#   = Header 1:
+		           - bold and theme color (Colourful)
+		           - bold and 15% size increase (Printer Friendly)
+		##text## = Header 2:
+		           - italic, bold, and theme color (Colourful)
+		           - italic and bold (Printer Friendly)
 */
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>> //

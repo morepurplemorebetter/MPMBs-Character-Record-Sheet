@@ -1302,61 +1302,68 @@ var SetUnitDecimals_Dialog = {
 //The dialog for setting the text font size and hiding or showing text lines
 var SetTextOptions_Dialog = {
 	//variables to be set by the calling function
-	bSize : 5.74,
-	bDefSize : 8.4,
-	bDefSizeSheet : 5.74,
-	bFont : "SegoePrint",
-	bFontsArray : {"SegoeUI" : -1, "SegoeUI-Semibold" : -1},
-	fOthTest : false,
-	bDefFont : "SegoePrint",
+	bSize: "5.74",
+	bDefSize: 8.4,
+	bDefSizeSheet: 5.74,
+	bFont: "SegoePrint",
+	bFontsArray: {"SegoeUI" : -1, "SegoeUI-Semibold" : -1},
+	fOthTest: false,
+	bDefFont: "SegoePrint",
+	linespacingSize: 10,
+	linespacingDefSize: "10",
 
 	//when starting the dialog
-	initialize : function (dialog) {
-		dialog.load({
-			"img1" : allIcons.textsize,
-			"StSz" : this.bDefSize.toString(),
-			"sOSi" : this.bSize.toString(),
-			"fAlS" : this.bFontsArray,
-			"fStS" : this.bDefFont
-		});
+	initialize: function (dialog) {
+		var loadObj = {
+			"img1": allIcons.textsize,
+			"StSz": this.bDefSize.toString(),
+			"sOSi": this.bSize,
+			"fAlS": this.bFontsArray,
+			"fStS": this.bDefFont,
+			"lStS": this.linespacingDefSize,
+			"lOSi": this.linespacingSize,
+		};
 
-		dialog.enable({
-			"fStS" : false,
-			"StSz" : false
-		});
+		var enableObj = {
+			"fStS": false,
+			"StSz": false,
+			"lStS": false,
+		};
 
-		if (Number(this.bSize) === this.bDefSize) {
-			dialog.load({
-				"sSta" : true
-			});
+		if (this.bSize == this.bDefSize) {
+			loadObj.sSta = true;
 		} else if (Number(this.bSize) === 0) {
-			dialog.load({
-				"sAut" : true
-			});
+			loadObj.sAut = true;
+			enableObj.lSta = false;
+			enableObj.lNon = false;
+			enableObj.lOth = false;
+			enableObj.lOSi = false;
 		} else {
-			dialog.load({
-				"sOth" : true
-			});
+			loadObj.sOth = true;
 		}
 
-		if (this.bFont === this.bDefFont) {
-			dialog.load({
-				"fSta" : true
-			});
+		if (this.bFont == this.bDefFont) {
+			loadObj.fSta = true;
 		} else if (this.bFontsArray[this.bFont]) {
-			dialog.load({
-				"fAlt" : true
-			});
+			loadObj.fAlt = true;
 		} else {
-			dialog.load({
-				"fOth" : true,
-				"fOtS" : this.bFont
-			});
+			loadObj.fOth = true;
+			loadObj.fOtS = this.bFont;
 		}
+
+		if (this.linespacingSize == this.linespacingDefSize) {
+			loadObj.lSta = true;
+		} else if (Number(this.linespacingSize) === 0) {
+			loadObj.lNon = true;
+		} else {
+			loadObj.lOth = true;
+		}
+		dialog.load(loadObj);
+		dialog.enable(enableObj);
 	},
 
 	//when pressing the ok button
-	commit : function (dialog) {
+	commit: function (dialog) {
 		var oResult = dialog.store();
 
 		if (oResult["sSta"]) {
@@ -1385,31 +1392,49 @@ var SetTextOptions_Dialog = {
 				this.bFont = this.bDefFont;
 			}
 		}
+
+		if (oResult["sAut"]) {
+			// ignore changes to linespacing if font size is set to Auto
+		} else if (oResult["lSta"]) {
+			this.linespacingSize = oResult["lStS"];
+		} else if (oResult["lNon"]) {
+			this.linespacingSize = 0;
+		} else if (oResult["lOth"]) {
+			this.linespacingSize = oResult["lOSi"];
+		}
 	},
 
-	//do this whenever a number is entered to make sure it has a dot as decimal separator and not trailing zeroes
-	sOSi : function (dialog) {
-		var cResult = dialog.store()["sOSi"];
+	// Do this whenever a number is entered to make sure it has a dot as decimal separator and not trailing zeroes
+	fixDecimal: function (dialog, editNm, radioNm) {
+		var cResult = dialog.store()[editNm];
 		if (isNaN(cResult) && (/,/).test(cResult)) {
 			var Parsed = parseFloat(cResult.replace(/,/, "."));
 		} else {
 			var Parsed = parseFloat(cResult);
 		}
+		var loadObj = {};
+		loadObj[editNm] = Parsed.toString();
+		if (radioNm) loadObj[radioNm] = true;
 
-		dialog.load({
-			"sOth" : true,
-			"sOSi" : Parsed.toString()
-		});
+		dialog.load(loadObj);
 	},
 
-	fSta : function (dialog) {
+	sOSi: function (dialog) {
+		this.fixDecimal(dialog, "sOSi", "sOth");
+	},
+
+	lOSi: function (dialog) {
+		this.fixDecimal(dialog, "lOSi", "lOth");
+	},
+
+	fSta: function (dialog) {
 		this.bDefSize = this.bDefSizeSheet;
 		dialog.load({
-			"StSz" : this.bDefSize.toString()
+			"StSz": this.bDefSize.toString()
 		});
 	},
 
-	fAlt : function (dialog) {
+	fAlt: function (dialog) {
 		var fontResult = dialog.store()["fAlS"];
 		var cResult = "";
 		for (var Fo in fontResult) {
@@ -1420,13 +1445,13 @@ var SetTextOptions_Dialog = {
 		if (testFont(cResult)) {
 			this.bDefSize = FontList[cResult];
 			dialog.load({
-				"fAlt" : true,
-				"StSz" : this.bDefSize.toString()
+				"fAlt": true,
+				"StSz": this.bDefSize.toString()
 			});
 		}
 	},
 
-	fAlS : function (dialog) {
+	fAlS: function (dialog) {
 		var fontResult = dialog.store()["fAlS"];
 		var cResult = "";
 		for (var Fo in fontResult) {
@@ -1437,243 +1462,298 @@ var SetTextOptions_Dialog = {
 		if (cResult === "") {
 			this.bDefSize = this.bDefSizeSheet;
 			dialog.load({
-				"StSz" : this.bDefSize.toString()
+				"StSz": this.bDefSize.toString()
 			});
 		} else if (testFont(cResult)) {
 			this.bDefSize = FontList[cResult];
 			dialog.load({
-				"fAlt" : true,
-				"StSz" : this.bDefSize.toString()
+				"fAlt": true,
+				"StSz": this.bDefSize.toString()
 			});
 		} else {
 			app.alert({
-				cMsg : "The font \"" + cResult + "\" does not appear to be working on your machine.\nEither it isn't spelled in the proper PDSysFont way, or it is not found on your system.\n\nNote that writing a font as a PDSysFont is not straightforward. You can use the names in the drop-down box as a guide (i.e. don't use spaces and pay attention to capitalization).",
-				nIcon : 0,
-				cTitle : "Error trying to apply the font"
+				cMsg: "The font \"" + cResult + "\" does not appear to be working on your machine.\nEither it isn't spelled in the proper PDSysFont way, or it is not found on your system.\n\nNote that writing a font as a PDSysFont is not straightforward. You can use the names in the drop-down box as a guide (i.e. don't use spaces and pay attention to capitalization), and ask for help on the MPMB Discord server.",
+				nIcon: 0,
+				cTitle: "Error trying to apply the font"
 			});
 			this.bDefSize = this.bDefSizeSheet;
 			dialog.load({
-				"fSta" : true,
-				"StSz" : this.bDefSize.toString()
-			});
-		}
-	},
-	fOth : function (dialog) {
-		var cResult = dialog.store()["fOtS"];
-
-		if (cResult === "") {
-			this.bDefSize = this.bDefSizeSheet;
-			this.fOthTest = false;
-			dialog.load({
-				"StSz" : this.bDefSize.toString()
-			});
-		} else if (testFont(cResult)) {
-			this.bDefSize = this.bDefSizeSheet;
-			this.fOthTest = true;
-			dialog.load({
-				"StSz" : this.bDefSize.toString()
-			});
-		} else {
-			this.fOthTest = false;
-			app.alert({
-				cMsg : "The font \"" + cResult + "\" does not appear to be working on your machine.\nEither it isn't spelled in the proper PDSysFont way, or it is not found on your system.\n\nNote that writing a font as a PDSysFont is not straightforward. You can use the names in the drop-down box as a guide (i.e. don't use spaces and pay attention to capitalization).",
-				nIcon : 0,
-				cTitle : "Error trying to apply the font"
-			});
-			this.bDefSize = this.bDefSizeSheet;
-			dialog.load({
-				"fSta" : true,
-				"StSz" : this.bDefSize.toString()
+				"fSta": true,
+				"StSz": this.bDefSize.toString()
 			});
 		}
 	},
 
-	fOtS : function (dialog) {
+	testCustomFont: function (dialog, updateCustomFontField) {
 		var cResult = dialog.store()["fOtS"].replace(/\s+/g, "");
 
+		this.bDefSize = this.bDefSizeSheet;
+		var loadObj = {
+			"fOth": this.bDefSize.toString(),
+		};
 		if (cResult === "") {
-			this.bDefSize = this.bDefSizeSheet;
 			this.fOthTest = false;
-			dialog.load({
-				"StSz" : this.bDefSize.toString()
-			});
 		} else if (testFont(cResult)) {
-			this.bDefSize = this.bDefSizeSheet;
 			this.fOthTest = true;
-			dialog.load({
-				"fOth" : true,
-				"fOtS" : cResult.toString(),
-				"StSz" : this.bDefSize.toString()
-			});
+			if (updateCustomFontField) {
+				loadObj.fOtS = cResult.toString();
+				loadObj.fOth = true;
+			}
 		} else {
 			this.fOthTest = false;
 			app.alert({
-				cMsg : "The font \"" + cResult + "\" does not appear to be working on your machine.\nEither it isn't spelled in the proper PDSysFont way, or it is not found on your system.\n\nNote that writing a font as a PDSysFont is not straightforward. You can use the names in the drop-down box as a guide (i.e. don't use spaces and pay attention to capitalization).",
-				nIcon : 0,
-				cTitle : "Error trying to apply the font"
-			});
-			this.bDefSize = this.bDefSizeSheet;
-			dialog.load({
-				"fSta" : true,
-				"StSz" : this.bDefSize.toString()
+				cMsg: "The font \"" + cResult + "\" does not appear to be working on your machine.\nEither it isn't spelled in the proper PDSysFont way, or it is not found on your system.\n\nNote that writing a font as a PDSysFont is not straightforward. You can use the names in the drop-down box as a guide (i.e. don't use spaces and pay attention to capitalization).",
+				nIcon: 0,
+				cTitle: "Error trying to apply the font"
 			});
 		}
+		dialog.load(loadObj);
 	},
 
-	description : {
-		name : "Set the Font, the Font Size, and Hide Text Lines",
-		elements : [{
-			type : "view",
-			elements : [{
-				type : "view",
-				elements : [{
-					type : "view",
-					align_children : "align_row",
-					elements : [{
-						type : "image",
-						item_id : "img1",
-						width : 20,
-						height : 20
+	fOth: function (dialog) {
+		this.testCustomFont(dialog);
+	},
+
+	fOtS: function (dialog) {
+		this.testCustomFont(dialog, true);
+	},
+
+	// Disable the line spacing cluster if font size is set to auto
+	enableLinespacing: function (dialog, bEnable) {
+		dialog.enable({
+			'lSta': bEnable,
+			'lNon': bEnable,
+			'lOth': bEnable,
+			'lOSi': bEnable,
+		});
+	},
+
+	sSta: function (dialog) {
+		this.enableLinespacing(dialog, true);
+	},
+	sAut: function (dialog) {
+		this.enableLinespacing(dialog, false);
+	},
+	sOth: function (dialog) {
+		this.enableLinespacing(dialog, true);
+	},
+
+	description: {
+		name: "Set the Font and the Font Size",
+		elements: [{
+			type: "view",
+			elements: [{
+				type: "view",
+				elements: [{
+					type: "view",
+					align_children: "align_row",
+					elements: [{
+						type: "image",
+						item_id: "img1",
+						width: 20,
+						height: 20
 					}, {
-						type : "static_text",
-						item_id : "head",
-						alignment : "align_fill",
-						font : "title",
-						bold : true,
-						height : 21,
-						char_width : 40,
-						name : "Set the Font and the Font Size"
+						type: "static_text",
+						item_id: "head",
+						alignment: "align_fill",
+						font: "title",
+						bold: true,
+						height: 21,
+						char_width: 40,
+						name: "Font, Font Size, and Line Spacing"
 					}]
 				}, {
-					type : "static_text",
-					item_id : "txt0",
-					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					char_width : 50,
-					name : "Below you can set the font size and change the font of all the form fields.\n\nNote that if you use a font of your own choosing (custom font), it might not be possible to align the text properly with the text lines, regardless of the font size you select."
-				}, {
-					type : "static_text",
-					item_id : "txt1",
-					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					char_width : 50,
-					name : "The settings for font size will be applied to all text fields that support multiple lines of text. Fields with a single line of text have a font size of 'auto'.\n\nIf you set the font size to 'auto', the text will resize to the size of the field. You can subsequently make the text smaller by entering more text or by entering line breaks."
-				}, {
-					type : "cluster",
-					align_children : "align_left",
-					char_width : 50,
-					name : "Select the Font",
-					font : "heading",
-					bold : true,
-					elements : [{
-						type : "view",
-						align_children : "align_distribute",
-						height : 23,
-						elements : [{
-							type : "radio",
-							item_id : "fSta",
-							group_id : "Font",
-							name : "Default font:",
-							height : 22
+					type: "cluster",
+					align_children: "align_left",
+					char_width: 50,
+					name: "Font (all form fields)",
+					font: "heading",
+					bold: true,
+					elements: [{
+						type: "static_text",
+						item_id: "txFn",
+						alignment: "align_fill",
+						font: "dialog",
+						wrap_name: true,
+						char_width: 40,
+						name: "This applied to all form fields.\nTo set a font of your own choosing (custom font), you need to provide its system name (PDSysFont name) exactly. Unfortunately, Acrobat doesn't allow the automation to provide these for you. Ask on Discord if you need help with this."
+					}, {
+						type: "view",
+						align_children: "align_distribute",
+						height: 23,
+						elements: [{
+							type: "radio",
+							item_id: "fSta",
+							group_id: "Font",
+							name: "Default font:",
+							height: 22
 						}, {
-							type : "edit_text",
-							item_id : "fStS",
-							char_width : 8,
-							height : 20,
-							font : "dialog",
-							bold : true
+							type: "edit_text",
+							item_id: "fStS",
+							char_width: 8,
+							height: 20,
+							font: "dialog",
+							bold: true
 						}]
 					}, {
-						type : "view",
-						align_children : "align_distribute",
-						height : 23,
-						elements : [{
-							type : "radio",
-							item_id : "fAlt",
-							group_id : "Font",
-							name : "Tested font, can be aligned with the lines in Adobe Acrobat:",
-							height : 22
+						type: "view",
+						align_children: "align_distribute",
+						height: 23,
+						elements: [{
+							type: "radio",
+							item_id: "fAlt",
+							group_id: "Font",
+							name: "Tested font with tested standard font size:",
+							height: 22
 						}, {
-							type : "popup",
-							item_id : "fAlS",
-							char_width : 10
+							type: "popup",
+							item_id: "fAlS",
+							char_width: 10
 						}]
 					}, {
-						type : "view",
-						align_children : "align_distribute",
-						height : 23,
-						elements : [{
-							type : "radio",
-							item_id : "fOth",
-							group_id : "Font",
-							name : "Custom font (using the PDSysFont font name):",
-							height : 22
+						type: "view",
+						align_children: "align_distribute",
+						height: 23,
+						elements: [{
+							type: "radio",
+							item_id: "fOth",
+							group_id: "Font",
+							name: "Custom font (using the PDSysFont font name):",
+							height: 22
 						}, {
-							type : "edit_text",
-							item_id : "fOtS",
-							char_width : 20,
-							height : 20
-						}]
-					}]
-				}, {
-					type : "cluster",
-					align_children : "align_left",
-					char_width : 50,
-					name : "Select the Font Size",
-					font : "heading",
-					bold : true,
-					elements : [{
-						type : "view",
-						align_children : "align_row",
-						height : 20,
-						elements : [{
-							type : "radio",
-							item_id : "sSta",
-							group_id : "Size",
-							name : "Standard font size, tested to align with the lines in Adobe Acrobat:"
-						}, {
-							type : "edit_text",
-							item_id : "StSz",
-							char_width : 4,
-							height : 20,
-							font : "dialog",
-							bold : true
-						}]
-					}, {
-						type : "view",
-						align_children : "align_left",
-						height : 20,
-						elements : [{
-							type : "radio",
-							item_id : "sAut",
-							group_id : "Size",
-							name : "Auto font size. The text will resize to the size of the field."
-						}]
-					}, {
-						type : "view",
-						align_children : "align_distribute",
-						height : 20,
-						elements : [{
-							type : "radio",
-							item_id : "sOth",
-							group_id : "Size",
-							name : "Custom font size (use your system's decimal separator):"
-						}, {
-							type : "edit_text",
-							item_id : "sOSi",
-							char_width : 4,
-							height : 20,
-							SpinEdit : true
+							type: "edit_text",
+							item_id: "fOtS",
+							char_width: 20,
+							height: 20
 						}]
 					}]
 				}, {
-					type : "gap",
-					height : 8
+					type: "cluster",
+					align_children: "align_left",
+					char_width: 50,
+					name: "Font Size (multiline fields)",
+					font: "heading",
+					bold: true,
+					elements: [{
+						type: "static_text",
+						item_id: "txSz",
+						alignment: "align_fill",
+						font: "dialog",
+						wrap_name: true,
+						char_width: 40,
+						name: 'This applies to all multi-line text fields. "Auto" font size means the text will resize to fit the field. Single-line fields always have auto font size.'+
+						'\nTIP: Add line breaks to shrink the text.'+
+						'\nWARNING: "Auto" font size is incompatible with rich text formatting like bold, underline, and ' + (typePF ? 'italic.' : 'colors.')
+					}, {
+						type: "view",
+						align_children: "align_row",
+						height: 20,
+						elements: [{
+							type: "radio",
+							item_id: "sSta",
+							group_id: "Size",
+							name: "Standard font size, tested to work well with the automation-provided descriptions:"
+						}, {
+							type: "edit_text",
+							item_id: "StSz",
+							char_width: 4,
+							height: 20,
+							font: "dialog",
+							bold: true
+						}]
+					}, {
+						type: "view",
+						align_children: "align_left",
+						height: 20,
+						elements: [{
+							type: "radio",
+							item_id: "sAut",
+							group_id: "Size",
+							name: 'Auto font size (resize to fit field). Incompatible with rich text formatting!'
+						}]
+					}, {
+						type: "view",
+						align_children: "align_distribute",
+						height: 20,
+						elements: [{
+							type: "radio",
+							item_id: "sOth",
+							group_id: "Size",
+							name: "Custom font size (use your system's decimal separator):"
+						}, {
+							type: "edit_text",
+							item_id: "sOSi",
+							char_width: 4,
+							height: 20,
+							SpinEdit: true
+						}]
+					}]
+				}, {
+					type: "cluster",
+					align_children: "align_left",
+					char_width: 50,
+					name: "Line Spacing (multiline fields)",
+					font: "heading",
+					bold: true,
+					elements: [{
+						type: "static_text",
+						item_id: "txLi",
+						alignment: "align_fill",
+						font: "dialog",
+						wrap_name: true,
+						char_width: 40,
+						name: 'This is the amount of space between lines of text, which only applies to multi-line text fields.'+
+						'\nThis setting is ignored if the font size is set to "Auto" above.'
+					}, {
+						type: "view",
+						align_children: "align_row",
+						height: 20,
+						elements: [{
+							type: "radio",
+							item_id: "lSta",
+							group_id: "Line",
+							name: "Default line spacing, making text align with the background lines."
+						}, {
+							type: "edit_text",
+							item_id: "lStS",
+							char_width: 4,
+							height: 20,
+							font: "dialog",
+							bold: true
+						}]
+					}, {
+						type: "view",
+						align_children: "align_left",
+						height: 20,
+						elements: [{
+							type: "radio",
+							item_id: "lNon",
+							group_id: "Line",
+							name: 'Single line spacing, determined by the font.'
+						}]
+					}, {
+						type: "view",
+						align_children: "align_distribute",
+						height: 20,
+						elements: [{
+							type: "radio",
+							item_id: "lOth",
+							group_id: "Line",
+							name: "Custom line spacing (use your system's decimal separator):"
+						}, {
+							type: "edit_text",
+							item_id: "lOSi",
+							char_width: 4,
+							height: 20,
+							SpinEdit: true
+						}]
+					}]
+				}, {
+					type: "gap",
+					height: 8
 				}]
 			}, {
-				type : "ok_cancel"
+				type: "ok_cancel"
 			}]
 		}]
 	}

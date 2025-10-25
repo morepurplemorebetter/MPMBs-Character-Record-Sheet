@@ -40,7 +40,7 @@
 	        	You will also need the syntax for common attributes for certain attributes,
 				as they are identical as described there and refer to that file.
 
-	Sheet:		v13.1.0 and newer
+	Sheet:		v14.0.0 and newer
 
 */
 
@@ -58,7 +58,7 @@ var iFileName = "Homebrew Syntax - CompanionList.js";
 	Only the first occurrence of this variable will be used.
 */
 
-RequiredSheetVersion("13.1.0");
+RequiredSheetVersion("14.0.0");
 /*	RequiredSheetVersion // OPTIONAL //
 	TYPE:	function call with one variable, a string or number
 	USE:	the minimum version of the sheet required for the import script to work
@@ -132,7 +132,7 @@ CompanionList["purple familiar"] = {
 		nameOrigin : "variant of the Find Familiar 1st-level conjuration [ritual] spell",
 		source : [["HB", 105], ["Purple", 12]]
 	The resulting heading would be:
-		"Purple Familiar (variant of the Find Familiar 1st-level conjuration [ritual] spell, HB 105)"
+		"**Purple Familiar** (variant of the Find Familiar 1st-level conjuration [ritual] spell, HB 105)"
 	Note that only the first source option is used that is not set to excluded in the Source Material dialog.
 */
 	source : ["SRD", 204],
@@ -354,6 +354,7 @@ action : [
 /*	notes // OPTIONAL //
 	TYPE:	array (variable length) with objects
 	USE:	add text to the leftmost Notes sections on the Companion page
+	CHANGE: v14.0.0 (formatting characters)
 
 	This attribute works identical to the `actions` , `features`, and `traits` from the CreatureList object,
 	but the entries are added to the left Notes section instead.
@@ -368,24 +369,24 @@ action : [
 		removeeval  run a function when removed (useful combined with minlevel)
 	For a more detailed explanation of these attributes, see below.
 
-	Each name is preceded by a bullet point and, by default, followed by a colon and the description,
-	for example:
+	Each name is preceded by a bullet point, made into a "header 2" and, by default, followed
+	by a period and the description, for example:
 		{
 			name : "Invisibility",
 			description : "As an action, the purple familiar magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell)."
 		}
 	Will result in:
-		◆ Invisibility: As an action, the purple familiar magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell).
-	
-	If you want something else than a colon, you can change it to anything you like by adding the
-	`joinString` attribute. For example:
+		##◆ Invisibility##. As an action, the purple familiar magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell).
+
+	If you want something else than a period, you can change it to anything you like by
+	adding the `joinString` attribute. For example:
 		{
 			name : "False Appearance (HB 105)",
 			description : "While the purple familiar remains motionless, it is indistinguishable from an ordinary purple flower.",
 			joinString : "\n   "
 		}
 	Will result in:
-		◆ False Appearance (HB 105)
+		##◆ False Appearance (HB 105)##
 		   While the purple familiar remains motionless, it is indistinguishable from an ordinary purple flower.
 
 	If the `description` attribute is not present, no string will be added to the field.
@@ -393,6 +394,21 @@ action : [
 
 	As these are added to the Notes section, it shouldn't interfere with any of the
 	`traits`, `features`, or `actions` defined by a CreatureList object.
+
+	FORMATTING CHARACTERS (since v14.0.0)
+	The `description` can be formatted using the Rich Text formatting characters.
+	Text between the formatting characters will be displayed differently on the sheet.
+	The formatting characters are as follows:
+		*text*   = italic
+		**text** = bold
+		_text_   = underlined [doesn't work in tooltips/pop-ups]
+		~text~   = strikethrough [doesn't work in tooltips/pop-ups]
+		#text#   = Header 1:
+		           - bold and theme color (Colourful)
+		           - bold and 15% size increase (Printer Friendly)
+		##text## = Header 2:
+		           - italic, bold, and theme color (Colourful)
+		           - italic and bold (Printer Friendly)
 
 	The array is processed in the order it is in the code, no sorting will take place.
 */

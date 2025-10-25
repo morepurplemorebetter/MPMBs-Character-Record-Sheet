@@ -297,7 +297,6 @@ var Base_ClassList = {
 			"\n \u2022 Leather armor and a dagger." +
 			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Bard College", ["bard-college of lore"]],
-		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : 1,
 		spellcastingKnown : {
 			cantrips : [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
@@ -454,7 +453,6 @@ var Base_ClassList = {
 			"\n \u2022 A shield and a holy symbol." +
 			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Divine Domain", ["cleric-life domain"]],
-		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : 1,
 		spellcastingKnown : {
 			cantrips : [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
@@ -553,7 +551,6 @@ var Base_ClassList = {
 			"\n \u2022 Leather armor, an explorer's pack, and a druidic focus." +
 			"\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Druid Circle", ["druid-circle of the land"]],
-		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : 1,
 		spellcastingKnown : {
 			cantrips : [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
@@ -1443,7 +1440,7 @@ var Base_ClassList = {
 		regExpSearch : /(rogue|miscreant)/i,
 		name : "Rogue",
 		source : [["SRD", 39], ["P", 94]],
-		primaryAbility : "Rogue: Dexterity",
+		primaryAbility : "Dexterity",
 		prereqs : "Dexterity 13",
 		improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6],
 		die : 8,
@@ -1470,7 +1467,6 @@ var Base_ClassList = {
 			"\n \u2022 Leather armor, two daggers, and thieves' tools." +
 			"\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Roguish Archetype", ["rogue-thief"]],
-		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		features : {
 			"expertise" : function() {
 				var a = {
@@ -1640,7 +1636,6 @@ var Base_ClassList = {
 			"\n \u2022 Two daggers." +
 			"\n\nAlternatively, choose 3d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Sorcerous Origin", ["sorcerer-draconic bloodline"]],
-		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : 1,
 		spellcastingKnown : {
 			cantrips : [4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
@@ -1785,7 +1780,6 @@ var Base_ClassList = {
 			"\n \u2022 Leather armor, any simple weapon, and two daggers." +
 			"\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Otherworldly Patron", ["warlock-the fiend"]],
-		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : "warlock1",
 		spellcastingKnown : {
 			cantrips : [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
@@ -2482,7 +2476,6 @@ var Base_ClassList = {
 			"\n \u2022 A spellbook." +
 			"\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Arcane Tradition", ["wizard-evocation"]],
-		attacks : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		spellcastingFactor : 1,
 		spellcastingKnown : {
 			cantrips : [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
