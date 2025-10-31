@@ -2636,7 +2636,7 @@ toNotesPage : [{
 		are some limitations to consider.
 			1. Formatting characters don't work across line breaks (`\r` and `\n`).
 				This won't work:
-					"**text before and" + "\n" + "text after line break**""
+					"**text before and" + "\n" + "text after line break**"
 				Instead do this:
 					"**text before and**" + "\n" + "**text after line break**"
 			2. Combining formatting characters requires them to be in the same or reversed order.
@@ -2648,9 +2648,9 @@ toNotesPage : [{
 					"_**~underlined, strikethrough, and bold_**~"
 			3. Tabs (`\t`) and multiple spaces will break the formatting if the field is edited manually.
 				This should be avoided:
-					"**text before and" + "\t" + "text after tab**""
+					"**text before and" + "\t" + "text after tab**"
 				Instead do this:
-					"**text before and**" + "\t" + "**text after tab**
+					"**text before and**" + "\t" + "**text after tab**"
 
 		Be aware that the default font on the Colourful sheets is already italic,
 		so making something only italic won't be visible on the Colourful sheets.

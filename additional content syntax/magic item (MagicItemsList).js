@@ -365,7 +365,7 @@ MagicItemsList["staff of purple"] = {
 				"**text before and**" + "\n" + "**text after line break**"
 		2. Combining formatting characters requires them to be in the same or reversed order.
 			This won't work:
-				_**~underlined, strikethrough, and bold**_~"
+				"_**~underlined, strikethrough, and bold**_~"
 			Instead do this:
 				"_**~underlined, strikethrough, and bold~**_"
 			or this:
@@ -374,7 +374,7 @@ MagicItemsList["staff of purple"] = {
 			This should be avoided:
 				"**text before and" + "\t" + "text after tab**"
 			Instead do this:
-				"**text before and**" + "\t" + "**text after tab**
+				"**text before and**" + "\t" + "**text after tab**"
 
 	Be aware that the default font on the Colourful sheets is already italic,
 	so making something only italic won't be visible on the Colourful sheets.
