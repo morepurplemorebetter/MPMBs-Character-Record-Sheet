@@ -216,22 +216,30 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.scoresOverride) processStats(addIt, type, tipNm, uObj.scoresOverride, abiScoresTxt, "overrides");
 
 		// spellcasting
+		var logChangedSpells = false;
 		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent, objNm, forceNonCurrent ? true : false);
-		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform !== undefined)) {
+		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle !== undefined || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform !== undefined || uObj.spellcastingPreparedCantrips)) {
 			var aCast = CurrentSpells[useSpCasting];
 
-			if (uObj.spellFirstColTitle) {
+			if (uObj.spellFirstColTitle != undefined) {
 				aCast.firstCol = addIt ? uObj.spellFirstColTitle : false;
-				if (!uObj.spellcastingBonus && !uObj.spellcastingExtra && !uObj.spellChanges) {
-					SetStringifieds('spells');
-					CurrentUpdates.types.push("spells");
-				}
+				logChangedSpells = true;
+			}
+
+			if (uObj.spellcastingPreparedCantrips) {
+				processPreparedCantrips(addIt, tipNmF, uObj.spellcastingPreparedCantrips, useSpCasting);
+				logChangedSpells = true;
 			}
 
 			if (uObj.spellcastingExtra || uObj.spellcastingExtraApplyNonconform !== undefined) {
 				processSpellcastingExtra(addIt, useSpCasting, fObj.minlevel, tipNmF, uObj.spellcastingExtra, uObj.spellcastingExtraApplyNonconform);
+				logChangedSpells = false;
 			}
-			if (uObj.spellChanges) processSpChanges(addIt, tipNmF, uObj.spellChanges, useSpCasting);
+
+			if (uObj.spellChanges) {
+				processSpChanges(addIt, tipNmF, uObj.spellChanges, useSpCasting);
+				logChangedSpells = false;
+			}
 		}
 		if (!uObj.spellcastingBonus && addIt && CurrentSpells[useSpCasting] && type !== "classes" && type !== "race" && (uObj.spellcastingAbility !== undefined || uObj.fixedDC || uObj.fixedSpAttack || uObj.allowUpCasting !== undefined || uObj.magicItemComponents !== undefined)) {
 			// will already have been processed if uObj has `spellcastingBonus`
@@ -245,9 +253,12 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			if (uObj.allowUpCasting !== undefined) aCast.allowUpCasting = uObj.allowUpCasting;
 			if (uObj.magicItemComponents !== undefined) aCast.magicItemComponents = uObj.magicItemComponents;
 
+			logChangedSpells = true;
+		};
+		if (logChangedSpells) {
 			SetStringifieds('spells');
 			CurrentUpdates.types.push("spells");
-		};
+		}
 		if (uObj.spellcastingBonusElsewhere) processSpellcastingBonusElsewhere(addIt, type, tipNm, uniqueObjNm, uObj.spellcastingBonusElsewhere);
 
 		if (addIt) addListOptions(); // add weapon/armour/ammo/creature option(s)
@@ -568,7 +579,7 @@ function SetFeatureChoice(type, objNm, feaNm, choice, extra) {
 	choice = choice ? choice.toLowerCase() : false;
 	extra = extra ? extra.toLowerCase() : false;
 	type = GetFeatureType(type);
-	if (type === "items" || type === "feats") return;
+	// if (type === "items" || type === "feats") return;
 	if (!CurrentFeatureChoices[type]) CurrentFeatureChoices[type] = {};
 	if (!choice) { // remove the choice
 		if (!CurrentFeatureChoices[type][objNm]) return;
@@ -954,6 +965,40 @@ function processSpellcastingExtra(AddRemove, spObjName, lvl, name, spExtra, spNo
 	CurrentUpdates.types.push("spells");
 }
 
+// process the spellcastingPreparedCantrips attribute
+function processPreparedCantrips(AddRemove, srcNm, prepCaList, spObjName) {
+	var aCast = CurrentSpells[spObjName];
+	if (!aCast) return;
+	if (AddRemove) {
+		aCast.preparedCantripsList = prepCaList;
+		if (!aCast.preparedCantripsListRemember) aCast.preparedCantripsListRemember = [];
+		aCast.preparedCantripsListRemember.push({
+			source: srcNm,
+			preparedCantripsList: prepCaList,
+		});
+		// enable the checkbox in the spell selection dialog
+		aCast.preparedCantrips = true;
+	} else if (aCast.preparedCantripsList && aCast.preparedCantripsListRemember) {
+		// Remove the entry
+		for (var i = aCast.preparedCantripsListRemember.length - 1; i >= 0; i--) {
+			var entry = aCast.preparedCantripsListRemember[i];
+			if (entry.source === srcNm) {
+				aCast.preparedCantripsListRemember.splice(i, 1);
+				break;
+			}
+		}
+		// Set the previously added option
+		if (aCast.preparedCantripsListRemember.length) {
+			aCast.preparedCantripsList = aCast.preparedCantripsListRemember[aCast.preparedCantripsListRemember.length - 1].preparedCantripsList;
+		} else {
+			// Delete the attributes if no entries are left to add
+			delete aCast.preparedCantrips;
+			delete aCast.preparedCantripsList;
+			delete aCast.preparedCantripsListRemember;
+		}
+	}
+}
+
 // Allow something to add a bonus spell to another spellcasting feature (e.g. magic item adds spells to spellbook of the wizard)
 /*
 var a = {spellcastingBonusElsewhere : {
@@ -1138,6 +1183,7 @@ function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrc
 			if (!bDoBonus && !bDoAddToKnown) break; // Stop the loop if both are false
 		}
 	}
+	SetStringifieds('spells');
 }
 
 // set the armour (if more AC than current armour) or remove the armour

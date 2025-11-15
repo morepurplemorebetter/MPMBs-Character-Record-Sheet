@@ -1963,7 +1963,7 @@ var Base_ClassList = {
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
 								if (spName == "book of ancient secrets") {
-									spellObj.firstCol = "(R)";
+									spellObj.firstCol = SpellRitualTag;
 									if (!(/.*(\d+ ?h\b|special|see b).*/i).test(spellObj.time)) {
 										var numMinutes = Number(spellObj.time.replace(/(\d+) ?min.*/, "$1"));
 										if (isNaN(numMinutes)) numMinutes = 0;
@@ -2388,7 +2388,7 @@ var Base_ClassList = {
 						name : "Pact of the Chain",
 						spells : ["find familiar"],
 						selection : ["find familiar"],
-						firstCol : "(R)"
+						firstCol : SpellRitualTag
 					}]
 				},
 				"pact of the tome" : {

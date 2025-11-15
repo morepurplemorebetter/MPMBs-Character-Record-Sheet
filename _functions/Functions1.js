@@ -4997,11 +4997,11 @@ function ParseFeat(input) {
 	var isMatch, isMatchSub, tempDate, tempDateSub, tempNameLen;
 	var varArr;
 
-	// Scan string for all magic items
+	// Scan string for all feat
 	for (var key in FeatsList) {
 		var kObj = FeatsList[key];
 
-		// test if the magic item or its source isn't excluded
+		// test if the feat or its source isn't excluded
 		if (testSource(key, kObj, "featsExcl")) continue;
 
 		isMatch = input.indexOf(kObj.name.toLowerCase()) !== -1;

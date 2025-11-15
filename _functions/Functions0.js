@@ -1484,8 +1484,9 @@ function formatDescriptionFull(sDescFull, bReturnRichTextStyled) {
 			if (isArray(n)) {
 				// Table, every entry in the array is a row, with the first one being the headers
 				var renderTable = n.reduce(function (finalStr, t, idx) {
+					var joinString = bReturnRichTextStyled ? "**\t**" : "\t";
 					var tableRow = typeof t === "string" ? t :
-									isArray(t) ? t.join("\t") : false;
+					               isArray(t) ? t.join(joinString) : false;
 					if (!tableRow) return finalStr;
 					if (idx === 0) {
 						tableRow = bReturnRichTextStyled ? "**" + tableRow + "**" :

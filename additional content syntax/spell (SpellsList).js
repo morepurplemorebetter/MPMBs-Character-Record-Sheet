@@ -38,7 +38,7 @@
 				If you want attack cantrips or spells to be added to the attack section,
 				use the syntax for adding a weapon (as well), see "weapon (WeaponsList).js".
 
-	Sheet:		v14.0.0 and newer
+	Sheet:		v14.0.1 and newer
 
 */
 
@@ -490,6 +490,10 @@ SpellsList["sindering purple"] = {
 /*	ritual // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this spell can be cast as a ritual
+	CHANGE: v14.0.1 (now adds registered trademark symbol instead of "(R)")
+
+	Spells with the ritual tag will gain a "®" (registered trademark symbol)
+	after their name on the spell sheet.
 
 	Setting this attribute to false is the same as not including this attribute.
 */
@@ -504,6 +508,7 @@ SpellsList["sindering purple"] = {
 /*	firstCol // OPTIONAL //
 	TYPE:	string
 	USE:	force the first column of the spell line to be set to this
+	CHANGE:	v14.0.1 (onceXr+markedbox options)
 
 	Be aware that the first column has very limited space and everything over 2 characters long will be invisible.
 	1 character enclosed in brackets will be short enough to be visible, e.g. "(R)".
@@ -514,12 +519,14 @@ SpellsList["sindering purple"] = {
 	This can be useful to indicate something like Power Point or Ki cost.
 
 	You can also use this attribute to call one of the special things the first column can be:
-		"atwill"		// the "At Will" graphic
-		"oncesr"		// the "1× SR" graphic
-		"oncelr"		// the "1× LR" graphic
-		"checkbox"		// an empty checkbox
-		"checkedbox"	// a checked checkbox
-		"markedbox"		// a checkbox checked with a star, indicating this spell is always prepared
+		"checkbox"			// an empty checkbox
+		"checkedbox"		// a checked checkbox
+		"markedbox"			// a checkbox with a star inside, indicating that this spell is always prepared
+		"atwill"			// the 'At will' graphic
+		"oncesr"			// a checkbox with 'SR' inside (once per short rest usage)
+		"oncelr"			// a checkbox with 'LR' inside (once per short long usage)
+		"oncesr+markedbox"	// two checkboxes, one with 'SR' inside and one with a star inside
+		"oncelr+markedbox"	// two checkboxes, one with 'LR' inside and one with a star inside
 
 	Setting this attribute to an empty string ("") is the same as not including this attribute.
 */
@@ -546,15 +553,17 @@ SpellsList["sindering purple"] = {
 	ADDED:	v13.0.7
 
 	IMPORTANT
-	This attribute is only useful as part of a `spellChanges` object (see "_common attributes.js").
-	It is ignored if part of a SpellsList object, because you can just not include upcasting in
-	the description.
+	This attribute is only useful as part of a `spellChanges` object or when used in a
+	`calcChanges.spellAdd` function (see "_common attributes.js").
+	It is ignored if part of a SpellsList object, because you can just not include
+	upcasting in the description.
 
-	By setting this attribute to false, you force the sheet to remove the upcasting from the spell's 
-	description.
-	Normally, the sheet will limit spells gained from a feat, magic item, or race to be cast only at
-	its lowest level, removing any upcasting options from the short spell description.
-	Use this attribute with the `spellChanges` attribute, if a class feature doesn't allow upcasting.
+	By setting this attribute to false, you force the sheet to remove the upcasting from
+	the spell's  description.
+	Normally, the sheet will limit spells gained from a feat, magic item, or race to be cast
+	only at its lowest level, removing any upcasting options from the short spell description.
+	Use this attribute with the `spellChanges` attribute, if a class feature
+	doesn't allow upcasting (see "_common attributes.js").
 */
 
 
