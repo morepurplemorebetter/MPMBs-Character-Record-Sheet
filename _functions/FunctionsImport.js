@@ -575,7 +575,7 @@ function DirectImport(consoleTrigger) {
 		if (ImportField("User Script") || newFilesScriptFrom) {
 			InitiateLists();
 			RunUserScript(true);
-			amendPsionicsToSpellsList();
+			setStuffAfterUserScripts();
 		};
 		// Set the excl./incl. sources
 		if (ImportField("CurrentSources.Stringified")) {
@@ -2574,7 +2574,7 @@ function AddUserScript(retResDia) {
 			InitiateLists();
 			RunUserScript(false, false);
 		};
-		amendPsionicsToSpellsList();
+		setStuffAfterUserScripts();
 	};
 	if (retResDia) resourceDecisionDialog(false, false, retResDia === "also"); // return to the Dialog for Selecting Resources
 };
@@ -3302,7 +3302,7 @@ function ImportScriptFileDialog(retResDia) {
 				InitiateLists();
 				RunUserScript(false, false);
 			}
-			amendPsionicsToSpellsList();
+			setStuffAfterUserScripts();
 			if (filesScriptRem !== What("User_Imported_Files.Stringified") || runScriptsTest) {
 				retResDia = "also";
 				app.alert({

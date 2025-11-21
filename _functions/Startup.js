@@ -8,7 +8,7 @@ function InitializeEverything(noButtons, noVars) {
 	if (!noVars) {
 		InitiateLists();
 		RunUserScript(true);
-		spellsAfterUserScripts();
+		setStuffAfterUserScripts();
 	};
 
 	if (!minVer) {
@@ -19,6 +19,10 @@ function InitializeEverything(noButtons, noVars) {
 		SetRichTextFields();
 		MakeAdventureLeagueMenu();
 	};
+
+	if (!tDoc.info.AdvLogOnly) {
+		setSpellVariables();
+	}
 
 	SetHighlighting();
 	if (!noButtons) MakeButtons();

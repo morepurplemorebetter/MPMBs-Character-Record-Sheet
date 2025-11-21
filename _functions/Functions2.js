@@ -6301,7 +6301,7 @@ function FunctionIsNotAvailable() {
  * @param {number} [wildshapeNo] [optional, requires `prefix`] index of the monster on wild shape page, starting with 1
  * @param {boolean|string} [returnScore] [optional] can be `true`, `false`, or `"tiebreak"`
  * 
- * @return {number} depends on returnScore: if `=== true` returns the modifier, if `== false` returns the score, if `=== "tiebreak"` returns the modifier with the score as decimals
+ * @returns {number} depends on returnScore: if `=== true` returns the modifier, if `== false` returns the score, if `=== "tiebreak"` returns the modifier with the score as decimals
  */
 function getAbiModValue(ability, prefix, wildshapeNo, returnScore) {
 	var mod = 0, score = 0, abi;
@@ -6336,7 +6336,7 @@ function getAbiModValue(ability, prefix, wildshapeNo, returnScore) {
  * @param {number} [wildshapeNo] [optional, requires `prefix`] index of the monster on wild shape page, starting with 1
  * @param {boolean} [returnAbbr] [optional] set to `true` if this should return
  * 
- * @return {number} depends on returnAbbr: if `== true` returns abbreviation ("Str", "Dex", etc.), otherwise (default) returns index number (1=Str, 2=Dex, 3=Con, 4=Int, 5=Wis, 6=Cha)
+ * @returns {number} depends on returnAbbr: if `== true` returns abbreviation ("Str", "Dex", etc.), otherwise (default) returns index number (1=Str, 2=Dex, 3=Con, 4=Int, 5=Wis, 6=Cha)
 */
 function getHighestAbility(abilities, prefix, wildshapeNo, returnAbbr) {
 	var defaultAbilities = AbilityScores.abbreviations.concat('HoS');
@@ -6897,7 +6897,7 @@ function processSkills(AddRemove, srcNm, itemArr, descrTxt) {
 		}
 	}
 	// if we generated a new descriptive text and none was provided, add it now
-	if (setDescr && descrTxt.length) CurrentProfs.skill.descrTxt[srcNm] = formatLineList(false, descrTxt);
+	if (setDescr && descrTxt.length) CurrentProfs.skill.descrTxt[srcNm] = formatLineList(false, descrTxt) + ".";
 	// then update the skill tooltips
 	setSkillTooltips();
 };
@@ -7633,23 +7633,24 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			return fullString == "both" ? total : fullString ? total[0] : total[1];
 		};
 		// A function to get the totals at the current state
-		var getTotals = function(oDeltaSpds) {
-			if (!oDeltaSpds) oDeltaSpds = {};
+		var getTotals = function(oDeltaSpds, bSetNumberValue) {
+			var fullString = bSetNumberValue ? false : true;
+			var idx = bSetNumberValue ? 1 : 0;
 			var oBaseWalk = { 
-				spd : parseSpeed("walk", set.walk.spd, "both", 0, oDeltaSpds.walkSpd),
-				enc : parseSpeed("walk", set.walk.enc, "both", 0, oDeltaSpds.walkEnc)
+				spd: parseSpeed("walk", set.walk.spd, "both", 0, oDeltaSpds.walkSpd),
+				enc: parseSpeed("walk", set.walk.enc, "both", 0, oDeltaSpds.walkEnc)
 			};
-			var oTotals = { walkSpd : oBaseWalk.spd[0], walkEnc : oBaseWalk.enc[0] };
+			var oTotals = { walkSpd: oBaseWalk.spd[idx], walkEnc: oBaseWalk.enc[idx] };
 			for (var i = 0; i < spdTypes.length; i++) {
 				var sT = spdTypes[i];
 				if (sT === "walk") continue;
-				oTotals[sT + "Spd"] = parseSpeed(sT, set[sT].spd, true, oBaseWalk.spd[2], oDeltaSpds[sT + "Spd"]);
-				oTotals[sT + "Enc"] = parseSpeed(sT, set[sT].enc, true, oBaseWalk.enc[2], oDeltaSpds[sT + "Enc"]);
+				oTotals[sT + "Spd"] = parseSpeed(sT, set[sT].spd, fullString, oBaseWalk.spd[2], oDeltaSpds[sT + "Spd"]);
+				oTotals[sT + "Enc"] = parseSpeed(sT, set[sT].enc, fullString, oBaseWalk.enc[2], oDeltaSpds[sT + "Enc"]);
 			};
 			return oTotals;
 		}
 		// Get the current expected totals before we change anything
-		var oldTotals = getTotals();
+		var oldTotals = getTotals({}, true);
 		// Get the manual changed by comparing the values of the field and the oldTotals
 		var oDeltaSpds = {};
 		var splitSpdString = function(type, str) {
@@ -8034,6 +8035,27 @@ function getHighestTotal(nmbrObj, notRound, replaceWalk, extraMods, type, withCl
 		return withCleanValue ? [returnStr, tValue, tValBeforeExtra] : returnStr;
 	}
 };
+
+/** Create a range object to use with getHighestTotal, given a certain base range
+ * This object can than be supplemented with other entries before calculated
+ * using getHighestTotal.
+ * @param {string} range a string with a number and unit (e.g. "20 ft" or "6 m")
+ * 
+ * @returns {object} attribute `base`: a number of the range in feet (e.g. `{ base:20 }`)
+ * @returns {false} if the input wasn't usable
+ */
+function getHighestTotalBaseObject(range) {
+	// First test if this is an actual range that we can use
+	var rangeParts = range.match(/(\d*[,.]?\d+).?(ft|feet|foot|m\b|metre|meter)/i);
+	if (!rangeParts) return false;
+	var rangeFT = Number(rangeParts[1].replace(",", "."));
+	if (rangeParts[2].toLowerCase()[0] === 'm') {
+		// If the range is in metres, convert it to feet
+		rangeFT = RoundTo(rangeFT / UnitsList.metric.length, 0.5);
+	}
+	// Create and return the object
+	return { base: rangeFT };
+}
 
 // open a dialog with a number of lines of choices and return the choices in an array; if knownOpt === "radio", show radio buttons instead, and return the entry selected
 // if notProficiencies is set to true, the optType will serve as the dialog header, and optSrc will serve as the multiline explanatory text

@@ -519,7 +519,7 @@ function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 			} else if (doSkills[2] == n && !isArray(uObj.skills[n]) && SkillsList.abbreviations.indexOf(uObj.skills[n]) == -1 && SkillsList.names.indexOf(uObj.skills[n]) == -1) {
 				// --- backwards compatibility --- //
 				// the class has skillstxt as skills attribute (pre v13)
-				oSkillsTxt = uObj.skills[n].replace(/^( |\n)*.*: |\;$|\.$/g, '');
+				oSkillsTxt = uObj.skills[n].replace(/^( |\n)*.*: |\;$/g, '');
 			} else {
 				// no 'skillstxt' attribute, only 'skills'
 				oSkills = uObj.skills[doSkills[2]];

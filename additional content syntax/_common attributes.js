@@ -2788,26 +2788,34 @@ magicitemsAdd : [ "Hat of Disguise", ["Staff of Power", true] ],
 	If a feature with this attribute is removed, these magic items will be removed as well.
 */
 
-featsAdd : [
+featsAdd: [
 	"Grappler",
 	{ key: "lucky" },
-	{ key: "magic initiate", choice: "wizard" }
+	{ key: "magic initiate", choice: "wizard" },
+	{ type: "origin" },
+	{ options: [
+			"Tough",
+			{ key: "shield master" },
+			{ key: "magic initiate", choice: "cleric" },
+		],
+	},
 ],
 /*	featsAdd // OPTIONAL //
 	TYPE:	array (variable length) of strings or objects
 	USE:	adds each entry in the array to one of the feat drop-downs
 	ADDED:	v14.0.0
+	CHANGE: v14.0.1 (added [TYPE 4] and [TYPE 5])
 
 	Each entry in the array is to add a single feat. Each entry must consist of either:
-	1) String with the name of the feat
+	[TYPE 1] String with the name of the feat
 		The string is added to the feat selection, regardless if this matches a feat.
 		The strings will be added exactly as written, capitalisation and all.
 
-	2) Object with `key` attribute
+	[TYPE 2] Object with `key` attribute
 		If the provided `key` attribute is present in the FeatsList, that feat's name
 		will be added, i.e. `FeatsList[key].name`.
 
-	3) Object with `key` and `choice` attributes
+	[TYPE 3] Object with `key` and `choice` attributes
 		This works the same as 2) above, except that the sheet then tries to luck for
 		the `choice` inside the feat (i.e. `FeatsList[key][choice]`).
 
@@ -2818,10 +2826,43 @@ featsAdd : [
 		If that `choice` is not viable, the parent feat's name will be added just like
 		with 2), i.e. `FeatsList[key].name`.
 
+	[TYPE 4] Object with `type` attribute
+		The player will be presented with a pop-up dialog to choose a feat with
+		a matching `type`. This type can be a string or a regular expression.
+
+		FeatsList objects without the `type` attribute will be treates as type "general".
+		Feat types have been introduced in the 2024 (5.5e) rules and are normally not
+		given for 5e (2014) feats.
+
+		In the 2024 rules, common feat types are:
+			"origin"
+			"general"
+			"fighting style"
+			"epic boon"
+			"supernatural gift"
+
+		You can define more types of feats by making a feat with something else set for their
+		`type` attribute. See the "feat (FeatsList).js" file for more details.
+
+		Already known feats, those excluded with the Source Selection dialog, and those with
+		prerequisites that have not been met won't be provided as options.
+
+	[TYPE 5] Object with `options` attribute
+		The player will be presented with a pop-up dialog to choose a feat from the given
+		list of options.
+
+		The options attribute is in itself an array.
+		Each of those entries can be [TYPE 1], [TYPE 2], or [TYPE 3] above.
+
+	The sheet test for the presence of attributes in the same order as presented above.
+	Thus, if an object has both the `key` and the `type` attribute,
+	the `type` attribute will be ignored.
 
 	An entry will only be added if there is space left in the feat section and the feat isn't already present.
 
 	If a feature with this attribute is removed, these feats will be removed as well.
+	If this attribute included an entry in the array with [TYPE 4] or [TYPE 5],
+	the sheet will then try to remove the originally selected feat.
 */
 
 // >>>>>>>>>>>>>>>>>>>>>>> //

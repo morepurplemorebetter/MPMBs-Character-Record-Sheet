@@ -495,9 +495,12 @@ function ResetAll(GoOn, noTempl, deleteImports) {
 		Value("User Script", userScriptString);
 	} else { // re-apply the imports and keep the sources setting
 		InitiateLists();
+		setStuffAfterUserScripts();
 		resourceDecisionDialog(true, true); //to make sure that even if the sheet is used before re-opening, the resources are set to default
 		UpdateDropdown("resources");
-		spellsAfterUserScripts(true);
+		setSpellVariables(true);
+		SetGearVariables();
+		ParseMagicItemMenu();
 	};
 
 	// Reset the calculation order
@@ -5280,7 +5283,6 @@ function ApplyFeat(input, FldNmbr) {
 		// Set the field description/calculation
 		if (theFeat.calculate) {
 			var theCalc = What("Unit System") === "imperial" ? theFeat.calculate : ConvertToMetric(theFeat.calculate, 0.5);
-			if (typePF) theCalc = theCalc.replace("\n", " ");
 			tDoc.getField(Fflds[2]).setAction("Calculate", theCalc);
 		}
 
@@ -5292,7 +5294,6 @@ function ApplyFeat(input, FldNmbr) {
 
 		// Get the description
 		var theDesc = !theFeat.description ? "" : What("Unit System") === "imperial" ? theFeat.description : ConvertToMetric(theFeat.description, 0.5);
-		if (typePF) theDesc = theDesc.replace("\n", " ");
 		// Set it all to the appropriate field
 		Value(Fflds[2], theDesc, tooltipStr, theFeat.calculate ? theCalc : "");
 
@@ -5641,9 +5642,120 @@ function FeatClear(itemNmbr, doAutomation) {
 }
 
 // Processing the generic `featsAdd` attribute
-function processAddFeats(bAddRemove, featsAdd) {
+function processAddFeats(bAddRemove, featsAdd, srcType, srcName, srcNameUnique) {
 	if (!featsAdd) return;
 	if (!isArray(featsAdd)) featsAdd = [featsAdd];
+
+	srcType = GetFeatureType(srcType);
+
+	var gatherVars = gatherPrereqevalVars();
+	var skipFeat = function(key, choice) {
+		var oFeat = FeatsList[key];
+		var oChoice = oFeat[choice];
+		var knownIndex = CurrentFeats.known.indexOf(key);
+		if (!oFeat || testSource(key, oFeat, "featsExcl") || (knownIndex !== -1 && !oFeat.allowDuplicates)) return true;
+		var prereqFunc = oFeat.prereqeval;
+		if (oFeat.choices && oChoice && typeof oChoice === "object") {
+			if (knownIndex !== -1 && CurrentFeats.choices[knownIndex] === choice) return true;
+			if (oChoice.source && testSource(key + "-" + choice, oChoice, "featsExcl")) return true;
+			if (oChoice.prereqeval) prereqFunc = oChoice.prereqeval;
+		}
+		if (prereqFunc) {
+			var meetsPrereq = true;
+			gatherVars.choice = choice;
+			try {
+				if (typeof prereqFunc == 'string') {
+					meetsPrereq = eval(prereqFunc);
+				} else if (typeof prereqFunc == 'function') {
+					meetsPrereq = prereqFunc(gatherVars);
+				}
+			} catch (error) {}
+			if (!meetsPrereq) return true;
+		}
+		return false;
+	}
+
+	var getFeatArrayFromType = function(sFeatType) {
+		var returnObj = {
+			options: [],
+			optionsRef: [],
+		};
+		if (sFeatType instanceof RegExp == true) {
+			var rxFeatType = sFeatType;
+			returnObj.title = "Select " + srcName.capitalize() + " Bonus Feat";
+			returnObj.message = srcName + " offers you a bonus feat.";
+		} else {
+			var rxFeatType = RegExp(sFeatType.RegEscape(), "i");
+			returnObj.title = "Select " + sFeatType.capitalize() + " Feat";
+			returnObj.message = srcName + " offers you a choice of " + sFeatType.toLowerCase() + " feat.";
+		}
+		var rxFeatType = sFeatType instanceof RegExp == true ? sFeatType : RegExp(sFeatType.RegEscape(), "i");
+		for (var key in FeatsList) {
+			var oFeat = FeatsList[key];
+			var sType = oFeat.type ? oFeat.type : "general";
+			if (rxFeatType.test(sType) && !skipFeat(key)) {
+				var sFeatDisplay = oFeat.name + stringSource(oFeat, "first", " [", "]");
+				returnObj.options.push(sFeatDisplay);
+				returnObj.optionsRef[sFeatDisplay] = oFeat.name;
+			}
+		}
+		return returnObj;
+	}
+
+	var getFeatArrayFromOptions = function(aFeatOptions, noCheck) {
+		if (!isArray(aFeatOptions)) return { options: [] };
+		var returnObj = {
+			title: "Select " + srcName.capitalize() + " Bonus Feat",
+			message: srcName + " offers you a bonus feat.",
+			options: [],
+			optionsRef: {},
+		};
+		aFeatOptions.forEach(function(entry) {
+			var sFeatName = false;
+			var oFeatSource = false;
+			if (typeof entry === "string") {
+				sFeatName = entry;
+				sourceAttr = ParseFeat(entry)
+			} else if (entry.name || entry.select) {
+				sFeatName = entry.name ? entry.name : entry.select;
+			} else if (entry.key && (noCheck || !skipFeat(entry.key, entry.choice))) {
+				var oFeat = FeatsList[entry.key];
+				var oChoice = oFeat[entry.choice];
+				sFeatName = oFeat.name;
+				var oFeatSource = oFeat;
+				if (oFeat.choices && oChoice && typeof oChoice === "object") {
+					var sChoice = oFeat.choices.filter(function (n) { return n.toLowerCase() === entry.choice; });
+					if (sChoice.length) {
+						sFeatName = oChoice.name ? oChoice.name : sFeatName + " [" + sChoice.toString() + "]";
+						if (oChoice.source) oFeatSource = oChoice;
+					}
+				}
+			}
+			if (sFeatName) {
+				if (!oFeatSource) {
+					var parsedFeat = ParseFeat(sFeatName);
+					var oFeat = FeatsList[parsedFeat[0]];
+					var oChoice = oFeat[parsedFeat[1]];
+					oFeatSource = oChoice && oChoice.source ? oChoice : oFeat;
+				}
+				var sFeatDisplay = sFeatName + stringSource(oFeatSource, "first", " [", "]");
+				returnObj.options.push(sFeatDisplay);
+				returnObj.optionsRef[sFeatDisplay] = sFeatName;
+			}
+		});
+		return returnObj;
+	}
+
+	var askUserFeat = function(dialogParts) {
+		if (dialogParts.options.length === 1) {
+			return dialogParts.optionsRef[dialogParts.options[0]];
+		} else if (dialogParts.options.length) {
+			dialogParts.options.sort();
+			return dialogParts.optionsRef[AskUserOptions(dialogParts.title, dialogParts.message + " Pick one of the options below. This list excludes feats that are already known and feats for which the prerequisites have not been met.", dialogParts.options, "radio", true, 'You can change what you select here by changing the feat selection in the corresponding section of the sheet.\nIf you do so, be aware that the newly selected feat will not automatically be removed when you remove ' + srcName + '.')];
+		} else {
+			return false;
+		}
+	}
 
 	var sFeatName;
 	// loop through all the entries
@@ -5655,23 +5767,32 @@ function processAddFeats(bAddRemove, featsAdd) {
 			sFeatName = featsAdd[i];
 		} else if (featsAdd[i].name || featsAdd[i].select) {
 			sFeatName = featsAdd[i].name ? featsAdd[i].name : featsAdd[i].select;
-		} else if (featsAdd[i].key && FeatsList[featsAdd[i].key]) {
-			var oFeat = FeatsList[featsAdd[i].key];
-			sFeatName = oFeat.name;
-			if (featsAdd[i].choice && oFeat.choices && oFeat[featsAdd[i].choice]) {
-				var sChoice = oFeat.choices.filter(function (n) { return n.toLowerCase() === featsAdd[i].choice; });
-				var oChoice = oFeat[featsAdd[i].choice];
-				if (typeof oChoice === "object" && sChoice.length) {
-					sFeatName = oChoice.name ? oChoice.name : sFeatName + " [" + sChoice.toString() + "]";
-				}
+		} else if (featsAdd[i].key) {
+			var aFeat = getFeatArrayFromOptions([featsAdd[i]], !bAddRemove).options;
+			if (aFeat.length) sFeatName = aFeat[0];
+		} else if (featsAdd[i].type || featsAdd[i].options) {
+			// Add a type of feat
+			var sSaveName = srcNameUnique ? srcNameUnique : srcName;
+			var sSaveFeature = "featsAdd_"+i;
+			if (bAddRemove) {
+				var dialogParts = featsAdd[i].type ? getFeatArrayFromType(featsAdd[i].type) : getFeatArrayFromOptions(featsAdd[i].options);
+				// Adding a feat, so let the user pick which feat of the matching type
+				sFeatName = askUserFeat(dialogParts);
+				// Store the selection if anything was chosen
+				if (sFeatName) SetFeatureChoice(srcType, sSaveName, sSaveFeature, sFeatName);
+			} else {
+				// Removing a feat, so use the stored selection
+				sFeatName = GetFeatureChoice(srcType, sSaveName, sSaveFeature);
+				// Remove the saved choice
+				SetFeatureChoice(srcType, sSaveName, sSaveFeature, false);
 			}
 		}
 		// If a feat name was detected, add or remove it
-		if (sFeatname) {
+		if (sFeatName) {
 			if (bAddRemove) {
-				AddFeat(sFeatname);
+				AddFeat(sFeatName);
 			} else {
-				RemoveFeat(sFeatname);
+				RemoveFeat(sFeatName);
 			}
 		}
 	}

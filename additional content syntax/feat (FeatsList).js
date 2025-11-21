@@ -118,6 +118,33 @@ FeatsList["purple power"] = {
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
+	type: "supernatural gift",
+/*	type // OPTIONAL //
+	TYPE:	string
+	USE:	define which type of feat this is
+	ADDED:	v14.0.1
+
+	This attribute is used in the 2024 (5.5e) version of the sheet and not needed for the 5e (2014) sheet.
+	It is only used by the `featsAdd` common attribute (see "_common attributes.js").
+
+	If this attribute is not present, it will be considered being set to "general" for the purpose of
+	processing the `featsAdd` common attribute.
+
+	The `featsAdd` attribute can offer the player a choice of feats that have a certain `type`.
+	If the provided `type` in the `featsAdd` attribute is (case-insensitive) included in this
+	`type` attribute string, then the feat will be shown in the options.
+
+	Common feat types are:
+		"origin"
+		"general"
+		"fighting style"
+		"epic boon"
+		"supernatural gift"
+
+	You can also define a custom type, or even a subtype.
+	For example, "origin (dwarf)" would have the feat appear both when `featsAdd.type` is
+	set to `type: "origin"` and `type: "origin (dwarf)"`.
+*/
 	defaultExcluded : true,
 /*	defaultExcluded // OPTIONAL //
 	TYPE:	boolean

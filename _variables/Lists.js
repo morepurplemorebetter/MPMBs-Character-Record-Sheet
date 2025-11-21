@@ -72,12 +72,11 @@ function InitiateLists() {
 	}
 };
 
-// A function to generate the spell variables after running imported scripts
-function spellsAfterUserScripts(reDoAllSpells) {
+// A function to do all the fixes after the lists have been re-initialized and the user scripts ran
+function setStuffAfterUserScripts() {
 	if (tDoc.info.AdvLogOnly) return;
 	amendPsionicsToSpellsList();
-	setSpellVariables(reDoAllSpells);
-};
+}
 
 function setGlobalVars() {
 	tDoc.typePF = (/printer friendly/i).test(tDoc.info.SheetType);
