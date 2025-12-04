@@ -80,7 +80,7 @@ var Base_CompanionList = {
 		source : [["SRD", 47], ["P", 107]],
 		includeCheck : function(sCrea, objCrea, iCreaCR, bIsAL) {
 			// return true if to be included, or a string to add a note to the menu option
-			return !objCrea.companion ? false : objCrea.companion.indexOf("familiar") !== -1 ? true : bIsAL && objCrea.companion.indexOf("familiar_not_al") !== -1 ? " (if DM approves)" : false;
+			return !objCrea.companion ? false : objCrea.companion.indexOf("familiar") !== -1 ? true : !bIsAL && objCrea.companion.indexOf("familiar_not_al") !== -1 ? " (if DM approves)" : false;
 		},
 		action : [
 			["action", "Familiar (dismiss/reappear)"],

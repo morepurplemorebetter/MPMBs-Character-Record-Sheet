@@ -131,7 +131,7 @@ function setCurrentCompRace(prefix, type, found) {
 					// things that should be replaced instead of amended to
 					CurrentCompRace[prefix][prop] = tProp;
 				} else if (isArray(CurrentCompRace[prefix][prop])) {
-					CurrentCompRace[prefix][prop] = CurrentCompRace[prefix][prop].concat(tProp);
+					CurrentCompRace[prefix][prop] = CurrentCompRace[prefix][prop].concat(newObj(tProp));
 				} else if (typeof CurrentCompRace[prefix][prop] === "string" && typeof tProp === "string") {
 					var sCoupler = CurrentCompRace[prefix][prop].indexOf(";") !== -1 ? "; " : ", ";
 					CurrentCompRace[prefix][prop] = CurrentCompRace[prefix][prop].replace(/\.$/, "") + sCoupler + tProp;
@@ -153,6 +153,11 @@ function setCurrentCompRace(prefix, type, found) {
 				console.show();
 			}
 		}
+	}
+	// set the nameThis
+	var inputCreaTxt = What(prefix + "Comp.Race").toLowerCase();
+	if (!CurrentCompRace[prefix].nameThis || inputCreaTxt.indexOf(CurrentCompRace[prefix].nameThis.toLowerCase()) === -1) {
+		CurrentCompRace[prefix].nameThis = clean(inputCreaTxt.replace(/,? ?(giant|dire)/ig, '').replace(/ +/g, ' '));
 	}
 }
 
@@ -503,9 +508,9 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 		var sCreaSubtype = aCrea.subtype ? " (" + (isArray(aCrea.subtype) ? AskUserOptions(aCreaTypeDialogTxt[0].replace("type", "subtype"), aCreaTypeDialogTxt[1].replace(/type/ig, "subtype"), aCrea.subtype, "radio", true) : aCrea.subtype) + ")" : "";
 		Value(prefix + "Comp.Desc.MonsterType", sCreaType + sCreaSubtype);
 
-		//set senses
-		var theSenses = What("Unit System") === "imperial" ? aCrea.senses : ConvertToMetric(aCrea.senses, 0.5);
-		Value(prefix + "Comp.Use.Senses", theSenses);
+		if (aCrea.senses) {//set senses
+			Value(prefix + "Comp.Use.Senses", What("Unit System") === "metric" ? ConvertToMetric(aCrea.senses, 0.5) : aCrea.senses);
+		}
 
 		Value(prefix + "Comp.Desc.Alignment", aCrea.alignment); //set alignment
 		Value(prefix + "Comp.Use.Proficiency Bonus", aCrea.proficiencyBonus); //set proficiency bonus
@@ -956,7 +961,7 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 	if (!objCrea) objCrea = CurrentCompRace[prefix];
 	if (objCrea.typeFound !== "creature") return; // only do this for CreatureList entries
 	var isMetric = What("Unit System") === "metric", arrToEval = [];
-	if (!useName) useName = What(prefix + "Comp.Race").toLowerCase();
+	if (!useName) useName = What(prefix + "Comp.Race");
 	var sCompType = CurrentCompRace[prefix].typeCompanion;
 	var objComp = sCompType ? CompanionList[sCompType] : false;
 	if (!objComp && sCompType) delete CurrentCompRace[prefix].typeCompanion;
@@ -1010,6 +1015,7 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 	];
 	var arrCompAltStrLocs = [prefix + "Cnote.Left"];
 	if (!typePF) arrCompAltStrLocs.push(prefix + "Cnote.Right");
+	var rxThisAdd = /\[THIS\]/g, rxThisRemove = /\[THIS\][\s\S]*/g;
 	// Now loop through all the features/actions/traits
 	for (var n = 1; n <= 2; n++) {
 		// First do the creature and then the companion direct attribute (probably only `notes`; i.e. not those under `attributesAdd`)
@@ -1037,14 +1043,11 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 					var propFirstLine = "##\u25C6 " + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name) + "##";
 					var propFullLine = propFirstLine + sNameDescrCoupler + (isMetric ? ConvertToMetric(prop.description, 0.5) : prop.description);
 					// Apply the name of the creature if [THIS] is present in the strings
-					if (/\[THIS\]/.test(propFullLine)) {
-						if (addIt) {
-							propFirstLine = propFirstLine.replace(/\[THIS\]/g, useName);
-							propFullLine = propFullLine.replace(/\[THIS\]/g, useName);
-						} else {
-							propFirstLine = propFirstLine.replace(/\[THIS\][\s\S]*/, "");
-							propFullLine = propFullLine.replace(/\[THIS\][\s\S]*/, "");
-						}
+					if (rxThisAdd.test(propFullLine)) {
+						var replaceThis = addIt ? rxThisAdd : rxThisRemove;
+						var replaceWith = addIt ? objCrea.nameThis : "";
+						propFirstLine = propFirstLine.replace(replaceThis, replaceWith);
+						propFullLine = propFullLine.replace(replaceThis, replaceWith);
 					}
 				}
 				// See if we need to do this prop
@@ -1787,7 +1790,10 @@ function ApplyWildshape() {
 	// add the string to the field
 	if (strTraits) {
 		if (What("Unit System") === "metric") strTraits = ConvertToMetric(strTraits, 0.5);
-		strTraits = strTraits.replace(/\[THIS\]/g, clean(newForm));
+		if (/\[THIS\]/.test(strTraits)) {
+			var nameThis = theCrea.nameThis && newForm.toLowerCase().indexOf(theCrea.nameThis) !== -1 ? theCrea.nameThis: clean(newForm.replace(/,? ?(giant|dire)/ig, '').replace(/ +/g, ' '));
+			strTraits = strTraits.replace(/\[THIS\]/g, nameThis);
+		}
 		AddString(prefix + "Wildshape." + Fld + ".Traits", strTraits, true);
 	}
 

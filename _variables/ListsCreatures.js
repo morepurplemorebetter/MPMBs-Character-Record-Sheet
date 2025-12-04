@@ -1178,11 +1178,11 @@ var Base_CreatureList = {
 		attacks : [],
 		traits : [{
 			name : "False Appearance",
-			description : "While the shrieker remains motionless, it is indistinguishable from an ordinary fungus."
+			description : "While the [THIS] remains motionless, it is indistinguishable from an ordinary fungus."
 		}],
 		actions : [{
 			name : "Shriek",
-			description : "As a reaction when bright light or a creature is within 30 ft of the shrieker, it emits a shriek audible within 300 ft of it. The shrieker continues to shriek until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward."
+			description : "As a reaction when bright light or a creature is within 30 ft of the [THIS], it emits a shriek audible within 300 ft of it. The [THIS] continues to shriek until the disturbance moves out of range and for 1d4 of the [THIS]'s turns afterward."
 		}],
 		wildshapeString : "\u25C6 Senses: blindsight 30 ft (blind beyond this radius).\n\u25C6 Condition Immunities: blinded, deafened, frightened.\n\u25C6 Shriek: As a reaction when bright light or a creature is within 30 ft of the shrieker, emits a shriek audible out to 300 ft. This continues until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward.\n\u25C6 False Appearance: While motionless, the shrieker is indistinguishable from an ordinary fungus."
 	},
@@ -1212,12 +1212,13 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "False Appearance",
-			description : "While the violet fungus remains motionless, it is indistinguishable from an ordinary fungus."
+			description : "While the [THIS] remains motionless, it is indistinguishable from an ordinary fungus."
 		}]
 	},
 	// Awakened plants (for the Awaken spell)
 	"awakened shrub" : {
 		name : "Awakened Shrub",
+		nameThis: "shrub",
 		source : [["SRD", 366], ["M", 317]],
 		size : 4, //Small
 		type : "Plant",
@@ -1244,11 +1245,12 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "False Appearance",
-			description : "While the shrub remains motionless, it is indistinguishable from a normal shrub."
+			description : "While the [THIS] remains motionless, it is indistinguishable from a normal shrub."
 		}]
 	},
 	"awakened tree" : {
 		name : "Awakened Tree",
+		nameThis: "tree",
 		source : [["SRD", 366], ["M", 317]],
 		size : 1, //Huge
 		type : "Plant",
@@ -1275,7 +1277,7 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "False Appearance",
-			description : "While the tree remains motionless, it is indistinguishable from a normal tree."
+			description : "While the [THIS] remains motionless, it is indistinguishable from a normal tree."
 		}]
 	},
 	// Mephits (with help from Undrhil)

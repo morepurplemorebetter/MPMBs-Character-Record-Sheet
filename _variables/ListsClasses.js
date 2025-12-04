@@ -1962,7 +1962,7 @@ var Base_ClassList = {
 					calcChanges : {
 						spellAdd : [
 							function (spellKey, spellObj, spName) {
-								if (spName == "book of ancient secrets") {
+								if (spName == "warlock-book of ancient secrets") {
 									spellObj.firstCol = SpellRitualTag;
 									if (!(/.*(\d+ ?h\b|special|see b).*/i).test(spellObj.time)) {
 										var numMinutes = Number(spellObj.time.replace(/(\d+) ?min.*/, "$1"));
@@ -1992,7 +1992,7 @@ var Base_ClassList = {
 					}],
 					prereqeval : function(v) { return classes.known.warlock.level >= 15 && GetFeatureChoice('class', 'warlock', 'pact boon') == 'pact of the chain'; },
 					spellChanges : {
-						"speak with animals" : {
+						"hold monster" : {
 							components : "V,S",
 							compMaterial : "",
 							description : "1 celestial, fiend, or elemental, save or paralyzed; extra save at end of each turn",
@@ -2088,7 +2088,8 @@ var Base_ClassList = {
 						"As an action, I can touch a willing creature and perceive through its senses (not my own)",
 						"This lasts until the end of my next turn, but I can use an action to extend the duration"
 					]),
-					source : [["SRD", 49], ["P", 111]]
+					source : [["SRD", 49], ["P", 111]],
+					action: [["bonus action", ""]],
 				},
 				"lifedrinker (prereq: level 12 warlock, pact of the blade)" : {
 					name : "Lifedrinker",

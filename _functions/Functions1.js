@@ -4870,7 +4870,7 @@ function CalcMod() {
 
 function processRecovery(recovery, additionalRecovery) {
 	var recoveryStr = "";
-	switch (recovery) {
+	switch (recovery.toLowerCase()) {
 		case "long rest":
 			recoveryStr += "LR";
 			break;
@@ -4897,7 +4897,7 @@ function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, Update
 	UpdateOrReplace = UpdateOrReplace || UpdateOrReplace === 0 || UpdateOrReplace === "" ? UpdateOrReplace : "replace";
 	var calculation = Calc ? Calc : "";
 	var SslotsVisible = !typePF && eval_ish(What("SpellSlotsRemember"))[0];
-	var recovery = (/^(long rest|short rest|dawn)$/).test(recovery) && !additionalRecovery ? recovery : processRecovery(recovery, additionalRecovery);
+	var recovery = (/^(long rest|short rest|dawn)$/i).test(recovery) && !additionalRecovery ? recovery.toLowerCase() : processRecovery(recovery, additionalRecovery);
 	if ((/ ?\bper\b ?/).test(usages)) usages = usages.replace(/ ?\bper\b ?/, "");
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 1; i <= FieldNumbers.limfea; i++) {
@@ -5768,8 +5768,8 @@ function processAddFeats(bAddRemove, featsAdd, srcType, srcName, srcNameUnique) 
 		} else if (featsAdd[i].name || featsAdd[i].select) {
 			sFeatName = featsAdd[i].name ? featsAdd[i].name : featsAdd[i].select;
 		} else if (featsAdd[i].key) {
-			var aFeat = getFeatArrayFromOptions([featsAdd[i]], !bAddRemove).options;
-			if (aFeat.length) sFeatName = aFeat[0];
+			var aFeat = getFeatArrayFromOptions([featsAdd[i]], !bAddRemove);
+			if (aFeat.options.length) sFeatName = aFeat.optionsRef[aFeat.options[0]];
 		} else if (featsAdd[i].type || featsAdd[i].options) {
 			// Add a type of feat
 			var sSaveName = srcNameUnique ? srcNameUnique : srcName;
@@ -6336,12 +6336,13 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 // Make menu for 'choose class feature' button and parse it to Menus.classfeatures
 function MakeClassMenu() {
 	var gatherVars, hasEldritchBlast, isFS = false, selFS = GetFightingStyleSelection();
-	var testPrereqs = function(toEval, objNm, feaNm) {
+	var testPrereqs = function(toEval, objNm, feaNm, curSel) {
 		if (!gatherVars) {
 			gatherVars = gatherPrereqevalVars();
 			hasEldritchBlast = gatherVars.hasEldritchBlast;
 		}
 		gatherVars.choice = objNm;
+		gatherVars.choiceActive = curSel;
 		var theRe = true;
 		try {
 			if (typeof toEval == 'string') {
@@ -6386,18 +6387,19 @@ function MakeClassMenu() {
 			if (!isActive && testSource("", feaObjA)) continue; // object's source is excluded, so skip it if not currently selected
 
 			// now see if we should disable this because of prerequisites
-			var isEnabled = feaObjA.prereqeval && !ignorePrereqs && !isActive ? testPrereqs(feaObjA.prereqeval, feaObjNm, featureNm) : true;
+			var isEnabled = isActive || ignorePrereqs ? true :
+				feaObjA.minlevel && feaObjA.minlevel > classes.known[classNm].level ? false :
+				!feaObjA.prereqeval || testPrereqs(feaObjA.prereqeval, feaObjNm, featureNm, curSel);
 			if (isEnabled === "skip") continue; // special failsafe for choices that return "skip" on their prepreqeval
 			if (isEnabled && !isActive && isFS && selFS[feaObjNm]) {
 				isEnabled = false;
 				extraNm = selFS[feaObjNm][2];
 			}
-			var removeStop = !isActive ? "add" : extrareturn ? "remove" : "stop";
-
 			if (!isActive && isEnabled === "markButDisable") {
 				isActive = true;
 				isEnabled = false;
 			}
+			var removeStop = !isActive ? "add" : extrareturn ? "remove" : "stop";
 
 			// now make the menu entry
 			var oSrc = { source : feaObjA.source ? feaObjA.source : feaObj.source };
@@ -6455,8 +6457,8 @@ function MakeClassMenu() {
 		var tempItem = [];
 		for (prop in cl.features) {
 			propFea = cl.features[prop];
+			isFS = /fighting style/i.test(prop + propFea.name);
 			if (propFea.choices && !propFea.choicesNotInMenu && propFea.minlevel <= clLvl) {
-				isFS = (/fighting style/i).test(prop + propFea.name);
 				toTest = GetFeatureChoice("classes", aClass, prop, false);
 				propFea.choices.sort();
 				menuLVL3(tempItem, propFea.name, propFea.choices, aClass, prop, "", propFea, toTest);
