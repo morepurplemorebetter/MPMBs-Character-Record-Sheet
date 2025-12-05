@@ -2657,7 +2657,7 @@ var Base_ClassSubList = {
 								case "life transference" :
 								case "vampiric touch" :
 									var useSpellDescr = getSpellShortDescription(spellKey, spellObj);
-									var strAdd = " +" + (spellObj.level + 2) + "+1/SL";
+									var strAdd = " +" + (spellObj.level + 2) + (spellObj.allowUpCasting === false ? "": "+1/SL");
 									spellObj.description = useSpellDescr.replace(/(heals? (half|twice)( the damage dealt| that)?)( in HP)?/, "$1" + strAdd);
 									return true;
 								case "mass heal" :
@@ -2665,7 +2665,7 @@ var Base_ClassSubList = {
 									return true;
 								default :
 									if (!genericSpellDmgEdit(spellKey, spellObj, "heal", (2 + spellObj.level))) return;
-									if (spellObj.level < 9) genericSpellDmgEdit(spellKey, spellObj, "heal", "1/SL");
+									if (spellObj.level < 9 && spellObj.allowUpCasting !== false) genericSpellDmgEdit(spellKey, spellObj, "heal", "1/SL");
 									spellObj.discipleOfLife = true; // for Blessed Healer and Supreme Healing
 									return true;
 							}

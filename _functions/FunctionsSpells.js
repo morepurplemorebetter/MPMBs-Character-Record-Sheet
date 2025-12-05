@@ -131,12 +131,6 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 		})
 		aSpell.changesObj["Magic Item"] = "\n \u2022 Spells cast by magic items don't require any components except the magic item itself, unless otherwise specified in the magic item's description.";
 	}
-	// If this spell is gained from an item, feat, or race, remove scaling effects
-	if (aCast && !aCast.allowUpCasting && (aCast.allowUpCasting === false || /^(item|feat|race)$/i.test(aCast.typeSp) || (aCast.refType && /^(item|feat|race)$/i.test(aCast.refType))) && (aSpell.level || aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
-		if (removeSpellUpcasting(aSpell)) {
-			aSpell.changesObj["Innate Spellcasting"] = "\n \u2022 Spell cast by magic items, from feats, or from racial traits can only be cast at the spell's level, not with higher level spell slots.";
-		}
-	}
 	// Apply spell overrides for this CurrentSpells entry
 	if (!noOverrides && aCast && aCast.spellAttrOverride && aCast.spellAttrOverride[theSpl]) {
 		var theOver = aCast.spellAttrOverride[theSpl];
@@ -149,8 +143,12 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 			aSpell[key] = theOver[key];
 		}
 	}
-	// If this set the spell to not allow upcasting, apply this now
-	if (aSpell.allowUpCasting === false) removeSpellUpcasting(aSpell);
+	// If this spell is gained from an item, feat, or race, remove scaling effects
+	if (aCast && !aCast.allowUpCasting && !aSpell.allowUpCasting && (aCast.allowUpCasting === false || aSpell.allowUpCasting === false || /^(item|feat|race)$/i.test(aCast.typeSp) || (aCast.refType && /^(item|feat|race)$/i.test(aCast.refType))) && (aSpell.level || aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
+		if (removeSpellUpcasting(aSpell) && aSpell.allowUpCasting === undefined) {
+			aSpell.changesObj["Innate Spellcasting"] = "\n \u2022 Spell cast by magic items, from feats, or from racial traits can only be cast at the spell's level, not with higher level spell slots.";
+		}
+	}
 
 	// Change some things into metric if set to do so
 	if (isMetric) {
@@ -296,7 +294,7 @@ function removeSpellUpcasting(oSpell) {
 			.replace(/, within (30 ft|10 m) of each other,?|, each max (30 ft|10 m) apart,?|; \+\d+d\d+ at CL.*?17/ig, '');
 		bReturn = true;
 	})
-	oSpell.noSpellUpcasting = true;
+	oSpell.allowUpCasting = false;
 	return bReturn;
 }
 
@@ -309,8 +307,8 @@ function applySpellcastingAbility(oSpell, oCast) {
 	if (theAbi) {
 		var theAbiMod = Number(What(theAbi + " Mod"));
 		var newSpellDescr = oSpell.description;
-		var spellAbiModRx = /(\+ ?)?(my )?spell(casting)? (ability )?mod(ifier)?/i;
-		var spellAbiChkRx = /spell(casting)? (ability )?check/i;
+		var spellAbiModRx = /(\+ ?)?(?:my )?(spell)(?:cast)?(?:ing)? (?:abi(?:lity)? )?(mod)(?:ifier)?/i;
+		var spellAbiChkRx = /spell(?:cast)?(?:ing)? (?:abi(?:lity)? )?check/i;
 		if (spellAbiModRx.test(newSpellDescr)) { // modifier
 			newSpellDescr = newSpellDescr.replace(spellAbiModRx, (theAbiMod >= 0 ? "+" + theAbiMod : theAbiMod) + " (" + theAbi + ")");
 		} else if (spellAbiChkRx.test(newSpellDescr)) { // check
@@ -5880,7 +5878,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 	var abiIfUpcasting = abiIsStr && /\/(\d*SL|PP|extra \w+)/i.test(abiMod);
 
 	// Stop now if there is nothing (positive) to add or nothing to maximize
-	if (!maximizeRolls && ((isNaN(ability) && abiMod < 1) || abiMod === 0 || (abiIfUpcasting && spellObj.noSpellUpcasting))) return;
+	if (!maximizeRolls && ((isNaN(ability) && abiMod < 1) || abiMod === 0 || (abiIfUpcasting && spellObj.allowUpCasting === false))) return;
 
 	// Get the spell description to use, the 'shorter' spell description, if defined
 	var useSpellDescr = spellObj.genericSpellDmgEdit ? spellObj.description : getSpellShortDescription(spellKey, spellObj);
@@ -6027,7 +6025,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 
 	// Create the matching regex with non-capturing inner groups
 	var isHealing = /heal|\bhp\b|restore/.test(dmgType);
-	var sRegex = (isHealing ? "(heals? |to life with )" : "") + "((?:\\+?\\d+d?\\d*)+)((?:\\+(?:\\((?:\\+?\\d+d?\\d*)+\\)|\\d+d?\\d*)\\/(?:\\d*SL|PP|extra \\w+))*(?:\\+ ?(?:my )?spell(?:casting)? (?:ability )?mod(?:ifier)?|(?:\\+|-)\\d+ \\(.{3}\\))? (?:" + (isHealing ? "" : dmgType) + ") ?(?:" + (isHealing ? "hp|hit points?" : "dmg|damage") + ")(?: per \\w+| each|/rnd|/turn)?)";
+	var sRegex = (isHealing ? "(heals? |to life with )" : "") + "((?:\\+?\\d+d?\\d*)+)((?:\\+(?:\\((?:\\+?\\d+d?\\d*)+\\)|\\d+d?\\d*)\\/(?:\\d*SL|PP|extra \\w+))*(?:\\+ ?spell mod|(?:\\+|-)\\d+ \\(.{3}\\))? (?:" + (isHealing ? "" : dmgType) + ") ?(?:" + (isHealing ? "hp|hit points?" : "dmg|damage") + ")(?: per \\w+| each|/rnd|/turn)?)";
 
 	// If the spell has multiple damage types, we need to check if any or all of them match the dmgType we are looking for
 	var onlySomeDmgTypes = false;
@@ -6165,6 +6163,7 @@ function getSpellShortDescription(spellKey, spellObj) {
 		[/(a)ttacks?/ig, '$1tk'],
 		[/(r)anged/ig, '$1ngd'],
 		[/(wea)pons?/ig, '$1'],
+		[/(?:my )?(spell)(?:cast)?(?:ing)? (?:abi(?:lity)? )?(mod)(?:ifier)?/ig, '$1 $2'],
 	];
 	for (var i = 0; i < arrTxtReplace.length; i++) {
 		useSpellDescr = useSpellDescr.replace(arrTxtReplace[i][0], arrTxtReplace[i][1]);

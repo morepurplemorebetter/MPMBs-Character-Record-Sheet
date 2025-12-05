@@ -5461,7 +5461,7 @@ var Base_MagicItemsList = {
 		}],
 		spellChanges : {
 			"cure wounds" : {
-				noSpellUpcasting : false,
+				allowUpCasting : true,
 				description : "1 living creature heals 1d8+1d8/SL+spell mod HP; +1 SL/extra charge",
 				changes : "The spell level Cure Wounds is cast at depends on the amount of charges spend, 1 charge per spell slot level."
 			}
