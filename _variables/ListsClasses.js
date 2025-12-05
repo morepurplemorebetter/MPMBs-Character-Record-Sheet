@@ -2389,7 +2389,7 @@ var Base_ClassList = {
 						name : "Pact of the Chain",
 						spells : ["find familiar"],
 						selection : ["find familiar"],
-						firstCol : SpellRitualTag
+						firstCol : '\xAE'
 					}]
 				},
 				"pact of the tome" : {
@@ -2718,7 +2718,7 @@ var Base_ClassSubList = {
 								};
 								var alwaysOthers = ["life transference", "raise dead", "revivify", "resurrection", "true resurrection"];
 								var strPart = alwaysOthers.indexOf(spellKey) === -1 ? "; if other, I heal " : "; I heal ";
-								var strAdd = spellObj.level < 9 ? strPart + (spellObj.level + 2) + (spellObj.noSpellUpcasting ? "" : "+1/SL") + " HP" : strPart + "11 HP";
+								var strAdd = spellObj.level < 9 ? strPart + (spellObj.level + 2) + (spellObj.allowUpCasting === false ? "" : "+1/SL") + " HP" : strPart + "11 HP";
 								spellObj.description = useSpellDescr + strAdd;
 								return true;
 							}
