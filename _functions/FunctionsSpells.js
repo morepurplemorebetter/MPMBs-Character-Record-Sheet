@@ -3544,27 +3544,26 @@ function GenerateSpellSheet(GoOn) {
 
 		//now add the general list, if chosen to do the full class list or if this is a 'list' spellcaster that didn't chose to only do the prepared spells
 		if (spCast.typeList === 4 || (spCast.typeSp === "list" && spCast.typeList !== 3)) {
-			var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
+			var listObject = newObj(spCast.list);
 			// Set the list level to generate
-			var iLowestLevel = spListLevel ? spListLevel[0] : 0;
-			spCast.list.level = [
+			var iLowestLevel = listObject.level ? listObject.level[0] : 0;
+			listObject.level = [
 				spCast.typeList === 4 || spCast.preparedCantrips ? iLowestLevel : Math.max(iLowestLevel, 1),
-				spCast.factor && spCast.factor[1] == "warlock" ? 9 : spListLevel ? spListLevel[1] : 9
+				spCast.factor && spCast.factor[1] == "warlock" ? 9 : listObject.level ? listObject.level[1] : 9
 			];
-
+			// Set the list to ignore bonus spells, as we are adding them in later, unless they are special "once per rest" spells
+			if (spCast.selectBo) listObject.notspells = spCast.selectBo.filter(function (spell) {
+				return !firstCols[spell] || !/^once[sl]r$/i.test(firstCols[spell]);
+			});
 			//add the full spell list of the class
-			var fullClassSpellList = CreateSpellList(spCast.list, false, false, false, CurrentCasters.incl[i], spCast.typeSp);
+			var fullClassSpellList = CreateSpellList(listObject, false, false, false, CurrentCasters.incl[i], spCast.typeSp);
 			fullSpellList = fullSpellList.concat(fullClassSpellList);
-
-			if (spListLevel) { //put that level list back in the right variable
-				spCast.list.level = spListLevel;
-			} else {
-				delete spCast.list.level;
-			}
 		} else if (spCast.preparedCantrips && spCast.typeList !== 3 && (spCast.list || spCast.preparedCantripsList)) { // Add all the cantrips
 			var listObject = spCast.preparedCantripsList ? spCast.preparedCantripsList : newObj(spCast.list);
 			// Force it being only cantrips
 			listObject.level = [0, 0];
+			// Ignore bonus spells so we don't get duplicates
+			if (spCast.selectBo) listObject.notspells = spCast.selectBo;
 			var fullClassCantripList = CreateSpellList(listObject, false, false, false, CurrentCasters.incl[i], spCast.typeSp);
 			fullSpellList = fullSpellList.concat(fullClassCantripList);
 		}
