@@ -6348,7 +6348,7 @@ function getHighestAbility(abilities, prefix, wildshapeNo, returnAbbr) {
 	var defaultAbilities = AbilityScores.abbreviations.concat('HoS');
 	var oResult = abilities.reduce(function (acc, abi) {
 		var score = getAbiModValue(abi, prefix, wildshapeNo, true);
-		if (score > acc.score) {
+		if (!acc.score || score > acc.score) {
 			return { score: score, abi: abi };
 		}
 		return acc;
@@ -7429,7 +7429,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			};
 		};
 		//a functino to parse the 'immune' and 'adv_vs' parts into a usable string
-		var preTxt = {adv_vs : "Adv. on saves vs.", immune : "Immune to"};
+		var preTxt = {adv_vs: "**Adv. vs.**", immune : "**Immunities**. "};
 		var parseSvTxt = function() {
 			var sUseName = metric ? "nameMetric" : "name";
 			var oTypes = { adv_vs : [], immune : [] };

@@ -929,8 +929,8 @@ var Base_ClassList = {
 				name : "Evasion",
 				source : [["SRD", 28], ["P", 79]],
 				minlevel : 7,
-				description : desc("My Dexterity saves vs. areas of effect negate damage on success and halve it on failure"),
-				savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
+				description : desc("If I make a Dex save to halve damage, I instead take none if I succeed and half if I fail."),
+				savetxt: { text: ["**Dex save for half dmg**. *Failure:* half dmg, *Success:* no dmg"] },
 			},
 			"stillness of mind" : {
 				name : "Stillness of Mind",
@@ -1573,8 +1573,8 @@ var Base_ClassList = {
 				name : "Evasion",
 				source : [["SRD", 40], ["P", 96]],
 				minlevel : 7,
-				description : desc("My Dexterity saves vs. areas of effect negate damage on success and halve it on failure"),
-				savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
+				description : desc("If I make a Dex save to halve damage, I instead take none if I succeed and half if I fail."),
+				savetxt: { text: ["**Dex save for half dmg**. *Failure:* half dmg, *Success:* no dmg"] },
 			},
 			"reliable talent" : {
 				name : "Reliable Talent",
@@ -3147,8 +3147,8 @@ var Base_ClassSubList = {
 				choices : ["Evasion", "Stand Against the Tide", "Uncanny Dodge"],
 				"evasion" : {
 					name : "Evasion",
-					description : desc("My Dexterity saves vs. areas of effect negate damage on success and halve it on failure"),
-					savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
+					description : desc("If I make a Dex save to halve damage, I instead take none if I succeed and half if I fail."),
+					savetxt: { text: ["**Dex save for half dmg**. *Failure:* half dmg, *Success:* no dmg"] },
 				},
 				"stand against the tide" : {
 					name : "Stand Against the Tide",
