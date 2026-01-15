@@ -49,7 +49,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v14.0.1 and newer
+	Sheet:		v14.0.5 and newer
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -2694,6 +2694,27 @@ toNotesPage : [{
 
 		Be aware that the default font on the Colourful sheets is already italic,
 		so making something only italic won't be visible on the Colourful sheets.
+	*/
+	useDescriptionFull : true,
+	useDescriptionFull : function(str) { return str.replace("if I was I", "if I were you"); },
+	/*	useDescriptionFull // OPTIONAL //
+		TYPE:	boolean or function
+		USE:	whether to use the parent feature's `descriptionFull` as the note
+		ADDED:	v14.0.5
+
+		If this is set to true for a feature that has the `descriptionFull` attribute, 
+		the `note` attribute will be ignored and the `descriptionFull` will be used instead.
+		The sheet will automatically transform the `descriptionFull` from second to first
+		person before adding it to a notes section.
+
+		The sheet's automated transformation to the first person is not perfect. To remedy
+		this, you can have this attribute be a function. If so, the function is passed 1
+		parameter: the string after it has been transformed to the first person.
+		The string returned by this function is then used instead.
+
+		You can also use this function to add/remove/change wording of the `descriptionFull`.
+
+		Setting this to 0 or false is the same as not including this attribute.
 	*/
 	page3notes : true,
 	/*	page3notes // OPTIONAL //

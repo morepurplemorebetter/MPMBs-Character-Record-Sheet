@@ -42,7 +42,7 @@
 	        	You will also need the syntax for common attributes if you want to use a
 	        	custom calculation for hit points (calcChanges.hp).
 
-	Sheet:		v14.0.0 and newer
+	Sheet:		v14.0.5 and above
 
 */
 
@@ -60,19 +60,31 @@ var iFileName = "Homebrew Syntax - CreatureList.js";
 	Only the first occurrence of this variable will be used.
 */
 
-RequiredSheetVersion("13.1.11");
+RequiredSheetVersion("14.0.5", "24.0.0");
 /*	RequiredSheetVersion // OPTIONAL //
 	TYPE:	function call with one variable, a string or number
-	USE:	the minimum version of the sheet required for the import script to work
+	USE:	the minimum and maximum versions of the sheet required for the add-on script to work
+	CHANGE: v14.0.5 (added second parameter: upper version limit)
 
-	If this script is imported into a sheet with an earlier version than given here, the player will be given a warning.
+	If this script is imported into a sheet with an lower or higher version than given here,
+	the player will be given a warning.
 
-	The variable you input can be a the full semantic version of the sheet as a string (e.g. "13.0.6" or "13.1.0-beta1+201209").
-	Alternatively, you can input a number, which the sheet will translate to a semantic version.
-	For example:
-		FUNCTION CALL						REQUIRED MINIMUM VERSION
-		`RequiredSheetVersion(13);`			13.0.0
-		`RequiredSheetVersion(13.1);`		13.1.0
+	This function takes two variables, but only the first is required:
+	1. The minimum required version number.
+	   The sheet's version needs to be the same number or higher.
+	   This first parameter is required.
+
+	2. The upper version number limit.
+	   The sheet's version needs to be a lower number.
+	   This second parameter is optional.
+
+	Each variable can be input as a string with the full semantic version (e.g. "14.0.5"
+	or "24.0.4-beta+25011209"), or a number that the sheet will translate to a semantic
+	version. See the examples below for how the sheet does this.
+
+	INPUT NUMBER	SEMANTIC VERSION
+		14  			14.0.0
+		24.1			24.1.0
 
 	You can find the full semantic version of the sheet at the bottom of every page,
 	or look at the "Get Latest Version" bookmark, which lists the version number,
@@ -488,22 +500,22 @@ CreatureList["purple crawler"] = {
 	Setting this attribute to false is the same as not including this attribute.
 */
 	senses : "Darkvision 60 ft",
-/*	senses	// REQUIRED //
+/*	senses	// OPTIONAL //
 	TYPE:	string
 	USE:	add text to the Senses section on the Companion page
+	CHANGE:	v14.0.5 (made optional)
 
 	Even though most creature stat blocks list Passive Perception under senses, do not include
-	it in this attribute. Passive Perception will be calculated automatically from the Perception bonus.
-	If Passive Perception is different than 10 + Perception bonus, you can use the `addMod` attribute
-	to add the bonus to the modifier field.
+	it in this attribute. Passive Perception will be calculated automatically from the
+	Perception bonus.
+	If Passive Perception is different than 10 + Perception bonus, you can use the `addMod`
+	attribute to add the bonus to the modifier field.
 
-	If the creature doesn't have any special senses, set an empty string for this attribute, like so:
-		senses : "",
-
-	This text are also displayed on the wild shape page, but in the singular Traits & Features section,
-	together with all other descriptive string, traits, features, and action attributes.
-	As the wild shape pages offer limited space, it is recommended to test if all of these and
-	the other attributes together will fit.
+	This text are also displayed on the wild shape page, but in the singular Traits &
+	Features section, together with all other descriptive `traits`, `features`, and
+	`action` attributes.
+	As the wild shape pages offer limited space, it is recommended to test if all of these
+	and the other attributes together will fit.
 	If they don't fit (well), consider using the `wildshapeString` attribute, see below.
 */
 	attacksAction : 2,

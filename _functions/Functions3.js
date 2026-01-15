@@ -140,10 +140,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 				runEval(evalThing, attributeName, true);
 				return;
 			}
-			var eText = "The " + attributeName + " from '" + fObjName + (aParent ? "' of the '" + aParent : "") + "' " + type + " produced an error! Please contact the author of the feature to correct this issue and please include this error message:\n " + error;
-			for (var e in error) eText += "\n " + e + ": " + error[e];
-			console.println(eText);
-			console.show();
+			displayError(error, 'The "' + attributeName + '" attribute from "' + fObjName + (aParent ? '" of the "' + aParent : "") + '" ' + type + " produces the error below and is subsequently ignored.\nPlease share this error message with its author so they can correct this issue.");
 		}
 	}
 
@@ -357,8 +354,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	};
 
 	if (!fObj) {
-		console.println("The '" + fObjName + (aParent ? "' of the '" + aParent : "") + "' " + type + " could not be found! Please contact the author of the feature to correct this issue.");
-		console.show();
+		displayError(false, '"The "' + fObjName + (aParent ? '" of the "' + aParent : "") + '" ' + type + ' could not be found! Please contact the author of the feature to correct this issue.');
 		return false;
 	};
 
@@ -2497,8 +2493,7 @@ function ParseMagicItem(input, bForInventory) {
 				var sObj = kObj[keySub];
 				// Continue if choice doesn't exist or source is excluded
 				if (!sObj) {
-					console.println("The subchoice '" + kObj.choices[i] + "' for the magic item '" + kObj.name + "' doesn't have a corresponding object entry. Please contact its author to have this issue corrected. The choice will be ignored for now.");
-					console.show();
+					displayError(false, 'The subchoice "' + kObj.choices[i] + '" for the magic item "' + kObj.name + "\" doesn't have a corresponding object entry. Please contact its author to have this issue corrected. The choice will be ignored for now.");
 					// Remove this array entry, but make sure we don't skip an entry
 					kObj.choices.splice(i, 1);
 					i--;
@@ -2610,10 +2605,7 @@ function ApplyMagicItem(input, FldNmbr) {
 				try {
 					selectMIvar = aMI.selfChoosing();
 				} catch (error) {
-					var eText = "The function in the 'selfChoosing' attribute of '" + newMI + "' produced an error! Please contact the author of the magic item code to correct this issue:\n " + error;
-					for (var e in error) eText += "\n " + e + ": " + error[e];
-					console.println(eText);
-					console.show();
+					displayError(error, 'The "selfChoosing" attribute for the magic item "' + aMI.name + '" produces the error below and is subsequently ignored.\nIf this is one of the built-in magic items, please share this error message with MorePurpleMoreBetter using one of the contact bookmarks, so he can fix this bug. Please attach this error message and list the version number of the sheet, name and version of the software you are using, and the name of the buggy magic item.\nIf this is not a built-in magic item, please share this error message with its author.');
 				}
 				selectMIvar = selectMIvar && typeof selectMIvar == "string" && aMI[selectMIvar.toLowerCase()] ? selectMIvar : false;
 			}
@@ -2642,8 +2634,7 @@ function ApplyMagicItem(input, FldNmbr) {
 	if (failedChoice) {
 		Value(MIflds[2], 'ERROR, please reapply "' + aMI.name + '" above.');
 		if (!IsNotImport) {
-			console.println("The magic item '" + aMI.name + "' requires you to make a selection of a sub-choice. However, because this item was added during importing from another MPMB's Character Record Sheet, no pop-up dialog could be displayed to allow you to make a selection. Please reapply this magic item to show the pop-up dialog and make a selection for its sub-choice.");
-			console.show();
+			displayError(false, 'The magic item "' + aMI.name + "\" requires you to make a selection of a sub-choice. However, because this item was added during importing from another MPMB's Character Record Sheet, no pop-up dialog could be displayed to allow you to make a selection. Please reapply this magic item to show the pop-up dialog and make a selection for its sub-choice.");
 		}
 		if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
 		event.target.setVal = "ERROR, please reapply: " + (aMI.name.substr(0,2) + "\u200A" + aMI.name.substr(2)).split(" ").join("\u200A ");
@@ -2715,10 +2706,7 @@ function ApplyMagicItem(input, FldNmbr) {
 				var meetsPrereq = theMI.prereqeval(gatherVars);
 			}
 		} catch (error) {
-			var eText = "The 'prereqeval' attribute for the magic item '" + theMI.name + "' produces an error and is subsequently ignored. If this is one of the built-in magic items, please contact morepurplemorebetter using one of the contact bookmarks to let him know about this bug. Please do not forget to list the version number of the sheet, name and version of the software you are using, and the name of the magic item.\nThe sheet reports the error as\n " + error;
-			for (var e in error) eText += "\n " + e + ": " + error[e];
-			console.println(eText);
-			console.show();
+			displayError(error, 'The "prereqeval" attribute for the magic item "' + theMI.name + '" produces the error below and is subsequently ignored.\nIf this is one of the built-in magic items, please share this error message with MorePurpleMoreBetter using one of the contact bookmarks, so he can fix this bug. Please attach this error message and list the version number of the sheet, name and version of the software you are using, and the name of the buggy magic item.\nIf this is not a built-in magic item, please share this error message with its author.');
 			var meetsPrereq = true;
 		};
 		if (!meetsPrereq) {
@@ -3786,8 +3774,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 		if (typeNm != "armor") itemChoices.sort();
 		if (!IsNotImport) {
 			userSelected = itemChoices[0];
-			console.println("During importing from another MPMB's Character Record Sheet, the sheet was unable to show a pop-up dialog to let you choose what type of " + typeNm + " the '" + curName + "' is. As a result, '" + userSelected + "' was chosen for you automatically. If you wish to change this, reapply the '" + curName + "'.");
-			console.show();
+			displayError(false, "During importing from another MPMB's Character Record Sheet, the sheet was unable to show a pop-up dialog to let you choose what type of " + typeNm + ' the "' + curName + '" is. As a result, "' + userSelected + '" was chosen for you automatically. If you wish to change this, reapply the "' + curName + '".');
 		} else {
 			var userSelected = AskUserOptions("Select Type of " + typeNmC, "Choose which " + typeNm + " type this '" + curName + "' is.\nIf you want to change the " + typeNm + " type at a later time, select the magic item again from the drop-down box." + (aMI.choices ? "\nYou will also be prompted to select the " + typeNm + " type again when you select a choice using the button in this magic item line," + (aMIvar ? " even when selecting '" + aMIvar.name + "' again." : ".") : ""), itemChoices, "radio", true);
 		}

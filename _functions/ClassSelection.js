@@ -90,8 +90,7 @@ function SelectClass() {
 				clPn[2] = aClass;
 				clPn[3] = theCl.subclass;
 			} else {
-				console.println("Error while trying to match the class '" + aClass + "' to a string in the Class field.");
-				console.show();
+				displayError(false, '"Error while trying to match the class "' + aClass + '" to a string in the Class field.');
 			};
 		};
 	};
@@ -1332,8 +1331,7 @@ function PleaseSubclass(aClass, classString) {
 	for (var i = 0; i < aclass.subclasses[1].length; i++) {
 		var aSub = aclass.subclasses[1][i];
 		if (!ClassSubList[aSub]) {
-			console.println("The subclass '" + aSub + "' of the '" + aClass + "' class doesn't exist in the ClassSubList. It has been ignored for now, but it might cause errors with other things in the sheet. So please make sure to remedy this before proceeding!");
-			console.show();
+			displayError(false, 'The subclass "' + aSub + '" of the "' + aClass + "\" class doesn't exist in the ClassSubList. It has been ignored for now, but it might cause errors with other things in the sheet. So please make sure to remedy this before proceeding!");
 			continue;
 		};
 		if (testSource(aSub, ClassSubList[aSub], "classExcl") || aclassArray.indexOf(ClassSubList[aSub].subname) !== -1) continue;

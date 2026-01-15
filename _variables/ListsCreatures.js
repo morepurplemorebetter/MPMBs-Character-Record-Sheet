@@ -190,7 +190,6 @@ var Base_CreatureList = {
 			"perception" : 3,
 			"stealth" : 4
 		},
-		senses : "",
 		passivePerception : 13,
 		challengeRating : "2",
 		proficiencyBonus : 2,
@@ -218,7 +217,6 @@ var Base_CreatureList = {
 		hd : [10, 12],
 		speed : "50 ft",
 		scores : [22, 9, 17, 2, 11, 5],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "5",
 		proficiencyBonus : 3,
@@ -256,7 +254,6 @@ var Base_CreatureList = {
 		skills : {
 			"perception" : 4
 		},
-		senses : "",
 		passivePerception : 14,
 		challengeRating : "8",
 		proficiencyBonus : 3,
@@ -375,7 +372,6 @@ var Base_CreatureList = {
 		speed : "60 ft, fly 90 ft",
 		scores : [18, 15, 16, 10, 13, 15],
 		damage_immunities : "fire",
-		senses : "",
 		passivePerception : 11,
 		languages : "understands Abyssal, Common, and Infernal but can't speak",
 		challengeRating : "3",
@@ -457,7 +453,6 @@ var Base_CreatureList = {
 		skills : {
 			"perception" : 6
 		},
-		senses : "",
 		passivePerception : 16,
 		languages : "understands Celestial, Common, Elvish, and Sylvan but can't speak",
 		challengeRating : "2",
@@ -725,7 +720,6 @@ var Base_CreatureList = {
 			"perception" : 3,
 			"stealth" : 8
 		},
-		senses : "",
 		passivePerception : 13,
 		languages : "Common, Elvish, Sylvan",
 		challengeRating : "1/4",
@@ -1230,7 +1224,6 @@ var Base_CreatureList = {
 		scores : [3, 8, 11, 10, 10, 6],
 		damage_vulnerabilities : "fire",
 		damage_resistances : "piercing",
-		senses : "",
 		passivePerception : 10,
 		languages : "one language known by its creator",
 		challengeRating : "0",
@@ -1262,7 +1255,6 @@ var Base_CreatureList = {
 		scores : [19, 6, 15, 10, 10, 7],
 		damage_vulnerabilities : "fire",
 		damage_resistances : "bludgeoning, piercing",
-		senses : "",
 		passivePerception : 10,
 		languages : "one language known by its creator",
 		challengeRating : "2",
@@ -1838,7 +1830,6 @@ var Base_CreatureList = {
 			"athletics" : 5,
 			"perception" : 3
 		},
-		senses : "",
 		passivePerception : 13,
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
@@ -1872,7 +1863,6 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "50 ft",
 		scores : [14, 12, 12, 2, 10, 5],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
@@ -1896,7 +1886,6 @@ var Base_CreatureList = {
 		hd : [1, 6],
 		speed : "30 ft, climb 30 ft",
 		scores : [8, 14, 11, 4, 12, 6],
-		senses : "",
 		passivePerception : 11,
 		challengeRating : "0",
 		proficiencyBonus : 2,
@@ -2100,7 +2089,6 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "40 ft",
 		scores : [13, 11, 12, 2, 9, 5],
-		senses : "",
 		passivePerception : 9,
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
@@ -2174,7 +2162,6 @@ var Base_CreatureList = {
 		hd : [2, 10],
 		speed : "50 ft",
 		scores : [16, 8, 14, 2, 8, 5],
-		senses : "",
 		passivePerception : 9,
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
@@ -2344,7 +2331,6 @@ var Base_CreatureList = {
 		skills : {
 			"stealth" : 2
 		},
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
@@ -2413,7 +2399,6 @@ var Base_CreatureList = {
 		hd : [1, 8],
 		speed : "50 ft",
 		scores : [11, 16, 11, 2, 14, 5],
-		senses : "",
 		passivePerception : 12,
 		challengeRating : "0",
 		proficiencyBonus : 2,
@@ -2474,7 +2459,6 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "40 ft",
 		scores : [18, 10, 12, 2, 11, 7],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
@@ -2529,7 +2513,6 @@ var Base_CreatureList = {
 		hd : [8, 12],
 		speed : "40 ft",
 		scores : [22, 9, 17, 3, 11, 6],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "4",
 		proficiencyBonus : 2,
@@ -2565,7 +2548,6 @@ var Base_CreatureList = {
 		hd : [2, 10],
 		speed : "50 ft",
 		scores : [16, 10, 12, 2, 10, 6],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
@@ -2665,7 +2647,6 @@ var Base_CreatureList = {
 			"athletics" : 9,
 			"perception" : 4
 		},
-		senses : "",
 		passivePerception : 14,
 		challengeRating : "7",
 		proficiencyBonus : 3,
@@ -2771,7 +2752,6 @@ var Base_CreatureList = {
 		hd : [5, 10],
 		speed : "40 ft",
 		scores : [17, 10, 16, 2, 7, 5],
-		senses : "",
 		passivePerception : 8,
 		challengeRating : "2",
 		proficiencyBonus : 2,
@@ -2901,7 +2881,6 @@ var Base_CreatureList = {
 		skills : {
 			"stealth" : 5
 		},
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "5",
 		proficiencyBonus : 3,
@@ -2985,7 +2964,6 @@ var Base_CreatureList = {
 		skills : {
 			"perception" : 4
 		},
-		senses : "",
 		passivePerception : 14,
 		languages : "Giant Elk, understands Common, Elvish, and Sylvan but can't speak",
 		challengeRating : "2",
@@ -3109,7 +3087,6 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "40 ft",
 		scores : [17, 11, 12, 3, 12, 6],
-		senses : "",
 		passivePerception : 11,
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
@@ -3144,7 +3121,6 @@ var Base_CreatureList = {
 		skills : {
 			"perception" : 3
 		},
-		senses : "",
 		passivePerception : 13,
 		challengeRating : "1",
 		proficiencyBonus : 2,
@@ -3410,7 +3386,6 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "swim 40 ft",
 		scores : [12, 15, 11, 2, 12, 5],
-		senses : "",
 		passivePerception : 11,
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
@@ -3615,7 +3590,6 @@ var Base_CreatureList = {
 		hd : [3, 8],
 		speed : "10 ft, fly 50 ft, swim 50 ft",
 		scores : [10, 14, 10, 1, 10, 3],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "1/2",
 		proficiencyBonus : 2,
@@ -3719,7 +3693,6 @@ var Base_CreatureList = {
 		hd : [1, 8],
 		speed : "40 ft",
 		scores : [12, 10, 11, 2, 10, 5],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "0",
 		proficiencyBonus : 2,
@@ -3822,7 +3795,6 @@ var Base_CreatureList = {
 		skills : {
 			"perception" : 3
 		},
-		senses : "",
 		passivePerception : 13,
 		challengeRating : "0",
 		proficiencyBonus : 2,
@@ -3997,7 +3969,6 @@ var Base_CreatureList = {
 		hd : [11, 12],
 		speed : "40 ft",
 		scores : [24, 9, 21, 3, 11, 6],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "6",
 		proficiencyBonus : 3,
@@ -4063,7 +4034,6 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "40 ft",
 		scores : [14, 10, 13, 2, 10, 5],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
@@ -4283,7 +4253,6 @@ var Base_CreatureList = {
 		hd : [2, 8],
 		speed : "40 ft",
 		scores : [15, 10, 13, 2, 11, 7],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "1/8",
 		proficiencyBonus : 2,
@@ -4376,7 +4345,6 @@ var Base_CreatureList = {
 		skills : {
 			"perception" : 3
 		},
-		senses : "",
 		passivePerception : 13,
 		challengeRating : "0",
 		proficiencyBonus : 2,
@@ -4431,6 +4399,7 @@ var Base_CreatureList = {
 	},
 	"rhinoceros" : {
 		name : "Rhinoceros",
+		nameAlt : ["Ceratok"],
 		source : [["SRD", 388], ["M", 336]],
 		size : 2, //Large
 		type : "Beast",
@@ -4441,7 +4410,6 @@ var Base_CreatureList = {
 		hd : [6, 10],
 		speed : "40 ft",
 		scores : [21, 8, 15, 2, 12, 6],
-		senses : "",
 		passivePerception : 11,
 		challengeRating : "2",
 		proficiencyBonus : 2,
@@ -4455,7 +4423,7 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Charge",
-			description : "If the rhinoceros moves at least 20 ft straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) bludgeoning damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone."
+			description : "If the [THIS] moves at least 20 ft straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) bludgeoning damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone."
 		}]
 	},
 	"riding horse" : {
@@ -4470,7 +4438,6 @@ var Base_CreatureList = {
 		hd : [2, 10],
 		speed : "60 ft",
 		scores : [16, 10, 12, 2, 11, 7],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "1/4",
 		proficiencyBonus : 2,
@@ -4564,7 +4531,6 @@ var Base_CreatureList = {
 		hd : [1, 4],
 		speed : "swim 20 ft",
 		scores : [1, 12, 8, 1, 10, 2],
-		senses : "",
 		passivePerception : 10,
 		challengeRating : "0",
 		proficiencyBonus : 2,
@@ -4733,7 +4699,6 @@ var Base_CreatureList = {
 		hd : [3, 10],
 		speed : "60 ft",
 		scores : [18, 12, 13, 2, 12, 7],
-		senses : "",
 		passivePerception : 11,
 		challengeRating : "1/2",
 		proficiencyBonus : 2,

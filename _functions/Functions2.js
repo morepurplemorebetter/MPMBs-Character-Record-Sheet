@@ -147,10 +147,7 @@ function setCurrentCompRace(prefix, type, found) {
 				oComp.attributesChange(type === "creature" ? CurrentCompRace[prefix].known : false, CurrentCompRace[prefix]);
 			} catch (error) {
 				delete CompanionList[sCompType].attributesChange;
-				var eText = "The `attributesChange` attribute from the '" + sCompType + "' companion produced an error! Please contact the author of the feature to correct this issue and please include this error message:\n " + error;
-				for (var e in error) eText += "\n " + e + ": " + error[e];
-				console.println(eText);
-				console.show();
+				displayError(error, 'The "attributesChange" attribute from the "' + sCompType + '" companion produced the error below. It will be removed for now, but please share this error message with its author so they can correct this issue.');
 			}
 		}
 	}
@@ -727,10 +724,7 @@ function MakeCompMenu_CompOptions(prefix, MenuSelection, force) {
 						}
 					} catch (error) {
 						delete CompanionList[sComp].includeCheck;
-						var eText = "The `includeCheck` attribute from the '" + sComp + "' companion produced an error! Please contact the author of the feature to correct this issue and please include this error message:\n " + error;
-						for (var e in error) eText += "\n " + e + ": " + error[e];
-						console.println(eText);
-						console.show();
+						displayError(error, 'The "includeCheck" attribute from the "' + sComp + '" companion produced the error below. It will be removed for now, but please share this error message with its author so they can correct this issue.');
 					}
 				}
 			}
@@ -947,10 +941,7 @@ function ApplyCreatureEval(prefix, objEval, arrLvl, sType, sName) {
 		return objEval[sType](prefix, arrLvl);
 	} catch (error) {
 		var iPageNo = tDoc.getField(prefix + 'Comp.Race').page + 1;
-		var eText = "The " + sType + ' for "' + sName + '" on page ' + iPageNo + " produced an error! Please contact the author of the feature to correct this issue and please include this error message:\n " + error;
-		for (var e in error) eText += "\n " + e + ": " + error[e];
-		console.println(eText);
-		console.show();
+		displayError(error, 'The ' + sType + ' for "' + sName + '" on page ' + iPageNo + ' produced the error below. It will be removed for now, but please share this error message with its author so they can correct this issue.');
 		delete objEval[sType];
 	}
 }
@@ -1102,8 +1093,8 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 
 // run the CurrentEvals.creatureCallback (sType == "creature") or CurrentEvals.companionCallback functions (sType == "companion") or specific function (fOverride = function) to a specific page (prefix == "prefix") or all companion pages (prefix == "all")
 function RunCreatureCallback(sPrefix, sType, bAdd, fOverride, sOverrideNm) {
-	var sEvalType = (/companion/i).test(sType) ? "companionCallback" : "creatureCallback";
-	var aPrefix = (/all/i).test(sPrefix) ? What("Template.extras.AScomp").split(",").splice(1) : [sPrefix];
+	var sEvalType = /companion/i.test(sType) ? "companionCallback" : "creatureCallback";
+	var aPrefix = /all/i.test(sPrefix) ? What("Template.extras.AScomp").split(",").splice(1) : [sPrefix];
 	if (bAdd === undefined) bAdd = true;
 	var prefix, oCrea, sCompType;
 	var doEval = function(evalThing, evalName) {
@@ -1111,10 +1102,7 @@ function RunCreatureCallback(sPrefix, sType, bAdd, fOverride, sOverrideNm) {
 		try {
 			if (typeof evalThing == 'function') evalThing(prefix, oCrea, bAdd, sCompType);
 		} catch (error) {
-			var eText = "The custom callback function (" + sEvalType + ") from '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
-			for (var e in error) eText += "\n " + e + ": " + error[e];
-			console.println(eText);
-			console.show();
+			displayError(error, 'The ' + sEvalType + ' function from "' + evalName + '" produced the error below . It will be removed from the sheet for now, but please share this error message with its author so they can correct this issue.');
 			if (CurrentEvals[sEvalType] && CurrentEvals[sEvalType][evalName]) {
 				delete CurrentEvals[sEvalType][evalName];
 				CurrentEvals[sEvalType + "Order"].splice(i, 1);
@@ -1151,10 +1139,7 @@ function processAddCompanions(bAddRemove, srcNm, aCreaAdds) {
 			try {
 				fCallBack(bAddRemove, prefix);
 			} catch (error) {
-				var eText = 'The callback function of the creaturesAdd attribute from "' + srcNm + '" produced an error while ' + (bAddRemove ? 'adding' : 'removing') + ' the "' + sRace + '" creature! Please contact the author of the feature to correct this issue:\n '  + error;
-				for (var e in error) eText += "\n " + e + ": " + error[e];
-				console.println(eText);
-				console.show();
+				displayError(error, 'The callback function of the "creaturesAdd" attribute from "' + srcNm + '" produced the error below while ' + (bAddRemove ? 'adding' : 'removing') + ' the "' + sRace + '" creature. Please share this error message with its author so they can correct this issue.');
 				fCallBackError = true;
 			}
 		}
@@ -1750,9 +1735,9 @@ function ApplyWildshape() {
 		strTraits = [theCrea.wildshapeString];
 	} else {
 		//set senses
-		var sensesToAdd = theCrea.senses.replace(/(\; )?Adv\..+(hearing|sight|smell)/i, ""); //avoid duplicating the information with regards to the keen hearing/sight/smell traits
-		if (sensesToAdd) {
-			strTraits.push("##\u25C6 Senses##. " + sensesToAdd); 
+		if (theCrea.senses) {
+			// avoid duplicating the information with regards to the keen hearing/sight/smell traits
+			strTraits.push("##\u25C6 Senses##. " + theCrea.senses.replace(/(\; )?Adv\..+(hearing|sight|smell)/i, "") + ".");
 		}
 		//add resistances & immunities
 		if (theCrea.damage_vulnerabilities) {
@@ -2864,13 +2849,7 @@ function deletePage(fldNm, onTemplate, ignoreError) {
 				tDoc.deletePages(tempPage);
 				theReturn = true;
 			} catch (error) {
-				var eText = "Error while deleting page. Please contact MPMB and share the following error text:\n Adobe Acrobat version: " + app.viewerVersion + "\n " + error;
-				for (var e in error) eText += "\n " + e + ": " + error[e];
-				eText += "\n>> ERROR END <<";
-				eText += "\n\nYou are now left with a non-functional page. You can try to remedy this issue by manually executing the code below. To do so, select the line with `tDoc.deletePages(X);` and press CTRL+ENTER.";
-				eText += "\n\ttDoc.deletePages(" + tempPage + ");";
-				console.println(eText);
-				console.show();
+				displayError(error, "ERROR WHILE DELETING PAGE\nPlease share this error message with MorePurpleMoreBetter using one of the contact bookmarks, so that he can address this issue.\nAdobe Acrobat version: " + app.viewerVersion, "You are now left with a non-functional page. You can try to remedy this issue by manually executing the code below. To do so, select the line below that reads `tDoc.deletePages(X);` and press Ctrl+Enter.\n\n\ttDoc.deletePages(" + tempPage + ");");
 			}
 		}
 	}
@@ -4273,10 +4252,7 @@ function SetHPTooltip(resetHP, onlyComp, aPrefix) {
 						}
 					}
 				} catch (error) {
-					var eText = "The custom hit point calculation addition '" + hpEval + "' produced an error! It will be ignored for now, but you will get this warning every time you open the sheet again. Please contact the author of the feature to have this issue corrected:\n " + error;
-					for (var e in error) eText += "\n " + e + ": " + error[e];
-					console.println(eText);
-					console.show();
+					displayError(error, '"The custom hit point calculation addition from "' + hpEval + '" produced the error below. It will be ignored for now, but you will get this warning every time you open the sheet.\nPlease share this error message with its author so they can correct this issue.');
 					if (prefix) {
 						delete CurrentEvals.Comp[prefix].hp[hpEval];
 					} else {
@@ -5823,10 +5799,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 						evalThing(fields, gatherVars);
 					}
 				} catch (error) {
-					var eText = "The custom ApplyWeapon/atkAdd script '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
-					for (var e in error) eText += "\n " + e + ": " + error[e];
-					console.println(eText);
-					console.show();
+					displayError(error, 'The custom calcChanges.atkAdd function from "' + evalName + '" produced the error below. It will be removed from the sheet for now, but please share this error message with its author so they can correct this issue.');
 					delete CurrentEvals.atkAdd[evalName];
 					CurrentEvals.atkAddOrder.splice(i, 1);
 					i--;
@@ -6021,10 +5994,7 @@ function CalcAttackDmgHit(fldName) {
 					evalThing(fields, gatherVars, output);
 				}
 			} catch (error) {
-				var eText = "The custom CalcAttackDmgHit/atkCalc script '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
-				for (var e in error) eText += "\n " + e + ": " + error[e];
-				console.println(eText);
-				console.show();
+				displayError(error, 'The custom calcChanges.atkCalc function from "' + evalName + '" produced the error below. It will be removed from the sheet for now, but please share this error message with its author so they can correct this issue.');
 				CurrentEvals.atkCalcOrder.splice(i, 1);
 				i--;
 			}
@@ -8367,8 +8337,16 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 		var noteObj = items[i];
 		var alertTxt = noteObj.popupName ? noteObj.popupName : noteObj.name + ' from "' + namesArr[0] + '"';
 		var noteSrc = noteObj.source ? stringSource(noteObj, "first,abbr", ", ") : fallback.noteSrc;
-		var useDescr = noteObj.useDescriptionFull && fallback.descriptionFull ? fallback.descriptionFull : noteObj.note;
-		var noteDesc = isArray(useDescr) ? "\r" + formatDescriptionFull(useDescr, true) : useDescr;
+		var noteDesc = "";
+		if (noteObj.useDescriptionFull && fallback.descrFull) {
+			noteDesc = ConvertToFirstPerson(
+				formatDescriptionFull(fallback.descrFull, true),
+				noteObj.useDescriptionFull,
+				fallback.noteOrig
+			);
+		} else {
+			noteDesc = isArray(noteObj.note) ? "\r" + formatDescriptionFull(noteObj.note, true) : noteObj.note;
+		}
 		noteDesc = noteDesc.replace(/\n/g, "\r");
 		var noteAdditional = noteObj.additional ? " #[" + noteObj.additional + "]#" : "";
 		if (What("Unit System") === "metric") {

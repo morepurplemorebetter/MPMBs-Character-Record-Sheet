@@ -252,9 +252,7 @@ function AddFolderJavaScript(justConsole) {
 	var theDialog = app.execDialog(AddJS_dialog);
 
 	if (theDialog === "cons") {
-		console.clear();
-		console.println("Select the line below that says \"StartDirectImport();\" and press " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + "\n\nStartDirectImport();");
-		console.show();
+		displayError(false, "Select the line below that says `StartDirectImport();`\"` and press Ctrl+Enter.\n\nStartDirectImport();", false, true);
 	}
 
 	return theDialog === "ok";
@@ -1549,12 +1547,7 @@ function DirectImport(consoleTrigger) {
 		// set the focus to the top of the first page
 		tDoc.getField("Player Name").setFocus();
 	} catch (error) {
-		if (error !== "user stop") {
-			var eText = "An error occurred during importing:\n " + error;
-			for (var e in error) eText += "\n " + e + ": " + error[e];
-			console.println(eText);
-			console.show();
-		};
+		if (error !== "user stop") displayError(error, 'An error occurred during importing:');
 	};
 
 	// A pop-up to inform the user of the changes
@@ -2242,7 +2235,7 @@ function MakeXFDFExport(partial) {
 	}
 	try {
 		tDoc.exportAsXFDF(theSettings);
-	} catch (err) {
+	} catch (error) {
 		var toExport = tDoc.exportAsXFDFStr(theSettings);
 
 		var explainTXT = "This is a work-around for Acrobat Reader. It requires a little bit more work, but otherwise you will have to get Acrobat Pro in order to do this more easily. You will be able to import the file you create into MPMB's Character Sheet version 10.2 or later.\nThe field below contains all the exported data in a XML format. All you have to do is copy this data and save it as an .xfdf file with UTF-8 encoding.";
@@ -2552,8 +2545,7 @@ function AddUserScript(retResDia) {
 		} else if (askForScripts === "bfaq") {
 			getFAQ(["faq", "pdf"]);
 		} else if (askForScripts === "bcon") {
-			console.println("\nYour code has been copied below, but hasn't been commited/saved to the sheet!\nYou can run code here by selecting the appropriate lines and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + ".\n\n" + theUserScripts.join(""));
-			console.show();
+			displayError(false, "Your code has been copied below, but hasn't been commited/saved to the sheet!\nYou can execute code here by selecting the appropriate lines and pressing Ctrl+Enter.\n\n" + theUserScripts.join(""), false, true);
 		} else {
 			diaIteration += 1;
 		};
@@ -2581,49 +2573,88 @@ function AddUserScript(retResDia) {
 
 // Run the custom defined user scripts, if any exist
 function RunUserScript(atStartup, manualUserScripts) {
-	var ScriptsAtEnd = [];
-	var ScriptAtEnd = [];
-	var minSheetVersion = [0, ""];
+	if (atStartup) tDoc.noDeprecatedWarnings = []; // make this globally accessible
+	var ScriptsAtEnd = [], ScriptAtEnd = [];
+	var minSheetVersion = [0, ""], maxSheetVersion = [999999, ""];
 	var RunFunctionAtEnd = function(inFunction) {
 		if (inFunction && typeof inFunction === "function") ScriptAtEnd.push(inFunction);
 	};
 	var runIt = function(aScript, scriptName, isManual) {
-		var RequiredSheetVersion = function(inNumber) {
+		var RequiredSheetVersion = function(minNumber, maxNumber) {
 			if (atStartup) return;
-			var minSemVers = /-|\+|beta/i.test(inNumber.toString()) ? inNumber.toString().replace(/^\D+/, "").replace(/([^\-])\.?beta/, "$1-beta") : getSemVers(inNumber);
-			var testNmbr = semVersToNmbr(minSemVers);
-			if (testNmbr > minSheetVersion[0]) minSheetVersion = [testNmbr, minSemVers];
+			var getVersString = function(input) {
+				var inputStr = input.toString();
+				return /-|beta|\+/i.test(inputStr) ? inputStr.replace(/^\D+/, "").replace(/([^\-])\.?beta/i, "$1-beta") : getSemVers(input);
+			}
+			var minSemVers = getVersString(minNumber);
+			var testMinNmbr = semVersToNmbr(minSemVers);
+			if (testMinNmbr > minSheetVersion[0]) minSheetVersion = [testMinNmbr, minSemVers];
+			if (maxNumber) {
+				var maxSemVers = getVersString(maxNumber);
+				var testMaxNmbr = semVersToNmbr(maxSemVers);
+				if (testMaxNmbr < maxSheetVersion[0]) maxSheetVersion = [testMaxNmbr, maxSemVers];
+			}
 		};
 		try {
 			IsNotUserScript = false;
 			ScriptAtEnd = [];
 			minSheetVersion = [0, ""];
+			maxSheetVersion = [9E9, ""];
 			eval(aScript);
 			IsNotUserScript = true;
 			if (ScriptAtEnd.length > 0) ScriptsAtEnd = ScriptsAtEnd.concat(ScriptAtEnd);
+			var failedTestMsg;
 			if (sheetVersion < minSheetVersion[0]) {
-				var failedTestMsg = {
-					cMsg : 'The add-on script "' + scriptName + '" says it was made for a newer version of the sheet (v' + minSheetVersion[1] + "), and might thus not be compatible with this version of the sheet (v" + semVers + ").\n\nDo you want to continue using this add-on script in the sheet? If you select no, the add-on script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
-					nIcon : 2,
-					cTitle : "Add-on script was made for newer version!",
-					nType : 2
+				failedTestMsg = {
+					cMsg: 'The add-on script "' + scriptName + '" reports that it requires at least version number v' + minSheetVersion[1] + ", and is thus probably not compatible with the version of the sheet that you are using (which is v" + semVers + ').'+
+						(sheetVersion >= maxSheetVersion[0] ? "\nThe add-on script also has a maximum version requirement. Adding it to a v" + maxSheetVersion[0] + " or higher sheet will result in this same error message." : '')+
+						(minSheetVersion[0] >= 24000000 ? '' : '\nThis could be because from v24.0.0 onwards, the sheet uses the 2024 (5.5e) rules, while lower versions use the 5e (2014) rules.')+
+						'\n\nDo you want to continue using this add-on script in the sheet? If you select NO, the "' + scriptName + '" add-on script will be skipped and removed.'+
+						'\n\nYou can find other versions of the sheet with the "Get Latest Version" bookmark.',
+					nIcon: 2,
+					cTitle: "Add-on script was made for " + (sheetVersion >= maxSheetVersion[0] ? "another" : "newer") + " version of the PDF!",
+					nType: 2,
 				};
-				if (app.alert(failedTestMsg) !== 4) return false;
-			};
+			} else if (sheetVersion >= maxSheetVersion[0]) {
+				failedTestMsg = {
+					cMsg: 'The add-on script "' + scriptName + '" reports that it requires a sheet with a version number lower than v' + maxSheetVersion[1] + ", and is thus probably not compatible with the version of the sheet that you are using (which is v" + semVers + ').'+
+						'\n\nDo you want to continue using this add-on script in the sheet? If you select NO, the "' + scriptName + '" add-on script will be skipped and removed.'+
+						'\n\nYou can find other versions of the sheet with the "Get Latest Version" bookmark.',
+					nIcon: 2,
+					cTitle: "Add-on script was made for lower version of the PDF!",
+					nType: 2,
+				};
+			}
+			if (failedTestMsg && app.alert(failedTestMsg) !== 4) return false;
 			return true;
-		} catch (err) {
-			if ((/out of memory/i).test(err.toSource())) return "outOfMemory";
+		} catch (error) {
+			if (/out of memory/i.test(error.toSource())) return "outOfMemory";
 			IsNotUserScript = true;
 			var forNewerVersion = sheetVersion < minSheetVersion[0];
-			var eText = "The add-on script "+ (isManual ? "you entered" : '"' + scriptName + '"');
-			eText += forNewerVersion ? " says it was made for a newer version of the sheet (v" + minSheetVersion[1] + "; this sheet is only v" + semVers + "). That is probably why " : " is faulty, ";
-			eText += "it returns the following error when run:\n\"" + err;
-			for (var e in err) eText += "\n " + e + ": " + err[e];
-			eText += '"\n\n' + (isManual ? "Your add-on script has not been added to the sheet, please try again after fixing the problem." : "The add-on script has been removed from this pdf.") + "\n\nFor a more specific error, that includes the line number of the error, try running the add-on script from the JavaScript Console.\n\nPlease contact the author of the add-on script";
+			var forOlderVersion = sheetVersion > maxSheetVersion[0];
+			var eText = "The add-on script " + (isManual ? "you entered" : '"' + scriptName + '"');
+			if (forNewerVersion || forOlderVersion) {
+				if (forNewerVersion) eText += " reports that it requires at minimum v" + minSheetVersion[1];
+				if (forNewerVersion && forOlderVersion) {
+					eText += " and at maximum v" + maxSheetVersion[1];
+				} else if (forOlderVersion) {
+					eText += " reports that it requires at maximum v" + maxSheetVersion[1];
+				}
+				eText += " of MPMB's Character Sheet. However, the version of the sheet that you are using is v" + semVers + ", which is probably why ";
+			} else {
+				eText += " is faulty, ";
+			}
+			eText += 'it returns the following error when run:\n\t"' + error;
+			if (typeof error === "object") for (var e in error) eText += "\n\t  " + e + ": " + error[e];
+			eText += '"\n\n';
+			if (forNewerVersion || forOlderVersion) eText += 'This could be because from v24.0.0 onwards, the sheet uses the 2024 (5.5e) rules, while lower versions use the 5e (2014) rules.\n\n';
+			eText += isManual ? "Your add-on script has not been added to the sheet, please try again after fixing the problem." : "The add-on script has been removed from this pdf.";
+			eText += "\n\nFor a more specific error and one that includes the error's line number, try running the add-on script from the JavaScript Console.";
+			if (!forNewerVersion && !forOlderVersion) eText += "\n\nPlease contact the add-on script's author to report this issue.";
 			app.alert({
-				cMsg : eText,
-				nIcon : 0,
-				cTitle : forNewerVersion ? "Add-on script was made for newer version!" : "Error in running user add-on script"
+				cMsg: eText,
+				nIcon: 0,
+				cTitle: forNewerVersion || forOlderVersion ? "Add-on script was made for another version!" : "Error in running user add-on script"
 			});
 			return false;
 		};
@@ -2659,8 +2690,8 @@ function RunUserScript(atStartup, manualUserScripts) {
 		var functionErrors = [];
 		IsNotUserScript = false;
 		for (var i = 0; i < ScriptsAtEnd.length; i++) {
-			try { ScriptsAtEnd[i](); } catch (err) {
-				functionErrors.push('The function starting with "' + ScriptsAtEnd[i].toString().slice(0,100) + '"\ngave the error:' + err);
+			try { ScriptsAtEnd[i](); } catch (error) {
+				functionErrors.push('The function starting with "' + ScriptsAtEnd[i].toString().slice(0,100) + '"\nresulted in the error: "' + error + '"');
 			};
 		};
 		IsNotUserScript = true;
@@ -2675,6 +2706,12 @@ function RunUserScript(atStartup, manualUserScripts) {
 
 	// fix wrong reference (common mistake when adding classes)
 	deleteUnknownReferences();
+
+	// amend class features with auto-generated (extra)choices
+	processChoicesFightingStyles();
+	processChoicesWeaponMasteries();
+
+	if (tDoc.noDeprecatedWarnings) delete tDoc.noDeprecatedWarnings; // remove global
 
 	// when run at startup and one of the script fails, update all the dropdowns
 	if (manualScriptResult == "outOfMemory" || runIScript == "outOfMemory") {
@@ -2706,9 +2743,8 @@ function deleteUnknownReferences() {
 		for (var i = oClass.subclasses[1].length - 1; i >= 0; i--) {
 			var sSubcl = oClass.subclasses[1][i];
 			if (!ClassSubList[sSubcl] || arrDupl.indexOf(sSubcl) !== -1) {
-				console.println("The subclass '" + sSubcl + "' for the class '" + oClass.name + "' is missing from the ClassSubList object, or appears multiple times in the `subclasses` attribute. Please contact its author to have this issue corrected. The subclass will be ignored for now.\nBe aware that if you add a subclass using the `AddSubClass()` function, you shouldn't list it in the `subclasses` attribute, the function will take care of that.");
-				console.show();
 				oClass.subclasses[1].splice(i, 1);
+				displayError(false, 'The subclass "' + sSubcl + '" for the class "' + oClass.name + "\" is missing from the ClassSubList object, or appears multiple times in the `subclasses` attribute. Please contact its author to have this issue corrected. The subclass will be ignored for now.\nBe aware that if you add a subclass using the `AddSubClass()` function, you shouldn't list it in the `subclasses` attribute, the function will take care of that.");
 			} else {
 				arrDupl.push(sSubcl);
 			}
@@ -2717,14 +2753,26 @@ function deleteUnknownReferences() {
 }
 
 // Define some custom import script functions as document-level functions so custom scripts including these can still be run from console
-function RequiredSheetVersion(inNumber) {
-	var minSemVers = /-|beta|\+/i.test(inNumber.toString()) ? inNumber.toString().replace(/^\D+/, "").replace(/([^\-])\.?beta/, "$1-beta") : getSemVers(inNumber);
-	var testNmbr = semVersToNmbr(minSemVers);
-	if (sheetVersion < testNmbr) {
+function RequiredSheetVersion(minNumber, maxNumber) {
+	var getVersString = function(input) {
+		var inputStr = input.toString();
+		return /-|beta|\+/i.test(inputStr) ? inputStr.replace(/^\D+/, "").replace(/([^\-])\.?beta/i, "$1-beta") : getSemVers(input);
+	}
+	var minSemVers = getVersString(minNumber);
+	var testMinNmbr = semVersToNmbr(minSemVers);
+	var testMax = false, maxSemVers, testMaxNmbr;
+	if (maxNumber) {
+		var maxSemVers = getVersString(maxNumber);
+		var testMaxNmbr = semVersToNmbr(maxSemVers);
+		testMax = true;
+	}
+	if (sheetVersion < testMinNmbr || (testMax && sheetVersion >= testMaxNmbr)) {
 		app.alert({
-			cMsg : "The RequiredSheetVersion() function in your script suggests that the script is made for a newer version, v" + minSemVers + ", of MPMB's Character Record Sheets.\nBe aware that this sheet is only v" + semVers + " and might thus not work properly.\nAlternatively, you might not be using the RequiredSheetVersion() function incorrectly.",
-			nIcon : 2,
-			cTitle : "Script was made for newer version!"
+			cMsg: "The RequiredSheetVersion() function in your script suggests that the script is made for another version of the MPMB's Character Sheet, minimally requiring v" + minSemVers + (testMax ? ", but lower than v" + maxSemVers : "") + "."+
+				"\nThis current PDF is v" + semVers + " and will likely not work properly."+
+				"\nAlternatively, you might not be using the RequiredSheetVersion() function correctly.",
+			nIcon: 2,
+			cTitle: "Script was made for another version of the PDF!",
 		});
 	}
 };
@@ -2988,12 +3036,7 @@ function ImportUserScriptFile(filePath) {
 				}
 				iFileCont = scriptContent;
 			} catch (error) {
-/* Uncomment for testing
-				var eText = "Error importing HTML from " + knownHTML + ": " + error;
-				for (var e in error) eText += "\n " + e + ": " + error[e];
-				console.println(eText);
-				console.show();
-*/
+				// displayError(error, 'Error importing HTML from "' + knownHTML + '":'); // Uncomment for testing
 				knownHTML = false;
 			}
 		}
@@ -3289,8 +3332,7 @@ function ImportScriptFileDialog(retResDia) {
 		if (scriptFilesDialog === "bfaq") {
 			getFAQ(["faq", "pdf"]);
 		} else if (scriptFilesDialog === "bcon") {
-			console.println("\nAny changes you made in the import script files dialog have not been applied!\nYou can run code here by pasting it in, selecting the appropriate lines and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + ".");
-			console.show();
+			displayError(false, "Any changes you made in the import script files dialog have not been applied!\nYou can run code here by pasting it in, selecting the appropriate lines and pressing Ctrl+Enter.");
 		};
 	} while (scriptFilesDialog !== "ok" && scriptFilesDialog !== "bCon" && scriptFilesDialog !== "cancel");
 

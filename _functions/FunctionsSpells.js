@@ -193,10 +193,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 			try {
 				didChange = evalThing(theSpl, aSpell, aCast ? theCast : "", noOverrides ? true : false);
 			} catch (error) {
-				var eText = "The custom function for changing spell attributes from '" + evalName + "' produced an error while processing the spell '" + theSpl + "'. The custom function will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
-				for (var e in error) eText += "\n " + e + ": " + error[e];
-				console.println(eText);
-				console.show();
+				displayError(error, 'The custom function for changing spell attributes from "' + evalName + '" produced the error below while processing the spell "' + theSpl + '". It will be removed from the sheet for now, but please share this error message with its author so they can correct this issue.');
 				delete CurrentEvals.spellAdd[evalName];
 				CurrentEvals.spellAddOrder.splice(i, 1);
 				i--;
@@ -869,10 +866,7 @@ function runSpellCalc(sType, sCaster, iAbiScore, sSpell) {
 				var evalResult = evalThing(sType, aCasters, iAbiScore, sSpell);
 				if (!isNaN(evalResult)) iReturn += Number(evalResult);
 			} catch (error) {
-				var eText = "The custom spell attack/DC (spellCalc) script from '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
-				for (var e in error) eText += "\n " + e + ": " + error[e];
-				console.println(eText);
-				console.show();
+				displayError(error, 'The custom spell attack/DC (spellCalc) function from "' + evalName + '" produced the error below. It will be removed from the sheet for now, but please share this error message with its author so they can correct this issue.');
 				delete CurrentEvals.spellCalc[evalName];
 				CurrentEvals.spellCalcOrder.splice(i, 1);
 				i--;
@@ -1038,10 +1032,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 			try {
 				evalThing(inputObject, objName, objType);
 			} catch (error) {
-				var eText = "The custom calcChanges.spellList function '" + evalName + "' produced an error! It will be removed from the sheet for now, but please contact the author of the feature to have this issue corrected:\n " + error;
-				for (var e in error) eText += "\n " + e + ": " + error[e];
-				console.println(eText);
-				console.show();
+				displayError(error, 'The custom calcChanges.spellList function from "' + evalName + '" produced the error below. It will be removed from the sheet for now, but please share this error message with its author so they can correct this issue.');
 				delete CurrentEvals.spellList[evalName];
 				CurrentEvals.spellListOrder.splice(i, 1);
 				i--;
@@ -2593,7 +2584,6 @@ function DefineSpellSheetDialogs(force, formHeight) {
 				strPrepTxt += "\nOther bonuses";
 				strPrepNr  += "\n" + (bonusPrepare < 0 ? "- " : "+ ") + Math.abs(bonusPrepare);
 			}
-			console.println(bonusPrepare+'\n'+strPrepTxt+'\n'+strPrepNr);
 
 			//set the value of various text entries
 			var toEnable = {
@@ -2963,13 +2953,13 @@ function AskUserSpellSheet() {
 				dia.offsetCa = spCast.offsetCa ? spCast.offsetCa : 0; //set the manually added cantrips
 				dia.selectCa = spCast.selectCa ? spCast.selectCa : []; //set the cantrips already selected
 
-				// Create the lists
+				// Create the list of cantrips that can be selected
 				// Set the list level to 0 so that school restrictions are ignored, if applicable
 				spCast.list.level = [0, 0, spListLevel && spListLevel[1] ? 1 : 0];
 				// Create an array of all the cantrips, and only cantrips
 				var extraToCa = !spCast.extra ? false :
-					spCast.type == "list" ? (spCast.extraSpecial ? spCast.extra : false) :
-					spCast.extraSpecial ? false : spCast.extra; // book or known
+					spCast.type == "list" ? (spCast.extraSpecial ? spCast.extra : false) : // list caster
+					spCast.extraSpecial ? false : spCast.extra; // book or known casters
 				var listCaRef = CreateSpellList(spCast.list, true, extraToCa, false, aCast, spCast.typeSp, true);
 				// Create the cantrip popup object
 				dia.listCa = CreateSpellObject(listCaRef);
@@ -3339,7 +3329,7 @@ function AskUserSpellSheet() {
 						delete spCast.list.level;
 					}
 				};
-				diaPrep.listSp = CreateSpellObject(listPrepRef); //create the spells popup object
+				diaPrep.listSp = CreateSpellObject(listPrepRef); //create the spells dropdown object
 
 				//set the previously selected spells and the offset, if any was defined
 				diaPrep.selectSp = spCast.selectPrep ? spCast.selectPrep : [];
@@ -5516,18 +5506,17 @@ function isSpellcaster(classOnly) {
 function amendPsionicsToSpellsList() {
 	//Add the psionics to the SpellsList object
 	if (PsionicsList) {
-		var errorPsi = "";
+		var errorPsi = [];
 		for (var psiO in PsionicsList) {
 			if (SpellsList[psiO]) {
-				if (!SpellsList[psiO].psionic) errorPsi += "\n \u2022 " + psiO + " was skipped, because it already exists in SpellsList.";
+				if (!SpellsList[psiO].psionic) errorPsi.push(" \u2022 " + psiO + " was skipped, because it already exists in SpellsList.");
 			} else {
 				SpellsList[psiO] = PsionicsList[psiO];
 			}
 		};
 	};
-	if (errorPsi) {
-		console.println("Error while adding Psionics to the sheet:" + errorPsi);
-		console.show();
+	if (errorPsi.length) {
+		displayError(errorPsi.join("\n"), "The errors below occured when adding Psionics to the sheet.");
 	};
 };
 
