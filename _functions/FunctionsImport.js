@@ -2707,12 +2707,6 @@ function RunUserScript(atStartup, manualUserScripts) {
 	// fix wrong reference (common mistake when adding classes)
 	deleteUnknownReferences();
 
-	// amend class features with auto-generated (extra)choices
-	processChoicesFightingStyles();
-	processChoicesWeaponMasteries();
-
-	if (tDoc.noDeprecatedWarnings) delete tDoc.noDeprecatedWarnings; // remove global
-
 	// when run at startup and one of the script fails, update all the dropdowns
 	if (manualScriptResult == "outOfMemory" || runIScript == "outOfMemory") {
 		outOfMemoryErrorHandling(atStartup);

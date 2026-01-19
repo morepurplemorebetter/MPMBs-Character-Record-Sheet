@@ -48,6 +48,7 @@ function FindCompRace(inputCreaTxt, aPrefix) {
 	} else {
 		// During startup, do all pages (aPrefix == undefined)
 		var prefixA = What("Template.extras.AScomp").split(",").splice(1);
+		inputCreaTxt = undefined; // make sure this is undefined
 	}
 	for (var p = 0; p < prefixA.length; p++) {
 		var prefix = prefixA[p];
@@ -85,7 +86,7 @@ function FindCompRace(inputCreaTxt, aPrefix) {
 }
 
 //set the CurrentCompRace variable
-function setCurrentCompRace(prefix, type, found) {
+function setCurrentCompRace(prefix, type, found, inputCreaTxt) {
 	if (!prefix || !tDoc.getField(prefix + "Comp.Race")) return;
 	if (!type || !found) {
 		CurrentCompRace[prefix] = {};
@@ -152,9 +153,9 @@ function setCurrentCompRace(prefix, type, found) {
 		}
 	}
 	// set the nameThis
-	var inputCreaTxt = What(prefix + "Comp.Race").toLowerCase();
-	if (!CurrentCompRace[prefix].nameThis || inputCreaTxt.indexOf(CurrentCompRace[prefix].nameThis.toLowerCase()) === -1) {
-		CurrentCompRace[prefix].nameThis = clean(inputCreaTxt.replace(/,? ?(giant|dire)/ig, '').replace(/ +/g, ' '));
+	var creaTxt = inputCreaTxt ? inputCreaTxt : clean(What(prefix + "Comp.Race")).toLowerCase();
+	if (!CurrentCompRace[prefix].nameThis || creaTxt.indexOf(CurrentCompRace[prefix].nameThis.toLowerCase()) === -1) {
+		CurrentCompRace[prefix].nameThis = clean(creaTxt.replace(/,? ?(giant|dire)/ig, '').replace(/ +/g, ' '));
 	}
 }
 
@@ -258,7 +259,7 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 		Value(prefix + "Companion.Remember", CreatureList[fndObj.found].companionApply);
 	}
 	// fill the global variable with the newly found race (and companion type)
-	setCurrentCompRace(prefix, fndObj.type, fndObj.found);
+	setCurrentCompRace(prefix, fndObj.type, fndObj.found, strRaceEntry);
 	var aCrea = CurrentCompRace[prefix];
 	var oComp = CompanionList[aCrea.typeCompanion];
 
@@ -1320,9 +1321,9 @@ function FindCompWeapons(ArrayNmbr, aPrefix) {
 				var compAttack = CurrentCompRace[prefix].attacks[tempArray[j][0]];
 				if (compAttack.abilitytodamage !== undefined) {
 					tempArray[j][2] = compAttack.abilitytodamage;
-				} else if (compAttack.modifiers && compAttack.modifiers[2] !== "") {
+				} else if (compAttack.modifiers && (compAttack.modifiers[2] || compAttack.modifiers[2] === false)) {
 					// --- backwards compatibility --- //
-					tempArray[j][2] = compAttack.modifiers[2];
+					tempArray[j][2] = !!compAttack.modifiers[2];
 				}
 			}
 			//put tempArray in known
