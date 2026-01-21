@@ -118,7 +118,6 @@ var Base_RaceList = {
 			name : "High Elf Cantrip",
 			"class" : "wizard",
 			level : [0, 0],
-			firstCol : 'atwill'
 		}]
 	},
 	"rock gnome" : {
@@ -281,7 +280,6 @@ var Base_RaceList = {
 			name : "Infernal Legacy (level 1)",
 			spells : ["thaumaturgy"],
 			selection : ["thaumaturgy"],
-			firstCol : 'atwill'
 		}],
 		features : {
 			"hellish rebuke" : {

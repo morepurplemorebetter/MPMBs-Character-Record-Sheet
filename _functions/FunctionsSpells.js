@@ -1008,7 +1008,7 @@ function SetSpellCheckbox() {
 }
 
 //generate a list of all the spells; if toDisplay = true it means this is meant for the drop-down boxes
-function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objName, objType, returnRef) {
+function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objName, objType, returnRef, bExtraSpecial) {
 	if (typeof inputObject === "string") {
 		if (inputObject != "warlock" && ClassList[inputObject] && ClassList[inputObject].spellcastingList) {
 			inputObject = ClassList[inputObject].spellcastingList;
@@ -1021,7 +1021,18 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 	inputObject = newObj(inputObject);
 	if (!inputObject.extraspells) inputObject.extraspells = [];
 	inputObject.psionic = inputObject.psionic === undefined ? false : typeof inputObject.psionic === "string" ? inputObject.psionic.toLowerCase() : inputObject.psionic;
-	if (extraArray) inputObject.extraspells = inputObject.extraspells.concat(extraArray);
+	if (extraArray) {
+		// How to process the extraArray depends on the type (`objType`) and whether or not this is a conform (`bExtraSpecial == false`) or nonconform (`bExtraSpecial == true`) use of the extra spells.
+		var extraNonconform = /list/i.test(objType) ? !bExtraSpecial : bExtraSpecial; // List casters work the other way around
+		if (extraNonconform) {
+			// Remove from the spell options, because they are always prepared and thus don't need to also be selectable in the dialog
+			if (!inputObject.notspells) inputObject.notspells = [];
+			inputObject.notspells = inputObject.notspells.concat(extraArray);
+		} else {
+			// Add to the spell options
+			inputObject.extraspells = inputObject.extraspells.concat(extraArray);
+		}
+	}
 
 	//first run the custom code injected by a feature
 	if (CurrentEvals.spellList && objName !== undefined && objType !== undefined) {
@@ -1092,7 +1103,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 			addSp = inputObject.school.indexOf(aSpell.school) !== -1;
 		}
 		if (addSp && inputObject.attackOnly !== undefined) {
-			var isAttackSpell = /booming blade|green-flame blade/.test(key) || /spell at(tac)?k/i.test(aSpell.description + aSpell.descriptionFull);
+			var isAttackSpell = /booming blade|green-flame blade|true strike/.test(key) || /spell at(tac?)k/i.test(aSpell.description + aSpell.descriptionFull);
 			addSp = isAttackSpell == inputObject.attackOnly;
 		}
 		// only filter rituals if the spell is not a cantrip
@@ -2020,7 +2031,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 
 			if (this.showCaPr) {
 				toLoad["CaPr"] = this.preparedCantrips;
-				toEnable["CaPr"] = !this.showSpRadio || this.selectSpRadio < 3;
+				toEnable["CaPr"] = !this.showSpRadio || this.selectSpRadio !== 3;
 			}
 
 			//a function to set the right object to positive
@@ -2182,7 +2193,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 		SpR1: function (dialog) { this.toggleCaPr(dialog, true); },
 		SpR2: function (dialog) { this.toggleCaPr(dialog, true); },
 		SpR3: function (dialog) { this.toggleCaPr(dialog, false); },
-		SpR4: function (dialog) { this.toggleCaPr(dialog, false); },
+		SpR4: function (dialog) { this.toggleCaPr(dialog, true); },
 
 		description : {
 			name : "SPELL SELECTION DIALOG",
@@ -2956,12 +2967,8 @@ function AskUserSpellSheet() {
 				// Create the list of cantrips that can be selected
 				// Set the list level to 0 so that school restrictions are ignored, if applicable
 				spCast.list.level = [0, 0, spListLevel && spListLevel[1] ? 1 : 0];
-				// Create an array of all the cantrips, and only cantrips
-				var extraToCa = !spCast.extra ? false :
-					spCast.type == "list" ? (spCast.extraSpecial ? spCast.extra : false) : // list caster
-					spCast.extraSpecial ? false : spCast.extra; // book or known casters
-				var listCaRef = CreateSpellList(spCast.list, true, extraToCa, false, aCast, spCast.typeSp, true);
-				// Create the cantrip popup object
+				var listCaRef = CreateSpellList(spCast.list, true, spCast.extra, false, aCast, spCast.typeSp, true, !!spCast.extraSpecial);
+				// Create the cantrip dropdown object
 				dia.listCa = CreateSpellObject(listCaRef);
 			}
 
@@ -3027,7 +3034,7 @@ function AskUserSpellSheet() {
 				//set the list level to 1 to max set before
 				spCast.list.level = [1, spListLevel ? spListLevel[1] : 9];
 				// create an array of all the spells
-				var listSpRef = CreateSpellList(spCast.list, true, spCast.extra && !spCast.extraSpecial ? spCast.extra : false, false, aCast, spCast.typeSp, true);
+				var listSpRef = CreateSpellList(spCast.list, true, spCast.extra, false, aCast, spCast.typeSp, true, !!spCast.extraSpecial);
 				// Create the spell popup object
 				dia.listSp = CreateSpellObject(listSpRef);
 			}
@@ -3115,9 +3122,9 @@ function AskUserSpellSheet() {
 					// Add the spell selection
 					if (spBonusi.selection && spBonusi.selection[y - 1] && SpellsList[spBonusi.selection[y - 1]]) {
 						dia.selectBo.push(spBonusi.selection[y - 1]);
-						// cantrips are atwill
-						if (SpellsList[spBonusi.selection[y - 1]].level === 0 && /^once[sl]r$/i.test(firstCol)) {
-							firstCol = 'atwill';
+						// For Cantrips atwill is the default, so let the sheet decide instead of forcing atwill
+						if (SpellsList[spBonusi.selection[y - 1]].level === 0 && firstCol === 'atwill') {
+							firstCol = undefined;
 						}
 					} else {
 						dia.selectBo.push(undefined);
@@ -3144,7 +3151,7 @@ function AskUserSpellSheet() {
 		if (dia.showAd) {
 			diaDynCols.push(spDias.spellSelectParts.extraCluster);
 			dia.selectAd = OrderSpells(spCast.extra, "single");
-			dia.nameAd = dia.typeSp === "list" ? ( spCast.extraSpecial ? "[added to spells known]" : "[always prepared]" ) :
+			dia.nameAd = dia.typeSp === "list" ? ( spCast.extraSpecial ? "[added to available spells]" : "[always prepared]" ) :
 				dia.typeSp === "book" ? ( spCast.extraSpecial ? "[added to known/spellbook]" : "[extra options for spellbook]" ) :
 				spCast.extraSpecial ? "[added to spells known]" : "[extra options for spells known]";
 		}
@@ -3199,7 +3206,18 @@ function AskUserSpellSheet() {
 
 					var iterate = !spBonusi.times ? 1 : isArray(spBonusi.times) ? spBonusi.times[Math.min(spBonusi.times.length, spCast.level) - 1] : spBonusi.times; //if we have to apply this thing multiple times, do so
 					for (var y = 1; y <= iterate; y++) {
-						if (BonusFirstCols[boNmr]) spCast.special[dia.selectBo[boNmr]] = BonusFirstCols[boNmr] //those that have a special first column
+						if (BonusFirstCols[boNmr]) {
+							// Those that have a special first column
+							spCast.special[dia.selectBo[boNmr]] = BonusFirstCols[boNmr];
+						} else if (SpellsList[dia.selectBo[boNmr]] && SpellsList[dia.selectBo[boNmr]].level === 0) { // First column not set for a cantrips
+							if (spCast.preparedCantrips && spCast.typeList !== 3) {
+								// If cantrips are also prepared and its first column isn't set, mark it as Always Prepared
+								spCast.special[dia.selectBo[boNmr]] = 'markedbox';
+							} else if (spCast.typeList === 4) {
+								// If cantrips are not prepared, but doing a full list, mark it as At Will
+								spCast.special[dia.selectBo[boNmr]] = 'atwill';
+							}
+						}
 						spBonusi.selection[y-1] = dia.selectBo[boNmr]; //set the selection(s)
 						boNmr += 1; //count the number of bonus things
 					}
@@ -3311,8 +3329,8 @@ function AskUserSpellSheet() {
 				//make the array of spells that the preparations can come from
 				if (spCast.selectSp) { // spellbook
 					var selectedSpells = {
-						spells : spCast.selectSp,
-						level : [1,9]
+						spells: spCast.selectSp,
+						level: [1, maxSpell], //set the list level to 1-max level able to cast
 					};
 					//add the spells from the extra spellbook dialog
 					if (spCast.selectSpSB) selectedSpells.spells = selectedSpells.spells.concat(spCast.selectSpSB);
@@ -3320,14 +3338,9 @@ function AskUserSpellSheet() {
 					if (spCast.extra && spCast.extraSpecial) selectedSpells.spells = selectedSpells.spells.concat(spCast.extra);
 					var listPrepRef = CreateSpellList(selectedSpells, true, false, false, undefined, undefined, true); //create an array of all the spells that can be prepared from the spells selected in the previous dialog
 				} else { // spell list
-					var spListLevel = spCast.list.level; //put the level of the list here for safe keeping
-					spCast.list.level = [1, maxSpell]; //set the list level to 1 to max level able to cast
-					var listPrepRef = CreateSpellList(spCast.list, true, spCast.extra && spCast.extraSpecial ? spCast.extra : false, false, aCast, spCast.typeSp, true); //create an array of all the spells that can be prepared at this level
-					if (spListLevel) { //put that list level back in the right variable
-						spCast.list.level = spListLevel;
-					} else {
-						delete spCast.list.level;
-					}
+					var listObject = newObj(spCast.list);
+					listObject.level = [1, maxSpell]; //set the list level to 1-max level able to cast
+					var listPrepRef = CreateSpellList(listObject, true, spCast.extra, false, aCast, spCast.typeSp, true, !!spCast.extraSpecial); //create an array of all the spells that can be prepared at this level, excluding the always prepared spells
 				};
 				diaPrep.listSp = CreateSpellObject(listPrepRef); //create the spells dropdown object
 
@@ -3497,40 +3510,82 @@ function GenerateSpellSheet(GoOn) {
 		var spCast = CurrentSpells[CurrentCasters.incl[i]];
 
 		//get a list of all the spells to put on the Spell Sheet
-		var fullSpellList = spCast.selectBo ? spCast.selectBo : [];
+		var fullSpellList = [];
 		if (spCast.selectCa) fullSpellList = fullSpellList.concat(spCast.selectCa); //add the cantrips
 		if (spCast.typeList === 3 && spCast.selectPrep) { //if it has been selected to only do the prepared spells, only add those
 			fullSpellList = fullSpellList.concat(spCast.selectPrep);
 		} else if (spCast.selectSp) { //otherwise add all the selected spells, if any
 			fullSpellList = fullSpellList.concat(spCast.selectSp); //add the spells
-			if (spCast.selectSpSB) fullSpellList = fullSpellList.concat(spCast.selectSpSB); //add the spells from the extra spellbook dialog
+			if (spCast.selectSpSB) fullSpellList = fullSpellList.concat(spCast.selectSpSB); //add the spells from the extra spellbook dialog(s)
 		}
 
-		var alwaysPrepared = []; //array of spells that are considered always prepared
+		var alwaysPrepared = []; // Array of spells that are considered always prepared (i.e. `extra` spells). Cantrips in this array will be marked as At Will, or Always Prepared if cantrips can be prepared
 		var firstCols = spCast.special ? spCast.special : {};
-		var addToFullList = false;
+		var addExtra = { toFullList: false, toDisplayList: false };
+		var preparingCantrips = spCast.preparedCantrips && spCast.typeList !== 3;
 
-		var listOrBookCaster = /list|book/i.test(spCast.typeSp);
-		var preparedOnly = spCast.typeList === 3 || (spCast.known && !spCast.known.prepared);
-		if (spCast.extra && (spCast.extraSpecial || listOrBookCaster)) {
-			var extraSpells = spCast.extra;
-			if (spCast.typeList === 3 && spCast.extraSpecial) {
-				// if set to only show prepared spells && nonconform use of extra spells, then the `extra` spells above 1st-level are already included in those selected as prepared, so don't add them as alwaysPrepared here. We only need to add the cantrips as extraspells
-				extraSpells = OrderSpells(extraSpells, "single", false, false, 0);
-			} else if (listOrBookCaster && !spCast.extraSpecial) {
-				var extraNoCantrips = OrderSpells(extraSpells, "multi");
-				if (!spCast.preparedCantrips) extraNoCantrips.shift(); // remove the cantrips if they can't be prepared
-				extraNoCantrips = [].concat.apply([], extraNoCantrips); // reduce to single array
-				alwaysPrepared = alwaysPrepared.concat(extraNoCantrips); // and add them to the always prepared array
-			};
-			fullSpellList = fullSpellList.concat(extraSpells); //add the extra spells
-		} else if (spCast.extra && spCast.typeList === 4) {
-			addToFullList = true;
-		};
+		// Process the extra spells, if any
+		if (spCast.extra) {
+			var listCaster = /list/i.test(spCast.typeSp);
+			var bookCaster = /book/i.test(spCast.typeSp);
+			var extraNonconform = listCaster ? !spCast.extraSpecial : spCast.extraSpecial;
+			switch (spCast.typeList) {
+				default: case 1: case 2: // Default
+					// Add to prepared/known spells if `extraNonconform == true`
+					if (extraNonconform) {
+						addExtra.toFullList = spCast.extra;
+						if (listCaster) {
+							// List casters with `extraSpecial == false` have these marked as Always Prepared
+							alwaysPrepared = spCast.extra;
+						} else if (preparingCantrips) {
+							// If the Cantrips  can be prepared, mark these as Always Prepared.
+							alwaysPrepared = OrderSpells(spCast.extra, "single", false, false, 0);
+						}
+					} else if (listCaster) {
+						// List casters should get the extra spells added to the generated spell sheet when `extraSpecial == true`
+						// If cantrips are prepared, add everything, but only add the non-cantrip spells if cantrips aren't prepared
+						addExtra.toDisplayList = preparingCantrips ? spCast.extra :
+							spCast.extra.filter(function(spell) {
+								return SpellsList[spell] && SpellsList[spell].level > 0;
+							});
+					}
+					break;
+				case 3: // Prepared only (only possible for List and Spellbook casters)
+					if (extraNonconform) {
+						// List casters with `extraSpecial == false` have these always prepared, otherwise they were already added to the list of options for the player to select prepared spells from and we don't need to do anything
+						// Spellbook casters will already have selected the appropriate spells that are prepared from the spellbook, but if `extraNonconform == true` the cantrips still need to be added as they are automatically known
+						addExtra.toFullList = listCaster ? spCast.extra : OrderSpells(spCast.extra, "single", false, false, 0);
+					}
+					break;
+				case 4: // Full class list, thus always add extra spells
+					if (extraNonconform) {
+						// Add to prepared/known spells if `extraNonconform == true`
+						addExtra.toFullList = spCast.extra;
+						if (!bookCaster) {
+							// For List and Known casters, mark all extra spells as Always Prepared
+							alwaysPrepared = spCast.extra;
+						} else {
+							// For Spellbook casters mark cantrips as Always Prepared if cantrips can be prepared, or otherwise as At Will because their selection can't be changed
+							alwaysPrepared = OrderSpells(spCast.extra, "single", false, false, 0);
+						}
+					} else {
+						// Show on the spell sheet, but don't mark if `extraNonconform == false`
+						addExtra.toDisplayList = spCast.extra;
+					}
+					break;
+			}
 
-		var knownSpells = fullSpellList; //put the total list of selected spells here for safekeeping before we add more to this list
+			if (addExtra.toFullList) {
+				fullSpellList = fullSpellList.concat(addExtra.toFullList);
+				addExtra.toDisplayList = false;
+			}
+		}
 
-		if (addToFullList) fullSpellList = fullSpellList.concat(spCast.extra); //add the extra spells if there are extra to choose from, but not auto known/prepared
+		// Save the list of spells that are known/prepared so they can be marked appropriately
+		var knownSpells = fullSpellList;
+		// After we have saved the known/prepared, we can add spells that should be displayed on the spell sheet, but not automatically marked as known/prepared
+		if (addExtra.toDisplayList) fullSpellList = fullSpellList.concat(addExtra.toDisplayList);
+		if (spCast.selectBo) fullSpellList = fullSpellList.concat(spCast.selectBo);
 
 		//now add the general list, if chosen to do the full class list or if this is a 'list' spellcaster that didn't chose to only do the prepared spells
 		if (spCast.typeList === 4 || (spCast.typeSp === "list" && spCast.typeList !== 3)) {
@@ -3538,22 +3593,16 @@ function GenerateSpellSheet(GoOn) {
 			// Set the list level to generate
 			var iLowestLevel = listObject.level ? listObject.level[0] : 0;
 			listObject.level = [
-				spCast.typeList === 4 || spCast.preparedCantrips ? iLowestLevel : Math.max(iLowestLevel, 1),
-				spCast.factor && spCast.factor[1] == "warlock" ? 9 : listObject.level ? listObject.level[1] : 9
+				spCast.typeList === 4 || preparingCantrips ? iLowestLevel : Math.max(iLowestLevel, 1),
+				spCast.factor && spCast.factor[1] == "warlock" ? 9 : listObject.level ? listObject.level[1] : 9,
 			];
-			// Set the list to ignore bonus spells, as we are adding them in later, unless they are special "once per rest" spells
-			if (spCast.selectBo) listObject.notspells = spCast.selectBo.filter(function (spell) {
-				return !firstCols[spell] || !/^once[sl]r$/i.test(firstCols[spell]);
-			});
 			//add the full spell list of the class
 			var fullClassSpellList = CreateSpellList(listObject, false, false, false, CurrentCasters.incl[i], spCast.typeSp);
 			fullSpellList = fullSpellList.concat(fullClassSpellList);
-		} else if (spCast.preparedCantrips && spCast.typeList !== 3 && (spCast.list || spCast.preparedCantripsList)) { // Add all the cantrips
+		} else if (preparingCantrips && (spCast.list || spCast.preparedCantripsList)) { // Add all the cantrips
 			var listObject = spCast.preparedCantripsList ? spCast.preparedCantripsList : newObj(spCast.list);
 			// Force it being only cantrips
 			listObject.level = [0, 0];
-			// Ignore bonus spells so we don't get duplicates
-			if (spCast.selectBo) listObject.notspells = spCast.selectBo;
 			var fullClassCantripList = CreateSpellList(listObject, false, false, false, CurrentCasters.incl[i], spCast.typeSp);
 			fullSpellList = fullSpellList.concat(fullClassCantripList);
 		}
@@ -3564,20 +3613,6 @@ function GenerateSpellSheet(GoOn) {
 			if (isFirst === i) isFirst += 1;
 			continue;
 		};
-
-		// First column of the column header row
-		var captionFirstCol = "##";
-		var captionFirstColCantrips = preparedOnly ? "##" : spCast.preparedCantrips ? "##pr" : "##kn";
-		if (spCast.firstCol !== undefined) {
-			// defined by CurrentSpells object
-			captionFirstCol += spCast.firstCol;
-			captionFirstColCantrips = "##" + spCast.firstCol;
-		} else if (spCast.known && spCast.known.prepared && spCast.typeList !== 3) {
-			// prepared, or spellbook (SB) if a book caster and generating a full list
-			captionFirstCol += spCast.typeSp === "book" && spCast.typeList === 4 ? 'sb' : 'pr';
-		} else if (/race|feat|item/i.test(spCast.typeSp) && spCast.typeList !== 3) {
-			captionFirstCol += "kn";
-		}
 
 		//see if we need to stop short of doing all the spells
 		var maxLvl = 9;
@@ -3593,7 +3628,24 @@ function GenerateSpellSheet(GoOn) {
 			};
 		};
 
-		var orderedSpellList = OrderSpells(fullSpellList, "multi", true, spCast.selectBo ? spCast.selectBo : [], maxLvl); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
+		var orderedSpellList = OrderSpells(fullSpellList, "multi", true, spCast.selectBo, maxLvl); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
+
+		var preparedOnly = spCast.typeList === 3 || (spCast.known && !spCast.known.prepared && spCast.typeList !== 4);
+
+		// First column of the column header row
+		var captionFirstCol = "##";
+		var captionFirstColCantrips = preparedOnly ? "##" : spCast.preparedCantrips ? "##pr" : "##kn";
+		var autoFirstColumn = spCast.typeList === 4 || (spCast.typeList !== 3 && (spCast.known && spCast.known.prepared) || /race|feat|item/i.test(spCast.typeSp));
+		if (spCast.firstCol !== undefined) {
+			// defined by CurrentSpells object
+			captionFirstCol += spCast.firstCol;
+			captionFirstColCantrips = "##" + spCast.firstCol;
+		} else if (spCast.known && spCast.known.prepared && spCast.typeList !== 3) {
+			// prepared, or spellbook (SB) if a book caster and generating a full list
+			captionFirstCol += spCast.typeSp === "book" && spCast.typeList === 4 ? 'sb' : 'pr';
+		} else if (autoFirstColumn) {
+			captionFirstCol += "kn";
+		}
 
 		if (i === isFirst) {
 			SSfront = true;
@@ -3648,19 +3700,27 @@ function GenerateSpellSheet(GoOn) {
 
 			for (var y = 0; y < spArray.length; y++) {
 				var aSpell = spArray[y];
+				var oSpell = SpellsList[aSpell];
+				if (!oSpell) continue;
+				var preparedCantrip = oSpell.level === 0 && preparingCantrips;
 				var notDupl = y ? aSpell != spArray[y - 1] : true;
+				var bonusBookSpell = bookCaster && notDupl && spCast.selectBo && spCast.selectBo.indexOf(aSpell) !== -1;
 				//check if not at the end of the page and, if so, create a new page
 				if (lineCurrent > lineMax) AddPage();
+				// Set the first column
 				var toCheck = "##";
 				if (notDupl && alwaysPrepared.indexOf(aSpell) !== -1 && !preparedOnly) {
-					toCheck += "markedbox";
+					// Mark as Always Prepared if set to do so, unless only doing prepared spells or if it's a cantrip and cantrips are not set to be prepared
+					toCheck += oSpell.level === 0 && !preparedCantrip ? "atwill" : "markedbox";
 				} else if (notDupl && firstCols[aSpell] && !(firstCols[aSpell] === "markedbox" && preparedOnly)) {
+					// Use the first column set for a bonus spell, unless it is an always prepared box and currently only doing prepared spells
 					toCheck += firstCols[aSpell];
-				} else if (SpellsList[aSpell] && SpellsList[aSpell].firstCol === undefined && (isPsionics || spCast.preparedCantrips || spCast.typeList === 4 || (spCast.known && spCast.known.prepared && spCast.typeList !== 3))) {
-					if (spCast.typeList === 4 || (SpellsList[aSpell].level === 0 && spCast.preparedCantrips)) {
-						toCheck += knownSpells.indexOf(aSpell) !== -1 ? "checkedbox" : "checkbox";
-					} else {
-						toCheck += SpellsList[aSpell].level === 0 ? "atwill" : "checkbox";
+				} else if (oSpell.firstCol === undefined && ( isPsionics || preparedCantrip || autoFirstColumn || bonusBookSpell)) {
+					if (spCast.typeList === 4 || preparedCantrip) {
+						// Showing all spells (or cantrips), so mark the prepared ones with a checked box
+						toCheck += bonusBookSpell || knownSpells.indexOf(aSpell) !== -1 ? "checkedbox" : "checkbox";
+					} else { // Default for list/book casters. Known casters have no first column
+						toCheck += oSpell.level === 0 ? "atwill" : "checkbox";
 					}
 				}
 				Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + CurrentCasters.incl[i] + (notDupl ? "" : "##stop"));
@@ -3978,21 +4038,28 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 //a function that takes an array of spells and orders it by level (and alphabet)
 //outputFormat defines whether to return an Array of Arrays ("multi"), or just one array "single";
 function OrderSpells(inputArray, outputFormat, sepPsionics, bonusSp, maxLvl) {
-	if (!isArray(bonusSp)) bonusSp = [];
+	var bonusCount = {};
+	if (bonusSp && isArray(bonusSp)) {
+		bonusSp.forEach(function(spl) {
+			bonusCount[spl] = !bonusCount[spl] ? 1 : bonusCount[spl] + 1;
+		});
+	}
 	if (maxLvl === undefined) maxLvl = 9;
+	var refCount = {};
 	var refspObj = {};
 	var orderedSpellList = [[], [], [], [], [], [], [], [], [], []]; //array of 10 arrays, one for each spell level
 	if (sepPsionics) { //add two more arrays, for the psionics
 		orderedSpellList[10] = [];
 		orderedSpellList[11] = [];
 	};
-	//put these spells into their right level-array in orderedSpellList and ignore duplicates
+	//put these spells into their right level-array in orderedSpellList and ignore duplicates except those in the bonus column. A spell can only exist as often as it does in the bonus column + 1
 	for (var S = 0; S < inputArray.length; S++) {
 		var nxtSpell = inputArray[S];
 		if (!SpellsList[nxtSpell]) continue;
 		var spLvl = SpellsList[nxtSpell].level;
-		if (spLvl > maxLvl && bonusSp.indexOf(nxtSpell) == -1) continue;
-		if (inputArray.indexOf(nxtSpell) === S || (spLvl <= maxLvl && bonusSp.indexOf(nxtSpell) !== -1)) {
+		if (spLvl > maxLvl && !bonusCount[nxtSpell]) continue;
+		if (!refCount[nxtSpell] || refCount[nxtSpell] < bonusCount[nxtSpell] || (spLvl <= maxLvl && refCount[nxtSpell] <= bonusCount[nxtSpell])) {
+			refCount[nxtSpell] = !refCount[nxtSpell] ? 1 : refCount[nxtSpell] + 1;
 			var spName = getSpNm(nxtSpell);
 			if (sepPsionics && SpellsList[nxtSpell].psionic) spLvl += 10;
 			refspObj[spName] = nxtSpell;
@@ -5474,6 +5541,9 @@ function isSpellUsed(spll, returnBoolean) {
 			var csAttr = ["selectCa", "selectBo", "selectSp", "selectSpSB", "extra"];
 			for (var i = 0; i < csAttr.length; i++) {
 				if (spCast[csAttr[i]] && spCast[csAttr[i]].indexOf(spll) !== -1) {
+					if (csAttr === "extra" && /book|known/i.test(spCast.typeSp) && !spCast.extraSpecial) {
+						continue; // These extra spells are not automatically added for known/book casters, so skip
+					}
 					rtrnA.push(aClass);
 					addAllSpClasses(aClass);
 					break;
@@ -5482,7 +5552,7 @@ function isSpellUsed(spll, returnBoolean) {
 			if (rtrnA.indexOf(aClass) === -1 && SpellsList[spll].level && /list/i.test(spCast.typeSp)) {
 				var spObj = newObj(spCast.list);
 				spObj.level = [1, 9];
-				var theSpList = CreateSpellList(spObj, false, spCast.extra, false, aClass, spCast.typeSp);
+				var theSpList = CreateSpellList(spObj, false, false, false, aClass, spCast.typeSp); // No need to add extra spells or cantrips, they have been processed above
 				if (theSpList.indexOf(spll) !== -1) {
 					rtrnA.push(aClass);
 					addAllSpClasses(aClass);

@@ -1112,6 +1112,8 @@ spellcastingBonus : [{
 		"oncelr+markedbox"	// two checkboxes, one with 'LR' inside and one with a star inside
 
 		If you don't set anything for the first column the sheet will determine what is most logical.
+		From v14.0.5 onwards, setting "atwill" is ignored when set for a cantrip, instead
+		the sheet will determine what is most logical.
 	*/
 
 	spellcastingAbility : 4,
