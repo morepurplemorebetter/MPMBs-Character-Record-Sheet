@@ -5051,7 +5051,7 @@ function MakeSkillsMenu_SkillsOptions(input, onlyTooltips) {
 // returns an object of the different elements to populate the class features or limited features section if olchoice is provided, oldlevel has to be provided as well
 function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceChoice) {
 	var tRe = { changed : false };
- 	var attr = [["Add", "additional"], ["Use", "usages"], ["UseCalc", "usagescalc"], ["Recov", "recovery"], ["UseName", "name"], ["UseName", "limfeaname"], ["Descr", "description"], ["source", "source"], ["AltRecov", "altResource"]];
+ 	var attr = [["Add", "additional"], ["Use", "usages"], ["UseCalc", "usagescalc"], ["Recov", "recovery"], ["UseName", "name"], ["UseName", "limfeaname"], ["Descr", "description"], ["Display", "description"], ["source", "source"], ["AltRecov", "altResource"]];
 
 	for (var a = 0; a < attr.length; a++) {
 		// add the new choice
@@ -5066,15 +5066,21 @@ function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceChoice)
 	}
 
 	for (var aProp in tRe) {
-		if (aProp.indexOf("source") !== -1) continue;
+		if (/changed|source/i.test(aProp)) continue;
 		var theP = tRe[aProp];
 		if (theP && isArray(theP)) {
 			var lvlUse = aProp.indexOf("Old") !== -1 && (oldlevel || oldlevel === 0) ? oldlevel : level;
 			lvlUse = Math.min(lvlUse, theP.length) - 1;
+
+			if (aProp.indexOf("Display") !== -1) {
+				tRe[aProp] = theP[lvlUse] !== undefined ? true : false;
+				continue; // don't affect the changed attribute
+			}
+
 			tRe[aProp] = theP[lvlUse] ? theP[lvlUse] : "";
 
 			// now see if anything changed compared to the new
-			if (!tRe.changed && aProp.indexOf("Old") !== -1) {
+			if (!tRe.changed && aProp.indexOf("Old") !== -1 && aProp.indexOf("Display") === -1) {
 				var otherProp = aProp.replace("Old", "");
 				if (tRe[otherProp] !== "" && !isArray(tRe[otherProp])) {
 					tRe.changed = tRe[aProp].toString() != tRe[otherProp].toString();
@@ -7400,7 +7406,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 			};
 		};
 		//a functino to parse the 'immune' and 'adv_vs' parts into a usable string
-		var preTxt = {adv_vs: "**Adv. vs.**", immune : "**Immunities**. "};
+		var preTxt = { adv_vs: "**Adv. vs.**", immune: "**Immunities**." };
 		var parseSvTxt = function() {
 			var sUseName = metric ? "nameMetric" : "name";
 			var oTypes = { adv_vs : [], immune : [] };
@@ -8312,7 +8318,10 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 	switch (GetFeatureType(type)) {
 		case "classes":
 			fallback.alertType = "Class Features section";
-			fallback.noteOrig = namesArr[2].indexOf("subclassfeature") !== -1 ? CurrentClasses[namesArr[3]].subname : CurrentClasses[namesArr[3]].name;
+			var objClass = CurrentClasses[namesArr[3]];
+			fallback.noteOrig = namesArr[2].indexOf("subclassfeature") !== -1 ?
+				(objClass.subnameShort ? objClass.subnameShort : objClass.subname) :
+				(objClass.nameShort ? objClass.nameShort : objClass.name);
 			fallback.noteOrig += mainObj.minlevel ? " " + mainObj.minlevel : parentObj && parentObj.minlevel ? " " + parentObj.minlevel : "";
 			break;
 		case "race":
@@ -8354,12 +8363,14 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 			noteDesc = ConvertToMetric(noteDesc, 0.5);
 			noteAdditional = ConvertToMetric(noteAdditional, 0.5);
 		}
-		var noteStr = "#\u25C6 " + noteObj.name + "# (" + fallback.noteOrig + noteSrc + ")" + noteAdditional + noteDesc;
+		var noteOrig = noteObj.origin != undefined ? noteObj.origin : fallback.noteOrig;
+		var noteStr = "#\u25C6 " + noteObj.name + "# (" + noteOrig + noteSrc + ")" + noteAdditional + noteDesc;
+		if (!noteOrig) noteStr = noteStr.replace("(, ", "(");
 		if (noteObj.page3notes) { // add to 3rd page notes section
 			if (AddRemove) {
 				AddString('Extra.Notes', noteStr, true);
 				show3rdPageNotes(); // for a Colourful sheet, show the notes section on the third page
-				var changeMsg = alertTxt + ' has been added to the Notes section on the third page' + (!typePF ? ", while the Rules section on the third page has been hidden" : "") + ". They wouldn't fit in the " + fallback.alertType + ".";
+				var changeMsg = alertTxt + ' has been added to the Notes section on the third page' + (!typePF ? ", while the Rules section on the third page has been hidden" : "") + ". They either wouldn't be apprioprate for or wouldn't fit in the " + fallback.alertType + ".";
 				CurrentUpdates.types.push("notes");
 				if (!CurrentUpdates.notesChanges) {
 					CurrentUpdates.notesChanges = [changeMsg];

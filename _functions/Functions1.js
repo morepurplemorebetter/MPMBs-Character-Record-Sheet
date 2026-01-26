@@ -5985,7 +5985,9 @@ function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld
 
 	var extraNm = oClFeaCh.extraname !== undefined ? oClFeaCh.extraname : ForceExtraname ? ForceExtraname : oClFea.extraname ? oClFea.extraname : false;
 	if (!extraNm) {
-		var className = isSubclassFeature ? ClassSubList[sSubclass].subname : ClassList[theClass].name;
+		var className = isSubclassFeature ?
+			(ClassSubList[sSubclass].subnameShort ? ClassSubList[sSubclass].subnameShort : ClassSubList[sSubclass].subname) :
+			(ClassList[theClass].nameShort ? ClassList[theClass].nameShort : ClassList[theClass].name);
 		var feaMinlevel = oClFeaCh.minlevel ? oClFeaCh.minlevel : oClFea.minlevel;
 		extraNm = className + " " + feaMinlevel;
 	}
@@ -6225,8 +6227,9 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 
 			// loop through the features
 			var LastProp = newHeaderString, feaA = [];
+			var loweredLvl = oldClassLvl[aClass] > newClassLvl[aClass];
 			for (var key in cl.features) feaA.push(key);
-			if (oldClassLvl[aClass] > newClassLvl[aClass]) feaA.reverse(); // when removing, loop through them backwards
+			if (loweredLvl) feaA.reverse(); // when removing, loop through them backwards
 			for (var f = 0; f < feaA.length; f++) {
 				var prop = feaA[f];
 				var propFea = cl.features[prop];
@@ -6256,13 +6259,15 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						Fea.extFirst = true; // signal that we need the full first line for FeaNewString
 						var FeaNewString = ParseClassFeature(aClass, prop, newClassLvl[aClass], false, Fea.Choice, Fea);
 						// see what type of change we have to do
-						var textAction = Fea.CheckLVL && !Fea.AddFea ? "remove" : // level dropped below minlevel
-							Fea.CheckLVL && Fea.AddFea && (!forceProp || (forceProp && !isClassProp)) ? "insert" : // level rose above minlevel and there is nothing to replace
+						var textAction = (!Fea.AddFea && Fea.CheckLVL) || (Fea.AddFea && !Fea.Display) ? "remove" : // level dropped below minlevel or new description is undefined
+							Fea.CheckLVL && Fea.AddFea && (!forceProp || !isClassProp) ? "insert" : // level rose above minlevel and there is nothing to replace
+							Fea.AddFea && Fea.Display && !Fea.DisplayOld ? "insert" : // description at previous level was undefined, but now there is something to insert
 							forceProp || (Fea.AddFea && Fea.changed && Fea.Descr !== Fea.DescrOld) ? "replace" : // forcing the new version or update the whole text after a description change
 							Fea.AddFea && Fea.changed && Fea.Descr === Fea.DescrOld ? "first" : // update just header after a usages/recovery/additional change
 							false;
 						// do the text change, if any
 						if (textAction) {
+							if (textAction === "insert" && loweredLvl) textAction = "insertbefore";
 							var doTextAction = applyClassFeatureText(textAction, ["Class Features"], FeaOldString, FeaNewString, LastProp);
 							if (doTextAction === false && textAction !== "remove") {
 								// This failed, so just add it to the end of the field
@@ -6270,8 +6275,10 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 							}
 						}
 
-						// keep track of the last property's header text (don't use FeaNewString, as it might include an additional or recovery)
-						LastProp = propFea.minlevel <= ClassLevelUp[aClass][2] ? FeaNewString[2] : LastProp;
+						// keep track of the last property's header text (don't just use FeaNewString, as it might include an additional or recovery)
+						if (Fea.Display && propFea.minlevel <= ClassLevelUp[aClass][2]) {
+							LastProp = FeaNewString[2];
+						}
 					}
 				} catch (error) {
 					displayError(error, 'The "' + propFea.name + '" feature from the "' + cl.fullname + '" class produced the error below. Please share this error message with its author so they can correct this issue.');

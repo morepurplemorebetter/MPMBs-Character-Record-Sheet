@@ -72,10 +72,11 @@ function Checkbox(field, FldValue, tooltip, submitNm) {
 	if (submitNm !== undefined) tDoc.getField(field).submitName = submitNm;
 };
 
-function desc(arr, joinStr) {
+function desc(arr, joinStr, preStr) {
 	joinStr = joinStr ? joinStr : "\n   ";
-	if (!Array.isArray(arr)) return joinStr + arr;
-	return joinStr + arr.join(joinStr);
+	if (!preStr) preStr = joinStr;
+	if (!Array.isArray(arr)) return preStr + arr;
+	return preStr + arr.join(joinStr);
 };
 
 // Call all the prototypes within their own function so we can call it again when importing, forcing the latest version

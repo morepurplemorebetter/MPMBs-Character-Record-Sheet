@@ -1542,28 +1542,34 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 
 	// apply the change
 	switch (act) {
-		case "first" : // update just the first line (usages, recovery, or additional changed)
+		case "first": // update just the first line (usages, recovery, or additional changed)
 			var changeTxt = fldTxt.replace(oldRx.head, newTxtA[0]);
 			break;
-		case "replace" : // replace the oldTxt with the newTxt
+		case "replace": // replace the oldTxt with the newTxt
 			var changeTxt = fldTxt.replace(oldRx.full, newTxtA[1]);
 			break;
-		case "insert" : // add the newTxt after the prevTxt
+		case "insert": // add the newTxt after the prevTxt
 			if (!prevTxt) return false; // no prevTxt, so we can't do anything
 			var prevRx = getRx(prevTxt);
 			var prevTxtFound = fldTxt.match(prevRx.full);
 			var changeTxt = prevTxtFound ? fldTxt.replace(prevTxtFound[0], prevTxtFound[0] + newTxtA[1]) : fldTxt;
 			break;
-		case "remove" : // remove the oldTxt
+		case "insertbefore": // add the newTxt before the prevTxt
+			if (!prevTxt) return false; // no prevTxt, so we can't do anything
+			var prevRx = getRx(prevTxt);
+			var prevTxtFound = fldTxt.match(prevRx.full);
+			var changeTxt = prevTxtFound ? fldTxt.replace(prevTxtFound[0], newTxtA[1] + prevTxtFound[0] ) : fldTxt;
+			break;
+		case "remove": // remove the oldTxt
 			var changeTxt = fldTxt.replace(oldRx.full, '').replace(/^\r+/, '');
 			break;
-		default :
+		default:
 			return false;
 	}
 	if (changeTxt != fldTxt) {
 		Value(fld, changeTxt);
 		return true;
-	} else if (act !== "insert" && act !== "remove") {
+	} else if (!/^(insert(before)?|remove)$/i.test(act)) {
 		// nothing changed, so just insert the whole feature, using this same function
 		applyClassFeatureText("insert", fldA, oldTxtA, newTxtA, prevTxt);
 	} else {

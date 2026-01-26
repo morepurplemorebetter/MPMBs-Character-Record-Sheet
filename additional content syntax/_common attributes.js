@@ -2783,6 +2783,28 @@ toNotesPage : [{
 
 		This attribute is useless if the `page3notes` attribute is also present and set to `true`.
 	*/
+	origin: "Sorcerer",
+	/*	origin // OPTIONAL //
+		TYPE:	string
+		USE:	the string to use instead of the name (and minlevel) of the parent object
+		ADDED:	v14.0.5
+
+		If this attribute is present, it is used instead of an auto-generated reference
+		to the parent object. The auto-generated reference is then ignored.
+
+		The auto-generated reference is the name of the parent object, such as the name of
+		the class, subclass, species, species feature name, feat, magic item, or background.
+		If that also has a `minlevel`, it is added to the name.
+		For example, for a level 3 class feature for the Wild Magic Sorcery subclass this
+		will result in "Wild Magic Sorcery 3".
+		Another example, for the Cloak of Protection magic item this will result in
+		"Cloak of Protection".
+		Another example, for the Adrenaline Rush feature of the Orc, which has
+		`minlevel: 1`, this will result in "Orc: Adrenaline Rush 1".
+
+		This attribute can be an empty string. If so, no origin is given for the note.
+		Setting this attribute to `false` will result in the origin being written as "false".
+	*/
 }],
 
 
