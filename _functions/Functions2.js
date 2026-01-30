@@ -5062,6 +5062,9 @@ function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceChoice)
 		if (objA.indexOf("usages") !== -1) {
 			if (level === 0) tRe[setA] = "";
 			if (oldlevel === 0) tRe[setA + "Old"] = "";
+		} else if (setA === "Display") {
+			if (!tRe[setA] && tRe[setA] !== undefined) tRe[setA] = true;
+			if (!tRe[setA + "Old"] && tRe[setA + "Old"] !== undefined) tRe[setA + "Old"] = true;
 		}
 	}
 

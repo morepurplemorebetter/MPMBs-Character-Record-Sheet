@@ -3628,7 +3628,12 @@ function GenerateSpellSheet(GoOn) {
 			};
 		};
 
-		var orderedSpellList = OrderSpells(fullSpellList, "multi", true, spCast.selectBo, maxLvl); //get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
+		// Get a list of all the bonus spells that have a special first column other than always prepared or at will, because only those spells are allowed to exist multiple times on the spell sheet
+		var allowedDuplicateSpells = spCast.selectBo.filter(function (aSpell) {
+			return firstCols[aSpell] && !/^(atwill|(once[sl]r\+)?markedbox(_used)?)$/i.test(firstCols[aSpell]);
+		});
+		// Get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
+		var orderedSpellList = OrderSpells(fullSpellList, "multi", true, allowedDuplicateSpells, maxLvl);
 
 		var preparedOnly = spCast.typeList === 3 || (spCast.known && !spCast.known.prepared && spCast.typeList !== 4);
 
