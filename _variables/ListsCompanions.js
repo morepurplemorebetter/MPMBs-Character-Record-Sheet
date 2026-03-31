@@ -128,7 +128,7 @@ var Base_CompanionList = {
 			joinString : ", "
 		}, {
 			name : "While my steed is within 1 mile of me",
-			description : "I can communicate with it telepathically",
+			description : "we can communicate with each other telepathically",
 			joinString : ", "
 		}, {
 			name : "I can dismiss my steed at any time as an action",

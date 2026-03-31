@@ -2876,10 +2876,10 @@ featsAdd: [
 		a matching `type`. This type can be a string or a regular expression.
 
 		FeatsList objects without the `type` attribute will be treates as type "general".
-		Feat types have been introduced in the 2024 (5.5e) rules and are normally not
+		Feat types have been introduced in the 5.5e (2024) rules and are normally not
 		given for 5e (2014) feats.
 
-		In the 2024 rules, common feat types are:
+		In the 5.5e (2024) rules, common feat types are:
 			"origin"
 			"general"
 			"fighting style"

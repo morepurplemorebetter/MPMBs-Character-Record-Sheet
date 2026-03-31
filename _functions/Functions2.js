@@ -5549,15 +5549,16 @@ function addEvals(evalObj, NameEntity, Add, type, level) {
 	// Do the rest
 	var bIsArray;
 	var objTypeStr = {
-		"atkAdd" : "atkStr",
-		"atkCalc" : "atkStr",
-		"spellCalc" : "spellAtkStr",
-		"spellList" : "spellStr",
-		"spellAdd" : "spellStr",
-		"creatureCallback" : "creaStr",
-		"companionCallback" : "creaStr"
+		"atkAdd": "atkStr",
+		"atkCalc": "atkStr",
+		"spellCalc": "spellAtkStr",
+		"spellList": "spellStr",
+		"spellAdd": "spellStr",
+		"creatureCallback": "creaStr",
+		"companionCallback": "creaStr",
+		"wildshapeCallback": "wildStr",
 	};
-	var objSaveStr = { atkStr : "", spellAtkStr : "", spellStr : "", creaStr : "" };
+	var objSaveStr = { atkStr: "", spellAtkStr: "", spellStr: "", creaStr: "", wildStr: "" };
 	// Process the eval functions
 	for (var sType in objTypeStr) {
 		if (!evalObj[sType]) continue;

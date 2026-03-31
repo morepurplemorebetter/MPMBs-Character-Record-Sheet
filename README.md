@@ -1,8 +1,8 @@
 # MorePurpleMoreBetter's D&D 5e (2014) Character Record Sheet
 This Git contains all document-level JavaScript that is used in the AcroForm PDFs called **MPMB's Character Record Sheet**. Note that you can't create the PDF from just this repository, this is just the JavaScript used at the document-level.
 
-## 2024 (5.5e) Rules
-This repo is for the 2014 rules. The code for MPMB's D&D 2024 (5.5e) Character Sheet can be found [here on GitHub](https://github.com/morepurplemorebetter/2024_MPMBs-Character-Record-Sheet).
+## 5.5e (2024) Rules
+This repo is for the 2014 rules. The code for MPMB's D&D 5.5e (2024) Character Sheet can be found [here on GitHub](https://github.com/morepurplemorebetter/2024_MPMBs-Character-Record-Sheet).
 
 ## Links
 

@@ -2608,7 +2608,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 				failedTestMsg = {
 					cMsg: 'The add-on script "' + scriptName + '" reports that it requires at least version number v' + minSheetVersion[1] + ", and is thus probably not compatible with the version of the sheet that you are using (which is v" + semVers + ').'+
 						(sheetVersion >= maxSheetVersion[0] ? "\nThe add-on script also has a maximum version requirement. Adding it to a v" + maxSheetVersion[0] + " or higher sheet will result in this same error message." : '')+
-						(minSheetVersion[0] >= 24000000 ? '' : '\nThis could be because from v24.0.0 onwards, the sheet uses the 2024 (5.5e) rules, while lower versions use the 5e (2014) rules.')+
+						(minSheetVersion[0] >= 24000000 ? '' : '\nThis could be because from v24.0.0 onwards, the sheet uses the 5.5e (2024) rules, while lower versions use the 5e (2014) rules.')+
 						'\n\nDo you want to continue using this add-on script in the sheet? If you select NO, the "' + scriptName + '" add-on script will be skipped and removed.'+
 						'\n\nYou can find other versions of the sheet with the "Get Latest Version" bookmark.',
 					nIcon: 2,
@@ -2647,7 +2647,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 			eText += 'it returns the following error when run:\n\t"' + error;
 			if (typeof error === "object") for (var e in error) eText += "\n\t  " + e + ": " + error[e];
 			eText += '"\n\n';
-			if (forNewerVersion || forOlderVersion) eText += 'This could be because from v24.0.0 onwards, the sheet uses the 2024 (5.5e) rules, while lower versions use the 5e (2014) rules.\n\n';
+			if (forNewerVersion || forOlderVersion) eText += 'This could be because from v24.0.0 onwards, the sheet uses the 5.5e (2024) rules, while lower versions use the 5e (2014) rules.\n\n';
 			eText += isManual ? "Your add-on script has not been added to the sheet, please try again after fixing the problem." : "The add-on script has been removed from this pdf.";
 			eText += "\n\nFor a more specific error and one that includes the error's line number, try running the add-on script from the JavaScript Console.";
 			if (!forNewerVersion && !forOlderVersion) eText += "\n\nPlease contact the add-on script's author to report this issue.";

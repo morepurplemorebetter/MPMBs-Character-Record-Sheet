@@ -136,7 +136,7 @@ FeatsList["purple power"] = {
 	USE:	define which type of feat this is
 	ADDED:	v14.0.1
 
-	This attribute is used in the 2024 (5.5e) version of the sheet and not needed for the 5e (2014) sheet.
+	This attribute is used in the 5.5e (2024) version of the sheet and not needed for the 5e (2014) sheet.
 	It is only used by the `featsAdd` common attribute (see "_common attributes.js").
 
 	If this attribute is not present, it will be considered being set to "general" for the purpose of

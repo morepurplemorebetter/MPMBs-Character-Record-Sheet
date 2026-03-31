@@ -199,7 +199,7 @@ function OpeningStatement() {
 		Text += "Welcome to " + toUni(sheetTitle, "bold");
 		Text += ".\n>> get the latest version using the bookmark.";
 		Text += patreonVersion ? "" : "\n\n" + toUni("SRD only") + '. The System Reference Document content is the only Wizards of the Coast publication this sheet is allowed to contain. The rest is protected by WotC\'s copyright. Use the "Get More Content" bookmark to get add-on scripts to increase the available options.';
-		Text += "\n\n" + toUni("5e version") + ". The 5th edition (2014) of Dungeons & Dragons is what this sheet is made for. Visit MPMB's website to get a sheet for 2024 (5.5e) D&D.";
+		Text += "\n\n" + toUni("5e version") + ". The 5th edition (2014) of Dungeons & Dragons is what this sheet is made for. Visit MPMB's website to get a sheet for 5.5e (2024) D&D.";
 		Text += "\n\n" + toUni("Advanced features") + ". The buttons in the \'JavaScript Window\'-toolbar and the bookmarks by the same name allow for many customization options. Please try them out. They are reversible.";
 		Text += "\n\nHave fun with the sheet and the adventures you embark on with its help!\n - MorePurpleMoreBetter - ";
 		var oCk = {
@@ -5794,14 +5794,18 @@ function ChangeSpeed(input) {
 // Reset the limited feature uses, buttons on the 1st page
 function resetLimFeaUsed(rxType) {
 	var bResetSpellSlots = false, aFldsToReset = [];
+	var rxRecoverXperSR = false, oFldsRecoverX = [];
 	var sType = !rxType ? 'long rest' : rxType.toString().toLowerCase().replace(/^\/|\/[igm]$/g, "");
 	switch (sType) {
+		case 'lr':
 		case 'long rest':
-			rxType = /\b(long rest|lr)\b/i;
+			rxType = /\b(long rest|lr|short rest|sr)\b/i;
 			bResetSpellSlots = true;
 			break;
+		case 'sr':
 		case 'short rest':
 			rxType = /\b(short rest|sr)\b/i;
+			rxRecoverXperSR = /(?:regain|recharge|recover) (\d+)\/SR/i;
 			break;
 		case 'day':
 		case 'dawn':
@@ -5818,7 +5822,16 @@ function resetLimFeaUsed(rxType) {
 	}
 	for (var i = 1; i <= FieldNumbers.limfea; i++) {
 		var sFldVal = What("Limited Feature Recovery " + i).toString();
-		if (rxType.test(sFldVal)) aFldsToReset.push("Limited Feature Used " + i);
+		var sFldUsed = "Limited Feature Used " + i;
+		var used = Number(What(sFldUsed));
+		if (rxType.test(sFldVal)) {
+			aFldsToReset.push(sFldUsed);
+		} else if (rxRecoverXperSR && used > 0) {
+			var recover = What("Limited Feature " + i).match(rxRecoverXperSR);
+			if (recover && !isNaN(recover[1])) {
+				oFldsRecoverX.push({ fld: sFldUsed, new: used - Number(recover[1]) });
+			}
+		}
 	}
 	if (bResetSpellSlots) {
 		var SSfrontA = What("Template.extras.SSfront").split(",")[1];
@@ -5827,9 +5840,12 @@ function resetLimFeaUsed(rxType) {
 		if (!typePF && SSfrontA) aFldsToReset.push(SSfrontA + "SpellSlots2.Checkboxes");
 		
 	}
-	if (aFldsToReset.length > 0) {
+	if (aFldsToReset.length || oFldsRecoverX.length) {
 		calcStop();
-		tDoc.resetForm(aFldsToReset);
+		if (aFldsToReset.length) tDoc.resetForm(aFldsToReset);
+		for (var i = 0; i < oFldsRecoverX.length; i++) {
+			Value(oFldsRecoverX[i].fld, oFldsRecoverX[i].new);
+		}
 	}
 }
 
@@ -6311,6 +6327,8 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 							var xtrFeaNewString = ParseClassFeatureExtra(aClass, prop, xtrProp, xtrFea, false);
 							// see what type of change we have to do
 							var xtrTextAction = Fea.CheckLVL && !Fea.AddFea ? "remove" : // level dropped below minlevel
+								xtrFea.AddFea && !xtrFea.Display ? "remove" : // new description is undefined
+								xtrFea.AddFea && xtrFea.Display && !xtrFea.DisplayOld ? "insert" : // description at previous level was undefined, but now there is something to insert
 								xtrFea.AddFea && xtrFea.changed && xtrFea.Descr !== xtrFea.DescrOld ? "replace" : // update the whole text after a description change
 								xtrFea.AddFea && xtrFea.changed && xtrFea.Descr === xtrFea.DescrOld ? "first" : // update just header after a usages/recovery/additional change
 								false;
