@@ -242,6 +242,7 @@ var Base_CreatureList = {
 	"tyrannosaurus rex" : {
 		name : "Tyrannosaurus Rex",
 		nameAlt : ["T-Rex"],
+		nameThis: "tyrannosaurus",
 		source : [["SRD", 279], ["M", 79]],
 		size : 1, //Huge
 		type : "Beast",
@@ -273,7 +274,7 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Multiattack",
-			description : "The tyrannosaurus makes two attacks: one with its bite and one with its tail. It can't make both attacks against the same target."
+			description : "As an action on its turn, the [THIS] can make one Bite and one Tail attack. It can't make both attacks against the same target."
 		}]
 	},
 	// Exotic mounts and pets
@@ -312,7 +313,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The griffon makes two attacks: one with its beak and one with its claws."
+			description : "As an action on its turn, the [THIS] can make one Beak and one Claws attack."
 		}],
 		traits : [{
 			name : "Keen Sight",
@@ -353,7 +354,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The hippogriff makes two attacks: one with its beak and one with its claws."
+			description : "As an action on its turn, the [THIS] can make one Beak and one Claws attack."
 		}],
 		traits : [{
 			name : "Keen Sight",
@@ -430,7 +431,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The owlbear makes two attacks: one with its beak and one with its claws."
+			description : "As an action on its turn, the [THIS] can make one Beak and one Claws attack."
 		}],
 		traits : [{
 			name : "Keen Sight and Smell",
@@ -862,20 +863,20 @@ var Base_CreatureList = {
 			damage : [2, 6, "bludgeoning"],
 			range : "Melee (5 ft)",
 			description : "+3d6 necrotic damage; DC 12 Constitution save or cursed with Mummy Rot",
-			tooltip : "Multiattack\nAs part of one Attack action, the mummy can use its Dreadful Glare and makes one attack with its rotting fist.\n\nRotting Fist\nIf the target is a creature, it must succeed on a DC 12 Constitution saving throw or be cursed with mummy rot. The cursed target can't regain hit points, and its hit point maximum decreases by 10 (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic."
+			tooltip : "Multiattack\nAs an action on its turn, the mummy can use its Dreadful Glare and make one Rotting Fist attack.\n\nRotting Fist\nIf the target is a creature, it must succeed on a DC 12 Constitution saving throw or be cursed with mummy rot. The cursed target can't regain hit points, and its hit point maximum decreases by 10 (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic."
 		}, {
 			name : "Dreadful Glare",
 			ability : 6,
 			damage : ["Wis save", "", "Frightened"],
 			range : "60 ft",
 			description : "Wis save or frightened for 1 round; If failed by 5 or more, paralyzed as well",
-			tooltip : "Multiattack\nAs part of one Attack action, the mummy can use its Dreadful Glare and makes one attack with its rotting fist.\n\nDreadful Glare\nThe mummy targets one creature it can see within 60 ft of it. If the target can see the mummy, it must succeed on a DC 11 Wisdom saving throw against this magic or become frightened until the end of the mummy's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies (but not mummy lords) for the next 24 hours.",
+			tooltip : "Multiattack\nAs an action on its turn, the mummy can use its Dreadful Glare and make one Rotting Fist attack.\n\nDreadful Glare\nThe mummy targets one creature it can see within 60 ft of it. If the target can see the mummy, it must succeed on a DC 11 Wisdom saving throw against this magic or become frightened until the end of the mummy's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies (but not mummy lords) for the next 24 hours.",
 			abilitytodamage : false,
 			dc : true
 		}],
 		traits : [{
 			name : "Multiattack",
-			description : "With one Attack action, do both Dreadful Glare and a Rotting Fist attack."
+			description : "As an action on its turn, the mummy can use its Dreadful Glare and make one Rotting Fist attack."
 		}, {
 			name : "Mummy Rot",
 			description : "A cursed creature can't regain hit points, and its hit point maximum decreases by 3d6 for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic."
@@ -1083,7 +1084,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The wight makes two longsword attacks or two longbow attacks. It can use its Life Drain in place of one longsword attack."
+			description : "As an action on its turn, the [THIS] can make two Longsword or two Longbow attacks. It can use its Life Drain in place of one Longsword attack."
 		}]
 	},
 	"zombie" : {
@@ -1849,7 +1850,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The ape makes two fist attacks."
+			description : "As an action on its turn, the [THIS] can make two Fist attacks."
 		}]
 	},
 	"axe beak" : {
@@ -1999,7 +2000,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The bear makes two attacks: one with its bite and one with its claws."
+			description : "As an action on its turn, the [THIS] can make one Bite and one Claws attack."
 		}],
 		traits : [{
 			name : "Keen Smell",
@@ -2143,7 +2144,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The bear makes two attacks: one with its bite and one with its claws."
+			description : "As an action on its turn, the [THIS] can make one Bite and one Claws attack."
 		}],
 		traits : [{
 			name : "Keen Smell",
@@ -2245,7 +2246,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The bear makes two attacks: one with its bite and one with its claws."
+			description : "As an action on its turn, the [THIS] can make one Bite and one Claws attack."
 		}],
 		traits : [{
 			name : "Keen Smell",
@@ -2378,7 +2379,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The dog makes two bite attacks."
+			description : "As an action on its turn, the [THIS] can make two Bite attacks."
 		}],
 		traits : [{
 			name : "Two-Headed",
@@ -2666,7 +2667,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The ape makes two fist attacks."
+			description : "As an action on its turn, the [THIS] can make two Fist attacks."
 		}]
 	},
 	"giant badger" : {
@@ -2701,7 +2702,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The badger makes two attacks: one with its bite and one with its claws."
+			description : "As an action on its turn, the [THIS] can make one Bite and one Claws attack."
 		}],
 		traits : [{
 			name : "Keen Smell",
@@ -2903,7 +2904,7 @@ var Base_CreatureList = {
 			description : "The [THIS] can hold its breath for 30 minutes."
 		}, {
 			name : "Multiattack",
-			description : "The [THIS] makes two attacks: one with its bite and one with its tail (to a target it is not grappling)."
+			description : "As an action on its turn, the [THIS] can make one Bite attack and, to a target it's not grappling) one Tail attack.",
 		}]
 	},
 	"giant eagle" : {
@@ -2942,7 +2943,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The eagle makes two attacks: one with its beak and one with its talons."
+			description : "As an action on its turn, the [THIS] can make one Beak and one Talons attack."
 		}],
 		traits : [{
 			name : "Keen Sight",
@@ -3371,7 +3372,7 @@ var Base_CreatureList = {
 		}],
 		traits : [{
 			name : "Multiattack",
-			description : "The scorpion makes three attacks: two with its claws and one with its sting."
+			description : "As an action on its turn, the [THIS] can make two Claw and one Sting attack."
 		}]
 	},
 	"giant sea horse" : {
@@ -3568,14 +3569,14 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The eagle makes two attacks: one with its beak and one with its talons."
+			description : "As an action on its turn, the [THIS] can make one Beak and one Talons attack."
 		}],
 		traits : [{
 			name : "Keen Sight and Smell",
-			description : "The vulture has advantage on Wisdom (Perception) checks that rely on sight or smell."
+			description : "The [THIS] has advantage on Wisdom (Perception) checks that rely on sight or smell."
 		}, {
 			name : "Pack Tactics",
-			description : "The vulture has advantage on an attack roll against a creature if at least one of the vulture's allies is within 5 ft of the creature and the ally isn't incapacitated."
+			description : "The [THIS] has advantage on an attack roll against a creature if at least one of the its allies is within 5 ft of the creature and the ally isn't incapacitated."
 		}]
 	},
 	"giant wasp" : {
@@ -4234,7 +4235,7 @@ var Base_CreatureList = {
 		}],
 		actions : [{
 			name : "Multiattack",
-			description : "The bear makes two attacks: one with its bite and one with its claws."
+			description : "As an action on its turn, the [THIS] can make one Bite and one Claws attack."
 		}],
 		traits : [{
 			name : "Keen Smell",

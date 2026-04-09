@@ -1524,7 +1524,7 @@ var Base_ClassList = {
 				minlevel : 1,
 				description : desc([
 					"Once per turn, I can add damage to a finesse/ranged weapon attack if I have advantage",
-					"I don't need adv. if the target has a conscious enemy within 5 ft and I don't have disadv."
+					"I don't need adv. if my ally is within 5 ft, is not incapacitated, and I don't have disadv."
 				]),
 				additional : levels.map(function (n) {
 					return Math.ceil(n / 2) + "d6";
