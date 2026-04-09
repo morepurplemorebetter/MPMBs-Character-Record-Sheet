@@ -4064,8 +4064,8 @@ function Publish(version, preRelease, build, forPatreon) {
 		tDoc.info.SheetVersionType = preRelease;
 		tDoc.info.SheetVersionBuild = build;
 	}
-	semVers = getSemVers(version, preRelease, build);
-	sheetVersion = semVersToNmbr(semVers);
+	tDoc.semVers = getSemVers(version, preRelease, build);
+	tDoc.sheetVersion = semVersToNmbr(tDoc.semVers) - 12000000;
 	var docNm = MakeDocName();
 	var resetFlds = ["Opening Remember"];
 	if (!forPatreon) resetFlds = resetFlds.concat(["CurrentSources.Stringified", "User_Imported_Files.Stringified"]);

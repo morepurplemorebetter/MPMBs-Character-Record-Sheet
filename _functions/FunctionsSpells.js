@@ -959,8 +959,10 @@ function SetSpellCheckbox() {
 					showThis = "Hide";
 					break;
 				case "": //make it a button that we can use to call a menu
-					insideColor = !typePF ? ColorList[What("Color.Theme")].CMYK : ["RGB", 0.659, 0.659, 0.659];
-					borderColor = color.white;
+					// insideColor = !typePF ? ColorList[What("Color.Theme")].CMYK : ["RGB", 0.659, 0.659, 0.659];
+					// borderColor = color.white;
+					insideColor = purple.filler.RGB;
+					borderColor = purple.background.CMYK;
 					theCaption = ">";
 					borderWidth = !typePF ? 2 : 1;
 					borderType = border.b;

@@ -79,12 +79,12 @@ function setStuffAfterUserScripts() {
 }
 
 function setGlobalVars() {
-	tDoc.typePF = (/printer friendly/i).test(tDoc.info.SheetType);
+	tDoc.typePF = /PURPLE|printer friendly/i.test(tDoc.info.SheetType);
 	tDoc.typeA4 = (/a4/i).test(tDoc.info.SheetType);
 	tDoc.typeLR = (/letter/i).test(tDoc.info.SheetType);
 	tDoc.minVer = tDoc.info.SpellsOnly || tDoc.info.AdvLogOnly;
 	tDoc.semVers = getSemVers(tDoc.info.SheetVersion, tDoc.info.SheetVersionType, tDoc.info.SheetVersionBuild);
-	tDoc.sheetVersion = semVersToNmbr(semVers);
+	tDoc.sheetVersion = semVersToNmbr(semVers) - 12000000;
 	tDoc.isWindows = app.platform === "WIN";
 	tDoc.patreonVersion = tDoc.getField("SaveIMG.Patreon").submitName === "";
 	if (minVer) sentientItemConflictTxt = "";
@@ -2251,3 +2251,26 @@ var licenseGPLV3 = [
 	'17. Interpretation of Sections 15 and 16.\nIf the disclaimer of warranty and limitation of liability provided above cannot be given local legal effect according to their terms, reviewing courts shall apply local law that most closely approximates an absolute waiver of all civil liability in connection with the Program, unless a warranty or assumption of liability accompanies a copy of the Program in return for a fee.',
 	'END OF TERMS AND CONDITIONS'
 ];
+
+var purple = {
+    background: {
+        RGB: ["RGB", 59/255, 32/255, 79/255], // 3b204f
+        CMYK: ["CMYK", 0.83, 0.96, 0.37, 0.36],
+    },
+    text: {
+        RGB: ["RGB", 154/255, 107/255, 171/255], // 7f55a2
+        CMYK: ["CMYK", 0.43, 0.67, 0.01, 0],
+    },
+    textDark: {
+        RGB: ["RGB", 127/255, 85/255, 162/255], // 7f55a2
+        CMYK: ["CMYK", 0.58, 0.78, 0, 0],
+    },
+    lines: {
+        RGB: ["RGB", 99/255, 45/255, 139/255], // 632d8b
+        CMYK: ["CMYK", 0.76, 1, 0.04, 0],
+    },
+    filler: {
+        RGB: ["RGB", 77/255, 40/255, 108/255], // 4d286c
+        CMYK: ["CMYK", 0.84, 1, 0.25, 0.13],
+    },
+}

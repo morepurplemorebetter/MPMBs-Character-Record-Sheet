@@ -1,5 +1,5 @@
 function MakeDocName() {
-	return "MorePurpleMoreBetter's D&D 5th edition " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " v" + semVers + " (" + tDoc.info.SheetType + ")";
+	return "MPMB's D&D 5e Character Sheet v" + semVers + " (Printer Unfriendly Redesign Pointless Layer Edition)";
 };
 
 function MakeButtons() {
@@ -194,14 +194,16 @@ function OpeningStatement() {
 	if (What("Opening Remember") === "No") {
 		tDoc.dirty = false;
 		tDoc.pane = "bookmarks"; //open the bookmarks so that on the first opening people can see its existence
-		var sheetTitle = "MorePurpleMoreBetter's D&D 5e " + (tDoc.info.SpellsOnly ? "Complete " + tDoc.info.SpellsOnly.capitalize() + " Spell Sheet" : (tDoc.info.AdvLogOnly ? "Adventure Logsheet" : "Character Record Sheet")) + " (" + tDoc.info.SheetType + ") v" + semVers;
+		var sheetTitle = "MPMB's D&D 5e Character Sheet (Printer Unfriendly Redesign Pointless Layer Edition) v" + semVers;
 		var Text = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
 		Text += "Welcome to " + toUni(sheetTitle, "bold");
 		Text += ".\n>> get the latest version using the bookmark.";
-		Text += patreonVersion ? "" : "\n\n" + toUni("SRD only") + '. The System Reference Document content is the only Wizards of the Coast publication this sheet is allowed to contain. The rest is protected by WotC\'s copyright. Use the "Get More Content" bookmark to get add-on scripts to increase the available options.';
-		Text += "\n\n" + toUni("5e version") + ". The 5th edition (2014) of Dungeons & Dragons is what this sheet is made for. Visit MPMB's website to get a sheet for 5.5e (2024) D&D.";
-		Text += "\n\n" + toUni("Advanced features") + ". The buttons in the \'JavaScript Window\'-toolbar and the bookmarks by the same name allow for many customization options. Please try them out. They are reversible.";
-		Text += "\n\nHave fun with the sheet and the adventures you embark on with its help!\n - MorePurpleMoreBetter - ";
+		Text += "\n\n" + toUni("1st of April 2026") + '. You are viewing the:\nPRINTER UNFRIENDLY REDESIGN POINTLESS LAYER EDITION\nor PURPLE for short.';
+		Text += "\n\nHave fun seeing your printer suffer!\n - MorePurpleMoreBetter - ";
+		// Text += patreonVersion ? "" : "\n\n" + toUni("SRD only") + '. The System Reference Document content is the only Wizards of the Coast publication this sheet is allowed to contain. The rest is protected by WotC\'s copyright. Use the "Get More Content" bookmark to get add-on scripts to increase the available options.';
+		// Text += "\n\n" + toUni("5e version") + ". The 5th edition (2014) of Dungeons & Dragons is what this sheet is made for. Visit MPMB's website to get a sheet for 5.5e (2024) D&D.";
+		// Text += "\n\n" + toUni("Advanced features") + ". The buttons in the \'JavaScript Window\'-toolbar and the bookmarks by the same name allow for many customization options. Please try them out. They are reversible.";
+		// Text += "\n\nHave fun with the sheet and the adventures you embark on with its help!\n - MorePurpleMoreBetter - ";
 		var oCk = {
 			bInitialValue : true,
 			bAfterValue : false
@@ -7342,12 +7344,14 @@ function SetRichTextFields(onlyAttackTitles, onlySkills) {
 	//set the skills
 	var alphaB = Who("Text.SkillsNames") === "alphabeta";
 	var skillTXT = [];
-	var PFcolor = ["RGB", 0.658, 0.658, 0.654];
+	// var PFcolor = ["RGB", 0.658, 0.658, 0.654];
+	var PFcolor = purple.textDark.RGB;
 	for (var s = 0; s < (SkillsList.abbreviations.length - 2); s++) {
 		var sNm = alphaB ? SkillsList.names[s] : SkillsList.namesByAS[s];
 		var sAS = alphaB ? SkillsList.abilityScores[s] : SkillsList.abilityScoresByAS[s];
 		if (typePF) {
-			skillTXT.push({text : sNm + " ", textSize: 7});
+			// skillTXT.push({text : sNm + " ", textSize: 7});
+			skillTXT.push({text : sNm + " ", textSize: 7, textColor: purple.text.RGB});
 			skillTXT.push({text : "(" + sAS + ")\n", textSize: 7, textColor: PFcolor});
 			skillTXT.push({text : "\n", textSize: 6});
 		} else {
@@ -10025,7 +10029,7 @@ function SetHighlighting() {
 	if (!IsNotReset) { //if called during a reset
 		//set the remember highlight colour to the sheet's default
 		tDoc.getField("Highlighting").fillColor = ["RGB", 0.9, 0.9, 1];
-		AddTooltip("Highlighting", "sheet default");
+		AddTooltip("Highlighting", "turn highlighting off");
 		Highlighting.rememberState = eval_ish(What("Highlighting"));
 		Highlighting.rememberColor = tDoc.getField("Highlighting").fillColor;
 	}
