@@ -49,7 +49,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v14.0.5 and newer
+	Sheet:		v14.0.6 and newer
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -1557,14 +1557,15 @@ creatureOptions : [{ /* CreatureList object, see "companion, wild shape (Creatur
 	USE:	adds each object in the array to the CreatureList variable
 	ADDED:	v13.0.6
 
-	The syntax of the objects is not explained here, but in the "companion, wild shape (CreatureList).js" syntax file.
+	The syntax of the objects is not explained here, but in the "creature, wild shape (CreatureList).js" syntax file.
 
 	This way you can have a feature add a type of creature to the automation.
 	It will also be added to the options in each companion page's Race field drop-down.
 	This will result in having the creature only available if the feature is present.
 
 	IMPORTANT!
-	Creatures added in this way are never available as a wild shape.
+	Creatures added in this way are never available as a wild shape, unless you set the
+	`forceWildshapeOption` attribute.
 	When the feature with this attribute is removed, any companion pages that these
 	creature(s) are	used on will have the race field reset (and thus the creature's stats
 	will be removed from that companion page).
@@ -2327,6 +2328,180 @@ calcChanges : {
 		// 2nd array entry // OPTIONAL //
 		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
 		This explanation is also available under the Companion Options button on any companion page.
+
+		// 3rd array entry // OPTIONAL //
+		This has to be a positive number that will be used to prioritise the order in which the functions
+		are processed. The lowest number gets processed first.
+		Functions with identical numbers are processed alphabetically.
+		For more information, see the 3rd array entry in the `atkAdd` explanation above.
+	*/
+	wildshapeCallback: [function(prefix, fieldNo, oWildshape, sCrea) {
+		oWildshape.acOptions.push({
+			name: "Circle of the Moon: Circle Forms",
+			ac: "13+Wis",
+		});
+	},
+	""],
+	/*	wildshapeCallback // OPTIONAL //
+		TYPE:	array with three entries
+				1st entry:	function
+				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
+				3rd entry:	optional number used to determine the order in which to run the functions
+		USE:	dynamically change a wild shape whenever it is calculated
+		ADDED:	v14.0.6
+
+		// 1st array entry // REQUIRED //
+		This function is called whenever a wild shape is applied/recalculated on
+		the wild shape page.
+		Recalculation happens whenever the class level changes and the sheet is in use, or when manually started using the Wild Shape Options button.
+		You can use it to dynamically change something about a companion like its
+		features, attacks, or AC.
+
+		Note that this is not called when removing a wild shape. Thus, don't use this
+		to edit other parts of the sheet, because they won't ever be undone.
+
+		This function is passed four variables:
+		1)	`prefix` a string with the page identifier for the wild shape page.
+			Use this to call fields on the wild shape page together with fieldNo, see 2).
+
+		2)	`fieldNo` a number with the identifier for which entry on the wild shape page
+			is being set.
+			Use this to call fields on the wild shape page together with prefix.
+			Wild Shape fields names are `prefix + "Wildshape." + fieldNo + ".Size"`,
+			where ".Size" varies per field.
+
+		3)	`oWildshape` a special object created from the CreatureList entry together with
+			proficiencies, bonuses, and armour options from the main character.
+
+			Change this object to affect the fields on the wild shape entry.
+			The fields will be set by this object. Only multi-line fields can be set directly
+			by this callback function. Other fields will be overwritten.
+
+			This object only exists for the purpose of calculating the wild shape entry.
+			It doesn't persist outside of this action and is regenerated from its components
+			every time a wild shape entry is added or (re)calculated.
+
+			The object is identical to a CreatureList object, with the following exceptions:
+
+			`oWildshape.wildshapeTraits` an empty array. Push an object to this array
+				with a `name`, `description`, and optional `joinString` attribute.
+				It is then processed like any `actions`, `traits`, or `features` object,
+				but unlike those attributes, things in `wildshapeTraits` are added even
+				if `oWildshape.wildshapeString` exists.
+				Use this to add things to the "Traits & Features" section of a Wild Shape.
+
+			`oWildshape.calcSetting` an array with two entries. It determines how the wild
+				shape should be calculated. It is identical to the setting set by the
+				"Wild Shape Options" button on a wild shape page.
+				You can edit this attribute to change the calculation just for this wild shape.
+				See the FAQ for the calculation options and what they do.
+				Array 1st entry: "default", "all_druid", "all_creature", or "by_the_numbers".
+				Array 2nd entry (only used if 1st is "all_druid"): "excluding", "expertise",
+				"attacks", or "attacks_expertise".
+
+			`oWildshape.scores` doesn't exist, instead the ability scores are stored in:
+			`oWildshape.ability` is an object that contains the ability scores.
+				It has an attribute for each ability, using its three-letter abbreviation, e.g.
+				`oWildshape.ability.Dex` and `oWildshape.ability.Int`.
+				These are again objects, now with the attributes `value` and `mod`.
+				You can change the value, but not the mod as it's generated from the value.
+				Example usage:
+				`oWildshape.ability.Str.value += 2` would add +2 to the Strength.
+				`oWildshape.ability.Dex.value = 12` would set the Dexterity to 12.
+				`oWildshape.ability.Con.mod` gives the Constitution modifier.
+				
+			`oWildshape.saves` doesn't exist, instead the saving throws are stored in:
+			`oWildshape.save` is an object that contains the saving throws.
+				It has an attribute for each ability, using its three-letter abbreviation, e.g.
+				`oWildshape.save.Dex` and `oWildshape.save.Int`.
+				Each of those are objects that contain the following attributes:
+					`creature: { // save proficiency gained from the creature.
+						value: "", // taken from the CreatureList.saves attribute. It will
+						           // be "" if no save proficiency is set. This is only
+						           // used if "by_the_numbers" is the calcSetting, see below.
+						proficient: false, // boolean, true if proficient, false otherwise.
+						bonus: 0, // dynamic bonus string that will be evaluated,
+						          // set by `addMod` attributes in CreatureList entry.
+					}`
+					`character: { // save proficiency gained from the character.
+						value: 2, // taken from the 1st page, used if "by_the_numbers" is the
+						          // calcSetting, see below.
+						proficient: true, // boolean, true if proficient, false otherwise.
+						bonus: "Cha", // dynamic bonus string, content of the modifier field
+						              // from the 1st page. Modify this to add a dynamic bonus.
+					}`
+				The main `save` object also has the following attribute:
+					`allBonus` the content of the All Saving Throw Bonus modifier field from
+					           the 1st page. Modify this to add a dynamic bonus to all saves.
+				Example usage:
+					`oWildshape.save.allBonus += "+1"` would add +1 to all saving throws.
+					`oWildshape.save.Dex.character.bonus += "+Cha"` would add the Charisma modifier to Dexterity saves.
+					`oWildshape.save.Str.character.proficient = true` would enable proficiency in Strenght saves.
+
+			`oWildshape.skills` doesn't exist, instead the skills are stored in:
+			`oWildshape.skill` is an object that contains the skills.
+				It has an attribute for each skill, using its full name, all lowercase, e.g.
+				`oWildshape.skill.perception` and `oWildshape.skill["animal handling"]`.
+				In addition, it has two attributes `Init` for initiative, and `passivePerception`,
+				that work similar to each skill entry.
+				Each of those (skills, initiative, and passive perception) are objects that
+				contain the following attributes:
+					`creature: { // skill proficiency gained from the creature.
+						value: "", // taken from the CreatureList.skills attribute. It will
+						           // be "" if no skill proficiency is set. This is only
+						           // used if "by_the_numbers" is the calcSetting, see below.
+						proficiency: "nothing", // string, can be "nothing", "proficient",
+						                        // or "expertise".
+						bonus: 0, // dynamic bonus string that will be evaluated,
+						          // set by `addMod` attributes in CreatureList entry.
+					}`
+					`character: { // skill proficiency gained from the character.
+						value: 2, // taken from the 1st page, used if "by_the_numbers" is the
+						          // calcSetting, see below.
+						proficiency: "proficient", // string, can be "nothing", "proficient",
+						                           // or "expertise".
+						bonus: "Cha", // dynamic bonus string, content of the modifier field
+						              // from the 1st page. Modify this to add a dynamic bonus.
+					}`
+					The `proficiency` attribute isn't used for `Init` (initiative), nor for `passivePerception`.
+				The main `skill` object also has the following three attributes:
+					`allBonus` the content of the All Skill Bonus modifier field from
+					           the 1st page. Modify this to add a dynamic bonus to all skills.
+					`jackOfAllTrades` true if Jack of All Trades is enabled on the 1st page.
+					`remarkableAthlete` true if Remarkable Athlete is enabled on the 1st page.
+				Example usage:
+					`oWildshape.skill.allBonus += "+1"` would add +1 to all skills.
+					`oWildshape.skill.jackOfAllTrades = true` would add half proficiency bonus to any skill that doesn't otherwise add a proficiency bonus.
+					`oWildshape.skill.perception.character.proficient = "expertise"` would enable expertise in Perception.
+
+			`oWildshape.ac` doesn't exist, instead the armour class is stored in:
+			`oWildshape.acOptions` is an array that contains all available AC calculations.
+				Each entry in the array is an object that contains the information how to
+				calculate that armour option's AC. Each object looks like this:
+				`{
+					name: "Unarmored Defense (Wis)", // required; string; name of the armour.
+					ac: "12+Dex+Wis", // required, string or number, evaluated to be the AC.
+					                  // Identical to `ac` attribute of an ArmourList object.
+					                  // Unless `key` below is set, the Dex bonus isn't
+					                  // automatically added. Add it here if needed.
+					key: "plate", // optional; string; the object name in ArmourList.
+					              // If this is set, Dexterity bonus to AC will be added as
+					              // dictated by the ArmourList entry.
+					useCreatureProf: false, // optional; boolean; set to true if the creature's
+					                        // proficiency bonus should be used when evaluating
+					                        // the above `ac` string.
+				}`
+				You can push an object to this array to add alternative AC calculations.
+				The sheet automatically picks the calculation that results in the highest AC.
+
+		4)	`sCrea` a string containing the object name of the CreatureList entry being used
+			as the base for the wild shape. I.e. the creature being shape-shifted into.
+			Use `CreatureList[sCrea]` to get the original stats of the creature.
+			For example `CreatureList[sCrea].scores[3]` contains its Intelligence score.
+
+		// 2nd array entry // OPTIONAL //
+		This has to be a string and will be shown in the "Changes" dialog when this feature is added/removed.
+		This explanation is also available under the Wild Shape Options button on any wild shape page.
 
 		// 3rd array entry // OPTIONAL //
 		This has to be a positive number that will be used to prioritise the order in which the functions

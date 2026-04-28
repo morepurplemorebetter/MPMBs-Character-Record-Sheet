@@ -41,7 +41,7 @@
 				Note that if you want a class feature, race, racial trait, feat, background, or magic item to
 				add a weapon/attack, you should be using the 'weaponOptions' attribute.
 
-	Sheet:		v14.0.5 and above
+	Sheet:		v14.0.6 and above
 */
 
 var iFileName = "Homebrew Syntax - WeaponsList.js";
@@ -538,6 +538,7 @@ WeaponsList["purple sword"] = {
 	USE:	the object name of a spellcasting object that this attack will use the spell attack/DC from
 	ADDED:	v13.0.6
 	CHANGE:	v14.0.0 (can now be an array of strings)
+	CHANGE:	v14.0.6 (can now be used on the wild shape page)
 
 	If the attack you are adding used the spell attack (or DC) of a fixed spellcasting entity
 	(class, race, feat, or magic item), then you can use this attribute.
@@ -564,9 +565,8 @@ WeaponsList["purple sword"] = {
 	regardless of the setting of the proficiency or ability score fields in the attack section.
 	In fact, it will force the selected ability to be the ability used by the spellcasting entity.
 
-	Be aware, that if you use this for a CreatureList object, the spell attack / DC used will
-	still be that of the main character.
-	This attribute is ignored on the Wild Shape pages.
+	Be aware, that if you use this for a CreatureList object, the spell attack / DC
+	used will still be that of the main character.
 
 	Setting this to an empty string ("") is the same as not including this attribute.
 */

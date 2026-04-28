@@ -87,6 +87,7 @@ function setGlobalVars() {
 	tDoc.sheetVersion = semVersToNmbr(semVers);
 	tDoc.isWindows = app.platform === "WIN";
 	tDoc.patreonVersion = tDoc.getField("SaveIMG.Patreon").submitName === "";
+	tDoc.use2024Rules = tDoc.sheetVersion >= 24000000;
 	if (minVer) sentientItemConflictTxt = "";
 }
 setGlobalVars();

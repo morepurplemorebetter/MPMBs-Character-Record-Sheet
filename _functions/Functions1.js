@@ -659,7 +659,7 @@ function ToggleTextSize(size, linespacingSize, forceReset) {
 	for (var i = 0; i < LinesFld.length; i++) {
 		var fieldName = LinesFld[i];
 		var lineFld = tDoc.getField(fieldName);
-		if (!fontChange && lineFld.value === "") continue;
+		if (!lineFld || (!fontChange && lineFld.value === "")) continue;
 		// Disable rich text before updating the textSize/linespacing so it actually gets applied
 		lineFld.richText = false;
 		if (fontChange) lineFld.textSize = fontSize;
@@ -6185,7 +6185,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 	}
 
 	// apply class level changes
-	if (!CurrentVars.manual.classes && (/^(?!=notclass)(all|class).*$/i).test(Typeswitch)) {
+	if (!CurrentVars.manual.classes && /^(?!=notclass)(all|class).*$/i.test(Typeswitch)) {
 
 		// first see if any wild shapes are in use
 		var WSinUse = false;
@@ -6270,7 +6270,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 					);
 
 					// add/remove/update the feature text on the second page
-					if (propFea.description !== undefined) {
+					if (Fea && propFea.description !== undefined) {
 						var FeaOldString = ParseClassFeature(aClass, prop, oldClassLvl[aClass], forceProp, Fea.ChoiceOld, forceProp ? false : Fea);
 						Fea.extFirst = true; // signal that we need the full first line for FeaNewString
 						var FeaNewString = ParseClassFeature(aClass, prop, newClassLvl[aClass], false, Fea.Choice, Fea);
@@ -6296,12 +6296,19 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 							LastProp = FeaNewString[2];
 						}
 					}
+
+					// See if this is a wild shape feature, overwriting previously set values if the later processed feature is higher level or if it's lower level but the higher level feature is to be removed
+					if (propFea.wildshapePageInfo && Fea && (typeof WSinUse !== "object" || WSinUse.minlevel < propFea.minlevel || (!WSinUse.addIt && Fea.AddFea))) {
+						WSinUse = {
+							addIt: Fea.AddFea,
+							minlevel: propFea.minlevel,
+							lvl: newClassLvl[aClass],
+							info: propFea.wildshapePageInfo,
+						};
+					}
 				} catch (error) {
 					displayError(error, 'The "' + propFea.name + '" feature from the "' + cl.fullname + '" class produced the error below. Please share this error message with its author so they can correct this issue.');
 				}
-
-				// see if this is a wild shape feature
-				if (prop.indexOf("wild shape") !== -1 && Fea.changed) WSinUse = [newClassLvl[aClass], Fea.Use, Fea.Recov, Fea.Add];
 
 				/* loop through the feature's selected extra options, but only:
 					- during import to set the feature for the first time (!IsNotImport && Fea.AddFea)
@@ -6345,7 +6352,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 		}
 
 		// (re-)apply and re-calculate all the wild shapes as something might have changed after going level up
-		if (WSinUse) WildshapeUpdate(WSinUse != true ? WSinUse : false);
+		if (WSinUse) WildshapeUpdate(typeof WSinUse === "object" ? WSinUse : false);
 	}
 
 	thermoM(thermoTxt, true); // Stop progress bar
@@ -6666,15 +6673,17 @@ function ClassFeatureOptions(Input, AddRemove, ForceExtraname) {
 
 // Add a temporary addition to classes.known, if applicable
 function addTempClassesKnown(oBonus) {
-	if (!classes.known[oBonus.class]) {
+	var oKnownClass = classes.known[oBonus.class];
+	var sCurSubclass = oKnownClass && oKnownClass.subclass ? oKnownClass.subclass : false;
+	if (!oKnownClass) {
 		classes.known[oBonus.class] = {
 			name : oBonus.class,
 			level : 0,
 			subclass : oBonus.subclass ? oBonus.subclass : "",
 			isTempKnown : true
 		}
-	} else if (oBonus.subclass && oBonus.subclass !== classes.known[oBonus.class].subclass) {
-		classes.known[oBonus.class].subclassRem = classes.known[oBonus.class].subclass;
+	} else if (oBonus.subclass && oBonus.subclass !== sCurSubclass) {
+		classes.known[oBonus.class].subclassRem = sCurSubclass;
 		classes.known[oBonus.class].subclass = oBonus.subclass;
 	}
 }
@@ -6683,7 +6692,7 @@ function cleanTempClassesKnown() {
 	for (var sClass in classes.known) {
 		if (classes.known[sClass].isTempKnown === true) {
 			delete classes.known[sClass];
-		} else if (classes.known[sClass].subclassRem) {
+		} else if (classes.known[sClass].subclassRem !== undefined) {
 			classes.known[sClass].subclass = classes.known[sClass].subclassRem;
 			delete classes.known[sClass].subclassRem;
 		}

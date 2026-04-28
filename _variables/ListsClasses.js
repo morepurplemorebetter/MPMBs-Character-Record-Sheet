@@ -523,7 +523,7 @@ var Base_ClassList = {
 	},
 
 	"druid" : {
-		regExpSearch : /(druid|shaman)/i,
+		regExpSearch : /druid/i,
 		name : "Druid",
 		source : [["SRD", 19], ["P", 61]],
 		primaryAbility : "Wisdom",
@@ -598,16 +598,31 @@ var Base_ClassList = {
 					" \u2022 I can choose whether equipment falls to the ground, merges, or stays worn",
 					" \u2022 I revert if out of time or unconscious; if KOd by damage, excess damage carries over"
 				]),
-				usages : [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, "\u221E\xD7 per "],
+				usages : levels.map(function (n) {
+					return n < 2 ? 0 : n < 20 ? 2 : "\u221E\xD7 per ";
+				}),
 				recovery : "short rest",
 				additional : levels.map(function (n) {
 					if (n < 2) return "";
 					var cr = n < 4 ? "1/4" : n < 8 ? "1/2" : 1;
 					var hr = Math.floor(n/2);
-					var restr = n < 4 ? ", no fly/swim" : n < 8 ? ", no fly" : "";
-					return "CR " + cr + restr + "; " + hr + (restr.length ? " h" : " hours");
+					var limits = n < 4 ? ", no fly/swim" : n < 8 ? ", no fly" : "";
+					return "CR " + cr + limits + "; " + hr + (limits.length ? " h" : " hours");
 				}),
-				action : [["action", " (start)"], ["bonus action", " (end)"]]
+				action : [["action", " (start)"], ["bonus action", " (end)"]],
+				wildshapePageInfo: {
+					uses: levels.map(function (n) {
+						return n < 20 ? "2\xD7 per short rest" : "unlimited";
+					}),
+					duration: levels.map(function (n) {
+						return Math.floor(n/2) + " hour" + (n > 3 ? "s" : "");
+					}),
+					limitations: levels.map(function (n) {
+						var CR = n < 4 ? "1/4" : "1/2";
+						var limits = n < 4 ? ", no fly/swim" : ", no fly speed";
+						return n < 8 ? "max CR " + CR + limits : "CR 1 or lower";
+					}),
+				},
 			},
 			"timeless body" : {
 				name : "Timeless Body",
@@ -1614,7 +1629,7 @@ var Base_ClassList = {
 	},
 
 	"sorcerer" : {
-		regExpSearch : /sorcerer|witch/i,
+		regExpSearch : /sorcerer/i,
 		name : "Sorcerer",
 		source : [["SRD", 42], ["P", 99]],
 		primaryAbility : "Charisma",

@@ -187,6 +187,7 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 		AddTooltip(prefix + "Comp.Desc.Height", "");
 		AddTooltip(prefix + "Comp.Desc.Weight", "");
 		AddTooltip(prefix + "Comp.Desc.Size", "");
+		AddTooltip(prefix + "Comp.Desc.MonsterType", "");
 		AddTooltip(prefix + "Comp.Desc.Age", "", "");
 		// remove submitName from modifier fields
 		var clearSubmitNames = [prefix + "Comp.Use.Combat.Init.Bonus"].concat(tDoc.getField(prefix + "BlueText.Comp.Use.Ability").getArray()).concat(tDoc.getField(prefix + "BlueText.Comp.Use.Skills").getArray());
@@ -498,13 +499,7 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 
 		//set race's type
 		var sCompExplStr = oComp ? ", a special companion (" + oComp.name.toLowerCase() + "), " : "";
-		var aCreaTypeDialogTxt = [
-			"Select creature type for the " + strRaceEntry + " on page " + iPageNo, // title
-			"The " + strRaceEntry + sCompExplStr + " on page " + iPageNo + " can be one of multiple creature types. It is up to you to choose which type will now be input in the dropdown on the companion page." // description
-		]
-		var sCreaType = isArray(aCrea.type) ? AskUserOptions(aCreaTypeDialogTxt[0], aCreaTypeDialogTxt[1], aCrea.type, "radio", true) : aCrea.type;
-		var sCreaSubtype = aCrea.subtype ? " (" + (isArray(aCrea.subtype) ? AskUserOptions(aCreaTypeDialogTxt[0].replace("type", "subtype"), aCreaTypeDialogTxt[1].replace(/type/ig, "subtype"), aCrea.subtype, "radio", true) : aCrea.subtype) + ")" : "";
-		Value(prefix + "Comp.Desc.MonsterType", sCreaType + sCreaSubtype);
+		SetCreatureType(prefix, [strRaceEntry, strRaceEntry, sCompExplStr], aCrea.type, aCrea.subtype);
 
 		if (aCrea.senses) {//set senses
 			Value(prefix + "Comp.Use.Senses", What("Unit System") === "metric" ? ConvertToMetric(aCrea.senses, 0.5) : aCrea.senses);
@@ -1376,8 +1371,8 @@ function addCompEvals(evalObj, prefix, NameEntity, Add) {
 
 //add a wildshape based on the selection and calculation settings
 function ApplyWildshape() {
-	if (IsSetDropDowns) return; // when just changing the dropdowns, don't do anything
-	if (event.target && event.value.toLowerCase() === event.target.value.toLowerCase()) return; //no changes were made
+	if (IsSetDropDowns) return; // When just changing the dropdowns, don't do anything
+	if (event.target && event.value.toLowerCase() === event.target.value.toLowerCase()) return; //No changes were made
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying wild shape...");
@@ -1386,298 +1381,473 @@ function ApplyWildshape() {
 	var prefix = getTemplPre(event.target.name, "WSfront", true);
 	var Fld = event.target.name.slice(-1);
 	var newForm = event.value.toLowerCase();
-	var resetFlds = [
-		prefix + "Wildshape." + Fld,
-		prefix + "Text.Wildshape." + Fld
-	];
+	var fldBase = prefix + "Wildshape." + Fld;
+	var fldBaseTxt = prefix + "Text.Wildshape." + Fld;
+	var resetFlds = [fldBase, fldBaseTxt];
 	var resetTooltipsFlds = function() {
-		AddTooltip(prefix + "Wildshape." + Fld + ".Attack." + 1 + ".Description", "");
-		AddTooltip(prefix + "Wildshape." + Fld + ".Attack." + 2 + ".Description", "");
-		AddTooltip(prefix + "Wildshape." + Fld + ".AC", "");
+		AddTooltip(fldBase + ".Attack." + 1 + ".Description", "");
+		AddTooltip(fldBase + ".Attack." + 2 + ".Description", "");
+		AddTooltip(fldBase + ".AC", "");
 	}
 
 	if (newForm === "" || newForm === "make a selection") {
-		thermoTxt = thermoM("Resetting the wild shape...", false); //change the progress dialog text
+		thermoTxt = thermoM("Resetting the wild shape...", false); // Change the progress dialog text
 		tDoc.resetForm(resetFlds);
-		thermoM(1/2); //increment the progress dialog's progress
+		thermoM(1/2); // Increment the progress dialog's progress
 		resetTooltipsFlds();
 		thermoM(thermoTxt, true); // Stop progress bar
-		return; //don't do the rest of the function
+		return; // Don't do the rest of the function
 	}
 
 	var newCrea = ParseCreature(newForm);
 
 	var oldCrea = ParseCreature(event.target.value);
-	if (newCrea === oldCrea || !newCrea || !What("Character Level") || !What("Int")|| !What("Wis")|| !What("Cha")) { //If this returns true, it means that no (new) race was found; or that the character has not been defined enough yet so the function can be stopped
+	if (newCrea === oldCrea || !newCrea || !What("Character Level") || !What("Int")|| !What("Wis")|| !What("Cha")) {
+		// If this returns true, it means that no (new) race was found; or that the character has not been defined enough yet so the function can be stopped
 		thermoM(thermoTxt, true); // Stop progress bar
-		return; //don't do the rest of the function
+		return; // Don't do the rest of the function
 	}
 
-	thermoTxt = thermoM("Resetting the wild shape...", false); //change the progress dialog text
+	thermoTxt = thermoM("Resetting the wild shape...", false); // Change the progress dialog text
 	tDoc.resetForm(resetFlds);
 	resetTooltipsFlds();
-	thermoM(1/10); //increment the progress dialog's progress
+	thermoM(1/8); // Increment the progress dialog's progress
 
-	thermoTxt = thermoM("Applying the new wild shape...", false); //change the progress dialog text
-	var theCrea = CreatureList[newCrea];
-	//calculate the new array of ability scores
-	var scores = [
-		theCrea.scores[0],
-		theCrea.scores[1],
-		theCrea.scores[2],
-		What("Int"),
-		What("Wis"),
-		What("Cha")
-	];
+	thermoTxt = thermoM("Applying the new wild shape...", false); // Change the progress dialog text
 
-	//calculate the ability score modifiers
-	var mods = [];
-	for (var i = 0; i < scores.length; i++) {
-		mods[i] = Math.round((scores[i] - 10.5) * 0.5);
-	}
-
-	//get the proficiency bonuses
-	var creaProfBcalc = theCrea.proficiencyBonus;
-	var charProfBcalc = Number(How("Proficiency Bonus"));
-	var creaProfBfix = theCrea.proficiencyBonus;
-	var charProfBfix = Number(How("Proficiency Bonus"));
-
-	//get the setting field
-	var setting = What("Wildshapes.Remember").split("!#TheListSeparator#!");
-
-	if (setting[0] === "all_creature") {
-		charProfBcalc = creaProfBcalc;
-	} else if (setting[0] === "all_druid") {
-		creaProfBcalc = charProfBcalc;
-	}
-
-	//define a function that calculates the proficiency bonus to use
-	var getProfB = function(ProfB, isProf, halfProf) {
+	// Some generic variables
+	var useProfDice = tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1;
+	var useModNotDC = tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0) === 1;
+	var skillsAlphaBeta = Who("Text.SkillsNames") === "alphabeta";
+	var isMetric = What("Unit System") === "metric";
+	var getProfB = function(ProfB, isProf, isHalfProf, expertiseBonusProf) {
 		if (isProf === "expertise") {
-			return ProfB * 2;
-		} else if (isProf === "proficient") {
+			return expertiseBonusProf ? expertiseBonusProf + ProfB : ProfB * 2;
+		} else if (isProf === "proficient" || isProf === true) {
 			return ProfB;
-		} else if (halfProf) {
+		} else if (isHalfProf) {
 			return Math.floor(ProfB / 2);
 		} else {
 			return 0;
 		}
 	}
+	var calcMod = function(value) { return Math.round((value - 10.5) * 0.5) };
 
-	//add ability scores (and set the mods for things using it while calculations are suspended)
-	for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
-		Value(prefix + "Wildshape." + Fld + ".Ability." + AbilityScores.abbreviations[a] + ".Score", scores[a]);
-		Value(prefix + "Wildshape." + Fld + ".Ability." + AbilityScores.abbreviations[a] + ".Mod", mods[a]);
+	// Create an object from the CreatureList entry where all info is going to be stored
+	var oWS = newObj(CreatureList[newCrea]);
+
+	// Update the nameThis if not matching the creature entered
+	if (!oWS.nameThis || newForm.toLowerCase().indexOf(oWS.nameThis) !== -1) {
+		oWS.nameThis = clean(newForm.replace(/,? ?(giant|dire)/ig, '').replace(/ +/g, ' '));
 	}
 
-	thermoM(2/10); //increment the progress dialog's progress
+	// Get the setting field
+	oWS.calcSetting = What("Wildshapes.Remember").split("!#TheListSeparator#!");
 
-	//add the size
-	SetCreatureSize([prefix, Fld], theCrea.name, theCrea.size);
-
-	//set race's type
-	var typeString = theCrea.subtype ? theCrea.type + " (" + theCrea.subtype + ")" : theCrea.type;
-	Value(prefix + "Wildshape." + Fld + ".MonsterType", typeString);
-
-	//set speed
-	var theSpeed = What("Unit System") === "imperial" ? theCrea.speed : ConvertToMetric(theCrea.speed, 0.5);
-	if (typePF) theSpeed = theSpeed.replace("(,|;) ", "$1\n"); // add line breaks
-	Value(prefix + "Wildshape." + Fld + ".Speed", theSpeed);
-
-	//if the character is using proficiency dice instead of a bonus, change the values for calculations to zero and change the Proficiency Bonus field to display a dice
-	if (tDoc.getField("Proficiency Bonus Dice").isBoxChecked(0) === 1) {
-		var profToDisplay = GetProfDice(creaProfBcalc);
-		creaProfBcalc = 0;
-		charProfBcalc = 0;
-	} else {
-		var profToDisplay = creaProfBcalc;
+	// Add ability scores and save proficiencies and bonuses to the oWS object
+	oWS.ability = {};
+	oWS.save = { allBonus: What("All ST Bonus") };
+	for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
+		var abi = AbilityScores.abbreviations[i];
+		// Ability
+		oWS.ability[abi] = {
+			value: i < 3 ? oWS.scores[i] : What(abi),
+			get mod(){ return calcMod(this.value) },
+		}
+		// Saving Throw
+		oWS.save[abi] = {};
+		// Saving Throw - The creature's part
+		var creaSave = oWS.saves && isArray(oWS.saves) && oWS.saves[i] !== undefined ? oWS.saves[i] : "";
+		oWS.save[abi].creature = {
+			value: creaSave,
+			proficient: creaSave !== "",
+			bonus: 0,
+			extra: creaSave === "" ? 0 : creaSave - oWS.ability[abi].mod - oWS.proficiencyBonus, // modifier included in statblock, we'll consider it part of its proficiency bonus
+		}
+		// Saving Throw - The character's part
+		oWS.save[abi].character = {
+			value: What(abi + " ST Mod"),
+			proficient: tDoc.getField(abi + " ST Prof").isBoxChecked(0) === 1,
+			bonus: What(abi + " ST Bonus"),
+		}
 	}
 
-	Value(prefix + "Wildshape." + Fld + ".Proficiency Bonus", profToDisplay); //set proficiency bonus
-	Value(prefix + "Wildshape." + Fld + ".HP Max", theCrea.hp); //set HP
-	Value(prefix + "Wildshape." + Fld + ".HD", theCrea.hd[0] + "d" + theCrea.hd[1]); //set HD
-	Value(prefix + "Wildshape." + Fld + ".CR", theCrea.challengeRating); //set CR
-
-	//set AC
-	var theCreaAC = EvalBonus(theCrea.ac, prefix, Fld, creaProfBcalc);
-	var theAC = [theCreaAC];
-	var theACtt = [""];
+	// Add the different AC calculations to the oWS object
+	oWS.acOptions = [{
+		baseCreatureAC: true,
+		useCreatureProf: true,
+		name: "The default AC for " + oWS.name + " is " + oWS.ac + ".",
+		ac: isNaN(oWS.ac) ? oWS.ac : oWS.ac - oWS.ability.Dex.mod + "+Dex",
+	}];
+	// Add armour options added by features that affect wild shapes, if any
 	if (CurrentVars.extraArmour) {
-		for (var anArmour in CurrentVars.extraArmour) {
-			var spArmour = CurrentVars.extraArmour[anArmour];
-			if (!spArmour.affectsWildShape) continue;
-			var newAC = EvalBonus(spArmour.ac, prefix, Fld, charProfBcalc) + calcCompMaxDexToAC(false, anArmour, mods[1]);
-			if (newAC) {
-				theAC.push(newAC);
-				theACtt.push("\n\nThe AC used here is calculated using " + spArmour.name);
+		for (var key in CurrentVars.extraArmour) {
+			var oArmour = CurrentVars.extraArmour[key];
+			if (!oArmour.affectsWildShape) continue;
+			oWS.acOptions.push({
+				key: key,
+				name: oArmour.name,
+				ac: oArmour.ac,
+			});
+		}
+	}
+	// Add currently applied armour if it affects wild shapes and not already added
+	if (CurrentArmour.known && ArmourList[CurrentArmour.known].affectsWildShape && !CurrentVars.extraArmour[CurrentArmour.known]) {
+		oWS.acOptions.push({
+			key: CurrentArmour.known,
+			name: What("AC Armor Description"),
+			ac: CurrentArmour.acString,
+		});
+	}
+
+	// Add skill proficiencies and bonuses to the oWS object
+	oWS.skill = {
+		allBonus: What("All Skills Bonus"),
+		jackOfAllTrades: tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1,
+		remarkableAthlete: tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1,
+	};
+	for (var i = 0; i < (SkillsList.names.length - 2); i++) {
+		var skill = SkillsList.names[i].toLowerCase();
+		var abbr = SkillsList.abbreviations[i];
+		oWS.skill[skill] = {
+			creature: {
+				value: "",
+				proficiency: "nothing",
+				bonus: 0,
+				extra: 0,
+			},
+		}
+
+		// The creature's part
+		if (oWS.skills && oWS.skills[skill] !== undefined) {
+			var skillCrea = CompSkillRefer(skill, oWS.skills[skill], oWS.scores, oWS.proficiencyBonus);
+			oWS.skill[skill].creature = {
+				value: oWS.skills[skill],
+				proficiency: skillCrea[1],
+				bonus: 0,
+				extra: skillCrea[2], // modifier included in statblock, we'll consider it part of its proficiency bonus
+			}
+		}
+
+		// The character's part
+		var skillCharFld = skillsAlphaBeta ? abbr : SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(abbr)]
+		var skillProf = tDoc.getField(skillCharFld + " Prof").isBoxChecked(0) === 1;
+		var skillExp  = tDoc.getField(skillCharFld + " Exp" ).isBoxChecked(0) === 1;
+		oWS.skill[skill].character = {
+			value: What(skillCharFld),
+			proficiency: skillExp && skillProf ? "expertise" : skillProf ? "proficient" : "nothing",
+			bonus: What(skillCharFld + " Bonus"),
+		}
+	}
+
+	// Passive Perception
+	var creaPercValue = oWS.skill.perception.creature.value !== "" ? oWS.skill.perception.creature.value : Math.round((oWS.scores[4] - 10.5) * 0.5);
+	oWS.skill.passivePerception = {
+		creature: {
+			value: oWS.passivePerception,
+			bonus: oWS.passivePerception - 10 - creaPercValue,
+		},
+		character: {
+			value: What("Passive Perception"),
+			bonus: What("Passive Perception Bonus"),
+		},
+	}
+
+	// Initiative
+	oWS.skill.Init = {
+		creature: {
+			value: oWS.ability.Dex.mod,
+			bonus: 0,
+		},
+		character: {
+			value: What("Initiative bonus"),
+			bonus: What("Init Bonus"),
+		},
+	}
+
+	// Process all addMods that affect skills, saves, and initiative
+	var arrAddMods = oWS.addMod ? (isArray(oWS.addMod) ? oWS.addMod : [oWS.addMod]) : [];
+	var addModsForEach = function(elem) {
+		if (!elem.addMod) return;
+		if (isArray(elem.addMod)) {
+			arrAddMods = arrAddMods.concat(elem.addMod);
+		} else {
+			arrAddMods.push(elem.addMod);
+		}
+		delete elem.addMod; // Remove it to avoid confusion
+	}
+	if (oWS.actions) oWS.actions.forEach(addModsForEach);
+	if (oWS.trait) oWS.traits.forEach(addModsForEach);
+	if (oWS.features) oWS.features.forEach(addModsForEach);
+	for (var i = 0; i < arrAddMods.length; i++) {
+		var addMod = arrAddMods[i];
+		switch (addMod.type.toLowerCase()) {
+			case "save":
+				var fld = addMod.field.substr(0,3).toLowerCase().capitalize();
+				if (fld === "All") {
+					oWS.save.allBonus += "+" + addMod.mod;
+				} else if (oWS.save[fld]) {
+					oWS.save[fld].creature.bonus += "+" + addMod.mod;
+				}
+				break;
+			case "skill":
+				var fld = addMod.field.substr(0,4).toLowerCase().capitalize();
+				if (fld === "All") {
+					oWS.skill.allBonus += "+" + addMod.mod;
+				} else {
+					if (fld === "Pass") fld = "passivePerception";
+					if (!oWS.skill[fld]) fld = fld.substr(0,3);
+					if (oWS.skill[fld]) {
+						oWS.skill[fld].creature.bonus += "+" + addMod.mod;
+					}
+				}
+				break;
+			case "initiative":
+				oWS.skill.Init.creature.bonus += "+" + addMod.mod;
+				break;
+		}
+	}
+
+	// Add the initiative bonus from the creature's addMod to its value
+	if (oWS.skill.Init.creature.bonus) {
+		oWS.skill.Init.creature.value += EvalBonus(oWS.skill.Init.creature.bonus, prefix, fld, oWS.proficiencyBonus);
+	}
+
+	// Delete now unused CreatureList attributes from the oWS object to avoid confusion
+	delete oWS.scores;
+	delete oWS.saves;
+	delete oWS.skills;
+	delete oWS.ac;
+	delete oWS.addMod;
+	delete oWS.passivePerception;
+
+	// Add an array to be filled with `traits` by the wildshapeCallback
+	oWS.wildshapeTraits = [];
+
+	thermoM(2/8); // Increment the progress dialog's progress
+
+	// Run calcChanges.wildshapeCallback, if any
+	if (CurrentEvals.wildshapeCallback) {
+		for (var i = 0; i < CurrentEvals.wildshapeCallbackOrder.length; i++) {
+			var evalName = CurrentEvals.wildshapeCallbackOrder[i][1];
+			var evalThing = CurrentEvals.wildshapeCallback[evalName];
+			if (!evalThing) continue;
+			try {
+				if (typeof evalThing == 'string') {
+					eval(evalThing);
+				} else if (typeof evalThing == 'function') {
+					evalThing(prefix, Fld, oWS, newCrea);
+				}
+			} catch (error) {
+				displayError(error, 'The custom calcChanges.wildshapeCallback function from "' + evalName + '" produced the error below. It will be removed from the sheet for now, but please share this error message with its author so they can correct this issue.');
+				delete CurrentEvals.wildshapeCallback[evalName];
+				CurrentEvals.wildshapeCallbackOrder.splice(i, 1);
+				i--;
 			}
 		}
 	}
-	if (CurrentArmour.known && ArmourList[CurrentArmour.known].affectsWildShape) {
-		var newAC = EvalBonus(CurrentArmour.acString, prefix, Fld, charProfBcalc) + calcCompMaxDexToAC(false, CurrentArmour.known, mods[1]);
-		theAC.push(newAC);
-		theACtt.push("\n\nThe AC used here is calculated using " + What("AC Armor Description"));
+
+	// Get the proficiency bonuses to use for the calculations
+	var creaProfB = oWS.proficiencyBonus;
+	var charProfB = getProfBonus(true);
+	if (oWS.calcSetting[0] === "all_creature") {
+		charProfB = creaProfB;
+	} else if (oWS.calcSetting[0] === "all_druid") {
+		creaProfB = charProfB;
 	}
-	var theACtoUse = Math.max.apply(null, theAC);
-	var theTTtoUse = "The " + theCrea.name + " default AC is " + theCrea.ac + theACtt[theAC.indexOf(theACtoUse)];
-	Value(prefix + "Wildshape." + Fld + ".AC", theACtoUse, theTTtoUse);
+	var profDiceDisplay;
+	if (useProfDice) {
+		// If using Proficiency Dice, set Prof Bonus values to 0 for all calculations
+		profDiceDisplay = GetProfDice(creaProfB);
+		creaProfB = 0;
+		charProfB = 0;
+	}
 
-	thermoM(3/10); //increment the progress dialog's progress
+	thermoM(3/8); // Increment the progress dialog's progress
 
-	//set the initiative value
-	var initBonus = EvalBonus(What("Init Bonus"), prefix, Fld);
-	if (tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1 || tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1) initBonus += Math.floor(charProfBcalc / 2); //add half the proficiency bonus if either Jack of All Trades or Remarkable Athlete is checked off
-	Value(prefix + "Wildshape." + Fld + ".Initiative Bonus", mods[1] + Number(initBonus));
+	/* >> Populate the Fields << */
 
-	thermoM(4/10); //increment the progress dialog's progress
+	// Ability scores and modifiers, as calculations are suspended and the mod fields are used by `EvalBonus()`
+	for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
+		var abi = AbilityScores.abbreviations[i];
+		var abiFldBase = fldBase + ".Ability." + abi;
+		Value(abiFldBase + ".Score", oWS.ability[abi].value);
+		Value(abiFldBase + ".Mod", oWS.ability[abi].mod);
+	}
 
-	//set the skill proficiencies
-	for (var s = 0; s < (SkillsList.abbreviations.length - 2); s++) {
-		//get the particulars of the skill
-		var skill = SkillsList.abbreviations[s];
-		var skillFull = SkillsList.names[s];
-		var skillDruid = Who("Text.SkillsNames") === "alphabeta" ? skill : SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(skill)];
-		var skillAbi = SkillsList.abilityScores[s];
-		var skillMod = mods[AbilityScores.abbreviations.indexOf(skillAbi)];
-		if (!typePF) {
-			var skillFlds = [
-				prefix + "Wildshape." + Fld + ".Skills." + skill, //for the numerical value
-				prefix + "Text.Wildshape." + Fld + ".Skills." + skill + ".Prof", //pick proficiency/expertise/nothing
-			];
-		} else {
-			var skillFlds = [
-				prefix + "Wildshape." + Fld + ".Skills." + skill + ".Mod", //for the numerical value
-				prefix + "Wildshape." + Fld + ".Skills." + skill + ".Prof", //for the proficiency
-				prefix + "Wildshape." + Fld + ".Skills." + skill + ".Exp", //for the expertise
-			];
+	// Saving throws (do after setting the mods, or EvalBonus might not work)
+	var savesAllBonus = oWS.save.allBonus ? EvalBonus(oWS.save.allBonus, prefix, Fld, charProfB) : 0;
+	for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
+		var abi = AbilityScores.abbreviations[i];
+		var abiFldBase = fldBase + ".Ability." + abi;
+		var oSave = oWS.save[abi];
+		// Proficiency checkbox
+		if (oSave.creature.proficient || oSave.character.proficient) {
+			Checkbox(abiFldBase + ".ST.Prof");
 		}
-
-		//see if the creature has proficiency/expertise in it
-		if (theCrea.skills && theCrea.skills[skillFull.toLowerCase()] !== undefined) {
-			var skillCrea = CompSkillRefer(skill, theCrea.skills[skillFull.toLowerCase()], theCrea.scores, creaProfBfix);
+		// Calculate modifier
+		if (oWS.calcSetting[0] === "by_the_numbers") {
+			var saveMod = oSave.creature.value === "" ? oSave.character.value : Math.max(oSave.creature.value, oSave.character.value);
 		} else {
-			var skillCrea = [skill, "nothing", 0];
+			var saveProfB = Math.max(
+				getProfB(creaProfB, oSave.creature.proficient) + oSave.creature.extra,
+				getProfB(charProfB, oSave.character.proficient)
+			);
+			var saveMod = savesAllBonus + oWS.ability[abi].mod + saveProfB;
+			if (oSave.creature.bonus) saveMod += EvalBonus(oSave.creature.bonus, prefix, Fld, creaProfB);
+			if (oSave.character.bonus) saveMod += EvalBonus(oSave.character.bonus, prefix, Fld, charProfB);
 		}
+		Value(abiFldBase + ".ST.Mod", saveMod);
+	}
 
-		//see if the druid has proficiency/expertise in it
-		var charProfFlds = [
-			tDoc.getField(skillDruid + " Prof").isBoxChecked(0) === 1,
-			tDoc.getField(skillDruid + " Exp").isBoxChecked(0) === 1,
-			What(skillDruid + " Bonus"),
-			What("All Skills Bonus"),
-			tDoc.getField("Jack of All Trades").isBoxChecked(0) === 1 || (tDoc.getField("Remarkable Athlete").isBoxChecked(0) === 1 && (skillAbi === "Str" || skillAbi === "Dex" || skillAbi === "Con"))
-		];
-		var skillChar = [
-			skill,
-			charProfFlds[0] && charProfFlds[1] ? "expertise" : charProfFlds[0] ? "proficient" : "nothing",
-			EvalBonus(charProfFlds[2], prefix, Fld, charProfBcalc),
-			EvalBonus(charProfFlds[3], prefix, Fld, charProfBcalc)
-		];
+	thermoM(4/8); // Increment the progress dialog's progress
 
-		//set the right colouring of the skill name (i.e. the proficiency level)
+	// Size
+	SetCreatureSize([prefix, Fld], oWS.name, oWS.size);
+
+	// Creature type
+	SetCreatureType([prefix, Fld], oWS.name, oWS.type, oWS.subtype);
+
+	// Speed
+	var theSpeed = isMetric ? ConvertToMetric(oWS.speed, 0.5) : oWS.speed;
+	var speedField = tDoc.getField(fldBase + ".Speed");
+	if (speedField && speedField.multiline) {
+		// Line break for second delimiter, if any
+		theSpeed = theSpeed.replace(/(.*[,;].*[,;]) ?(.*)/, "$1\n$2");
+	}
+	Value(fldBase + ".Speed", theSpeed);
+
+	// CR, HP, and HD (does nothing if fields don't exist)
+	Value(fldBase + ".CR", oWS.challengeRating);
+	Value(fldBase + ".HD", oWS.hd[0] + "d" + oWS.hd[1]);
+	if (tDoc.use2024Rules) {
+		Value(fldBase + ".HP Temp", What(prefix + "Wildshapes.Info.TempHP"));
+	} else {
+		Value(fldBase + ".HP Max", oWS.hp);
+	}
+
+	// Proficiency Bonus
+	Value(fldBase + ".Proficiency Bonus", useProfDice ? profDiceDisplay : creaProfB);
+
+	// AC
+	var ac = { value: 10 + oWS.ability.Dex.mod, tooltip: "", tooltipBase: false };
+	for (var i = 0; i < oWS.acOptions.length; i++) {
+		var oAC = oWS.acOptions[i];
+		if (oAC.baseCreatureAC && !ac.tooltipBase) {
+			ac.tooltipBase = oAC.name;
+		}
+		oAC.calc = EvalBonus(oAC.ac, prefix, Fld, oAC.useCreatureProf ? creaProfB : charProfB);
+		if (oAC.key) oAC.calc += calcCompMaxDexToAC(false, oAC.key, oWS.ability.Dex.mod)
+		if (oAC.calc > ac.value) {
+			ac.value = oAC.calc;
+			ac.tooltip = 'The AC used here is calculated using "' + oAC.name + '".';
+		}
+	}
+	ac.tooltipFull = (ac.tooltipBase + "\n\n" +  ac.tooltip).replace(/^\n+|\n+$/, '');
+	if (useModNotDC) {
+		ac.value -= 12;
+		if (ac.value > 0) ac.value = "+" + ac.value;
+		ac.tooltipFull += '\n\nThe value is a modifier (AC - 12) because the optional rule "Players Make All Rolls" is enabled.';
+	}
+	Value(fldBase + ".AC", ac.value, ac.tooltipFull);
+
+	thermoM(5/8); // Increment the progress dialog's progress
+
+	// Skills
+	var skillsAllBonus = oWS.skill.allBonus ? EvalBonus(oWS.skill.allBonus, prefix, Fld, charProfB) : 0;
+	// Unless explicitly set to do so, use the creature's proficiency bonus for expertise, as creature stat blocks don't make a distinction beteen a static bonus and expertise
+	var expertiseCreaProfB = oWS.calcSetting[1].indexOf("expertise") === -1 ? oWS.proficiencyBonus : false;
+	for (var i = 0; i < (SkillsList.names.length - 2); i++) {
+		var skill = SkillsList.names[i].toLowerCase();
+		var abbr = SkillsList.abbreviations[i];
+		var abi = SkillsList.abilityScores[i];
+		var oSkill = oWS.skill[skill];
+		var skillFldBase = fldBase + ".Skills." + abbr;
+		var skillFldCF_Prof = fldBaseTxt + ".Skills." + abbr + ".Prof";
+
+		// Proficiency indication
 		var skillProf = "nothing";
-		if (skillCrea[1] === "expertise" || skillChar[1] === "expertise") {
+		if (oSkill.creature.proficiency === "expertise" || oSkill.character.proficient === "expertise") {
 			skillProf = "expertise";
-		} else if (skillCrea[1] === "proficient" || skillChar[1] === "proficient") {
+		} else if (oSkill.creature.proficiency === "proficient" || oSkill.character.proficient === "proficient") {
 			skillProf = "proficient";
 		}
-		if (!typePF) {
-			Value(skillFlds[1], skillProf);
+		if (typePF) {
+			Checkbox(skillFldBase + ".Prof", skillProf === "expertise" || skillProf === "proficient");
+			Checkbox(skillFldBase + ".Exp", skillProf === "expertise");
 		} else {
-			Checkbox(skillFlds[1], skillProf === "expertise" || skillProf === "proficient");
-			Checkbox(skillFlds[2], skillProf === "expertise");
+			Value(skillFldCF_Prof, skillProf);
 		}
 
-		//set the bonus for the skill
-		if (setting[0] === "by_the_numbers") { //if set to only compare by the numbers, regardless of actual stats/prof bonus
-			var skillBonus = theCrea.skills && theCrea.skills[skillFull.toLowerCase()] !== undefined ? Math.max(theCrea.skills[skillFull.toLowerCase()], What(skill)) : Math.max(skillMod, What(skill));
+		// Calculate modifier
+		if (oWS.calcSetting[0] === "by_the_numbers") {
+			var skillMod = oSkill.creature.value === "" ? oSkill.character.value : Math.max(oSkill.creature.value, oSkill.character.value);
 		} else {
-			//if set to use char's prof bonus for everything, but not double it on creature expertise, add it to the
-			if (setting[1].indexOf("expertise") === -1 && skillCrea[1] === "expertise") {
-				skillCrea[2] += creaProfBfix; //add the prof bonus from the creature stat block, because we are not now doubling any prof bonus
-				skillCrea[1] = "proficient"; //just set it to proficient, so that it will be only added once
-			}
-
-			var creaSkillProfB = getProfB(creaProfBcalc, skillCrea[1], false);
-			var charSkillProfB = getProfB(charProfBcalc, skillChar[1], charProfFlds[4]);
-
-			//calculate the skill bonus with the highest proficiency bonus
-			var skillBonus = skillMod + Math.max(creaSkillProfB + skillCrea[2], charSkillProfB) + skillChar[2] + skillChar[3];
+			// See if half proficiency should be added from the character's features
+			var isHalfProf = (oWS.skill.jackOfAllTrades || (oWS.skill.remarkableAthlete && /^(Str|Dex|Con)$/.test(abi))) && !/prof/.test(oSave.creature.bonus + oSave.character.bonus);
+			// Get the highest of the two Proficiency Bonuses
+			var skillProfB = Math.max(
+				getProfB(creaProfB, oSkill.creature.proficiency, false, expertiseCreaProfB) + oSkill.creature.extra,
+				getProfB(charProfB, oSkill.character.proficiency, isHalfProf)
+			);
+			// Calculate the final total
+			var skillMod = skillsAllBonus + oWS.ability[abi].mod + skillProfB;
+			// Evaluate any bonus strings and add them
+			if (oSave.creature.bonus) saveMod += EvalBonus(oSave.creature.bonus, prefix, Fld, creaProfB);
+			if (oSave.character.bonus) saveMod += EvalBonus(oSave.character.bonus, prefix, Fld, charProfB);
 		}
-		Value(skillFlds[0], skillBonus);
-
-		//set the passive perception if calculating the perception score
-		if (skillFull === "Perception") {
-			var passPercBonus = EvalBonus(What("Passive Perception Bonus"), prefix, Fld);
-			Value(prefix + "Wildshape." + Fld + ".Skills.PassPerc", 10 + skillBonus + Number(passPercBonus));
-		}
+		Value(skillFldBase + (typePF ? ".Mod" : ""), skillMod);
 	}
 
-	thermoM(5/10); //increment the progress dialog's progress
-
-	//set the saving throw proficiencies
-	for (var s = 0; s < AbilityScores.abbreviations.length; s++) {
-		//get the particulars of the save
-		var saveAbi = AbilityScores.abbreviations[s];
-		var saveMod = mods[s];
-		var saveFlds = [
-			prefix + "Wildshape." + Fld + ".Ability." + saveAbi + ".ST.Prof", //check if proficient
-			prefix + "Wildshape." + Fld + ".Ability." + saveAbi + ".ST.Mod" //for the numerical value
-		];
-		var creaSave = theCrea.saves && isArray(theCrea.saves) && theCrea.saves[s] !== undefined ? theCrea.saves[s] : "";
-
-		//see if the creature has proficiency/expertise in it, and any possible bonuses
-		var saveCrea = [
-			creaSave !== "" ? "proficient" : "nothing",
-			creaSave !== "" ? creaProfBcalc : 0,
-			creaSave !== "" ? creaSave - Math.round((theCrea.scores[s] - 10.5) * 0.5) - creaProfBfix : 0
-		];
-
-		//see if the druid has proficiency/expertise in it, and any possible bonuses
-		var saveCharFlds = [
-			tDoc.getField(saveAbi + " ST Prof").isBoxChecked(0) === 1,
-			What(saveAbi + " ST Bonus"),
-			What("All ST Bonus")
-		];
-		var saveChar = [
-			saveCharFlds[0] ? "proficient" : "nothing",
-			saveCharFlds[0] ? charProfBcalc : 0,
-			EvalBonus(saveCharFlds[1], prefix, Fld, charProfBcalc),
-			EvalBonus(saveCharFlds[2], prefix, Fld, charProfBcalc)
-		];
-
-		//check the box for proficiency, if applicable
-		if (saveCrea[0] === "proficient" || saveChar[0] === "proficient") {
-			Checkbox(saveFlds[0]);
+	// Passive Perception
+	if (oWS.calcSetting[0] === "by_the_numbers") {
+		var passPerc = Math.max(oWS.skill.passivePerception.creature.value, oWS.skill.passivePerception.character.value);
+	} else {
+		var passPerc = 10 + What(fldBase + "Skills.Perc" + (typePF ? ".Mod" : ""));
+		if (oWS.skill.passivePerception.creature.bonus) {
+			passPerc += EvalBonus(oWS.skill.passivePerception.creature.bonus, prefix, fld, creaProfB);
 		}
-
-		//set the bonus for the save
-		if (setting[0] === "by_the_numbers") { //if set to only compare by the numbers, regardless of actual stats/prof bonus
-			var saveBonus = creaSave !== "" ? Math.max(creaSave, What(saveAbi + " ST Mod")) : Math.max(saveMod, What(saveAbi + " ST Mod"));
-		} else {
-			//calculate the skill bonus with the highest proficiency bonus
-			var saveBonus = saveMod + Math.max(saveCrea[1] + saveCrea[2], saveChar[1]) + saveChar[2] + saveChar[3];
+		if (oWS.skill.passivePerception.character.bonus) {
+			passPerc += EvalBonus(oWS.skill.passivePerception.character.bonus, prefix, fld, charProfB);
 		}
-		Value(saveFlds[1], saveBonus);
 	}
+	Value(fldBase + ".Skills.PassPerc", passPerc);
 
-	thermoM(6/10); //increment the progress dialog's progress
+	// Initiative
+	if (oWS.calcSetting[0] === "by_the_numbers") {
+		var initiative = Math.max(oWS.skill.Init.creature.value, oWS.skill.Init.character.value);
+	} else {
+		var initiative = oWS.ability.Dex.mod;
+		if (oWS.skill.Init.creature.bonus) {
+			initiative += EvalBonus(oWS.skill.Init.creature.bonus, prefix, fld, creaProfB);
+		}
+		if (oWS.skill.Init.character.bonus) {
+			initiative += EvalBonus(oWS.skill.Init.character.bonus, prefix, fld, charProfB);
+		}
+		// Jack of All Trades no longer affects initiative in 2024 rules
+		var applyJackOfAllTrades = tDoc.use2024Rules ? false : oWS.skill.jackOfAllTrades;
+		if ((applyJackOfAllTrades || oWS.skill.remarkableAthlete) && !/prof/.test(oWS.skill.Init.creature.bonus + oWS.skill.Init.character.bonus)) {
+			initiative += Math.floor(charProfB / 2);
+		}
+	}
+	Value(fldBase + ".Initiative Bonus", initiative);
 
-	//add attacks
-	var modIpvDC = tDoc.getField("BlueText.Players Make All Rolls").isBoxChecked(0);
-	var atkProfB = setting[1].indexOf("attacks") !== -1 ? charProfBcalc : creaProfBcalc;
-	for (var a = 0; a < (Math.min(2, theCrea.attacks.length)); a++) {
-		var atk = theCrea.attacks[a];
-		var atkFld = prefix + "Wildshape." + Fld + ".Attack." + (a + 1);
-		var atkMod = atk.ability === 0 ? 0 : mods[atk.ability - 1];
-		var atkRange = What("Unit System") === "imperial" ? atk.range : ConvertToMetric(atk.range, 0.5);
-		var atkDescription = !atk.description ? "" : What("Unit System") === "imperial" ? atk.description : ConvertToMetric(atk.description, 0.5);
-		Value(atkFld + ".Weapon", atk.name); //set attack name
-		Value(atkFld + ".Range", atkRange); //set attack range
-		Value(atkFld + ".Description", atkDescription, atk.tooltip ? atk.tooltip : ""); //set attack description
-		AddDmgType(atkFld + ".Damage Type", atk.damage[2]); //set damage type
+	thermoM(6/8); //increment the progress dialog's progress
 
-		// for backwards compatibility
+	// Attacks
+	var atkProfB = oWS.calcSetting[1].indexOf("attacks") !== -1 ? charProfB : creaProfB;
+	for (var i = 0; i < Math.min(2, oWS.attacks.length); i++) {
+		var atk = oWS.attacks[i];
+		var atkFld = fldBase + ".Attack." + (i + 1);
+		var atkMod = atk.ability === 0 ? 0 : oWS.ability[AbilityScores.abbreviations[atk.ability - 1]].mod;
+		var atkRange = isMetric ? ConvertToMetric(atk.range, 0.5) : atk.range;
+		var atkDescription = !atk.description ? "" : isMetric ? ConvertToMetric(atk.description, 0.5) : atk.description;
+		Value(atkFld + ".Weapon", atk.name);
+		Value(atkFld + ".Range", atkRange);
+		Value(atkFld + ".Description", atkDescription, atk.tooltip ? atk.tooltip : "");
+		AddDmgType(atkFld + ".Damage Type", atk.damage[2]);
+
+		// For backwards compatibility
 		if (atk.modifiers) {
 			if (atk.dc === undefined && atk.modifiers[0] !== undefined && /dc/i.test(atk.modifiers[0])) {
 				atk.dc = true;
@@ -1688,31 +1858,46 @@ function ApplyWildshape() {
 			}
 		}
 
-		// Calculate to hit
-		var atkToHit = atkProfB; // proficiency bonus
-		atkToHit += atkMod; // add ability modifier
+		// To hit
+		var atkToHit = atkProfB + atkMod;
 		if (atk.modifiers && atk.modifiers[0]) { // add special to hit modifier
 			atkToHit += EvalBonus(atk.modifiers[0], prefix, Fld, atkProfB);
 		}
-		if (!modIpvDC && atk.dc) {
-			atkToHit += 8; // add 8 if DC
-			atkToHit = "DC " + atkToHit; // write it with a DC prefix
-		} else if (atkToHit >= 0) {
-			atkToHit = "+" + atkToHit; // write it with a "+" prefix when not a negative number
+		var isDC = !useModNotDC && atk.dc;
+		// Set to spell casting modifier, if defined and present
+		if (atk.useSpellMod && existsInCurrentSpells(atk.useSpellMod)) {
+			var spellAbi = getHighestSpellcastingAbility(atk.useSpellMod, false, atk.dc);
+			var oCast = CurrentSpells[spellAbi.caster];
+			atkMod = spellAbi.ability === 0 ? 0 : oWS.ability[AbilityScores.abbreviations[spellAbi.ability - 1]].mod;
+			if (oCast.calcSpellScores[atk.dc ? "dc" : "attack"]) {
+				atkToHit = oCast.calcSpellScores[atk.dc ? "dc" : "attack"] - (atk.dc ? 8 : 0);
+			} else if (!isNaN(oCast.fixedDC) || !isNaN(oCast.fixedSpAttack)) {
+				if (atk.dc) {
+					atkToHit = !isNaN(oCast.fixedDC) ? oCast.fixedDC - 8 : oCast.fixedSpAttack;
+				} else {
+					atkToHit = !isNaN(oCast.fixedSpAttack) ? oCast.fixedSpAttack : oCast.fixedDC - 8;
+				}
+			} else if (spellAbi.ability !== atk.ability) {
+				atkToHit = atkProfB + atkMod;
+			}
 		}
-
-		// output to hit string to field
+		// Change it to how it should look in the field
+		if (isDC) { // If DC, add DC prefix and 8 to the total
+			atkToHit = "DC " + (atkToHit + 8);
+		} else if (atkToHit >= 0) { // If modifier, add "+" prefix if not negative
+			atkToHit = "+" + atkToHit;
+		}
 		Value(atkFld + ".To Hit", atkToHit);
 
-		// Calculate damage die
+		// Damage die
 		var atkDmgDie = atk.damage[0] + (parseFloat(atk.damage[1]) ? "d" + atk.damage[1] : "");
 		atkDmgDie = EvalDmgDie(atkDmgDie, prefix, Fld, atkProfB);
-		if (!isNaN(Number(atkDmgDie))) atkDmgDie = Number(atkDmgDie); // make sure it is a number if eligible
+		if (!isNaN(Number(atkDmgDie))) atkDmgDie = Number(atkDmgDie); // Make sure it is a number if eligible
 
-		// Calculate damage bonus
+		// Damage bonus
 		var modToDmg = atk.abilitytodamage !== undefined ? atk.abilitytodamage : true;
-		var atkDmg = modToDmg ? atkMod : 0; // add ability modifier
-		if (atk.modifiers && atk.modifiers[1]) { // add special damage modifier
+		var atkDmg = modToDmg ? atkMod : 0;
+		if (atk.modifiers && atk.modifiers[1]) {
 			atkDmg += EvalBonus(atk.modifiers[1], prefix, Fld, atkProfB);
 		}
 
@@ -1724,66 +1909,95 @@ function ApplyWildshape() {
 			var atkDmgTot = atkDmgDie + (atkDmg === 0 ? "" : atkDmg);
 		}
 
-		// output damage string to field
-		Value(atkFld + ".Damage", atkDmgTot == 0 ? "" : atkDmgTot);
+		// Set damage field
+		Value(atkFld + ".Damage", atkDmgTot ? atkDmgTot : "");
 	}
 
-	thermoM(7/10); //increment the progress dialog's progress
+	thermoM(7/8); //increment the progress dialog's progress
 
-	//add traits & features
-	var strTraits = [];
-	if (theCrea.wildshapeString !== undefined && typeof theCrea.wildshapeString === "string") {
-		strTraits = [theCrea.wildshapeString];
+	// Traits & Features
+	var arrTraits = [];
+
+	// Senses (seperate because on some sheet versions it has its own field)
+	var skipKeenSenses = false;
+	if (oWS.senses) {
+		var keenSensesRx = /([,;] )?\bAdv\. on (Wis|Perception).*?(checks|hearing|sight|smell)/i;
+		if (tDoc.getField(fldBase + ".Senses")) {
+			skipKeenSenses = keenSensesRx.test(oWS.senses);
+			var senses = oWS.senses.replace("Wis (Perception)", "Perception");
+			AddString(fldBase + ".Senses", senses, true);
+		} else {
+			var senses = oWS.senses.replace(keenSensesRx, ""); // remove duplicate Keen Hearing/Senses/Sight/Smell
+			arrTraits.push("##Senses##. " + senses + ".");
+		}
+	}
+
+	// Populate the arrTraits array
+	var entries = [];
+	if (oWS.wildshapeString !== undefined && typeof oWS.wildshapeString === "string") {
+		arrTraits = [oWS.wildshapeString];
 	} else {
-		//set senses
-		if (theCrea.senses) {
-			// avoid duplicating the information with regards to the keen hearing/sight/smell traits
-			strTraits.push("##\u25C6 Senses##. " + theCrea.senses.replace(/(\; )?Adv\..+(hearing|sight|smell)/i, "") + ".");
+		// Resistances & Immunities
+		if (oWS.vulnerabilities) { // 2024 notation
+			arrTraits.push("##Vulnerabilities##. " + oWS.vulnerabilities + ".");
+		} else if (oWS.damage_vulnerabilities) {
+			arrTraits.push("##Vulnerabilities##. " + oWS.damage_vulnerabilities + ".");
 		}
-		//add resistances & immunities
-		if (theCrea.damage_vulnerabilities) {
-			strTraits.push("##\u25C6 Damage Vulnerabilities##. " + theCrea.damage_vulnerabilities + ".");
+		if (oWS.resistances) { // 2024 notation
+			arrTraits.push("##Resistances##. " + oWS.resistances + ".");
+		} else if (oWS.damage_resistances) {
+			arrTraits.push("##Resistances##. " + oWS.damage_resistances + ".");
 		}
-		if (theCrea.damage_resistances) {
-			strTraits.push("##\u25C6 Damage Resistances##. " + theCrea.damage_resistances + ".");
+		if (oWS.immunities) { // 2024 notation
+			arrTraits.push("##Immunities##. " + oWS.immunities + ".");
+		} else if (oWS.damage_immunities || oWS.condition_immunities) {
+			var immunities = oWS.damage_immunities && oWS.condition_immunities ?
+				[oWS.damage_immunities, oWS.condition_immunities].join(", ") :
+				oWS.damage_immunities ? oWS.damage_immunities : oWS.condition_immunities;
+			arrTraits.push("##Immunities##. " + immunities + ".");
 		}
-		if (theCrea.damage_immunities) {
-			strTraits.push("##\u25C6 Damage Immunities##. " + theCrea.damage_immunities + ".");
-		}
-		if (theCrea.condition_immunities) {
-			strTraits.push("##\u25C6 Condition Immunities##. " + theCrea.condition_immunities + ".");
-		}
-		//add actions
-		if (theCrea.actions) {
-			for (var t = 0; t < theCrea.actions.length; t++) {
-				var joinStr = theCrea.actions[t].joinString !== undefined ? theCrea.actions[t].joinString : ". ";
-				strTraits.push("##\u25C6 " + theCrea.actions[t].name + "##" + joinStr + theCrea.actions[t].description);
+		// Actions, Traits, and Features
+		if (oWS.actions)  entries = entries.concat(oWS.actions);
+		if (oWS.traits)   entries = entries.concat(oWS.traits);
+		if (oWS.features) entries = entries.concat(oWS.features);
+	}
+	// Addthe entries gained from wildshapeCallback and process all entries, if any
+	entries = entries.concat(oWS.wildshapeTraits);
+	for (var i = 0; i < entries.length; i++) {
+		if (entries[i].wildshapeShow === false) continue;
+		var joinStr = entries[i].joinString !== undefined ? entries[i].joinString : ". ";
+		var hasWildshapeShow = typeof entries[i].wildshapeShow === "string";
+		var entryDescr = hasWildshapeShow ? entries[i].wildshapeShow : entries[i].description;
+		if (!hasWildshapeShow) {
+			if (skipKeenSenses && /Keen (Hearing|Senses|Smell|Sight)/i.test(entries[i].name)) {
+				// Skip if Keen Hearing/Senses/Smell/Sight was already added to a Senses field
+				continue;
+			} else if (/multiattack/i.test(entries[i].name)) {
+				// Condense the wording of multiattack
+				var descrMatch = entryDescr.match(/As an(?: Attack)? action((?: on its turn)?.*?), the .*? (?:can make|makes) (.*)/);
+				if (descrMatch) {
+					var newDescr = (descrMatch[1] ? descrMatch[1].trim() + ", " : "") + descrMatch[2].replace(/\bone\b/ig, 1).replace(/\btwo\b/ig, 2).replace(/\bthree\b/ig, 3);
+					entryDescr = newDescr[0].toUpperCase() + newDescr.substring(1);
+				}
+			} else if (/^pack tactics$/i.test(entries[i].name)) {
+				entryDescr = "Advantage on an attack roll if at least one ally, that isn't Incapacitated, is within 5 ft of the target.";
+			} else if (/(^T|, t)he \[THIS\] (can|has|moves)/.test(entryDescr)) {
+				entryDescr = entryDescr.replace(/^The \[THIS\] can/, "Can").replace(/^The \[THIS\] has/, "Has").replace(/, the \[THIS\] (can|has|moves)/g, ", $1");
 			}
 		}
-		//add traits
-		if (theCrea.traits) {
-			for (var t = 0; t < theCrea.traits.length; t++) {
-				var joinStr = theCrea.traits[t].joinString !== undefined ? theCrea.traits[t].joinString : ". ";
-				strTraits.push("##\u25C6 " + theCrea.traits[t].name + "##" + joinStr + theCrea.traits[t].description);
-			}
+		arrTraits.push("##" + entries[i].name + "##" + joinStr + entryDescr);
+	}
+	// Add arrTraits to the field
+	if (arrTraits.length) {
+		arrTraits = arrTraits.join("\n");
+		if (isMetric) arrTraits = ConvertToMetric(arrTraits, 0.5);
+		if (/\[THIS\]/.test(arrTraits)) {
+			arrTraits = arrTraits.replace(/\[THIS\]/g, oWS.nameThis);
 		}
-
-		strTraits = strTraits.join("\n");
+		AddString(fldBase + ".Traits", arrTraits, true);
 	}
 
-	thermoM(9/10); //increment the progress dialog's progress
-
-	// add the string to the field
-	if (strTraits) {
-		if (What("Unit System") === "metric") strTraits = ConvertToMetric(strTraits, 0.5);
-		if (/\[THIS\]/.test(strTraits)) {
-			var nameThis = theCrea.nameThis && newForm.toLowerCase().indexOf(theCrea.nameThis) !== -1 ? theCrea.nameThis: clean(newForm.replace(/,? ?(giant|dire)/ig, '').replace(/ +/g, ' '));
-			strTraits = strTraits.replace(/\[THIS\]/g, nameThis);
-		}
-		AddString(prefix + "Wildshape." + Fld + ".Traits", strTraits, true);
-	}
-
-	thermoM(8/10); //increment the progress dialog's progress
+	thermoM(8/8); //increment the progress dialog's progress
 
 	thermoM(thermoTxt, true); // Stop progress bar
 }
@@ -1815,27 +2029,38 @@ function AddWildshape(input, inCrea) {
 }
 
 //remove the first instance of the wild shape found
-function RemoveWildshape(input) {
+function RemoveWildshape(input, inCrea, bRemoveAll) {
 	var prefixA = What("Template.extras.WSfront").split(",").splice(1);
+	var inputLC = input.toLowerCase();
+	inCrea = inCrea && CreatureList[inCrea] ? inCrea : ParseCreature(inputLC);
+	if (!inCrea) return;
 	for (var p = 0; p < prefixA.length; p++) {
 		var prefix = prefixA[p];
 		for (var i = 1; i <= 4; i++) {
-			next = tDoc.getField(prefix + "Wildshape.Race." + i);
-			if (next.value.toLowerCase().indexOf(input.toLowerCase()) !== -1) {
+			var next = tDoc.getField(prefix + "Wildshape.Race." + i);
+			var aShp = next.value.toLowerCase();
+			var aCrea = ParseCreature(next.value);
+			if (aShp == inputLC || inCrea == aCrea) {
 				next.value = next.defaultValue;
-				WildshapeRecalc();
-				return;
+				if (!bRemoveAll) {
+					WildshapeRecalc();
+					return;
+				}
 			}
 		}
 	}
+	WildshapeRecalc();
 }
 
 //make a menu for wild shape options
 function MakeWildshapeMenu() {
 	var prefix = getTemplPre(event.target.name, "WSfront", true);
 
-	if (!What("Character Level") || !What("Int")|| !What("Wis")|| !What("Cha")) { //If the character has not been defined enough, the function can be stopped after making a warning-menu
-		Menus.wildshape = [{cName : "Please create a character on the 1st page before trying a Wild Shape", cReturn : "nothing#toreport", bEnabled : false}];
+	if (!What("Character Level") || !What("Int")|| !What("Wis") || !What("Cha")) { //If the character has not been defined enough, the function can be stopped after making a warning-menu
+		Menus.wildshape = [{
+			cName: "Please create a character on the 1st page before trying a Wild Shape", cReturn: "nothing#toreport",
+			bEnabled: false,
+		}];
 		return; //don't do the rest of the function
 	}
 
@@ -1846,8 +2071,9 @@ function MakeWildshapeMenu() {
 		for (var i = 1; i <= 4; i++) {
 			var theFld = What(prefixA[p] + "Wildshape.Race." + i);
 			if (!theFld || theFld.toLowerCase() === "make a selection") continue;
-			if (usedShapeNames.indexOf(theFld) === -1) usedShapeNames.push(theFld);
 			var theShape = ParseCreature(theFld);
+			var theEntry = [theFld, theShape];
+			if (usedShapeNames.find(theEntry.toString()) === -1) usedShapeNames.push(theEntry);
 			if (theShape) usedShapes.push(theShape);
 		}
 	}
@@ -1855,8 +2081,9 @@ function MakeWildshapeMenu() {
 	var menuLVL1 = function (item, array) {
 		for (var i = 0; i < array.length; i++) {
 			item.push({
-				cName : array[i][0],
-				cReturn : array[i][1] + "#" + "nothing"
+				cName: array[i][0],
+				cReturn: array[i][1] + "#" + "nothing",
+				bEnabled: array[i][2] !== undefined ? array[i][2] : true,
 			});
 		}
 	};
@@ -1866,27 +2093,29 @@ function MakeWildshapeMenu() {
 		temp.cName = name[0];
 		temp.oSubMenu = [];
 		for (var i = 0; i < array.length; i++) {
+			var hasParts = isArray(array[i]);
 			temp.oSubMenu.push({
-				cName : array[i],
-				cReturn : name[1] + "#" + array[i]
+				cName: hasParts ? array[i][0] : array[i],
+				cReturn: name[1] + "#" + (hasParts ? array[i].join("#") : array[i]),
 			})
 		}
 		menu.push(temp);
 	};
 
 	var menuLVL3 = function (menu, name, array) {
+		if (!array.length) return;
 		array.sort();
 		var temp = [];
 		for (var i = 0; i < array.length; i++) {
 			temp.push({
-				cName : array[i][0],
-				cReturn : "add" + "#" + array[i][1] + "#" + array[i][2],
-				bMarked : usedShapes.indexOf(array[i][2]) !== -1
+				cName: array[i][0],
+				cReturn: "add" + "#" + array[i][1] + "#" + array[i][2],
+				bMarked: usedShapes.indexOf(array[i][2]) !== -1,
 			});
 		};
 		menu.oSubMenu.push({
-			cName : name,
-			oSubMenu : temp
+			cName: name,
+			oSubMenu: temp,
 		});
 	};
 
@@ -1894,23 +2123,24 @@ function MakeWildshapeMenu() {
 		var tempMenu = [];
 		for (var range in object) {
 			var array = object[range];
+			if (!array.length) continue;
 			array.sort();
 			var temp = [];
 			for (var i = 0; i < array.length; i++) {
 				temp.push({
-					cName : array[i][0],
-					cReturn : "add" + "#" + array[i][1] + "#" + array[i][2],
-					bMarked : usedShapes.indexOf(array[i][2]) !== -1
+					cName: array[i][0],
+					cReturn: "add" + "#" + array[i][1] + "#" + array[i][2],
+					bMarked: usedShapes.indexOf(array[i][2]) !== -1,
 				});
 			};
 			tempMenu.push({
-				cName : range,
-				oSubMenu : temp
+				cName: range,
+				oSubMenu: temp,
 			});
 		}
 		menu.oSubMenu.push({
-			cName : name,
-			oSubMenu : tempMenu
+			cName: name,
+			oSubMenu: tempMenu,
 		});
 	};
 
@@ -1918,9 +2148,9 @@ function MakeWildshapeMenu() {
 		var toTest = What("Wildshapes.Remember").split("!#TheListSeparator#!");
 		for (var i = 0; i < array.length; i++) {
 			menu.oSubMenu.push({
-				cName : array[i][0],
-				cReturn : thereturn + "#" + array[i][1],
-				bMarked : toTest[0] === array[i][1]
+				cName: array[i][0],
+				cReturn: thereturn + "#" + array[i][1],
+				bMarked: toTest[0] === array[i][1],
 			})
 		}
 	};
@@ -1930,150 +2160,184 @@ function MakeWildshapeMenu() {
 		var temp = [];
 		for (var i = 0; i < array.length; i++) {
 			temp.push({
-				cName : array[i][0],
-				cReturn : thereturn + "#" + name[1] + "#" + array[i][1],
-				bMarked : toTest[1] === array[i][1]
+				cName: array[i][0],
+				cReturn: thereturn + "#" + name[1] + "#" + array[i][1],
+				bMarked: toTest[1] === array[i][1],
 			})
 		}
 		menu.oSubMenu.push({
-			cName : name[0],
-			oSubMenu : temp,
-			bMarked : toTest[0] === name[1]
+			cName: name[0],
+			oSubMenu: temp,
+			bMarked: toTest[0] === name[1],
 		});
 	};
 
 	var WildshapeMenu = [];
 	var allCreaturesTest = [];
-	var elementals = [];
 	var arrSplitAlphabet = ["A-C", "D-F", "G-I", "J-L", "M-O", "P-R", "S-U", "V-Z"];
+	var arrSubmenuSplit = arrSplitAlphabet.slice(0, arrSplitAlphabet.indexOf("G-I")).concat("Giant").concat(arrSplitAlphabet.slice(arrSplitAlphabet.indexOf("G-I")));
 	var shapesBeast = {
-		all : [],
-		CR1_4 : {
-			"A-C" : [],
-			"D-F" : [],
-			"G-I" : [],
-			"J-L" : [],
-			"M-O" : [],
-			"P-R" : [],
-			"S-U" : [],
-			"V-Z" : []
+		all: {
+			name: "All Beasts",
+			entries: arrSubmenuSplit.reduce(function (initial, val) {
+				initial[val] = [];
+				return initial;
+			}, {}),
 		},
-		CR1_2 : [],
-		CR1 : [],
-		CR2 : [],
-		CR3 : [],
-		CR4 : [],
-		CR5 : [],
-		CR6 : []
+		"CR1/4": {
+			name: "Beasts up to CR 1/4",
+			entries: arrSubmenuSplit.reduce(function (initial, val) {
+				initial[val] = [];
+				return initial;
+			}, {}),
+		},
+		"CR1/2": {
+			name: "Beasts of CR 1/2",
+			entries: [],
+		},
+		CR1: {
+			name: "Beasts of CR 1",
+			entries: [],
+		},
+		CR2: {
+			name: "Beasts of CR 2",
+			entries: [],
+		},
+		CR3: {
+			name: "Beasts of CR 3",
+			entries: [],
+		},
+		CR4: {
+			name: "Beasts of CR 4",
+			entries: [],
+		},
+		CR5: {
+			name: "Beasts of CR 5",
+			entries: [],
+		},
+		CR6: {
+			name: "Beasts of CR 6",
+			entries: [],
+		},
 	};
+	var shapesOther = {};
 
 	// loop through all the creatures
 	for (var sCrea in CreatureList) {
 		var oCrea = CreatureList[sCrea];
-		// skip this creature if it is not a beast and not one of the four elementals, is added by a creatureOptions attribute, or it or its source is excluded
-		var bIsElemental = /^(air|earth|fire|water) elemental$/i.test(sCrea);
-		if ((!bIsElemental && !/beast/i.test(oCrea.type))
-			|| (CurrentVars.extraCreatures && CurrentVars.extraCreatures[sCrea])
-			|| testSource(sCrea, oCrea, "creaExcl")) {
+		// Keep only certain creatures, namely Beasts not added by CreatureList
+		var isBeast = /^Beast$/i.test(oCrea.type);
+		if (
+			(!oCrea.forceWildshapeOption && !isBeast)
+			|| (!oCrea.forceWildshapeOption && CurrentVars.extraCreatures && CurrentVars.extraCreatures[sCrea])
+			|| testSource(sCrea, oCrea, "creaExcl")
+		) {
 			continue;
 		};
 
-		if (bIsElemental)  {
-			elementals.push([oCrea.name, oCrea.name, sCrea]);
-			continue; // it is not one of the other things, so just stop here
-		};
-
-		// see if the creature has a fly and/or swim speed
-		var Spd = oCrea.speed.match(/fly|swim/ig);
-		if (Spd) {
-			switch (Spd.toLowerCase()) {
-				case "fly,swim" :
-				case "swim,fly" :
-					Spd = "Fly and Swim speeds";
-					break;
-				case "fly" :
-					Spd = "Fly speed";
-					break;
-				case "swim" :
-					Spd = "Swim speed";
-					break;
-			}
-		}
-
-		// select based on challenge Rating
-		var CR = oCrea.challengeRating;
-		var CRname = CR;
-		var creaNameAdd = Spd ? " (" + Spd + ")" : "";
-		var creaNameAddFull = " (CR " + CR + (Spd ? ", " + Spd : "") + ")";
-		switch (CR) {
-			case "0" :
-			case "1/8" :
-			case "1/4" :
-				CRname = "1_4";
-				creaNameAdd = creaNameAddFull;
-				break;
-			case "1/2" :
-				CRname = "1_2";
-		};
-
-		// loop through all its names
+		// Get an array of all its names
 		var aCreaNames = [oCrea.name];
 		if (oCrea.nameAlt) {
-			aCreaNames = aCreaNames.concat(isArray(oCrea.nameAlt) ? oCrea.nameAlt : [oCrea.nameAlt]);
+			// Add alternative names but not those with a comma or semicolon in them to avoid duplication
+			var altNames = (isArray(oCrea.nameAlt) ? oCrea.nameAlt : [oCrea.nameAlt]).filter(function (name) { return !/,|;/.test(name); });
+			if (altNames.length) aCreaNames = aCreaNames.concat(altNames);
 		}
-		for (var i = 0; i < aCreaNames.length; i++) {
-			var creaName = aCreaNames[i];
-			if (allCreaturesTest.indexOf(creaName) !== -1) continue; // already added
-			allCreaturesTest.push(creaName);
 
-			//add it to the array of all
-			shapesBeast.all.push([creaName + creaNameAddFull, creaName, sCrea]);
+		if (isBeast) {
+			// See if the Beast has a Fly and/or Swim speed
+			var Spd = false;
+			var hasFlySpd = /fly/i.test(oCrea.speed);
+			var hasSwimSpd = /swim/i.test(oCrea.speed);
+			if (hasFlySpd & hasSwimSpd) {
+				Spd = "fly and swim speeds";
+			} else if (hasFlySpd) {
+				Spd = "fly speed";
+			} else if (hasSwimSpd) {
+				Spd = "swim speed";
+			}
 
-			//add it to the CR specific array
-			if (CRname === "1_4") {
-				var CRsub = getLetterRange(creaName, arrSplitAlphabet);
-				if (!shapesBeast["CR1_4"][CRsub]) continue;
-				shapesBeast["CR1_4"][CRsub].push([creaName + creaNameAdd, creaName, sCrea]);
-			} else if (shapesBeast["CR" + CRname]) {
-				shapesBeast["CR" + CRname].push([creaName + creaNameAdd, creaName, sCrea]);
+			// Group Beast based on Challenge Rating
+			var CR = oCrea.challengeRating;
+			var creaNameAdd = Spd ? " (" + Spd + ")" : "";
+			var creaNameAddFull = " (CR " + CR + (Spd ? ", " + Spd : "") + ")";
+
+			// Loop through all names of the Beast and add each
+			for (var i = 0; i < aCreaNames.length; i++) {
+				var creaName = aCreaNames[i];
+				if (allCreaturesTest.indexOf(creaName) !== -1) continue; // Avoid duplicates
+				allCreaturesTest.push(creaName);
+
+				//add it to the array of all
+				var CRsub = /^Giant/i.test(creaName) ? "Giant" : getLetterRange(creaName, arrSplitAlphabet);
+				if (shapesBeast.all.entries[CRsub]) {
+					shapesBeast.all.entries[CRsub].push([creaName + creaNameAddFull, creaName, sCrea]);
+				}
+
+				//add it to the CR specific array
+				if (eval_ish(CR) <= 1/4) {
+					if (!shapesBeast["CR1/4"].entries[CRsub]) continue;
+					shapesBeast["CR1/4"].entries[CRsub].push([creaName + creaNameAddFull, creaName, sCrea]);
+				} else if (shapesBeast["CR" + CR]) {
+					shapesBeast["CR" + CR].entries.push([creaName + creaNameAdd, creaName, sCrea]);
+				}
+			}
+		} else {
+			// Loop through all other creature's names and add each
+			var submenuName = oCrea.forceWildshapeOption;
+			if (submenuName === true) {
+				// Generate submenuName from the creature's type
+				submenuName = isArray(oCrea.type) ? oCrea.type[0] : oCrea.type;
+			}
+			var submenuNameLC = submenuName.toLowerCase();
+			if (!shapesOther[submenuNameLC]) {
+				shapesOther[submenuNameLC] = {
+					name: submenuName,
+					entries: [],
+				};
+			}
+			for (var i = 0; i < aCreaNames.length; i++) {
+				var creaName = aCreaNames[i];
+				if (allCreaturesTest.indexOf(creaName) !== -1) continue; // Avoid duplicates
+				allCreaturesTest.push(creaName);
+				shapesOther[submenuNameLC].entries.push([creaName, creaName, sCrea]);
 			}
 		}
 	};
 
 	//add all the options for "Add Wild Shape"
-	var BeastMenu = {
-		cName : "Add Wild Shape",
-		oSubMenu : []
+	var AddWildShapeMenu = {
+		cName: "Add Wild Shape",
+		oSubMenu: [],
 	};
 	if (CurrentSources.globalExcl.indexOf("M") !== -1) { // the monster manual has been excluded from the sources
-		BeastMenu.oSubMenu.push({
-			cName : "Be aware: the Monster Manual is excluded from the sources!",
-			cReturn : "-",
-			bEnabled : false
+		AddWildShapeMenu.oSubMenu.push({
+			cName: "Be aware: the Monster Manual is excluded from the sources!",
+			cReturn: "-",
+			bEnabled: false,
 		});
 	};
-	menuLVL3(BeastMenu, "All Beasts", shapesBeast.all);
-	menuLVL3(BeastMenu, "Elementals", elementals);
-	menuLVL4(BeastMenu, "Beasts up to CR 1/4", shapesBeast.CR1_4);
-	menuLVL3(BeastMenu, "Beasts of CR 1/2", shapesBeast.CR1_2);
-	menuLVL3(BeastMenu, "Beasts of CR 1", shapesBeast.CR1);
-	menuLVL3(BeastMenu, "Beasts of CR 2", shapesBeast.CR2);
-	menuLVL3(BeastMenu, "Beasts of CR 3", shapesBeast.CR3);
-	menuLVL3(BeastMenu, "Beasts of CR 4", shapesBeast.CR4);
-	menuLVL3(BeastMenu, "Beasts of CR 5", shapesBeast.CR5);
-	menuLVL3(BeastMenu, "Beasts of CR 6", shapesBeast.CR6);
-	WildshapeMenu.push(BeastMenu);
+	for (var key in shapesBeast) {
+		var useFunction = isArray(shapesBeast[key].entries) ? menuLVL3 : menuLVL4;
+		useFunction(AddWildShapeMenu, shapesBeast[key].name, shapesBeast[key].entries);
+	}
+	if (ObjLength(shapesOther)) {
+		AddWildShapeMenu.oSubMenu.push({cName : "-"}); //add a divider
+		for (var key in shapesOther) {
+			menuLVL3(AddWildShapeMenu, shapesOther[key].name, shapesOther[key].entries);
+		}
+	}
+	WildshapeMenu.push(AddWildShapeMenu);
 
-	WildshapeMenu.push({cName : "-"}); //add a divider
+	WildshapeMenu.push({cName: "-"}); //add a divider
 
 	//add all the options for "Remove Wild Shape"
-	if (usedShapeNames.length > 0) { //if any shapes are currently present
+	if (usedShapeNames.length) { //if any shapes are currently present
 		menuLVL2(WildshapeMenu, ["Remove Wild Shape", "remove"], usedShapeNames)
 	} else { //if no shapes are present to be removed, add the item, but grey it out
-		WildshapeMenu.push({cName : "Remove Wild Shape", cReturn : "nothing", bEnabled : false});
+		WildshapeMenu.push({ cName: "Remove Wild Shape", cReturn: "nothing", bEnabled: false });
 	}
 
-	WildshapeMenu.push({cName : "-"}); //add a divider
+	WildshapeMenu.push({cName: "-"}); //add a divider
 
 	//add the options for wildshape calculation
 	var calcMenu = {
@@ -2089,7 +2353,17 @@ function MakeWildshapeMenu() {
 	WildshapeMenu.push(calcMenu);
 
 	//add options to re-calculate and to reset
-	menuLVL1(WildshapeMenu, [["-", "-"], ["Re-calculate the Wild Shapes", "recalculate"], ["Order the Wild Shapes alphabetically (re-calculates)", "order"], ["Reset all the Wild Shapes on this page", "reset"], ["-", "-"], ["Add extra 'Wild Shapes' page", "add page"], [(prefix ? "Remove" : "Hide") + " this 'Wild Shapes' page", "remove page"]]);
+	menuLVL1(WildshapeMenu, [
+		["-", "-"],
+		["Re-calculate the Wild Shapes", "recalculate"],
+		["Order the Wild Shapes alphabetically (re-calculates)", "order"],
+		["Reset all the Wild Shapes on this page", "reset"],
+		["-", "-"],
+		["Add extra 'Wild Shapes' page", "add page"],
+		[(prefix ? "Remove" : "Hide") + " this 'Wild Shapes' page", "remove page"],
+		["-", "-"],
+		["Show things changing the wild shape automations", "showcalcs", ObjLength(CurrentEvals.wildStr) ? true : false],
+	]);
 
 	Menus.wildshape = WildshapeMenu;
 };
@@ -2114,7 +2388,7 @@ function WildshapeOptions() {
 		AddWildshape(MenuSelection[1].capitalize(), MenuSelection[2]);
 		break;
 	 case "remove" :
-		RemoveWildshape(MenuSelection[1]);
+		RemoveWildshape(MenuSelection[1], MenuSelection[2], true, true);
 		break;
 	 case "wildshapeselect" :
 		if (MenuSelection[1] === "all_druid") {
@@ -2132,6 +2406,10 @@ function WildshapeOptions() {
 		break;
 	 case "remove page" :
 		DoTemplate("WSfront", "Remove", prefix);
+		break;
+	 case "showcalcs" :
+		var wildCalcStr = StringEvals("wildStr");
+		if (wildCalcStr) ShowDialog("Things Affecting the Wild Shape Automation", wildCalcStr);
 		break;
 	}
 }
@@ -2180,8 +2458,8 @@ function SetWildshapeDropdown(forceTooltips) {
 	var theList = [];
 
 	for (var key in CreatureList) {
-		if (CurrentVars.extraCreatures && CurrentVars.extraCreatures[key]) continue;
-		if ((CreatureList[key].type === "Beast" && eval_ish(CreatureList[key].challengeRating) <= 6) || /^(air|earth|fire|water) elemental$/i.test(key)) {
+		if (CurrentVars.extraCreatures && CurrentVars.extraCreatures[key] && !CreatureList[key].forceWildshapeOption) continue;
+		if (CreatureList[key].forceWildshapeOption || (/^Beast$/i.test(CreatureList[key].type) && eval_ish(CreatureList[key].challengeRating) <= 6)) {
 			// see if source is not excluded
 			if (testSource(key, CreatureList[key], "creaExcl")) continue;
 			// add name to list if it isn't already there
@@ -2266,36 +2544,60 @@ function SetCompDropdown(forceTooltips) {
 		}
 	}
 };
-//update the wild shape header and all the different shapes on the all the wildshape pages
-function WildshapeUpdate(inputArray) {
-	var prefixA = What("Template.extras.WSfront").split(",");
-	if (inputArray && inputArray[1]) {
-		var wlvl = inputArray[0];
-		var wUses = inputArray[1];
-		var wRec = inputArray[2];
-		var useString = isNaN(wUses) && (wUses.indexOf("\u221E") !== -1 || wUses.toLowerCase().indexOf("unlimited") !== -1) ? "Unlimited" : wUses + (!isNaN(wUses) ? "\xD7" : "") + " per " + wRec;
-		var wLimit = inputArray[3].match(/CR.+;/i);
-		wLimit = wLimit ? "max " + wLimit[0].replace(";", "") : "";
-		var wDur = inputArray[3].match(/(\d+) h(our)?s?/i);
-		wDur = wDur ? wDur[0].replace(/h$/i, "hour" + (Number(wDur[1]) > 1 ? "s" : "")) : "";
-	} else {
-		var useString = What("Wildshapes.Info.Uses");
-		var wLimit = What("Wildshapes.Info.Limitations");
-		var wDur = What("Wildshapes.Info.Duration");
-		prefixA.splice(prefixA.indexOf(""), 1);
+
+// Update the wild shape header and all the different shapes on the all the wildshape pages
+function WildshapeUpdate(input) {
+	if (input && typeof input === "object") {
+		if (input.addIt === false || input.lvl === 0) {
+			// Reset all fields when Wild Shape feature is being removed
+			var resetFields = What("Template.extras.WSfront").split(",").map(function (prefix) {
+				return prefix + "Wildshapes.Info";
+			});
+			tDoc.resetForm(resetFields);
+		} else if (input.addIt) {
+			// There is input, so set the template's primary fields to these values
+			var lvl = input.lvl;
+			var info = {
+				uses: undefined, // for backwards compatibility, used in 2014 sheet
+				limitations: undefined,
+				duration: undefined,
+				tempHP: undefined, // new in 2024
+				knownForms: undefined, // new in 2024
+			};
+			for (var key in input.info) {
+				if (isArray(input.info[key])) {
+					info[key] = input.info[key][Math.min(lvl, input.info[key].length) - 1];
+				} else {
+					info[key] = input.info[key];
+				}
+			}
+			for (var field in info) {
+				if (info[field] !== undefined && info[field] !== null) {
+					var fieldName = "Wildshapes.Info." + field[0].toUpperCase() + field.substring(1);
+					Value(fieldName, info[field]);
+				}
+			}
+		}
 	}
-	for (var p = 0; p < prefixA.length; p++) {
-		var prefix = prefixA[p];
-		if (useString) {
-			Value(prefix + "Wildshapes.Info.Uses", useString);
-			Value(prefix + "Wildshapes.Info.Limitations", wLimit);
-			Value(prefix + "Wildshapes.Info.Duration", wDur);
-		} else {
-			tDoc.resetForm([prefix + "Wildshapes.Info"]);
-		};
-	};
-	//now recalculate all the wild shapes if not just adding a new sheet (i.e. inputArray === undefined)
+	// Lastly recalculate all the wild shapes
 	WildshapeRecalc();
+}
+
+// Return the value of the field of the primary (i.e. non-spawned template) [field calculation]
+function CalcWildShapeInfo() {
+	var prefix = getTemplPre(event.target.name, "WSfront", true);
+	if (!prefix) return;
+	var theField = event.target.name.replace(prefix, "");
+	event.value = What(theField);
+}
+
+// When changed, set the value to the primary (i.e. non-spawned template) [field validation]
+function ValidateWildShapeInfo() {
+	var prefix = getTemplPre(event.target.name, "WSfront", true);
+	if (!prefix) return;
+	var theField = event.target.name.replace(prefix, "");
+	var theValue = What(theField);
+	if (event.value !== theValue) Value(theField, event.value);
 }
 
 //change the font of all fields to this
@@ -5603,6 +5905,7 @@ function addEvals(evalObj, NameEntity, Add, type, level) {
 	if (evalObj.atkAdd) CurrentUpdates.types.push("attacksforce");
 	if (evalObj.creatureCallback) RunCreatureCallback("all", "creature", Add, isArray(evalObj.creatureCallback) ? evalObj.creatureCallback[0] : evalObj.creatureCallback, NameEntity);
 	if (evalObj.companionCallback) RunCreatureCallback("all", "companion", Add, isArray(evalObj.companionCallback) ? evalObj.companionCallback[0] : evalObj.companionCallback, NameEntity);
+	if (evalObj.wildshapeCallback) WildshapeRecalc();
 	// Remove any remaining empty objects when removing stuff
 	if (!Add) CurrentEvals = CleanObject(CurrentEvals);
 	// Finally, set this global variable to its field for safekeeping
@@ -8275,7 +8578,7 @@ function AskUserOptions(optType, optSrc, optSubj, knownOpt, notProficiencies, sB
 	return theDialog.choices;
 };
 
-// Ask user for size options and return the index number; prefix == false (1st page); prefix is string (companion page); prefix is array [prefix, nr] (wild shape page)
+// Ask user for size options and apply them; prefix == false (1st page); prefix is string (companion page); prefix is array [prefix, nr] (wild shape page)
 function SetCreatureSize(prefix, sName, aSizes) {
 	if (!isArray(aSizes)) aSizes = [aSizes];
 	var sNamePl = sName;
@@ -8283,7 +8586,8 @@ function SetCreatureSize(prefix, sName, aSizes) {
 		sNamePl = sName[1];
 		sName = sName[0];
 	}
-	var sFldNm = !prefix ? "Size Category" : isArray(prefix) ? prefix[0] + "Wildshape." + prefix[1] + ".Size" : prefix + "Comp.Desc.Size";
+	var isWildShapePage = isArray(prefix);
+	var sFldNm = !prefix ? "Size Category" : isWildShapePage ? prefix[0] + "Wildshape." + prefix[1] + ".Size" : prefix + "Comp.Desc.Size";
 	var aOptions = [], oOptionsRef = {};
 	var oFld = tDoc.getField(sFldNm);
 	for (var i = 0; i < aSizes.length; i++) {
@@ -8291,7 +8595,6 @@ function SetCreatureSize(prefix, sName, aSizes) {
 		aOptions.push(sSizeName);
 		oOptionsRef[sSizeName] = aSizes[i];
 	}
-	var sTooltip = sNamePl + " size " + (aOptions.length > 1 ? formatLineList("can be", aOptions, true) + "." : "is " + aOptions[0] + ".");
 	if (!prefix) sTooltip += "\n\nSelected size category will affect encumbrance on the second page.";
 	var bGoAsk = aSizes.length > 1;
 	if (bGoAsk) {
@@ -8305,7 +8608,51 @@ function SetCreatureSize(prefix, sName, aSizes) {
 	if (!bGoAsk) {
 		PickDropdown(sFldNm, isArray(aSizes) ? aSizes[0] : aSizes);
 	}
-	if (!isArray(prefix)) AddTooltip(sFldNm, sTooltip);
+	if (!isWildShapePage) {
+		var sTooltip = sNamePl + " size " + (aOptions.length > 1 ? formatLineList("can be", aOptions, true) + "." : "is " + aOptions[0] + ".");
+		AddTooltip(sFldNm, sTooltip);
+	}
+}
+
+// Ask user for creature type options and apply them; prefix == false (1st page); prefix is string (companion page); prefix is array [prefix, nr] (wild shape page)
+function SetCreatureType(prefix, sName, aTypes, aSubtypes) {
+	var sNamePl = sName;
+	var sNameCompanion = "";
+	if (isArray(sName)) {
+		sNamePl = sName[1] ? sName[1] : sName[0];
+		if (sName[2]) sNameCompanion = sName[2];
+		sName = sName[0];
+	}
+	var isWildShapePage = isArray(prefix);
+	var sFldNm = !prefix ? "Creature Type" : isWildShapePage ? prefix[0] + "Wildshape." + prefix[1] + ".MonsterType" : prefix + "Comp.Desc.MonsterType";
+	var oFld = tDoc.getField(sFldNm);
+	if (!oFld) return;
+
+	// Details for the dialogs
+	var iPageNo = oFld.page;
+	var sWildShapeEntry = isWildShapePage ? " (entry number " + prefix[1] + ")" : "";
+	var oDialogTxt = {
+		title: "Select creature type for " + sName + " on page " + iPageNo + sWildShapeEntry,
+		description: "The " + sName + sNameCompanion + " on page " + iPageNo + " can be one of multiple creature types. Select what should be entered in the field.",
+	};
+
+	// Create the type and subtype string, ask user if there is a choice to be made
+	var sCreaType = !isArray(aTypes) ? aTypes :
+		AskUserOptions(oDialogTxt.title, oDialogTxt.description, aTypes, "radio", true);
+	var sCreaSubtype = !aSubtypes ? "" : !isArray(aSubtypes) ? aSubtypes :
+		AskUserOptions(oDialogTxt.title.replace(), oDialogTxt.description, aSubtypes, "radio", true);
+	if (sCreaSubtype) sCreaType += " (" + sCreaSubtype + ")";
+
+	// Apply the value
+	Value(sFldNm, sCreaType);
+
+	// Create a tooltip for it, if not a Wild Shape page
+	if (!isWildShapePage) {
+		var sTooltip = sNamePl + " creature type " + (isArray(aTypes) ? formatLineList("can be", aTypes, true) : "is " + aTypes);
+		if (aSubtypes) sTooltip += ", and their subtype " + (isArray(aSubtypes) ? formatLineList("can be", aSubtypes, true) : "is " + aSubtypes);
+		sTooltip += ".";
+		AddTooltip(sFldNm, sTooltip);
+	}
 }
 
 // Process a feature attribute through the AddToNotes function

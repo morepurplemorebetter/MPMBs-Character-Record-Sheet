@@ -44,7 +44,14 @@ var Base_CreatureList = {
 			name : "Whirlwind (Recharge 4-6)",
 			description : "See Attack. Each creature in the elemental's space that fails its saving throw is flung up to 20 ft away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 ft it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone."
 		}],
-		wildshapeString : "Darkvision 60 ft| Knows Auran| Resistant to: lightning, thunder, and bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious| Air Form: can move through 1 inch wide space without squeezing and can move through and stop in space of hostiles| Whirlwind: see Monster Manual page 124"
+		wildshapeString : [
+			"##Senses##. Darkvision 60 ft. ##Languages##. Knows Auran.",
+			"##Resistances##. Lightning; thunder; bludgeoning, piercing, and slashing from nonmagical weapons.",
+			"##Immunities##. Poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious.",
+			"##Air Form##. Can move through 1 inch wide gap without squeezing. Can move through and stop in space of hostiles."+
+			(typePF ? "\n" : " ") + "##Whirlwind##. See Monster Manual page 124.",
+		].join("\n"),
+		forceWildshapeOption: "Elementals",
 	},
 	"earth elemental" : {
 		name : "Earth Elemental",
@@ -73,7 +80,7 @@ var Base_CreatureList = {
 			ability : 1,
 			damage : [2, 8, "bludgeoning"],
 			range : "Melee (10 ft)",
-			description : "Two slam attacks as an Attack action"
+			description : "Two slam attacks as an Attack action; Double damage to objects"
 		}],
 		traits : [{
 			name : "Earth Glide",
@@ -82,7 +89,15 @@ var Base_CreatureList = {
 			name : "Siege Monster",
 			description : "The elemental deals double damage to objects and structures."
 		}],
-		wildshapeString : "Darkvision 60 ft; Tremorsense 60 ft| Knows Terran| Vulnerable to: thunder| Resistant to: bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, paralyzed, petrified, poisoned, unconscious| Earth Glide: can burrow through nonmagical, unworked earth and stone without disturbing the material| Siege Monster: does double damage to objects and structures"
+		wildshapeString : [
+			"##Senses##. Darkvision 60 ft; Tremorsense 60 ft.",
+			"##Languages##. Knows Terran.",
+			"##Resistances##. " + (typePF ? "Bludgeoning, piercing, and slashing from nonmagical weapons." : "Nonmagical bludgeoning, piercing, slashing."),
+			"##Immunities##. Poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious.",
+			"##Earth Glide##. Can burrow through nonmagical, unworked earth and stone without disturbing the material.",
+			"##Siege Monster##. Deals double damage to objects.",
+		].join("\n"),
+		forceWildshapeOption: "Elementals",
 	},
 	"fire elemental" : {
 		name : "Fire Elemental",
@@ -122,7 +137,11 @@ var Base_CreatureList = {
 			name : "Water Susceptibility",
 			description : "For every 5 ft the elemental moves in water, or for every gallon of water splashed on it, it takes 1 cold damage."
 		}],
-		wildshapeString : "Darkvision 60 ft| Knows Ignan| Resistant to: bludg./ piercing/slashing from nonmagical weapons| Immune to: fire/poison/exhaustion/grappled/paralyzed/petrified/ poisoned/prone/restrained/unconscious| Sheds 30-ft bright/dim light| 1 cold dmg per gallon of or 5ft moved through water| Fire Form: pass through 1\" space no squeezing; move through/stop in another's space; do 1d10 fire dmg to melee attackers; MM, p125"
+		wildshapeString : [
+			(typePF ? "##Senses##. " : "") + "Darkvision 60 ft. " + (typePF ? "##Languages##. " : "") + "Knows Ignan.",
+			"##Resistances##. Nonmagical bludgeoning, piercing, slashing. ##Immunities##. Fire, poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious. ##Light##. 30-ft bright+dim. ##Water##. Takes 1 cold dmg per gal or 5 ft moved through. ##" + (typePF ? "Fire Form" : "Fire") + "##. Can move through hostiles, 1\" gap not squeezing, and stop in another's space. 1d0 fire dmg to those moved through and melee attackers. See MM p125.",
+		].join(typePF ? "\n" : " "),
+		forceWildshapeOption: "Elementals",
 	},
 	"water elemental" : {
 		name : "Water Elemental",
@@ -172,7 +191,14 @@ var Base_CreatureList = {
 			name : "Whelm (Recharge 4-6)",
 			description : "See attack. Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 ft of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding."
 		}],
-		wildshapeString : "Darkvision 60 ft| Knows Aquan| Resistant to: acid, and bludg./piercing/slashing from nonmagical weapons| Immune to: poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious|  Water Form: pass through 1\" space without squeezing; move through and stop in another's space| Freeze: if taken cold damage, speed reduced to 20 ft until end of next turn| Whelm: see Monster Manual page 125"
+		wildshapeString : [
+			(typePF ? "##Senses##. " : "") + "Darkvision 60 ft. " + (typePF ? "##Languages##. " : "") + "Knows Aquan.",
+			"##Resistances##. Acid; bludgeoning, piercing, and slashing from nonmagical weapons.",
+			"##Immunities##. Poison, exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious.",
+			'##Water Form##. Can move through and stop in space of hostiles. Can move through 1" gap without squeezing.',
+			"##Freeze##. If takes cold damage, speed reduced to 20 ft until end of next turn. ##Whelm##. See MM page 125.",
+		].join(typePF ? "\n" : " "),
+		forceWildshapeOption: "Elementals",
 	},
 	// Dinosaurs (which are beasts for Druid Wild Shape)
 	"plesiosaurus" : {
@@ -1179,7 +1205,12 @@ var Base_CreatureList = {
 			name : "Shriek",
 			description : "As a reaction when bright light or a creature is within 30 ft of the [THIS], it emits a shriek audible within 300 ft of it. The [THIS] continues to shriek until the disturbance moves out of range and for 1d4 of the [THIS]'s turns afterward."
 		}],
-		wildshapeString : "\u25C6 Senses: blindsight 30 ft (blind beyond this radius).\n\u25C6 Condition Immunities: blinded, deafened, frightened.\n\u25C6 Shriek: As a reaction when bright light or a creature is within 30 ft of the shrieker, emits a shriek audible out to 300 ft. This continues until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward.\n\u25C6 False Appearance: While motionless, the shrieker is indistinguishable from an ordinary fungus."
+		wildshapeString : [
+			"##Senses##. Blindsight 30 ft (blind beyond).",
+			"##Immunities##. Blinded, deafened, frightened.",
+			"##Shriek##. As a reaction when bright light or a creature is within 30 ft of the shrieker, emits a shriek audible out to 300 ft. This continues until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward.",
+			"##False Appearance##. While motionless, it's indistinguishable from an ordinary fungus.",
+		].join("\n"),
 	},
 	"violet fungus" : {
 		name : "Violet Fungus",
@@ -3074,7 +3105,12 @@ var Base_CreatureList = {
 			name : "Swallow",
 			description : "The frog makes one bite attack against a Small or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the frog, and it takes 5 (2d4) acid damage at the start of each of the frog's turns. The frog can have only one target swallowed at a time. If the frog dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 ft of movement, exiting prone."
 		}],
-		wildshapeString : "Darkvision 30 ft| Amphibious: can breathe air and water| Standing Leap: can long jump up to 20 ft and high jump up to 10 ft, with or without a running start| Swallow: if a bite attack hits a Small or smaller target it is grappling, it is swallowed, ending the grapple. Swallowed: blinded, restrained, total cover, takes 2d4 acid damage at the start of each of the frog's turns; can have only 1 swallowed at a time."
+		wildshapeString : [
+			"##Senses##. Darkvision 30 ft.",
+			"##Amphibious##. Breathes air and water.",
+			"##Standing Leap##. Long jump up to 20 ft and high jump up to 10 ft, with or without a running start.",
+			"##Swallow##. If a bite attack hits a Small or smaller target it is grappling, it is swallowed, ending the grapple. Swallowed: blinded, restrained, total cover, takes 2d4 acid damage at the start of each of the frog's turns; can have only 1 swallowed at a time.",
+		].join(typePF ? "\n" : " "),
 	},
 	"giant goat" : {
 		name : "Giant Goat",
@@ -3212,7 +3248,12 @@ var Base_CreatureList = {
 			name : "Ink Cloud (Recharges after a Short or Long Rest)",
 			description : "As an action, a 20-ft-radius cloud of ink extends all around the octopus if it is underwater. The area is heavily obscured for 1 minute, although a significant current can disperse the ink. After releasing the ink, the octopus can use the Dash action as a bonus action."
 		}],
-		wildshapeString : "Darkvision 60 ft| Water Breathing: can breathe only underwater| Hold Breath: can hold its breath for 1 hourout of water| Underwater Camouflage: advantage on Dexterity (Stealth) checks made while underwater| Ink Cloud (Recharges after a Short or Long Rest): if underwater, 20-ft radius cloud of ink around octopus, heavily obscures for 1 minute, can be dispersed. After releasing, can use the Dash action as a bonus action"
+		wildshapeString : [
+			"##Senses##. Darkvision 60 ft."+
+			(typePF ? "\n" : " ") + "##Underwater Camouflage##. Adv. on Dex (Stealth) checks made while underwater.",
+			"##Water Breathing##. Can breathe only underwater, but can hold its breath for 1 hour out of water. ",
+			"##Ink Cloud (Once per Short Rest)##. As an action while underwater, 20-ft radius cloud of ink around octopus, heavily obscures for 1 minute, can be dispersed. After releasing, can use the Dash action as a bonus action",
+		].join("\n"),
 	},
 	"giant owl" : {
 		name : "Giant Owl",
@@ -3493,7 +3534,13 @@ var Base_CreatureList = {
 			name : "Web (Recharge 5-6)",
 			description : "See attack. On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)."
 		}],
-		wildshapeString : "Blindsight 10 ft; Darkvision 60 ft| If the bite's poison damage reduces the target to 0 HP, the target is stable but poisoned and paralyzed for 1 hour, even after regaining HP| Spider Climb: climb difficult surfaces, including upside down, without an ability check| Web Sense: knows the exact location of any other creature in contact with the same web| Web Walker: ignores movement restrictions from webbing"
+		wildshapeString : [
+			"##Senses##. Blindsight 10 ft, Darkvision 60 ft.",
+			"##Bite##. If the poison damage reduces the target to 0 HP, the target is stable but poisoned and paralyzed for 1 hour, even after regaining HP.",
+			"##Spider Climb##. Climb difficult surfaces, including upside down, without an ability check.",
+			"##Web Sense##. Knows the exact location of any other creature in contact with the same web.",
+			"##Web Walker##. No movement restrictions from webbing.",
+		].join(typePF ? "\n" : " "),
 	},
 	"giant toad" : {
 		name : "Giant Toad",
@@ -3529,7 +3576,12 @@ var Base_CreatureList = {
 			name : "Swallow",
 			description : "The toad makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the toad, and it takes 10 (3d6) acid damage at the start of each of the toad's turns. The toad can have only one target swallowed at a time.\nIf the toad dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 ft of movement, exiting prone."
 		}],
-		wildshapeString : "Darkvision 30 ft| Amphibious: can breathe air and water| Standing Leap: can long jump up to 20 ft and high jump up to 10 ft, with or without a running start| Swallow: if a bite attack hits a Medium or smaller target that it is grappling, it is swallowed, ending the grapple. Swallowed: blinded, restrained, total cover, takes 3d6 acid damage at the start of each of the toad's turns; can have only 1 swallowed at a time."
+		wildshapeString : [
+			"##Senses##. Darkvision 30 ft.",
+			"##Amphibious##. Breathes air and water.",
+			"##Standing Leap##. Long jump up to 20 ft and high jump up to 10 ft, with or without a running start.",
+			"##Swallow##. If a bite attack hits a Medium or smaller target that it is grappling, it is swallowed, ending the grapple. Swallowed: blinded, restrained, total cover, takes 3d6 acid damage at the start of each of the toad's turns; can have only 1 swallowed at a time.",
+		].join(typePF ? "\n" : " "),
 	},
 	"giant vulture" : {
 		name : "Giant Vulture",
@@ -3681,7 +3733,13 @@ var Base_CreatureList = {
 			name : "Web Walker",
 			description : "The spider ignores movement restrictions caused by webbing."
 		}],
-		wildshapeString : "Blindsight 10 ft; Darkvision 60 ft| If the bite's poison damage reduces the target to 0 HP, the target is stable but poisoned and paralyzed for 1 hour, even after regaining HP| Spider Climb: climb difficult surfaces, including upside down, without an ability check| Web Sense: knows the exact location of any other creature in contact with the same web| Web Walker: ignores movement restrictions from webbing"
+		wildshapeString : [
+			"##Senses##. Blindsight 10 ft, Darkvision 60 ft.",
+			"##Bite##. If the poison damage reduces the target to 0 HP, the target is stable but poisoned and paralyzed for 1 hour, even after regaining HP.",
+			"##Spider Climb##. Climb difficult surfaces, including upside down, without an ability check.",
+			"##Web Sense##. Knows the exact location of any other creature in contact with the same web.",
+			"##Web Walker##. No movement restrictions from webbing.",
+		].join(typePF ? "\n" : " "),
 	},
 	"goat" : {
 		name : "Goat",
@@ -3930,7 +3988,12 @@ var Base_CreatureList = {
 			name : "Running Leap",
 			description : "With a 10-ft running start, the lion can long jump up to 25 ft."
 		}],
-		wildshapeString : "Keen Smell: advantage on Wis (Perception) checks that rely on smell| Pack Tactics: advantage on attack rolls if at least one capable ally is within 5 ft of the target| Pounce: if target is hit with a claw attack after the lion moved at least 20 ft straight on the same turn, DC 13 Str save or knocked prone and the lion can make one bite attack against it as a bonus action| Running Leap: long jump up to 25 ft with a 10-ft running start"
+		wildshapeString : [
+			"##Keen Smell##. Adv. on Wis (Perception) checks using smell.",
+			"##Pack Tactics##. Advantage on attack rolls if at least one capable ally is within 5 ft of the target.",
+			"##Pounce##. If target is hit with a claw attack after the lion moved at least 20 ft straight on the same turn, DC 13 Str save or knocked prone and the lion can make one bite attack against it as a bonus action."+
+			(typePF ? "\n" : " ") + "##Running Leap##. Long jump up to 25 ft with a 10-ft running start.",
+		].join("\n"),
 	},
 	"lizard" : {
 		name : "Lizard",
@@ -4093,7 +4156,12 @@ var Base_CreatureList = {
 			name : "Water Breathing",
 			description : "The octopus can breathe only underwater."
 		}],
-		wildshapeString : "Darkvision 30 ft| Water Breathing: can breathe only underwater| Hold Breath: can hold its breath for 30 minutes out of water| Underwater Camouflage: advantage on Dex (Stealth) checks while underwater| Ink Cloud (Recharges after a Short or Long Rest): if underwater, 5-ft radius cloud of ink around octopus, heavily obscures for 1 minute, can be dispersed. After releasing, can use the Dash action as a bonus action"
+		wildshapeString : [
+			"##Senses##. Darkvision 30 ft."+
+			(typePF ? "\n" : " ") + "##Underwater Camouflage##. Adv. on Dex (Stealth) checks made while underwater.",
+			"##Water Breathing##. Can breathe only underwater, but can hold its breath for 30 minutes out of water. ",
+			"##Ink Cloud (Once per Short Rest)##. As an action while underwater, 5-ft radius cloud of ink around octopus, heavily obscures for 1 minute, can be dispersed. After releasing, can use the Dash action as a bonus action",
+		].join("\n"),
 	},
 	"owl" : {
 		name : "Owl",
@@ -4580,7 +4648,12 @@ var Base_CreatureList = {
 			name : "Web Walker",
 			description : "The spider ignores movement restrictions caused by webbing."
 		}],
-		wildshapeString : "\u25C6 Senses: Darkvision 30 ft | \u25C6 Spider Climb: The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.\n\u25C6 Web Sense: While in contact with a web, the spider knows the exact location of any other creature in contact with the same web.\n\u25C6 Web Walker: The spider ignores movement restrictions caused by webbing."
+		wildshapeString : [
+			"##Senses##. Darkvision 30 ft.",
+			"##Spider Climb##. Can climb difficult surfaces, including upside down on ceilings, without making a check.",
+			"##Web Sense##. While in contact with a web, knows the exact location of other creatures in contact with the same web.",
+			"##Web Walker##. Ignores movement restrictions caused by webbing.",
+		].join("\n"),
 	},
 	"stirge" : {
 		name : "Stirge",

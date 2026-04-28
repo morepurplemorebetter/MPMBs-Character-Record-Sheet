@@ -42,7 +42,7 @@
 	        	You will also need the syntax for common attributes if you want to use a
 	        	custom calculation for hit points (calcChanges.hp).
 
-	Sheet:		v14.0.5 and above
+	Sheet:		v14.0.6 and above
 
 */
 
@@ -621,13 +621,13 @@ CreatureList["purple crawler"] = {
 	features : [{
 		name : "False Appearance",
 		description : "While the purple crawler remains motionless, it is indistinguishable from an ordinary purple flower.",
-		joinString : "\n   "
+		joinString : "\n   ",
 	}],
 	actions : [{
 		name : "Invisibility",
 		minlevel : 5,
 		description : "As an action, the purple crawler magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell).",
-		addMod : [{ type : "skill", field : "all", mod : "max(oCha|1)", text : "The purple crawler adds its master's Charisma modifier (min 1) to all its skill checks." }]
+		addMod : [{ type : "skill", field : "all", mod : "max(oCha|1)", text : "The purple crawler adds its master's Charisma modifier (min 1) to all its skill checks." }],
 	}],
 	traits : [{
 		name : "Keen Sight",
@@ -640,7 +640,8 @@ CreatureList["purple crawler"] = {
 		removeeval : function(prefix, lvl) {
 			// Change size back to Medium
 			PickDropdown(prefix + "Comp.Desc.Size", 3);
-		}
+		},
+		wildshapeShow : false,
 	}],
 	notes : [{
 		name : "Lila Laser Light (Purplemancer 13)",
@@ -649,7 +650,8 @@ CreatureList["purple crawler"] = {
 			"The purple companion gains the ability to shine in a bright purple color",
 			"Once per long rest, it can cast Hypnotic Pattern without requiring components"
 		]),
-		joinString : ""
+		joinString : "",
+		wildshapeShow : ". Once per long rest, cast Hypnotic Pattern without components.",
 	}],
 /*	features // OPTIONAL //
 	actions  // OPTIONAL //
@@ -660,6 +662,7 @@ CreatureList["purple crawler"] = {
 	CHANGE:	v13.1.0 (added `joinString` attribute)
 	CHANGE:	v13.1.11 (added `notes`)
 	CHANGE: v14.0.0 (formatting characters)
+	CHANGE: v14.0.6 (added `wildshapeShow`)
 
 	Each of these four attributes work in the same way.
 	Each is an array with objects that have at least two attributes, `name` and `description`,
@@ -725,12 +728,15 @@ CreatureList["purple crawler"] = {
 
 	The array is processed in the order it is in the code, no sorting will take place.
 
-	These text, except `notes`, are also displayed on the wild shape page, but all together in the singular
-	Traits & Features section,	regardless of their `minlevel` attribute value.
-	Also, `eval`, `removeeval`, and `changeeval` are not executed when this creature is selected/removed on the Wild Shape page.
+	These text, except `notes`, are also displayed on the wild shape page, but all
+	together in the singular Traits & Features section, regardless of their `minlevel`
+	attribute value, but ones that have the `wildshapeShow: false` attribute are skipped.
+	Also, `eval`, `removeeval`, and `changeeval` are not executed when this creature is
+	selected/removed on the Wild Shape page.
 	As the wild shape pages offer limited space, it is recommended to test if all of
 	these and the other attributes together will fit.
-	If they don't fit (well), consider using the `wildshapeString` attribute, see below.
+	If they don't fit (well), consider using the `wildshapeShow` attribute to shorten
+	a single description, or the `wildshapeString` attribute, see below.
 
 	FORMATTING CHARACTERS (since v14.0.0)
 	The `description` can be formatted using the Rich Text formatting characters.
@@ -783,6 +789,29 @@ CreatureList["purple crawler"] = {
 	They function exactly as described for the main object, but they will only be called when the
 	`features`, `traits`, `actions`, or `notes` object is processed, which can be influenced
 	using the `minlevel` attribute, see above.
+*/
+
+	wildshapeShow : false,
+	wildshapeShow : "Shorter text for on the Wild Shape page.",
+/*	wildshapeShow // OPTIONAL //
+	(Part of `features`, `traits`, or `actions` object, see above)
+	TYPE:	boolean or string
+	USE:	change or stop text on the wild shape page
+	ADDED:	v14.0.6
+
+	This attribute can only be used as part of an object in the `features`, `traits`,
+	`actions`, or `notes` arrays, see above.
+
+	When set to `false`, the parent object is not displayed in the Wild Shape "Traits &
+	Features" section (but if the parent has an `addMod` attribute, it is still processed).
+	What set to a string, it is used in place of the `description` attribute on the
+	Wild Shape page.
+
+	Use this for features or actions that otherwise don't fit or don't necessarily need
+	to take up space on the Wild Shape page, such as attack descriptions that are already
+	covered in the attack section.
+
+	Setting this attribute to `true` is the same as not including it.
 */
 
 	minlevelLinked : ["artificer", "wizard"],
@@ -970,12 +999,12 @@ CreatureList["purple crawler"] = {
 // >>> Wild Shape Page Only >>> //
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 /*
-	The below attributes won't affect anything when the creature is select as a companion,
-	but they will work on a Wild Shape page.
+	The below attributes won't affect anything when the creature is selected on a
+	Companion page, but they will work on a Wild Shape page.
 */
 
 	wildshapeString : "Darkvision 60 ft; Tremorsense 60 ft| Knows Terran| Vulnerable to: thunder| Resistant to: bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, paralyzed, petrified, poisoned, unconscious| Earth Glide: can burrow through nonmagical, unworked earth and stone without disturbing the material| Siege Monster: does double damage to objects and structures",
-/*	wildshapeString	// OPTIONAL	 //
+/*	wildshapeString // OPTIONAL //
 	TYPE:	string
 	USE:	add text to the Traits & Features section on the Wild Shape page
 
@@ -986,5 +1015,32 @@ CreatureList["purple crawler"] = {
 	automatically from all descriptive attributes that contain strings (e.g. senses, languages, traits, etc.).
 	However, that can result in too much content for the limited space on the Wild Shape pages and
 	hence the need for the `wildshapeString` attribute.
+*/
+	forceWildshapeOption: true,
+	forceWildshapeOption: "Elementals",
+/*	forceWildshapeOption // OPTIONAL //
+	TYPE:	boolean or string
+	USE:	force the entry to appear as a wild shape option
+	ADDED:	v14.0.6
+
+	The Wild Shape page has both a menu and drop-down boxes to select creatures on it.
+	Use this attribute to have the creature included.
+
+	By default, any creature with the type "Beast" and a Challenge Rating of 6 or lower
+	is automatically included.
+	However, creatures added through the `creatureOptions` attribute aren't included unless
+	this attribute is set (see "_common attributes.js").	
+
+	By using this attribute you can force a creature to be included in the drop-down box
+	and the menu on the Wild Shape page.
+	The string you set is used for the submenu that the creature is listed under.
+	This way you can group multiple creatures together under the same menu item.
+
+	If you set this attribute to `true`, the type of the creature will be used.
+	If you are adding a Beast using the `creatureOptions` attribute, you will probably want
+	to set this attribute to `true`. Then the creature gets grouped together with other
+	Beasts of similar CR in the menu.
+
+	Setting this attribute to an empty string or `false` is the same as not including it.
 */
 }

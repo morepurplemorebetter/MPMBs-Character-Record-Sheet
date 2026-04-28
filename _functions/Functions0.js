@@ -462,6 +462,7 @@ function KeystrokeDay() {
 
 //a field "format" function to add a space at the start and end of the field, to make sure it looks better on the sheet
 function addWhitespace() {
+	if (typePF && tDoc.getField("Image.calc_lines.CSfront").display === display.visible) return; // don't do this if the calculation boxes are not being used
 	event.value = " " + event.value + " ";
 };
 
@@ -483,13 +484,6 @@ function RoundTo(inputNmbr, roundNmbr, emptyAtZero, applyDec) {
 	} else if (applyDec && result % 1 != 0 && What("Decimal Separator") === "comma") {
 		result = result.replace(".", ",");
 	}
-	return result;
-}
-
-function NormDecimal(dec) {
-	var i = 0;
-	var first = ding.match(/,|\./);
-	var result = dec.replace(/,|\./g, function(all, match) { return i++===0 ? first : ''; });
 	return result;
 }
 
