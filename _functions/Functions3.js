@@ -1533,7 +1533,7 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 		var sEscaped = str.replace(/\n/g, '\r').replace(/^\r+/, '').RegEscape();
 		var sJustLine = RegExp(sEscaped + ".*", "i");
 		// Regex for everything until the first empty line or the first line that doesn't start with a "#" (the header format character)
-		var sFullSection = RegExp("\\r?" + sEscaped + ".*(\\r[^\\r\\s+\\r][^\\r#].*)*", "i");
+		var sFullSection = RegExp("\\r?" + sEscaped + ".*(\\r(?!\\s*\\r|#).*)*", "i");
 		return {
 			head: sJustLine,
 			full: sFullSection,
