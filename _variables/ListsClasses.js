@@ -123,6 +123,7 @@ var Base_ClassList = {
 			"\n \u2022 An explorer's pack and four javelins." +
 			"\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Primal Path", ["barbarian-berserker"]],
+		subclassGainedLevel : 3,
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		features : {
 			"rage" : {
@@ -297,6 +298,7 @@ var Base_ClassList = {
 			"\n \u2022 Leather armor and a dagger." +
 			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Bard College", ["bard-college of lore"]],
+		subclassGainedLevel : 3,
 		spellcastingFactor : 1,
 		spellcastingKnown : {
 			cantrips : [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
@@ -453,6 +455,7 @@ var Base_ClassList = {
 			"\n \u2022 A shield and a holy symbol." +
 			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Divine Domain", ["cleric-life domain"]],
+		subclassGainedLevel : 1,
 		spellcastingFactor : 1,
 		spellcastingKnown : {
 			cantrips : [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
@@ -551,6 +554,7 @@ var Base_ClassList = {
 			"\n \u2022 Leather armor, an explorer's pack, and a druidic focus." +
 			"\n\nAlternatively, choose 2d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Druid Circle", ["druid-circle of the land"]],
+		subclassGainedLevel : 2,
 		spellcastingFactor : 1,
 		spellcastingKnown : {
 			cantrips : [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
@@ -687,6 +691,7 @@ var Base_ClassList = {
 			"\n \u2022 A dungeoneer's pack -or- an explorer's pack." +
 			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Martial Archetype", ["fighter-champion"]],
+		subclassGainedLevel : 3,
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4],
 		features : {
 			"fighting style" : {
@@ -768,6 +773,7 @@ var Base_ClassList = {
 			"\n \u2022 10 darts." +
 			"\n\nAlternatively, choose 5d4 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Monastic Tradition", ["monk-way of the open hand"]],
+		subclassGainedLevel : 3,
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		features : {
 			"unarmored defense" : {
@@ -1041,6 +1047,7 @@ var Base_ClassList = {
 			"\n \u2022 Chain mail and a holy symbol." +
 			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Sacred Oath", ["paladin-oath of devotion"]],
+		subclassGainedLevel : 3,
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		spellcastingFactor : 2,
 		spellcastingKnown : {
@@ -1195,6 +1202,7 @@ var Base_ClassList = {
 			"\n \u2022 A longbow and a quiver of 20 arrows." +
 			"\n\nAlternatively, choose 5d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Ranger Archetype", ["ranger-hunter"]],
+		subclassGainedLevel : 3,
 		attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 		spellcastingFactor : 2,
 		spellcastingKnown : {
@@ -1482,6 +1490,7 @@ var Base_ClassList = {
 			"\n \u2022 Leather armor, two daggers, and thieves' tools." +
 			"\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Roguish Archetype", ["rogue-thief"]],
+		subclassGainedLevel : 3,
 		features : {
 			"expertise" : function() {
 				var a = {
@@ -1651,6 +1660,7 @@ var Base_ClassList = {
 			"\n \u2022 Two daggers." +
 			"\n\nAlternatively, choose 3d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Sorcerous Origin", ["sorcerer-draconic bloodline"]],
+		subclassGainedLevel : 1,
 		spellcastingFactor : 1,
 		spellcastingKnown : {
 			cantrips : [4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
@@ -1795,6 +1805,7 @@ var Base_ClassList = {
 			"\n \u2022 Leather armor, any simple weapon, and two daggers." +
 			"\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Otherworldly Patron", ["warlock-the fiend"]],
+		subclassGainedLevel : 1,
 		spellcastingFactor : "warlock1",
 		spellcastingKnown : {
 			cantrips : [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
@@ -2492,6 +2503,7 @@ var Base_ClassList = {
 			"\n \u2022 A spellbook." +
 			"\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 		subclasses : ["Arcane Tradition", ["wizard-evocation"]],
+		subclassGainedLevel : 2,
 		spellcastingFactor : 1,
 		spellcastingKnown : {
 			cantrips : [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],

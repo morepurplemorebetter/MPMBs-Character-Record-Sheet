@@ -1803,23 +1803,13 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		};
 
 		// Ask for subclass if none is defined and this is not a reset, import, or a sheet startup event and not after just removing a subclass
-		if (IsNotReset && IsNotImport && NotAtStartup && !tempSubClass && tempClObj.subclasses[1].length && !tempSubClassOld) {
-			// first check at what level this class gets it subclass and if we are at that level yet
-			var enoughLevel = false;
-			for (var propKey in tempClObj.features) {
-				var tempProp = tempClObj.features[propKey];
-				if (propKey.indexOf("subclassfeature") == -1 || !tempProp.minlevel || tempProp.minlevel > tempLevel) continue;
-				enoughLevel = true;
-				break;
-			}
-			if (enoughLevel) {
-				var newSubClass = PleaseSubclass(tempClass, classesTemp[tempClass].string);
-				if (newSubClass) {
-					classesTemp[tempClass].subclass = newSubClass[0];
-					classesTemp[tempClass].string = newSubClass[1];
-					classes.field = classes.field.replace(classes.parsed[i][0], newSubClass[1]);
-					classes.parsed[i][0] = newSubClass[1];
-				}
+		if (IsNotReset && IsNotImport && NotAtStartup && !tempSubClass && tempClObj.subclasses[1].length && !tempSubClassOld && tempClObj.subclassGainedLevel <= tempLevel) {
+			var newSubClass = PleaseSubclass(tempClass, classesTemp[tempClass].string);
+			if (newSubClass) {
+				classesTemp[tempClass].subclass = newSubClass[0];
+				classesTemp[tempClass].string = newSubClass[1];
+				classes.field = classes.field.replace(classes.parsed[i][0], newSubClass[1]);
+				classes.parsed[i][0] = newSubClass[1];
 			}
 		}
 
@@ -1951,12 +1941,12 @@ function FindClasses(NotAtStartup, isFieldVal) {
 
 		// Fill in the properties of this newly defined global variable and prefer subclass attributes over class attributes
 		for (var prop in classObj) { // the class
-			if ((/^(subname|features)$/i).test(prop)) continue;
+			if (/^(subname|features)$/i.test(prop)) continue;
 			Temps[prop] = classObj[prop];
 		}
 		if (subClObj) { // the subclass, if it exists
 			for (var prop in subClObj) {
-				if ((/^(name|features|prereqs|primaryAbility)$/i).test(prop)) continue;
+				if (/^(name|features|prereqs|primaryAbility)$/i.test(prop)) continue;
 				Temps[prop] = subClObj[prop];
 			}
 			// --- backwards compatibility --- //
@@ -1973,7 +1963,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		//add features of the class
 		for (prop in classObj.features) {
 			var cPropAtt = classObj.features[prop];
-			var fNm = ("0" + cPropAtt.minlevel).slice(-2) + ((/subclassfeature/i).test(prop) ? "" : "()") + cPropAtt.name;
+			var fNm = ("0" + cPropAtt.minlevel).slice(-2) + (/subclassfeature/i.test(prop) ? "" : "()") + cPropAtt.name;
 			//subClObj && subClObj.features[prop]
 			if (fNm.toString().length > 2) {
 				fAB.push(fNm);

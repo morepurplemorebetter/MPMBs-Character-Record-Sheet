@@ -2705,7 +2705,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 	};
 
 	// fix wrong reference (common mistake when adding classes)
-	deleteUnknownReferences();
+	fixClassReferences();
 
 	// when run at startup and one of the script fails, update all the dropdowns
 	if (manualScriptResult == "outOfMemory" || runIScript == "outOfMemory") {
@@ -2720,27 +2720,36 @@ function RunUserScript(atStartup, manualUserScripts) {
 };
 
 // Fix a common mistake in adding classes, having subclass references that don't work
-function deleteUnknownReferences() {
+function fixClassReferences(bDontKickSubclasses) {
 	// Loop through all classes
 	for (var sClass in ClassList) {
 		var oClass = ClassList[sClass];
 		// If the subclasses attribute doesn't exist or is malformed, fix it
 		if (!oClass.subclasses || !isArray(oClass.subclasses) || !isArray(oClass.subclasses[1])) {
 			oClass.subclasses = [
-				oClass.subclasses[0] && typeof oClass.subclasses[0] === "string" ? oClass.subclasses[0] : "Archetype",
+				oClass.subclasses[0] && typeof oClass.subclasses[0] === "string" ? oClass.subclasses[0] : oClass.name + " Subclass",
 				[]
 			];
-			continue;
+		} else if (!bDontKickSubclasses) {
+			// Loop through all the subclasses from end to start and delete any that don't exist in the ClassSubList object and any duplicates
+			var arrDupl = [];
+			for (var i = oClass.subclasses[1].length - 1; i >= 0; i--) {
+				var sSubcl = oClass.subclasses[1][i];
+				if (!ClassSubList[sSubcl] || arrDupl.indexOf(sSubcl) !== -1) {
+					oClass.subclasses[1].splice(i, 1);
+					displayError(false, 'The subclass "' + sSubcl + '" for the class "' + oClass.name + "\" is missing from the ClassSubList object, or appears multiple times in the `subclasses` attribute. Please contact its author to have this issue corrected. The subclass will be ignored for now.\nBe aware that if you add a subclass using the `AddSubClass()` function, you shouldn't list it in the `subclasses` attribute, the function will take care of that.");
+				} else {
+					arrDupl.push(sSubcl);
+				}
+			}
 		}
-		// Loop through all the subclasses from end to start and delete any that don't exist in the ClassSubList object and any duplicates
-		var arrDupl = [];
-		for (var i = oClass.subclasses[1].length - 1; i >= 0; i--) {
-			var sSubcl = oClass.subclasses[1][i];
-			if (!ClassSubList[sSubcl] || arrDupl.indexOf(sSubcl) !== -1) {
-				oClass.subclasses[1].splice(i, 1);
-				displayError(false, 'The subclass "' + sSubcl + '" for the class "' + oClass.name + "\" is missing from the ClassSubList object, or appears multiple times in the `subclasses` attribute. Please contact its author to have this issue corrected. The subclass will be ignored for now.\nBe aware that if you add a subclass using the `AddSubClass()` function, you shouldn't list it in the `subclasses` attribute, the function will take care of that.");
-			} else {
-				arrDupl.push(sSubcl);
+		// Create subclassGainedLevel attribute if it doesn't exist
+		if (!oClass.subclassGainedLevel) {
+			oClass.subclassGainedLevel = 3; // set it to level 3 by default
+			for (var key in oClass.features) {
+				if (key.indexOf("subclassfeature") !== -1 && oClass.features[key].minlevel && oClass.features[key].minlevel < oClass.subclassGainedLevel) {
+					oClass.subclassGainedLevel = oClass.features[key].minlevel;
+				}
 			}
 		}
 	}
@@ -2809,6 +2818,7 @@ function AddSubClass(iClass, subclassName, subclassObj) {
 	iClass = iClass.toLowerCase();
 	subclassName = subclassName.toLowerCase();
 	if (!ClassList[iClass]) return;
+	if (!ClassList[iClass].subclassGainedLevel || !ClassList[iClass].subclasses) fixClassReferences(true);
 	var suffix = 1;
 	var fullScNm = iClass + "-" + subclassName;
 	while (ClassList[iClass].subclasses[1].indexOf(fullScNm) !== -1 || ClassSubList[fullScNm]) {
