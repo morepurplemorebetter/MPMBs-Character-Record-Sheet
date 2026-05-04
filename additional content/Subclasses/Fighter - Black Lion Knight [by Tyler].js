@@ -95,7 +95,7 @@ AddSubClass("fighter", "black lion knight", {
 			name : "Lion's Versatility",
 			source : ["HB", 0],
 			minlevel : 10,
-			description : "\n   I deal extra damage with my weapon attacks",
+			description: desc("I deal extra damage with my weapon attacks"),
 			additional : levels.map(function (n) {
 				return n < 10 ? "" : "+" + (n < 17 ? 1 : n < 20 ? 2 : 3) + "d8 weapon damage";
 			}),
@@ -121,13 +121,13 @@ AddSubClass("fighter", "black lion knight", {
 			name : "Lion's Action",
 			source : ["HB", 0],
 			minlevel : 15,
-			description : "\n   When I use action surge to take an extra action, I can also do another move",
+			description: desc("When I use action surge to take an extra action, I can also do another move"),
 		},
 		"subclassfeature18" : {
 			name : "Lion's Heart",
 			source : ["HB", 0],
 			minlevel : 18,
-			description : "\n  Whenever I hit a creature twice in the same round, I gain my Wis mod in temporary HP"
+			description: desc("Whenever I hit a creature twice in the same round, I gain my Wis mod in temporary HP"),
 		}
 	}
 });

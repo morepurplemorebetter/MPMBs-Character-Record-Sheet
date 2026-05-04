@@ -44,7 +44,7 @@ AddSubClass("fighter", "gunslinger", {
 			name : "Firearm Proficiency",
 			source : ["MM:GMA", 2],
 			minlevel : 3,
-			description : "\n   " + "I gain proficiency with firearms",
+			description: desc("I gain proficiency with firearms"),
 			weapons : [false, false, ["Firearms"]]
 		},
 		"subclassfeature3.1" : {
@@ -64,7 +64,7 @@ AddSubClass("fighter", "gunslinger", {
 				name : "Deadeye Shot",
 				source : ["MM:GMA", 2],
 				additional : "1 grit point",
-				description : "\n   " + "I gain advantage on the next attack roll I make with a firearm this round"
+				description: desc("I gain advantage on the next attack roll I make with a firearm this round")
 			},
 			"violent shot" : {
 				name : "Violent Shot",
@@ -130,14 +130,14 @@ AddSubClass("fighter", "gunslinger", {
 			name : "Lightning Reload",
 			source : ["MM:GMA", 2],
 			minlevel : 15,
-			description : "\n   " + "I can reload any firearm as a bonus action",
+			description: desc("I can reload any firearm as a bonus action"),
 			action : [["bonus action", ""]]
 		},
 		"subclassfeature18" : {
 			name : "Vicious Intent",
 			source : ["MM:GMA", 2],
 			minlevel : 18,
-			description : "\n   " + "My firearm attacks score a critical hit on a roll of both 19 and 20",
+			description: desc("My firearm attacks score a critical hit on a roll of both 19 and 20"),
 			calcChanges : {
 				atkAdd : ["if (!isSpell && theWea && (/firearm/).test(theWea.type + theWea.list) && !CritChance) {var CritChance = 19; fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20'; }; ", "My attacks with firearms score a critical on a to hit roll of both 19 and 20."]
 			}
@@ -146,7 +146,10 @@ AddSubClass("fighter", "gunslinger", {
 			name : "Hemorrhaging Critical",
 			source : ["MM:GMA", 2],
 			minlevel : 18,
-			description : "\n   " + "When I score a critical hit with a firearm, the target takes additional damage" + "\n   " + "At the end of its next turn, it again suffers half of the damage from the attack"
+			description: desc([
+				"When I score a critical hit with a firearm, the target takes additional damage",
+				"At the end of its next turn, it again suffers half of the damage from the attack",
+			]),
 		}
 	}
 });

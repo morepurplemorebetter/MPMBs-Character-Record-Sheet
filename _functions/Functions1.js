@@ -9168,15 +9168,15 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 function ConvertToFirstPerson(inputString, convertFunction, origin) {
 	// First all capitalized words, then the same but lowercase
 	var firstPerson = inputString.replace(/Yours/g, "Mine").replace(/yours/ig, "mine")
-	                  .replace(/Your/g, "My").replace(/your/ig, "my")
-	                  .replace(/you aren['\u2019]t/ig, "I am not")
-	                  .replace(/you are/ig, "I am").replace(/you['\u2019]re/ig, "I'm")
-	                  .replace(/(a)re you\b/ig, "$1m I")
+					  .replace(/Your/g, "My").replace(/your/ig, "my")
+					  .replace(/you aren['\u2019]t/ig, "I am not")
+					  .replace(/you are/ig, "I am").replace(/you['\u2019]re/ig, "I'm")
+					  .replace(/(a)re you\b/ig, "$1m I")
 					  .replace(/(a)ren['\u2019]t you\b/ig, "$1m I not")
-	                  .replace(/you were/ig, "I was")
+					  .replace(/you were/ig, "I was")
 					  .replace(/(w)ere(n['\u2019]t)? you\b/ig, "$1as$2 I")
-	                  .replace(/you/ig, "I")
-	                  .replace(/(\d+.?(square |cubic )?)f(oo|ee)t\b/ig, "$1ft");
+					  .replace(/you/ig, "I")
+					  .replace(/(\d+.?(square |cubic )?)f(oo|ee)t\b/ig, "$1ft");
 	// Now correct prepositions where "I" should be "me"
 	firstPerson = firstPerson.replace(/\b(at|to|of|for|on|in|with|by|under|over|above|below|into|towards|through|around|past|as|about) I\b/ig, "$1 me");
 	// If provided with a convertFunction, run it

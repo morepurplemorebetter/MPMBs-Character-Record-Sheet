@@ -39,7 +39,7 @@ AddSubClass("barbarian", "path of the brawler", {
 			name : "Powerful Blows",
 			source : [["FBC:PotB", 0]],
 			minlevel : 3,
-			description : "\n   " + "My unarmed strikes deal 1d6 damage (1d8 in rage) instead of their usual amount",
+			description: desc("My unarmed strikes deal 1d6 damage (1d8 in rage) instead of their usual amount"),
 			calcChanges : {
 				atkAdd : [
 					function (fields, v) { 
@@ -63,7 +63,7 @@ AddSubClass("barbarian", "path of the brawler", {
 			name : "Massive Leap",
 			source : [["FBC:PotB", 0]],
 			minlevel : 3,
-			description : "\n   " + "While raging, my jump distance is doubled and I have adv. on checks related to jumping"
+			description: desc("While raging, my jump distance is doubled and I have adv. on checks related to jumping")
 		},
 		"subclassfeature6" : {
 			name : "Iron Body",

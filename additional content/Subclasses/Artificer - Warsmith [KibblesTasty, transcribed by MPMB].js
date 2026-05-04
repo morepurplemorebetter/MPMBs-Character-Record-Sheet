@@ -136,7 +136,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 				name : "Fully Customized Gear",
 				source : ["KT:AA", 27],
 				minlevel : 14,
-				description : "\n   During a long rest, I can swap out one upgrade for another if all prerequisites are met"
+				description: desc("During a long rest, I can swap out one upgrade for another if all prerequisites are met")
 			},
 			"subclassfeature15" : {
 				name : "Upgrades, Level 15",
@@ -329,7 +329,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 	}, {
 		name : "Martial Grip",
 		source : ["KT:AA", 28],
-		description : "\n   I have proficiency with martial weapons while wearing my warplate gauntlet",
+		description: desc("I have proficiency with martial weapons while wearing my warplate gauntlet"),
 		weaponProfs : [false, true]
 	}, {
 		name : "Power Fist",
@@ -375,7 +375,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		},
 		name : "Power Fist, 2nd hand",
 		source : ["KT:AA", 28],
-		description : "\n   With a Power Fist on both hands, I can use it for two-weapon fighting",
+		description: desc("With a Power Fist on both hands, I can use it for two-weapon fighting"),
 		weaponsAdd : ["Power Fist (off-hand)"]
 	}, {
 		name : "Reinforced Armor",
@@ -419,7 +419,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		name : "Sentient Armor",
 		listlevel : 3,
 		source : ["KT:AA", 28],
-		description : "\n   While wearing my warsmith's armor, I add +2 to my Intelligence score, up to 22",
+		description: desc("While wearing my warsmith's armor, I add +2 to my Intelligence score, up to 22"),
 		scores : [0, 0, 0, 2, 0, 0],
 		scoresMaximum : [0, 0, 0, 22, 0, 0],
 	}, {
@@ -468,7 +468,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		},
 		name : "Divination Visor",
 		source : ["KT:AA", 28],
-		description : "\n   I can cast my divination artificer spells as a bonus action and they no longer require conc.",
+		description: desc("I can cast my divination artificer spells as a bonus action and they no longer require conc."),
 		calcChanges : {
 			spellAdd : [
 				function (spellKey, spellObj, spName) {
@@ -505,7 +505,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		},
 		name : "Focal Reflectors",
 		source : ["KT:AA", 28],
-		description : "\n   I add +30 ft range to my Force Blast and a +2 bonus on all my ranged spell attack rolls",
+		description: desc("I add +30 ft range to my Force Blast and a +2 bonus on all my ranged spell attack rolls"),
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
@@ -529,7 +529,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		},
 		name : "Mechanical Enhancement",
 		source : ["KT:AA", 29],
-		description : "\n   +5 ft to all movement modes, +1 HP per artificer level, and +1 on Str, Dex, and Con saves",
+		description: desc("+5 ft to all movement modes, +1 HP per artificer level, and +1 on Str, Dex, and Con saves"),
 		calcChanges : {
 			hp : function (totalHD) {
 				if (classes.known["artificer-ua3"]) {
@@ -552,63 +552,63 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		},
 		name : "Reactive Plating",
 		source : ["KT:AA", 29],
-		description : "\n   As a reaction when hit by an attack, I can reduce the damage by my proficiency bonus",
+		description: desc("As a reaction when hit by an attack, I can reduce the damage by my proficiency bonus"),
 		action : [["reaction", " (when hit)"]]
 	}, {
 		listname : "Resistance, Acid",
 		listlevel : 5,
 		name : "Acid Resistance",
 		source : ["KT:AA", 29],
-		description : "\n   While wearing my warsmith's armor, I have resistance to acid damage",
+		description: desc("While wearing my warsmith's armor, I have resistance to acid damage"),
 		dmgres : ["Acid"]
 	}, {
 		listname : "Resistance, Cold",
 		listlevel : 5,
 		name : "Cold Resistance",
 		source : ["KT:AA", 29],
-		description : "\n   While wearing my warsmith's armor, I have resistance to Cold damage",
+		description: desc("While wearing my warsmith's armor, I have resistance to Cold damage"),
 		dmgres : ["Cold"]
 	}, {
 		listname : "Resistance, Fire",
 		listlevel : 5,
 		name : "Fire Resistance",
 		source : ["KT:AA", 29],
-		description : "\n   While wearing my warsmith's armor, I have resistance to fire damage",
+		description: desc("While wearing my warsmith's armor, I have resistance to fire damage"),
 		dmgres : ["Fire"]
 	}, {
 		listname : "Resistance, Force",
 		listlevel : 5,
 		name : "Force Resistance",
 		source : ["KT:AA", 29],
-		description : "\n   While wearing my warsmith's armor, I have resistance to force damage",
+		description: desc("While wearing my warsmith's armor, I have resistance to force damage"),
 		dmgres : ["Force"]
 	}, {
 		listname : "Resistance, Lightning",
 		listlevel : 5,
 		name : "Lightning Resistance",
 		source : ["KT:AA", 29],
-		description : "\n   While wearing my warsmith's armor, I have resistance to lightning damage",
+		description: desc("While wearing my warsmith's armor, I have resistance to lightning damage"),
 		dmgres : ["Lightning"]
 	}, {
 		listname : "Resistance, Necrotic",
 		listlevel : 5,
 		name : "Necrotic Resistance",
 		source : ["KT:AA", 29],
-		description : "\n   While wearing my warsmith's armor, I have resistance to necrotic damage",
+		description: desc("While wearing my warsmith's armor, I have resistance to necrotic damage"),
 		dmgres : ["Necrotic"]
 	}, {
 		listname : "Resistance, Radiant",
 		listlevel : 5,
 		name : "Radiant Resistance",
 		source : ["KT:AA", 29],
-		description : "\n   While wearing my warsmith's armor, I have resistance to radiant damage",
+		description: desc("While wearing my warsmith's armor, I have resistance to radiant damage"),
 		dmgres : ["Radiant"]
 	}, {
 		listname : "Resistance, Thunder",
 		listlevel : 5,
 		name : "Thunder Resistance",
 		source : ["KT:AA", 29],
-		description : "\n   While wearing my warsmith's armor, I have resistance to thunder damage",
+		description: desc("While wearing my warsmith's armor, I have resistance to thunder damage"),
 		dmgres : ["Thunder"]
 	}, {
 		listname : "Sealed Suit (prereq: Warplate)",
@@ -628,7 +628,8 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		listlevel : 9,
 		name : "Ether Reactor",
 		source : ["KT:AA", 29],
-		description : " [6 charges \u0026 1\xD7 overdraw per long rest]" + desc([
+		additional: "6 charges \u0026 1\xD7 overdraw per long rest",
+		description : desc([
 			"I can use these charges to cast spells from other upgrades, without expending that upgrade",
 			"This uses 1 charge per level of the spell; I can expend more to cast the spell at a higher level",
 			"Once per long rest, when out of charges, I can overdraw the reactor to cast a spell anyway",
@@ -647,7 +648,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		listlevel : 9,
 		name : "Iron Muscle",
 		source : ["KT:AA", 29],
-		description : "\n   While wearing my warsmith's armor, I add +2 to my Strength score, up to 24",
+		description: desc("While wearing my warsmith's armor, I add +2 to my Strength score, up to 24"),
 		scores : [2, 0, 0, 0, 0, 0],
 		scoresMaximum : [24, 0, 0, 0, 0, 0]
 	}, {
@@ -705,7 +706,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		},
 		name : "Ablative Armor",
 		source : ["KT:AA", 29],
-		description : "\n   Whenever I finish a short or long rest, I gain temp HP equal to my Int mod + artificer level"
+		description: desc("Whenever I finish a short or long rest, I gain temp HP equal to my Int mod + artificer level")
 	}, {
 		listname : "Cloaking Device (prereq: Active Camouflage)",
 		listlevel : 11,
@@ -734,7 +735,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		listlevel : 11,
 		name : "Distributed Force",
 		source : ["KT:AA", 29],
-		description : "\n   I can add my ability modifier to the damage of my off-hand attacks",
+		description: desc("I can add my ability modifier to the damage of my off-hand attacks"),
 		calcChanges : {
 			atkCalc : [
 				function (fields, v, output) {
@@ -752,7 +753,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		},
 		name : "Lightning Rod",
 		source : ["KT:AA", 29],
-		description : "\n   Whenever I cast Lightning Charged, I treat it as if I had used a spell slot of 1 level higher",
+		description: desc("Whenever I cast Lightning Charged, I treat it as if I had used a spell slot of 1 level higher"),
 		spellChanges : {
 			"lightning charged" : {
 				description : "If target crea melee atk, touch spell, or in grapple, other takes 1d6 Lightn. dmg; works 8+2/SL times",
@@ -795,7 +796,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		},
 		name : "Flight",
 		source : ["KT:AA", 30],
-		description : "\n   While wearing my warsmith's armor, I have a magical flying speed of 30 ft",
+		description: desc("While wearing my warsmith's armor, I have a magical flying speed of 30 ft"),
 		speed : { fly : { spd : 30, enc : 30 } }
 	}, {
 		listname : "Integrated Attack (prereq: Integrated Armor or Warplate)",
@@ -822,7 +823,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		},
 		name : "Power Slam Capacitor",
 		source : ["KT:AA", 30],
-		description : "\n   As an action, I jump up to my movement and cast Destructive Wave as I land (no spell slot)",
+		description: desc("As an action, I jump up to my movement and cast Destructive Wave as I land (no spell slot)"),
 		usages : 1,
 		recovery : "long rest",
 		action : [["action", ""]],
@@ -841,12 +842,12 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		},
 		name : "Self-Repair Matrix",
 		source : ["KT:AA", 30],
-		description : "\n   At the start of my turn when I have no temp HP, I gain my proficiency bonus in temp HP"
+		description: desc("At the start of my turn when I have no temp HP, I gain my proficiency bonus in temp HP")
 	}, {
 		listlevel : 11,
 		name : "Titan Grip",
 		source : ["KT:AA", 30],
-		description : "\n   I can wield a two-handed weapon in the one hand with the gauntlet with this upgrade"
+		description: desc("I can wield a two-handed weapon in the one hand with the gauntlet with this upgrade")
 	}, {
 		listlevel : 11,
 		prereqeval : function () {
@@ -881,7 +882,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		},
 		name : "Heavy Plating",
 		source : ["KT:AA", 30],
-		description : "\n   While wearing my warplate, I have resistance to nonmagical bludg./pierc./slash. damage",
+		description: desc("While wearing my warplate, I have resistance to nonmagical bludg./pierc./slash. damage"),
 		dmgres : [["Bludgeoning", "Bludg. (nonmagical)"], ["Piercing", "Pierc. (nonmagical)"], ["Slashing", "Slash. (nonmagical)"]]
 	}, {
 		listlevel : 15,
@@ -912,7 +913,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		listlevel : 15,
 		name : "Sun Cannon",
 		source : ["KT:AA", 30],
-		description : "\n   Once per long rest, I can cast Sunbeam using this upgrade without using a spell slot",
+		description: desc("Once per long rest, I can cast Sunbeam using this upgrade without using a spell slot"),
 		usages : 1,
 		recovery : "long rest",
 		spellcastingBonus : [{

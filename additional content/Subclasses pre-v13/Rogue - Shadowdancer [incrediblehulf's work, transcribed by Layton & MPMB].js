@@ -61,7 +61,7 @@ AddSubClass("rogue", "shadowdancer", {
 			name : "Shadowdancing",
 			source : ["IH:SD", 1],
 			minlevel : 3,
-			description : "\n   " + "As a bonus action, I can teleport from and into dim light or darkness within range",
+			description: desc("As a bonus action, I can teleport from and into dim light or darkness within range"),
 			additional : levels.map( function(n) { return n < 3 ? "" : "teleport " + (n < 6 ? "30 ft" : "60 ft"); }),
 			action : [["bonus action", ""]]
 		},
@@ -69,13 +69,13 @@ AddSubClass("rogue", "shadowdancer", {
 			name : "Improved Shadowdancing",
 			source : ["IH:SD", 1],
 			minlevel : 3,
-			description : "\n   " + "After teleporting, I have adv. on the next melee attack I make before the end of my turn"
+			description: desc("After teleporting, I have adv. on the next melee attack I make before the end of my turn")
 		},
 		"subclassfeature9.1" : {
 			name : "Supernatural Darkvision",
 			source : ["IH:SD", 1],
 			minlevel : 9,
-			description : "\n   " + "I can see normally in magical and nonmagical darkness, to a distance of 120 feet",
+			description: desc("I can see normally in magical and nonmagical darkness, to a distance of 120 feet"),
 			vision : [["Devil's sight", 120]]
 		},
 		"subclassfeature10" : {

@@ -476,7 +476,7 @@ AddSubClass("elementalist", "air", {
 			minlevel : 10,
 			description : desc([
 				"Choose whether to hybridize your elemental affinity or stick with air",
-				'Use the "Choose Features" button above to select the element'
+				'Use the "Choose Feature" button above to select the element'
 			]),
 			choices : ["Air", "Ice", "Storm"],
 			"air" : {
@@ -497,7 +497,7 @@ AddSubClass("elementalist", "air", {
 			source : [["ELCC", 89]],
 			minlevel : 14,
 			description : desc([
-				'Use the "Choose Features" button above to select your (hybrid) element'
+				'Use the "Choose Feature" button above to select your (hybrid) element'
 			]),
 			choices : ["Air", "Ice", "Storm"],
 			choicesNotInMenu : true,
@@ -516,7 +516,7 @@ AddSubClass("elementalist", "air", {
 			source : [["ELCC", 89]],
 			minlevel : 18,
 			description : desc([
-				'Use the "Choose Features" button above to select your (hybrid) element'
+				'Use the "Choose Feature" button above to select your (hybrid) element'
 			]),
 			choices : ["Air", "Ice", "Storm"],
 			choicesNotInMenu : true,
@@ -602,7 +602,7 @@ AddSubClass("elementalist", "earth", {
 			minlevel : 10,
 			description : desc([
 				"Choose whether to hybridize your elemental affinity or stick with earth",
-				'Use the "Choose Features" button above to select the element'
+				'Use the "Choose Feature" button above to select the element'
 			]),
 			choices : ["Earth", "Life", "Metal"],
 			"earth" : {
@@ -627,7 +627,7 @@ AddSubClass("elementalist", "earth", {
 			source : [["ELCC", 89]],
 			minlevel : 14,
 			description : desc([
-				'Use the "Choose Features" button above to select your (hybrid) element'
+				'Use the "Choose Feature" button above to select your (hybrid) element'
 			]),
 			choices : ["Earth", "Life", "Metal"],
 			choicesNotInMenu : true,
@@ -646,7 +646,7 @@ AddSubClass("elementalist", "earth", {
 			source : [["ELCC", 89]],
 			minlevel : 18,
 			description : desc([
-				'Use the "Choose Features" button above to select your (hybrid) element'
+				'Use the "Choose Feature" button above to select your (hybrid) element'
 			]),
 			choices : ["Earth", "Life", "Metal"],
 			choicesNotInMenu : true,
@@ -725,7 +725,7 @@ AddSubClass("elementalist", "fire", {
 			minlevel : 10,
 			description : desc([
 				"Choose whether to hybridize your elemental affinity or stick with fire",
-				'Use the "Choose Features" button above to select the element'
+				'Use the "Choose Feature" button above to select the element'
 			]),
 			choices : ["Fire", "Metal", "Storm"],
 			"fire" : {
@@ -749,7 +749,7 @@ AddSubClass("elementalist", "fire", {
 			source : [["ELCC", 89]],
 			minlevel : 14,
 			description : desc([
-				'Use the "Choose Features" button above to select your (hybrid) element'
+				'Use the "Choose Feature" button above to select your (hybrid) element'
 			]),
 			savetxt : { immune : ["fire"] }, // from Fireproof
 			choices : ["Fire", "Metal", "Storm"],
@@ -769,7 +769,7 @@ AddSubClass("elementalist", "fire", {
 			source : [["ELCC", 89]],
 			minlevel : 18,
 			description : desc([
-				'Use the "Choose Features" button above to select your (hybrid) element'
+				'Use the "Choose Feature" button above to select your (hybrid) element'
 			]),
 			choices : ["Fire", "Metal", "Storm"],
 			choicesNotInMenu : true,
@@ -866,7 +866,7 @@ AddSubClass("elementalist", "water", {
 			minlevel : 10,
 			description : desc([
 				"Choose whether to hybridize your elemental affinity or stick with water",
-				'Use the "Choose Features" button above to select the element'
+				'Use the "Choose Feature" button above to select the element'
 			]),
 			choices : ["Water", "Ice", "Life"],
 			"water" : {
@@ -887,7 +887,7 @@ AddSubClass("elementalist", "water", {
 			source : [["ELCC", 89]],
 			minlevel : 14,
 			description : desc([
-				'Use the "Choose Features" button above to select your (hybrid) element'
+				'Use the "Choose Feature" button above to select your (hybrid) element'
 			]),
 			choices : ["Water", "Ice", "Life"],
 			choicesNotInMenu : true,
@@ -906,7 +906,7 @@ AddSubClass("elementalist", "water", {
 			source : [["ELCC", 89]],
 			minlevel : 18,
 			description : desc([
-				'Use the "Choose Features" button above to select your (hybrid) element'
+				'Use the "Choose Feature" button above to select your (hybrid) element'
 			]),
 			choices : ["Water", "Ice", "Life"],
 			choicesNotInMenu : true,

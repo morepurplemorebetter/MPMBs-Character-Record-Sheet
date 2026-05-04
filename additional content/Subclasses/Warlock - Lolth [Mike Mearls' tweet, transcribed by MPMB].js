@@ -95,7 +95,7 @@ AddSubClass("warlock", "lolth", {
 			name : "Spider Queen's Chosen",
 			source : ["MM:LP", 0],
 			minlevel : 10,
-			description : "\n   In spider form, I have resistance to nonmagical bludgeoning, piercing, & slashing damage",
+			description: desc("In spider form, I have resistance to nonmagical bludgeoning, piercing, & slashing damage"),
 			dmgres : [["Bludgeoning", "Bludgeon. (as spider)"], ["Piercing", "Piercing (as spider)"], ["Slashing", "Slashing (as spider)"]]
 		},
 		"subclassfeature14" : {

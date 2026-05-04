@@ -277,23 +277,26 @@ ClassList["purplemancer"] = {
 			name : "Fighting Style", //required; the name of the class feature
 			source : ["P", 72], //required; the source of the class feature
 			minlevel : 1, //required; the level at which the feature is gained
-			description : "\n   " + "Choose a Fighting Style using the \"Choose Feature\" button above", //required; the text to put in the "Class Features" field
+			description : desc('Choose a Fighting Style using the "Choose Feature" button above'), //required; the text to put in the "Class Features" field
 			choices : ["Great Weapon Fighting", "Protection", "Two-Weapon Fighting"], //optional; choices the feature offers, if any.
 			choicesNotInMenu : true, //optional: this tells the sheet not to put the choices into the "Choose Options" menu on the second page. Use this is you want to have the choices selected through another class feature. See for an example of this the "Draconic Bloodline" sorcerer archetype. // Note that you always want to have the choices listed in the choices attribute, because otherwise they won't be updated if they have level-dependent features
 			"great weapon fighting" : { //required if "choices" is defined; has to be exactly the same as how it is written in the "choices" entry. Note the use of lower case!
 				name : "Great Weapon Fighting Style", //required;
-				description : "\n   " + "Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands" //required;
+				description: desc("Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands"), //required;
 			},
 
 			"protection" : { //has to be exactly the same as how it is written in the "choices" entry. Note the use of lower case!
 				name : "Protection Fighting Style",
-				description : "\n   " + "As a reaction, I can give disadv. on an attack made vs. someone within 5 ft of me" + "\n   " + "I need to be wielding a shield and be able to see the attacker to do this",
+				description: desc([
+					"As a reaction, I can give disadv. on an attack made vs. someone within 5 ft of me",
+					"I need to be wielding a shield and be able to see the attacker to do this",
+				]),
 				action : ["reaction", ""] //optional; adds the name of this choice to the reaction list when chosen. The options are "action", "bonus action", and "reaction" //the second value in the array is added as a suffix for the "name" of the feature when entered into the action field
 			},
 
 			"two-weapon fighting" : { //has to be exactly the same as how it is written in the "choices" entry. Note the use of lower case!
 				name : "Two-Weapon Fighting Style",
-				description : "\n   " + "I can add my ability modifier to the damage of my off-hand attacks",
+				description: desc("I can add my ability modifier to the damage of my off-hand attacks"),
 
 				calcChanges : { //optional; adds stuff to the calculation of attacks and/or HP
 
@@ -330,7 +333,7 @@ ClassList["purplemancer"] = {
 			name : "Arcane Initiate",
 			source : ["S", 125],
 			minlevel : 1,
-			description : "\n   " + "I gain proficiency with Arcana and two wizard cantrips that count as cleric cantrips",
+			description: desc("I gain proficiency with Arcana and two wizard cantrips that count as cleric cantrips"),
 
 			skills : ["Arcana"], //optional; an array of skills with which proficiency is gained
 
@@ -374,7 +377,11 @@ ClassList["purplemancer"] = {
 			name : "Spellcasting",
 			source : ["P", 114],
 			minlevel : 1,
-			description : "\n   " + "I can cast prepared wizard cantrips/spells, using Intelligence as my spellcasting ability" + "\n   " + "I can use an arcane focus as a spellcasting focus" + "\n   " + "I can cast all wizard spells in my spellbook as rituals if they have the ritual tag",
+			description: desc([
+				"I can cast prepared wizard cantrips/spells, using Intelligence as my spellcasting ability",
+				"I can use an arcane focus as a spellcasting focus",
+				"I can cast all wizard spells in my spellbook as rituals if they have the ritual tag",
+			]),
 			additional : ["3 cantrips known", "3 cantrips known", "3 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "4 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known", "5 cantrips known"], //optional; text to display in the header of the feature. This can be one value, but can also be an array of 20 values, one for each level.
 		},
 
@@ -382,7 +389,7 @@ ClassList["purplemancer"] = {
 			name : "Second Wind",
 			source : ["P", 72],
 			minlevel : 1,
-			description : "\n   " + "As a bonus action, I regain 1d10 + fighter level HP; I can use this once per short rest",
+			description: desc("As a bonus action, I regain 1d10 + fighter level HP; I can use this once per short rest"),
 			additional : ["1d10+1", "1d10+2", "1d10+3", "1d10+4", "1d10+5", "1d10+6", "1d10+7", "1d10+8", "1d10+9", "1d10+10", "1d10+11", "1d10+12", "1d10+13", "1d10+14", "1d10+15", "1d10+16", "1d10+17", "1d10+18", "1d10+19", "1d10+20"],
 			usages : 1, //optional; number of times it can be used. This can be one value, but can also be an array of 20 values, one for each level. It is recommended to use a numerical value, but if you use a string, include " per " at the end, like "1d10 per "
 			recovery : "short rest", //required if "usages" is defined; way of getting the limited feature recharged. Only if you define both the 'usages' and 'recovery' will the feature be added to the limited features
@@ -393,7 +400,7 @@ ClassList["purplemancer"] = {
 			name : "Action Surge",
 			source : ["P", 72],
 			minlevel : 2,
-			description : "\n   " + "I can take one additional action on my turn on top of my normally allowed actions",
+			description: desc("I can take one additional action on my turn on top of my normally allowed actions"),
 			usages : [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2], //example of usages varying per level
 			recovery : "short rest",
 
@@ -410,7 +417,10 @@ ClassList["purplemancer"] = {
 			name : "Martial Archetype",
 			source : ["P", 72],
 			minlevel : 3,
-			description : "\n   " + "Choose a Martial Archetype you strive to emulate and put it in the \"Class\" field" + "\n   " + "Choose either Champion, Battle Master, Eldritch Knight, or Purple Dragon Knight",
+			description : desc([
+				'Choose a Martial Archetype you strive to emulate and put it in the "Class" field',
+				"Choose either Champion, Battle Master, Eldritch Knight, or Purple Dragon Knight",
+			])
 		},
 
 		"subclassfeature3.1" : {

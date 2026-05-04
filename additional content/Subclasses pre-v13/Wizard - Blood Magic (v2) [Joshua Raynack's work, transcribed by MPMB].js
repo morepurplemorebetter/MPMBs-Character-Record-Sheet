@@ -69,7 +69,7 @@ AddSubClass("wizard", "blood magic-v2", {
 			source : ["JR:BM", 12],
 			minlevel : 2,
 			description : desc([
-				"Use the \"Choose Feature\" button above to add 2 blood rites to the third page",
+				'Use the "Choose Feature" button above to add 2 blood rites to the third page',
 				"Whenever I gain a wizard level, I can replace a blood rite I know with another"
 			]),
 			extraname : "Blood Rite",
@@ -147,7 +147,7 @@ AddSubClass("wizard", "blood magic-v2", {
 			name : "Empowered Blood",
 			source : ["JR:BM", 12],
 			minlevel : 6,
-			description : "\n   " + "When I roll damage for a spell, I can reroll up to my Con Mod of damage dice (min 1)",
+			description: desc("When I roll damage for a spell, I can reroll up to my Con Mod of damage dice (min 1)"),
 			usages : levels.map(function (n) { return n < 6 ? "" : n < 14 ? 1 : 2; }),
 			recovery : "short rest"
 		},
@@ -155,7 +155,7 @@ AddSubClass("wizard", "blood magic-v2", {
 			name : "Blood Awakening",
 			source : ["JR:BM", 10],
 			minlevel : 10,
-			description : "\n   " + "Once per long rest, I can cast Revivify using a wizard spell slot",
+			description: desc("Once per long rest, I can cast Revivify using a wizard spell slot"),
 			usages : 1,
 			recovery : "long rest",
 			spellcastingBonus : [{

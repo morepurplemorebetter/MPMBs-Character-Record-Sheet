@@ -21,10 +21,10 @@ var iFileName = "Primitive Tribal Member [Damion Meany's work, transcribed by /u
 RequiredSheetVersion(12.999);
 
 SourceList["DM:IB"] = {
-    name : "Damion Meany's Improved Backgrounds",
-    abbreviation : "DM:IB",
-    group : "Dungeon Masters Guild",
-    url : "https://www.dmsguild.com/product/208784/Improved-Backgrounds",
+	name : "Damion Meany's Improved Backgrounds",
+	abbreviation : "DM:IB",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/208784/Improved-Backgrounds",
 	date : "2017/04/01"
 };
 
@@ -94,6 +94,6 @@ BackgroundList["primitive tribe member"] = {
 };
 
 BackgroundFeatureList["at one with nature"] = {
-    description : "I am intimately familiar with the geography of my home region. I know exactly where water, shelter, and food can be found within several miles of my home and am good at finding these areas when outside of my home region as well when in a climate much like it.",
-    source : ["DM:IB", 63]
+	description : "I am intimately familiar with the geography of my home region. I know exactly where water, shelter, and food can be found within several miles of my home and am good at finding these areas when outside of my home region as well when in a climate much like it.",
+	source : ["DM:IB", 63]
 };

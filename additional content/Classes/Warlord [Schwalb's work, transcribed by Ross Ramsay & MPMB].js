@@ -106,13 +106,13 @@ ClassList["warlord"] = {
 			name : "Military Strategem",
 			source : ["SE:W", 3],
 			minlevel : 3,
-			description : "\n   " + "Choose a Military Strategem you adhere to and put it in the \"Class\" field"
+			description: desc('Choose a Military Strategem you adhere to and put it in the "Class" field')
 		},
 		"battle leader" : {
 			name : "Battle Leader",
 			source : ["SE:W", 4],
 			minlevel : 6,
-			description : "\n   " + "Allies within range add my Charisma modifier to the damage of their weapon attacks",
+			description: desc("Allies within range add my Charisma modifier to the damage of their weapon attacks"),
 			additional : levels.map(function (n) {
 				return n < 6 ? "" : n < 10 ? "10 ft" : n < 20 ? "30 ft" : "60 ft";
 			})
@@ -121,7 +121,7 @@ ClassList["warlord"] = {
 			name : "Call To Arms",
 			source : ["SE:W", 4],
 			minlevel : 6,
-			description : "\n   " + "Me and my allies within range can add my battle command die to initiative checks",
+			description: desc("Me and my allies within range can add my battle command die to initiative checks"),
 			additional : levels.map(function (n) {
 				if (n < 6) return "";
 				var range = n < 10 ? "10 ft" : n < 20 ? "30 ft" : "60 ft";
@@ -173,7 +173,7 @@ AddSubClass("warlord", "daring gambler", {
 			name : "Daring Assault",
 			source : ["SE:W", 5],
 			minlevel : 3,
-			description : "\n   " + "Allies within range can choose to take -5 on their attack rolls to do extra damage",
+			description: desc("Allies within range can choose to take -5 on their attack rolls to do extra damage"),
 			additional : levels.map(function (n) {
 				return n < 3 ? "" : "+" + (n < 15 ? 2 : 3) + "d6; " + (n < 10 ? "10 ft" : n < 20 ? "30 ft" : "60 ft");
 			})
@@ -182,7 +182,7 @@ AddSubClass("warlord", "daring gambler", {
 			name : "Desperate Avoidance",
 			source : ["SE:W", 5],
 			minlevel : 7,
-			description : "\n" + "I can make a save with adv., but I get disadv. on attack rolls until my next turn ends",
+			description: desc("I can make a save with adv., but I get disadv. on attack rolls until my next turn ends"),
 			usages : 1,
 			recovery : "short rest"
 		},
@@ -242,7 +242,7 @@ AddSubClass("warlord", "golden general", {
 			name : "Inspiring Presence",
 			source : ["SE:W", 5],
 			minlevel : 7,
-			description : "\n   I gain proficiency in the Persuasion skill, or expertise if I already have proficiency",
+			description: desc("I gain proficiency in the Persuasion skill, or expertise if I already have proficiency"),
 			skills : [["Persuasion", "increment"]]
 		},
 		"subclassfeature11" : {
@@ -289,7 +289,7 @@ AddSubClass("warlord", "hordemaster", {
 			name : "Make Haste",
 			source : ["SE:W", 6],
 			minlevel : 3,
-			description : "\n   Allies starting there turn within range gain +5 ft speed until the end of their turn",
+			description: desc("Allies starting there turn within range gain +5 ft speed until the end of their turn"),
 			additional : levels.map(function (n) {
 				return n < 3 ? "" : n < 10 ? "10 ft" : n < 20 ? "30 ft" : "60 ft";
 			})
@@ -314,7 +314,7 @@ AddSubClass("warlord", "hordemaster", {
 			name : "Nimble Troops",
 			source : ["SE:W", 6],
 			minlevel : 7,
-			description : "\n   Creatures within range add my Charisma modifier to Athletics and Acrobatics checks",
+			description: desc("Creatures within range add my Charisma modifier to Athletics and Acrobatics checks"),
 			additional : levels.map(function (n) {
 				return n < 7 ? "" : n < 10 ? "10 ft" : n < 20 ? "30 ft" : "60 ft";
 			})
@@ -323,7 +323,7 @@ AddSubClass("warlord", "hordemaster", {
 			name : "Hit-and-Run",
 			source : ["SE:W", 6],
 			minlevel : 11,
-			description : "\n   Using a battle command die granted by me also gains +10 ft speed until its turn ends"
+			description: desc("Using a battle command die granted by me also gains +10 ft speed until its turn ends")
 		},
 		"subclassfeature15" : {
 			name : "Seize Advantage",
@@ -387,7 +387,7 @@ AddSubClass("warlord", "resourceful leader", {
 			name : "Trick up your Sleeve",
 			source : ["SE:W", 7],
 			minlevel : 7,
-			description : "\n   I can add my proficiency bonus (an extra time) to one ability check, attack roll, or save",
+			description: desc("I can add my proficiency bonus (an extra time) to one ability check, attack roll, or save"),
 			usages : 1,
 			recovery : "short rest"
 		},
@@ -395,7 +395,7 @@ AddSubClass("warlord", "resourceful leader", {
 			name : "Close Call",
 			source : ["SE:W", 7],
 			minlevel : 11,
-			description : "\n   When I would fail a check or save, I can add a die to the total, but only once per minute",
+			description: desc("When I would fail a check or save, I can add a die to the total, but only once per minute"),
 			usages : 1,
 			recovery : "1 min",
 			additional : levels.map(function (n) {
@@ -446,7 +446,7 @@ AddSubClass("warlord", "shrewd commander", {
 			name : "Attention to Detail",
 			source : ["SE:W", 7],
 			minlevel : 7,
-			description : "\n   Three times per long rest I can make an ability check with advantage",
+			description: desc("Three times per long rest I can make an ability check with advantage"),
 			usages : 3,
 			recovery : "long rest"
 		},
@@ -464,7 +464,7 @@ AddSubClass("warlord", "shrewd commander", {
 			name : "Exploit the Advantage",
 			source : ["SE:W", 8],
 			minlevel : 15,
-			description : "\n   When an ally attacks a target marked by me, those attacks do an extra +1d6 damage"
+			description: desc("When an ally attacks a target marked by me, those attacks do an extra +1d6 damage")
 		},
 		"subclassfeature18" : {
 			name : "No Room for Failure",
@@ -504,7 +504,7 @@ AddSubClass("warlord", "supreme tactician", {
 			name : "Student of History",
 			source : ["SE:W", 8],
 			minlevel : 7,
-			description : "\n   I gain proficiency and expertise in the History skill",
+			description: desc("I gain proficiency and expertise in the History skill"),
 			skills : [["History", "full"]]
 		},
 		"subclassfeature11" : {
@@ -520,13 +520,13 @@ AddSubClass("warlord", "supreme tactician", {
 			name : "Superior Tactics",
 			source : ["SE:W", 8],
 			minlevel : 15,
-			description : "\n   I can have two tactics dice at the same time"
+			description: desc("I can have two tactics dice at the same time")
 		},
 		"subclassfeature18" : {
 			name : "Master Tactician",
 			source : ["SE:W", 8],
 			minlevel : 18,
-			description : "\n   Creatures using a combat die granted by me can reroll any 1 or 2 until it is a 3 or more"
+			description: desc("Creatures using a combat die granted by me can reroll any 1 or 2 until it is a 3 or more")
 		}
 	}
 });

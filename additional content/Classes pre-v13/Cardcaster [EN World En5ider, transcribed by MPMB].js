@@ -210,7 +210,7 @@ ClassList["cardcaster"] = {
 			source : ["EN5:106", 4],
 			minlevel : 1,
 			description : desc([
-				"Choose your Focus Card of the minor arcana and put it in the \"Class\" field",
+				'Choose your Focus Card of the minor arcana and put it in the "Class" field',
 				"Choose either the Knight of Swords, Page of Wands, or Queen of Cups"
 			])
 		},
@@ -324,7 +324,7 @@ AddSubClass("cardcaster", "knight of swords", {
 			name : "Warrior's Fortitude",
 			source : ["EN5:106", 6],
 			minlevel : 1,
-			description : "\n   " + "My Hit Dice from the cardcaster class increase to d8s"
+			description: desc("My Hit Dice from the cardcaster class increase to d8s")
 		},
 		"subclassfeature2" : {
 			name : "Resounding Charge",
@@ -372,7 +372,7 @@ AddSubClass("cardcaster", "knight of swords", {
 			name : "Bonus Proficiencies",
 			source : ["EN5:106", 6],
 			minlevel : 14,
-			description : "\n   " + "I gain proficiency with heavy armor, and light and martial weapons",
+			description: desc("I gain proficiency with heavy armor, and light and martial weapons"),
 			armor : [false, false, true, false],
 			weapons : [true, true]
 		}
@@ -387,7 +387,7 @@ AddSubClass("cardcaster", "page of wands", {
 			name : "Cantrips",
 			source : ["EN5:106", 6],
 			minlevel : 1,
-			description : "\n   " + "I know the Minor Illusion and Produce Flames cantrips",
+			description: desc("I know the Minor Illusion and Produce Flames cantrips"),
 			spellcastingBonus : [{
 				name : "Page of Wands",
 				spells : ["minor illusion", "produce flames"],
@@ -410,7 +410,7 @@ AddSubClass("cardcaster", "page of wands", {
 			name : "Sprout of Curiosity",
 			source : ["EN5:106", 6],
 			minlevel : 2,
-			description : "\n   " + "Before I draw cards after a long rest, I select one card from my deck to add to my hand"
+			description: desc("Before I draw cards after a long rest, I select one card from my deck to add to my hand")
 		},
 		"subclassfeature6" : {
 			name : "Backburn",
@@ -508,7 +508,7 @@ AddSubClass("cardcaster", "queen of cups", {
 			name : "Court of Cups",
 			source : ["EN5:106", 7],
 			minlevel : 14,
-			description : "\n   " + "I gain resistance to acid, cold, necrotic, and psychic damage",
+			description: desc("I gain resistance to acid, cold, necrotic, and psychic damage"),
 			dmgres : ["Acid", "Cold", "Necrotic", "Psychic"]
 		}
 	}
@@ -531,7 +531,7 @@ AddSubClass("cardcaster", "king of pentacles", {
 			name : "Lucre \u0026 Cantrips",
 			source : ["EN5:110", 2],
 			minlevel : 1,
-			description : "\n   " + "I know the Fire Bolt and Prestidigitation cantrips; I start play with an extra 50 gp",
+			description: desc("I know the Fire Bolt and Prestidigitation cantrips; I start play with an extra 50 gp"),
 			spellcastingBonus : [{
 				name : "King of Pentacles",
 				spells : ["fire bolt", "prestidigitation"],
@@ -543,7 +543,7 @@ AddSubClass("cardcaster", "king of pentacles", {
 			name : "Spendthrift",
 			source : ["EN5:110", 2],
 			minlevel : 1,
-			description : "\n   " + "I can get 25% discount on any one item purchased, up to a maximum depending on level",
+			description: desc("I can get 25% discount on any one item purchased, up to a maximum depending on level"),
 			additional : levels.map(function (n) {
 				var total = (Math.pow(n, 2) * 100);
 				total = total > 1000 ? total / 1000 + 'k' : total;
@@ -556,7 +556,7 @@ AddSubClass("cardcaster", "king of pentacles", {
 			name : "Profit Margin",
 			source : ["EN5:110", 2],
 			minlevel : 2,
-			description : "\n   " + "Whenever I find cash or receive a cash payout, it mysteriously increases by 10%"
+			description: desc("Whenever I find cash or receive a cash payout, it mysteriously increases by 10%")
 		},
 		"subclassfeature6" : {
 			name : "Insightful Shopper",
@@ -641,7 +641,7 @@ AddSubClass("cardcaster", "jack of beasts", {
 			name : "Monstrous Arcana",
 			source : ["EN5:110", 3],
 			minlevel : 1,
-			description : "\n   " + "I have additional spell options for every major arcana card (see [MA] on 'Notes' page)",
+			description: desc("I have additional spell options for every major arcana card (see [MA] on 'Notes' page)"),
 			eval : "try { if (ClassSubList['cardcaster-jack of beasts']) { ClassList.cardcaster.removeMajorArcana(); ClassSubList['cardcaster-jack of beasts'].addMonstrousArcana(); }; } catch (er) {}; ",
 			removeeval : "try { if (ClassSubList['cardcaster-jack of beasts']) { ClassSubList['cardcaster-jack of beasts'].removeMonstrousArcana(); }; } catch (er) {}; "
 		},

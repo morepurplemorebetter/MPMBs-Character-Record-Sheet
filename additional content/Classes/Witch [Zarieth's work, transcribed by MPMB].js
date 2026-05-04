@@ -145,7 +145,7 @@ ClassList["witch-zarieth"] = {
 			description : desc([
 				"With 10 minutes of uninterrupted meditation, I can expend a spell slot to bind a spirit",
 				"The spirit's level is as the spell slot used; I can't recover this slot while the spirit is bound",
-				"I can choose a spirit from the list on the third page's \"Notes\" section",
+				'I can choose a spirit from the list on the 3rd page "Notes" section',
 				"The amount of active bonds I can have is limited by my level and I can't have duplicates",
 				"A spirit has an effect while it is bound and a one-time effect when I choose to release it"
 			]),

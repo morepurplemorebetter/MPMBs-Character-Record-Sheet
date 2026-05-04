@@ -126,7 +126,7 @@ ClassList['witch-wr'] = {
 			name : "Tradition",
 			source : [["WR:W", 5]],
 			minlevel : 2,
-			description : '\n   Choose a Witching Tradition that represents your style and put it in the "Class" field'
+			description : desc('Choose a Witching Tradition that represents your style and put it in the "Class" field')
 		},
 		"wild shape" : { // use this object name so the sheet known to populate the wild shape pages
 			name : "Animal Shift",

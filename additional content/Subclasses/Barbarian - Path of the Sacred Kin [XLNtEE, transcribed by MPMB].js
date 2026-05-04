@@ -46,7 +46,7 @@ AddSubClass("barbarian", "sacred kin-xlntee2", {
 			name : "Spellcasting",
 			source : ["XLNtEE2", 8],
 			minlevel : 3,
-			description : "\n   " + "I can cast known sorcerer cantrips/spells, using Constitution as my spellcasting ability",
+			description: desc("I can cast known sorcerer cantrips/spells, using Constitution as my spellcasting ability"),
 			additional : ["", "", "2 cantrips \u0026 3 spells known", "2 cantrips \u0026 4 spells known", "2 cantrips \u0026 4 spells known", "2 cantrips \u0026 4 spells known", "2 cantrips \u0026 5 spells known", "2 cantrips \u0026 6 spells known", "2 cantrips \u0026 6 spells known", "3 cantrips \u0026 7 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 8 spells known", "3 cantrips \u0026 9 spells known", "3 cantrips \u0026 10 spells known", "3 cantrips \u0026 10 spells known", "3 cantrips \u0026 11 spells known", "3 cantrips \u0026 11 spells known", "3 cantrips \u0026 11 spells known", "3 cantrips \u0026 12 spells known", "3 cantrips \u0026 13 spells known"],
 			spellcastingBonus : [{ //for the spells gained at level 3, 8, 14, 20
 				name : "From any school",
@@ -59,21 +59,21 @@ AddSubClass("barbarian", "sacred kin-xlntee2", {
 			name : "Ancestral Origins",
 			source : ["XLNtEE2", 9],
 			minlevel : 3,
-			description : "\n   Use the \"Choose Features\" button above to select the ancestral origins",
+			description : desc('Use the "Choose Feature" button above to select the ancestral origins'),
 			choices : ["Aberrant", "Celestial", "Demonic"],
 			"aberrant" : {
 				name : "Aberrant Ancestral Origin",
-				description : "\n   I can speak, read and write Deep Speech; My ancestral damage types are psychic \u0026 force",
+				description: desc("I can speak, read and write Deep Speech; My ancestral damage types are psychic \u0026 force"),
 				languageProfs : ["Deep Speech"]
 			},
 			"celestial" : {
 				name : "Celestial Ancestral Origin",
-				description : "\n   I can speak, read and write Celestial; My ancestral damage types are thunder \u0026 radiant",
+				description: desc("I can speak, read and write Celestial; My ancestral damage types are thunder \u0026 radiant"),
 				languageProfs : ["Celestial"]
 			},
 			"demonic" : {
 				name : "Demonic Ancestral Origin",
-				description : "\n   I can speak, read and write Abyssal; My ancestral damage types are necrotic and poison",
+				description: desc("I can speak, read and write Abyssal; My ancestral damage types are necrotic and poison"),
 				languageProfs : ["Abyssal"]
 			},
 			choiceDependencies : [{
@@ -84,7 +84,7 @@ AddSubClass("barbarian", "sacred kin-xlntee2", {
 			name : "Mythic Manifestation",
 			source : ["XLNtEE2", 9],
 			minlevel : 3,
-			description : "\n   When I use a spell slot to cast a spell, I gain three times the slot's level in temporary HP"
+			description: desc("When I use a spell slot to cast a spell, I gain three times the slot's level in temporary HP")
 		},
 		"subclassfeature3.3" : {
 			name : "Supernatural Fury",
@@ -120,7 +120,7 @@ AddSubClass("barbarian", "sacred kin-xlntee2", {
 			name : "Transcendent Legacy",
 			source : ["XLNtEE2", 9],
 			minlevel : 6,
-			description : "\n   While in rage, I can have my melee weapon attacks deal an ancestral damage type",
+			description: desc("While in rage, I can have my melee weapon attacks deal an ancestral damage type"),
 			additional : levels.map( function (n) {
 				return n < 14 ? "" : "Ignores resistance";
 			})
@@ -139,7 +139,7 @@ AddSubClass("barbarian", "sacred kin-xlntee2", {
 			name : "Immortal Birthright",
 			source : ["XLNtEE2", 9],
 			minlevel : 14,
-			description : "\n   Use the \"Choose Features\" button above to select the ancestral origins",
+			description : desc('Use the "Choose Feature" button above to select the ancestral origins'),
 			action : [["bonus action", " (start/stop)"]],
 			speed : { fly : { spd : "walk", enc : "walk" } },
 			choices : ["aberrant", "celestial", "demonic"],

@@ -36,7 +36,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			name : "Master Runes",
 			source : [["XLNtEE", 19]],
 			minlevel : 3,
-			description : "\n   " + "I know the Ild (fire), Kalt (frost), Ond (spirit), Stein (Stone), and Vind (wind) runes"
+			description: desc("I know the Ild (fire), Kalt (frost), Ond (spirit), Stein (Stone), and Vind (wind) runes")
 		},
 		"subclassfeature3.1" : {
 			name : "Runecraft",
@@ -63,7 +63,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"hagr - ild" : {
 				name : "Hagr - Ild",
 				source : [["XLNtEE", 20]],
-				description : "\n   " + "While active, I can add my Con mod to my Str (Athletics) and Dex (Acrobatics) checks",
+				description: desc("While active, I can add my Con mod to my Str (Athletics) and Dex (Acrobatics) checks"),
 				usages : 1,
 				recovery : "short rest",
 				action : [["action", ""]]
@@ -71,7 +71,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"hagr - kalt" : {
 				name : "Hagr - Kalt",
 				source : [["XLNtEE", 20]],
-				description : "\n   " + "While active, I ignore difficult terrain and can walk on still or gently flowing water",
+				description: desc("While active, I ignore difficult terrain and can walk on still or gently flowing water"),
 				usages : 1,
 				recovery : "short rest",
 				action : [["action", ""]]
@@ -79,7 +79,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"hagr - ond" : {
 				name : "Hagr - Ond",
 				source : [["XLNtEE", 20]],
-				description : "\n   " + "While active, any healing I receive also gives me 5 + my proficiency bonus temporary HP",
+				description: desc("While active, any healing I receive also gives me 5 + my proficiency bonus temporary HP"),
 				usages : 1,
 				recovery : "short rest",
 				action : [["action", ""]]
@@ -87,7 +87,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"hagr - stein" : {
 				name : "Hagr - Stein",
 				source : [["XLNtEE", 20]],
-				description : "\n   " + "While active, any healing I receive also gives me 5 + my proficiency bonus temporary HP",
+				description: desc("While active, any healing I receive also gives me 5 + my proficiency bonus temporary HP"),
 				usages : 1,
 				recovery : "short rest",
 				action : [["action", ""]]
@@ -95,7 +95,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"hagr - vind" : {
 				name : "Hagr - Vind",
 				source : [["XLNtEE", 20]],
-				description : "\n   " + "While active, I gain 5 ft \xD7 my Constitution mod extra movement speed (min 5 ft)",
+				description: desc("While active, I gain 5 ft \xD7 my Constitution mod extra movement speed (min 5 ft)"),
 				usages : 1,
 				recovery : "short rest",
 				action : [["action", ""]]
@@ -116,7 +116,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"sokn - kalt" : {
 				name : "Sokn - Kalt",
 				source : [["XLNtEE", 20]],
-				description : "\n   " + "While active, targets I hit with the rune-inscribed weapon can't take reactions until its turn",
+				description: desc("While active, targets I hit with the rune-inscribed weapon can't take reactions until its turn"),
 				usages : 1,
 				recovery : "short rest",
 				action : [["bonus action", ""]]
@@ -157,7 +157,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"vard - ild" : {
 				name : "Vard - Ild",
 				source : [["XLNtEE", 20]],
-				description : "\n   " + "While active, when hit by a melee attack, the attacker gets my Prof Bonus in fire damage",
+				description: desc("While active, when hit by a melee attack, the attacker gets my Prof Bonus in fire damage"),
 				usages : 1,
 				recovery : "short rest",
 				action : [["reaction", ""]]
@@ -165,7 +165,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"vard - kalt" : {
 				name : "Vard - Kalt",
 				source : [["XLNtEE", 20]],
-				description : "\n   " + "While active, when hit by a melee attack, I reduce the damage by my proficiency bonus",
+				description: desc("While active, when hit by a melee attack, I reduce the damage by my proficiency bonus"),
 				usages : 1,
 				recovery : "short rest",
 				action : [["reaction", ""]]
@@ -173,7 +173,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"vard - ond" : {
 				name : "Vard - Ond",
 				source : [["XLNtEE", 20]],
-				description : "\n   " + "While active, I add my Constitution modifier to saving throws to resist being frightened",
+				description: desc("While active, I add my Constitution modifier to saving throws to resist being frightened"),
 				usages : 1,
 				recovery : "short rest",
 				action : [["reaction", ""]]
@@ -181,7 +181,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"vard - stein" : {
 				name : "Vard - Stein",
 				source : [["XLNtEE", 20]],
-				description : "\n   " + "While active, I have advantage on saving throws to resist being moved against my will",
+				description: desc("While active, I have advantage on saving throws to resist being moved against my will"),
 				usages : 1,
 				recovery : "short rest",
 				action : [["reaction", ""]]
@@ -189,7 +189,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			"vard - vind" : {
 				name : "Vard - Vind",
 				source : [["XLNtEE", 20]],
-				description : "\n   " + "While active, ranged attacks against me have disadvantage",
+				description: desc("While active, ranged attacks against me have disadvantage"),
 				usages : 1,
 				recovery : "short rest",
 				action : [["reaction", ""]]
@@ -243,7 +243,7 @@ AddSubClass("fighter", "runeguard-xlntee", {
 			name : "Runic Mastery",
 			source : [["XLNtEE", 19]],
 			minlevel : 18,
-			description : "\n   " + "I no longer need to concentrate on runic augmentations and can have three active"
+			description: desc("I no longer need to concentrate on runic augmentations and can have three active")
 		}
 	}
 });

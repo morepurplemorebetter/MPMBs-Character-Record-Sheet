@@ -85,7 +85,7 @@ ClassList["battlemage"] = {
 			source : ["LA:BM", 3],
 			minlevel : 1,
 			description : desc([
-				'Choose an energy type using the "Choose Features" button above; I gain resistance to it',
+				'Choose an energy type using the "Choose Feature" button above; I gain resistance to it',
 				"It replaces the acid, cold, fire, lightning, necrotic, psychic, and thunder damage in spells"
 			]),
 			calcChanges : {
@@ -256,7 +256,7 @@ ClassList["battlemage"] = {
 			name : "Discoveries",
 			source : ["LA:BM", 3],
 			minlevel : 2,
-			description : '\n   Use the "Choose Feature" button above to add a discovery to the third page',
+			description : desc('Use the "Choose Feature" button above to add a discovery to the third page'),
 			additional : levels.map(function (n) {
 				return n < 2 ? "" : (n < 7 ? 1 : n < 15 ? 2 : 3) + " known; swap one when gaining level";
 			}),
@@ -357,7 +357,7 @@ ClassList["battlemage"] = {
 			"ritual casting" : {
 				name : "Ritual Casting",
 				source : ["LA:BM", 3],
-				description : "\n   I can cast wizard spells with the ritual tag in my spellbook as rituals even if not prepared"
+				description: desc("I can cast wizard spells with the ritual tag in my spellbook as rituals even if not prepared")
 			},
 			"wider study" : {
 				name : "Wider Study",
@@ -382,7 +382,7 @@ ClassList["battlemage"] = {
 			name : "Battlemage Archetype",
 			source : ["LA:BM", 3],
 			minlevel : 3,
-			description : "\n   Choose a Battlemage Archetype that represents your style and put it in the \"Class\" field"
+			description : desc('Choose a Battlemage Archetype that represents your style and put it in the "Class" field')
 		},
 		"warrior magic" : {
 			name : "Warrior Magic",
@@ -407,7 +407,7 @@ ClassList["battlemage"] = {
 			name : "Energy Mastery",
 			source : ["LA:BM", 4],
 			minlevel : 20,
-			description : '\n   Choose an energy specialization using the "Choose Features" button above',
+			description : desc('Choose an energy specialization using the "Choose Feature" button above'),
 			calcChanges : {
 				atkCalc : [
 					function (fields, v, output) {
@@ -432,37 +432,44 @@ ClassList["battlemage"] = {
 			choicesNotInMenu : true,
 			"acid" : {
 				name : "Acid Energy Mastery",
-				description : " [Acid damage immunity]" + "\n   I add my Intelligence modifier to the damage rolls of spells that deal acid damage",
+				additional: "Acid damage immunity",
+				description: desc("I add my Intelligence modifier to the damage rolls of spells that deal acid damage"),
 				savetxt : { immune : ["acid"] }
 			},
 			"cold" : {
 				name : "Cold Energy Mastery",
-				description : " [Cold damage immunity]" + "\n   I add my Intelligence modifier to the damage rolls of spells that deal cold damage",
+				additional: "Cold damage immunity",
+				description: desc("I add my Intelligence modifier to the damage rolls of spells that deal cold damage"),
 				savetxt : { immune : ["cold"] }
 			},
 			"fire" : {
 				name : "Fire Energy Mastery",
-				description : " [Fire damage immunity]" + "\n   I add my Intelligence modifier to the damage rolls of spells that deal fire damage",
+				additional: "Fire damage immunity",
+				description: desc("I add my Intelligence modifier to the damage rolls of spells that deal fire damage"),
 				savetxt : { immune : ["fire"] }
 			},
 			"lightning" : {
 				name : "Lightning Energy Mastery",
-				description : " [Lightning damage immunity]" + "\n   I add my Intelligence modifier to the damage rolls of spells that deal lightning damage",
+				additional: "Lightning damage immunity",
+				description: desc("I add my Intelligence modifier to the damage rolls of spells that deal lightning damage"),
 				savetxt : { immune : ["lightning"] }
 			},
 			"necrotic" : {
 				name : "Necrotic Energy Mastery",
-				description : " [Necrotic damage immunity]" + "\n   I add my Intelligence modifier to the damage rolls of spells that deal necrotic damage",
+				additional: "Necrotic damage immunity",
+				description: desc("I add my Intelligence modifier to the damage rolls of spells that deal necrotic damage"),
 				savetxt : { immune : ["necrotic"] }
 			},
 			"psychic" : {
 				name : "Psychic Energy Mastery",
-				description : " [Psychic damage immunity]" + "\n   I add my Intelligence modifier to the damage rolls of spells that deal psychic damage",
+				additional: "Psychic damage immunity",
+				description: desc("I add my Intelligence modifier to the damage rolls of spells that deal psychic damage"),
 				savetxt : { immune : ["psychic"] }
 			},
 			"thunder" : {
 				name : "Thunder Energy Mastery",
-				description : " [Thunder damage immunity]" + "\n   I add my Intelligence modifier to the damage rolls of spells that deal thunder damage",
+				additional: "Thunder damage immunity",
+				description: desc("I add my Intelligence modifier to the damage rolls of spells that deal thunder damage"),
 				savetxt : { immune : ["thunder"] }
 			}
 		}
@@ -603,7 +610,7 @@ AddSubClass("battlemage", "mystic marksman", {
 			name : "Master of Destruction",
 			source : ["LA:BM", 4],
 			minlevel : 18,
-			description : "\n   I add my Int mod to each energy die when determining the damage I deal with them"
+			description: desc("I add my Int mod to each energy die when determining the damage I deal with them")
 		}
 	}
 });
@@ -617,14 +624,14 @@ AddSubClass("battlemage", "psychic warrior", {
 			name : "Empathy",
 			source : ["LA:BM", 5],
 			minlevel : 3,
-			description : "\n   I gain proficiency and expertise with the Insight skill",
+			description: desc("I gain proficiency and expertise with the Insight skill"),
 			skills : [["Insight", "full"]]
 		},
 		"subclassfeature3.1" : {
 			name : "Psionic Spellcasting",
 			source : ["LA:BM", 5],
 			minlevel : 3,
-			description : "\n   I no longer require somatic or verbal components to cast my wizard spells",
+			description: desc("I no longer require somatic or verbal components to cast my wizard spells"),
 			calcChanges : {
 				spellAdd : [
 					function (spellKey, spellObj, spName) {
@@ -642,7 +649,7 @@ AddSubClass("battlemage", "psychic warrior", {
 			name : "Telepathy",
 			source : ["LA:BM", 5],
 			minlevel : 3,
-			description : "\n   I can communicate telepathically with anyone I can see in 30 ft if it has Int 5 or higher"
+			description: desc("I can communicate telepathically with anyone I can see in 30 ft if it has Int 5 or higher")
 		},
 		"subclassfeature6" : {
 			name : "Energy Shield",
@@ -729,7 +736,7 @@ AddSubClass("battlemage", "runic bulwark", {
 			name : "Arcane Scholar",
 			source : ["LA:BM", 6],
 			minlevel : 3,
-			description : "\n   I gain heavy armor proficiency, and Arcana and caligrapher's supplies prof. \u0026 expertise",
+			description: desc("I gain heavy armor proficiency, and Arcana and caligrapher's supplies prof. \u0026 expertise"),
 			skills : [["Arcana", "full"]],
 			toolProfs : ["Caligrapher's supplies (expertise)"],
 			armorProfs : [false, false, true, false]
@@ -741,7 +748,7 @@ AddSubClass("battlemage", "runic bulwark", {
 			description : desc([
 				"When I finish a short rest, I can inscribe arcane runes on two simple or martial weapons",
 				"These are magical and gain an ability; I can have only two, making more undoes another",
-				"See the third page's \"Notes\" section for what these runic weapons can do"
+				'See the 3rd page "Notes" section for what these runic weapons can do',
 			]),
 			action : [["action", "Call Runic Weapon"]],
 			calcChanges : {
@@ -837,7 +844,7 @@ AddSubClass("battlemage", "runic bulwark", {
 			name : "Runic Resistance",
 			source : ["LA:BM", 6],
 			minlevel : 18,
-			description : "\n   My runic armor grants me resistance to all damage except bludgeoning/piercing/slashing",
+			description: desc("My runic armor grants me resistance to all damage except bludgeoning/piercing/slashing"),
 			dmgres : ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"]
 		}
 	}
@@ -869,7 +876,7 @@ AddSubClass("battlemage", "spell dancer", {
 			name : "Unarmored Defense",
 			source : ["LA:BM", 7],
 			minlevel : 3,
-			description : "\n   " + "Without armor and no shield, my AC is 10 + Dexterity modifier + Intelligence modifier",
+			description: desc("Without armor and no shield, my AC is 10 + Dexterity modifier + Intelligence modifier"),
 			armorOptions : [{
 				regExpSearch : /justToAddToDropDownAndEffectWildShape/,
 				name : "Unarmored Defense (Int)",
@@ -894,14 +901,14 @@ AddSubClass("battlemage", "spell dancer", {
 			name : "Evasion",
 			source : ["LA:BM", 7],
 			minlevel : 10,
-			description : "\n   My Dexterity saves vs. areas of effect negate damage on success and halve it on failure",
+			description: desc("My Dexterity saves vs. areas of effect negate damage on success and halve it on failure"),
 			savetxt : { text : ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg"] }
 		},
 		"subclassfeature10.1" : {
 			name : "Lightning Reflexes",
 			source : ["LA:BM", 7],
 			minlevel : 10,
-			description : "\n   I gain proficiency with Dexterity saving throws",
+			description: desc("I gain proficiency with Dexterity saving throws"),
 			saves : ["Dex"]
 		},
 		"subclassfeature14" : {

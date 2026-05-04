@@ -76,7 +76,7 @@ ClassList["blood hunter"] = {
 			source : [["MM:BH", 3]],
 			minlevel : 1,
 			description : desc([
-				'I can use a Blood Curse on targets with blood; Use the "Choose Features" button above',
+				'I can use a Blood Curse on targets with blood; Use the "Choose Feature" button above',
 				"I can amplify it by taking my hemocraft die in damage; Amplified it works on any target",
 				"Whenever I learn a new Blood Curse, I can also replace a curse I know with another"
 			]),
@@ -95,7 +95,8 @@ ClassList["blood hunter"] = {
 			"blood curse of the anxious" : {
 				name : "Blood Curse of the Anxious",
 				source : [["MM:BH", 11]],
-				description : " [Amplify 1\xD7 per long rest]" + desc([
+				additional: "Amplify 1\xD7 per long rest",
+				description : desc([
 					"As a bonus action, I can make a creature within 30 ft more susceptible to forceful influence",
 					"Until my next turn ends, all Charisma (Intimidation) checks against it are made with adv.",
 					"\u2022 Amplify (once per long rest): Disadv. on next Wis save the target makes before curse ends"
@@ -192,7 +193,7 @@ ClassList["blood hunter"] = {
 			name : "Hunter's Bane",
 			source : [["MM:BH", 3]],
 			minlevel : 1,
-			description : "\n   I get adv. on Int checks to recall info about, and Survival to track, fey, fiends, or undead"
+			description: desc("I get adv. on Int checks to recall info about, and Survival to track, fey, fiends, or undead")
 		},
 		"crimson rite" : {
 			name : "Crimson Rite",
@@ -261,7 +262,7 @@ ClassList["blood hunter"] = {
 			name : "Fighting Style",
 			source : [["MM:BH", 3]],
 			minlevel : 2,
-			description : '\n   Choose a Fighting Style using the "Choose Feature" button above',
+			description : desc('Choose a Fighting Style using the "Choose Feature" button above'),
 			choices : ["Archery", "Dueling", "Great Weapon Fighting", "Two-Weapon Fighting"],
 			"archery" : FightingStyles.archery,
 			"dueling" : FightingStyles.dueling,
@@ -300,13 +301,13 @@ ClassList["blood hunter"] = {
 			name : "Grim Psychometry",
 			source : [["MM:BH", 4]],
 			minlevel : 9,
-			description : "\n   I have adv. on Int (History) checks about an object I'm touching or a location where I am"
+			description: desc("I have adv. on Int (History) checks about an object I'm touching or a location where I am")
 		},
 		"dark augmentation" : {
 			name : "Dark Augmentation",
 			source : [["MM:BH", 4]],
 			minlevel : 10,
-			description : "\n   I have +5 ft speed and add my Int modifier (min 1) to my Str, Dex, and Con saves",
+			description: desc("I have +5 ft speed and add my Int modifier (min 1) to my Str, Dex, and Con saves"),
 			speed : { allModes : "+5" },
 			addMod : [{
 				type : "save", field : "Str", mod : "max(Int|1)",
@@ -323,7 +324,8 @@ ClassList["blood hunter"] = {
 			name : "Brand of Tethering",
 			source : [["MM:BH", 4]],
 			minlevel : 13,
-			description : " [Castigation deals 2× Int mod damage]" + desc([
+			additional: "Castigation deals 2× Int mod damage",
+			description : desc([
 				"A branded target can't use Dash; It must succeed on a Wis save to teleport or plane shift",
 				"It takes 4d6 psychic damage when trying to teleport/plane shift, regardless of the save"
 			])
@@ -411,7 +413,7 @@ AddSubClass("blood hunter", "ghostslayer", {
 			name : "Curse Specialist",
 			source : [["MM:BH", 5]],
 			minlevel : 3,
-			description : "\n   I gain an extra blood maledict use; My curses can always affect creatures without blood",
+			description: desc("I gain an extra blood maledict use; My curses can always affect creatures without blood"),
 			eval : function (v) {
 				AddFeature('Blood Maledict', 1, '', 'short rest', 'Order of the Ghostslayer: Curse Specialist', 'bonus');
 			},
@@ -422,7 +424,8 @@ AddSubClass("blood hunter", "ghostslayer", {
 				name : "Rite of the Dawn",
 				extraname : "Crimson Rite",
 				source : [["MM:BH", 5]],
-				description : " [radiant damage]" + desc([
+				additional: "radiant damage",
+				description : desc([
 					"While this rite is active, my weapon deals an extra hemocraft die of rite damage vs. undead",
 					"Also, my weapon sheds 20-ft radius bright light and I gain resistance to necrotic damage"
 				])
@@ -483,7 +486,7 @@ AddSubClass("blood hunter", "ghostslayer", {
 			name : "Rite Revival",
 			source : [["MM:BH", 6]],
 			minlevel : 18,
-			description : "\n   If I drop to 0 HP, but I'm not killed, I can end a crimson rite to instead stay at 1 HP"
+			description: desc("If I drop to 0 HP, but I'm not killed, I can end a crimson rite to instead stay at 1 HP")
 		}
 	}
 });
@@ -529,7 +532,7 @@ AddSubClass("blood hunter", "profane soul", {
 			name : "Otherwordly Patron",
 			source : [["MM:BH", 7]],
 			minlevel : 3,
-			description : '\n   Choose an Otherwordly Patron using the "Choose Feature" button above',
+			description : desc('Choose an Otherwordly Patron using the "Choose Feature" button above'),
 			choices : ["the Archfey", "the Fiend", "the Great Old One", "the Undying", "the Celestial", "the Hexblade"],
 			"the archfey" : {
 				name : "Rite Focus: the Archfey",
@@ -540,7 +543,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the fiend" : {
 				name : "Rite Focus: the Fiend",
-				description : "\n   When using the rite of the flame, I may reroll a 1 or 2 on the rite damage die once"
+				description: desc("When using the rite of the flame, I may reroll a 1 or 2 on the rite damage die once")
 			},
 			"the great old one" : {
 				name : "Rite Focus: the Great Old One",
@@ -551,14 +554,14 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the undying" : {
 				name : "Rite Focus: the Undying",
-				description : "\n   When I reduce a hostile creature to 0 HP using an active rite weapon, I heal HP",
+				description: desc("When I reduce a hostile creature to 0 HP using an active rite weapon, I heal HP"),
 				additional : levels.map(function (n) {
 					return n < 3 ? "" : "regain " + MMBH_BhHemocraftDie(n) + " HP";
 				})
 			},
 			"the celestial" : {
 				name : "Rite Focus: the Celestial",
-				description : "\n   As a bonus action, I can expend a blood maledict use to heal a creature I can see in 60 ft",
+				description: desc("As a bonus action, I can expend a blood maledict use to heal a creature I can see in 60 ft"),
 				additional : levels.map(function (n) {
 					return n < 3 ? "" : "heals " + MMBH_BhHemocraftDie(n) + "+Int mod";
 				}),
@@ -566,7 +569,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the hexblade" : {
 				name : "Rite Focus: the Hexblade",
-				description : "\n   When I use a blood curse, my next attack adds my Prof Bonus to damage vs. the cursed"
+				description: desc("When I use a blood curse, my next attack adds my Prof Bonus to damage vs. the cursed")
 			},
 			choiceDependencies : [{
 				feature : "subclassfeature7.1"
@@ -592,19 +595,19 @@ AddSubClass("blood hunter", "profane soul", {
 			name : "Mystic Frenzy",
 			source : [["MM:BH", 7]],
 			minlevel : 7,
-			description : "\n   When I cast a cantrip as an action, I can make one weapon attack as a bonus action",
+			description: desc("When I cast a cantrip as an action, I can make one weapon attack as a bonus action"),
 			action : [["bonus action", " (with cantrip)"]]
 		},
 		"subclassfeature7.1" : {
 			name : "Revealed Arcana",
 			source : [["MM:BH", 7]],
 			minlevel : 7,
-			description : '\n   Choose an Otherwordly Patron using the "Choose Feature" button above',
+			description : desc('Choose an Otherwordly Patron using the "Choose Feature" button above'),
 			usages : 1,
 			recovery : "long rest",
 			"the archfey" : {
 				name : "Revealed Arcana",
-				description : "\n   Once per long rest, I can cast Blur by expending a pact magic spell slot",
+				description: desc("Once per long rest, I can cast Blur by expending a pact magic spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["blur"],
@@ -614,7 +617,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the fiend" : {
 				name : "Revealed Arcana",
-				description : "\n   Once per long rest, I can cast Scorching Ray by expending a pact magic spell slot",
+				description: desc("Once per long rest, I can cast Scorching Ray by expending a pact magic spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["scorching ray"],
@@ -624,7 +627,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the great old one" : {
 				name : "Revealed Arcana",
-				description : "\n   Once per long rest, I can cast Detect Thoughts by expending a pact magic spell slot",
+				description: desc("Once per long rest, I can cast Detect Thoughts by expending a pact magic spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["detect thoughts"],
@@ -634,7 +637,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the undying" : {
 				name : "Revealed Arcana",
-				description : "\n   Once per long rest, I can cast Blindness/Deafness by expending a pact magic spell slot",
+				description: desc("Once per long rest, I can cast Blindness/Deafness by expending a pact magic spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["blindness/deafness"],
@@ -644,7 +647,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the celestial" : {
 				name : "Revealed Arcana",
-				description : "\n   Once per long rest, I can cast Lesser Restoration by expending a pact magic spell slot",
+				description: desc("Once per long rest, I can cast Lesser Restoration by expending a pact magic spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["lesser restoration"],
@@ -654,7 +657,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the hexblade" : {
 				name : "Revealed Arcana",
-				description : "\n   Once per long rest, I can cast Branding Smite by expending a pact magic spell slot",
+				description: desc("Once per long rest, I can cast Branding Smite by expending a pact magic spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["branding smite"],
@@ -667,18 +670,18 @@ AddSubClass("blood hunter", "profane soul", {
 			name : "Brand of the Sapping Scar",
 			source : [["MM:BH", 7]],
 			minlevel : 11,
-			description : "\n   A creature branded by me has disadvantage on their saves against my warlock spells"
+			description: desc("A creature branded by me has disadvantage on their saves against my warlock spells")
 		},
 		"subclassfeature15" : {
 			name : "Unsealed Arcana",
 			source : [["MM:BH", 7]],
 			minlevel : 15,
-			description : '\n   Choose an Otherwordly Patron using the "Choose Feature" button above',
+			description : desc('Choose an Otherwordly Patron using the "Choose Feature" button above'),
 			usages : 1,
 			recovery : "long rest",
 			"the archfey" : {
 				name : "Unsealed Arcana",
-				description : "\n   Once per long rest, I can cast Slow without expending a spell slot",
+				description: desc("Once per long rest, I can cast Slow without expending a spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["slow"],
@@ -688,7 +691,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the fiend" : {
 				name : "Unsealed Arcana",
-				description : "\n   Once per long rest, I can cast Fireball without expending a spell slot",
+				description: desc("Once per long rest, I can cast Fireball without expending a spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["fireball"],
@@ -698,7 +701,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the great old one" : {
 				name : "Unsealed Arcana",
-				description : "\n   Once per long rest, I can cast Haste without expending a spell slot",
+				description: desc("Once per long rest, I can cast Haste without expending a spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["haste"],
@@ -708,7 +711,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the undying" : {
 				name : "Unsealed Arcana",
-				description : "\n   Once per long rest, I can cast Bestow Curse without expending a spell slot",
+				description: desc("Once per long rest, I can cast Bestow Curse without expending a spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["bestow curse"],
@@ -718,7 +721,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the celestial" : {
 				name : "Unsealed Arcana",
-				description : "\n   Once per long rest, I can cast Revivify without expending a spell slot",
+				description: desc("Once per long rest, I can cast Revivify without expending a spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["revivify"],
@@ -728,7 +731,7 @@ AddSubClass("blood hunter", "profane soul", {
 			},
 			"the hexblade" : {
 				name : "Unsealed Arcana",
-				description : "\n   Once per long rest, I can cast Blink without expending a spell slot",
+				description: desc("Once per long rest, I can cast Blink without expending a spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["blink"],
@@ -740,7 +743,8 @@ AddSubClass("blood hunter", "profane soul", {
 				name : "Blood Curse of the Souleater",
 				extraname : "Order of the Profane Soul 18; Blood Curse",
 				source : [["MM:BH", 12]],
-				description : " [Amplify 1\xD7 per long rest]" + desc([
+				additional: "Amplify 1\xD7 per long rest",
+				description : desc([
 					"As a reaction when a living creature (not construct/undead) is reduced to 0 HP in 30 ft,",
 					"I can use their soul to gain advantage on my weapon attacks until the end of my next turn",
 					"\u2022 Amplify (once per long rest): I also regain an expended warlock spell slot"
@@ -1054,7 +1058,7 @@ AddSubClass("blood hunter", "lycan", {
 			name : "Heightened Senses",
 			source : [["MM:BH", 10]],
 			minlevel : 3,
-			description : "\n   I gain advantage on Wisdom (Perception) checks that rely on hearing or smell",
+			description: desc("I gain advantage on Wisdom (Perception) checks that rely on hearing or smell"),
 			vision : [["Adv. on Perception relying on hearing or smell", 0]]
 		},
 		"subclassfeature3.1" : {
@@ -1127,7 +1131,7 @@ AddSubClass("blood hunter", "lycan", {
 			name : "Advanced Transformation",
 			source : [["MM:BH", 11]],
 			minlevel : 11,
-			description : '\n   In my hybrid form, I gain the Lycan Regeneration feature, see "Notes" page',
+			description : desc('In my hybrid form, I gain the Lycan Regeneration feature, see "Notes" page'),
 			calcChanges : {
 				atkCalc : [
 					function(fields, v, output) {

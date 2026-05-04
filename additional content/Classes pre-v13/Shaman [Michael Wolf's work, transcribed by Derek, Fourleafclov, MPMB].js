@@ -116,19 +116,19 @@ ClassList["shaman"] = {
 			name : "Shamanic Calling",
 			source : ["MW:SC", 4],
 			minlevel : 1,
-			description : "\n   " + "Choose the spirit that has called me and put it in the \"Class\" field"
+			description : desc('Choose the spirit that has called me and put it in the "Class" field')
 		},
 		"shamanic invocations" : {
 			name : "Shamanic Invocations",
 			source : ["MW:SC", 4],
 			minlevel : 2,
-			description : "\n   " + "Use the \"Choose Feature\" button above to add Shamanic Invocations to the third page",
+			description : desc('Use the "Choose Feature" button above to add Shamanic Invocations to the third page'),
 			additional : ["", "1 invocation known", "1 invocation known", "1 invocation known", "2 invocations known", "2 invocations known", "3 invocations known", "3 invocations known", "4 invocations known", "4 invocations known", "4 invocations known", "5 invocations known", "5 invocations known", "5 invocations known", "6 invocations known", "6 invocations known", "6 invocations known", "7 invocations known", "7 invocations known", "7 invocations known"],
 			extraname : "Shamanic Invocation",
 			extrachoices : ["Ascendant Step (prereq: level 9 shaman)", "Battle Frenzy (prereq: level 12 shaman, Gift of Savagery)", "Call of the Elements (prereq: level 9 shaman, Speaker of Flames/Stones/Waters/Winds)", "Elemental Empowerment (prereq: level 7 shaman, Gift of Savagery)", "Entreat the Spirits (prereq: level 9 shaman)", "Fauna Shaman (prereq: level 5 shaman)", "Force of Will", "Glimpse the Path (prereq: level 5 shaman, Gift of Sight)", "Keeper of Lore", "Mask of Beasts (prereq: level 9 shaman)", "Mask of Many Faces", "Master of Myriad Forms (prereq: level 15 shaman)", "Pierce the Shadows (prereq: Gift of Sight)", "Rally the Ancestors (prereq: level 9 shaman, Speaker of Ancestors)", "Rewrite the Past (prereq: level 12 shaman, Speaker of Dreams)", "Rite of Cleansing", "River's Secrets (prereq: level 5 shaman)", "Savage Magic (prereq: level 5 shaman, Gift of Savagery)", "See the Unwritten (prereq: level 12 shaman, Gift of Sight)", "Seeker of Visions (prereq: level 7 shaman, Gift of Sight)", "Sight Beyond Sight (prereq: level 15 shaman, Gift of Sight)", "Sky Shaping (prereq: level 5 shaman)", "Smoke Teller", "Soul Reading (prereq: level 5 shaman)", "Speaker of All (prereq: level 12 shaman)", "Spirit Sight (prereq: Gift of Sight)", "Spirit Warrior (prereq: Gift of Savagery)", "Stand Firm (prereq: Gift of Savagery)", "Tongue of Beasts", "Tongue of Wild Spaces (prereq: level 5 shaman)", "Twilight Shepherd (prereq: level 9 shaman)", "Unfiltered Perceptions (prereq: level 7 shaman)", "Unrestrained Savagery (prereq: level 5 shaman, Gift of Savagery)", "Voice of the Forgotten (prereq: level 7 shaman)", "Walker of the World (prereq: level 7 shaman)"],
 			"ascendant step (prereq: level 9 shaman)" : {
 				name : "Ascendant Step",
-				description : "\n   " + "I can cast Levitate on myself at will, without spirit points or material components",
+				description: desc("I can cast Levitate on myself at will, without spirit points or material components"),
 				source : ["MW:SC", 13],
 				spellcastingBonus : [{
 					name : "Ascendant Step",
@@ -140,14 +140,14 @@ ClassList["shaman"] = {
 			},
 			"battle frenzy (prereq: level 12 shaman, gift of savagery)" : {
 				name : "Battle Frenzy",
-				description : "\n   " + "I can make one attack as a bonus action when taking the attack action",
+				description: desc("I can make one attack as a bonus action when taking the attack action"),
 				source : ["MW:SC", 13],
 				action : [["bonus action", " (with Attack action)"]],
 				prereqeval : "classes.known.shaman.level >= 12 && What('Class Features Remember').indexOf('shaman,spiritual gift,gift of savagery') !== -1"
 			},
 			"call of the elements (prereq: level 9 shaman, speaker of flames/stones/waters/winds)" : {
 				name : "Call of the Elements",
-				description : "\n   " + "Once per long rest, I can cast Conjure Elemental to conjure my element, no spirit points",
+				description: desc("Once per long rest, I can cast Conjure Elemental to conjure my element, no spirit points"),
 				source : ["MW:SC", 13],
 				usages : 1,
 				recovery : "long rest",
@@ -161,13 +161,17 @@ ClassList["shaman"] = {
 			},
 			"elemental empowerment (prereq: level 7 shaman, gift of savagery)" : {
 				name : "Elemental Empowerment",
-				description : "\n   " + "When casting Elemental Weapon on my spirit weapon I can do so as a bonus action" + "\n   " + "I can concentrate on an Elemental Weapon casting until my next short or long rest" + "\n   " + "I can spend 1 spirit point to avoid breaking my concentration on Elemental Weapon",
+				description: desc([
+					"When casting Elemental Weapon on my spirit weapon I can do so as a bonus action",
+					"I can concentrate on an Elemental Weapon casting until my next short or long rest",
+					"I can spend 1 spirit point to avoid breaking my concentration on Elemental Weapon",
+				]),
 				source : ["MW:SC", 13],
 				prereqeval : "classes.known.shaman.level >= 9 && What('Class Features Remember').indexOf('shaman,spiritual gift,gift of savagery') !== -1"
 			},
 			"entreat the spirits (prereq: level 9 shaman)" : {
 				name : "Entreat the Spirits",
-				description : "\n   " + "I can cast Commune with Nature, but only as a ritual",
+				description: desc("I can cast Commune with Nature, but only as a ritual"),
 				source : ["MW:SC", 13],
 				spellcastingBonus : [{
 					name : "Entreat the Spirits",
@@ -179,7 +183,7 @@ ClassList["shaman"] = {
 			},
 			"fauna shaman (prereq: level 5 shaman)" : {
 				name : "Fauna Shaman",
-				description : "\n   " + "I can cast Animal Friendship and Beast Sense, but only as rituals",
+				description: desc("I can cast Animal Friendship and Beast Sense, but only as rituals"),
 				source : ["MW:SC", 14],
 				spellcastingBonus : [{
 					name : "Fauna Shaman",
@@ -192,7 +196,10 @@ ClassList["shaman"] = {
 			},
 			"force of will" : {
 				name : "Force of Will",
-				description : "\n   " + "When dealing damage with a shaman cantrip, I add my Charisma modifier to the damage" + "\n   " + "In addition, I may spend 1 spirit point to add my shaman level to the damage",
+				description: desc([
+					"When dealing damage with a shaman cantrip, I add my Charisma modifier to the damage",
+					"In addition, I may spend 1 spirit point to add my shaman level to the damage",
+				]),
 				source : ["MW:SC", 14],
 				calcChanges : {
 					atkCalc : ["if (thisWeapon[4].indexOf('shaman') !== -1 && thisWeapon[3] && SpellsList[thisWeapon[3]].level === 0) { output.extraDmg += What('Cha Mod'); }; ", "My shaman cantrips get my Charima modifier added to their damage. In addition, I may spend 1 spirit point to add my shaman level to the damage whenever I hit with a shaman cantrip."]
@@ -200,7 +207,7 @@ ClassList["shaman"] = {
 			},
 			"glimpse the path (prereq: level 5 shaman, gift of sight)" : {
 				name : "Glimpse the Path",
-				description : "\n   " + "I can cast Augury, but only as a ritual",
+				description: desc("I can cast Augury, but only as a ritual"),
 				source : ["MW:SC", 14],
 				spellcastingBonus : [{
 					name : "Glimpse the Path",
@@ -212,12 +219,12 @@ ClassList["shaman"] = {
 			},
 			"keeper of lore" : {
 				name : "Keeper of Lore",
-				description : "\n   " + "I can read all writing",
+				description: desc("I can read all writing"),
 				source : ["MW:SC", 14]
 			},
 			"mask of beasts (prereq: level 9 shaman)" : {
 				name : "Mask of Beasts",
-				description : "\n   " + "Once per long rest, I can cast Polymorph on myself, without expending spirit points",
+				description: desc("Once per long rest, I can cast Polymorph on myself, without expending spirit points"),
 				source : ["MW:SC", 14],
 				usages : 1,
 				recovery : "long rest",
@@ -231,7 +238,7 @@ ClassList["shaman"] = {
 			},
 			"mask of many faces" : {
 				name : "Mask of Many Faces",
-				description : "\n   " + "I can cast Disguise Self at will, without expending spirit points",
+				description: desc("I can cast Disguise Self at will, without expending spirit points"),
 				source : ["MW:SC", 14],
 				spellcastingBonus : [{
 					name : "Mask of Many Faces",
@@ -242,7 +249,7 @@ ClassList["shaman"] = {
 			},
 			"master of myriad forms (prereq: level 15 shaman)" : {
 				name : "Master of Myriad Forms",
-				description : "\n   " + "I can cast Alter Self at will, without expending spirit points",
+				description: desc("I can cast Alter Self at will, without expending spirit points"),
 				source : ["MW:SC", 14],
 				spellcastingBonus : [{
 					name : "Master of Myriad Forms",
@@ -254,14 +261,14 @@ ClassList["shaman"] = {
 			},
 			"pierce the shadows (prereq: gift of sight)" : {
 				name : "Pierce the Shadows",
-				description : "\n   " + "I can see in magical and nonmagical darkness out to 120 ft",
+				description: desc("I can see in magical and nonmagical darkness out to 120 ft"),
 				source : ["MW:SC", 14],
 				vision : [["Devil's sight", 120]],
 				prereqeval : "What('Class Features Remember').indexOf('shaman,spiritual gift,gift of sight') !== -1"
 			},
 			"rally the ancestors (prereq: level 9 shaman, speaker of ancestors)" : {
 				name : "Rally the Ancestors",
-				description : "\n   " + "Once per long rest, I can cast Animate Dead, without expending spirit points",
+				description: desc("Once per long rest, I can cast Animate Dead, without expending spirit points"),
 				source : ["MW:SC", 14],
 				usages : 1,
 				recovery : "long rest",
@@ -275,7 +282,7 @@ ClassList["shaman"] = {
 			},
 			"rewrite the past (prereq: level 12 shaman, speaker of dreams)" : {
 				name : "Rewrite the Past",
-				description : "\n   " + "Once per long rest, I can cast modify memory, without expending spirit points",
+				description: desc("Once per long rest, I can cast modify memory, without expending spirit points"),
 				source : ["MW:SC", 14],
 				usages : 1,
 				recovery : "long rest",
@@ -289,7 +296,7 @@ ClassList["shaman"] = {
 			},
 			"rite of cleansing" : {
 				name : "Rite of Cleansing",
-				description : "\n   " + "I can cast Purify Food and Water, but only as a ritual",
+				description: desc("I can cast Purify Food and Water, but only as a ritual"),
 				source : ["MW:SC", 14],
 				spellcastingBonus : [{
 					name : "Rite of Cleansing",
@@ -300,7 +307,7 @@ ClassList["shaman"] = {
 			},
 			"river's secrets (prereq: level 5 shaman)" : {
 				name : "River's Secrets",
-				description : "\n   " + "I can cast Water Breathing and Water Walk, but only as rituals",
+				description: desc("I can cast Water Breathing and Water Walk, but only as rituals"),
 				source : ["MW:SC", 14],
 				spellcastingBonus : [{
 					name : "River's Secrets",
@@ -313,19 +320,23 @@ ClassList["shaman"] = {
 			},
 			"savage magic (prereq: level 5 shaman, gift of savagery)" : {
 				name : "Savage Magic",
-				description : " [1 spirit point]" + "\n   " + "When making a spell attack as part of a shaman spell, I may use my spirit weapon instead" + "\n   " + "For 1 spirit point, I make a spirit weapon attack that deals damage and the spell's effect",
+				additional: "1 spirit point",
+				description: desc([
+					"When making a spell attack as part of a shaman spell, I may use my spirit weapon instead",
+					"For 1 spirit point, I make a spirit weapon attack that deals damage and the spell's effect",
+				]),
 				source : ["MW:SC", 14],
 				prereqeval : "classes.known.shaman.level >= 5 && What('Class Features Remember').indexOf('shaman,spiritual gift,gift of savagery') !== -1"
 			},
 			"see the unwritten (prereq: level 12 shaman, gift of sight)" : {
 				name : "See the Unwritten",
-				description : "\n   " + "I roll three d20s for my Gift of Sight, rather than two",
+				description: desc("I roll three d20s for my Gift of Sight, rather than two"),
 				source : ["MW:SC", 14],
 				prereqeval : "classes.known.shaman.level >= 12 && What('Class Features Remember').indexOf('shaman,spiritual gift,gift of sight') !== -1"
 			},
 			"seeker of visions (prereq: level 7 shaman, gift of sight)" : {
 				name : "Seeker of Visions",
-				description : "\n   " + "I can cast Divination, but only as a ritual",
+				description: desc("I can cast Divination, but only as a ritual"),
 				source : ["MW:SC", 14],
 				spellcastingBonus : [{
 					name : "Seeker of Visions",
@@ -337,14 +348,14 @@ ClassList["shaman"] = {
 			},
 			"sight beyond sight (prereq: level 15 shaman, gift of sight)" : {
 				name : "Sight Beyond Sight",
-				description : "\n   " + "I see the true form of any in 30 ft even if shapechanged, illusion or transmutation magic",
+				description: desc("I see the true form of any in 30 ft even if shapechanged, illusion or transmutation magic"),
 				source : ["MW:SC", 14],
 				vision : [["Witch sight", 30]],
 				prereqeval : "classes.known.shaman.level >= 15 && What('Class Features Remember').indexOf('shaman,spiritual gift,gift of sight') !== -1"
 			},
 			"sky shaping (prereq: level 5 shaman)" : {
 				name : "Sky Shaping",
-				description : "\n   " + "I can cast Skywrite, but only as a ritual",
+				description: desc("I can cast Skywrite, but only as a ritual"),
 				source : ["MW:SC", 14],
 				spellcastingBonus : [{
 					name : "Sky Shaping",
@@ -356,13 +367,19 @@ ClassList["shaman"] = {
 			},
 			"smoke teller" : {
 				name : "Smoke Teller",
-				description : "\n   " + "As an action, I can control smoke within 10 ft and form it into an image up to 5-ft cube" + "\n   " + "Each round I concentrate on this, I can use my action to expand or change the image" + "\n   " + "As an action, I expand the image by a 5-ft cube, up to a 20-ft cube" + "\n   " + "As an action, I can change the image, its color, and have it appear to be moving" + "\n   " + "The smoke lightly obscures and dissipates 1 minute after I stop concentrating on it",
+				description: desc([
+					"As an action, I can control smoke within 10 ft and form it into an image up to 5-ft cube",
+					"Each round I concentrate on this, I can use my action to expand or change the image",
+					"As an action, I expand the image by a 5-ft cube, up to a 20-ft cube",
+					"As an action, I can change the image, its color, and have it appear to be moving",
+					"The smoke lightly obscures and dissipates 1 minute after I stop concentrating on it",
+				]),
 				source : ["MW:SC", 14],
 				action : [["action", ""]]
 			},
 			"soul reading (prereq: level 5 shaman)" : {
 				name : "Soul Reading",
-				description : "\n   " + "Once per long rest, I can cast Detect Thoughts, without expending spirit points",
+				description: desc("Once per long rest, I can cast Detect Thoughts, without expending spirit points"),
 				source : ["MW:SC", 14],
 				usages : 1,
 				recovery : "long rest",
@@ -376,13 +393,13 @@ ClassList["shaman"] = {
 			},
 			"speaker of all (prereq: level 12 shaman)" : {
 				name : "Speaker of All",
-				description : "\n   " + "I understand all spoken languages and any creature with a language understands me",
+				description: desc("I understand all spoken languages and any creature with a language understands me"),
 				source : ["MW:SC", 14],
 				prereqeval : "classes.known.shaman.level >= 12"
 			},
 			"spirit sight (prereq: gift of sight)" : {
 				name : "Spirit Sight",
-				description : "\n   " + "I can cast Detect Magic at will, without expending spirit points",
+				description: desc("I can cast Detect Magic at will, without expending spirit points"),
 				source : ["MW:SC", 15],
 				spellcastingBonus : [{
 					name : "Spirit Sight",
@@ -394,7 +411,10 @@ ClassList["shaman"] = {
 			},
 			"spirit warrior (prereq: gift of savagery)" : {
 				name : "Spirit Warrior",
-				description : "\n   " + "After finishing a rest, I can increase my HP and max HP by 1 for every spirit points spend" + "\n   " + "This lasts until I finish another short or long rest",
+				description: desc([
+					"After finishing a rest, I can increase my HP and max HP by 1 for every spirit points spend",
+					"This lasts until I finish another short or long rest",
+				]),
 				additional : levels.map(function (n) {
 					return "up to " + (n < 9 ? Math.floor(n / 2) : 5) + " spirit points";
 				}),
@@ -403,13 +423,13 @@ ClassList["shaman"] = {
 			},
 			"stand firm (prereq: gift of savagery)" : {
 				name : "Stand Firm",
-				description : "\n   " + "While not wearing armor, my AC is 13 + my Constitution modifier + shield",
+				description: desc("While not wearing armor, my AC is 13 + my Constitution modifier + shield"),
 				source : ["MW:SC", 15],
 				prereqeval : "What('Class Features Remember').indexOf('shaman,spiritual gift,gift of savagery') !== -1"
 			},
 			"tongue of beasts" : {
 				name : "Tongue of Beasts",
-				description : "\n   " + "I can cast Speak with Animals at will, without expending spirit points",
+				description: desc("I can cast Speak with Animals at will, without expending spirit points"),
 				source : ["MW:SC", 15],
 				spellcastingBonus : [{
 					name : "Tongue of Beasts",
@@ -420,7 +440,7 @@ ClassList["shaman"] = {
 			},
 			"tongue of wild spaces (prereq: level 5 shaman)" : {
 				name : "Tongue of Wild Spaces",
-				description : "\n   " + "I can cast Speak with Plants at will, without expending spirit points",
+				description: desc("I can cast Speak with Plants at will, without expending spirit points"),
 				source : ["MW:SC", 15],
 				spellcastingBonus : [{
 					name : "Tongue of Wild Spaces",
@@ -432,7 +452,7 @@ ClassList["shaman"] = {
 			},
 			"twilight shepherd (prereq: level 9 shaman)" : {
 				name : "Twilight Shepherd",
-				description : "\n   " + "Once per long rest, I can cast reincarnate, using spirit points",
+				description: desc("Once per long rest, I can cast reincarnate, using spirit points"),
 				source : ["MW:SC", 15],
 				usages : 1,
 				recovery : "long rest",
@@ -446,7 +466,10 @@ ClassList["shaman"] = {
 			},
 			"unfiltered perceptions (prereq: level 7 shaman)" : {
 				name : "Unfiltered Perception",
-				description : "\n   " + "I can't be blinded or deafened unless seeing or hearing through another source" + "\n   " + "I can sense the presence, not exact location, of invisible creatures or objects within 10 ft",
+				description: desc([
+					"I can't be blinded or deafened unless seeing or hearing through another source",
+					"I can sense the presence, not exact location, of invisible creatures or objects within 10 ft",
+				]),
 				source : ["MW:SC", 15],
 				savetxt : { immune : ["blinded", "deafened"] },
 				vision : [["Sense invisible", 10]],
@@ -454,13 +477,13 @@ ClassList["shaman"] = {
 			},
 			"unrestrained savagery (prereq: level 5 shaman, gift of savagery)" : {
 				name : "Unrestrained Savagery",
-				description : "\n   " + "When taking the Attack action, I can attack twice with my spirit weapon",
+				description: desc("When taking the Attack action, I can attack twice with my spirit weapon"),
 				source : ["MW:SC", 15],
 				prereqeval : "classes.known.shaman.level >= 5 && What('Class Features Remember').indexOf('shaman,spiritual gift,gift of savagery') !== -1"
 			},
 			"voice of the forgotten (prereq: level 7 shaman)" : {
 				name : "Voice of the Forgotten",
-				description : "\n   " + "I can cast speak with dead at will, without expending spirit points",
+				description: desc("I can cast speak with dead at will, without expending spirit points"),
 				source : ["MW:SC", 15],
 				spellcastingBonus : [{
 					name : "Voice of the Forgotten",
@@ -472,7 +495,10 @@ ClassList["shaman"] = {
 			},
 			"walker of the world (prereq: level 7 shaman)" : {
 				name : "Walker of the World",
-				description : "\n   " + "My movement speed increases by 10 feet while not wearing armor" + "\n   " + "While underground, I always know which way is north and my depth below the surface",
+				description: desc([
+					"My movement speed increases by 10 feet while not wearing armor",
+					"While underground, I always know which way is north and my depth below the surface",
+				]),
 				source : ["MW:SC", 15],
 				prereqeval : "classes.known.shaman.level >= 7",
 				speed : { allModes : "+10" }
@@ -482,7 +508,7 @@ ClassList["shaman"] = {
 			name : "Spiritual Gift",
 			source : ["MW:SC", 4],
 			minlevel : 3,
-			description : "\n   " + "Choose a Spiritual Gift using the \"Choose Feature\" button above",
+			description : desc('Choose a Spiritual Gift using the "Choose Feature" button above'),
 			choices : ["Gift of Savagery", "Gift of Sight"],
 			"gift of savagery" : {
 				name : "Gift of Savagery",
@@ -529,13 +555,13 @@ ClassList["shaman"] = {
 			name : "Timeless Body",
 			source : ["MW:SC", 5],
 			minlevel : 18,
-			description : "\n   " + "I age more slowly, only 1 year for every 10 years that pass"
+			description: desc("I age more slowly, only 1 year for every 10 years that pass")
 		},
 		"spiritual master" : {
 			name : "Spiritual Master",
 			source : ["MW:SC", 5],
 			minlevel : 20,
-			description : "\n   " + "For 1 minute, I can cast all spells from my shaman spell list as if they were prepared",
+			description: desc("For 1 minute, I can cast all spells from my shaman spell list as if they were prepared"),
 			recovery : "long rest",
 			usages : 1
 		}
@@ -571,7 +597,7 @@ ClassSubList["shaman-speaker of ancestors"] = {
 			name : "Channel Divinity",
 			source : ["MW:SC", 6],
 			minlevel : 1,
-			description : "\n   " + "I channel my ancestral spirits to cause effects; the save for this is my shaman spell DC",
+			description: desc("I channel my ancestral spirits to cause effects; the save for this is my shaman spell DC"),
 			usages : [0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3],
 			recovery : "short rest"
 		},
@@ -815,7 +841,7 @@ ClassSubList["shaman-speaker of stones"] = {
 			name : "Unyielding Stone",
 			source : ["MW:SC", 10],
 			minlevel : 6,
-			description : "\n   " + "As a reaction when hit by a seen attacker, I can turn to stone to nullify the damage",
+			description: desc("As a reaction when hit by a seen attacker, I can turn to stone to nullify the damage"),
 			recovery : "short rest",
 			usages : 1,
 			action : [["reaction", ""]]
@@ -978,7 +1004,7 @@ ClassSubList["shaman-speaker of winds"] = {
 			name : "Weather the Storm",
 			source : ["MW:SC", 13],
 			minlevel : 10,
-			description : "\n   " + "I have resistance to lightning and thunder damage, I am immune to being paralyzed",
+			description: desc("I have resistance to lightning and thunder damage, I am immune to being paralyzed"),
 			dmgres : ["Lightning", "Thunder"],
 			savetxt : { immune : ["paralyzed"] }
 		},

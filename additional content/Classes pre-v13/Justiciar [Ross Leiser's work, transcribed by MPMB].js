@@ -136,7 +136,7 @@ ClassList["justiciar"] = {
 			name : "Binding Cell",
 			source : ["OAP:JC", 3],
 			minlevel : 1,
-			description : "\n   " + "I can create a magical cell that traps creatures; See the third page's Notes section",
+			description: desc("I can create a magical cell that traps creatures; See the third page's Notes section"),
 			action : [["action", " (create)"]],
 			usages : levels.map(function(n) {
 				return n < 3 ? 2 : n < 6 ? 3 : n < 12 ? 4 : n < 17 ? 5 : n < 20 ? 6 : "\u221E\u00D7 per ";
@@ -208,7 +208,7 @@ ClassList["justiciar"] = {
 			name : "Fighting Style",
 			source : ["OAP:JC", 3],
 			minlevel : 2,
-			description : "\n   " + "Choose a Fighting Style for the justiciar using the \"Choose Feature\" button above",
+			description : desc('Choose a Fighting Style for the justiciar using the "Choose Feature" button above'),
 			choices : ["Archery", "Close Quarters Shooting", "Defense", "Dueling", "Great Weapon Fighting", "Protection", "Two-Weapon Fighting"],
 			"archery" : FightingStyles.archery,
 			"defense" : FightingStyles.defense,
@@ -240,7 +240,7 @@ ClassList["justiciar"] = {
 			name : "Judiciary Division",
 			source : ["OAP:JC", 4],
 			minlevel : 3,
-			description : "\n   " + "Choose a division for my role within the Arcana Court and put it in the \"Class\" field"
+			description : desc('Choose a division for my role within the Arcana Court and put it in the "Class" field')
 		},
 		"applied study" : {
 			name : "Applied Study",
@@ -295,7 +295,7 @@ ClassList["justiciar"] = {
 			name : "Arcane Safeguard",
 			source : ["OAP:JC", 5],
 			minlevel : 15,
-			description : "\n   " + "I have resistance to damage from spells and advantage on saving throws against spells",
+			description: desc("I have resistance to damage from spells and advantage on saving throws against spells"),
 			savetxt : { adv_vs : "spells" },
 			dmgres : ["Spells"]
 		}
@@ -352,7 +352,7 @@ AddSubClass("justiciar", "division of defense", {
 			name : "Arcane Bastion",
 			source : ["OAP:JC", 6],
 			minlevel : 18,
-			description : "\n   " + "Allies within 10 ft of me and myself gain +2 to AC and saves against spells"
+			description: desc("Allies within 10 ft of me and myself gain +2 to AC and saves against spells")
 		}
 	}
 });
@@ -430,7 +430,7 @@ AddSubClass("justiciar", "division of execution", {
 			name : "Macabre Mien",
 			source : ["OAP:JC", 6],
 			minlevel : 7,
-			description : "\n   " + "I gain proficiency and expertise with Intimidation and can use Int instead of Cha with it",
+			description: desc("I gain proficiency and expertise with Intimidation and can use Int instead of Cha with it"),
 			addMod : { type : "skill", field : "Inti", mod : "Int-Cha", text : "I can use Intelligence instead of Charisma for my Intimidation checks." },
 			eval : "AddSkillProf('Inti', true, 'true');",
 			removeeval : "AddSkillProf('Inti', false, false);",
@@ -486,14 +486,14 @@ AddSubClass("justiciar", "division of prosecution", {
 			name : "Prosecutor's Retort",
 			source : ["OAP:JC", 7],
 			minlevel : 7,
-			description : "\n   " + "As a reaction, I halve the damage of an attack from an attacker that I can see",
+			description: desc("As a reaction, I halve the damage of an attack from an attacker that I can see"),
 			action : [["reaction", ""]]
 		},
 		"subclassfeature14" : {
 			name : "Voiding Clause",
 			source : ["OAP:JC", 7],
 			minlevel : 14,
-			description : "\n   " + "Once per long rest, I can cast Counterspell without using a spell slot",
+			description: desc("Once per long rest, I can cast Counterspell without using a spell slot"),
 			usages : 1,
 			recovery : "long rest",
 			spellcastingBonus : [{

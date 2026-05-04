@@ -80,7 +80,7 @@ AddSubClass("paladin", "paladin-weave", {
 			name : "Arcane Cantrips",
 			source : ["FRA2", 22],
 			minlevel : 3,
-			description : "\n   " + "I learn two cantrips, with Charisma as my spellcasting ability",
+			description: desc("I learn two cantrips, with Charisma as my spellcasting ability"),
 			spellcastingBonus : [{
 				name : "Arcane Cantrips",
 				spells : ["booming blade", "green-flame blade", "challenger's mark", "echoing blow", "frostwind blade", "looming shadow", "punishing strike"],

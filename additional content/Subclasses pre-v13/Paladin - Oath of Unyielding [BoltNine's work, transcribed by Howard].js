@@ -36,21 +36,28 @@ AddSubClass("paladin", "unyielding", {
 			name : "Channel Divinity: Immovable",
 			source : ["IB:OotU", 1],
 			minlevel : 3,
-			description : "\n   " + "As an action, I can make myself an impenetrable wall" + "\n   " + "For 1 minute, I can take one extra reaction each round" + "\n   " + "In addition, any enemy I hit must make a Str save or be knocked prone and back 5 ft",
+			description: desc([
+				"As an action, I can make myself an impenetrable wall",
+				"For 1 minute, I can take one extra reaction each round",
+				"In addition, any enemy I hit must make a Str save or be knocked prone and back 5 ft",
+			]),
 			action : [["action", ""]]
 		},
 		"subclassfeature3.1" : {
 			name : "Channel Divinity: Hold the Weaks",
 			source : ["IB:OotU", 1],
 			minlevel : 3,
-			description : "\n   " + "As an action, I can make every enemy within 15 ft of me make a Wisdom saving throw" + "\n   " + "If failed, the enemy can't move on their turn, until the beginning of my next turn",
+			description: desc([
+				"As an action, I can make every enemy within 15 ft of me make a Wisdom saving throw",
+				"If failed, the enemy can't move on their turn, until the beginning of my next turn",
+			]),
 			action : [["action", ""]]
 		},
 		"subclassfeature7" : {
 			name : "Aura of Unyielding",
 			source : ["IB:OotU", 1],
 			minlevel : 7,
-			description : "\n   " + "Allies within range and I have adv. on saves against being moved while I am conscious",
+			description: desc("Allies within range and I have adv. on saves against being moved while I am conscious"),
 			additional : ["", "", "", "", "", "", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "10-foot aura", "30-foot aura", "30-foot aura", "30-foot aura"],
 			savetxt : { adv_vs : ["effects that move me"] }
 		},
@@ -58,7 +65,10 @@ AddSubClass("paladin", "unyielding", {
 			name : "Unbending",
 			source : ["IB:OotU", 1],
 			minlevel : 15,
-			description : "\n   " + "I gain proficiency in the Persuasion and Intimidation skills" + "\n   " + "If I already have proficiency in either of these, then I gain expertise in that skill instead",
+			description: desc([
+				"I gain proficiency in the Persuasion and Intimidation skills",
+				"If I already have proficiency in either of these, then I gain expertise in that skill instead",
+			]),
 			skills : ["Persuasion", "Intimidation"],
 			skillstxt : "\n\n" + toUni("Oath of the Unyielding") + ": Persuasion and Intimidation. If already proficient with either, gain expertise in that skill instead.",
 		},
@@ -66,7 +76,13 @@ AddSubClass("paladin", "unyielding", {
 			name : "Bastion of Defense",
 			source : ["IB:OotU", 1],
 			minlevel : 20,
-			description : "\n   " + "Once per long rest when my HP drops to 0, I gain the following benefits for 1 minute:" + "\n    - " + "I gain temporary HP equal to one quarter of my maximum HP, rounded down" + "\n    - " + "Attacks against me are made at disadvantage" + "\n    - " + "I have advantage on saving throws against spells that deal damage" + "\n   " + "This ends after 1 minute or when my HP reaches 0 again, whichever comes first",
+			description: desc([
+				"Once per long rest when my HP drops to 0, I gain the following benefits for 1 minute:",
+				"\u2022 I gain temporary HP equal to one quarter of my maximum HP, rounded down",
+				"\u2022 Attacks against me are made at disadvantage",
+				"\u2022 I have advantage on saving throws against spells that deal damage",
+				"This ends after 1 minute or when my HP reaches 0 again, whichever comes first",
+			]),
 			recovery : "long rest",
 			usages : 1
 		}

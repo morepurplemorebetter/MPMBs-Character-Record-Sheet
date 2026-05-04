@@ -87,7 +87,7 @@ AddSubClass("paladin", "apathy", {
 			name : "Stubborn with a Capital U",
 			source : ["DDAL00-09", 14],
 			minlevel : 18,
-			description : "\n   As a reaction when an ally I can see is being pushed or pulled, I can negate the push/pull",
+			description: desc("As a reaction when an ally I can see is being pushed or pulled, I can negate the push/pull"),
 			action : [["reaction", ""]]
 		},
 		"subclassfeature20" : {

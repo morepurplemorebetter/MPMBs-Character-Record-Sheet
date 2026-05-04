@@ -89,7 +89,8 @@ AddSubClass("monk", "jedi-spiketaildrake", {
 				name : "Bladeweaving",
 				extraname : "Way of the Jedi 11",
 				source : [["SD:WotJ", 2]],
-				description : " [2 ki points]" + desc([
+				additional: "2 ki points",
+				description : desc([
 					"As a bonus action after Attack action with my lightsaber, I can cast a spell (time: 1 act.)"
 				]),
 				action : [["bonus action", " (after Attack action)"]]

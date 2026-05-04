@@ -6671,7 +6671,7 @@ function EvalBonus(input, prefix, isSpecial, useProfB) {
 	var minMaxMatches;
 	var minMaxRegex = /(max|min)(\([+-.0-9]+(?:\|[+-.0-9]+)+\))/i;
 	while (minMaxMatches = minMaxRegex.exec(input)) {
-    	input = input.replace(minMaxMatches[0], "Math." + minMaxMatches[1].toLowerCase() + minMaxMatches[2].split("|"));
+		input = input.replace(minMaxMatches[0], "Math." + minMaxMatches[1].toLowerCase() + minMaxMatches[2].split("|"));
 	}
 	// double negative to positive
 	input = input.replace(/--/g, "+");

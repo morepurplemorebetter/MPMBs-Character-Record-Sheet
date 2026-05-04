@@ -96,7 +96,7 @@ CreatureList["death dog"].companion = "pact_of_the_chain";
 //add the invocations
 AddWarlockInvocation("The Better to See You With", {
 	name : "The Better to See You With",
-	description : "\n   " + "I can cast Faerie Fire at will (PHB 239)",
+	description: desc("I can cast Faerie Fire at will (PHB 239)"),
 	source : ["ATC:BBW", 3],
 	spellcastingBonus : [{
 		name : "The Better to See You With",
@@ -107,7 +107,7 @@ AddWarlockInvocation("The Better to See You With", {
 });
 AddWarlockInvocation("Obscuring Fog", {
 	name : "Obscuring Fog",
-	description : "\n   " + "I can cast Fog Cloud at will, as a 1st-level spell (PHB 243)",
+	description: desc("I can cast Fog Cloud at will, as a 1st-level spell (PHB 243)"),
 	source : ["ATC:BBW", 3],
 	spellcastingBonus : [{
 		name : "Obscuring Fog",
@@ -118,13 +118,13 @@ AddWarlockInvocation("Obscuring Fog", {
 });
 AddWarlockInvocation("Hex Beacon (prereq: level 5 warlock)", {
 	name : "Hex Beacon",
-	description : "\n   " + "Adv. on Perception, Survival, Investigation, Nature checks to find a target of my Hex spell",
+	description: desc("Adv. on Perception, Survival, Investigation, Nature checks to find a target of my Hex spell"),
 	source : ["ATC:BBW", 3],
 	prereqeval : "classes.known.warlock.level >= 5"
 });
 AddWarlockInvocation("Whispers from the Dark (prereq: level 5 warlock)", {
 	name : "Whispers from the Dark",
-	description : "\n   " + "Once per short rest, I can cast Dissonant Whispers as a 1st-level spell (PHB 234)",
+	description: desc("Once per short rest, I can cast Dissonant Whispers as a 1st-level spell (PHB 234)"),
 	source : ["ATC:BBW", 3],
 	usages : 1,
 	recovery : "short rest",
@@ -138,7 +138,7 @@ AddWarlockInvocation("Whispers from the Dark (prereq: level 5 warlock)", {
 });
 AddWarlockInvocation("Stalker's Step (prereq: level 7 warlock)", {
 	name : "Stalker's Step",
-	description : "\n   " + "Once per short rest, I can cast Pass Without Trace on myself without spell slot (PHB 264)",
+	description: desc("Once per short rest, I can cast Pass Without Trace on myself without spell slot (PHB 264)"),
 	source : ["ATC:BBW", 3],
 	usages : 1,
 	recovery : "short rest",
@@ -152,7 +152,7 @@ AddWarlockInvocation("Stalker's Step (prereq: level 7 warlock)", {
 });
 AddWarlockInvocation("The Better to Find You With (prereq: level 9 warlock)", {
 	name : "The Better to Find You With",
-	description : "\n   " + "Once per short rest, I can cast Locate Creature using a warlock spell slot, no mater. comp.",
+	description: desc("Once per short rest, I can cast Locate Creature using a warlock spell slot, no mater. comp."),
 	source : ["ATC:BBW", 3],
 	usages : 1,
 	recovery : "short rest",
@@ -166,7 +166,7 @@ AddWarlockInvocation("The Better to Find You With (prereq: level 9 warlock)", {
 });
 AddWarlockInvocation("Let Me In (prereq: level 9 warlock)", {
 	name : "Let Me In",
-	description : "\n   " + "I can cast Knock at will (PHB 254)",
+	description: desc("I can cast Knock at will (PHB 254)"),
 	source : ["ATC:BBW", 3],
 	spellcastingBonus : [{
 		name : "Let Me In",
@@ -178,7 +178,7 @@ AddWarlockInvocation("Let Me In (prereq: level 9 warlock)", {
 });
 AddWarlockInvocation("Unseen Artisans (prereq: level 15 warlock)", {
 	name : "Unseen Artisans",
-	description : "\n   " + "Once per short rest, I can cast Fabricate without using a spell slot (PHB 239)",
+	description: desc("Once per short rest, I can cast Fabricate without using a spell slot (PHB 239)"),
 	source : ["ATC:BBW", 3],
 	usages : 1,
 	recovery : "short rest",
@@ -192,7 +192,10 @@ AddWarlockInvocation("Unseen Artisans (prereq: level 15 warlock)", {
 });
 AddWarlockInvocation("Fangs of the Wolf (prereq: level 12 warlock, the Big, Bad Wolf patron, Pact of the Blade)", {
 	name : "Fangs of the Wolf",
-	description : "\n   " + "My Pact weapon does +1d6 psychic damage against targets that are frightened of me" + "\n   " + "I then gain half this psychic damage as temporary HP",
+	description: desc([
+		"My Pact weapon does +1d6 psychic damage against targets that are frightened of me",
+		"I then gain half this psychic damage as temporary HP",
+	]),
 	source : ["ATC:BBW", 3],
 	calcChanges : {
 		atkAdd : ["if (inputText.match(/\\bpact\\b/i)) { fields.Description += (fields.Description ? '; ' : '') + '+1d6 psychic damage vs. target frightened of me'; }; ", "If I include the word 'Pact' in a weapon's name, it will be treated as a Pact Weapon. When I hit a target that is frightened of me with my Pact weapon, the attack does an additional 1d6 psychic damage. I then gain half this bonus damage as temporary HP."]
@@ -201,7 +204,7 @@ AddWarlockInvocation("Fangs of the Wolf (prereq: level 12 warlock, the Big, Bad 
 });
 AddWarlockInvocation("Pack of the Wolf (prereq: level 15 warlock, the Big, Bad Wolf patron, Pact of the Chain)", {
 	name : "Pack of the Wolf",
-	description : "\n   " + "I gain adv. on attacks vs. targets when my familiar is within 5 ft of it, not incapacitated",
+	description: desc("I gain adv. on attacks vs. targets when my familiar is within 5 ft of it, not incapacitated"),
 	source : ["ATC:BBW", 3],
 	prereqeval : "classes.known.warlock.subclass === 'warlock-the big bad wolf' && classes.known.warlock.level >= 15 && What('Class Features Remember').indexOf('warlock,pact boon,pact of the chain') !== -1"
 });

@@ -78,7 +78,8 @@ AddSubClass("sorcerer", "spellfire channeler", {
 			"reactive healing" : {
 				name : "Reactive Healing",
 				source : ["FRA2", 31],
-				description : " [1 or more spellfire dice]" + desc([
+				additional: "1 or more spellfire dice",
+				description : desc([
 					"As a reaction when I take cold or spell damage, I can expend die to regain the result in HP"
 				]),
 				action : [["reaction", ""]]
@@ -86,7 +87,8 @@ AddSubClass("sorcerer", "spellfire channeler", {
 			"burn projectiles" : {
 				name : "Burn Projectiles",
 				source : ["FRA2", 31],
-				description : " [1 or more spellfire dice]" + desc([
+				additional: "1 or more spellfire dice",
+				description : desc([
 					"As a reaction when I'm hit by a ranged weapon attack, I can expend die to melt the missile",
 					"I reduce the damage taken by my sorcerer level + the number rolled on the expended dice"
 				]),
@@ -107,7 +109,8 @@ AddSubClass("sorcerer", "spellfire channeler", {
 			"healing spellfire" : {
 				name : "Healing Spellfire",
 				source : ["FRA2", 31],
-				description : " [1 or more spellfire dice]" + desc([
+				additional: "1 or more spellfire dice",
+				description : desc([
 					"As an action, I can heal a creature I touch for the roll of the expended dice"
 				]),
 				action : [["action", ""]]

@@ -363,7 +363,7 @@ AddSubClass("monk", "way of the cobalt soul-tdcs", {
 			name : "Preternatural Counter",
 			source : ["TDCS", 104],
 			minlevel : 11,
-			description : "\n   " + "As a reaction when an attack misses me, I can make a melee attack against the attacker",
+			description: desc("As a reaction when an attack misses me, I can make a melee attack against the attacker"),
 			action : [["reaction", ""]],
 			eval : "processLanguages(true, 'Monk (Way of the Cobalt Soul 11)', [1]);",
 			removeeval : "processLanguages(false, 'Monk (Way of the Cobalt Soul 11)', [1]);",

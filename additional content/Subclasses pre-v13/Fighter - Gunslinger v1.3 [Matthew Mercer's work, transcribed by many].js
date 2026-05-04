@@ -44,7 +44,7 @@ AddSubClass("fighter", "gunslinger-v1.3", {
 			name : "Firearm Proficiency",
 			source : ["MM:GMA", 2],
 			minlevel : 3,
-			description : "\n   " + "I gain proficiency with firearms",
+			description: desc("I gain proficiency with firearms"),
 			weapons : [false, false, ["Firearms"]]
 		},
 		"subclassfeature3.1" : {
@@ -78,7 +78,7 @@ AddSubClass("fighter", "gunslinger-v1.3", {
 			source : ["MM:GMA", 2],
 			minlevel : 3,
 			description : desc([
-				"Use the \"Choose Feature\" button above to add a Trick Shot to the third page",
+				'Use the "Choose Feature" button above to add a Trick Shot to the third page',
 				"A trick shot must be declared before the roll; Only one grit shot can be used per attack",
 				"The save DC for trick shots, if any, is 8 + my Proficiency Bonus + my Dexterity modifier",
 				"Each time I learn a new trick shot, I can also replace one I know with a new one"
@@ -93,7 +93,7 @@ AddSubClass("fighter", "gunslinger-v1.3", {
 				name : "Bullying Shot",
 				source : ["MM:GMA", 2],
 				additional : "1 grit point",
-				description : "\n   " + "When making a Cha (intimidation) check, I can spend 1 grit point to gain advantage on it"
+				description: desc("When making a Cha (intimidation) check, I can spend 1 grit point to gain advantage on it")
 			},
 			"dazing shot" : {
 				name : "Dazing Shot",
@@ -108,7 +108,7 @@ AddSubClass("fighter", "gunslinger-v1.3", {
 				name : "Deadeye Shot",
 				source : ["MM:GMA", 2],
 				additional : "1 grit point",
-				description : "\n   " + "I gain advantage on one attack roll with my firearm"
+				description: desc("I gain advantage on one attack roll with my firearm")
 			},
 			"disarming shot" : {
 				name : "Disarming Shot",
@@ -172,7 +172,7 @@ AddSubClass("fighter", "gunslinger-v1.3", {
 			name : "Rapid Repair",
 			source : ["MM:GMA", 2],
 			minlevel : 10,
-			description : "\n   " + "As a bonus action, I can repair a misfired (not broken) firearm by spending 1 grit point",
+			description: desc("As a bonus action, I can repair a misfired (not broken) firearm by spending 1 grit point"),
 			additional : "1 grit point",
 			action : [["bonus action", " (1 grit point)"]]
 		},
@@ -180,14 +180,14 @@ AddSubClass("fighter", "gunslinger-v1.3", {
 			name : "Lightning Reload",
 			source : ["MM:GMA", 2],
 			minlevel : 15,
-			description : "\n   " + "I can reload any firearm as a bonus action",
+			description: desc("I can reload any firearm as a bonus action"),
 			action : [["bonus action", ""]]
 		},
 		"subclassfeature18" : {
 			name : "Vicious Intent",
 			source : ["MM:GMA", 2],
 			minlevel : 18,
-			description : "\n   " + "My firearm attacks score a critical hit on a roll of both 19 and 20",
+			description: desc("My firearm attacks score a critical hit on a roll of both 19 and 20"),
 			calcChanges : {
 				atkAdd : ["if (!isSpell && theWea && (/firearm/).test(theWea.type + theWea.list) && !CritChance) {var CritChance = 19; fields.Description += (fields.Description ? '; ' : '') + 'Crit on 19-20'; }; ", "My attacks with firearms score a critical on a to hit roll of both 19 and 20."]
 			}
@@ -196,7 +196,10 @@ AddSubClass("fighter", "gunslinger-v1.3", {
 			name : "Hemorrhaging Critical",
 			source : ["MM:GMA", 2],
 			minlevel : 18,
-			description : "\n   " + "When I score a critical hit with a firearm, the target takes additional damage" + "\n   " + "At the end of its next turn, it again suffers half of the damage from the attack"
+			description: desc([
+				"When I score a critical hit with a firearm, the target takes additional damage",
+				"At the end of its next turn, it again suffers half of the damage from the attack",
+			]),
 		}
 	}
 });

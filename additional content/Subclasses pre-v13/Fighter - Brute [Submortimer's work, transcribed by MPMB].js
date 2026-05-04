@@ -37,7 +37,7 @@ var theCoD = AddSubClass("fighter", "brute-giantitp", {
 			name : "Heavy Metal",
 			source : ["S:Brute", 0],
 			minlevel : 3,
-			description : "\n   " + "I can do additional damage with weapons that have the heavy property",
+			description: desc("I can do additional damage with weapons that have the heavy property"),
 			additional : levels.map(function (n) {
 				return n < 3 ? "" : "+1d" + (n < 10 ? 4 : n < 18 ? 6 : 8) + " damage";
 			}),
@@ -49,7 +49,7 @@ var theCoD = AddSubClass("fighter", "brute-giantitp", {
 			name : "Beast of Burden",
 			source : ["S:Brute", 0],
 			minlevel : 7,
-			description : "\n   " + "Advantage on Strength checks to push/pull/lift/break; Carrying capacity is doubled",
+			description: desc("Advantage on Strength checks to push/pull/lift/break; Carrying capacity is doubled"),
 			eval : "tDoc.getField('Carrying Capacity Multiplier').value *= 2;",
 			removeeval : "tDoc.getField('Carrying Capacity Multiplier').value /= 2;"
 		},
@@ -69,7 +69,7 @@ var theCoD = AddSubClass("fighter", "brute-giantitp", {
 			name : "Musclebound Enforcer",
 			source : ["S:Brute", 0],
 			minlevel : 15,
-			description : "\n   " + "I can add my Strength modifier to my Charisma (Intimidate) checks",
+			description: desc("I can add my Strength modifier to my Charisma (Intimidate) checks"),
 			addMod : { type : "skill", field : "Inti", mod : "Str", text : "I add my Strength modifier to Charisma (Intimidate) checks." }
 		},
 		"subclassfeature18" : {

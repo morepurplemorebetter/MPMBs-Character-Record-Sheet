@@ -72,14 +72,14 @@ AddSubClass("bard", "college of bladesingers", {
 			name : "Song of Celerity",
 			source : ["MTC:CB", 0],
 			minlevel : 6,
-			description : "\n   " + "As a bonus action when I use my action to cast a cantrip, I can make a weapon attack",
+			description: desc("As a bonus action when I use my action to cast a cantrip, I can make a weapon attack"),
 			action : [["bonus action", " (with cantrip)"]]
 		},
 		"subclassfeature6.1" : {
 			name : "War Chanter",
 			source : ["MTC:CB", 0],
 			minlevel : 6,
-			description : "\n   " + "My concentration on bard spells or abilities can't be broken by taking damage"
+			description: desc("My concentration on bard spells or abilities can't be broken by taking damage")
 		},
 		"subclassfeature14" : {
 			name : "Dance of Death",

@@ -75,7 +75,7 @@ AddSubClass("rogue", "thieving magpie", {
 			name: "Grow Together",
 			source: ["FC:TM", 0],
 			minlevel: 13,
-			description: "\n   " + "My familiar gains additional HD equal to my proficiency bonus; This affect HP as well"
+			description: desc("My familiar gains additional HD equal to my proficiency bonus; This affect HP as well")
 		},
 		"subclassfeature17": {
 			name: "Act As One",

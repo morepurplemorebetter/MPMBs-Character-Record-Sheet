@@ -106,7 +106,7 @@ ClassList["warmage"] = {
 			name : "Arcane Initiation",
 			source : ["MFoV:CW", 3],
 			minlevel : 1,
-			description : "\n   " + "Choose an Initiation (Sage, Savant, or Scholar) using the \"Choose Feature\" button above",
+			description: desc('Choose an Initiation (Sage, Savant, or Scholar) using the "Choose Feature" button above'),
 			choices : ["Sage", "Savant", "Scholar"],
 			"sage" : {
 				name : "Arcane Initiation: Sage",
@@ -175,11 +175,11 @@ ClassList["warmage"] = {
 			name : "Arcane Fighting Style",
 			source : ["MFoV:CW", 3],
 			minlevel : 1,
-			description : "\n   " + "Choose an Arcane Fighting Style using the \"Choose Feature\" button above",
+			description: desc('Choose an Arcane Fighting Style using the "Choose Feature" button above'),
 			choices : ["Blaster", "Deflector", "Resistive", "Sniper", "Striker"],
 			"blaster" : {
 				name : "Arcane Blaster Fighting Style",
-				description : "\n   " + "My warmage spell save DC increases by 2",
+				description: desc("My warmage spell save DC increases by 2"),
 				calcChanges : {
 					spellCalc : [
 						function (type, spellcasters, ability) {
@@ -199,7 +199,7 @@ ClassList["warmage"] = {
 			},
 			"resistive" : {
 				name : "Resistive Arcane Fighting Style",
-				description : "\n   " + "I gain +1 AC while wearing light or medium armor, or under the effects of Mage Armor",
+				description: desc("I gain +1 AC while wearing light or medium armor, or under the effects of Mage Armor"),
 				extraAC : [{
 					mod : 1,
 					name : "Resistive Fighting Style",
@@ -211,7 +211,7 @@ ClassList["warmage"] = {
 			},
 			"sniper" : {
 				name : "Arcane Sniper Fighting Style",
-				description : "\n   " + "I gain +2 bonus to attack rolls I make with ranged spell attacks",
+				description: desc("I gain +2 bonus to attack rolls I make with ranged spell attacks"),
 				calcChanges : {
 					atkCalc : [
 						function (fields, v, output) {
@@ -225,14 +225,14 @@ ClassList["warmage"] = {
 			},
 			"striker" : {
 				name : "Arcane Striker Fighting Style",
-				description : "\n   " + "Reroll 1 or 2 on damage die when making melee spell attack with a warmage cantrip"
+				description: desc("Reroll 1 or 2 on damage die when making melee spell attack with a warmage cantrip")
 			}
 		},
 		"warmage edge" : {
 			name : "Warmage Edge",
 			source : ["MFoV:CW", 4],
 			minlevel : 2,
-			description : "\n   " + "Once per turn when I deal damage with a warmage spell, I can have it do extra damage",
+			description: desc("Once per turn when I deal damage with a warmage spell, I can have it do extra damage"),
 			usages : 1,
 			recovery : " Turn",
 			additional : levels.map(function (n) {
@@ -244,7 +244,7 @@ ClassList["warmage"] = {
 			source : ["MFoV:CW", 4],
 			minlevel : 2,
 			description : desc([
-				"Use the \"Choose Feature\" button above to add Warmage Tricks to the third page",
+				'Use the "Choose Feature" button above to add Warmage Tricks to the third page',
 				"Whenever I gain a warmage level, I can replace a trick I know with another"
 			]),
 			additional : levels.map(function (n) {
@@ -330,7 +330,7 @@ ClassList["warmage"] = {
 			"mystical armor" : {
 				name : "Mystical Armor",
 				source : ["MFoV:CW", 9],
-				description : "\n   " + "I can cast Mage Armor at will, without using a spell slot",
+				description: desc("I can cast Mage Armor at will, without using a spell slot"),
 				spellcastingBonus : [{
 					name : "Mystical Armor",
 					spells : ["mage armor"],
@@ -341,7 +341,7 @@ ClassList["warmage"] = {
 			"mystical vision" : {
 				name : "Mystical Vision",
 				source : ["MFoV:CW", 9],
-				description : "\n   " + "I can cast Detect Magic at will, without using a spell slot",
+				description: desc("I can cast Detect Magic at will, without using a spell slot"),
 				spellcastingBonus : [{
 					name : "Mystical Vision",
 					spells : ["detect magic"],
@@ -352,7 +352,7 @@ ClassList["warmage"] = {
 			"pawn storm (prereq: house of pawns)" : {
 				name : "Pawn Storm",
 				source : ["MFoV:CW", 9],
-				description : "\n   " + "I gain +10 ft speed and double my speed on the first round of combat",
+				description: desc("I gain +10 ft speed and double my speed on the first round of combat"),
 				prereqeval : function(v) { return (/pawns/i).test(classes.known.warmage.subclass); },
 				speed : { allModes : "+10" }
 			},
@@ -451,7 +451,7 @@ ClassList["warmage"] = {
 /* 			"rook's perch (prereq: level 5 warmage, house of rooks)" : {
 				name : "Rook's Perch",
 				source : ["MFoV:CW", 11],
-				description : "\n   " + "I gain +10 ft speed and a climbing speed equal to my walking speed",
+				description: desc("I gain +10 ft speed and a climbing speed equal to my walking speed"),
 				prereqeval : function(v) { return (/rooks/i).test(classes.known.warmage.subclass); },
 				speed : {
 					allModes : "+10",
@@ -527,7 +527,7 @@ ClassList["warmage"] = {
 			source : ["MFoV:CW", 4],
 			minlevel : 3,
 			description : desc([
-				"Choose a Warmage House to which you belong and put it in the \"Class\" field",
+				'Choose a Warmage House to which you belong and put it in the "Class" field',
 				"Choose either the House of Pawns, or the House of Rooks"
 			])
 		},
@@ -535,14 +535,14 @@ ClassList["warmage"] = {
 			name : "Warmage Tactics",
 			source : ["MFoV:CW", 4],
 			minlevel : 6,
-			description : "\n   " + "I can add my Intelligence modifier to all my saves against magic that deals damage",
+			description: desc("I can add my Intelligence modifier to all my saves against magic that deals damage"),
 			savetxt : { text : ["Add Int mod to saves vs. damage magic"] }
 		},
 		"warmage surge" : {
 			name : "Warmage Surge",
 			source : ["MFoV:CW", 4],
 			minlevel : 11,
-			description : "\n   " + "When I deal damage with a warmage cantrip on my turn, I can double that damage",
+			description: desc("When I deal damage with a warmage cantrip on my turn, I can double that damage"),
 			usages : levels.map(function (n) {
 				return n < 14 ? "" : n < 20 ? 1 : 3;
 			}),
@@ -578,7 +578,7 @@ AddSubClass("warmage", "pawns", {
 			name : "Bonus Proficiencies",
 			source : ["MFoV:CW", 7],
 			minlevel : 3,
-			description : "\n   " + "I gain proficiency with medium armor, heavy armor, and shields",
+			description: desc("I gain proficiency with medium armor, heavy armor, and shields"),
 			armorProfs : [false, true, true, true]
 		},
 		"subclassfeature3.1" : {
@@ -614,7 +614,7 @@ AddSubClass("warmage", "pawns", {
 			name : "Fighting Style",
 			source : ["MFoV:CW", 8],
 			minlevel : 1,
-			description : "\n   " + "Choose a Fighting Style for using the \"Choose Feature\" button above",
+			description: desc('Choose a Fighting Style for using the "Choose Feature" button above'),
 			choices : ["Defense", "Protection",],
 			"defense" : FightingStyles.defense,
 			"protection" : FightingStyles.protection

@@ -84,7 +84,7 @@ ClassList["blood hunter"] = {
 			source : ["MM:BH", 3],
 			minlevel : 1,
 			description : desc([
-				"I can imbue my weapons with Crimson Rites; Use the \"Choose Features\" button above",
+				'I can imbue my weapons with Crimson Rites; Use the "Choose Feature" button above',
 				"As a bonus action, I imbue a weapon, which than adds the rite damage to its damage",
 				"It can hold only one rite, lasting until my next short/long rest or it leaves my hand",
 				"When activated, I take my character level in damage and lower my max HP the same"
@@ -100,34 +100,34 @@ ClassList["blood hunter"] = {
 			"flame (primal rite)" : {
 				source : ["MM:BH", 3],
 				name : "Rite of the Flame",
-				description : "\n   " + "I can select fire as the damage type for my crimson rite damage die"
+				description: desc("I can select fire as the damage type for my crimson rite damage die")
 			},
 			"frozen (primal rite)" : {
 				source : ["MM:BH", 3],
 				name : "Rite of the Frozen",
-				description : "\n   " + "I can select cold as the damage type for my crimson rite damage die"
+				description: desc("I can select cold as the damage type for my crimson rite damage die")
 			},
 			"storm (primal rite)" : {
 				source : ["MM:BH", 3],
 				name : "Rite of the Storm",
-				description : "\n   " + "I can select lightning as the damage type for my crimson rite damage die"
+				description: desc("I can select lightning as the damage type for my crimson rite damage die")
 			},
 			"roar (esoteric rite)" : {
 				source : ["MM:BH", 3],
 				name : "Rite of the Roar",
-				description : "\n   " + "I can select thunder as the damage type for my crimson rite damage die",
+				description: desc("I can select thunder as the damage type for my crimson rite damage die"),
 				prereqeval : "classes.known['blood hunter'].level >= 14"
 			},
 			"oracle (esoteric rite)" : {
 				source : ["MM:BH", 3],
 				name : "Rite of the Oracle",
-				description : "\n   " + "I can select psychic as the damage type for my crimson rite damage die",
+				description: desc("I can select psychic as the damage type for my crimson rite damage die"),
 				prereqeval : "classes.known['blood hunter'].level >= 14"
 			},
 			"dead (esoteric rite)" : {
 				source : ["MM:BH", 3],
 				name : "Rite of the Dead",
-				description : "\n   " + "I can select necrotic as the damage type for my crimson rite damage die",
+				description: desc("I can select necrotic as the damage type for my crimson rite damage die"),
 				prereqeval : "classes.known['blood hunter'].level >= 14"
 			},
 			calcChanges : {
@@ -138,7 +138,7 @@ ClassList["blood hunter"] = {
 			name : "Fighting Style",
 			source : ["MM:BH", 3],
 			minlevel : 2,
-			description : "\n   " + "Choose a Fighting Style using the \"Choose Feature\" button above",
+			description : desc('Choose a Fighting Style using the "Choose Feature" button above'),
 			choices : ["Archery", "Dueling", "Great Weapon Fighting", "Two-Weapon Fighting"],
 			"archery" : FightingStyles.archery,
 			"dueling" : FightingStyles.dueling,
@@ -150,7 +150,7 @@ ClassList["blood hunter"] = {
 			source : ["MM:BH", 3],
 			minlevel : 2,
 			description : desc([
-				"I can use a Blood Curse on targets with blood; Use the \"Choose Features\" button above",
+				'I can use a Blood Curse on targets with blood; Use the "Choose Feature" button above',
 				"I can amplify its effect by taking damage equal to my Crimson Rite damage die",
 				"Whenever I learn a new Blood Curse, I can replace one I know with a new one as well"
 			]),
@@ -244,7 +244,7 @@ ClassList["blood hunter"] = {
 			source : ["MM:BH", 5],
 			minlevel : 3,
 			description : desc([
-				"Choose a Blood Hunter Order you commit to and put it in the \"Class\" field",
+				'Choose a Blood Hunter Order you commit to and put it in the "Class" field',
 				"Choose either the Order of the Ghostslayer, Lycan, Mutant, or Profane Soul"
 			])
 		},
@@ -301,7 +301,7 @@ ClassSubList["blood hunter-order of the ghostslayer"] = {
 			name : "Rite of the Dawn",
 			source : ["MM:BH", 5],
 			minlevel : 3,
-			description : "\n   " + "I know the Rite of the Dawn and add my Wis mod to its damage against some creatures",
+			description: desc("I know the Rite of the Dawn and add my Wis mod to its damage against some creatures"),
 			additional : levels.map(function (n) { return n < 3 ? "" : "+Wis mod damage to " + (n < 11 ? "undead" : "all"); }),
 			extraname : "Crimson Rite",
 			extrachoices : ["dawn"],
@@ -346,7 +346,7 @@ ClassSubList["blood hunter-order of the ghostslayer"] = {
 			name : "Gravesight",
 			source : ["MM:BH", 5],
 			minlevel : 15,
-			description : "\n   " + "Out to 30 feet, I can see in magic darkness as well as invisible creatures and objects",
+			description: desc("Out to 30 feet, I can see in magic darkness as well as invisible creatures and objects"),
 			vision : [["Devil's sight", 30], ["See invisible", 30]]
 		},
 		"subclassfeature18" : {
@@ -406,31 +406,31 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			name : "Otherwordly Patron",
 			source : ["MM:BH", 6],
 			minlevel : 3,
-			description : "\n   " + "Choose an Otherwordly Patron using the \"Choose Feature\" button above",
+			description : desc('Choose an Otherwordly Patron using the "Choose Feature" button above'),
 			choices : ["the Archfey", "the Fiend", "the Great Old One", "the Undying", "the Celestial", "the Hexblade"],
 			"the archfey" : {
 				name : "Otherwordly Patron: the Archfey",
-				description : "\n   " + "When I do rite damage, the target loses invisibility, 1/2 \u0026 3/4 cover until my next turn",
+				description: desc("When I do rite damage, the target loses invisibility, 1/2 \u0026 3/4 cover until my next turn"),
 				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the archfey']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"the fiend" : {
 				name : "Otherwordly Patron: the Fiend",
-				description : "\n   " + "When using the Rite of the Flame I may reroll a 1 on the rite damage die, once",
+				description: desc("When using the Rite of the Flame I may reroll a 1 on the rite damage die, once"),
 				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the fiend']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"the great old one" : {
 				name : "Otherwordly Patron: the Great Old One",
-				description : "\n   " + "When I do a critical hit, the target Wis save or frightened of me until my next turn end",
+				description: desc("When I do a critical hit, the target Wis save or frightened of me until my next turn end"),
 				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the great old one']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"the undying" : {
 				name : "Otherwordly Patron: the Undying",
-				description : "\n   " + "When I kill a hostile with a weapon attack, I regain HP equal to my rite damage die",
+				description: desc("When I kill a hostile with a weapon attack, I regain HP equal to my rite damage die"),
 				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the undying']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			},
 			"the celestial" : {
 				name : "Otherwordly Patron: the Celestial",
-				description : "\n   " + "As a bonus action, I can expend a Blood Maledict use to heal a creature within 60 ft",
+				description: desc("As a bonus action, I can expend a Blood Maledict use to heal a creature within 60 ft"),
 				additional : levels.map(function (n) {
 					var die = "2d" + (n < 6 ? 4 : n < 11 ? 6 : n < 16 ? 8 : 10);
 					return n < 3 ? "" : "heal " + die + " + Wisdom modifier";
@@ -440,7 +440,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the hexblade" : {
 				name : "Otherwordly Patron: the Hexblade",
-				description : "\n   " + "My next attack vs. a creature I target with a blood curse, is a critical hit on a 19 or 20",
+				description: desc("My next attack vs. a creature I target with a blood curse, is a critical hit on a 19 or 20"),
 				eval : "var ToAdd = ['blood hunter', 'subclassfeature7.1', 'the hexblade']; if (classes.known['blood hunter'].level >= 7 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)} ToAdd[1] = 'subclassfeature15'; ToAdd[2] += 2; if (classes.known['blood hunter'].level >= 15 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};"
 			}
 		},
@@ -458,21 +458,21 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			name : "Mystic Frenzy",
 			source : ["MM:BH", 6],
 			minlevel : 7,
-			description : "\n   " + "When I cast a cantrip as an action, I can make one weapon attack as a bonus action",
+			description: desc("When I cast a cantrip as an action, I can make one weapon attack as a bonus action"),
 			action : [["bonus action", " (with cantrip)"]]
 		},
 		"subclassfeature7.1" : {
 			name : "Revealed Arcana",
 			source : ["MM:BH", 6],
 			minlevel : 7,
-			description : "\n   " + "Choose an Otherwordly Patron using the \"Choose Feature\" button above ",
+			description : desc('Choose an Otherwordly Patron using the "Choose Feature" button above'),
 			usages : 1,
 			recovery : "long rest",
 			choices : ["the Archfey", "the Fiend", "the Great Old One", "the Undying", "the Celestial", "the Hexblade"],
 			choicesNotInMenu : true,
 			"the archfey" : {
 				name : "Revealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Blur using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Blur using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["blur"],
@@ -482,7 +482,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the fiend" : {
 				name : "Revealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Scorching Ray using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Scorching Ray using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["scorching ray"],
@@ -492,7 +492,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the great old one" : {
 				name : "Revealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Detect Thoughts using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Detect Thoughts using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["detect thoughts"],
@@ -502,7 +502,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the undying" : {
 				name : "Revealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Blindness/Deafness using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Blindness/Deafness using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["blindness/deafness"],
@@ -512,7 +512,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the celestial" : {
 				name : "Revealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Lesser Restoration using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Lesser Restoration using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["lesser restoration"],
@@ -522,7 +522,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the hexblade" : {
 				name : "Revealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Branding Smite using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Branding Smite using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Revealed Arcana",
 					spells : ["branding smite"],
@@ -549,14 +549,14 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			name : "Unsealed Arcana",
 			source : ["MM:BH", 7],
 			minlevel : 15,
-			description : "\n   " + "Choose an Otherwordly Patron using the \"Choose Feature\" button above  ",
+			description : desc('Choose an Otherwordly Patron using the "Choose Feature" button above'),
 			usages : 1,
 			recovery : "long rest",
 			choices : ["the Archfey2", "the Fiend2", "the Great Old One2", "the Undying2", "the Celestial2", "the Hexblade2"],
 			choicesNotInMenu : true,
 			"the archfey2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Slow without using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Slow without using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["slow"],
@@ -566,7 +566,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the fiend2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Fireball without using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Fireball without using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["fireball"],
@@ -576,7 +576,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the great old one2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Haste without using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Haste without using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["haste"],
@@ -586,7 +586,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the undying2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Bestow Curse without using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Bestow Curse without using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["bestow curse"],
@@ -596,7 +596,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the celestial2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Revivify without using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Revivify without using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["revivify"],
@@ -606,7 +606,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			},
 			"the hexblade2" : {
 				name : "Unsealed Arcana",
-				description : "\n   " + "Once per long rest, I can cast Blink without using a profane soul spell slot",
+				description: desc("Once per long rest, I can cast Blink without using a profane soul spell slot"),
 				spellcastingBonus : [{
 					name : "Unsealed Arcana",
 					spells : ["blink"],
@@ -620,7 +620,7 @@ ClassSubList["blood hunter-order of the profane soul"] = {
 			name : "Soul Syphon",
 			source : ["MM:BH", 7],
 			minlevel : 18,
-			description : "\n   " + "When I kill a creature of CR15+ with an attack, I recover an expended spell slot"
+			description: desc("When I kill a creature of CR15+ with an attack, I recover an expended spell slot")
 		}
 	}
 };
@@ -635,7 +635,7 @@ ClassSubList["blood hunter-order of the mutant"] = {
 			source : ["MM:BH", 7],
 			minlevel : 3,
 			description : desc([
-				"Use the \"Choose Features\" button above to add Mutagen Formulae to the third page",
+				'Use the "Choose Feature" button above to add Mutagen Formulae to the third page',
 				"When I gain a new mutagen formula I can also replace one I know with another"
 			]),
 			additional : levels.map(function (n) { return n < 3 ? "" : (n < 7 ? 3 : n < 11 ? 4 : n < 15 ? 5 : n < 18 ? 6 : 7) + " mutagen formulae"; }),
@@ -786,7 +786,7 @@ ClassSubList["blood hunter-order of the mutant"] = {
 			name : "Strange Metabolism",
 			source : ["MM:BH", 7],
 			minlevel : 11,
-			description : "\n   " + "As a bonus action, I can ignore the side effects of a single mutagen for 1 minute",
+			description: desc("As a bonus action, I can ignore the side effects of a single mutagen for 1 minute"),
 			usages : 1,
 			recovery : "short rest",
 			action : [["bonus action", ""]]
@@ -795,14 +795,14 @@ ClassSubList["blood hunter-order of the mutant"] = {
 			name : "Robust Physiology",
 			source : ["MM:BH", 7],
 			minlevel : 15,
-			description : "\n   " + "I gain immunity to poison damage and the poison condition",
+			description: desc("I gain immunity to poison damage and the poison condition"),
 			savetxt : { immune : ["poison"] }
 		},
 		"subclassfeature18" : {
 			name : "Exalted Mutation",
 			source : ["MM:BH", 7],
 			minlevel : 18,
-			description : "\n   " + "I permanently gain all (side) effects of one mutagen, chosen from the formulae I know"
+			description: desc("I permanently gain all (side) effects of one mutagen, chosen from the formulae I know")
 		}
 	}
 };
@@ -816,7 +816,7 @@ ClassSubList["blood hunter-order of the lycan"] = {
 			name : "Heightened Senses",
 			source : ["MM:OotL", 2],
 			minlevel : 3,
-			description : "\n   " + "I gain advantage on Wisdom (Perception) checks that rely on hearing or smell",
+			description: desc("I gain advantage on Wisdom (Perception) checks that rely on hearing or smell"),
 			vision : [["Adv. on Perception relying on hearing or smell", 0]]
 		},
 		"subclassfeature3.1" : {
@@ -825,7 +825,7 @@ ClassSubList["blood hunter-order of the lycan"] = {
 			minlevel : 3,
 			description : desc([
 				"As an action, I can transform into a Hybrid lycanthropy form",
-				"See the \"Notes\" page for the full rules of this Hybrid form at my current level"
+				'See the "Notes" page for the full rules of this Hybrid form at my current level'
 			]),
 			usages : ["", "", 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3],
 			recovery : "short rest",
@@ -884,7 +884,7 @@ ClassSubList["blood hunter-order of the lycan"] = {
 			name : "Hybrid Transformation Mastery",
 			source : ["MM:OotL", 3],
 			minlevel : 18,
-			description : "\n   " + "I know the Blood Curse of the Howl, which doesn't count against the number I know",
+			description: desc("I know the Blood Curse of the Howl, which doesn't count against the number I know"),
 			extraname : "Blood Curse",
 			"blood curse of the howl" : {
 				name : "Blood Curse of the Howl",
@@ -959,7 +959,7 @@ UpdateHybridForm = function() {
 	if (BHlevelOld <= 2 && BHlevelNew > 2) {
 		app.alert({
 			cTitle : "Order of thy Lycan's Hybrid Form is on the Notes page",
-			cMsg : "You can find the rules for the Hybrid Form on the first \"Notes\" page, (page no. " + (tDoc.getField(NotesPrefix + "Notes.Left").page + 1) + ").\n\nThe Hybrid Form you gain with the Hybrid Transformation class feature from Blood Hunter (Order of thy Lycan) has a lot of rules attached to it. Because of this, it is not possible to put them in the \"Class Features\". Additionally, all the Blood Curses and Crimson Rites take up all the space of the third page's Notes section. Thus, the rules for this Hybrid Form will be put on the first \"Notes\" page and will be updated there.",
+			cMsg : 'You can find the rules for the Hybrid Form on the first "Notes" page, (page no. ' + (tDoc.getField(NotesPrefix + "Notes.Left").page + 1) + ').\n\nThe Hybrid Form you gain with the Hybrid Transformation class feature from Blood Hunter (Order of thy Lycan) has a lot of rules attached to it. Because of this, it is not possible to put them in the "Class Features". Additionally, all the Blood Curses and Crimson Rites take up all the space of the third page\'s Notes section. Thus, the rules for this Hybrid Form will be put on the first "Notes" page and will be updated there.',
 			nIcon : 3
 		});
 	};

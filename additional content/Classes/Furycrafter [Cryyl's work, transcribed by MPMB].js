@@ -73,7 +73,7 @@ ClassList["furycrafter"] = {
 			name : "Fighting Style",
 			source : ["Cryyl:F", 3],
 			minlevel : 1,
-			description : "\n   " + "Choose a Fighting Style for the furycrafter using the \"Choose Feature\" button above",
+			description: desc('Choose a Fighting Style for the furycrafter using the "Choose Feature" button above'),
 			choices : ["Archery", "Defense", "Dueling", "Great Weapon Fighting", "Protection"],
 			"archery" : FightingStyles.archery,
 			"defense" : FightingStyles.defense,
@@ -85,41 +85,41 @@ ClassList["furycrafter"] = {
 			name : "Furycraft",
 			source : ["Cryyl:F", 2],
 			minlevel : 1,
-			description : "\n   Use the \"Choose Features\" button above to select the furycraft element",
+			description : desc('Use the "Choose Feature" button above to select the furycraft element'),
 			choices : ["Earth", "Fire", "Metal", "Water", "Wind", "Wood"],
 			"earth" : {
 				name : "Earth Furycrafter",
-				description : "\n   I use earth fury spells; I must use melee weapons for abilities, which deal force damage",
+				description: desc("I use earth fury spells; I must use melee weapons for abilities, which deal force damage"),
 				spellcastingExtra : ["mold earth", "earth tremor", "animal friendship", "maximilian's earthen grasp", "pass without trace", "erupting earth", "wall of sand", "stoneskin", "stone shape", "transmute rock", "wall of stone"],
 				spellcastingExtraApplyNonconform : true
 			},
 			"fire" : {
 				name : "Fire Furycrafter",
-				description : "\n   I use fire fury spells; I can use all weapons for my abilities, which deal fire damage",
+				description: desc("I use fire fury spells; I can use all weapons for my abilities, which deal fire damage"),
 				spellcastingExtra : ["produce flame", "burning hands", "charm person", "suggestion", "scorching ray", "melf's minute meteors", "fireball", "wall of fire", "fire shield", "flame strike", "immolation"],
 				spellcastingExtraApplyNonconform : true
 			},
 			"metal" : {
 				name : "Metal Furycrafter",
-				description : "\n   I use metal fury spells; I must use melee weapons for abilities, which deal extra damage",
+				description: desc("I use metal fury spells; I must use melee weapons for abilities, which deal extra damage"),
 				spellcastingExtra : ["true strike", "compelled duel", "wrathful smite", "magic weapon", "blur", "protection from energy", "conjure barrage", "staggering smite", "stoneskin", "banishing smite", "destructive wave"],
 				spellcastingExtraApplyNonconform : true
 			},
 			"water" : {
 				name : "Water Furycrafter",
-				description : "\n   I use water fury spells; I can use all weapons for my abilities, which deal cold damage",
+				description: desc("I use water fury spells; I can use all weapons for my abilities, which deal cold damage"),
 				spellcastingExtra : ["shape water", "cure wounds", "create or destroy water", "snilloc's snowball swarm", "alter self", "tidal wave", "revivify", "control water", "ice storm", "maelstrom", "mass cure wounds"],
 				spellcastingExtraApplyNonconform : true
 			},
 			"wind" : {
 				name : "Wind Furycrafter",
-				description : "\n   I use wind fury spells; I can use all weapons for my abilities, which deal thunder damage",
+				description: desc("I use wind fury spells; I can use all weapons for my abilities, which deal thunder damage"),
 				spellcastingExtra : ["gust", "catapult", "expeditious retreat", "invisibility", "levitate", "call lightning", "fly", "greater invisibility", "storm sphere", "control winds", "telekinesis"],
 				spellcastingExtraApplyNonconform : true
 			},
 			"wood" : {
 				name : "Wood Furycrafter",
-				description : "\n   I use wood fury spells; I must use ranged weapons for abilities, dealing piercing damage",
+				description: desc("I use wood fury spells; I must use ranged weapons for abilities, dealing piercing damage"),
 				spellcastingExtra : ["druidcraft", "entangle", "goodberry", "pass without trace", "spike growth", "plant growth", "speak with plants", "grasping vine", "hallucinatory terrain", "conjure volley", "swift quiver"],
 				spellcastingExtraApplyNonconform : true
 			},
@@ -133,13 +133,13 @@ ClassList["furycrafter"] = {
 			name : "Spellcasting",
 			source : ["Cryyl:F", 4],
 			minlevel : 2,
-			description : "\n   " + "I can cast my furycraft element spells, using Wisdom as my spellcasting ability"
+			description: desc("I can cast my furycraft element spells, using Wisdom as my spellcasting ability")
 		},
 		"fury-enhanced strike" : {
 			name : "Fury-Enhanced Strike",
 			source : ["Cryyl:F", 4],
 			minlevel : 2,
-			description : "\n   Use the \"Choose Features\" button above to select the furycraft element",
+			description : desc('Use the "Choose Feature" button above to select the furycraft element'),
 			choices : ["earth", "fire", "metal", "water", "wind", "wood"],
 			choicesNotInMenu : true,
 			"earth" : {
@@ -189,18 +189,18 @@ ClassList["furycrafter"] = {
 			name : "Furycraft Archetype",
 			source : ["Cryyl:F", 4],
 			minlevel : 3,
-			description : "\n   Choose a Furycraft Archetype that defines my connection to my fury\n   Choose either Manifestation or Innate Force"
+			description: desc("Choose a Furycraft Archetype that defines my connection to my fury\n   Choose either Manifestation or Innate Force")
 		},
 		"improved fury-enhanced strike" : {
 			name : "Improved Fury-Enhanced Strike",
 			source : ["Cryyl:F", 4],
 			minlevel : 11,
-			description : "\n   Use the \"Choose Features\" button above to select the furycraft element",
+			description : desc('Use the "Choose Feature" button above to select the furycraft element'),
 			choices : ["earth", "fire", "metal", "water", "wind", "wood"],
 			choicesNotInMenu : true,
 			"earth" : {
 				name : "Improved Earth Fury-Enhanced Strike",
-				description : "\n   Whenever I hit a creature with a melee weapon, I deal an extra +1d8 force damage",
+				description: desc("Whenever I hit a creature with a melee weapon, I deal an extra +1d8 force damage"),
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
@@ -212,7 +212,7 @@ ClassList["furycrafter"] = {
 			},
 			"fire" : {
 				name : "Improved Fire Fury-Enhanced Strike",
-				description : "\n   Whenever I hit a creature with a weapon attack, I deal an extra +1d8 fire damage",
+				description: desc("Whenever I hit a creature with a weapon attack, I deal an extra +1d8 fire damage"),
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
@@ -224,7 +224,7 @@ ClassList["furycrafter"] = {
 			},
 			"metal" : {
 				name : "Improved Metal Fury-Enhanced Strike",
-				description : "\n   Whenever I hit a creature with a melee weapon attack, I deal an extra +1d8 damage",
+				description: desc("Whenever I hit a creature with a melee weapon attack, I deal an extra +1d8 damage"),
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
@@ -236,7 +236,7 @@ ClassList["furycrafter"] = {
 			},
 			"water" : {
 				name : "Improved Water Fury-Enhanced Strike",
-				description : "\n   Whenever I hit a creature with a weapon attack, I deal an extra +1d8 cold damage",
+				description: desc("Whenever I hit a creature with a weapon attack, I deal an extra +1d8 cold damage"),
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
@@ -248,7 +248,7 @@ ClassList["furycrafter"] = {
 			},
 			"wind" : {
 				name : "Improved Wind Fury-Enhanced Strike",
-				description : "\n   Whenever I hit a creature with a weapon attack, I deal an extra +1d8 thunder damage",
+				description: desc("Whenever I hit a creature with a weapon attack, I deal an extra +1d8 thunder damage"),
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
@@ -260,7 +260,7 @@ ClassList["furycrafter"] = {
 			},
 			"wood" : {
 				name : "Improved Wood Fury-Enhanced Strike",
-				description : "\n   Whenever I hit a creature with a ranged weapon, I deal an extra +1d8 piercing damage",
+				description: desc("Whenever I hit a creature with a ranged weapon, I deal an extra +1d8 piercing damage"),
 				calcChanges : {
 					atkAdd : [
 						function (fields, v) {
@@ -406,7 +406,7 @@ AddSubClass("furycrafter", "manifestation", {
 			name : "Unleashed Fury",
 			source : ["Cryyl:F", 5],
 			minlevel : 11,
-			description : "\n   When I command my companion to do the Attack action, it can attack twice on its turn"
+			description: desc("When I command my companion to do the Attack action, it can attack twice on its turn")
 		},
 		"subclassfeature15" : {
 			name : "Rapid Fury",
@@ -439,7 +439,7 @@ AddSubClass("furycrafter", "innate force", {
 			name : "Imbued Strikes",
 			source : ["Cryyl:F", 6],
 			minlevel : 7,
-			description : "\n   My weapon attacks count as magical for overcoming resistances and immunities",
+			description: desc("My weapon attacks count as magical for overcoming resistances and immunities"),
 			calcChanges : {
 				atkAdd : [
 					function (fields, v) {
@@ -455,7 +455,7 @@ AddSubClass("furycrafter", "innate force", {
 			name : "Alternate Craft",
 			source : ["Cryyl:F", 6],
 			minlevel : 11,
-			description : "\n   Use the \"Choose Features\" button above to select a secondary furycraft element",
+			description : desc('Use the "Choose Feature" button above to select a secondary furycraft element'),
 			choices : ["Earth", "Fire", "Metal", "Water", "Wind", "Wood"],
 			"earth" : {
 				name : "Alternate Earth Craft",
@@ -570,7 +570,7 @@ AddSubClass("furycrafter", "innate force", {
 			name : "Alternate Craft Evolved",
 			source : ["Cryyl:F", 6],
 			minlevel : 15,
-			description : "\n   Use the \"Choose Features\" button above to select a tertiary furycraft element",
+			description : desc('Use the "Choose Feature" button above to select a tertiary furycraft element'),
 			choices : ["Earth", "Earth Evolved (prereq: Alternate Earth Craft)", "Fire", "Fire Evolved (prereq: Alternate Fire Craft)", "Metal", "Metal Evolved (prereq: Alternate Metal Craft)", "Water", "Water Evolved (prereq: Alternate Water Craft)", "Wind", "Wind Evolved (prereq: Alternate Wind Craft)", "Wood", "Wood Evolved (prereq: Alternate Wood Craft)"],
 			"earth" : {
 				name : "Alternate Earth Craft",
@@ -592,7 +592,7 @@ AddSubClass("furycrafter", "innate force", {
 			},
 			"earth evolved (prereq: alternate earth craft)" : {
 				name : "Alternate Earth Craft Evolved",
-				description : "\n  I can use earth fury spells of my full furycrafter level",
+				description: desc("I can use earth fury spells of my full furycrafter level"),
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "earth";
 				},
@@ -632,7 +632,7 @@ AddSubClass("furycrafter", "innate force", {
 			},
 			"fire evolved (prereq: alternate fire craft)" : {
 				name : "Alternate Fire Craft Evolved",
-				description : "\n  I can use fire fury spells of my full furycrafter level",
+				description: desc("I can use fire fury spells of my full furycrafter level"),
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "fire";
 				},
@@ -672,7 +672,7 @@ AddSubClass("furycrafter", "innate force", {
 			},
 			"metal evolved (prereq: alternate metal craft)" : {
 				name : "Alternate Metal Craft Evolved",
-				description : "\n  I can use metal fury spells of my full furycrafter level",
+				description: desc("I can use metal fury spells of my full furycrafter level"),
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "metal";
 				},
@@ -712,7 +712,7 @@ AddSubClass("furycrafter", "innate force", {
 			},
 			"water evolved (prereq: alternate water craft)" : {
 				name : "Alternate Water Craft Evolved",
-				description : "\n  I can use water fury spells of my full furycrafter level",
+				description: desc("I can use water fury spells of my full furycrafter level"),
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "water";
 				},
@@ -752,7 +752,7 @@ AddSubClass("furycrafter", "innate force", {
 			},
 			"wind evolved (prereq: alternate wind craft)" : {
 				name : "Alternate Wind Craft Evolved",
-				description : "\n  I can use wind fury spells of my full furycrafter level",
+				description: desc("I can use wind fury spells of my full furycrafter level"),
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "wind";
 				},
@@ -793,7 +793,7 @@ AddSubClass("furycrafter", "innate force", {
 			},
 			"wood evolved (prereq: alternate wood craft)" : {
 				name : "Alternate Wood Craft Evolved",
-				description : "\n  I can use wood fury spells of my full furycrafter level",
+				description: desc("I can use wood fury spells of my full furycrafter level"),
 				prereqeval : function() {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "wood";
 				},

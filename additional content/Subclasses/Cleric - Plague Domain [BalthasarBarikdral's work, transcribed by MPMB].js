@@ -36,7 +36,7 @@ AddSubClass("cleric", "plague domain", {
 			name : "Bonus Cantrip",
 			source : ["BB:PD", 0],
 			minlevel : 1,
-			description : "\n   " + "I learn the Poison Spray cantrip if I didn't already know it",
+			description: desc("I learn the Poison Spray cantrip if I didn't already know it"),
 			spellcastingBonus : [{
 				name : "Bonus Cantrip",
 				spells : ["poison spray"],
@@ -102,7 +102,7 @@ AddSubClass("cleric", "plague domain", {
 			name : "Potent Spellcasting",
 			source : ["BB:PD", 0],
 			minlevel : 8,
-			description : "\n   " + "I can add my Wisdom modifier to the damage I deal with my cleric cantrips",
+			description: desc("I can add my Wisdom modifier to the damage I deal with my cleric cantrips"),
 			calcChanges : {
 				atkCalc : [
 					function (fields, v, output) {

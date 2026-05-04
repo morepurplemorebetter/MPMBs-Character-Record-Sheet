@@ -5061,9 +5061,7 @@ var KCCC_fleshsmith = AddSubClass("inventor", "fleshsmith", {
 			name : "Thesis of Flesh",
 			source : [["KCCC", 42]],
 			minlevel : 1,
-			description : desc([
-				"Choose a Form, Mind, Creation, or Technique using the \"Choose Feature\" button above"
-			]),
+			description : desc('Choose a Form, Mind, Creation, or Technique using the "Choose Feature" button above'),
 			choices : ["Perfection of Form", "Perfection of Mind", "Perfection of Creation", "Perfection of Technique"],
 			"perfection of form" : {
 				name : "Perfection of Form",
@@ -6390,7 +6388,7 @@ var KCCC_cursesmith = AddSubClass("inventor", "cursesmith", {
 			name : "Cursed Path",
 			source : [["KCCC", 49]],
 			minlevel : 3,
-			description : " [use the \"Choose Feature\" button]" + desc([
+			description : ' [use the "Choose Feature" button]' + desc([
 				"I select a path that reflects my cursed affinity",
 				"This grants me extra features and I learn spells related to the path"
 			]),
@@ -7982,7 +7980,7 @@ SpellsList["cold snap"] = {
 	range : "90 ft",
 	components : "S",
 	duration : "Instantaneous",
-    save : "Con",
+	save : "Con",
 	description : "5-ft rad sphere dif. terrain till my next turn; 3d8+1d8/SL Cold dmg, slowed 10 ft; save halves, no slow",
 	descriptionFull : "With a snap of your fingers a swirling burst of freezing wind erupts at a point you choose within range. Each creature in a 5-foot-radius sphere centered on that point must make a Constitution saving throw. On a failed save, a creature takes 3d8 cold damage and becomes stuck in the ice, reducing their speed by 10 feet until the start of your next turn. On a success, the target takes half as much damage and is not stuck in ice.\n   The ground in the area is covered with slick ice and snow, making it difficult terrain until the start of your next turn." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, the damage increases by 1d8 for each slot level above 2nd."
 };
@@ -7997,7 +7995,7 @@ SpellsList["compelled query"] = {
 	components : "S",
 	duration : "Instantaneous",
 	save : "Int",
-    description : "Ask crea simple question, save or give thought or image answer; +5 on save per time used in past 24 h",
+	description : "Ask crea simple question, save or give thought or image answer; +5 on save per time used in past 24 h",
 	descriptionFull : "You focus your telepathic powers on a creature and ask it a simple question. It must make an Intelligence saving throw, or it conjures a short mental thought or image that answers your question to the best of its ability that you can perceive telepathically. A creature gains a +5 to the saving throw against this spell for each time it has been used on them in the past 24 hours."
 };
 SpellsList["crackle"] = {
@@ -8010,7 +8008,7 @@ SpellsList["crackle"] = {
 	range : "60 ft",
 	components : "V,S",
 	duration : "Instantaneous",
-    save : "Con",
+	save : "Con",
 	description : "3+1/SL arcs; ranged spell attack for 1d12 Lightn. dmg; 3+ on crea; save or stunned till their next turn",
 	descriptionFull : "You create three arcs of lightning striking targets in range. You can direct them at one target or several.\n   Make a ranged spell attack for each arc. On a hit, the target takes 1d12 lightning damage. If three or more arcs hit a single target, they must make a Constitution saving throw or become shocked, stunning them until the start of their next turn." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, you create one additional arc for each slot level above 2nd.",
 	dynamicDamageBonus : { multipleDmgMoments : true }
@@ -8025,7 +8023,7 @@ SpellsList["crashing wave"] = {
 	range : "S:15" + (typePF ? "-" : "") + "ft cone",
 	components : "V,S",
 	duration : "Instantaneous",
-    save : "Str",
+	save : "Str",
 	description : "Water in 5ft, 25ft cone; 2d6+1d6/SL Bludg dmg, push 10ft; wall/fails>5=prone; save halves, no push",
 	descriptionFull : "A wave of water sweeps out from you. Each creature in a 15-foot cone must make a Strength saving throw. On a failed save, a creature takes 2d6 bludgeoning damage and is knocked 10 feet away from you. If a creature is knocked into a wall, another creature, or fails by 5 or more, it is additionally knocked prone. On a successful save, the creature takes half as much damage and is not knocked back. If there is a source of water of at least 5 cubic feet within 5 feet of you when you cast the spell, you can displace that water, increasing the range of the spell to a 25-foot cone." + AtHigherLevels + "When you cast this spell using a spell lot of 2nd level or higher, the damage increases by 1d6 for each level above 1st."
 };
@@ -8040,7 +8038,7 @@ SpellsList["crippling agony"] = {
 	components : "V,S,M",
 	compMaterial : "A joint bone",
 	duration : "Conc, 1 min",
-    save : "Con",
+	save : "Con",
 	description : "1 crea takes 1d6 Necrotic dmg when moves > half speed or takes an action; repeat save at end of turn",//reworded
 	descriptionFull : "You can inflict crippling agony on a foe. Choose one creature that you can see within range to make a Constitution saving throw. If the target fails, it becomes crippled with horrific pain. Whenever the creation moves more than half of its speed or takes an action, the crippling pain causes it to take 1d6 necrotic damage.\n   It can repeat the saving throw at the end of each of its turns, the target can make a Constitution saving throw. On a success, the spell ends."
 };
@@ -8056,7 +8054,7 @@ SpellsList["cruel puppetry"] = {
 	components : "V,S,M\u2020",
 	compMaterial : "A small humanoid doll worth at least 5 gp and something from the target (such as blood, hair, or scales) both of which the spell consumes",
 	duration : "Conc, 1 min",
-    save : "Cha",
+	save : "Cha",
 	description : "1 crea bound to doll; can use my action to control doll/crea; see book; SL 5+: unlimited range",
 	descriptionFull : "You attempt to bind a creatures soul to a doll, linking the creature to the doll in a sympathetic link. The target must make a Charisma saving throw. On failure, the creature becomes bound to the doll. On a successful save, the creature is not bound and the spell ends.\n   As part of casting the spell when the creature fails the save, and on subsequent turns using your action until the spell ends, you can perform one of the following actions:\n \u2022 Hold the doll still, causing the creature to be Restrained until start of your next turn.\n \u2022 Force the doll to move, causing the creature to move 15 feet in a direction of your choice that it can move.\n \u2022 Stab the doll, causing the creature take 4d6 piercing damage.\n \u2022 Rip the doll in half, ending the spell, destroying the doll, and dealing 4d12 necrotic damage to the creature.\n \u2022 Each time after the first you use an action to manipulate the doll, after the effect takes place, the creature can repeat the Charisma with disadvantage, ending the effect on a successful save.\n\nOnce a creature has been targeted by this spell, they cannot be targeted again for 24 hours." + AtHigherLevels + "When cast with a 5th level spell slot or above, the range of the spell becomes unlimited, as long as the target is on the same plane as the caster."
 };
@@ -8070,7 +8068,7 @@ SpellsList["crushing singularity"] = {
 	range : "60 ft",
 	components : "V,S",
 	duration : "1 rnd",
-    save : "Str",
+	save : "Str",
 	description : "15-ft rad; 3d6+1d6/other crea that failed (max 6d6) Bludg. dmg & moved to center of area; see book",
 	descriptionFull : "You create an overwhelming gravitational singularity at a point within range that lasts until the start of your next turn. When you cast this spell, any creature within 15 feet of the point must make a Strength saving throw. Creatures that fail their saving throw are moved to the closest available space adjacent to the singularity and take 3d6 bludgeoning damage, and an extra 1d6 bludgeoning damage for each other creature that fails the saving throw, up to a maximum of 6d6 bludgeoning damage.\n   While within 15 feet of the singularity, moving away from the singularity requires twice as much movement. If a creature ends its turn within 15 feet of the singularity, it must make a Strength saving throw. On failure, they take 2d6 bludgeoning damage are dragged back to the closest available spot to the center of the singularity."
 };
@@ -8084,7 +8082,7 @@ SpellsList["dancing wave"] = {
 	range : "30 ft",
 	components : "V,S",
 	duration : "Conc, 1 min",
-    save : "Str",
+	save : "Str",
 	description : "5-ft rad dif. ter. if no swim spd; bns move 30 ft; enters crea's space; save or 1d6 Bludg dmg and prone",
 	descriptionFull : "You summon a surging mass of water into existence at a point on the ground within range. The mass of water remains cohesive filling a 5-foot radius, though only rises 3 feet from the ground. The area is difficult terrain for any creature without a swimming speed.\n   For the duration of the spell, as a bonus action you can move the wave of water up to 30 feet along a surface in any direction. The first time the wave enters any creature's space during your turn, they must make a Strength saving throw or take 1d6 bludgeoning damage and be knocked prone. A creature automatically fails the saving throw against this spell if they are prone."
 };
@@ -8099,7 +8097,7 @@ SpellsList["delve mind"] = {
 	components : "S",
 	duration : "Conc, 1 min",
 	save : "Int",
-    description : "Crea save or I gain access to past 12+12/SL hours memories; recall them as if my memories",
+	description : "Crea save or I gain access to past 12+12/SL hours memories; recall them as if my memories",
 	descriptionFull : "You delve into a creature's mind, forcing it to make an Intelligence saving throw. On a failure, for the duration or until you end the spell you gain access to its memories from the past 12 hours, and are able to recall things it remembers as if they are your own memories, but these memories contain only things the target creature remembers." + AtHigherLevels + "When you cast this spell using a spell slot of 4th level or higher, you can delve an additional 12 hours further back in the creature's memories for each slot level above 3rd."
 };
 SpellsList["devouring darkness"] = {
@@ -8301,7 +8299,7 @@ SpellsList["fire cyclone"] = {
 	range : "60 ft",
 	components : "V,S,M",
 	compMaterial : "A pinch of ashes from a forest fire",
-    duration : "Conc, 1 min",
+	duration : "Conc, 1 min",
 	save : "Str",
 	description : "5ft rad, 30ft tall; crea starts turn/enters: 3d6+1d6/SL Fire dmg, 15ft up \u0026 across; save halves, not moved",
 	descriptionFull : "Targeting a point you can see, you cause a cyclone made of whipping flames with a radius of 5 feet and height of 30 feet to form." + "\n   " +
@@ -8348,7 +8346,7 @@ SpellsList["flicker"] = {
 	range : "Self",
 	components : "S",
 	duration : "1 rnd",
-    description : "Until my next turn, when I would take dmg roll a d4, on a 2 I gain resistance, on a 4 I take no damage",
+	description : "Until my next turn, when I would take dmg roll a d4, on a 2 I gain resistance, on a 4 I take no damage",
 	descriptionFull : "You flicker between the material and ethereal planes. Until the start of your next turn, each time you would take damage, including the triggering attack, roll a d4. On a 2, you gain resistance to that instance of damage. On a 4, you don't take any damage."
 };
 SpellsList["flickering strikes"] = {
@@ -8443,7 +8441,7 @@ SpellsList["future insight"] = {
 	range : "Self",
 	components : "S",
 	duration : "10 mins",
-    description : "Roll 3d4 or 1d12; I can expend a die to add/subtract from atk, save or check made by any crea in 60ft",
+	description : "Roll 3d4 or 1d12; I can expend a die to add/subtract from atk, save or check made by any crea in 60ft",
 	descriptionFull : "You roll 3d4 or 1d12 (your choice) and record the results. During the duration, you can expend one of these dice to add or subtract them from any attack roll, saving throw, or ability check made by a creature within 60 feet of you until the dice are exhausted or the spell ends. You must expend the die after the roll is made, but before you know the outcome of the roll."
 };
 SpellsList["gale bolt"] = {
@@ -8483,7 +8481,7 @@ SpellsList["glimpse the future"] = {
 	range : "60 ft",
 	components : "S",
 	duration : "10 mins",
-    description : "Give a creature a glimpse of the future, roll d4 for effect; SL 3+ pick effect; see book",
+	description : "Give a creature a glimpse of the future, roll d4 for effect; SL 3+ pick effect; see book",
 	descriptionFull : "You give a creature within range a glimpse of their future. Roll a d4 to determine outcome:\n  d4\tEffect\n  1\tThe target forsees an action to come. Roll a d20\n\tand record the value. Until the duration of the spell\n\tends, they can replace one of their d20 rolls with\n\t\tthe value rolled.\n  2\tThe target sees their own death. If they are\n\treduced to zero hit points by an attack or failing a\n\tsave throw during the duration, they instead evade\n\tthe attack or pass the saving throw if they are not\n\totherwise incapacitated prior to being reduced to\n\t\t\tzero.\n  3\tThey see a future victory, growing confident. They\n\tgain 10 temporary hit points and are immune to\n\tthe frightened condition for the duration of the\n\t\t\tspell.\n  4\tThe target sees an ambush or surprise, the first\n\ttime they would be surprised they are not, or the\n\tfirst time an attack would be made against them\n\twith advantage, it is instead made with\n\t\t\tdisadvantage.\n\nOnce any of the events forseen occur, the spell ends." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, you can select the effect instead of rolling a d4."
 };
 SpellsList["grip of the dead"] = {
@@ -8569,7 +8567,7 @@ SpellsList["inner world"] = {
 	range : "S:120-ft rad",
 	components : "S",
 	duration : "Conc, 1 min",
-    description : "Create controllable environment, all creatures in range are brought into environment; see book",
+	description : "Create controllable environment, all creatures in range are brought into environment; see book",
 	descriptionFull : "As an action, you create and enter an imaginary world. All other creatures within 120 feet are pulled this world with you. This world is centered on you, and extends in 120 feet in all directions." +
 	"\n   A creature that reaches the edge of this world can make a Charisma saving throw to attempt to exit, spending 5 feet of movement to return where they were before being pulled into the world on success, and being unable to move out the world until the start of their next turn on failure. A creature outside the world can attempt to enter it by moving to where you cast the spell (which is marked by a glowing psionic rift) and making a Charisma saving throw to enter the world. You can allow a creature to automatically pass their save to enter or exit the world." +
 	"\n   When you create this world, you can create obstacles and terrain of your choice, creating walls, pillars, and other obstacles that take up to twenty 5 by 5 square foot areas (stylistically, these can appear however you choose). These can be placed consecutively or spread out in any method of your choosing, but any area with a creature must contain a path that creature can fit through to both you and the edge of the of the world." +
@@ -8589,7 +8587,7 @@ SpellsList["invested competency"] = {
 	range : "Touch",
 	components : "S",
 	duration : "Conc, 1 h",
-    description : "Willing creature gains expertise in a skill of my choice",
+	description : "Willing creature gains expertise in a skill of my choice",
 	descriptionFull : "You touch a willing creature imbuing psionic competency into them. Until the spell ends, they gain expertise in on skill of your choice, adding double their proficiency bonus to that skill."
 };
 SpellsList["invest life"] = {
@@ -8602,7 +8600,7 @@ SpellsList["invest life"] = {
 	range : "Touch",
 	components : "S",
 	duration : "Instantaneous",
-    description : "I take 4d8+1d8/SL Necrotic damage, can't be reduced; Other creature regains HP = twice the damage",
+	description : "I take 4d8+1d8/SL Necrotic damage, can't be reduced; Other creature regains HP = twice the damage",
 	descriptionFull : "You invest some of your vital essence into another creature you can see within range. You take 4d8 necrotic damage, which can't be reduced in any way, and one creature of your choice that you can see within range regains a number of hit points equal to twice the necrotic damage you take." + AtHigherLevels + "When you cast this spell using a spell slot of 4th level or higher, the damage increases by 1d8 for each slot level above 3rd."
 };
 SpellsList["jumping jolt"] = {
@@ -8715,7 +8713,7 @@ SpellsList["mind blast"] = {
 	components : "S",
 	duration : "Instantaneous",
 	save : "Int",
-    description : "6d8 Psychic dmg, stunned until the end of their next turn; Save halves and no stun",
+	description : "6d8 Psychic dmg, stunned until the end of their next turn; Save halves and no stun",
 	descriptionFull : "You emit a blast of psychic energy. Each creature in a 60-foot cone must make an Intelligence saving throw. A creature takes 6d8 psychic damage and is stunned until the end of their next turn on a failed save. A creature takes half as much damage and is not stunned on a successful save."
 };
 SpellsList["mutate"] = {
@@ -8769,7 +8767,7 @@ SpellsList["nullify effect"] = {
 	range : "Self",
 	components : "S",
 	duration : "1 rnd",
-    description : "Adv on Int, Wis, Cha saves, resist Psychic, Force dmg until my turn; SL 4+: +d20 adv; 5+: Immunity",
+	description : "Adv on Int, Wis, Cha saves, resist Psychic, Force dmg until my turn; SL 4+: +d20 adv; 5+: Immunity",
 	descriptionFull : "You gain advantage on Intelligence, Wisdom, and Charisma saving throws (Including the triggering save) until the start of your next turn. You also gain resistance to Psychic and Force damage until the start of your next turn." + AtHigherLevels + "When you cast this spell using a spell slot of 4th level or higher, you can roll an additional d20 as part of your advantage roll. If you cast this at the 5th level or higher, it grants immunity to Psychic and Force damage for the duration."
 };
 SpellsList["orbital stones"] = {
@@ -8851,7 +8849,7 @@ SpellsList["psychic drain"] = {
 	range : "60 ft",
 	components : "S",
 	duration : "Instantaneous",
-    description : "Crea save or 3d8+1d8/SL Psychic dmg, I gain half the dmg dealt as temp HP, regain 1 psi point",
+	description : "Crea save or 3d8+1d8/SL Psychic dmg, I gain half the dmg dealt as temp HP, regain 1 psi point",
 	descriptionFull : "You draw on the psychic energy of another creature you can see to sustain yourself. The target must make a Charisma saving throw. On failure it takes 3d8 psychic damage and you gain temporary hit points equal to half the amount of psychic damage dealt and regain one expended psi point." + AtHigherLevels + "When you cast this spell using a spell slot of 3rd level or higher, the spell deals an extra 1d8 psychic damage."
 };
 SpellsList["rain of spiders"] = {
@@ -9221,7 +9219,7 @@ SpellsList["turbulent warp"] = {
 	components : "S",
 	duration : "Instantaneous",
 	save : "Cha",
-    description : "I & willing crea teleport; Creas in 10ft of old space 5d4+2d4/SL Force dmg, teleported 5ft; save halves",
+	description : "I & willing crea teleport; Creas in 10ft of old space 5d4+2d4/SL Force dmg, teleported 5ft; save halves",
 	descriptionFull : "You teleport yourself to an unoccupied space you can see within range, leaving behind a spatial distortion. Each creature within 10 feet of the space you left must make a Charisma saving throw. On a failure, they take 5d4 force damage and are teleported to an empty space of your choice within 5 feet of where they were. On success they take half as much damage and are not teleported." +
 	"\n   You can also teleport one willing creature of your size or smaller who is carrying gear up to its carrying capacity. The creature must be within 5 feet of you when you cast this spell, and there must be an unoccupied space within 5 feet of your destination space for the creature to appear in; otherwise, the creature is left behind." +
 	AtHigherLevels + "When you cast this spell using a spell slot of 4th level or higher, the damage increases by 2d4 for each slot level above 3rd."
@@ -9249,7 +9247,7 @@ SpellsList["unlocked potential"] = {
 	range : "60 ft",
 	components : "S",
 	duration : "Conc, 1 min",
-    description : "1/turn, target creature can take 1 psychic damage to add d4 to any attack, damage roll, or save",
+	description : "1/turn, target creature can take 1 psychic damage to add d4 to any attack, damage roll, or save",
 	descriptionFull : "You unlock the potential of a creature's mind, allowing it to fully reach its limits. For the duration, once per turn the creature can add 1d4 to any attack roll, damage roll, or saving throw it makes. Each time it adds the extra 1d4, it takes 1 psychic damage as it pushes beyond its natural limitations."
 };
 SpellsList["unstable explosion"] = {

@@ -6339,10 +6339,10 @@ function testSpellAdd(spellAddArray, useClass, spellKeysArray, bAlsoDuplicateAsO
 			Value(prefix+"spells.name."+i, bSetMetric ? "  [cantrip-metric]" : "  [cantrip]");
 			nextI();
 			// cantrip edited description, run function
-        	CurrentCasters.allowSpellAdd = true;
-            Value(prefix+"spells.remember."+i, aSp + addStr);
-            Value(prefix+"spells.name."+i, bSetMetric ? "  [cantrip-metric-test]" : "  [cantrip-test]");
-            nextI();
+			CurrentCasters.allowSpellAdd = true;
+			Value(prefix+"spells.remember."+i, aSp + addStr);
+			Value(prefix+"spells.name."+i, bSetMetric ? "  [cantrip-metric-test]" : "  [cantrip-test]");
+			nextI();
 			if (bAlsoDuplicateAsOnce) {
 				Value(prefix+"spells.remember."+i, aSp + addStr + "##true");
 				Value(prefix+"spells.name."+i, bSetMetric ? "  [cantrip-metric-test-1\xD7]" : "  [cantrip-test-1\xD7]");

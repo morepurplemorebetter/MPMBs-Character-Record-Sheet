@@ -232,7 +232,8 @@ var Base_ClassList = {
 				name : "Relentless Rage",
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 11,
-				description : " [DC 10 + 5 per try, per short rest]" + desc([
+				additional: "DC 10 + 5 per try, per short rest",
+				description : desc([
 					"If I drop to 0 HP while raging, I can make a DC 10 Constitution save to stay at 1 HP",
 					"The DC increases by 5 for every attempt until I finish a short or long rest"
 				]),
@@ -849,21 +850,24 @@ var Base_ClassList = {
 					name : "Flurry of Blows",
 					extraname : "Ki Feature",
 					source : [["SRD", 27], ["P", 78]],
-					description : " [1 ki point]" + desc("After taking the Attack action, I can make 2 unarmed attacks as a bonus action"),
+					additional: "1 ki point",
+					description : desc("After taking the Attack action, I can make 2 unarmed attacks as a bonus action"),
 					action : [["bonus action", " (after Attack action)"]]
 				},
 				"patient defense" : {
 					name : "Patient Defense",
 					extraname : "Ki Feature",
 					source : [["SRD", 27], ["P", 78]],
-					description : " [1 ki point]" + desc("As a bonus action, I can take the Dodge action"),
+					additional: "1 ki point",
+					description : desc("As a bonus action, I can take the Dodge action"),
 					action : [["bonus action", ""]]
 				},
 				"step of the wind" : {
 					name : "Step of the Wind",
 					extraname : "Ki Feature",
 					source : [["SRD", 27], ["P", 78]],
-					description : " [1 ki point]" + desc("As a bonus action, I can either Dash or Disengage; My jump distance doubles when I do so"),
+					additional: "1 ki point",
+					description : desc("As a bonus action, I can either Dash or Disengage; My jump distance doubles when I do so"),
 					action : [["bonus action", ""]]
 				},
 				autoSelectExtrachoices : [{
@@ -920,7 +924,8 @@ var Base_ClassList = {
 					name : "Stunning Strike",
 					extraname : "Monk 5",
 					source : [["SRD", 27], ["P", 79]],
-					description : " [1 ki point]" + desc([
+					additional: "1 ki point",
+					description : desc([
 						"After I hit a creature with a melee weapon attack, I can spend a ki point to try to stun it",
 						"It has to succeed on a Constitution save or be stunned until the end of my next turn"
 					])
@@ -1723,7 +1728,8 @@ var Base_ClassList = {
 				"careful spell" : {
 					name : "Careful Spell",
 					source : [["SRD", 44], ["P", 102]],
-					description : " [1 sorcery point]" + desc([
+					additional: "1 sorcery point",
+					description : desc([
 						"If the spell allows a saving throw, I can protect Cha modifier number of creatures",
 						"The selected creatures automatically succeed on their saving throws vs. the spell"
 					])
@@ -1731,12 +1737,14 @@ var Base_ClassList = {
 				"distant spell" : {
 					name : "Distant Spell",
 					source : [["SRD", 44], ["P", 102]],
-					description : " [1 sorcery point]" + desc("I double the range of the spell or make the range 30 ft if the range was touch")
+					additional: "1 sorcery point",
+					description : desc("I double the range of the spell or make the range 30 ft if the range was touch")
 				},
 				"empowered spell" : {
 					name : "Empowered Spell",
 					source : [["SRD", 44], ["P", 102]],
-					description : " [1 sorcery point]" + desc([
+					additional: "1 sorcery point",
+					description : desc([
 						"If the spell uses damage dice, I can reroll my Charisma modifier number of damage dice",
 						"I can Empower a spell even if I use another Metamagic option on it"
 					])
@@ -1744,28 +1752,33 @@ var Base_ClassList = {
 				"extended spell" : {
 					name : "Extended Spell",
 					source : [["SRD", 44], ["P", 102]],
-					description : " [1 sorcery point]" + desc("If the spell has a duration of at least 1 min, I can double it, up to 24 hours")
+					additional: "1 sorcery point",
+					description : desc("If the spell has a duration of at least 1 min, I can double it, up to 24 hours")
 				},
 				"heightened spell" : {
 					name : "Heightened Spell",
 					source : [["SRD", 44], ["P", 102]],
-					description : " [3 sorcery points]" + desc("If the spell allows a saving throw, I can have one target get disadv. on their first save")
+					additional: "3 sorcery points",
+					description : desc("If the spell allows a saving throw, I can have one target get disadv. on their first save")
 				},
 				"quickened spell" : {
 					name : "Quickened Spell",
 					source : [["SRD", 44], ["P", 102]],
-					description : " [2 sorcery points]" + desc("If the spell has a casting time of 1 action, I can cast it as a bonus action"),
+					additional: "2 sorcery points",
+					description : desc("If the spell has a casting time of 1 action, I can cast it as a bonus action"),
 					action : [["bonus action", ""]]
 				},
 				"subtle spell" : {
 					name : "Subtle Spell",
 					source : [["SRD", 44], ["P", 102]],
-					description : " [1 sorcery point]" + desc("I can cast the spell without the need to use somatic or verbal components")
+					additional: "1 sorcery point",
+					description : desc("I can cast the spell without the need to use somatic or verbal components")
 				},
 				"twinned spell" : {
 					name : "Twinned Spell",
 					source : [["SRD", 44], ["P", 102]],
-					description : " [1 sorcery point per spell level, minimum 1]" + desc("If spell/cantrip has a target of one and not self, I can aim it at second target within range")
+					additional: "1 sorcery point per spell level, minimum 1",
+					description : desc("If spell/cantrip has a target of one and not self, I can aim it at second target within range")
 				}
 			},
 			"sorcerous restoration" : {
@@ -3023,7 +3036,8 @@ var Base_ClassSubList = {
 					name : "Quivering Palm",
 					extraname : "Way of the Open Hand 17",
 					source : [["SRD", 29], ["P", 80]],
-					description : " [3 ki points]" + desc([
+					additional: "3 ki points",
+					description : desc([
 						"When I hit a creature with an unarmed strike, I can start imperceptible vibrations",
 						"Within my monk level in days, I can use an action to have the creature make a Con save",
 						"If it fails, it is reduced to 0 hit points; If it succeeds, it takes 10d10 necrotic damage"

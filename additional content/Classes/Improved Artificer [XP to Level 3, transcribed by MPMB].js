@@ -420,7 +420,7 @@ ClassList["improved artificer"] = {
 			"dual pistols: rapid fire (3 invention points)" : {
 				name : "Dual Pistols: Rapid Fire",
 				source : ["XPtL3:IA", 5],
-				description : "\n   As an action, I can fire my dual pistols each 2 times, for a total of 4 attacks",
+				description: desc("As an action, I can fire my dual pistols each 2 times, for a total of 4 attacks"),
 				additional : "3 points",
 				usages: "Int mod per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
@@ -544,7 +544,7 @@ ClassList["improved artificer"] = {
 			"blunderbuss: knockdown (2 invention points)" : {
 				name : "Blunderbuss: Knockdown",
 				source : ["XPtL3:IA", 6],
-				description : "\n   When I hit with my blunderbuss, I can have the target take a Dex save or be knocked prone",
+				description: desc("When I hit with my blunderbuss, I can have the target take a Dex save or be knocked prone"),
 				additional : "2 points",
 				usages: "Int mod per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
@@ -662,7 +662,7 @@ ClassList["improved artificer"] = {
 			"sniper rifle: aimed fire (4 invention points)" : {
 				name : "Sniper Rifle: Aimed Fire",
 				source : ["XPtL3:IA", 6],
-				description : "\n   When I hit with my sniper rifle, I can have the attack be an automatic critical hit",
+				description: desc("When I hit with my sniper rifle, I can have the attack be an automatic critical hit"),
 				additional : "4 points",
 				usages: "Int mod per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
@@ -932,7 +932,7 @@ ClassList["improved artificer"] = {
 				name : "Arcane Scent",
 				source : ["XPtL3:IA", 8],
 				additional : "1 point",
-				description : "\n   I can smell if something is a magic item if I hold it up to my mechanical nose"
+				description: desc("I can smell if something is a magic item if I hold it up to my mechanical nose")
 			},
 			"arcane scent: increase range (1 invention point)" : {
 				name : "Arcane Scent: Increase Range to 30 ft",
@@ -950,7 +950,7 @@ ClassList["improved artificer"] = {
 				name : "Mechanical Sense",
 				source : ["XPtL3:IA", 8],
 				additional : "1 point",
-				description : "\n   With my mechanical ears I get +3 on Wisdom (Perception) checks that rely on hearing",
+				description: desc("With my mechanical ears I get +3 on Wisdom (Perception) checks that rely on hearing"),
 				vision : [["+3 Perception relying on hearing", 0]]
 			},
 			"mechanical sense: translate 2 languages (1 invention point)" : {
@@ -963,7 +963,10 @@ ClassList["improved artificer"] = {
 			"mechanical sense: can't be surprised (1 invention point)" : {
 				name : "Mechanical Sense: Perimeter Sense",
 				source : ["XPtL3:IA", 8],
-				description : "\n   As a bonus action, I can activate my perimeter sense which lasts for 10 minutes\n   I can't be surprised or be snuck up on while my perimeter sense is active",
+				description : desc([
+					"As a bonus action, I can activate my perimeter sense which lasts for 10 minutes",
+					"I can't be surprised or be snuck up on while my perimeter sense is active",
+				]),
 				action : [["bonus action", ""]],
 				additional : "3 p",
 				usages: "Int mod/",
@@ -975,7 +978,7 @@ ClassList["improved artificer"] = {
 				name : "Robotic Eye",
 				source : ["XPtL3:IA", 8],
 				additional : "1 point",
-				description : "\n   With my mechanical eye I get +3 on Wisdom (Perception) checks that rely on sight",
+				description: desc("With my mechanical eye I get +3 on Wisdom (Perception) checks that rely on sight"),
 				vision : [["+3 Perception relying on sight", 0]]
 			},
 			"robotic eye: +2 on ranged attacks (2 invention points)" : {
@@ -995,7 +998,7 @@ ClassList["improved artificer"] = {
 			"robotic eye: see invisible (3 invention points)" : {
 				name : "Robotic Eye: See Invisible",
 				source : ["XPtL3:IA", 8],
-				description : "\n   As a bonus action, I can activate this to be able to see invisible creature for 10 minutes",
+				description: desc("As a bonus action, I can activate this to be able to see invisible creature for 10 minutes"),
 				action : [["bonus action", ""]], // added bonus action as no activation method was given
 				additional : "3 points",
 				usages: "Int mod per ",
@@ -1105,7 +1108,7 @@ ClassList["improved artificer"] = {
 			"calibrated legs: tremorsense (3 invention points)" : {
 				name : "Calibrated Legs: Tremorsense",
 				source : ["XPtL3:IA", 9],
-				description : "\n   As a bonus action, I can gain termorsense for 10 minutes",
+				description: desc("As a bonus action, I can gain termorsense for 10 minutes"),
 				action : [["bonus action", ""]],
 				additional : "3 pnts",
 				usages: "Int mod per ",
@@ -1203,7 +1206,7 @@ ClassList["improved artificer"] = {
 			name : "Magic Item Analysis",
 			source : ["XPtL3:IA", 2],
 			minlevel : 1,
-			description : "\n   " + "I can cast Detect Magic and Identify as rituals without requiring material components",
+			description: desc("I can cast Detect Magic and Identify as rituals without requiring material components"),
 			spellcastingBonus : [{
 				name : "Magic Item Analysis",
 				spells : ["detect magic"],
@@ -1220,14 +1223,14 @@ ClassList["improved artificer"] = {
 			name : "Tool Expertise",
 			source : ["XPtL3:IA", 3],
 			minlevel : 2,
-			description : "\n   " + "I have expertise with any tool proficiencies I gain from the artificer class",
+			description: desc("I have expertise with any tool proficiencies I gain from the artificer class"),
 			skillstxt : "expertise with with any tool proficiencies gained from the artificer class"
 		},
 		"wondrous invention" : {
 			name : "Wondrous Invention",
 			source : ["XPtL3:IA", 3],
 			minlevel : 2,
-			description : "\n   " + "I gain a magic item that I have crafted; Use the \"Choose Feature\" button above",
+			description: desc('I gain a magic item that I have crafted; Use the "Choose Feature" button above'),
 			additional : levels.map(function (n) {
 				return n < 2 ? "" : n < 5 ? "1 item" : (n < 10 ? 2 : n < 15 ? 3 : n < 20 ? 4 : 5) + " items";
 			}),
@@ -1272,7 +1275,7 @@ ClassList["improved artificer"] = {
 			name : "Soul of Artifice",
 			source : ["XPtL3:IA", 4],
 			minlevel : 20,
-			description : "\n   " + "I gain a +1 bonus to all saving throws per magic item I am currently attuned to",
+			description: desc("I gain a +1 bonus to all saving throws per magic item I am currently attuned to"),
 			savetxt : {
 				text : ["+1 to all saves per attuned magic item"]
 			}

@@ -124,7 +124,7 @@ ClassList["shadowcaster"] = {
 			source : ["L:SM", 4],
 			minlevel : 2,
 			description : desc([
-				"Choose the Shadowcaster Ideal you share your believe with and put it in the \"Class\" field",
+				'Choose the Shadowcaster Ideal you share your believe with and put it in the "Class" field',
 				"Choose either the Nightblade, Shadowmaster, Shadowsmith, or Skiamancer"
 			])
 		},
@@ -164,7 +164,7 @@ ClassList["shadowcaster"] = {
 			name : "Winter's Touch",
 			source : ["L:SM", 4],
 			minlevel : 9,
-			description : "\n   " + "I have resistance to cold damage and can survive comfortably in cold environments",
+			description: desc("I have resistance to cold damage and can survive comfortably in cold environments"),
 			dmgres : ["Cold"]
 		},
 		"sustaining shadow" : {
@@ -184,7 +184,7 @@ ClassList["shadowcaster"] = {
 			name : "Mastered Mysteries",
 			source : ["L:SM", 4],
 			minlevel : 20,
-			description : "\n   " + "I can invoke my favored apprentice mysteries any number of times before resting"
+			description: desc("I can invoke my favored apprentice mysteries any number of times before resting")
 		}
 	}
 };
@@ -436,7 +436,7 @@ AddSubClass("shadowcaster", "skiamancer", {
 			description : desc([
 				"I add my Intelligence mod to the damage I deal with fundamentals or initiate mysteries",
 				"I know several secrets, of which I can use one each turn to enhance one of my mysteries",
-				"Use the \"Choose Feature\" button above to add a secrets to the third page"
+				'Use the "Choose Feature" button above to add a secrets to the third page',
 			]),
 			calcChanges : {
 				atkCalc : ["if (thisWeapon[4].indexOf('shadowcaster') !== -1 && thisWeapon[3] && (/^(0|1)$/).test(SpellsList[thisWeapon[3]].level)) { output.extraDmg += What('Int Mod'); }; ", "My shadowcaster fundamentals and initiate mysteries get my Intelligence modifier added to their damage."]

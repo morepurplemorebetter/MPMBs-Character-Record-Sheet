@@ -35,7 +35,7 @@ AddSubClass("druid", "circle of the wyrm-giantitp", {
 			name : "Draconic",
 			source : ["Y:CotW", 0],
 			minlevel : 2,
-			description : "\n   " + "I know the Draconic language",
+			description: desc("I know the Draconic language"),
 			languageProfs : ["Draconic"]
 		},
 		"subclassfeature2.1" : {
@@ -58,13 +58,13 @@ AddSubClass("druid", "circle of the wyrm-giantitp", {
 			name : "Tooth and Claw",
 			source : ["Y:CotW", 0],
 			minlevel : 6,
-			description : "\n   " + "My attacks in dragon form count as magical for overcoming resistance and immunities"
+			description: desc("My attacks in dragon form count as magical for overcoming resistance and immunities")
 		},
 		"subclassfeature6.1" : {
 			name : "Favored Identity",
 			source : ["Y:CotW", 0],
 			minlevel : 6,
-			description : "\n   " + "I add double my Prof Bonus to checks for conversing, knowledge, or identifying dragons"
+			description: desc("I add double my Prof Bonus to checks for conversing, knowledge, or identifying dragons")
 		},
 		"subclassfeature10" : {
 			name : "Wyrm Heal",
@@ -79,7 +79,7 @@ AddSubClass("druid", "circle of the wyrm-giantitp", {
 			name : "True Dragon",
 			source : ["Y:CotW", 0],
 			minlevel : 10,
-			description : "\n   " + "During a short rest I have a chance to reduce my exhaustion by 1 level",
+			description: desc("During a short rest I have a chance to reduce my exhaustion by 1 level"),
 			additional : levels.map(function (n) { return n < 10 ? "" : n < 14 ? "33%, 1 or 2 on a d6" : "50%, 1 or 2 on a d4"; }),
 			usages : 1,
 			recovery : "long rest"
@@ -88,7 +88,7 @@ AddSubClass("druid", "circle of the wyrm-giantitp", {
 			name : "Dragon's Breath",
 			source : ["Y:CotW", 0],
 			minlevel : 14,
-			description : "\n   " + "The breath weapon of my dragon shape recharges on a 5-6 at the start of each round"
+			description: desc("The breath weapon of my dragon shape recharges on a 5-6 at the start of each round")
 		},
 		"subclassfeature14.1" : {
 			name : "Change Shape",

@@ -38,7 +38,7 @@ var theCoD = AddSubClass("druid", "circle of fountain", {
 			name : "Additional Cantrips",
 			source : ["SCC:CF", 0],
 			minlevel : 2,
-			description : "\n   " + "I learn the Spare the Dying and Shape Water cantrips",
+			description: desc("I learn the Spare the Dying and Shape Water cantrips"),
 			spellcastingBonus : [{
 				name : "Additional Cantrips",
 				spells : ["spare the dying"],
