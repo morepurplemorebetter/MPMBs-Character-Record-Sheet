@@ -6246,7 +6246,7 @@ function testSpellcastingExtra(spArr) {
 			wrongArr.push(sp);
 			return;
 		};
-		var sSrc = stringSource(SpellsList[sp], "").replace(/\d+| /g, "").split(",");
+		var sSrc = stringSource(SpellsList[sp], "page_multi").replace(/, page.*/g, "").split("\n");
 		if (!sSrc || !sSrc[0]) {
 			sourceArr.push("Source excluded: " + sp + " (" + SpellsList[sp].source + ")");
 		} else {

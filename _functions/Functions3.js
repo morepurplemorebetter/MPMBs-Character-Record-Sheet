@@ -1575,13 +1575,13 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 			var changeTxt = prevTxtFound ? fldTxt.replace(prevTxtFound[0], newTxtA[1] + prevTxtFound[0] ) : fldTxt;
 			break;
 		case "remove": // remove the oldTxt
-			var changeTxt = fldTxt.replace(oldRx.full, '').replace(/^\r+/, '');
+			var changeTxt = fldTxt.replace(oldRx.full, '');
 			break;
 		default:
 			return false;
 	}
 	if (changeTxt != fldTxt) {
-		Value(fld, changeTxt);
+		Value(fld, changeTxt.trim());
 		return true;
 	} else if (!/^(insert(before)?|remove)$/i.test(act)) {
 		// nothing changed, so just insert the whole feature, using this same function
