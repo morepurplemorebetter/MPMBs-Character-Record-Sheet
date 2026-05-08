@@ -1,4 +1,4 @@
-var AtHigherLevels = "\n   " + toUni("At Higher Levels") + ": ";
+var AtHigherLevels = "\n   ***At Higher Levels***. ";
 var SpellRitualTag = '\xAE'; // registered trademark symbol
 var SpellRitualTagNonUnicode = '(R)';
 
@@ -489,9 +489,11 @@ var Base_SpellsList = {
 		duration : "Conc, 1 min",
 		save : "Cha",
 		description : "20-ft rad all humanoids save or I suppress either charm/fear effects or hostility",
-		descriptionFull : "You attempt to suppress strong emotions in a group of people. Each humanoid in a 20-foot-radius sphere centered on a point you choose within range must make a Charisma saving throw; a creature can choose to fail this saving throw if it wishes. If a creature fails its saving throw, choose one of the following two effects."+
-		"\n   You can suppress any effect causing a target to be charmed or frightened. When this spell ends, any suppressed effect resumes, provided that its duration has not expired in the meantime."+
-		"\n   Alternatively, you can make a target indifferent about creatures of your choice that it is hostile toward. This indifference ends if the target is attacked or harmed by a spell or if it witnesses any of its friends being harmed. When the spell ends, the creature becomes hostile again, unless the DM rules otherwise."
+		descriptionFull: [
+			"You attempt to suppress strong emotions in a group of people. Each humanoid in a 20-foot-radius sphere centered on a point you choose within range must make a Charisma saving throw; a creature can choose to fail this saving throw if it wishes. If a creature fails its saving throw, choose one of the following two effects.",
+			"You can suppress any effect causing a target to be charmed or frightened. When this spell ends, any suppressed effect resumes, provided that its duration has not expired in the meantime.",
+			"Alternatively, you can make a target indifferent about creatures of your choice that it is hostile toward. This indifference ends if the target is attacked or harmed by a spell or if it witnesses any of its friends being harmed. When the spell ends, the creature becomes hostile again, unless the DM rules otherwise.",
+		],
 	},
 	"chain lightning" : {
 		name : "Chain Lightning",
@@ -4212,26 +4214,27 @@ var Base_SpellsList = {
 		components : "V",
 		duration : "Instantaneous",
 		description : "I + 8 willing crea, or an object teleport to a place I know, have seen, or can describe; see book",
-		descriptionFull : [
-			"This spell instantly transports you and up to eight willing creatures of your choice that you can see within range, or a single object that you can see within range, to a destination you select. If you target an object, it must be able to fit entirely inside a 10-foot cube, and it can't be held or carried by an unwilling creature. The destination you choose must be known to you, and it must be on the same plane of existence as you. Your familiarity with the destination determines whether you arrive there successfully. The DM rolls d100 and consults the table.\n",
-			toUni("Familiarity\tMishap\tSimilar\t  Off\t   On"),
-			"\t\t\t  " + toUni("Area\tTarget\tTarget"),
-			"Permanent Circle\t    -\t    -\t    -\t01-100",
-			"Associated Object\t    -\t    -\t    -\t01-100",
-			"Very Familiar\t01-05\t06-13\t14-24\t25-100",
-			"Seen Casually\t01-33\t34-43\t44-53\t54-100",
-			"Viewed Once\t01-43\t44-53\t54-73\t74-100",
-			"Description\t01-43\t44-53\t54-73\t74-100",
-			"False Description\t01-50\t51-100\t    -\t    -\n"
-		].join("\n") + desc([
-			toUni("Familiarity") + ": \"Permanent Circle\" means a permanent teleportation circle whose sigil sequence you know. \"Associated Object\" means that you possess an object taken from the desired destination within the last six months, such as a book from a wizard's library, bed linen from a royal suite, or a chunk of marble from a Lich's secret tomb.",
-			"\"Very Familiar\" is a place you have been very often, a place you have carefully studied, or a place you can see when you cast the spell. \"Seen Casually\" is some place you have seen more than once but with which you aren't very familiar. \"Viewed Once\" is a place you have seen once, possibly using magic. \"Description\" is a place whose location and appearance you know through someone else's description, perhaps from a map.",
-			"\"False Description\" is a place that doesn't exist. Perhaps you tried to scry an enemy's sanctum but instead viewed an illusion, or you are attempting to teleport to a familiar location that no longer exists.",
-			toUni("On Target") + ": You and your group (or the target object) appear where you want to go.",
-			toUni("Off Target") + ": You and your group (or the target object) appear a random distance away from the destination in a random direction. Distance off target is 1d10 \xD7 1d10 percent of the distance that was to be travelled. For example, if you tried to travel 120 miles, landed off target, and rolled a 5 and 3 on the two d10s, then you would be off target by 15 percent, or 18 miles. The DM determines the direction off target randomly by rolling a d8 and designating 1 as north, 2 as north-east, 3 as east, and so on around the points of the compass. If you were teleporting to a coastal city and wound up 18 miles out at sea, you could be in trouble.",
-			toUni("Similar Area") + ": You and your group (or the target object) wind up in a different area that's visually or thematically similar to the target area. If you are heading for your home laboratory, for example, you might wind up in another wizard's laboratory or in an alchemical supply shop that has many of the same tools and implements as your laboratory. Generally, you appear in the closest similar place, but since the spell has no range limit, you could conceivably wind up anywhere on the plane.",
-			toUni("Mishap") + ": The spell's unpredictable magic results in a difficult journey. Each teleporting creature (or the target object) takes 3d10 force damage and the DM rerolls on the table to see where you wind up (multiple mishaps can occur, dealing damage each time)."
-		])
+		descriptionFull: [
+			"This spell instantly transports you and up to eight willing creatures of your choice that you can see within range, or a single object that you can see within range, to a destination you select. If you target an object, it must be able to fit entirely inside a 10-foot cube, and it can't be held or carried by an unwilling creature. The destination you choose must be known to you, and it must be on the same plane of existence as you. Your familiarity with the destination determines whether you arrive there successfully. The DM rolls d100 and consults the table.",
+			[
+				["", "", "", "Similar", "Off", "On"],
+				["**Familiarity**", "**Mishap**", "**Area**", "**Target**", "**Target**"],
+				["Permanent circle", "\u2014", "\u2014", "\u2014", "01-00"],
+				["Associated object", "\u2014", "\u2014", "\u2014", "01-00"],
+				["Very familiar", "01-05", "06-13", "14-24", "25-00"],
+				["Seen casually", "01-33", "34-43", "44-53", "54-00"],
+				["Viewed once", "01-43", "44-53", "54-73", "74-00"],
+				["Description", "01-43", "44-53", "54-73", "74-00"],
+				["False destination", "01-50", "51-00", "\u2014", "\u2014"],
+			],
+			"***Familiarity***. \"Permanent circle\" means a permanent teleportation circle whose sigil sequence you know. \"Associated object\" means that you possess an object taken from the desired destination within the last six months, such as a book from a wizard's library, bed linen from a royal suite, or a chunk of marble from a Lich's secret tomb.",
+			"\"Very familiar\" is a place you have been very often, a place you have carefully studied, or a place you can see when you cast the spell. \"Seen casually\" is some place you have seen more than once but with which you aren't very familiar. \"Viewed once\" is a place you have seen once, possibly using magic. \"Description\" is a place whose location and appearance you know through someone else's description, perhaps from a map.",
+			"\"False destination\" is a place that doesn't exist. Perhaps you tried to scry an enemy's sanctum but instead viewed an illusion, or you are attempting to teleport to a familiar location that no longer exists.",
+			"***On Target***. You and your group (or the target object) appear where you want to go.",
+			"***Off Target***. You and your group (or the target object) appear a random distance away from the destination in a random direction. Distance off target is 1d10 \xD7 1d10 percent of the distance that was to be travelled. For example, if you tried to travel 120 miles, landed off target, and rolled a 5 and 3 on the two d10s, then you would be off target by 15 percent, or 18 miles. The DM determines the direction off target randomly by rolling a d8 and designating 1 as north, 2 as north-east, 3 as east, and so on around the points of the compass. If you were teleporting to a coastal city and wound up 18 miles out at sea, you could be in trouble.",
+			"***Similar Area***. You and your group (or the target object) wind up in a different area that's visually or thematically similar to the target area. If you are heading for your home laboratory, for example, you might wind up in another wizard's laboratory or in an alchemical supply shop that has many of the same tools and implements as your laboratory. Generally, you appear in the closest similar place, but since the spell has no range limit, you could conceivably wind up anywhere on the plane.",
+			"***Mishap***. The spell's unpredictable magic results in a difficult journey. Each teleporting creature (or the target object) takes 3d10 force damage and the DM rerolls on the table to see where you wind up (multiple mishaps can occur, dealing damage each time).",
+		],
 	},
 	"teleportation circle" : {
 		name : "Teleportation Circle",

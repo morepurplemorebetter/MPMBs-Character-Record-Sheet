@@ -4855,19 +4855,14 @@ function CalcMod() {
 
 function processRecovery(recovery, additionalRecovery) {
 	var recoveryStr = "";
-	switch (recovery.toLowerCase()) {
-		case "long rest":
-			recoveryStr += "LR";
-			break;
-		case "short rest":
-			recoveryStr += "SR";
-			break;
-		case "dawn":
-			recoveryStr += "Dawn";
-			break;
-		default:
-			recoveryStr += recovery.trim().capitalize();
-			break;
+	if (/\b(long rest|lr)\b/i.test(recovery)) {
+		recoveryStr = "LR";
+	} else if (/\b(short rest|sr)\b/i.test(recovery)) {
+		recoveryStr = "SR";
+	} else if (/\bdawn\b/i.test(recovery)) {
+		recoveryStr = "Dawn";
+	} else {
+		ecoveryStr = recovery.trim().capitalize();
 	}
 	if (additionalRecovery) {
 		recoveryStr += "/" + additionalRecovery.trim();
@@ -4883,7 +4878,7 @@ function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, Update
 	var calculation = Calc ? Calc : "";
 	var SslotsVisible = !typePF && eval_ish(What("SpellSlotsRemember"))[0];
 	var recovery = (/^(long rest|short rest|dawn)$/i).test(recovery) && !additionalRecovery ? recovery.toLowerCase() : processRecovery(recovery, additionalRecovery);
-	if ((/ ?\bper\b ?/).test(usages)) usages = usages.replace(/ ?\bper\b ?/, "");
+	if (typeof usages === "string") usages = usages.trim().replace(/\xD7? ?\bper\b ?|\xD7$/g, "");
 	for (var n = 1; n <= 2; n++) {
 		for (var i = 1; i <= FieldNumbers.limfea; i++) {
 			var featureFld = tDoc.getField("Limited Feature " + i);

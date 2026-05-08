@@ -160,7 +160,7 @@ var Base_ClassList = {
 				minlevel : 1,
 				description : desc("Without armor, my AC is 10 + Dexterity modifier + Constitution modifier + shield"),
 				armorOptions : [{
-					regExpSearch : /justToAddToDropDownAndEffectWildShape/,
+					regExpSearch : /justToAddToDropDownAndAffectWildShape/,
 					name : "Unarmored Defense (Con)",
 					source : [["SRD", 8], ["P", 48]],
 					ac : "10+Con",
@@ -783,7 +783,7 @@ var Base_ClassList = {
 				minlevel : 1,
 				description : desc("Without armor and no shield, my AC is 10 + Dexterity modifier + Wisdom modifier"),
 				armorOptions : [{
-					regExpSearch : /justToAddToDropDownAndEffectWildShape/,
+					regExpSearch : /justToAddToDropDownAndAffectWildShape/,
 					name : "Unarmored Defense (Wis)",
 					source : [["SRD", 26], ["P", 78]],
 					ac : "10+Wis",
@@ -910,7 +910,7 @@ var Base_ClassList = {
 				]),
 				action : [["reaction", ""]],
 				additional : levels.map(function (n) {
-					return n < 3 ? "" : "1d10 + " + n + " + Dexterity modifier; 1 ki to throw";
+					return n < 3 ? "" : "1d10 + " + n + " + Dexterity mod; 1 ki to throw";
 				})
 			},
 			"slow fall" : {
@@ -969,7 +969,7 @@ var Base_ClassList = {
 				name : "Purity of Body",
 				source : [["SRD", 28], ["P", 79]],
 				minlevel : 10,
-				description : typeA4 ? desc("My mastery of the ki flowing through me makes me immune to poison and disease") : " [" + "I am immune to poison and disease" + "]",
+				description : typeA4 ? desc("My mastery of the ki flowing through me makes me immune to poison and disease") : " [I am immune to poison and disease]",
 				savetxt : { immune : ["poison", "disease"] } //both immune to poison damage and the poisoned condition (see sage advice)
 			},
 			"tongue of the sun and moon" : {
@@ -997,7 +997,7 @@ var Base_ClassList = {
 				source : [["SRD", 28], ["P", 79]],
 				minlevel : 18,
 				description : desc("Be invisible and resist non-force damage for 1 min or cast Astral Projection on self"),
-				additional : "Invisible: 4 ki points; Astral Projection: 8 ki points",
+				additional : "Invisible: 4 ki " + (typePF ? "" : "points") + "; Astral Projection: 8 ki points",
 				action : [["action", ""]],
 				spellcastingBonus : [{
 					name : "Empty Body",
@@ -1412,11 +1412,11 @@ var Base_ClassList = {
 				name : "Primeval Awareness",
 				source : [["SRD", 37], ["P", 92]],
 				minlevel : 3,
-				description : desc([
+				description : (typePF ? " [aber./celest./dragon/elem./fey/fiend/undead]" : "") + desc([
 					"As an action, I can use a spell slot to focus my awareness for 1 min per spell slot level",
 					"Out to 1 mile (6 in favored terrain), I sense if certain types of creatures are present"
 				]),
-				additional : "aber./celest./dragon/elem./fey/fiend/undead",
+				additional : typePF ? false : "aber./celest./dragon/elem./fey/fiend/undead",
 				action : [["action", ""]]
 			},
 			"land's stride" : {
@@ -1838,13 +1838,14 @@ var Base_ClassList = {
 					"I can use an arcane focus as a spellcasting focus for my warlock spells",
 					"I regain these spell slots on a short rest"
 				]),
-				additional : levels.map(function (n, idx) {
+				additional: levels.map(function (n, idx) {
 					var cantr = [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4][idx];
 					var splls = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15][idx];
 					var slots = n < 2 ? 1 : n < 11 ? 2 : n < 17 ? 3 : 4;
-					var sllvl = n < 3 ? 1 : n < 5 ? 2 : n < 7 ? 3 : n < 9 ? 4 : 5;
-					return cantr + " cantrips \u0026 " + splls + " spells known; " + slots + "\xD7 " + Base_spellLevelList[sllvl] + " spell slot";
-				})
+					var slLvl = n < 3 ? 1 : n < 5 ? 2 : n < 7 ? 3 : n < 9 ? 4 : 5;
+					var sltxt = typePF ? "level " + slLvl : Base_spellLevelList[slLvl];
+					return cantr + " cantrips \x26 " + splls + " spells; " + slots + "\xD7 " + sltxt + " spell slot";
+				}),
 			},
 			"subclassfeature1" : {
 				name : "Otherworldly Patron",
@@ -2627,6 +2628,7 @@ var Base_ClassSubList = {
 	"bard-college of lore" : {
 		regExpSearch : /^(?=.*(college|bard|minstrel|troubadour|jongleur))(?=.*lore).*$/i,
 		subname : "College of Lore",
+		subnameshort: "Lore",
 		source : [["SRD", 13], ["P", 54]],
 		features : {
 			"subclassfeature3" : {
@@ -2807,6 +2809,7 @@ var Base_ClassSubList = {
 	"druid-circle of the land" : {
 		regExpSearch : /^(?=.*(druid|shaman))(?=.*\b(land|arctic|coast|deserts?|forests?|grasslands?|savannah|steppes?|mountains?|swamps?|underdark)\b).*$/i,
 		subname : "Circle of the Land",
+		subnameshort: "Land",
 		source : [["SRD", 21], ["P", 68]],
 		features : {
 			"subclassfeature2" : {
@@ -3004,6 +3007,7 @@ var Base_ClassSubList = {
 	"monk-way of the open hand" : {
 		regExpSearch : /^(?=.*\bopen\b)(?=.*\bhand\b)((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
 		subname : "Way of the Open Hand",
+		subnameshort: "Open Hand",
 		source : [["SRD", 28], ["P", 79]],
 		features : {
 			"subclassfeature3" : {
@@ -3022,7 +3026,7 @@ var Base_ClassSubList = {
 				source : [["SRD", 28], ["P", 79]],
 				minlevel : 6,
 				description : desc("As an action, I regain hit points equal to three times my monk level"),
-				additional : levels.map(function (n) { return n < 6 ? "" : (n*3) + " hit points" }),
+				additional : levels.map(function (n) { return n < 6 ? "" : (n*3) + " HP" }),
 				usages : 1,
 				recovery : "long rest",
 				action : [["action", ""]]
@@ -3053,6 +3057,7 @@ var Base_ClassSubList = {
 	"paladin-oath of devotion" : {
 		regExpSearch : /^(?=.*(devotion|obedience))((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
 		subname : "Oath of Devotion",
+		subnameshort: "Devotion",
 		source : [["SRD", 32], ["P", 86]],
 		features : {
 			"subclassfeature3" : {
@@ -3466,6 +3471,7 @@ var Base_ClassSubList = {
 						"I add my Charisma modifier to one damage roll of a spell if it does lightning damage",
 						"When I do this, I can spend 1 sorcery point to gain lightning resistance for 1 hour"
 					]),
+					additional : typePF ? "optional: 1 SP" : undefined,
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
@@ -3489,6 +3495,7 @@ var Base_ClassSubList = {
 						"I add my Charisma modifier to one damage roll of a spell if it does poison damage",
 						"When I do this, I can spend 1 sorcery point to gain poison resistance for 1 hour"
 					]),
+					additional : typePF ? "optional: 1 SP" : undefined,
 					calcChanges : {
 						atkCalc : [
 							function (fields, v, output) {
@@ -3536,6 +3543,7 @@ var Base_ClassSubList = {
 	"warlock-the fiend" : {
 		regExpSearch : /^(?=.*(fiend|devil|demon|daemon|hell|abyss))(?=.*warlock).*$/i,
 		subname : "the Fiend",
+		subnameShort: "Fiend",
 		source : [["SRD", 50], ["P", 109]],
 		spellcastingExtra : ["burning hands", "command", "blindness/deafness", "scorching ray", "fireball", "stinking cloud", "fire shield", "wall of fire", "flame strike", "hallow"],
 		features : {
@@ -3576,8 +3584,9 @@ var Base_ClassSubList = {
 		}
 	},
 	"wizard-evocation" : {
-		regExpSearch : /(evocation|evocer|evoker)/i,
+		regExpSearch : /evocation|evocer|evoker/i,
 		subname : "School of Evocation",
+		subnameshort: "Evocation",
 		fullname : "Evoker",
 		source : [["SRD", 54], ["P", 117]],
 		features : {

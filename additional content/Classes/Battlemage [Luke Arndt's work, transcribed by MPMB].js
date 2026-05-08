@@ -878,7 +878,7 @@ AddSubClass("battlemage", "spell dancer", {
 			minlevel : 3,
 			description: desc("Without armor and no shield, my AC is 10 + Dexterity modifier + Intelligence modifier"),
 			armorOptions : [{
-				regExpSearch : /justToAddToDropDownAndEffectWildShape/,
+				regExpSearch : /justToAddToDropDownAndAffectWildShape/,
 				name : "Unarmored Defense (Int)",
 				source : ["LA:BM", 7],
 				ac : "10+Int",

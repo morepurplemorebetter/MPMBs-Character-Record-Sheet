@@ -1479,14 +1479,16 @@ function formatDescriptionFull(sDescFull, bReturnRichTextStyled) {
 			if (isArray(n)) {
 				// Table, every entry in the array is a row, with the first one being the headers
 				var renderTable = n.reduce(function (finalStr, t, idx) {
-					var joinString = bReturnRichTextStyled ? "**\t**" : "\t";
+					var richTextHeader = idx === 0 && bReturnRichTextStyled;
+					var joinString = richTextHeader ? "**\t**" : "\t";
 					var tableRow = typeof t === "string" ? t :
 					               isArray(t) ? t.join(joinString) : false;
 					if (!tableRow) return finalStr;
-					if (idx === 0) {
-						tableRow = bReturnRichTextStyled ? "**" + tableRow + "**" :
-						           bIgnoreUnicode ? tableRow.toUpperCase() :
-						           toUni(tableRow, "**");
+					if (richTextHeader) {
+						tableRow = "**" + tableRow + "**";
+						tableRow = tableRow.replace(/(^|\s)\*{4}|\*{4}(\s|$)/g, "$1"); // Fix for empty header row array entries
+					} else if (idx === 0) {
+						tableRow = bIgnoreUnicode ? tableRow.toUpperCase() : toUni(tableRow, "**");
 					}
 					var lineBreakT = finalStr ? '\n' : '';
 					return finalStr + lineBreakT + tableRow;

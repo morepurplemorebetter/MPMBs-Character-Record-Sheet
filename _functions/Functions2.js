@@ -5359,8 +5359,8 @@ function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceChoice)
 		// add the new choice
 		var setA = attr[a][0];
 		var objA = attr[a][1];
-		tRe[setA] = choice && aFea[choice] && aFea[choice][objA] ? aFea[choice][objA] : aFea[objA] && !ForceChoice ? aFea[objA] : tRe[setA] ? tRe[setA] : "";
-		tRe[setA + "Old"] = oldchoice && aFea[oldchoice] && aFea[oldchoice][objA] ? aFea[oldchoice][objA] : aFea[objA] && !ForceChoice ? aFea[objA] : tRe[setA + "Old"] ? tRe[setA + "Old"] : "";
+		tRe[setA] = choice && aFea[choice] && aFea[choice][objA] !== undefined ? aFea[choice][objA] : aFea[objA] && !ForceChoice ? aFea[objA] : tRe[setA] ? tRe[setA] : "";
+		tRe[setA + "Old"] = oldchoice && aFea[oldchoice] && aFea[oldchoice][objA] !== undefined ? aFea[oldchoice][objA] : aFea[objA] && !ForceChoice ? aFea[objA] : tRe[setA + "Old"] ? tRe[setA + "Old"] : "";
 		if (objA.indexOf("usages") !== -1) {
 			if (level === 0) tRe[setA] = "";
 			if (oldlevel === 0) tRe[setA + "Old"] = "";
@@ -6081,7 +6081,7 @@ function ApplyWeapon(inputText, fldName, isReCalc, onlyProf, forceRedo) {
 			var isSpell = thisWeapon[3] || (theWea && /cantrip|spell/i.test(theWea.type)) || (!theWea && /\b(cantrip|spell)\b/i.test(WeaponText)) ? true : false;
 			var isWeapon = theWea && theWea.isNotWeapon ? false : !isSpell || (isSpell && theWea && !/cantrip|spell/i.test(theWea.type));
 			var isMeleeWeapon = isWeapon && /melee/i.test(fields.Range);
-			var isRangedWeapon = isWeapon && /^(?!.*melee).*\d+.*$/i.test(fields.Range);
+			var isRangedWeapon = isWeapon && !isMeleeWeapon && /\d/i.test(fields.Range);
 			var isNaturalWeapon = isWeapon && theWea && /natural/i.test(theWea.type);
 			var isThrownWeapon = isWeapon && /\bthrown\b/i.test(fields.Description) && /\d ?(ft|m)\.?($|[^)])/i.test(fields.Range);
 
@@ -6264,7 +6264,7 @@ function CalcAttackDmgHit(fldName) {
 	var isSpell = thisWeapon[3] || (theWea && /cantrip|spell/i.test(theWea.type)) || (!theWea && /\b(cantrip|spell)\b/i.test(WeaponText)) ? true : false;
 	var isWeapon = theWea && theWea.isNotWeapon ? false : !isSpell || (isSpell && theWea && !/cantrip|spell/i.test(theWea.type));
 	var isMeleeWeapon = isWeapon && /melee/i.test(fields.Range);
-	var isRangedWeapon = isWeapon && /^(?!.*melee).*\d+.*$/i.test(fields.Range);
+	var isRangedWeapon = isWeapon && !isMeleeWeapon && /\d/i.test(fields.Range);
 	var isNaturalWeapon = isWeapon && theWea && /natural/i.test(theWea.type);
 	var isThrownWeapon = isWeapon && /\bthrown\b/i.test(fields.Description) && /\d ?(ft|m)\.?($|[^)])/i.test(fields.Range);
 
