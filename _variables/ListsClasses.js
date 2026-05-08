@@ -3543,7 +3543,6 @@ var Base_ClassSubList = {
 	"warlock-the fiend" : {
 		regExpSearch : /^(?=.*(fiend|devil|demon|daemon|hell|abyss))(?=.*warlock).*$/i,
 		subname : "the Fiend",
-		subnameShort: "Fiend",
 		source : [["SRD", 50], ["P", 109]],
 		spellcastingExtra : ["burning hands", "command", "blindness/deafness", "scorching ray", "fireball", "stinking cloud", "fire shield", "wall of fire", "flame strike", "hallow"],
 		features : {
