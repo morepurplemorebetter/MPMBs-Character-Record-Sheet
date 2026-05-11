@@ -149,11 +149,66 @@ function setPrototypes() {
 
 	//add stuff otherwise not available in older version of Adobe Acrobat
 	if (!Object.keys) {
-		Object.keys = function(obj) {
-			var arrRe = [];
-			for (var a in obj) arrRe.push(a);
-			return arrRe;
+		Object.keys = function (target) {
+			'use strict';
+			if (target === undefined || target === null) {
+				throw new TypeError('Cannot convert undefined or null to object');
+			}
+			var obj = Object(target);
+			var arr = [];
+			for (var key in obj) {
+				if (Object.prototype.hasOwnProperty.call(obj, key)) arr.push(key);
+			}
+			return arr;
 		}
+	}
+	if (!Object.values) {
+		Object.values = function (target) {
+			'use strict';
+			if (target === undefined || target === null) {
+				throw new TypeError('Cannot convert undefined or null to object');
+			}
+			var obj = Object(target);
+			var arr = [];
+			for (var key in obj) {
+				if (Object.prototype.hasOwnProperty.call(obj, key)) arr.push(obj[key]);
+			}
+			return arr;
+		}
+	}
+	if (!Object.entries) {
+		Object.entries = function (target) {
+			'use strict';
+			if (target === undefined || target === null) {
+				throw new TypeError('Cannot convert undefined or null to object');
+			}
+			var obj = Object(target);
+			var arr = [];
+			for (var key in obj) {
+				if (Object.prototype.hasOwnProperty.call(obj, key)) arr.push([key, obj[key]]);
+			}
+			return arr;
+		}
+	}
+	if (!Object.assign) {
+		Object.assign = function (target) {
+			'use strict';
+			if (target === undefined || target === null) {
+				throw new TypeError('Cannot convert undefined or null to object');
+			}
+			var obj = Object(target);
+			for (var i = 1; i < arguments.length; i++) {
+				var s = arguments[i];
+				if (s === undefined || s === null) continue; // Skip if undefined or null
+				for (var key in s) {
+					// Avoid bugs when hasOwnProperty is shadowed
+					if (Object.prototype.hasOwnProperty.call(s, key)) {
+						obj[key] = s[key];
+					}
+				}
+			}
+			return obj;
+		};
 	}
 
 	//define a way for numbers and regular expressions to return an indexOf(), match(), replace(), search(), slice(), split(), substring(), substr(), toLowerCase(), or toUpperCase() to avoid errors
