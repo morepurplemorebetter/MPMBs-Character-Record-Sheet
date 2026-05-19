@@ -101,13 +101,14 @@ function ParseSpell(input, aCast, limitArray) {
 
 // Create a spell object for a spell + caster combination
 // GetSpellObject(theSpl, input[2], input[1], input[3], false)
-// GetSpellObject(theSpl, theCast, false, true, true)
-function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
+// GetSpellObject(theSpl, theCast,  false,    false,    true)
+function GetSpellObject(theSpl, theCast, firstCol, isDuplicate, tooltipOnly) {
 	var foundSpell = SpellsList[theSpl];
 	var aSpell = { changesObj : {} };
 	if (!foundSpell) return aSpell;
 	var aDescrAttr = ["description", "descriptionMetric", "descriptionShorter", "descriptionShorterMetric"];
 	var aCast = theCast && CurrentSpells[theCast] ? CurrentSpells[theCast] : "";
+	var isBonusSpell = !isDuplicate && aCast && aCast.selectBo && aCast.selectBo.indexOf(theSpl) !== -1;
 	var isMetric = What("Unit System") === "metric";
 	for (var key in foundSpell) {
 		if (key === 'allowUpCasting') continue;
@@ -132,15 +133,34 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 		aSpell.changesObj["Magic Item"] = "\n \u2022 Spells cast by magic items don't require any components except the magic item itself, unless otherwise specified in the magic item's description.";
 	}
 	// Apply spell overrides for this CurrentSpells entry
-	if (!noOverrides && aCast && aCast.spellAttrOverride && aCast.spellAttrOverride[theSpl]) {
+	if (aCast && aCast.spellAttrOverride && aCast.spellAttrOverride[theSpl]) {
 		var theOver = aCast.spellAttrOverride[theSpl];
-		for (var key in theOver) {
-			if (key == "changesObj") {
-				for (var changeO in theOver[key]) {
-					aSpell.changesObj[changeO] = theOver.changesObj[changeO];
+		var overrideType = theOver.affectsDuplicates ? theOver.affectsDuplicates : "firstonly";
+		var applyOverride = false;
+		switch (overrideType.toLowerCase()) {
+			default:
+			case "firstOnly":
+				applyOverride = !isDuplicate;
+				break;
+			case "bonus":
+				applyOverride = isBonusSpell;
+				break;
+			case "regular":
+				applyOverride = !isBonusSpell;
+				break;
+			case "all":
+				applyOverride = true;
+				break;
+		}
+		if (applyOverride) {
+			for (var key in theOver) {
+				if (key == "changesObj") {
+					for (var changeO in theOver[key]) {
+						aSpell.changesObj[changeO] = theOver.changesObj[changeO];
+					}
 				}
+				aSpell[key] = theOver[key];
 			}
-			aSpell[key] = theOver[key];
 		}
 	}
 	// If this spell is gained from an item, feat, or race, remove scaling effects
@@ -191,7 +211,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 			var didChange = false;
 			var changeHead = "Changes by " + evalName;
 			try {
-				didChange = evalThing(theSpl, aSpell, aCast ? theCast : "", noOverrides ? true : false);
+				didChange = evalThing(theSpl, aSpell, aCast ? theCast : "", isDuplicate ? true : false, isBonusSpell);
 			} catch (error) {
 				displayError(error, 'The custom function for changing spell attributes from "' + evalName + '" produced the error below while processing the spell "' + theSpl + '". It will be removed from the sheet for now, but please share this error message with its author so they can correct this issue.');
 				delete CurrentEvals.spellAdd[evalName];
@@ -212,7 +232,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 	//make the tooltip for the description field
 	var spTooltip = "";
 	var ttSpellObj = aSpell.completeRewrite ? aSpell : foundSpell;
-	if (ttSpellObj.descriptionFull || tipShortDescr) {
+	if (ttSpellObj.descriptionFull || tooltipOnly) {
 		spTooltip = toUni(ttSpellObj.name, "bold") + " \u2014 ";
 
 		if (ttSpellObj.school) {
@@ -239,7 +259,7 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 		if (ttSpellObj.timeFull) {
 			spTooltip += "\n  Casting Time:  " + ttSpellObj.timeFull;
 		} else if (ttSpellObj.time) {
-			spTooltip += "\n  Casting Time:  " + ttSpellObj.time.replace(/1 a\b/i, '1 action').replace(/1 bns\b/i, '1 bonus action').replace(/1 rea\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
+			spTooltip += "\n  Casting Time:  " + ttSpellObj.time.replace(/(1 )?bns\b/i, '1 bonus action').replace(/(act|1 a)\b/i, '1 action').replace(/(1 rea|react)\b/i, '1 reaction').replace(/\b1 min\b/i, '1 minute').replace(/\b1 h\b/i, '1 hour').replace(/\bmin\b/i, 'minutes').replace(/\bh\b/i, 'hours');
 		}
 
 		if (ttSpellObj.range) spTooltip += "\n  Range:  " + ttSpellObj.range.replace(/s: *(.*)/i, "Self ($1)").replace(/rad\b/i, "radius").replace(/(\d+)(ft|m)/i, "$1-$2");
@@ -250,13 +270,13 @@ function GetSpellObject(theSpl, theCast, firstCol, noOverrides, tipShortDescr) {
 
 		if (ttSpellObj.descriptionFull) spTooltip += "\n\n" + formatDescriptionFull(ttSpellObj.descriptionFull);
 
-		if (tipShortDescr) spTooltip += "\n\n__________\n\n" + toUni("Short Description") + '  (how it will appear on the sheet)\n  ' + aSpell.description;
+		if (tooltipOnly) spTooltip += "\n\n__________\n\n" + toUni("Short Description") + '  (how it will appear on the sheet)\n  ' + aSpell.description;
 		
 		if (ObjLength(aSpell.changesObj)) {
 			var txt = [];
 			for (var str in aSpell.changesObj) txt.push(toUni(str) + aSpell.changesObj[str]);
 			spTooltip += "\n\n>>  CHANGES BY FEATURES  <<\nThe above original ";
-			spTooltip += tipShortDescr ? "will be modified when added to the sheet as follows (the short description includes the changes):\n\n" : "has been changed as follows:\n\n";
+			spTooltip += tooltipOnly ? "will be modified when added to the sheet as follows (the short description includes the changes):\n\n" : "has been changed as follows:\n\n";
 			spTooltip += txt.join("\n\n");
 		}
 	};
@@ -950,7 +970,7 @@ function SetSpellCheckbox() {
 		var borderWidth = 0;
 		var borderType = border.s;
 		var imageField = tDoc.getField("SaveIMG.FirstCol." + theEV);
-		if (imageField) {
+		if (theEV && imageField) {
 			theIcon = imageField.buttonGetIcon();
 		} else {
 			switch (theEV) {
@@ -3708,19 +3728,21 @@ function GenerateSpellSheet(GoOn) {
 				var oSpell = SpellsList[aSpell];
 				if (!oSpell) continue;
 				var preparedCantrip = oSpell.level === 0 && preparingCantrips;
-				var notDupl = y ? aSpell != spArray[y - 1] : true;
-				var bonusBookSpell = bookCaster && notDupl && spCast.selectBo && spCast.selectBo.indexOf(aSpell) !== -1;
+				var isBonusSpell = spCast.selectBo && spCast.selectBo.indexOf(aSpell) !== -1;
+				var isDuplicate = y && aSpell === spArray[y - 1];
+				var isRegularSpell = !isBonusSpell || isDuplicate;
+				var bonusBookSpell = bookCaster && isBonusSpell && !isDuplicate;
 				//check if not at the end of the page and, if so, create a new page
 				if (lineCurrent > lineMax) AddPage();
 				// Set the first column
 				var toCheck = "##";
-				if (notDupl && alwaysPrepared.indexOf(aSpell) !== -1 && !preparedOnly) {
+				if (isRegularSpell && alwaysPrepared.indexOf(aSpell) !== -1 && !preparedOnly) {
 					// Mark as Always Prepared if set to do so, unless only doing prepared spells or if it's a cantrip and cantrips are not set to be prepared
 					toCheck += oSpell.level === 0 && !preparedCantrip ? "atwill" : "markedbox";
-				} else if (notDupl && firstCols[aSpell] && !(firstCols[aSpell] === "markedbox" && preparedOnly)) {
+				} else if (isBonusSpell && !isDuplicate && firstCols[aSpell] && !(firstCols[aSpell] === "markedbox" && preparedOnly)) {
 					// Use the first column set for a bonus spell, unless it is an always prepared box and currently only doing prepared spells
 					toCheck += firstCols[aSpell];
-				} else if (oSpell.firstCol === undefined && ( isPsionics || preparedCantrip || autoFirstColumn || bonusBookSpell)) {
+				} else if (oSpell.firstCol === undefined && (isPsionics || preparedCantrip || autoFirstColumn || bonusBookSpell)) {
 					if (spCast.typeList === 4 || preparedCantrip) {
 						// Showing all spells (or cantrips), so mark the prepared ones with a checked box
 						toCheck += bonusBookSpell || knownSpells.indexOf(aSpell) !== -1 ? "checkedbox" : "checkbox";
@@ -3728,7 +3750,7 @@ function GenerateSpellSheet(GoOn) {
 						toCheck += oSpell.level === 0 ? "atwill" : "checkbox";
 					}
 				}
-				Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + CurrentCasters.incl[i] + (notDupl ? "" : "##stop"));
+				Value(prefixCurrent + "spells.remember." + lineCurrent, aSpell + toCheck + "##" + CurrentCasters.incl[i] + (isDuplicate ? "##isduplicate" : ""));
 				lineCurrent += 1;
 			}
 		}

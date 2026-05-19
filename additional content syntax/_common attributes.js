@@ -1390,12 +1390,14 @@ spellChanges : {
 	"spare the dying" : {
 		time : "1 bns",
 		range : "30 ft",
-		changes : "I can cast spare the dying as a bonus action instead of an action, and it has a range of 30 ft instead of touch." // REQUIRED // string
-	}
+		changes : "I can cast spare the dying as a bonus action instead of an action, and it has a range of 30 ft instead of touch.", // REQUIRED // string
+		affectsDuplicates: "all", // OPTIONAL // string // defaults to "firstOnly"
+	},
 },
 /*	spellChanges // OPTIONAL //
 	TYPE:	object with objects
 	USE:	change aspects of spells when generating a spell sheet of the parent object
+	CHANGE:	v14.0.8 (added `affectsDuplicates` attribute)
 
 	The object names in this must correspond with the object names as used in the SpellsList object.
 	The possible attributes in that sub-object are the same as those for a SpellsList entry,
@@ -1406,6 +1408,21 @@ spellChanges : {
 	Each sub-object must have a 'changes' attribute, a string, explaining what was changed.
 	This 'changes' attribute is amended to the full spell description in the tooltip.
 	Use it to make clear how the spell now differs from the original version.
+
+	// `affectsDuplicates` attribute (string) //
+	This attribute is optional, but defaults to "firstOnly" if not present.
+	The spell sheet can have the same spell on it twice, once gained through the regular ways
+	and once from being in the Bonus column on the spell selection dialog.
+	If the spell is displayed twice, the first one is always the one from the Bonus column.
+	The value of this attribute defines which of the two are affected:
+
+		VALUE      		CHANGES WILL AFFECT
+		"firstOnly"		Always only the first spell, but never more. [default]
+		"bonus"    		Only the spell from the Bonus column, if any.
+		"regular"  		Only the spell NOT gained from the Bonus column, if any.
+		"all"      		Both spells, regardless of how they are obtained.
+	
+	If you don't use any of the above values, it will be treated as "firstOnly".
 
 	// NOT ALL SpellsList ATTRIBUTES SUPPORTED //
 	As these attributes are only looked into when the fields on the sheet are filled with the
@@ -2092,7 +2109,7 @@ calcChanges : {
 	*/
 
 	spellAdd : [
-		function (spellKey, spellObj, spName, isDuplicate) {
+		function (spellKey, spellObj, spName, isDuplicate, isBonusSpell) {
 			if ((/heals/).test(spellObj.description) && spellObj.range === "touch") {
 				// healing spells have a range of 60 ft instead of touch
 				spellObj.range = What("Unit System") === "metric" ? ConvertToMetric("60 ft", 0.5) : "60 ft";
@@ -2111,12 +2128,13 @@ calcChanges : {
 				3rd entry:	optional number used to determine the order in which to run the functions
 		USE:	dynamically change aspects of spells when it is added on the spell sheet
 		CHANGE:	v13.0.8 (priority, 3rd array entry)
+		CHANGE:	v14.0.8 (isBonusSpell, 5th variable passed to the function)
 
 		// 1st array entry //
 		This function is called whenever a spell is added to the spell sheet,
 		both when added manually and during spell sheet generation.
 		You can use it to dynamically change something about a spell like its description, range, or school.
-		This function is passed four variables:
+		This function is passed five variables:
 		1)	spellKey, a string of the name of the entry in the SpellsList variable.
 			Thus, you can find the original SpellsList entry with SpellsList[spellKey].
 
@@ -2134,11 +2152,24 @@ calcChanges : {
 			or "drow" for the racial spells gained from being a dark elf.
 			This will be an empty string when the spell is added manually.
 
-		4)	isDuplicate, a boolean that is true if the spell is a duplicate
+		4)	>> DEPRECATED: it's easer to use the 5th variable `isBonusSpell` instead.
+			isDuplicate, a boolean that is true if the spell is a duplicate
 			This is intended for spells that are added using the 'spellcastingBonus' attribute, but are also present on the spell list otherwise.
 			For duplicate spells like this, the first time the spell is added,
 			it is treated as the one gained from 'spellcastingBonus', and this boolean is set to false.
 			Then, the second time this spell is added, it is treated as the one gained from the regular spell list and this attribute is true.
+
+		5)	isBonusSpell, a boolean that is true if this spell was added because it's in
+			the Bonus column of the spell selection dialog
+
+			This is true for spells that are added using the 'spellcastingBonus' attribute.
+			This is false for spells added because they are on the regular spell list,
+			spells known, or are gained from `spellcastingExtra` (e.g. domain spells).
+
+			Spells can be shown on the spell sheet twice because they are both gained through
+			regular ways and as a bonus spell (the Bonus column of the selection dialog).
+
+			Use this variable if you only want to affect one or the other.
 
 
 		By changing the attributes of the spellObj, you change what is put in the fields.

@@ -561,16 +561,19 @@ function ResetAll(GoOn, noTempl, deleteImports) {
 };
 
 // Select the text size to use (0 for auto), or if left empty, select the default text size of 5.74 (7 for Printer Friendly)
-function ToggleTextSize(size, linespacingSize, forceReset) {
+function ToggleTextSize(size, linespacingSize, forceReset, removeLocalRichText) {
 	if (CurrentVars.fontsize === undefined) CurrentVars.fontsize = typePF ? 7 : 5.74;
 	if (CurrentVars.linespacing === undefined) CurrentVars.linespacing = typePF ? 11 : 10;
+	if (CurrentVars.fixRichTextFormatting === undefined) CurrentVars.fixRichTextFormatting = !tDoc.isWindows;
 
 	var fontSize = forceReset || size == undefined || isNaN(size) ? (typePF ? 7 : 5.74) : parseFloat(size);
 	var linespacing = forceReset || linespacingSize == undefined || isNaN(linespacingSize) ? (typePF ? 11 : 10) : parseFloat(linespacingSize);
+	var fixRT = forceReset || removeLocalRichText == undefined ? !tDoc.isWindows : removeLocalRichText ? true : false;
 
 	var fontChange = forceReset || fontSize != CurrentVars.fontsize;
 	var linespacingChange = forceReset || linespacing != CurrentVars.linespacing;
-	if (!fontChange && !linespacingChange) return;
+	var fixRTChange = forceReset || fixRT != CurrentVars.fixRichTextFormatting;
+	if (!fontChange && !linespacingChange && !fixRTChange) return;
 
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Changing the " + (fontChange ? "font size" : "linespacing") + " to " + (fontChange ? (fontSize ? fontSize : "'Auto'") : (linespacing ? linespacing : "'Auto'")) + "...");
@@ -578,6 +581,7 @@ function ToggleTextSize(size, linespacingSize, forceReset) {
 
 	if (fontChange) CurrentVars.fontsize = fontSize;
 	if (linespacingChange) CurrentVars.linespacing = linespacing;
+	if (fixRTChange) CurrentVars.fixRichTextFormatting = fixRT;
 	SetStringifieds("vars"); // Save the settings to a field
 
 	var LinesFld = [];
@@ -639,9 +643,10 @@ function ToggleTextSize(size, linespacingSize, forceReset) {
 		for (var T = 0; T < wildTemps.length; T++) {
 			var prefix = wildTemps[T];
 			for (var W = 1; W <= 4; W++) {
+				var wsBase = prefix + "Wildshape." + W;
 				LinesFld = LinesFld.concat([
-					prefix + "Wildshape." + W + ".HP Current",
-					prefix + "Wildshape." + W + ".Traits"
+					wsBase + ".HP Current",
+					wsBase + ".Traits"
 				]);
 			}
 		}
@@ -1962,9 +1967,10 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		var fTrans = {};
 		//add features of the class
 		for (prop in classObj.features) {
+			// skip any features from the class if a subclass is known and has that same feature
+			if (subClObj && subClObj.features && subClObj.features[prop]) continue;
 			var cPropAtt = classObj.features[prop];
-			var fNm = ("0" + cPropAtt.minlevel).slice(-2) + (/subclassfeature/i.test(prop) ? "" : "()") + cPropAtt.name;
-			//subClObj && subClObj.features[prop]
+			var fNm = ("0" + cPropAtt.minlevel).slice(-2) + (/subclassfeature/i.test(prop) ? "" : "()") + prop;
 			if (fNm.toString().length > 2) {
 				fAB.push(fNm);
 				fTrans[fNm] = {name: prop, list: "ClassList", item: aClass};
@@ -1975,7 +1981,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		if (subClObj && subClObj.features) {
 			for (prop in subClObj.features) {
 				var csPropAtt = subClObj.features[prop];
-				var fNm = ("0" + csPropAtt.minlevel).slice(-2) + csPropAtt.name;
+				var fNm = ("0" + csPropAtt.minlevel).slice(-2) + (/subclassfeature/i.test(prop) ? "" : "()") + prop;
 				if (fNm.toString().length > 2) {
 					fAB.push(fNm);
 					fTrans[fNm] = {name: prop, list: "ClassSubList", item: classes.known[aClass].subclass};
@@ -1987,7 +1993,6 @@ function FindClasses(NotAtStartup, isFieldVal) {
 
 		for (var f = 0; f < fAB.length; f++) {
 			var propAtt = fTrans[fAB[f]];
-			if (subClObj && propAtt.list === "ClassList" && subClObj.features[propAtt.name]) continue; // skip any features from the class if a subclass is known and has that same feature
 			Temps.features[propAtt.name] = tDoc[propAtt.list][propAtt.item].features[propAtt.name];
 			// set the extrachoice attribute of the feature if it is dependent on a choice
 			if (Temps.features[propAtt.name].choiceSetsExtrachoices) {
@@ -9490,6 +9495,7 @@ function SetTextOptions_Button() {
 	if (FontList[nowFont]) FontDefSize = FontList[nowFont];
 	var linespacingDefSize = typePF ? 11 : 10;
 	var linespacingSize = CurrentVars.linespacing !== undefined ? CurrentVars.linespacing : linespacingDefSize;
+	var fixRichTextFormatting = CurrentVars.fixRichTextFormatting ? true : false;
 
 	var fontArray = {};
 	for (var fo in FontList) {
@@ -9505,6 +9511,7 @@ function SetTextOptions_Button() {
 	SetTextOptions_Dialog.bDefSizeSheet = FontList[FontDef];
 	SetTextOptions_Dialog.bFont = nowFont;
 	SetTextOptions_Dialog.bFontsArray = fontArray;
+	SetTextOptions_Dialog.fixRichTextFormatting = fixRichTextFormatting;
 
 	// linespacing
 	SetTextOptions_Dialog.linespacingDefSize = linespacingDefSize.toString();
@@ -9512,10 +9519,20 @@ function SetTextOptions_Button() {
 
 	// Call the dialog and do something if ok is pressed
 	if (app.execDialog(SetTextOptions_Dialog) === "ok") {
-		var newFontSize = SetTextOptions_Dialog.bSize != FontSize ? SetTextOptions_Dialog.bSize : FontSize;
-		var newLinespacing = SetTextOptions_Dialog.linespacingSize != linespacingSize ? SetTextOptions_Dialog.linespacingSize : linespacingSize;
-		if (newFontSize || newLinespacing) {
-			ToggleTextSize(newFontSize, newLinespacing);
+		var newFontSize = SetTextOptions_Dialog.bSize != FontSize;
+		var newLinespacing = SetTextOptions_Dialog.linespacingSize != linespacingSize;
+		var newForceRT = SetTextOptions_Dialog.fixRichTextFormatting != fixRichTextFormatting && SetTextOptions_Dialog.fixRichTextFormatting;
+		if (newFontSize || newLinespacing || newForceRT) {
+			ToggleTextSize(
+				SetTextOptions_Dialog.bSize,
+				SetTextOptions_Dialog.linespacingSize,
+				false, // Do not reset
+				SetTextOptions_Dialog.fixRichTextFormatting
+			);
+		} else if (SetTextOptions_Dialog.fixRichTextFormatting != fixRichTextFormatting) {
+			// fixRichTextFormatting was turned off, but nothing else was changed. Then we don't redo all fields because formatting would be lost.
+			CurrentVars.fixRichTextFormatting = false;
+			SetStringifieds("vars");
 		}
 		if (SetTextOptions_Dialog.bFont != nowFont) {
 			ChangeFont(SetTextOptions_Dialog.bFont);

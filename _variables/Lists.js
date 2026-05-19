@@ -288,7 +288,11 @@ var CurrentCasters = {};
 var CurrentSources = {firstTime : true, globalExcl : [], globalKnown : []};
 var CurrentEvals = {};
 var CurrentScriptFiles = {};
-var CurrentVars = { manual : {}, vislayers : ["rules", "equipment"] };
+var CurrentVars = {
+	manual: {},
+	vislayers: ["notes", "equipment"],
+	fixRichTextFormatting: !tDoc.isWindows,
+};
 var UpdateSpellSheets = {};
 var CurrentFeatureChoices = {};
 var CurrentStats = {};
@@ -1311,6 +1315,7 @@ var SetTextOptions_Dialog = {
 	bDefFont: "SegoePrint",
 	linespacingSize: 10,
 	linespacingDefSize: "10",
+	fixRichTextFormatting: false,
 
 	//when starting the dialog
 	initialize: function (dialog) {
@@ -1322,6 +1327,7 @@ var SetTextOptions_Dialog = {
 			"fStS": this.bDefFont,
 			"lStS": this.linespacingDefSize,
 			"lOSi": this.linespacingSize,
+			"ckFF": this.fixRichTextFormatting,
 		};
 
 		var enableObj = {
@@ -1338,6 +1344,7 @@ var SetTextOptions_Dialog = {
 			enableObj.lNon = false;
 			enableObj.lOth = false;
 			enableObj.lOSi = false;
+			enableObj.ckFF = false;
 		} else {
 			loadObj.sOth = true;
 		}
@@ -1401,6 +1408,11 @@ var SetTextOptions_Dialog = {
 			this.linespacingSize = 0;
 		} else if (oResult["lOth"]) {
 			this.linespacingSize = oResult["lOSi"];
+		}
+
+		if (!oResult["sAut"]) {
+			// ignore changes to fixRichTextFormatting if font size is set to Auto
+			this.fixRichTextFormatting = oResult["ckFF"];
 		}
 	},
 
@@ -1525,6 +1537,7 @@ var SetTextOptions_Dialog = {
 			'lNon': bEnable,
 			'lOth': bEnable,
 			'lOSi': bEnable,
+			'ckFF': bEnable,
 		});
 	},
 
@@ -1641,7 +1654,7 @@ var SetTextOptions_Dialog = {
 						font: "dialog",
 						wrap_name: true,
 						char_width: 40,
-						name: 'This applies to all multi-line text fields. "Auto" font size means the text will resize to fit the field. Single-line fields always have auto font size.'+
+						name: 'This applies to all multiline text fields. "Auto" font size means the text will resize to fit the field. Single-line fields always have auto font size.'+
 						'\nTIP: Add line breaks to shrink the text.'+
 						'\nWARNING: "Auto" font size is incompatible with rich text formatting like bold, underline, and ' + (typePF ? 'italic.' : 'colors.')
 					}, {
@@ -1702,8 +1715,8 @@ var SetTextOptions_Dialog = {
 						font: "dialog",
 						wrap_name: true,
 						char_width: 40,
-						name: 'This is the amount of space between lines of text, which only applies to multi-line text fields.'+
-						'\nThis setting is ignored if the font size is set to "Auto" above.'
+						name: 'This is the amount of space between lines of text, which only applies to multiline text fields.'+
+						'\nNB: This setting is ignored if the font size is set to "Auto" above.'
 					}, {
 						type: "view",
 						align_children: "align_row",
@@ -1748,6 +1761,31 @@ var SetTextOptions_Dialog = {
 							SpinEdit: true
 						}]
 					}]
+				}, {
+					type: "cluster",
+					align_children: "align_left",
+					char_width: 50,
+					name: "Force Formatting (multiline fields)",
+					font: "heading",
+					bold: true,
+					elements: [{
+						type: "static_text",
+						item_id: "txFF",
+						alignment: "align_fill",
+						font: "dialog",
+						wrap_name: true,
+						char_width: 40,
+						name: [
+							'When this is enabled, the sheet will force the font, font size, color, and line height of multiline fields (i.e. with rich text formatting) to the above settings when you click/tab outside of a field.',
+							'When this is disabled, you can change the formatting multiline fields as you see fit.',
+							'TIP: Enable this setting if you experience issues with pasting into multiline fields.',
+							'NB: This setting is ignored if the font size is set to "Auto" above.'
+						].join("\n"),
+					}, {
+						type: "check_box",
+						item_id: "ckFF",
+						name: "Force formatting of multiline fields"
+					}],
 				}, {
 					type: "gap",
 					height: 8

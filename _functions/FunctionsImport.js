@@ -2820,10 +2820,11 @@ function AddSubClass(iClass, subclassName, subclassObj) {
 	if (!ClassList[iClass]) return;
 	if (!ClassList[iClass].subclassGainedLevel || !ClassList[iClass].subclasses) fixClassReferences(true);
 	var suffix = 1;
-	var fullScNm = iClass + "-" + subclassName;
+	var baseScNm = iClass + "-" + subclassName;
+	var fullScNm = baseScNm;
 	while (ClassList[iClass].subclasses[1].indexOf(fullScNm) !== -1 || ClassSubList[fullScNm]) {
-		suffix += 1;
-		fullScNm += suffix;
+		suffix++;
+		fullScNm = baseScNm + "-" + suffix;
 	};
 	ClassList[iClass].subclasses[1].push(fullScNm);
 	ClassSubList[fullScNm] = subclassObj;

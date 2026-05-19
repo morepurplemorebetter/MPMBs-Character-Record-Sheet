@@ -74,7 +74,7 @@ function Checkbox(field, FldValue, tooltip, submitNm) {
 
 function desc(arr, joinStr, preStr) {
 	joinStr = joinStr ? joinStr : "\n   ";
-	if (!preStr) preStr = joinStr;
+	if (preStr === undefined) preStr = joinStr;
 	if (!Array.isArray(arr)) return preStr + arr;
 	return preStr + arr.join(joinStr);
 };
@@ -1721,13 +1721,22 @@ function correctRichTextLineSpacing() {
 	// Make sure the linespacing adheres to the sheet
 	var val = event.richValue;
 	if (!val) return;
-	var processed = val.every(function(span) { return span.linespacing !== undefined; });
+	var processed = CurrentVars.fixRichTextFormatting ? false : val.every(function(span) { return span.linespacing !== undefined; });
 	if (processed) return;
+	var style = event.target.defaultStyle;
+	var lineHeight = CurrentVars.linespacing !== undefined ? CurrentVars.linespacing : typePF ? 11 : 10;
 	var spans = val.map(function(span, idx, spans) {
-		if (span.linespacing === undefined) span.linespacing = CurrentVars.linespacing !== undefined ? CurrentVars.linespacing : typePF ? 11 : 10;
+		if (span.linespacing === undefined || CurrentVars.fixRichTextFormatting) {
+			span.linespacing = lineHeight;
+		}
 		if (idx !== spans.length - 1 && span.endParagraph && !/[\r\n]$/.test(span.text)) {
 			span.endParagraph = false;
 			span.text += '\n';
+		}
+		if (CurrentVars.fixRichTextFormatting && style) {
+			span.fontFamily = style.fontFamily;
+			span.textColor = style.textColor;
+			span.textSize = style.textSize;
 		}
 		return span;
 	});
