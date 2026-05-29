@@ -1576,216 +1576,231 @@ var SetTextOptions_Dialog = {
 						name: "Font, Font Size, and Line Spacing"
 					}]
 				}, {
-					type: "cluster",
-					align_children: "align_left",
-					char_width: 50,
-					name: "Font (all form fields)",
-					font: "heading",
-					bold: true,
+					type: "view",
+					align_children: "align_top",
 					elements: [{
-						type: "static_text",
-						item_id: "txFn",
-						alignment: "align_fill",
-						font: "dialog",
-						wrap_name: true,
-						char_width: 40,
-						name: "This applied to all form fields.\nTo set a font of your own choosing (custom font), you need to provide its system name (PDSysFont name) exactly. Unfortunately, Acrobat doesn't allow the automation to provide these for you. Ask on Discord if you need help with this."
-					}, {
-						type: "view",
-						align_children: "align_distribute",
-						height: 23,
-						elements: [{
-							type: "radio",
-							item_id: "fSta",
-							group_id: "Font",
-							name: "Default font:",
-							height: 22
-						}, {
-							type: "edit_text",
-							item_id: "fStS",
-							char_width: 8,
-							height: 20,
-							font: "dialog",
-							bold: true
-						}]
-					}, {
-						type: "view",
-						align_children: "align_distribute",
-						height: 23,
-						elements: [{
-							type: "radio",
-							item_id: "fAlt",
-							group_id: "Font",
-							name: "Tested font with tested standard font size:",
-							height: 22
-						}, {
-							type: "popup",
-							item_id: "fAlS",
-							char_width: 10
-						}]
-					}, {
-						type: "view",
-						align_children: "align_distribute",
-						height: 23,
-						elements: [{
-							type: "radio",
-							item_id: "fOth",
-							group_id: "Font",
-							name: "Custom font (using the PDSysFont font name):",
-							height: 22
-						}, {
-							type: "edit_text",
-							item_id: "fOtS",
-							char_width: 20,
-							height: 20
-						}]
-					}]
-				}, {
-					type: "cluster",
-					align_children: "align_left",
-					char_width: 50,
-					name: "Font Size (multiline fields)",
-					font: "heading",
-					bold: true,
-					elements: [{
-						type: "static_text",
-						item_id: "txSz",
-						alignment: "align_fill",
-						font: "dialog",
-						wrap_name: true,
-						char_width: 40,
-						name: 'This applies to all multiline text fields. "Auto" font size means the text will resize to fit the field. Single-line fields always have auto font size.'+
-						'\nTIP: Add line breaks to shrink the text.'+
-						'\nWARNING: "Auto" font size is incompatible with rich text formatting like bold, underline, and ' + (typePF ? 'italic.' : 'colors.')
-					}, {
-						type: "view",
-						align_children: "align_row",
-						height: 20,
-						elements: [{
-							type: "radio",
-							item_id: "sSta",
-							group_id: "Size",
-							name: "Standard font size, tested to work well with the automation-provided descriptions:"
-						}, {
-							type: "edit_text",
-							item_id: "StSz",
-							char_width: 4,
-							height: 20,
-							font: "dialog",
-							bold: true
-						}]
-					}, {
-						type: "view",
+						type: "cluster",
 						align_children: "align_left",
-						height: 20,
+						char_width: 50,
+						name: "Font (all form fields)",
+						font: "heading",
+						bold: true,
 						elements: [{
-							type: "radio",
-							item_id: "sAut",
-							group_id: "Size",
-							name: 'Auto font size (resize to fit field). Incompatible with rich text formatting!'
-						}]
-					}, {
-						type: "view",
-						align_children: "align_distribute",
-						height: 20,
-						elements: [{
-							type: "radio",
-							item_id: "sOth",
-							group_id: "Size",
-							name: "Custom font size (use your system's decimal separator):"
-						}, {
-							type: "edit_text",
-							item_id: "sOSi",
-							char_width: 4,
-							height: 20,
-							SpinEdit: true
-						}]
-					}]
-				}, {
-					type: "cluster",
-					align_children: "align_left",
-					char_width: 50,
-					name: "Line Spacing (multiline fields)",
-					font: "heading",
-					bold: true,
-					elements: [{
-						type: "static_text",
-						item_id: "txLi",
-						alignment: "align_fill",
-						font: "dialog",
-						wrap_name: true,
-						char_width: 40,
-						name: 'This is the amount of space between lines of text, which only applies to multiline text fields.'+
-						'\nNB: This setting is ignored if the font size is set to "Auto" above.'
-					}, {
-						type: "view",
-						align_children: "align_row",
-						height: 20,
-						elements: [{
-							type: "radio",
-							item_id: "lSta",
-							group_id: "Line",
-							name: "Default line spacing, making text align with the background lines."
-						}, {
-							type: "edit_text",
-							item_id: "lStS",
-							char_width: 4,
-							height: 20,
+							type: "static_text",
+							item_id: "txFn",
+							alignment: "align_fill",
 							font: "dialog",
-							bold: true
-						}]
-					}, {
-						type: "view",
-						align_children: "align_left",
-						height: 20,
-						elements: [{
-							type: "radio",
-							item_id: "lNon",
-							group_id: "Line",
-							name: 'Single line spacing, determined by the font.'
-						}]
-					}, {
-						type: "view",
-						align_children: "align_distribute",
-						height: 20,
-						elements: [{
-							type: "radio",
-							item_id: "lOth",
-							group_id: "Line",
-							name: "Custom line spacing (use your system's decimal separator):"
+							wrap_name: true,
+							char_width: 40,
+							name: [
+								"This applies to all form fields.",
+								"To set a font of your own choosing (custom font), you need to provide its system name (PDSysFont name) exactly. Unfortunately, Acrobat doesn't allow the automation to provide these for you. Ask on Discord if you need help with this."
+							].join("\r"),
 						}, {
-							type: "edit_text",
-							item_id: "lOSi",
-							char_width: 4,
+							type: "view",
+							align_children: "align_distribute",
+							height: 23,
+							elements: [{
+								type: "radio",
+								item_id: "fSta",
+								group_id: "Font",
+								name: "Default font:",
+								height: 22
+							}, {
+								type: "edit_text",
+								item_id: "fStS",
+								char_width: 8,
+								height: 20,
+								font: "dialog",
+								bold: true
+							}]
+						}, {
+							type: "view",
+							align_children: "align_distribute",
+							height: 23,
+							elements: [{
+								type: "radio",
+								item_id: "fAlt",
+								group_id: "Font",
+								name: "Tested font with tested standard font size:",
+								height: 22
+							}, {
+								type: "popup",
+								item_id: "fAlS",
+								char_width: 10
+							}]
+						}, {
+							type: "view",
+							align_children: "align_distribute",
+							height: 23,
+							elements: [{
+								type: "radio",
+								item_id: "fOth",
+								group_id: "Font",
+								name: "Custom font (using the PDSysFont font name):",
+								height: 22
+							}, {
+								type: "edit_text",
+								item_id: "fOtS",
+								char_width: 20,
+								height: 20
+							}]
+						}]
+					}, {
+						type: "cluster",
+						align_children: "align_left",
+						char_width: 50,
+						name: "Font Size (multiline fields)",
+						font: "heading",
+						bold: true,
+						elements: [{
+							type: "static_text",
+							item_id: "txSz",
+							alignment: "align_fill",
+							font: "dialog",
+							wrap_name: true,
+							char_width: 40,
+							name: [
+								'This applies to all multiline text fields. "Auto" font size means the text will resize to fit the field. Single-line fields always have auto font size.',
+								'TIP: Add line breaks to shrink the text.',
+								'WARNING: "Auto" font size is incompatible with rich text formatting like bold, underline, and ' + (typePF ? 'italic.' : 'colors.')
+							].join("\r"),
+						}, {
+							type: "view",
+							align_children: "align_row",
 							height: 20,
-							SpinEdit: true
+							elements: [{
+								type: "radio",
+								item_id: "sSta",
+								group_id: "Size",
+								name: "Standard font size, tested to work well with the automation-provided descriptions:"
+							}, {
+								type: "edit_text",
+								item_id: "StSz",
+								char_width: 4,
+								height: 20,
+								font: "dialog",
+								bold: true
+							}]
+						}, {
+							type: "view",
+							align_children: "align_left",
+							height: 20,
+							elements: [{
+								type: "radio",
+								item_id: "sAut",
+								group_id: "Size",
+								name: 'Auto font size (resize to fit field). Incompatible with rich text formatting!'
+							}]
+						}, {
+							type: "view",
+							align_children: "align_distribute",
+							height: 20,
+							elements: [{
+								type: "radio",
+								item_id: "sOth",
+								group_id: "Size",
+								name: "Custom font size (use your system's decimal separator):"
+							}, {
+								type: "edit_text",
+								item_id: "sOSi",
+								char_width: 4,
+								height: 20,
+								SpinEdit: true
+							}]
 						}]
 					}]
 				}, {
-					type: "cluster",
-					align_children: "align_left",
-					char_width: 50,
-					name: "Force Formatting (multiline fields)",
-					font: "heading",
-					bold: true,
+					type: "view",
+					align_children: "align_top",
 					elements: [{
-						type: "static_text",
-						item_id: "txFF",
-						alignment: "align_fill",
-						font: "dialog",
-						wrap_name: true,
-						char_width: 40,
-						name: [
-							'When this is enabled, the sheet will force the font, font size, color, and line height of multiline fields (i.e. with rich text formatting) to the above settings when you click/tab outside of a field.',
-							'When this is disabled, you can change the formatting multiline fields as you see fit.',
-							'TIP: Enable this setting if you experience issues with pasting into multiline fields.',
-							'NB: This setting is ignored if the font size is set to "Auto" above.'
-						].join("\n"),
+						type: "cluster",
+						align_children: "align_left",
+						char_width: 50,
+						name: "Line Spacing (multiline fields)",
+						font: "heading",
+						bold: true,
+						elements: [{
+							type: "static_text",
+							item_id: "txLi",
+							alignment: "align_fill",
+							font: "dialog",
+							wrap_name: true,
+							char_width: 40,
+							name: [
+								'This is the amount of space between lines of text, which only applies to multiline text fields.',
+								'NB: This setting is ignored if the font size is set to "Auto" above.',
+							].join("\r"),
+						}, {
+							type: "view",
+							align_children: "align_row",
+							height: 20,
+							elements: [{
+								type: "radio",
+								item_id: "lSta",
+								group_id: "Line",
+								name: "Default line spacing, making text align with the background lines."
+							}, {
+								type: "edit_text",
+								item_id: "lStS",
+								char_width: 4,
+								height: 20,
+								font: "dialog",
+								bold: true
+							}]
+						}, {
+							type: "view",
+							align_children: "align_left",
+							height: 20,
+							elements: [{
+								type: "radio",
+								item_id: "lNon",
+								group_id: "Line",
+								name: 'Single line spacing, determined by the font.'
+							}]
+						}, {
+							type: "view",
+							align_children: "align_distribute",
+							height: 20,
+							elements: [{
+								type: "radio",
+								item_id: "lOth",
+								group_id: "Line",
+								name: "Custom line spacing (use your system's decimal separator):"
+							}, {
+								type: "edit_text",
+								item_id: "lOSi",
+								char_width: 4,
+								height: 20,
+								SpinEdit: true
+							}]
+						}]
 					}, {
-						type: "check_box",
-						item_id: "ckFF",
-						name: "Force formatting of multiline fields"
-					}],
+						type: "cluster",
+						align_children: "align_left",
+						char_width: 50,
+						name: "Force Formatting (multiline fields)",
+						font: "heading",
+						bold: true,
+						elements: [{
+							type: "static_text",
+							item_id: "txFF",
+							alignment: "align_fill",
+							font: "dialog",
+							wrap_name: true,
+							char_width: 40,
+							name: [
+								'When enabled, the sheet will force the font, font size, color, and line height of multiline fields (i.e. with rich text formatting) to those set in this dialog when you click/tab outside of a field.',
+								'When disabled, you can change the formatting of multiline fields as you see fit.',
+								'TIP: Enable this setting if you experience issues with pasting into multiline fields.',
+								'NB: This setting is ignored if the font size is set to "Auto" above.'
+							].join("\r"),
+						}, {
+							type: "check_box",
+							item_id: "ckFF",
+							name: "Force fixed formatting of multiline fields"
+						}],
+					}]
 				}, {
 					type: "gap",
 					height: 8

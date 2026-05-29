@@ -5804,26 +5804,32 @@ function addEvals(evalObj, NameEntity, Add, type, level) {
 	if (!evalObj) return;
 
 	// Calculate the priority
-	var priority = level ? level : 0;
-	switch (GetFeatureType(type)) {
-		case "magic":
-			priority += 100;
-			break;
-		case "items":
-			priority += 200;
-			break;
-		case "feats":
-			priority += 300;
-			break;
-		case "background":
-			priority += 400;
-			break;
-		case "race":
-			priority += 500;
-			break;
-		case "classes":
-			priority += 600;
-			break;
+	var getPriority = function(type, level, entry) {
+		if (entry && entry[2] !== undefined && !isNaN(entry[2])) {
+			return entry[2];
+		}
+		var priority = level ? level : 0;
+		switch (GetFeatureType(type, true)) {
+			case "magic":
+				priority += 100;
+				break;
+			case "items":
+				priority += 200;
+				break;
+			case "feats":
+				priority += 300;
+				break;
+			case "background":
+				priority += 400;
+				break;
+			case "race":
+				priority += 500;
+				break;
+			case "classes":
+				priority += 600;
+				break;
+		}
+		return priority;
 	}
 
 	// Function to sort
@@ -5834,7 +5840,7 @@ function addEvals(evalObj, NameEntity, Add, type, level) {
 		if (!CurrentEvals.hp) CurrentEvals.hp = {};
 		if (Add) {
 			CurrentEvals.hp[NameEntity] = evalObj.hp;
-		} else if (CurrentEvals.hp && CurrentEvals.hp[NameEntity]) {
+		} else {
 			delete CurrentEvals.hp[NameEntity];
 		};
 		if (evalObj.hpForceRecalc) {
@@ -5849,7 +5855,6 @@ function addEvals(evalObj, NameEntity, Add, type, level) {
 	};
 
 	// Do the rest
-	var bIsArray;
 	var objTypeStr = {
 		"atkAdd": "atkStr",
 		"atkCalc": "atkStr",
@@ -5864,21 +5869,19 @@ function addEvals(evalObj, NameEntity, Add, type, level) {
 	// Process the eval functions
 	for (var sType in objTypeStr) {
 		if (!evalObj[sType]) continue;
-		bIsArray = isArray(evalObj[sType]);
-		var aPrio = [
-			bIsArray && evalObj[sType][2] !== undefined && !isNaN(evalObj[sType][2]) ? evalObj[sType][2] : priority,
-			NameEntity
-		];
+		var entry = isArray(evalObj[sType]) ? evalObj[sType] : [evalObj[sType]];
+		var aPrio = [ getPriority(type, level, entry), NameEntity ];
 		// Add the descriptive text for safekeeping
-		if (bIsArray && evalObj[sType][1]) objSaveStr[objTypeStr[sType]] += "\n \u2022 " + evalObj[sType][1];
-		// Set the function
+		if (entry[1]) objSaveStr[objTypeStr[sType]] += "\n \u2022 " + entry[1];
+		// Make sure the objects exists
 		if (!CurrentEvals[sType]) CurrentEvals[sType] = {};
 		if (!CurrentEvals[sType+"Order"]) CurrentEvals[sType+"Order"] = [];
+		// Add/Remove the function and priority
 		if (Add) {
-			CurrentEvals[sType][NameEntity] = bIsArray ? evalObj[sType][0] : evalObj[sType];
+			CurrentEvals[sType][NameEntity] = entry[0];
 			CurrentEvals[sType+"Order"].push(aPrio);
 		} else {
-			if (CurrentEvals[sType] && CurrentEvals[sType][NameEntity]) delete CurrentEvals[sType][NameEntity];
+			delete CurrentEvals[sType][NameEntity];
 			CurrentEvals[sType+"Order"].eject(aPrio);
 		}
 		CurrentEvals[sType+"Order"].sort(fSortArray);
