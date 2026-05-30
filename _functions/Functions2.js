@@ -5387,7 +5387,7 @@ function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceChoice)
 			// now see if anything changed compared to the new
 			if (!tRe.changed && aProp.indexOf("Old") !== -1 && aProp.indexOf("Display") === -1) {
 				var otherProp = aProp.replace("Old", "");
-				if (tRe[otherProp] !== "" && !isArray(tRe[otherProp])) {
+				if (!isArray(tRe[otherProp])) {
 					tRe.changed = tRe[aProp].toString() != tRe[otherProp].toString();
 				}
 			}
