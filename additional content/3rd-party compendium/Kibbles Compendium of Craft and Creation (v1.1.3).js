@@ -20,6 +20,7 @@
 
 	Code by:	Nod_Hero & PoetOfGod & MorePurpleMoreBetter
 	Date:		2023-12-05 (sheet v13.1.9)
+	Change:		2026-06-03 (fix Cross-Disciplinary Knowledge)
 */
 
 var iFileName = "Kibbles' Compendium of Craft and Creation (v1.1.3).js";
@@ -7657,7 +7658,7 @@ var KCCC_createCrossDisciplinaryKnowledgeOptions = function() {
 	]);
 	for (var u = 0; u < KCCCglobal.upgrades.potionsmith.length; u++) {
 		var oUpgr = KCCCglobal.upgrades.potionsmith[u];
-		if (!/^alchemical (fire|acid)$/i.test(oUpgr.name)) continue; // to only get Alchemical Fire or Alchemical Acid
+		if (!/^alchemical (fire|acid)/i.test(oUpgr.name)) continue; // to only get Alchemical Fire or Alchemical Acid
 		var sUpgrName = oUpgr.listname ? oUpgr.listname : oUpgr.name;
 		var sUpgrNameLC = sUpgrName.toLowerCase();
 		oCDK.extrachoices.push(sUpgrName);
