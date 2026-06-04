@@ -21,6 +21,7 @@
 	Code by:	Nod_Hero & PoetOfGod & MorePurpleMoreBetter
 	Date:		2023-12-05 (sheet v13.1.9)
 	Change:		2026-06-03 (fix Cross-Disciplinary Knowledge)
+	Change:		2026-06-04 (make compatible with 2024 sheets)
 */
 
 var iFileName = "Kibbles' Compendium of Craft and Creation (v1.1.3).js";
@@ -1599,18 +1600,41 @@ CompanionList.mechanical_familiar = {
 		objCrea.type = "Construct";
 		objCrea.subtype = "";
 	},
-	attributesAdd : CompanionList.familiar.attributesAdd,
-	notes : function() {
-		var a = newObj(CompanionList.familiar.notes);
-		a[0].description = [
-			"appearing in an unoccupied space within 10 ft",
-			"It assumes a chosen beast form (can change at every casting), see the spell and feature",
-			"It has the chosen form's statistics, but its type changes to construct",
-			"When the familiar drops to 0 hit points, it deactivates or is destroyed",
-			"It reactivates when I cast this spell again (in a new form if so desired)"
-		].join("\n   ");
+	attributesAdd :  function() {
+		// For 2024 sheets compatibility
+		var a = CompanionList.familiar.attributesAdd;
+		if (a.notes && a.notes[0].useSpellDescription === "find familiar") {
+			a.notes[0].name = "Mechanical Familiar \u2014 Find Familiar";
+			a.notes[0].formatSpellDescription = function(str) {
+				return str.replace(
+					"though it is a Celestial, Fey, or Fiend (my choice)",
+					"though it is a Construct"
+				).replace(
+					"When the familiar drops to 0 Hit Points, it disappears.",
+					"When the familiar drops to 0 Hit Points, it is destroyed."
+				).replace(
+					/Whenever the familiar drops to 0 Hit Points or disappears (.*)/,
+					"Whenever the familiar disappears $1 It stays active until I deactivate it or it is destroyed."
+				);
+			};
+		}
 		return a;
-	}()
+	},
+	notes : function() {
+		var a = undefined;
+		if (CompanionList.familiar.notes) {
+			// For 5e sheets compatibility
+			a = newObj(CompanionList.familiar.notes);
+			a[0].description = [
+				"appearing in an unoccupied space within 10 ft",
+				"It assumes a chosen beast form (can change at every casting), see the spell and feature",
+				"It has the chosen form's statistics, but its type changes to construct",
+				"When the familiar drops to 0 hit points, it deactivates or is destroyed",
+				"It reactivates when I cast this spell again (in a new form if so desired)"
+			].join("\n   ");
+		}
+		return a;
+	}(),
 };
 }
 
@@ -3156,18 +3180,38 @@ CompanionList.homunculus_familiar = {
 		objCrea.type = ["Construct", "Monstrosity"];
 		objCrea.subtype = "";
 	},
-	attributesAdd : CompanionList.familiar.attributesAdd,
-	notes : function() {
-		var a = newObj(CompanionList.familiar.notes);
-		a[0].description = [
-			"appearing in an unoccupied space within 10 ft",
-			"It assumes any Tiny form or shape desired (can change at every casting)",
-			"It has the statistics of any valid creature, but its type changes to construct or monstrosity",
-			"When the familiar drops to 0 hit points, it disappears, leaving behind no physical form",
-			"It reappears when I cast this spell again (in a new form if so desired)"
-		].join("\n   ");
+	attributesAdd :  function() {
+		// For 2024 sheets compatibility
+		var a = CompanionList.familiar.attributesAdd;
+		if (a.notes && a.notes[0].useSpellDescription === "find familiar") {
+			a.notes[0].name = "Homunculus Familiar \u2014 Find Familiar";
+			a.notes[0].formatSpellDescription = function(str) {
+				return str.replace(
+					"a spirit that takes an animal form I choose",
+					"a spirit that uses the statistics of a form I choose"
+				).replace(
+					"has the statistics of the chosen form, though it is a Celestial, Fey, or Fiend (my choice)",
+					"can take any Tiny shape I want and it is a Construct or Monstrosity (my choice)"
+				);
+			};
+		}
 		return a;
-	}()
+	},
+	notes : function() {
+		var a = undefined;
+		if (CompanionList.familiar.notes) {
+			// For 5e sheets compatibility
+			a = newObj(CompanionList.familiar.notes);
+			a[0].description = [
+				"appearing in an unoccupied space within 10 ft",
+				"It assumes any Tiny form or shape desired (can change at every casting)",
+				"It has the statistics of any valid creature, but its type changes to construct or monstrosity",
+				"When the familiar drops to 0 hit points, it disappears, leaving behind no physical form",
+				"It reappears when I cast this spell again (in a new form if so desired)"
+			].join("\n   ");
+		}
+		return a;
+	}(),
 };
 }
 
@@ -6150,20 +6194,44 @@ CompanionList.adorable_critter = {
 		objCrea.type = "Construct";
 		objCrea.subtype = "";
 	},
-	attributesAdd : CompanionList.familiar.attributesAdd,
-	notes : function() {
-		var a = newObj(CompanionList.familiar.notes);
-		a[0].description = [
-			"appearing in an unoccupied space within 10 ft",
-			"It assumes any Tiny CR 0 form, see the spell and feature",
-			"It has the chosen form's statistics, but its type changes to construct",
-			"When the familiar drops to 0 hit points, it falls unconcious",
-			"At the start of its turn, if it is unconcious, it regains its full hit points",
-			"It can regain HP this way a number of times equal to my Int mod per short rest",
-			"It can only die if destroyed; It resusitates when I cast this spell again"
-		].join("\n   ");
+	attributesAdd :  function() {
+		// For 2024 sheets compatibility
+		var a = CompanionList.familiar.attributesAdd;
+		if (a.notes && a.notes[0].useSpellDescription === "find familiar") {
+			a.notes[0].name = "Adorable Critter \u2014 Find Familiar";
+			a.notes[0].formatSpellDescription = function(str) {
+				return str.replace(
+					"a spirit that takes an animal form I choose",
+					"though it is a Construct"
+				).replace(
+					"though it is a Celestial, Fey, or Fiend (my choice)",
+					"though it is a Construct"
+				).replace(
+					"When the familiar drops to 0 Hit Points, it disappears. It reappears after I cast this spell again. As a Magic action, I can temporarily dismiss the familiar to a pocket dimension. Alternatively, I can dismiss it forever. As a Magic action while it is temporarily dismissed, I can cause it to reappear in an unoccupied space within 30 ft of me. Whenever the familiar drops to 0 Hit Points or disappears into the pocket dimension, it leaves behind in its space anything it was wearing or carrying.",
+					"As a Magic action, I can temporarily dismiss the familiar to a pocket dimension. Alternatively, I can dismiss it forever. As a Magic action while it is temporarily dismissed, I can cause it to reappear in an unoccupied space within 30 ft of me. Whenever the familiar disappears into the pocket dimension, it leaves behind in its space anything it was wearing or carrying."
+				) + "\n   " +
+				"**Critter**. When the critter drops to 0 Hit Points, it becomes unconscious. It can't fully die unless destroyed. If it starts its turn unconscious, it regains its full hit points and regains consciousness. It can do this a number of times equal to my Intelligence modifier.";
+			};
+		}
 		return a;
-	}()
+	},
+	notes : function() {
+		var a = undefined;
+		if (CompanionList.familiar.notes) {
+			// For 5e sheets compatibility
+			a = newObj(CompanionList.familiar.notes);
+			a[0].description = [
+				"appearing in an unoccupied space within 10 ft",
+				"It assumes any Tiny CR 0 form, see the spell and feature",
+				"It has the chosen form's statistics, but its type changes to construct",
+				"When the familiar drops to 0 hit points, it falls unconcious",
+				"At the start of its turn, if it is unconcious, it regains its full hit points",
+				"It can regain HP this way a number of times equal to my Int mod per short rest",
+				"It can only die if destroyed; It resusitates when I cast this spell again"
+			].join("\n   ");
+		}
+		return a;
+	}(),
 };
 }
 
