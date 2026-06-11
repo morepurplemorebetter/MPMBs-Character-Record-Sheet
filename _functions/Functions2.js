@@ -341,7 +341,7 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 					theLangs.push("+" + aLang);
 				};
 			};
-			var languageString = formatLineList("\u25C6 Languages:", theLangs);
+			var languageString = formatLineList("##\u25C6 Languages##.", theLangs);
 			if (languageString) AddString(prefix + "Comp.Use.Features", languageString + ".", true);
 		};
 
@@ -386,7 +386,7 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 
 		//add a string of any resistances to the features
 		if (aCrea.dmgres) {
-			var dmgresString = formatLineList("\u25C6 Damage Resistances:", aCrea.dmgres);
+			var dmgresString = formatLineList("##\u25C6 Damage Resistances##.", aCrea.dmgres);
 			if (dmgresString) AddString(prefix + "Comp.Use.Features", dmgresString + ".", true);
 		};
 
@@ -399,7 +399,7 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 			if (weaponProf[0]) theWeaponArray.push("simple weapons");
 			if (weaponProf[1]) theWeaponArray.push("martial weapons");
 			if (weaponProf[2]) theWeaponArray = theWeaponArray.concat(weaponProf[2]);
-			var weaponString = formatLineList("\u25C6 Weapon Proficiencies:", theWeaponArray);
+			var weaponString = formatLineList("##\u25C6 Weapon Proficiencies##.", theWeaponArray);
 			if (weaponString) AddString(prefix + "Comp.Use.Features", weaponString + ".", true);
 		};
 
@@ -411,7 +411,7 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 			if (armorProf[1]) theArmourArray.push("medium armor");
 			if (armorProf[2]) theArmourArray.push("heavy armor");
 			if (armorProf[3]) theArmourArray.push("shields");
-			var armourString = formatLineList("\u25C6 Armor Proficiencies:", theArmourArray);
+			var armourString = formatLineList("##\u25C6 Armor Proficiencies##.", theArmourArray);
 			if (armourString) AddString(prefix + "Comp.Use.Features", armourString + ".", true);
 		};
 
@@ -432,7 +432,7 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 					theTools.push(aTool);
 				};
 			};
-			var toolString = formatLineList("\u25C6 Tool Proficiencies:", theTools);
+			var toolString = formatLineList("##\u25C6 Tool Proficiencies##.", theTools);
 			if (toolString) AddString(prefix + "Comp.Use.Features", toolString + ".", true);
 		};
 
@@ -454,10 +454,10 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 				var skillName = AddSkillProf(doSkill, true, doExp, true, undefined, prefix);
 				if (skillName) skillsNameArr.push(skillName);
 			}
-			skillsTxt = formatLineList("\u25C6 Skill Proficiencies:", skillsNameArr);
+			skillsTxt = formatLineList("##\u25C6 Skill Proficiencies##.", skillsNameArr);
 		};
 		if (aCrea.skillstxt) {
-			skillsTxt = "\u25C6 Skill Proficiencies: " + aCrea.skillstxt.replace(/^( |\n)*.*: |\;$|\.$/g, '');
+			skillsTxt = "##\u25C6 Skill Proficiencies##. " + aCrea.skillstxt.replace(/^( |\n)*.*: |\;$|\.$/g, '');
 		}
 		if (skillsTxt) AddString(prefix + "Comp.Use.Features", skillsTxt + ".", true);
 
