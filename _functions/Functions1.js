@@ -4872,10 +4872,10 @@ function processRecovery(recovery, additionalRecovery) {
 	if (additionalRecovery) {
 		recoveryStr += "/" + additionalRecovery.trim();
 	}
-	return leftpad(recoveryStr,(typePF ? 5 : 4));
+	return leftpad(recoveryStr, typePF ? 5 : 4);
 }
 
-// Add a limited feature: add (UpdateOrReplace = "replace"), or only update the text (UpdateOrReplace = "update"), or update both the text and the usages (UpdateOrReplace = number of previous usages), or just add the number of usages (UpdateOrReplace = "bonus")
+// Add a limited feature: add (UpdateOrReplace = "replace"), remove previous replace (UpdateOrReplace = "replaceUndo") or only update the text (UpdateOrReplace = "update"), or update both the text and the usages (UpdateOrReplace = number of previous usages), or just add the number of usages (UpdateOrReplace = "bonus")
 function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, UpdateOrReplace, Calc, additionalRecovery) {
 	tooltip = tooltip ? tooltip : "";
 	var additionaltxt = additionaltxt.indexOf(identifier) != -1 ? "" : additionaltxt && What("Unit System") === "metric" ? ConvertToMetric(additionaltxt, 0.5) : additionaltxt;
@@ -4890,9 +4890,14 @@ function AddFeature(identifier, usages, additionaltxt, recovery, tooltip, Update
 			var usageFld = tDoc.getField("Limited Feature Max Usages " + i);
 			var recoveryFld = tDoc.getField("Limited Feature Recovery " + i);
 			if (n === 1 && featureFld.value.toLowerCase().indexOf(identifier.toLowerCase()) !== -1) { //if the feature is found
-				if (UpdateOrReplace === "replace" || ((!recoveryFld.value || recoveryFld.value == recovery) && !isNaN(usageFld.value) && !isNaN(UpdateOrReplace) && !isNaN(usages))) {
+				if (UpdateOrReplace === "replace" || UpdateOrReplace === "replaceUndo" || ((!recoveryFld.value || recoveryFld.value == recovery) && !isNaN(usageFld.value) && !isNaN(UpdateOrReplace) && !isNaN(usages))) {
 					featureFld.value = identifier + additionaltxt;
-					if (tooltip && featureFld.userName.indexOf(tooltip) === -1) featureFld.userName += ", " + tooltip;
+					var hasTooltip = tooltip && featureFld.userName.indexOf(tooltip) !== -1
+					if (hasTooltip && UpdateOrReplace === "replaceUndo") {
+						featureFld.userName = featureFld.userName.replace(", " + tooltip, "");
+					} else if (tooltip && !hasTooltip) {
+						featureFld.userName += ", " + tooltip;
+					}
 					usageFld.setAction("Calculate", calculation);
 					usageFld.submitName = calculation; //so it can be referenced later
 					recoveryFld.value = recovery;
@@ -9167,18 +9172,18 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 // Change an English string form second to first person
 function ConvertToFirstPerson(inputString, convertFunction, origin) {
 	// First all capitalized words, then the same but lowercase
-	var firstPerson = inputString.replace(/Yours/g, "Mine").replace(/yours/ig, "mine")
-					  .replace(/Your/g, "My").replace(/your/ig, "my")
-					  .replace(/you aren['\u2019]t/ig, "I am not")
-					  .replace(/you are/ig, "I am").replace(/you['\u2019]re/ig, "I'm")
-					  .replace(/(a)re you\b/ig, "$1m I")
-					  .replace(/(a)ren['\u2019]t you\b/ig, "$1m I not")
-					  .replace(/you were/ig, "I was")
-					  .replace(/(w)ere(n['\u2019]t)? you\b/ig, "$1as$2 I")
-					  .replace(/you/ig, "I")
-					  .replace(/(\d+.?(square |cubic )?)f(oo|ee)t\b/ig, "$1ft");
+	var firstPerson = inputString.replace(/Yours\b/g, "Mine").replace(/yours\b/ig, "mine")
+		.replace(/Your/g, "My").replace(/your/ig, "my")
+		.replace(/you aren['\u2019]t/ig, "I am not")
+		.replace(/you are/ig, "I am").replace(/you['\u2019]re/ig, "I'm")
+		.replace(/(a)re you\b/ig, "$1m I")
+		.replace(/(a)ren['\u2019]t you\b/ig, "$1m I not")
+		.replace(/you were/ig, "I was")
+		.replace(/(w)ere(n['\u2019]t)? you\b/ig, "$1as$2 I")
+		.replace(/\byou\b/ig, "I")
+		.replace(/(\d+.?(square |cubic )?)f(oo|ee)t\b/ig, "$1ft");
 	// Now correct prepositions where "I" should be "me"
-	firstPerson = firstPerson.replace(/\b(at|to|of|for|on|in|with|by|under|over|above|below|into|towards|through|around|past|as|about) I\b/ig, "$1 me");
+	firstPerson = firstPerson.replace(/\b(at|to|of|for|on|in|with|by|under|over|above|below|into|towards?|through|around|past|as|about|near|granting) I\b/ig, "$1 me");
 	// If provided with a convertFunction, run it
 	if (/function|=>/.test(convertFunction)) {
 		try {

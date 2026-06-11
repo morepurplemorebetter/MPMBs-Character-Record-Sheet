@@ -1617,11 +1617,11 @@ function formatSpan(parentSpan, newText, formatChars, idx) {
 			if (!typePF) {
 				span.textColor = ColorList[What("Color.Theme")].RGB;
 				if (event.target) event.target.mpmbRtColor = true;
-			} else if (!event.target || !event.target.firstParagraph
-				|| event.target.processedChars > event.target.charsPerLine) {
-				/* Do not do this for the first X number of characters of the first paragraph,
-				 * as making anything on the first line of a field bigger will result in text
-				 * no longer aligning with the writing lines in the background.
+			} else if (!event.target || !event.target.firstParagraph || event.target.firstLineOneParagraph || span.linespacing !== 11) {
+				/**
+				 * Do not apply the text size increase if this is the first paragraph,
+				 * unless that first paragraph fully fits on the first line,
+				 * or unless this is not the default line height.
 				 */
 				span.textSize = span.textSize * 1.15;
 			}
@@ -1631,7 +1631,16 @@ function formatSpan(parentSpan, newText, formatChars, idx) {
 }
 // Pick out the formatting characters and create separate spans for them
 function richTextReduce(spans, span, idx, orig) {
+	// Make sure line height is set
 	if (span.linespacing === undefined) span.linespacing = CurrentVars.linespacing !== undefined ? CurrentVars.linespacing : typePF ? 11 : 10;
+	/** On the Printer Friendly sheet:
+	 * Change line height for the first line so it can accommodate font size increase.
+	 * But only do this for lines with default line height and if the first paragraph
+	 * fits fully on the first line.
+	 */
+	if (typePF && event.target.firstParagraph && event.target.firstLineOneParagraph && span.linespacing === 11) {
+		span.linespacing = 7.25; // Slightly above default font size
+	}
 	if (idx !== orig.length - 1 && span.endParagraph && !/[\r\n]$/.test(span.text)) span.text += '\r';
 	var matches = span.text.match(/(([*_~#]+).+?\2)/g);
 	if (matches) {
@@ -1655,7 +1664,6 @@ function richTextReduce(spans, span, idx, orig) {
 						// String part without any matches, so no formatting characters
 						spans.push(formatSpan(span, preMatch));
 						remainingText = remainingText.substr(preMatch.length);
-						if (event.target.firstParagraph) event.target.processedChars += preMatch.length;
 					}
 				}
 				var postMatch = remainingText.substr(matchIndex + match.length);
@@ -1668,7 +1676,6 @@ function richTextReduce(spans, span, idx, orig) {
 				var newSpan = formatSpan(span, cleanedMatch, formatChars, idx);
 				spans = spans.concat([newSpan].reduce(richTextReduce, []));
 				remainingText = remainingText.substr(match.length);
-				if (event.target.firstParagraph) event.target.processedChars += match.length;
 			} else {
 				// String part without any matches, so no formatting characters
 				spans.push(formatSpan(span, remainingText));
@@ -1691,7 +1698,7 @@ function formatRichText() {
 		if (typePF) {
 			// Correct issue if the first line has its size increased (Printer Friendly only)
 			event.target.firstParagraph = true;
-			event.target.processedChars = 0;
+			var firstPar = event.target.value.match(/^.*?(?=[\r\n]|$)/);
 			if (!event.target.charsPerLine) {
 				event.target.charsPerLine = 75;
 				var rect = false;
@@ -1704,8 +1711,9 @@ function formatRichText() {
 					rect = event.target.rect;
 				}
 				// If we have dimensions, roughly estimate the amount of characters on the first line
-				if (rect) event.target.charsPerLine = Math.round((rect[2]-rect[0]) / 3);
+				if (rect) event.target.charsPerLine = Math.floor(( rect[2] - rect[0] ) / 3);
 			}
+			event.target.firstLineOneParagraph = firstPar && firstPar[0].length < event.target.charsPerLine;
 		}
 		// Format the rich text using the formatting characters
 		var spans = event.richValue.reduce(richTextReduce, []);
