@@ -875,7 +875,7 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, force
 		if (!CurrentSpells[useSpName]) sObj = CreateCurrentSpellsEntry(type, parentName, choice, forceNonCurrent);
 		if (!sObj) return; // failed to create CurrentSpells entry, so stop now
 		if (!isArray(spBon)) spBon = [spBon];
-		sObj.bonus[srcNm] = spBon;
+		sObj.bonus[srcNm] = newObj(spBon);
 		// see if this wants to change the spellcasting ability
 		var spFeatItemLvl, spAbility, spFixedDC, spFixedSpAttack, spAllowUpCasting, spMagicItemComponents;
 		for (var i = 0; i < spBon.length; i++) {

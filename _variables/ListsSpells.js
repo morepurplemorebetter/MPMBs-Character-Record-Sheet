@@ -3442,7 +3442,7 @@ var Base_SpellsList = {
 		components : "V,S,M\u2020",
 		compMaterial : "Holy water or powdered silver and iron, which the spell consumes",
 		duration : "Conc, 10 min",
-		description : "1 crea immune fear/charm/possess by abber./celest./elem./fey/fiends/undead, they also dis. on atks",
+		description : "1 crea immune fear/charm/possess by aber./celest./elem./fey/fiends/undead, they also dis. on atks",
 		descriptionFull : "Until the spell ends, one willing creature you touch is protected against certain types of creatures - aberrations, celestials, elementals, fey, fiends, and undead." + "\n   " + "The protection grants several benefits. Creatures of those types have disadvantage on attack rolls against the target. The target also can't be charmed, frightened, or possessed by them. If the target is already charmed, frightened, or possessed by such a creature, the target has advantage on any new saving throw against the relevant effect."
 	},
 	"protection from poison" : {

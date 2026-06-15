@@ -2462,26 +2462,42 @@ var Base_ClassList = {
 					name : "Mystic Arcanum (6th-level)",
 					"class" : "warlock",
 					level : [6, 6],
-					firstCol : "oncelr"
 				}, {
 					name : "Mystic Arcanum (7th-level)",
 					"class" : "warlock",
 					level : [7, 7],
-					firstCol : "oncelr",
 					times : levels.map(function (n) { return n < 13 ? 0 : 1; })
 				}, {
 					name : "Mystic Arcanum (8th-level)",
 					"class" : "warlock",
 					level : [8, 8],
-					firstCol : "oncelr",
 					times : levels.map(function (n) { return n < 15 ? 0 : 1; })
 				}, {
 					name : "Mystic Arcanum (9th-level)",
 					"class" : "warlock",
 					level : [9, 9],
-					firstCol : "oncelr",
 					times : levels.map(function (n) { return n < 17 ? 0 : 1; })
-				}]
+				}],
+				calcChanges: {
+					spellAdd: [
+						function (spellKey, spellObj, spName, isDuplicate, isBonusSpell) {
+							// Special treatment for Mystic Arcanum spells (any warlock spell level 6 or higher).
+							if (spName === "warlock" && spellObj.level >= 6) {
+								var isMysticArcanumSelection = isBonusSpell && CurrentSpells.warlock.bonus['mystic arcanum'].some(function (n) { return n.selection[0] === spellKey; });
+								// Add Once per Long Rest checkbox for the Mystic Arcanum spells. Put a checked box on a full class list.
+								if (isMysticArcanumSelection && !spellObj.firstCol) {
+									spellObj.firstCol = CurrentSpells.warlock.typeList === 4 ? "checkedbox" : "oncelr";
+								}
+								// Can't upcast Mystic Arcanum spells. Skip bonus spells that are not part of the Mystic Arcanum selection.
+								var notMysticArcanumSpell = isBonusSpell && !isMysticArcanumSelection;
+								if (spellObj.allowUpCasting === undefined && spellObj.level < 9 && !notMysticArcanumSpell) {
+									return removeSpellUpcasting(spellObj);
+								}
+							}
+						},
+						"Mystic Arcanum spells can't be upcast.",
+					],
+				},
 			},
 			"eldritch master" : {
 				name : "Eldritch Master",
