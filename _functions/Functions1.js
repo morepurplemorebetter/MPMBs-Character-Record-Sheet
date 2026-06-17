@@ -1809,12 +1809,13 @@ function FindClasses(NotAtStartup, isFieldVal) {
 
 		// Ask for subclass if none is defined and this is not a reset, import, or a sheet startup event and not after just removing a subclass
 		if (IsNotReset && IsNotImport && NotAtStartup && !tempSubClass && tempClObj.subclasses[1].length && !tempSubClassOld && tempClObj.subclassGainedLevel <= tempLevel) {
-			var newSubClass = PleaseSubclass(tempClass, classesTemp[tempClass].string);
+			var currentString = classesTemp[tempClass].string;
+			var newSubClass = PleaseSubclass(tempClass, currentString);
 			if (newSubClass) {
-				classesTemp[tempClass].subclass = newSubClass[0];
-				classesTemp[tempClass].string = newSubClass[1];
-				classes.field = classes.field.replace(classes.parsed[i][0], newSubClass[1]);
-				classes.parsed[i][0] = newSubClass[1];
+				classesTemp[tempClass].subclass = newSubClass.ref;
+				classesTemp[tempClass].string = newSubClass.display;
+				classes.parsed[i][0] = newSubClass.display;
+				classes.field = classes.field.replace(currentString, newSubClass.display);
 			}
 		}
 

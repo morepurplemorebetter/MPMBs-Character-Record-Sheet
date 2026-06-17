@@ -1323,62 +1323,66 @@ function AskMulticlassing(lvlAlreadyAdded) {
 
 //show a dialog when the subclass is not set but the level is high enough to need a subclass
 function PleaseSubclass(aClass, classString) {
-	if (!IsNotImport || What("SubClass Remember").indexOf(aClass) !== -1) return;
+	var oClass = ClassList[aClass];
 
-	var aclass = ClassList[aClass];
-	var aclassObj = {};
-	var aclassArray = [];
-	for (var i = 0; i < aclass.subclasses[1].length; i++) {
-		var aSub = aclass.subclasses[1][i];
-		if (!ClassSubList[aSub]) {
+	if (!IsNotImport || What("SubClass Remember").indexOf(aClass) !== -1 || !oClass.subclasses[1] || !oClass.subclasses[1].length) return false;
+
+	var isAsterisk = false;
+	var options = oClass.subclasses[1].reduce(function (array, aSub) {
+		var oSub = ClassSubList[aSub];
+		if (!oSub) { // Second check in case `fixClassReferences()` didn't ran before
 			displayError(false, 'The subclass "' + aSub + '" of the "' + aClass + "\" class doesn't exist in the ClassSubList. It has been ignored for now, but it might cause errors with other things in the sheet. So please make sure to remedy this before proceeding!");
-			continue;
+			return array;
 		};
-		if (testSource(aSub, ClassSubList[aSub], "classExcl") || aclassArray.indexOf(ClassSubList[aSub].subname) !== -1) continue;
-		aclassObj[ClassSubList[aSub].subname] = aSub;
-		aclassArray.push(ClassSubList[aSub].subname);
-	};
-	if (aclassArray.length === 0) return false; //no subclasses got through the test
-	aclassArray.sort();
+		if (testSource(aSub, oSub, "classExcl")) return array; // Skip excluded
+		// See if the name matches the subclass
+		var displayName = oSub.fullname ? oSub.fullname : oClass.name + " (" + oSub.subname + ")";
+		var parsed = ParseClass(displayName);
+		if (!parsed || parsed[1] !== aSub) return array; // Skip if not matched
+		// Create an entry in the reducer object
+		if (oSub.fullname && oSub.fullname !== oSub.subname) {
+			var optionName = oSub.subname + " (" + oSub.fullname + "*)";
+		} else {
+			var optionName = oSub.subname + (oSub.fullname ? "*" : "");
+		}
+		if (!isAsterisk && oSub.fullname) isAsterisk = true;
+		array.push({
+			display: displayName,
+			name: optionName,
+			ref: aSub,
+		});
+		return array;
+	}, []);
+	if (!options.length) return false; // No subclasses got through the tests
+	options.sort(function(a, b) { return a.name.localeCompare(b.name); });
 
-	var testSubClass = aclassObj[aclassArray[Math.round(aclassArray.length / 2) - 1]];
+	// Create explanatory strings
+	var testSubClass = options[Math.round(options.length / 2) - 1].ref;
+	var testSubFullname = ClassSubList[testSubClass].fullname ? ClassSubList[testSubClass].fullname : false;
+	classString = classString ? classString : classes.known[aClass].string ? classes.known[aClass].string : oClass.name;
+	var theString = "The " + oClass.name + " class you entered into the Class field on the first page has a high enough level to add a subclass. However, no " + oClass.subclasses[0] + " has been detected."
+	var clusterString = "Select the " + oClass.subclasses[0];
+	var moreString = "Alternatively, you can add a subclass manually by typing it into the Class field on the first page. Just put your chosen " + oClass.subclasses[0] + ' next to, or in place of, "' + classString + '".\nFor example: "' + classString + " (" + ClassSubList[testSubClass].subname + (testSubFullname ? ')", or just "' + testSubFullname + '".' : ')".');
+	var asteriskString = isAsterisk ? '* This name will replace "' + classString + '" in the Class field instead of amending to it.' : "";
 
-	var SubName1 = ClassSubList[testSubClass].subname;
-	var SubName2 = ClassSubList[testSubClass].fullname ? ClassSubList[testSubClass].fullname : ClassSubList[testSubClass].subname;
-
-	classString = classString ? classString : classes.known[aClass].string ? classes.known[aClass].string : aclass.name;
-	var theString = "The " + aclass.name + " class you entered into the Class field on the first page has a high enough level to add a subclass. However, no " + aclass.subclasses[0] + " has been detected."
-	var clusterString = "Select the " + aclass.subclasses[0];
-	var moreString = "Alternatively, you can add a subclass manually by typing it into the Class field on the first page. Just put your chosen " + aclass.subclasses[0] + " next to, or in place of, \"" + classString + "\".\n\nFor example: \"" + classString + " (" + SubName1 + ")\", or just \"" + SubName2 + "\".";
-
+	// Create the radio buttons
 	var SubclassArrayLeft = [];
 	var SubclassArrayRight = [];
-	var isAsterisk = false;
-	for (var i = 0; i < aclassArray.length; i++) {
-		var theSub = ClassSubList[aclassObj[aclassArray[i]]];
-
-		if (!isAsterisk && theSub.fullname) isAsterisk = true;
-
-		if (theSub.fullname && theSub.fullname !== theSub.subname) {
-			var theName = theSub.subname + " (" + theSub.fullname + "*)";
-		} else {
-			var theName = theSub.subname + (theSub.fullname ? "*" : "");
-		}
-
+	for (var i = 0; i < options.length; i++) {
+		var oSub = ClassSubList[options[i].ref];
+		options[i].id = "Su" + ("0" + i).slice(-2);
 		var temp = {
-			type : "radio",
-			group_id : "Subs",
-			item_id : "Su" + ("0" + i).slice(-2),
-			name : theName
+			type: "radio",
+			group_id: "Subs",
+			item_id: options[i].id,
+			name: options[i].name,
 		}
-		if ((i + 1) <= Math.ceil((aclassArray.length) / 2)) {
+		if ((i + 1) <= Math.ceil((options.length) / 2)) {
 			SubclassArrayLeft.push(temp);
 		} else {
 			SubclassArrayRight.push(temp);
 		}
 	}
-
-	var asteriskString = isAsterisk ? "* This name will replace \"" + classString + "\" in the Class field instead of amending to it." : "";
 
 	var SubclassSelect_Dialog = {
 		result : -1,
@@ -1393,10 +1397,10 @@ function PleaseSubclass(aClass, classString) {
 		//when pressing the ok button
 		commit : function (dialog) {
 			var oResult = dialog.store();
-			for (var i = 0; i < aclassArray.length; i++) {
-				if (oResult["Su" + ("0" + i).slice(-2)]) {
+			for (var i = 0; i < options.length; i++) {
+				if (oResult[options[i].id]) {
 					this.result = i;
-					i = aclassArray.length;
+					break;
 				}
 			}
 		},
@@ -1429,7 +1433,7 @@ function PleaseSubclass(aClass, classString) {
 							bold : true,
 							height : 23,
 							width : 470,
-							name : aclass.name + " has no detectable " + aclass.subclasses[0]
+							name : oClass.name + " has no detectable " + oClass.subclasses[0]
 						}]
 					}, {
 						type : "static_text",
@@ -1479,7 +1483,7 @@ function PleaseSubclass(aClass, classString) {
 					}]
 				}, {
 					type : "ok_cancel_other",
-					ok_name : "Add " + aclass.subclasses[0],
+					ok_name : "Add " + oClass.subclasses[0],
 					other_name : "I get it, don't show me this again"
 				}]
 			}]
@@ -1488,9 +1492,7 @@ function PleaseSubclass(aClass, classString) {
 
 	var theDialog = app.execDialog(SubclassSelect_Dialog);
 	if (theDialog === "ok" && SubclassSelect_Dialog.result > -1) {
-		var selection = aclassObj[aclassArray[SubclassSelect_Dialog.result]];
-		var newName = ClassSubList[selection].fullname ? ClassSubList[selection].fullname : aclass.name + " (" + ClassSubList[selection].subname + ")";
-		return [selection, newName];
+		return options[SubclassSelect_Dialog.result];
 	};
 	return false;
 };
