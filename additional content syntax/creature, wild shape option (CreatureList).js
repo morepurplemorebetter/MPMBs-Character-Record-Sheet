@@ -652,6 +652,7 @@ CreatureList["purple crawler"] = {
 		]),
 		joinString : "",
 		wildshapeShow : ". Once per long rest, cast Hypnotic Pattern without components.",
+		bulletString: "\u2736",
 	}],
 /*	features // OPTIONAL //
 	actions  // OPTIONAL //
@@ -663,6 +664,7 @@ CreatureList["purple crawler"] = {
 	CHANGE:	v13.1.11 (added `notes`)
 	CHANGE: v14.0.0 (formatting characters)
 	CHANGE: v14.0.6 (added `wildshapeShow`)
+	CHANGE: v14.0.8 (added `bulletString`)
 
 	Each of these four attributes work in the same way.
 	Each is an array with objects that have at least two attributes, `name` and `description`,
@@ -699,6 +701,16 @@ CreatureList["purple crawler"] = {
 	Will result in:
 		##◆ False Appearance##
 		   While the purple crawler remains motionless, it is indistinguishable from an ordinary purple flower.
+
+	If you want something else than a ◆ ("\u25C6") before the name, you can change it
+	to anything you like by adding the `bulletString` attribute. For example:
+		{
+			name: "Beast's Strike Damage Type",
+			description: "The damage type of the beast's attack can be Bludgeoning, Piercing, or Slashing damage, which is chosen by its master when they summon the beast.",
+			bulletString: "(\u273D)"
+		}
+	Will result in:
+		##(✽) Beast's Strike Damage Type##. The damage type of the beast's attack can be Bludgeoning, Piercing, or Slashing damage, which is chosen by its master when they summon the beast.
 
 	If the `description` attribute is not present, no string will be added to the field.
 	Any description will do, even an empty string (e.g. description : "").

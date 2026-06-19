@@ -222,14 +222,18 @@ WeaponsList["purple sword"] = {
 	Setting this to false is the same as not including this attribute and
 	will cause the weapon to not have any To Hit or Damage calculated.
 */
-	abilitytodamage : true,
-/*	abilitytodamage // REQUIRED //
+	abilitytodamage: false,
+/*	abilitytodamage // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether (true) or not (false) to add the ability score modifier to the damage
 
-	When set to 'true', the ability score modifier set with the 'ability' attribute
+	When set to `true`, the ability score modifier set with the `ability` attribute
 	is added to the calculated damage of the weapon/attack.
 	This will happen even if the ability score modifier is negative.
+
+	When set to `false`, it isn't added to the damage.
+
+	If this attribute is not included, the sheet defaults to this being set to `true`.
 */
 	damage : [2, 4, "piercing"],
 /*	damage // REQUIRED //

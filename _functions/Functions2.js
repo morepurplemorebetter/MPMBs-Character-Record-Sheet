@@ -1026,9 +1026,10 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 				var addIt = newLvl >= propMinLvl;
 				if (doPropTxt) {
 					// Create the strings for the property
-					var sNameDescrCoupler = prop.joinString !== undefined ? prop.joinString : ". ";
-					var propFirstLine = "##\u25C6 " + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name) + "##";
-					var propFullLine = propFirstLine + sNameDescrCoupler + (isMetric ? ConvertToMetric(prop.description, 0.5) : prop.description);
+					var joinString = prop.joinString !== undefined ? prop.joinString : ". ";
+					var bulletString = prop.bulletString !== undefined ? "##" + prop.bulletString + " " : "##\u25C6 ";
+					var propFirstLine = bulletString + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name) + "##";
+					var propFullLine = propFirstLine + joinString + (isMetric ? ConvertToMetric(prop.description, 0.5) : prop.description);
 					// Apply the name of the creature if [THIS] is present in the strings
 					if (rxThisAdd.test(propFullLine)) {
 						var replaceThis = addIt ? rxThisAdd : rxThisRemove;
