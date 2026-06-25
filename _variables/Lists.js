@@ -356,7 +356,6 @@ var IsNotImport = true;
 var IsNotFeatMenu = true;
 var IsNotMagicItemMenu = true;
 var IsNotWeaponMenu = true;
-var IsNotConditionSet = true;
 var IsNotUserScript = true;
 var IsSetDropDowns = false;
 var IsCharLvlVal = false;

@@ -1474,20 +1474,17 @@ function ApplyShield(input) {
 }
 
 //Change advantage or disadvantage of saves, skills, checks, attacks, etc. based on condition
-function ConditionSet(isReset) {
-	if (!isReset && !IsNotConditionSet) return;
-	if (typePF) { // only the stealth disadvantage is part of the printer friendly version
+function ConditionSet(isReset, skipStealthDisadv) {
+	if (typePF && !skipStealthDisadv) { // only the stealth disadvantage is part of the printer friendly version
 		// Start progress bar and stop calculations
 		var thermoTxt = thermoM("Armor stealth disadvantage...");
 		calcStop();
-		IsNotConditionSet = false;
 		var thisFld = "ArmDis";
 		var thisChck = !isReset && tDoc.getField("AC Stealth Disadvantage").isBoxChecked(0) ? true : false;
 		SetProf("advantage", thisChck, ["Ste", false], "Armor");
-		IsNotConditionSet = true;
 		thermoM(thermoTxt, true); // Stop progress bar
-		return;
 	}
+	if (typePF) return;
 	var cFlds = {
 		Exh1 : { name : "Extra.Exhaustion Level 1" },
 		Exh2 : { name : "Extra.Exhaustion Level 2" },
@@ -1514,6 +1511,7 @@ function ConditionSet(isReset) {
 	var thisFld = "ArmDis";
 	for (var aFld in cFlds) {
 		if (!tDoc.getField(cFlds[aFld].name)) continue;
+		if (isReset && !(skipStealthDisadv && aFld === "ArmDis")) Checkbox(cFlds[aFld].name, false);
 		cFlds[aFld].checked = tDoc.getField(cFlds[aFld].name).isBoxChecked(0);
 		if (event.target && event.target.name && cFlds[aFld].name == event.target.name) thisFld = aFld;
 		if ((/Exh\d/).test(aFld)) cFlds[aFld].origchecked = thisFld === aFld ? !cFlds[aFld].checked : cFlds[aFld].checked;
@@ -1524,7 +1522,6 @@ function ConditionSet(isReset) {
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Applying the conditions...");
 	calcStop();
-	IsNotConditionSet = false;
 
 	// Do something with other fields dependent on the selection
 	//var stealthLoc = Who("Text.SkillsNames") === "alphabeta" ? "Ste" : "Ath";
@@ -1596,7 +1593,7 @@ function ConditionSet(isReset) {
 		Checkbox(cFlds.Incapacitated.name, true);
 		cFlds.Incapacitated.checked = true;
 	}
-	if (isReset || thisFld == "ArmDis") {
+	if ((isReset && !skipStealthDisadv) || thisFld == "ArmDis") {
 		SetProf("advantage", thisChck, ["Ste", false], "Armor");
 	}
 	thermoM(0.25); //increment the progress dialog's progress
@@ -1627,7 +1624,6 @@ function ConditionSet(isReset) {
 		}
 	}
 
-	IsNotConditionSet = true;
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 

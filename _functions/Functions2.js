@@ -3238,6 +3238,15 @@ function DoTemplate(tempNm, AddRemove, removePrefix, GoOn) {
 				// grey out the appropriate bookmarks
 				amendBookmarks(BookMarkList[tempNm + "_Bookmarks"], false);
 			}
+
+			//now do some extra actions, depending on the page(s) removed
+			switch (tempNm) {
+			  case "ASfront" :
+				// Reset the conditions as they can no longer be toggled with this page hidden
+				ConditionSet(true, true);
+				break;
+			};
+
 			// Stop progress bar
 			thermoM(thermoTxt, true);
 		} else {
@@ -8018,8 +8027,14 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					var theVal = oAllMode;
 				}
 				if (!theVal) continue;
-				if (!isNaN(theVal) || !/[xX\*\xD7\/:]/.test(theVal[0])) theVal += " ft";
+				if (!isNaN(theVal) || !/[xX\*\xD7\/:]/.test(theVal[0])) {
+					theVal += " ft";
+				}
 				if (metric) theVal = ConvertToMetric(theVal, 0.5);
+				// Round to two decimal places
+				theVal = theVal.replace(/\d+[.,]\d+/, function (match) {
+					return RoundTo(match, 0.01, false, true);
+				});
 				modArray.push(spMod + " [" + theVal + "]");
 			};
 			// The strings for full speed and encumbered speed
@@ -8038,6 +8053,10 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 						theVal += " ft";
 					};
 					if (metric) theVal = ConvertToMetric(theVal, 0.5);
+					// Round to two decimal places
+					theVal = theVal.replace(/\d+[.,]\d+/, function (match) {
+						return RoundTo(match, 0.01, false, true);
+					});
 					arrs[sV].push(aSpeed + " [" + theVal + "]");
 					goOn = true;
 				};

@@ -591,19 +591,24 @@ function DirectImport(consoleTrigger) {
 
 		//reset conditions
 		if (!fromSheetTypePF && global.docFrom.ConditionSet) {
-			var conResets = [];
-			var doCondi = false;
-			for (var c = 1; c <= 14; c++) {
-				if (c <= 6) {
-					conResets.push("Extra.Exhaustion Level " + c);
-					if (!doCondi && global.docFrom.getField("Extra.Exhaustion Level " + c).value !== global.docFrom.getField("Extra.Exhaustion Level " + c).defaultValue) doCondi = true;
+			// sheets before v14.0.9-beta
+			if (FromVersion < semVersToNmbr("14.0.9-beta")) {
+				var conResets = [];
+				var doCondi = false;
+				for (var c = 1; c <= 14; c++) {
+					if (c <= 6) {
+						conResets.push("Extra.Exhaustion Level " + c);
+						if (!doCondi && global.docFrom.getField("Extra.Exhaustion Level " + c).value !== global.docFrom.getField("Extra.Exhaustion Level " + c).defaultValue) doCondi = true;
+					}
+					conResets.push("Extra.Condition " + c);
+					if (!doCondi && global.docFrom.getField("Extra.Condition " + c).value !== global.docFrom.getField("Extra.Condition " + c).defaultValue) doCondi = true;
+				};
+				if (doCondi) {
+					global.docFrom.resetForm(conResets);
+					global.docFrom.ConditionSet();
 				}
-				conResets.push("Extra.Condition " + c);
-				if (!doCondi && global.docFrom.getField("Extra.Condition " + c).value !== global.docFrom.getField("Extra.Condition " + c).defaultValue) doCondi = true;
-			};
-			if (doCondi) {
-				global.docFrom.resetForm(conResets);
-				global.docFrom.ConditionSet();
+			} else {
+				global.docFrom.ConditionSet(true, true);
 			}
 		}
 
