@@ -4864,7 +4864,7 @@ function processRecovery(recovery, additionalRecovery) {
 	} else if (/\bdawn\b/i.test(recovery)) {
 		recoveryStr = "Dawn";
 	} else {
-		ecoveryStr = recovery.trim().capitalize();
+		recoveryStr = recovery.trim().capitalize();
 	}
 	if (additionalRecovery) {
 		recoveryStr += "/" + additionalRecovery.trim();
