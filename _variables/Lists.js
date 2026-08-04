@@ -79,9 +79,9 @@ function setStuffAfterUserScripts() {
 }
 
 function setGlobalVars() {
-	tDoc.typePF = (/printer friendly/i).test(tDoc.info.SheetType);
-	tDoc.typeA4 = (/a4/i).test(tDoc.info.SheetType);
-	tDoc.typeLR = (/letter/i).test(tDoc.info.SheetType);
+	tDoc.typePF = /printer friendly/i.test(tDoc.info.SheetType);
+	tDoc.typeA4 = /a4/i.test(tDoc.info.SheetType);
+	tDoc.typeLR = /letter/i.test(tDoc.info.SheetType);
 	tDoc.minVer = tDoc.info.SpellsOnly || tDoc.info.AdvLogOnly;
 	tDoc.semVers = getSemVers(tDoc.info.SheetVersion, tDoc.info.SheetVersionType, tDoc.info.SheetVersionBuild);
 	tDoc.sheetVersion = semVersToNmbr(semVers);
@@ -93,27 +93,31 @@ function setGlobalVars() {
 setGlobalVars();
 
 var UnitsList = {
-	metric : {
-		mass : 0.5,
-		'length' : 0.3,
-		lengthInch : 2.5,
-		volume : 0.03,
-		surface : 0.1,
-		distance : 1.6,
-		liquid : 4,
-		liquidQuart : 1
+	metric: {
+		mass: 0.5,
+		'length': 0.3,
+		lengthInch: 2.5,
+		volume: 0.03,
+		surface: 0.1,
+		distance: 1.6,
+		liquid: 4,
+		liquidQuart: 1,
+		liquidPint: 0.5,
+		liquidOunce: 3,
 	},
-	metricExact : {
-		mass : 0.45359237,
-		'length' : 0.3048,
-		lengthInch : 2.54,
-		volume : 0.028316846592,
-		surface : 0.09290304,
-		distance : 1.609344,
-		liquid : 3.785411784,
-		liquidQuart : 0.94635295
-	}
-}
+	metricExact: {
+		mass: 0.45359237,
+		'length': 0.3048,
+		lengthInch: 2.54,
+		volume: 0.028316846592,
+		surface: 0.09290304,
+		distance: 1.609344,
+		liquid: 3.785411784,
+		liquidQuart: 0.94635295,
+		liquidPint: 0.473176473,
+		liquidOunce: 2.95735296,
+	},
+};
 
 var AbilityScores = {
 	abbreviations : ["Str", "Dex", "Con", "Int", "Wis", "Cha"],

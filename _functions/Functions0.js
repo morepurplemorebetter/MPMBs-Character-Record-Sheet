@@ -75,7 +75,7 @@ function Checkbox(field, FldValue, tooltip, submitNm) {
 function desc(arr, joinStr, preStr) {
 	joinStr = joinStr ? joinStr : "\n   ";
 	if (preStr === undefined) preStr = joinStr;
-	if (!Array.isArray(arr)) return preStr + arr;
+	if (!isArray(arr)) return preStr + arr;
 	return preStr + arr.join(joinStr);
 };
 

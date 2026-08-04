@@ -8723,7 +8723,7 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 		var noteSrc = noteObj.source ? stringSource(noteObj, "first,abbr", ", ") : fallback.noteSrc;
 		var noteDesc = "";
 		if (noteObj.useDescriptionFull && fallback.descrFull) {
-			noteDesc = ConvertToFirstPerson(
+			noteDesc = "\r" + ConvertToFirstPerson(
 				formatDescriptionFull(fallback.descrFull, true),
 				noteObj.useDescriptionFull,
 				fallback.noteOrig
