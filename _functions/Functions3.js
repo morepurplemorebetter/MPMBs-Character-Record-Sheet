@@ -3792,6 +3792,8 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	var aMIvar = curChoice && aMI[curChoice] ? aMI[curChoice] : false;
 	var curName = curChoice ? MagicItemsList[curItem][curChoice].name : MagicItemsList[curItem].name;
 	var itemToProcess, selectedItem;
+	var rxComma = /(.*?), (.*)/;
+	var rxPluralS = typeObj.removePluralS ? /s$/ : '';
 
 	// use the name of the choice object (if any) or the shortest of the name, nameAlt, and nameTest of the parent object
 	var nameObj = aMIvar && aMIvar.name ? aMIvar : aMI;
@@ -3837,7 +3839,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 				continue;
 			}
 			if (typeObj.excludeCheck && typeObj.excludeCheck(key, kObj)) continue;
-			var capName = kObj.name.capitalize();
+			var capName = (kObj.invName ? kObj.invName : kObj.name).capitalize().replace(rxComma, "$2 $1").replace(rxPluralS, '');
 			if (itemChoices.indexOf(capName) == -1) itemChoices.push(capName);
 			itemRefs[capName] = key;
 		}
@@ -3854,15 +3856,11 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 		selectedItem = baseList[isItem].name;
 	} else {
 		if (isApplyFld && event.target.setValPrepared) selectedItem = baseList[isItem].name;
-		var theItemName = baseList[isItem].name.toLowerCase();
+		var theItemName = (baseList[isItem].invName ? baseList[isItem].invName : baseList[isItem].name).toLowerCase();
 	}
-	// ammunitions are often written as plural and with a comma to sort better, but we don't want that here
-	if (typeNm == "ammunition") {
-		var rxComma = /(.*?), (.*)/;
-		var rxPluralS = /s$/;
-		theItemName = theItemName.replace(rxComma, "$2 $1").replace(rxPluralS, '');
-		if (selectedItem) selectedItem = selectedItem.replace(rxComma, "$2 $1").replace(rxPluralS, '');
-	}
+	// Inverse if written with a comma
+	theItemName = theItemName.replace(rxComma, "$2 $1").replace(rxPluralS, '');
+	if (selectedItem) selectedItem = selectedItem.replace(rxComma, "$2 $1").replace(rxPluralS, '');
 	// get the new name of the magic item
 	var theItemNameCap = theItemName.capitalize();
 	var newMIname = useVal;
@@ -3879,23 +3877,30 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	}
 	// Apply the item to the sheet
 	if (!correctingDescrLong) {
+		if (!itemToProcess) {
+			itemToProcess = newMIname.replace(/(ammunition|ammo|weapon|armou?r) (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2");
+		}
+		if (isItem && baseList[isItem] && baseList[isItem].invName) {
+			var firstPageName = baseList[isItem].name.replace(rxComma, "$2 $1").replace(rxPluralS, '').capitalize();
+			var invName = baseList[isItem].invName.replace(rxComma, "$2 $1").replace(rxPluralS, '').capitalize();
+			if (firstPageName !== invName) {
+				itemToProcess = itemToProcess.replace(invName, firstPageName);
+			}
+		}
 		switch (typeNm) {
 			case "ammunition":
-				var ammoName = itemToProcess ? itemToProcess : newMIname.replace(/ammunition (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2");
-				processAddAmmo(AddRemove, [[ammoName, typeObj.ammoAmount && !isNaN(typeObj.ammoAmount) ? typeObj.ammoAmount : 1]]);
+				processAddAmmo(AddRemove, [[itemToProcess, typeObj.ammoAmount && !isNaN(typeObj.ammoAmount) ? typeObj.ammoAmount : 1]]);
 				break;
 			case "weapon":
-				var weaponName = itemToProcess ? itemToProcess : newMIname.replace(/weapon (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2");
-				processAddWeapons(AddRemove, {select : [weaponName], options : [weaponName]}, weaponName);
+				processAddWeapons(AddRemove, {select : [itemToProcess], options : [itemToProcess]}, itemToProcess);
 				break;
 			case "armor":
-				var armourName = itemToProcess ? itemToProcess : newMIname.replace(/armou?r (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2");
 				processAddArmour(AddRemove, {
-					"select": armourName,
-					"options": [armourName],
+					"select": itemToProcess,
+					"options": [itemToProcess],
 					"noStealthDis": typeObj.noStealthDis,
 					"forceStealthDis": typeObj.forceStealthDis
-				}, armourName);
+				}, itemToProcess);
 				break;
 		}
 	}

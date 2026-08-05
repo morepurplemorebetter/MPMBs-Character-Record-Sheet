@@ -711,7 +711,7 @@ SpellsList["sindering purple"] = {
 		USE:	force the `genericSpellDmgEdit` function to treat this spell as a single damage instance (false) or as one with multiple damage instances (true)
 
 		See the explanation for `descriptionShorter` above for how the `genericSpellDmgEdit` function
-		normally determines wether the spell has a single or multiple damage instances.
+		normally determines whether the spell has a single or multiple damage instances.
 		Only use this attribute if the `genericSpellDmgEdit` function yields the wrong outcome.
 
 		Set this attribute to `true` if this spell has a duration of instant(enous) or 1 r(ou)nd,
@@ -734,7 +734,7 @@ SpellsList["sindering purple"] = {
 		USE:	force the `genericSpellDmgEdit` function to treat multiple damage listings as a single damage instance
 	
 		See the explanation for `descriptionShorter` above for how the `genericSpellDmgEdit` function
-		normally determines wether the spell has a single or multiple damage instances.
+		normally determines whether the spell has a single or multiple damage instances.
 		Only use this attribute if the `genericSpellDmgEdit` function yields the wrong outcome.
 
 		Set this attribute to `true` if this spell has multiple damages that fit the syntax,

@@ -999,7 +999,7 @@ scoresMaximum : [24, 0, 24, 0, "+2", 0],
 scoresMaxLimited : true,
 /*	scores // OPTIONAL //
 	TYPE:	boolean
-	USE:	wether to apply the ability score maximum increase only if that maximum is reached (true) or always (false)
+	USE:	whether to apply the ability score maximum increase only if that maximum is reached (true) or always (false)
 	ADDED:	v13.0.8
 
 	By default, the ability score increases can never increase an ability score above 20.

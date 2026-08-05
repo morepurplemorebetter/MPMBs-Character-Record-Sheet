@@ -8737,7 +8737,7 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 			noteDesc = ConvertToMetric(noteDesc, 0.5);
 			noteAdditional = ConvertToMetric(noteAdditional, 0.5);
 		}
-		var noteOrig = noteObj.origin != undefined ? noteObj.origin : fallback.noteOrig;
+		var noteOrig = noteObj.origin != undefined ? noteObj.origin : noteObj.name === fallback.noteOrig ? "" : fallback.noteOrig;
 		var noteStr = "#\u25C6 " + noteObj.name + "# (" + noteOrig + noteSrc + ")" + noteAdditional + noteDesc;
 		if (!noteOrig) noteStr = noteStr.replace("(, ", "(");
 		if (noteObj.page3notes) { // add to 3rd page notes section

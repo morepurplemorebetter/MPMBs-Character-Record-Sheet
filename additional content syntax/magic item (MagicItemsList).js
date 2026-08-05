@@ -39,7 +39,7 @@
 				You will also need the syntax for adding a source if you want the magic item
 				to have a source that doesn't yet exist in the sheet.
 
-	Sheet:		v14.0.5 and above
+	Sheet:		v14.0.11 and above
 
 */
 
@@ -668,6 +668,23 @@ MagicItemsList["staff of purple"] = {
 
 		Use this if you are adding an armour that normally doesn't impose disadvantage on
 		stealth, but the variation added by the feature does.
+	*/
+		removePluralS : true,
+	/*	removePluralS // OPTIONAL //
+		TYPE:	boolean
+		USE:	whether to remove (true) a trailing -s from the name of the weapon/armour/ammo
+		ADDED:	v14.0.11
+
+		When set to `true`, the sheet will remove the last character from the name of the
+		selected weapon/armour/ammo, if that character is a 's'.
+		This way the displayed name of the magic item will not be plural.
+		This is especially useful for ammunition, as those names are always plural.
+
+		Note that the sheet automatically inverses the order of names that have a comma in it.
+		For example, "Bullets, Sling" is automatically changed to "Sling Bullets" before this
+		attribute is applied.
+
+		Setting this attribute to `false` is the same as not including this attribute.
 	*/
 	},
 /*
