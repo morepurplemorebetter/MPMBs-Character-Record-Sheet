@@ -505,6 +505,8 @@ function DirectImport(consoleTrigger) {
 		var fromBefore13 = FromVersion < semVersToNmbr("13.0.0-beta14");
 		var fromBefore13_1_5 = FromVersion < semVersToNmbr("13.1.5");
 		var fromBefore13_2 = FromVersion < semVersToNmbr("13.2.0");
+		var fromBefore14 = FromVersion < semVersToNmbr(14);
+		var isEditionSwitch = global.docFrom.use2024Rules !== global.docTo.use2024Rules;
 		if (FromVersion > ToVersion || (FromVersion >= semVersToNmbr("13.0.0-beta1") && fromBefore13)) {
 			// If importing from a newer version or from a v13.0.0-beta1-beta13
 			var versTypeTxt = FromVersion > ToVersion ? ["this sheet is", "newer", "than the one you are importing"] : ["the other sheet is an", "unsupported beta", "that can't be imported to any other MPMB's Character Record Sheet"];
@@ -838,11 +840,52 @@ function DirectImport(consoleTrigger) {
 		ImportField("Background Extra", {notTooltip: true});
 		IsSetDropDowns = false; // reset this setting if backgrounds was set to manual, otherwise it was already false
 
-		//set the values of the ability score dialog (after race, so scores manually set for race are not undone)
+		// reset the values of the ability score dialog (after race and background, so scores manually set for race are not undone)
 		var abiScoreFlds = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
-		if (fromBefore13) {
+		var abiScoreDialogReset = false;
+		if (isEditionSwitch ||
+			(FromVersion > semVersToNmbr(13.999) && FromVersion < semVersToNmbr("14.0.11-beta")) ||
+			(FromVersion > semVersToNmbr(23) && FromVersion < semVersToNmbr("24.0.11-beta"))
+		) {
+			// Switching between the 5e (2014) and 5.5e (2024) rules or importing from an older beta doesn't work for the ability score automation, because things by the same name suddenly work very differently. Thus we are going to let the automation handle it.
+			initiateCurrentStats(true);
+			abiScoreDialogReset = true;
+			// However, we can get the content from the base, levels and any extra columns, as those are the most important ones.
+			// If not an edition switch, do the same for the race (5e) and background (5.5e) columns.
+			var oldCurrentStats = eval(global.docFrom.What("CurrentStats.Stringified"));
+			oldCurrentStats.cols.forEach(function (oCol) {
+				var iColNewIdx = CurrentStats.cols.findIndex(function (obj) { return obj.type === oCol.type; });
+				switch (oCol.type) {
+					// Always update
+					case "base": case "levels":
+						break;
+					// Only do if the right edition
+					case "race":
+						if (isEditionSwitch || tDoc.use2024Rules) return;
+						break;
+					case "background":
+						if (isEditionSwitch || !tDoc.use2024Rules) return;
+						break;
+					// Never update
+					case "classes": case "items": case "feats":
+					case "magic": case "override": case "maximum":
+						return;
+					// Custom columns
+					case "extra": default:
+						if (iColNewIdx !== -1) {
+							return; // not a column we want to process
+						} else { // custom column
+							iColNewIdx = ASaddColumn(oCol.name, oCol.type);
+						}
+				}
+				if (iColNewIdx === -1) return;
+				var oColNew = CurrentStats.cols[oColNewIdx];
+				oColNew.scores = oCol.scores;
+			});
+			SetStringifieds("stats");
+		} else if (fromBefore13) {
 			initiateCurrentStats();
-			var equalAbiCol = [0, 1, 4, 7, 5, 2];
+			var equalAbiCol = ["base", "race", "levels", "override", "items", "feats"];
 			for (var a = 0; a < abiScoreFlds.length; a++) {
 				var abiR = global.docFrom.getField(abiScoreFlds[a] + " Remember");
 				if (!abiR) continue;
@@ -850,9 +893,11 @@ function DirectImport(consoleTrigger) {
 				for (var i = 0; i < abiScAr.length; i++) {
 					var abiSc = Number(abiScAr[i]);
 					if (isNaN(abiSc) || !abiScAr[i] || (i == 0 && abiScAr == 8)) continue;
-					CurrentStats.cols[equalAbiCol[i]].scores[a] = abiSc;
+					var newAbiColIdx = CurrentStats.cols.findIndex(function (obj) { return obj.type === equalAbiCol[i]; });
+					CurrentStats.cols[newAbiColIdx].scores[a] = abiSc;
 				}
 			}
+			CurrentStats.applied = true;
 			SetStringifieds("stats");
 		} else if (ImportField("CurrentStats.Stringified")) {
 			CurrentStats = eval(What("CurrentStats.Stringified"));
@@ -1015,7 +1060,7 @@ function DirectImport(consoleTrigger) {
 
 		//add the content from the saving throw and vision field, but not if importing from an older version
 		if (FromVersion >= semVersToNmbr(12.998)) {
-			//First make sure the "Immune to" and "Adv. on saves vs." match with the import
+			//First make sure the "Immune to" and "Adv on saves vs" match with the import
 			var importSaveTxt = function(type) {
 				var preTxt = type === "adv_vs" ? "Adv. on saves vs." : type === "immune" ? "Immune to" : false;
 				var fld = "Saving Throw advantages / disadvantages";
@@ -1581,20 +1626,33 @@ function DirectImport(consoleTrigger) {
 		};
 		aText += toUni("Some manual additions might not have transferred over") + "\nSome things that you adjusted manually on your old sheet might not have transferred to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.\n"
 		aText += [
-			toUni("The following things should be considered:"),
-			"The 'Class Features' text is now solely what the automation added",
-			"The 'Notes' section on the 3rd page is now solely what the automation added",
-			"Attack and Ammunition attributes are now solely what the automation set",
-			"Magic and Misc AC bonuses are now solely what the automation set",
-			"Feat and Magic Item descriptions are now solely what the automation set",
-			"Companion pages have been copied exactly, not using any updates in automation",
-			"Wild Shapes have been re-calculated, manual changes have been ignored",
-			"Ability Score dialog has been duplicated from the old version, changes by newer automation have been ignored. Read that dialog's text carefully to see if you are missing anything",
-			sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "No spell sheets have been generated"
+			toUni("Be Aware"),
+			"The 'Class Features' text is now solely what the automation added.",
+			"The 'Notes' section on the 3rd page is now solely what the automation added.",
+			"Attack and Ammunition attributes are now solely what the automation set.",
+			"Magic and Misc AC bonuses are now solely what the automation set.",
+			"Feat and Magic Item descriptions are now solely what the automation set.",
+			"Companion pages have been copied exactly, not using any updates in automation.",
+			"Wild Shapes have been re-calculated, manual changes have been ignored.",
+			"Ability Score dialog has been duplicated from the old version, changes by newer automation have been ignored. Read that dialog's text carefully to see if you are missing anything.",
+			sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "No spell sheets have been generated."
 		].join("\n  \u2022 ");
+		if (abiScoreDialogReset) {
+			var columNames = ["base", tDoc.use2024Rules ? "background" : "race", "levels"].map(function (type) {
+				var idx = CurrentStats.cols.findIndex(function (obj) { return obj.type === type; });
+				return idx === -1 ? type : CurrentStats.cols[idx].name;
+			}).concat(["Custom"]);
+			var beta1424_0_11 = (tDoc.use2024Rules ? 24 : 14) + ".0.11-beta";
+			aText += [
+				"\n\n" + toUni("Ability Score Dialog"),
+				"Because the imported sheet was " + (isEditionSwitch ? "made for a different edition of D&D" : "an older version (before v" + (tDoc.use2024Rules ? 24 : 14) + ".0.11-beta)") + ", the values in the ability score dialog are now solely what the automation set, except for the " + formatLineList("", columNames) + " columns.",
+				"The ability score fields have been updated to what they were in the imported sheets. Only the values in the dialog have been changed.",
+			].join("\n  \u2022 ");
+			delete CurrentStats.ignoreImportGlobal;
+		}
 		if (fromBefore13) {
 			aText += [
-				"\n\n" + toUni("Bonuses from magic items"),
+				"\n\n" + toUni("Bonuses from Magic Items"),
 				"Be aware that v13 introduces automation for magic items which has immediately been applied on import.",
 				"If you added bonuses to modifier fields to account for magic items, those bonuses will have been imported, but the magic item automation will have applied those bonuses as well. It could well be that some things now have twice the bonus that they should have! Please check carefully if all the modifier fields still display the right numbers.",
 				"The modifier fields are hidden by default, but you can toggle their visiblity with the Functions >> Modifiers bookmark."
@@ -1615,9 +1673,9 @@ function DirectImport(consoleTrigger) {
 		};
 		if (aTextExtra.length) aText += '\n' + aTextExtra.join("\n");
 		app.alert({
-			cMsg : aText,
-			nIcon : 3,
-			cTitle : "Things to consider about the import"
+			cMsg: aText,
+			nIcon: 3,
+			cTitle: "Things to consider about the import",
 		});
 	};
 	thermoStop(); // Stop progress bar, forcibly

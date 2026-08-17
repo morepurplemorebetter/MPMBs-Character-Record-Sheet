@@ -292,6 +292,23 @@ function setPrototypes() {
 		}
 		return -1;
 	};
+	Array.prototype.findIndex = Array.prototype.findIndex || function(callback) {
+		if (this === null) {
+			throw new TypeError('Array.prototype.findIndex called on null or undefined');
+		} else if (typeof callback !== 'function') {
+			throw new TypeError('callback must be a function');
+		}
+		var list = Object(this);
+		// Makes sure it always has an positive integer as length.
+		var length = list.length >>> 0;
+		var thisArg = arguments[1];
+		for (var i = 0; i < length; i++) {
+			if ( callback.call(thisArg, list[i], i, list) ) {
+			return i;
+			}
+		}
+		return -1;
+	};
 	Array.prototype.split = function (separator, limit) {
 		return this.toString().split(separator, limit);
 	};
@@ -550,6 +567,20 @@ function ObjLength(theObj) {
 	}
 	return size;
 };
+
+// convert number to ordinal string
+function toOrdinal(n) {
+	var remainder100 = n % 100;
+	if (remainder100 >= 11 && remainder100 <= 13) {
+		return n + "th";
+	}
+	switch (n % 10) {
+		case 1: return n + "st";
+		case 2: return n + "nd";
+		case 3: return n + "rd";
+		default: return n + "th";
+	}
+}
 
 // start a progress dialog
 // input can be a percentage of the progress or a string to display

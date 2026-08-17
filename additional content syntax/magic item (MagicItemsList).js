@@ -39,7 +39,7 @@
 				You will also need the syntax for adding a source if you want the magic item
 				to have a source that doesn't yet exist in the sheet.
 
-	Sheet:		v14.0.11 and above
+	Sheet:		v14.0.12 and above
 
 */
 
@@ -489,6 +489,24 @@ MagicItemsList["staff of purple"] = {
 	FORMATTING CHARACTERS (since v14.0.0)
 	The resulting string can be formatted using the Rich Text formatting characters.
 	See the `description` attribute above for an explanation of how they work.
+*/
+	scoresStackable : true,
+/*	scoresStackable // OPTIONAL //
+	TYPE:	boolean
+	USE:	allow the `scores` and `scoresMaxLimited` of the magic item to stack with themselves
+	ADDED:	v14.0.12
+
+	To use this attribute, make sure both the `scores` and `scoresMaxLimited` attributes
+	are set for the item. See the "_common attributes.js" syntax file for how they work.
+	If either the `scores` or `scoresMaxLimited` attribute is missing, this attribute
+	will do nothing.
+
+	Set this attribute to `true` for magic items that can apply their one-time ability
+	score increase multiple times. When adding a magic item with this attribute set to
+	`true`, the player will be prompted to apply the ability score increase, even if
+	the item already applied it before.
+
+	Setting this attribute to `false` is the same as not including this attribute.
 */
 	chooseGear : {
 /*	chooseGear // OPTIONAL //

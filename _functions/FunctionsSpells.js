@@ -486,7 +486,7 @@ function ApplySpell(FldValue, rememberFldName) {
 			var spTooltip = aSpell.tooltip ? aSpell.tooltip : "";
 
 			//set what an empty cell should look like
-			var emptyCell = CurrentCasters.emptyFields ? "" : "\u2014";
+			var emptyCell = CurrentCasters.emptyFields ? "" : "\u2013";
 
 			//set the spell description and the tooltip with the full description
 			Value(base.replace("remember", "description"), aSpell.description, spTooltip);

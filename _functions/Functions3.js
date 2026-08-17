@@ -203,11 +203,18 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (uObj.carryingCapacity) SetProf("carryingcapacity", addIt, uObj.carryingCapacity, tipNmF);
 		if (uObj.advantages) processAdvantages(addIt, tipNmF, uObj.advantages);
 
-		// --- backwards compatibility --- //
-		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false;
-		if (uObj.scores || abiScoresTxt) {
-			processStats(addIt, type, tipNm, uObj.scores, abiScoresTxt, false, uObj.scoresMaximum, uObj.scoresMaxLimited);
-		} else if (uObj.scoresMaximum) {
+		// --- Ability Scores --- //
+		var abiScoresTxt = uObj.scorestxt ? uObj.scorestxt : uObj.improvements ? uObj.improvements : false; // backwards compatibility
+		var processMaximumsSeparately = uObj.scoresMaximum;
+		if (uObj.scores && uObj.scoresMaxLimited) {
+			var abiScoresLimit = isArray(uObj.scoresMaxLimited) ? uObj.scoresMaxLimited : uObj.scoresMaximum ? uObj.scoresMaximum : false; // backwards compatibility
+			processStats(addIt, type, tipNm, uObj.scores, abiScoresTxt, "limited", abiScoresLimit, uObj.scoresStackable);
+			if (!isArray(uObj.scoresMaxLimited)) processMaximumsSeparately = false;
+		} else if (uObj.scores || abiScoresTxt) {
+			processStats(addIt, type, tipNm, uObj.scores, abiScoresTxt, false, uObj.scoresMaximum);
+			processMaximumsSeparately = false;
+		}
+		if (processMaximumsSeparately) {
 			processStats(addIt, type, tipNm, uObj.scoresMaximum, abiScoresTxt, "maximums");
 		}
 		if (uObj.scoresOverride) processStats(addIt, type, tipNm, uObj.scoresOverride, abiScoresTxt, "overrides");
@@ -1804,9 +1811,11 @@ function UpdateSheetDisplay() {
 			if (CUflat.indexOf("stats") !== -1) {
 				var statChanges = [];
 				if (CurrentUpdates.types.indexOf("statsrace") !== -1) statChanges.push(toUni("Race"));
-				if (CurrentUpdates.types.indexOf("statsclasses") !== -1) statChanges.push(toUni("Class Feature(s)"));
-				if (CurrentUpdates.types.indexOf("statsfeats") !== -1) statChanges.push(toUni("Feat(s)"));
-				if (CurrentUpdates.types.indexOf("statsoverride") !== -1 || CurrentUpdates.types.indexOf("statsitems") !== -1 || CurrentUpdates.types.indexOf("statsmagic") !== -1) statChanges.push(toUni("Magic Item(s)"));
+				if (CurrentUpdates.types.indexOf("statsclasses") !== -1) statChanges.push(toUni("Class Features"));
+				if (CurrentUpdates.types.indexOf("statsfeats") !== -1) statChanges.push(toUni("Feats"));
+				if (CurrentUpdates.types.find(/^stats(magic|items)$/) !== -1) statChanges.push(toUni("Magic Items"));
+				if (CurrentUpdates.types.indexOf("statsoverride") !== -1) statChanges.push(toUni("Overrides") + " (manual changes reset)");
+				if (CurrentUpdates.types.indexOf("statsmaximum") !== -1) statChanges.push(toUni("Maximums") + " (manual changes reset)");
 				strStats += formatLineList("\nThe following changed one or more ability score:", statChanges);
 			}
 			if (strStats) {

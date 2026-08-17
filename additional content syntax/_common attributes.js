@@ -49,7 +49,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v14.0.6 and newer
+	Sheet:		v14.0.12 and above
 */
 "example feature name" = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -935,15 +935,26 @@ scores : [0, 1, 0, 0, 2, 0],
 
 	Where exactly the numbers will be added in the Ability Scores dialog depends on the parent feature.
 
-	The array will also be used to generate a textual description of the improvement for the dialog
-	and tooltips, but only if the attribute 'scorestxt' is not present in the same feature, see below.
+	The array will also be used to generate a textual description of the improvement for
+	dialogs and tooltips, but only if the feature doesn't have the `scorestxt` attribute.
 
 	Note that if a feature gives you a choice in which ability score to improve,
 	you should put that information in the 'scorestxt' attribute and not include the improvement here.
+
+	MAGIC ITEMS
+	Magic items work different than other features, because their increase can be either
+	one-time (e.g. Manual of Bodily Health) or ongoing while the item is worn/attuned to
+	(e.g. Ioun Stone of Fortitude).
+	For magic items that provide an ongoing increase, you don't need any other attribute,
+	but you can use `scoresMaximum` if this increase can be above 20.
+	For magic items that provide a one-time increase, be sure to also include a matching
+	`scoresMaxLimited` attribute, even if the increase can't be above 20.
+	For magic items that change the total to a fixed value (e.g. Belt of Giant Strength),
+	use the `scoresOverride` attribute instead of this one.
 */
 
 scorestxt : "+2 Charisma and +1 to two other ability scores of my choice",
-/*	scores // OPTIONAL //
+/*	scorestxt // OPTIONAL //
 	TYPE:	string
 	USE:	description of ability score improvements to use in the Ability Scores dialog and tooltips
 
@@ -953,7 +964,7 @@ scorestxt : "+2 Charisma and +1 to two other ability scores of my choice",
 */
 
 scoresOverride : [0, 0, 0, 19, 0, 0],
-/*	scores // OPTIONAL //
+/*	scoresOverride // OPTIONAL //
 	TYPE:	array of six numbers
 	USE:	add ability score overrides to the Ability Scores dialog
 
@@ -963,65 +974,130 @@ scoresOverride : [0, 0, 0, 19, 0, 0],
 
 	An override will be used for the ability score if it would otherwise be less.
 
-	The array will also be used to generate a textual description of the improvement for the dialog and tooltips,
-	but only if the attribute 'scorestxt' is not present in the same feature.
+	The array will also be used to generate a textual description of the improvement for
+	dialogs and tooltips, but only if the feature doesn't have the `scorestxt` attribute.
 */
 
 scoresMaximum : [24, 0, 24, 0, "+2", 0],
-/*	scores // OPTIONAL //
+/*	scoresMaximum // OPTIONAL //
 	TYPE:	array of six numbers or strings
 	USE:	change ability score maximum in the Ability Scores dialog
 	CHANGE:	v13.0.8 (allow modifiers "+2" as well as fixed numbers)
+	CHANGE: v14.0.12 (one-time score increases "up to X" no longer use this attribute)
 
-	By default, the ability score increases can never increase an ability score above 20.
-	Using this attribute, you can change that maximum.
-	Note that the maximum has no effect on something set by the 'scoresOverride' attribute.
+	By default, an ability score increase can never improve an ability score above 20.
+	Using this attribute, you can change the maximum that an ability score can increase to.
+	Only use this if the feature permanently changes the maximum, or it is a magic item
+	that increases the score up to a certain value.
+	For all other features that increases a score up to a value other than 20,
+	or magic items that apply a one-time (not ongoing) increase,
+	use `scoresMaxLimited` instead.
+
+	MAGIC ITEMS WITH ONGOING EFFECT
+	Magic items that increase an ability score to a number higher than 20 whenever the
+	item is worn/attuned are special cases. Because the increase is not bound to a single
+	moment, the order in which this item applies its increase doesn't matter.
+	For these magic items, do not use `scoresMaxLimited`, but use `scoresMaximum` together
+	with `scores`.
+
+	USE ATTRIBUTE       FOR FEATURE TEXT
+	`scoresMaximum`     "Your Strength score increases by 4. Your maximum for it is now 24."
+	`scoresMaxLimited`  "Your Strength score increases by 4, to a maximum of 24."
+	`scoresMaximum`     "While attuned to this magic item, your Strength score increases by 4, to a maximum of 24."
+
+	Note that this maximum has no effect on something set by the 'scoresOverride' attribute.
 
 	This array requires exactly six entries, each being a number.
 	The entries are: [Str, Dex, Con, Int, Wis, Cha].
 	You should put a 0 for an ability score that gets no change in maximum.
 
-	You can enter a lower maximum (1-19), the default of 20 will only be used if nothing sets a maximum.
+	You can enter a number below 20 to decrease the maximum (i.e. 1-19).
+	The default of 20 will be used if nothing sets an alternative maximum.
 	If multiple things change the maximum, the highest of those will be used.
 
-	Alternatively, you can enter a string that reads as a mathematical modifier that adds "+X" or
-	subtracts "-Y". For example, you could set it to "+2" to increase the maximum by 2.
-	These modifiers will be applied to the highest maximum for the score set by other features, or 20,
-	if no other features set a maximum. (e.g. the "+2" will result in a maximum of 22).
-
-	If the maximum has a requirement, because the feature only increases the maximum if the total
-	goes over 20, then take a look at the `scoresMaxLimited` attribute below.
-
-	The array will also be used to generate a textual description of the improvement for the dialog
-	and tooltips, but only if the attribute 'scorestxt' is not present in the same feature.
+	Alternatively, you can enter a string that reads as a mathematical modifier that
+	adds "+X" or subtracts "-Y".
+	For example, you could set it to "+2" to increase the maximum by 2.
+	These modifiers will be applied to the current maximum for the score set by other
+	features, or 20 if no other features have set a maximum.
+	Thus, it matters when the feature is added for what maximum it sets.
+	The array will also be used to generate a textual description of the improvement for
+	dialogs and tooltips, but only if the feature doesn't have the `scorestxt` attribute.
 */
 
-scoresMaxLimited : true,
-/*	scores // OPTIONAL //
-	TYPE:	boolean
-	USE:	whether to apply the ability score maximum increase only if that maximum is reached (true) or always (false)
+scoresMaxLimited : [0, 0, 25, 0, 25, "-2"],
+/*	scoresMaxLimited // OPTIONAL //
+	TYPE:	array of six numbers
+	USE:	only apply the `scores` values up to these maximums
 	ADDED:	v13.0.8
+	CHANGE: v14.0.12 (type changed from boolean to array, no longer dependent on `scoresMaximum`)
 
 	By default, the ability score increases can never increase an ability score above 20.
-	Using the `scoresMaximum` attribute above, you can change that maximum to a higher value.
-	However, some features only allow the maximum to increase if the new total reaches that maximum.
+	Using this attribute, you can have the increases from the `scores` attribute (see
+	above) be limited to the maximum values set here.
+	Only use this if the feature increases a score up to a value other than 20, or for
+	a magic item that applies a one-time increase (even if its limited to 20).
+	If a feature permanently changes the maximum, use `scoresMaximum` instead.
 
-	This attribute only works if the same object also includes both the `scores` and the `scoresMaximum`
-	attributes.
+	NOT FOR MAGIC ITEMS WITH ONGOING EFFECT
+	Magic items that increase an ability score to a number higher than 20 whenever the
+	item is worn/attuned are special cases. Because the increase is not bound to a single
+	moment, the order in which this item applies its increase doesn't matter.
+	For these magic items, do not use `scoresMaxLimited`, but use `scoresMaximum`.
+	Items that cause a one-time addition, but still limit the ability to maximum 20
+	should still set this attribute, as it tells the sheet that it is a one-time addition
+	and not an ongoing effect.
 
-	For example, a magic item might read: "Your Constitution score increases by 2, up to a maximum of 22."
-	Thus, if the score is currently 18, it is increased to 20, but its maximum should stay 20.
-	If the feature is worded like that, set this attribute to true and set `scores` and `scoresMaximum` 
-	attributes to the respective bonuses. The result will then look like this:
-		scores : [0, 0, 2, 0, 0, 0],
-		scoresMaximum : [0, 0, 22, 0, 0, 0],
-		scoresMaxLimited : true
+	USE ATTRIBUTE       FOR FEATURE TEXT
+	`scoresMaximum`     "Your Strength score increases by 4. Your maximum for it is now 24."
+	`scoresMaxLimited`  "Your Strength score increases by 4, to a maximum of 24."
 
-	// IMPORTANT //
-	When setting this attribute to `true`, the `scoresMaximum` can't have modifiers (e.g. "+2"), but can
-	only exists of numbers.
+	IMPORTANT
+	It matters when the feature is added for what bonus and maximum it applies, see
+	the EXAMPLE below.
 
-	Setting this attribute to false is the same as not including this attribute.
+	EXAMPLE
+	For example, a feature might read:
+		"Your Strength and Constitution scores increase by 4, to a maximum of 25."
+	Then you would use the attributes:
+		scores: [4, 0, 0, 0, 0, 0],
+		scoresMaxLimited: [25, 0, 0, 0, 0, 0],
+	Which, when applied, will results in:
+		BEFORE    AFTER      EFFECT
+		STR MAX   STR MAX    STR MAX
+		15   20   19   20    +4   +0
+		18   20   22   22    +4   +2
+		23   23   25   25    +2   +2
+		26   27   26   27    +0   +0
+	Even when something later changes the maximum, the bonus from this example feature
+	will not change.
+
+	Alternatively, you can enter a string that reads as a mathematical modifier that
+	adds "+X" or subtracts "-Y".
+	For example, you could set it to "+2" to increase the maximum by 2.
+	These modifiers will be applied to the current maximum for the score set by other
+	features, or 20 if no other features have set a maximum.
+	Thus, it matters when the feature is added for what maximum it sets.
+	The array will also be used to generate a textual description of the improvement for
+	dialogs and tooltips, but only if the feature doesn't have the `scorestxt` attribute.
+
+	MATCHING `scores` REQUIRED
+	Use of this attribute requires a matching `scores` attribute that affects the same
+	abilities.
+
+	MAGIC ITEMS WITH ONE-TIME SCORE INCREASES
+	When this attribute, and a matching `scores` attribute, are set for a magic item,
+	it will be treated as causing a one-time ability score increase. This works different
+	than an item that needs attuning, the one-time increase is gained and stays regardless
+	of what happens to the item.
+	The sheet will prompt the player when they select a magic item with this attribute,
+	asking if the one-time increase should be applied. It will also ask the player if this
+	increase should remain when the magic item is removed.
+	If the magic item can be applied multiple times, it can set the `scoresStackable`
+	attribute, see the "magic item (MagicItemsList).js" syntax file.
+
+	The array will also be used to generate a textual description of the improvement for
+	dialogs and tooltips, but only if the feature doesn't have the `scorestxt` attribute.
 */
 
 
