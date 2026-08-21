@@ -98,7 +98,7 @@ var GenericClassFeatures = {
 
 var Base_ClassList = {
 	"barbarian" : {
-		regExpSearch : /^((?=.*(marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n))|((?=.*(warrior|fighter))(?=.*(feral|tribal)))).*$/i,
+		regExpSearch : /^((?=.*(marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n))|((?=.*warrior)(?=.*(feral|tribal))))(?!.*(monk|fighter|paladin|ranger)).*$/i,
 		name : "Barbarian",
 		source : [["SRD", 8], ["P", 46]],
 		primaryAbility : "Strength",
@@ -666,7 +666,7 @@ var Base_ClassList = {
 	},
 
 	"fighter" : {
-		regExpSearch : /^(?!.*(feral|tribal|dark|green|fey|horned|totem|spiritual|exalted|sacred|holy|divine|nature|odin|thor|nature|natural|green|beast|animal))(?=.*(fighter|warrior|militant|warlord|phalanx|gladiator|trooper)).*$/i,
+		regExpSearch : /^(?!.*(feral|tribal|dark|green|fey|horned|totem|spiritual|exalted|sacred|holy|divine|nature|odin|thor|nature|natural|green|beast|animal|))(?=.*(fighter|warrior|militant|warlord|phalanx|gladiator|trooper))(?!.*(barbarian|monk|paladin|ranger)).*$/i,
 		name : "Fighter",
 		source : [["SRD", 24], ["P", 70]],
 		primaryAbility : "Strength or Dexterity",
@@ -746,7 +746,7 @@ var Base_ClassList = {
 	},
 
 	"monk" : {
-		regExpSearch : /^((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior)))).*$/i,
+		regExpSearch : /^((?=.*(monk|monastic))|(((?=.*martial)(?=.*(artist|arts)))|((?=.*spiritual)(?=.*warrior))))(?!.*(barbarian|fighter|paladin|ranger)).*$/i,
 		name : "Monk",
 		source : [["SRD", 26], ["P", 76]],
 		primaryAbility : "Dexterity and Wisdom",
@@ -1025,7 +1025,7 @@ var Base_ClassList = {
 	},
 
 	"paladin" : {
-		regExpSearch : /^((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
+		regExpSearch : /^((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|warrior|warlord|trooper))))(?!.*(monk|fighter|barbarian|ranger)).*$/i,
 		name : "Paladin",
 		source : [["SRD", 30], ["P", 82]],
 		primaryAbility : "Strength and Charisma",
@@ -1179,7 +1179,7 @@ var Base_ClassList = {
 	},
 
 	"ranger" : {
-		regExpSearch : /^((?=.*(ranger|strider))|((?=.*(nature|natural))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
+		regExpSearch : /^((?=.*(ranger|strider))|((?=.*(nature|natural))(?=.*(knight|warrior|warlord|trooper))))(?!.*(monk|fighter|barbarian|paladin)).*$/i,
 		name : "Ranger",
 		source : [["SRD", 35], ["P", 89]],
 		primaryAbility : "Dexterity and Wisdom",
@@ -3071,7 +3071,7 @@ var Base_ClassSubList = {
 		}
 	},
 	"paladin-oath of devotion" : {
-		regExpSearch : /^(?=.*(devotion|obedience))((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper)))).*$/i,
+		regExpSearch : /^(?=.*(devotion|obedience))((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|warrior|warlord|trooper)))).*$/i,
 		subname : "Oath of Devotion",
 		subnameshort: "Devotion",
 		source : [["SRD", 32], ["P", 86]],

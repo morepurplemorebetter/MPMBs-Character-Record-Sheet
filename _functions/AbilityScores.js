@@ -77,22 +77,29 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 	// Types that have their value 
 	var registerSpecial = function(sRef, idxScore, sName, iValue) {
 		var oRef = CurrentStats[sRef + "s"][idxScore];
+		// Get the total before making the change
+		var reducerFunc = function(iTotal, key) { return Math.max(iTotal, oRef[key]); };
+		var iValueBefore = Object.keys(oRef).reduce(reducerFunc, 0);
+		if (sRef === "maximum" && iValueBefore === 0) iValueBefore = 20; // default is max 20
 		// Save this for safekeeping
 		if (AddRemove) {
 			oRef[sName] = iValue;
 		} else {
 			delete oRef[sName];
 		}
-		// Distill the new value from the resulting reference object and set that as the column value
+		// Distill the new value from the resulting reference object and set that as the column value, unless th
+		var iValueAfter = Object.keys(oRef).reduce(reducerFunc, 0);
 		var iObjColIdx = CurrentStats.cols.findIndex(function (obj) { return obj.type === sRef; });
 		if (iObjColIdx === -1) return;
 		var oColScores = CurrentStats.cols[iObjColIdx].scores;
 		var iCurrent = oColScores[idxScore];
-		oColScores[idxScore] = Object.keys(oRef).reduce(function(iTotal, key) {
-			return Math.max(iTotal, oRef[key]);
-		}, 0);
-		if (sRef === "maximum" && oColScores[idxScore] === 0) oColScores[idxScore] = 20;
-		if (iCurrent !== oColScores[idxScore]) CurrentUpdates.types.push("stats" + sRef);
+		if (iCurrent && iCurrent !== iValueBefore && iCurrent > iValueAfter) {
+			// The value was assigned manually and higher than what we are about to set it, so let it stay as is
+		} else if (iCurrent !== iValueAfter) {
+			// Not manually set and something changed, so apply the change
+			oColScores[idxScore] = sRef === "maximum" && iValueAfter === 0 ? 20 : iValueAfter;
+			CurrentUpdates.types.push("stats" + sRef);
+		}
 	}
 
 	// Loop through the ability scores
@@ -104,16 +111,6 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 			// Just reset to zero before doing anything, as there can be only one race/background
 			oCol.scores[i] = 0;
 		}
-
-		var iScoreStillDo = {
-			apply: !!iScore && !isSpecial,
-			description: !!iScore && !isSpecial && AddRemove,
-		};
-		var iMaxStillDo = {
-			apply: !!iMax && !isSpecial,
-			description: !!iMax && !isSpecial && AddRemove,
-			isMod: false,
-		};
 
 		if (!iScore && !iMax) continue; // nothing to do for this ability
 
@@ -146,11 +143,11 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 					iMax = Math.max(20, iScoreNow + iScore);
 				}
 				// Maximum and changes to the description
-				var sScoreChange = iScoreNow + (iScore >= 0 ? "+" : "") + iScore + "=" + (iScoreNow + iScore);
+				var sScoreChange = " (" + iScoreNow + (iScore >= 0 ? "+" : "") + iScore + "=" + (iScoreNow + iScore) + ")";
 				if (isModMax) {
-					description += " to its maximum " + isModMax + " (" + sScoreChange + ")";
+					description += " to its maximum " + isModMax + sScoreChange;
 				} else {
-					description += " to a maximum of " + displayMax + " (" + sScoreChange + ")";
+					description += " to a maximum of " + displayMax + sScoreChange;
 				}
 				aDescriptions.push(description); // Add description for the tooltip and dialog
 
@@ -520,9 +517,9 @@ function AbilityScores_Button(onlySetTooltip) {
 		var oBaseCol = CurrentStats.cols[oBaseColIdx];
 		for (var i = 0; i < oBaseCol.scores.length; i++) {
 			var oStat = getAbilityScoreTotals(i);
-			// No need to calculate the base if there is nothing in the field or the calculated version is the same as the field value
+			// No need to update the base if there is nothing in the field or the calculated version is the same as the field value
 			if (oStat.value && oBaseCol.scores[i] === 8 && oStat.value !== oStat.calculatedTotal) {
-				oBaseCol.scores[i] = oStat.value - oStat.bonus - oStat.ongoingBonus;
+				oBaseCol.scores[i] = oStat.value;
 			}
 		}
 	}
@@ -535,7 +532,7 @@ function AbilityScores_Button(onlySetTooltip) {
 		].join("\n"),
 		[
 			'\xB9 The "Items up to Max X" column is set by automated magic items that apply a ongoing bonus (i.e. not one-time). These adhere to their own maximums, which are not displayed in the row. The value in this column can change depending on other column values.',
-			'\xB2 "Override" and "Items up to Max X" columns ignore the maximum. Manual changes to the "Magical Override" and "Max Total" column will be overwritten by automation if you (de)select something that affects their value.',
+			'\xB2 "Override" and "Items up to Max X" columns ignore the maximum. Manual changes to the "Magical Override" and "Max Total" column will be overwritten by automation if you (de)select something that affects their value.', // NOG VERANDEREN NA TESTEN!!!
 		].join("\n"),
 	];
 	var curHoS = What("HoSRememberState");
@@ -1463,6 +1460,7 @@ function getAbilityScoreTotals(ability, dialogStore) {
 		base: 8, // value from the base column
 		bonuses: [], // value from each column that modifies the base (not ongoing, maximum or override)
 		bonus: 0, // sum of bonuses
+		bonusesMaxLimited: [], // all previously applied MaxLimited
 		maximums: Object.keys(CurrentStats.maximums[idx]).map(function (key) {
 			return { name: key, value: CurrentStats.maximums[idx][key] };
 		}), // all registered maximums

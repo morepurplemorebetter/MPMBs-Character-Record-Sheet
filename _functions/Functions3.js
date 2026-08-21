@@ -1814,8 +1814,8 @@ function UpdateSheetDisplay() {
 				if (CurrentUpdates.types.indexOf("statsclasses") !== -1) statChanges.push(toUni("Class Features"));
 				if (CurrentUpdates.types.indexOf("statsfeats") !== -1) statChanges.push(toUni("Feats"));
 				if (CurrentUpdates.types.find(/^stats(magic|items)$/) !== -1) statChanges.push(toUni("Magic Items"));
-				if (CurrentUpdates.types.indexOf("statsoverride") !== -1) statChanges.push(toUni("Overrides") + " (manual changes reset)");
-				if (CurrentUpdates.types.indexOf("statsmaximum") !== -1) statChanges.push(toUni("Maximums") + " (manual changes reset)");
+				if (CurrentUpdates.types.indexOf("statsoverride") !== -1) statChanges.push(toUni("Overrides (manual changes reset)"));
+				if (CurrentUpdates.types.indexOf("statsmaximum") !== -1) statChanges.push(toUni("Maximums (manual changes reset)"));
 				strStats += formatLineList("\nThe following changed one or more ability score:", statChanges);
 			}
 			if (strStats) {
@@ -3847,7 +3847,10 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			} else if (typeNm == "ammunition" && (kObj.isMagicAmmo || WeaponsList[key])) {
 				continue;
 			}
-			if (typeObj.excludeCheck && typeObj.excludeCheck(key, kObj)) continue;
+			if (typeObj.excludeCheck) {
+				var gatherVars = typeNm == "weapon" ? gatherWeaponVars(key, kObj) : false;
+				if (typeObj.excludeCheck(key, kObj, gatherVars)) continue;
+			}
 			var capName = (kObj.invName ? kObj.invName : kObj.name).capitalize().replace(rxComma, "$2 $1").replace(rxPluralS, '');
 			if (itemChoices.indexOf(capName) == -1) itemChoices.push(capName);
 			itemRefs[capName] = key;
@@ -3857,7 +3860,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			userSelected = itemChoices[0];
 			displayError(false, "During importing from another MPMB's Character Record Sheet, the sheet was unable to show a pop-up dialog to let you choose what type of " + typeNm + ' the "' + curName + '" is. As a result, "' + userSelected + '" was chosen for you automatically. If you wish to change this, reapply the "' + curName + '".');
 		} else {
-			var userSelected = AskUserOptions("Select Type of " + typeNmC, "Choose which " + typeNm + " type this '" + curName + "' is.\nIf you want to change the " + typeNm + " type at a later time, select the magic item again from the drop-down box." + (aMI.choices ? "\nYou will also be prompted to select the " + typeNm + " type again when you select a choice using the button in this magic item line," + (aMIvar ? " even when selecting '" + aMIvar.name + "' again." : ".") : ""), itemChoices, "radio", true);
+			var userSelected = AskUserOptions("Select Type of " + typeNmC, "Choose which " + typeNm + " type this '" + curName + "' is.\nYou can use the in-line button to change the " + typeNm + " type at a later time." + (aMI.choices ? "\nYou will also be prompted to select the " + typeNm + " type again when you select a choice using the in-line button," + (aMIvar ? " even when selecting '" + aMIvar.name + "' again." : ".") : ""), itemChoices, "radio", true);
 		}
 
 		var theItemName = userSelected.toLowerCase();
@@ -3984,6 +3987,51 @@ function gatherPrereqevalVars() {
 		gObj[attr + "LC"] = gObj[attr].map(toLC);
 	});
 	return gObj;
+}
+
+// Gather some variables to pass to an excludeCheck function
+function gatherWeaponVars(inputObjectKey, inputObject) {
+	// If the attack has a baseWeapon property, we need to create the full attack object first
+	if (!inputObject) inputObject = WeaponsList[inputObjectKey];
+	var baseWeaponKey = inputObject.baseWeapon && WeaponsList[inputObject.baseWeapon] ? inputObject.baseWeapon : false;
+	var oBaseWeapon = baseWeaponKey ? WeaponsList[baseWeaponKey] : {};
+	var gatherVars = {
+		weaponKey: inputObjectKey,
+		baseWeaponKey: baseWeaponKey,
+		baseWeaponName: baseWeaponKey ? baseWeaponKey : inputObjectKey,
+		theWea: Object.assign({}, oBaseWeapon, inputObject),
+		get isDC() {
+			return this.theWea.dc !== undefined ? this.theWea.dc : this.theWea.modifiers && /dc/i.test(this.theWea.modifiers[0]);
+		},
+		get isSpellKey() {
+			return this.theWea.SpellsList ? this.theWea.SpellsList :
+				SpellsList[this.weaponKey] ? this.weaponKey :
+				this.baseWeaponKey && SpellsList[this.baseWeaponKey] ? this.baseWeaponKey :
+				ParseSpell(this.theWea.name);
+		},
+		get isSpell() {
+			return this.isSpellKey || /cantrip|spell/i.test(this.theWea.type) ? true : false;
+		},
+		get isWeapon() {
+			return this.theWea.isNotWeapon ? false : !this.isSpell || !/cantrip|spell/i.test(this.theWea.type);
+		},
+		get isMeleeWeapon() {
+			return /melee/i.test(this.theWea.range) && this.isWeapon;
+		},
+		get isRangedWeapon() {
+			return /^(?!.*melee)(?=.*\d).*$/i.test(this.theWea.range) && this.isWeapon;
+		},
+		get isThrownWeapon() {
+			return /\bthrown\b/i.test(this.theWea.description) && /\d ?(ft|m)\.?($|[^)])/i.test(this.theWea.range) && this.isWeapon;
+		},
+		get isNaturalWeapon() {
+			return /natural/i.test(this.theWea.type);
+		},
+		get isSimpleOrMartial() {
+			return /simple|martial/i.test(this.theWea.type) && this.isWeapon;
+		},
+	};
+	return gatherVars;
 }
 
 // set the checkbox for "Players Make All Rolls" (also field MouseUp)

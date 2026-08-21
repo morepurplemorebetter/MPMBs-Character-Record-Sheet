@@ -39,7 +39,7 @@
 				You will also need the syntax for adding a source if you want the magic item
 				to have a source that doesn't yet exist in the sheet.
 
-	Sheet:		v14.0.12 and above
+	Sheet:		v14.0.13 and above
 
 */
 
@@ -542,14 +542,36 @@ MagicItemsList["staff of purple"] = {
 	/*	excludeCheck // OPTIONAL //
 		TYPE:	function
 		USE:	filter things from the list of weapon, armor, or ammunition from the options
+		CHANGE:	v14.0.13 (added third variable: `v`)
 
 		This function is called for each entry in the WeaponsList, ArmourList, or AmmoList (depending on 'type', see above).
 		If the function returns `true` for an entry, that entry will be omitted from the pop-up dialog.
-		This function is passed two variables:
+		This function is passed three variables:
 		1)	inObjKey
 				A string of the name of the entry in the list variable (WeaponsList, ArmourList, or AmmoList)
 		2)	inObj
 				The object of the entry (e.g. WeaponsList[inObjKey])
+		3)	v [added in v14.0.13]
+			An object with some information about the weapon.
+			This variable is only passed if the chooseGear.type is "weapon".
+			Changing this object will do nothing, but you can use its input to test things
+
+			An explanation of the different attributes of this variable:
+			var v = {
+				baseWeaponName, // string, the key of the entry in the WeaponsList object that the weapon is based on (or its own key if it is not based on anything)
+				theWea, // object, a combination of inObj and its baseWeapon, if any. If no baseWeapon is set, this will be identical to inObj
+				isDC, // boolean, whether or not this attack has a To Hit (false) or a DC (true)
+				isSpell, // boolean, whether (true) or not (false) this attack is a recognized cantrip or spell. Be aware that something can be both a spell/cantrip and a weapon attack
+				isSpellKey, // string, the recognized key of the spell in the SpellsList object
+				isWeapon, // boolean, whether (true) or not (false) this attack is considered a weapon attack
+				isMeleeWeapon, // boolean, whether (true) or not (false) this attack has a range of 'melee' and is considered a melee weapon attack
+				isRangedWeapon, // boolean, whether (true) or not (false) this attack has a range that doesn't include 'melee' and is considered a ranged weapon attack
+				isThrownWeapon, // boolean, whether (true) or not (false) this attack is a weapon and has the 'thrown' property
+				isNaturalWeapon, // boolean, whether (true) or not (false) this attack has the type 'natural'
+				isSimpleOrMartial, // boolean, whether (true) or not (false) this weapon has the Simple or Martial type
+			}
+			Thus, if you only want to include melee weapons, you would do:
+				return !v.isMeleeWeapon;
 
 		The above example returns true for the ArmourList 'hide' entry, making sure that the Hide armour is not part of the pop-up.
 	*/
