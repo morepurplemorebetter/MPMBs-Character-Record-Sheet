@@ -158,6 +158,7 @@ function GetSpellObject(theSpl, theCast, firstCol, isDuplicate, tooltipOnly) {
 					for (var changeO in theOver[key]) {
 						aSpell.changesObj[changeO] = theOver.changesObj[changeO];
 					}
+					continue;
 				}
 				aSpell[key] = theOver[key];
 			}

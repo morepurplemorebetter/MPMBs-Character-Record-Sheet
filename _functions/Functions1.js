@@ -5273,7 +5273,10 @@ function ApplyFeat(input, FldNmbr) {
 		if (theFeat.descriptionFull) tooltipStr += "\n\n" + formatDescriptionFull(theFeat.descriptionFull);
 
 		// Get the description
-		var theDesc = !theFeat.description ? "" : What("Unit System") === "imperial" ? theFeat.description : ConvertToMetric(theFeat.description, 0.5);
+		var theDesc = !theFeat.description ? "" : theFeat.description;
+		if (isArray(theDesc)) theDesc = theDesc.join("\r");
+		if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
+
 		// Set it all to the appropriate field
 		Value(Fflds[2], theDesc, tooltipStr, theFeat.calculate ? theCalc : "");
 

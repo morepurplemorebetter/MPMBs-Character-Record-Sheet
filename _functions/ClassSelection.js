@@ -151,6 +151,11 @@ function SelectClass() {
 				var cs = this.curSelec[i];
 				if (!cs || cs.length === 0) {
 					this.curSelec[i] = [];
+					if (i === 0 && this.finalLevel === 0 && this.LVLchange) {
+						var newLevel = Math.min(this.LVLchange, 20);
+						this.curSelec[i][0] = newLevel;
+						toLoad["r0LV"] = newLevel.toString();
+					}
 					toLoad["r" + i + "CD"] = this.getRemainingClassList();
 					continue;
 				};
@@ -167,7 +172,6 @@ function SelectClass() {
 			};
 			dialog.load(toLoad);
 			dialog.enable(toUse);
-			var toShow = {nLVL : toUse.nLVL};
 			dialog.visible(toUse);
 			dialog.setForeColorRed("nLVL");
 			dialog.setForeColorRed("rngr");
@@ -863,7 +867,7 @@ function SelectClass() {
 							item_id : "bAdR",
 							type : "button",
 							alignment : "align_right",
-							name : "Add Empty Row"
+							name : "Add Extra Row"
 						}]
 					}]
 				}, {
@@ -1030,7 +1034,7 @@ function SelectClass() {
 		Value("Delimiter", ClassSelection_Dialog.delimiter);
 		// if the final class text doesn't have a number in it, add the total level at the end
 		// this is done so that with only single class that only has its level changed, it is still applied
-		if (!(/\d/).test(txtFinal)) txtFinal += " " + lvlFinal;
+		if (!/\d/.test(txtFinal)) txtFinal += " " + lvlFinal;
 		// update the class field
 		if (ClassFld !== txtFinal) { // text changed
 			delete tDoc.getField("Class and Levels").remVal;
@@ -1044,7 +1048,7 @@ function SelectClass() {
 
 //and On Click function for the Class and Levels field
 function ClickClasses() {
-	if (!CurrentVars.manual.classes && app.viewerVersion >= 15 && (!event.target.value || event.modifier || event.shift)) {
+	if (!CurrentVars.manual.classes && app.viewerVersion >= 15) {
 		event.target.remVal = event.target.value;
 		tDoc.getField("Player Name").setFocus();
 		SelectClass();

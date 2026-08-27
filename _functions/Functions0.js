@@ -1742,7 +1742,7 @@ function formatRichText() {
 					rect = event.target.rect;
 				}
 				// If we have dimensions, roughly estimate the amount of characters on the first line
-				if (rect) event.target.charsPerLine = Math.floor(( rect[2] - rect[0] ) / 3);
+				if (rect) event.target.charsPerLine = Math.floor(( rect[2] - rect[0] ) / 3.25);
 			}
 			event.target.firstLineOneParagraph = firstPar && firstPar[0].length < event.target.charsPerLine;
 		}

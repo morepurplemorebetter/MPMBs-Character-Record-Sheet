@@ -343,6 +343,7 @@ MagicItemsList["staff of purple"] = {
 	TYPE:	string
 	USE:	the text to be filled in the description field of the magic item
 	CHANGE: v14.0.0 (formatting characters)
+	CHANGE: v14.0.13 (array input joined by carriage return "\r")
 
 	Note that the sheet normally uses the first person for this.
 	Make sure that this description is not too long and fits on the description field on
@@ -390,12 +391,15 @@ MagicItemsList["staff of purple"] = {
 
 	Be aware that the default font on the Colourful sheets is already italic,
 	so making something only italic won't be visible on the Colourful sheets.
+
+	If this attribute is an array, the sheet will join it with a carriage return "\r".
 */
 	descriptionLong : "A heavy ceramic jug. As an action, the jug can be commanded to hold a chosen liquid. With another action, I can uncork the jug and pour the liquid out at 2 gallons per minute. Once commanded to produce a liquid, it can't produce a different one or more than the maximum of one, until the next dawn.\nLiquids (with maximum): acid (8 fl. oz.), basic poison (1/2 fl. oz.), beer (4 gallons), honey (1 gallon), mayonnaise (2 gallons), oil (1 quart), vinegar (2 gallons), fresh water (8 gallons), salt water (12 gallons), wine (1 gallon).",
 /*	descriptionLong // OPTIONAL //
 	TYPE:	string
 	USE:	the text to be filled in the description field of the magic item, but only on the overflow page
 	CHANGE: v14.0.0 (formatting characters)
+	CHANGE: v14.0.13 (array input joined by carriage return "\r")
 
 	Use this attribute in addition to the 'description' attribute.
 	This attribute will only be used when the magic item is added on the overflow page,
@@ -412,6 +416,8 @@ MagicItemsList["staff of purple"] = {
 	FORMATTING CHARACTERS (since v14.0.0)
 	This can be formatted using the Rich Text formatting characters.
 	See the `description` attribute above for an explanation of how they work.
+
+	If this attribute is an array, the sheet will join it with a carriage return "\r".
 */
 	descriptionFull : "You have a swimming speed of 40 feet while wearing this ring.",
 	descriptionFull : [

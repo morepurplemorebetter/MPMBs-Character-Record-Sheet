@@ -1726,7 +1726,7 @@ function UpdateSheetDisplay() {
 						item_id : "CNCL",
 						ok_name : "Close",
 						cancel_name : "Close",
-						height : 0
+						height : tDoc.isWindows ? -12 : -6,
 					}]
 				}]
 			}]
@@ -2892,11 +2892,9 @@ function ApplyMagicItem(input, FldNmbr) {
 		if (theMI.descriptionFull) tooltipStr += "\n\n" + formatDescriptionFull(theMI.descriptionFull);
 
 		// Get the description
-		var theDesc = "";
-		if (!theMI.calculate) {
-			theDesc = FldNmbr > FieldNumbers.magicitemsD && theMI.descriptionLong ? theMI.descriptionLong : theMI.description ? theMI.description : "";
-			if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
-		}
+		var theDesc = FldNmbr > FieldNumbers.magicitemsD && theMI.descriptionLong ? theMI.descriptionLong : theMI.description ? theMI.description : "";
+		if (isArray(theDesc)) theDesc = theDesc.join("\r");
+		if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
 
 		// Set it all to the appropriate field
 		Value(MIflds[2], theDesc, tooltipStr, theMI.calculate ? theCalc : "");
@@ -2971,6 +2969,7 @@ function correctMIdescriptionLong(FldNmbr) {
 	if (!aMI || theMI.calculate || !theMI.descriptionLong) return;
 
 	var theDesc = FldNmbr > FieldNumbers.magicitemsD && theMI.descriptionLong ? theMI.descriptionLong : theMI.description ? theMI.description : "";
+	if (isArray(theDesc)) theDesc = theDesc.join("\r");
 	if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
 	Value("Extra.Magic Item Description " + FldNmbr, theDesc);
 	// Apply the chooseGear item again to the description
@@ -3054,6 +3053,14 @@ function correctMIattunedVisibility(pageType) {
 	for (var i = startNo; i <= endNo; i++) {
 		setMIattunedVisibility(i, true);
 	}
+}
+
+// Test if magic item is attuned (true) or not (false) or doesn't require attunement (true)
+function isMagicItemAttuned(knownIndex) {
+	var FldNmbr = knownIndex + 1;
+	if (isNaN(FldNmbr) || knownIndex < 0 || FldNmbr > FieldNumbers.magicitems) return false;
+	var MIflds = ReturnMagicItemFieldsArray(FldNmbr);
+	return tDoc.getField(MIflds[4]).isBoxChecked(0) || How(MIflds[4]) !== "";
 }
 
 // Set the options of the dropdown of magic items
@@ -3386,7 +3393,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 					choiceMenu.oSubMenu.push({
 						cName : aCh + stringSource(aMI[aChL].source ? aMI[aChL] : aMI, "first,abbr", "\t   [", "]"),
 						cReturn : "item#choice#" + aChL,
-						bMarked : theMI == aChL
+						bMarked : theMIchoice == aChL
 					});
 				}
 				if (choiceMenu.oSubMenu.length > 1) magicMenu.push(choiceMenu);
@@ -3828,7 +3835,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	if (!AddRemove) {
 		if (isItem) {
 			selectedItem = baseList[isItem].name;
-			var theItemName = selectedItem.toLowerCase();
+			var theItemName = selectedItem;
 		} else {
 			return; // nothing more to do if we are just removing this item and no item is found
 		}
@@ -3863,18 +3870,20 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			var userSelected = AskUserOptions("Select Type of " + typeNmC, "Choose which " + typeNm + " type this '" + curName + "' is.\nYou can use the in-line button to change the " + typeNm + " type at a later time." + (aMI.choices ? "\nYou will also be prompted to select the " + typeNm + " type again when you select a choice using the in-line button," + (aMIvar ? " even when selecting '" + aMIvar.name + "' again." : ".") : ""), itemChoices, "radio", true);
 		}
 
-		var theItemName = userSelected.toLowerCase();
+		var theItemName = userSelected;
 		isItem = itemRefs[userSelected];
 		selectedItem = baseList[isItem].name;
 	} else {
 		if (isApplyFld && event.target.setValPrepared) selectedItem = baseList[isItem].name;
-		var theItemName = (baseList[isItem].invName ? baseList[isItem].invName : baseList[isItem].name).toLowerCase();
+		var theItemName = (baseList[isItem].invName ? baseList[isItem].invName : baseList[isItem].name);
 	}
+	// Make lower case if using 5e rules or capitalized if using 2024 rules
+	theItemName = tDoc.use2024Rules ? theItemName.capitalize(): theItemName.toLowerCase();
 	// Inverse if written with a comma
 	theItemName = theItemName.replace(rxComma, "$2 $1").replace(rxPluralS, '');
 	if (selectedItem) selectedItem = selectedItem.replace(rxComma, "$2 $1").replace(rxPluralS, '');
 	// get the new name of the magic item
-	var theItemNameCap = theItemName.capitalize();
+	var theItemNameCap = tDoc.use2024Rules ? theItemName : theItemName.capitalize();
 	var newMIname = useVal;
 	if (selectedItem && typeObj.prefixOrSuffix) {
 		if (isArray(typeObj.prefixOrSuffix)) {

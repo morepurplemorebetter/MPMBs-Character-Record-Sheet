@@ -504,8 +504,8 @@ var Base_MagicItemsList = {
 		descriptionFull : "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt's score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The belt of stone giant strength and the belt of frost giant strength look different, but they have the same effect.\n\n" + toUni("Type\t\tStr\tRarity") + "\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant   \t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
 		attunement : true,
 		allowDuplicates : true,
-		choices : ["Hill (Str 21, rare)", "Frost (Str 23, very rare)", "Stone (Str 23, very rare)", "Fire (Str 25, very rare)", "Cloud (Str 27, legendary)", "Storm (Str 29, legendary)"],
-		"hill (str 21, rare)" : {
+		choices : ["Hill Giant (Str 21, rare)", "Frost Giant (Str 23, very rare)", "Stone Giant (Str 23, very rare)", "Fire Giant (Str 25, very rare)", "Cloud Giant (Str 27, legendary)", "Storm Giant (Str 29, legendary)"],
+		"hill giant (str 21, rare)" : {
 			name : "Belt of Hill Giant Strength",
 			sortname : "Belt of Giant Strength, Hill (Str 21)",
 			rarity : "rare",
@@ -513,7 +513,7 @@ var Base_MagicItemsList = {
 			description : "My Strength score is 21 while I'm wearing this belt, provided that my Strength is not already 21 or higher.",
 			scoresOverride : [21, 0, 0, 0, 0, 0]
 		},
-		"frost (str 23, very rare)" : {
+		"frost giant (str 23, very rare)" : {
 			name : "Belt of Frost Giant Strength",
 			sortname : "Belt of Giant Strength, Frost (Str 23)",
 			rarity : "very rare",
@@ -521,7 +521,7 @@ var Base_MagicItemsList = {
 			description : "My Strength score is 23 while I'm wearing this belt, provided that my Strength is not already 23 or higher.",
 			scoresOverride : [23, 0, 0, 0, 0, 0]
 		},
-		"stone (str 23, very rare)" : {
+		"stone giant (str 23, very rare)" : {
 			name : "Belt of Stone Giant Strength",
 			sortname : "Belt of Giant Strength, Stone (Str 23)",
 			rarity : "very rare",
@@ -529,7 +529,7 @@ var Base_MagicItemsList = {
 			description : "My Strength score is 23 while I'm wearing this belt, provided that my Strength is not already 23 or higher.",
 			scoresOverride : [23, 0, 0, 0, 0, 0]
 		},
-		"fire (str 25, very rare)" : {
+		"fire giant (str 25, very rare)" : {
 			name : "Belt of Fire Giant Strength",
 			sortname : "Belt of Giant Strength, Fire (Str 25)",
 			rarity : "very rare",
@@ -537,7 +537,7 @@ var Base_MagicItemsList = {
 			description : "My Strength score is 25 while I'm wearing this belt, provided that my Strength is not already 25 or higher.",
 			scoresOverride : [25, 0, 0, 0, 0, 0]
 		},
-		"cloud (str 27, legendary)" : {
+		"cloud giant (str 27, legendary)" : {
 			name : "Belt of Cloud Giant Strength",
 			sortname : "Belt of Giant Strength, Cloud (Str 27)",
 			rarity : "legendary",
@@ -545,7 +545,7 @@ var Base_MagicItemsList = {
 			description : "My Strength score is 27 while I'm wearing this belt, provided that my Strength is not already 27 or higher.",
 			scoresOverride : [27, 0, 0, 0, 0, 0]
 		},
-		"storm (str 29, legendary)" : {
+		"storm giant (str 29, legendary)" : {
 			name : "Belt of Storm Giant Strength",
 			sortname : "Belt of Giant Strength, Storm (Str 29)",
 			rarity : "legendary",
@@ -582,7 +582,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'Cursed';
 					}
 				},
-				'If I include the word "Berserker" in a the name of an axe, it will be treated as the magic weapon Berserker Axe. It has +1 to hit and damage, but also bears a curse.'
+				'If I include the word "Berserker" in the name of an axe, it will be treated as the magic weapon Berserker Axe. It has +1 to hit and damage, but also bears a curse.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -1287,7 +1287,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'Attacks on its own as a bonus action';
 					}
 				},
-				'If I include the word "Dancing" in a the name of a sword, it will be treated as the magic weapon Dancing Sword. The sword can be made to attack on its own as a bonus action.'
+				'If I include the word "Dancing" in the name of a sword, it will be treated as the magic weapon Dancing Sword. The sword can be made to attack on its own as a bonus action.'
 			]
 		}
 	},
@@ -1512,7 +1512,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + '+3 bonus can be used for AC instead';
 					}
 				},
-				'If I include the word "Defender" in a the name of a sword, it will be treated as the magic weapon Defender. It has +3 to hit and damage, but this bonus can be lowered and added to AC instead. Decide to do so with the first attack on your turn.'
+				'If I include the word "Defender" in the name of a sword, it will be treated as the magic weapon Defender. It has +3 to hit and damage, but this bonus can be lowered and added to AC instead. Decide to do so with the first attack on your turn.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -1782,7 +1782,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + '+3d6 damage vs. dragons';
 					}
 				},
-				'If I include the words "Dragon Slayer" in a the name of a sword, it will be treated as the magic weapon Dragon Slayer. It has +1 to hit and damage and deals +3d6 damage to creatures with the dragon type.'
+				'If I include the words "Dragon Slayer" in the name of a sword, it will be treated as the magic weapon Dragon Slayer. It has +1 to hit and damage and deals +3d6 damage to creatures with the dragon type.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -2199,7 +2199,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'While active, +2d6 fire damage';
 					}
 				},
-				'If I include the words "Flame Tongue" in a the name of a sword, it will be treated as the magic weapon Flame Tongue. When the command word is spoken, the blade erupts with flames, adding +2d6 fire damage on a hit and shining light.'
+				'If I include the words "Flame Tongue" in the name of a sword, it will be treated as the magic weapon Flame Tongue. When the command word is spoken, the blade erupts with flames, adding +2d6 fire damage on a hit and shining light.'
 			]
 		}
 	},
@@ -2246,7 +2246,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + '+1d6 cold damage';
 					}
 				},
-				'If I include the words "Frost Brand" in a the name of a sword, it will be treated as the magic weapon Frost Brand. It does +1d6 cold damage.'
+				'If I include the words "Frost Brand" in the name of a sword, it will be treated as the magic weapon Frost Brand. It does +1d6 cold damage.'
 			]
 		}
 	},
@@ -2316,7 +2316,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + '+2d6 damage vs. giants; Giants DC 15 Str save or prone';
 					}
 				},
-				'If I include the words "Giant Slayer" in a the name of a sword, it will be treated as the magic weapon Giant Slayer. It has +1 to hit and damage and when hitting a creatures with the giant type, it does +2d6 damage and the target has to make a DC 15 Strength save or be knocked prone.'
+				'If I include the words "Giant Slayer" in the name of a sword, it will be treated as the magic weapon Giant Slayer. It has +1 to hit and damage and when hitting a creatures with the giant type, it does +2d6 damage and the target has to make a DC 15 Strength save or be knocked prone.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -2379,56 +2379,124 @@ var Base_MagicItemsList = {
 		descriptionFull : "While wearing these dark lenses, you have darkvision out to a range of 60 feet. If you already have darkvision. wearing the goggles increases its range by 60 feet.",
 		vision : [["Darkvision", "fixed 60"], ["Darkvision", "+60"]]
 	},
-	"hammer of thunderbolts" : {
-		name : "Hammer of Thunderbolts",
-		source : [["SRD", 224], ["D", 173]],
-		type : "weapon (maul)",
-		rarity : "legendary",
-		magicItemTable : "I",
-		description : "This magical maul adds a +1 bonus to attack and damage rolls made with it. It has additional features when I'm attuned to it, which requires me to wear both a belt of giant strength and gauntlets of ogre power.",
-		descriptionFull : "You gain a +1 bonus to attack and damage rolls made with this magic weapon.\n   " + toUni("Giant's Bane (Requires Attunement)") + ". You must be wearing a belt of giant strength (any variety) and gauntlets of ogre power to attune to this weapon. The attunement ends if you take off either of those items. While you are attuned to this weapon and holding it, your Strength score increases by 4 and can exceed 20, but not 30. When you roll a 20 on an attack roll made with this weapon against a giant, the giant must succeed on a DC 17 Constitution saving throw or die.\n   The hammer also has 5 charges. While attuned to it, you can expend 1 charge and make a ranged weapon attack with the hammer, hurling it as if it had the thrown property with a normal range of 20 feet and a long range of 60 feet. If the attack hits, the hammer unleashes a thunderclap audible out to 300 feet. The target and every creature within 30 feet of it must succeed on a DC 17 Constitution saving throw or be stunned until the end of your next turn. The hammer regains 1d4+1 expended charges daily at dawn.",
-		weight : 10,
-		selfChoosing : function () {
-			// don't have to be attuned to the prereqs https://twitter.com/jeremyecrawford/status/948346891296653315
-			return CurrentMagicItems.known.indexOf("belt of giant strength") !== -1 && CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1 ? "attuned (requires Belt of Giant Strength and Gauntlets of Ogre Power)" : "not attuned";
-		},
-		choices : ["not attuned", "attuned (requires Belt of Giant Strength and Gauntlets of Ogre Power)"],
-		"not attuned" : {
-			description : "This magical maul adds a +1 bonus to attack and damage rolls made with it. It has additional features when I'm attuned to it, which requires me to wear both a belt of giant strength and gauntlets of ogre power.",
-			weaponOptions : [{
-				baseWeapon : "maul",
-				regExpSearch : /^(?=.*hammer)(?=.*thunderbolts).*$/i,
-				name : "Hammer of Thunderbolts",
-				source : [["SRD", 224], ["D", 173]],
-				modifiers : [1, 1],
-				selectNow : true
-			}]
-		},
-		"attuned (requires belt of giant strength and gauntlets of ogre power)" : {
-			name : "Hammer of Thunderbolts [attuned]",
-			description : "This magical maul has a +1 bonus to hit/damage and gives me +4 Strength (max 30). On a roll of 20 to hit vs. a giant, it dies on a failed DC 17 Con save. I can expend 1 charge to throw it with 20 ft/60 ft range, which, on a hit, causes all within 30 ft to make a DC 17 Con save or be stunned until the end of my next turn.",
-			descriptionLong : "This magical maul adds a +1 bonus to attack and damage rolls made with it. It gives me a +4 bonus to Strength (max 30). On a roll of 20 to hit vs. a giant, the giant dies on a failed DC 17 Con save. The hammer has 5 charges and regains 1d4+1 charges daily at dawn. I can can expend 1 charge and make a ranged weapon attack with the hammer, hurling it as if it had the thrown property with a normal range of 20 ft and a long range of 60 ft. On a hit, it releases an audible thunderclap in a 300 ft radius and all within 30 ft of the target that was hit must make a DC 17 Con save or be stunned until the end of my next turn.",
-			prerequisite : "Must be wearing a Belt of Giant Strength and Gauntlets of Ogre Power to attune",
-			prereqeval : function () {
-				// don't have to be attuned to the prereqs https://twitter.com/jeremyecrawford/status/948346891296653315
-				return CurrentMagicItems.known.indexOf("belt of giant strength") !== -1 && CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1;
+	"hammer of thunderbolts" :  function() {
+		/** Ability score increases and magic items setting the ability scores
+		 * 2024 version of this item increases the override of the attuend item by 4 and
+		 * that is how this 5e version has been made to work from v14.0.13 onwards.
+		 * This is the prefered interpertation of Jeremy Crawford's ruling,
+		 * instead of having all magic items with `scores` stack with `scoresOverride`.
+		 * See https://www.sageadvice.eu/does-the-bonus-strength-from-the-hammer-of-thunderbolts-stack-with-your-giants-strength-belt/
+		*/
+		var baseWeapon = {
+			baseWeapon : "maul",
+			regExpSearch : /^(?=.*hammer)(?=.*thunderbolts).*$/i,
+			name : "Hammer of Thunderbolts",
+			source : [["SRD", 224], ["D", 173]],
+			modifiers : [1, 1],
+			selectNow : true
+		};
+		var obj = {
+			name : "Hammer of Thunderbolts",
+			source : [["SRD", 224], ["D", 173]],
+			type : "weapon (maul)",
+			rarity : "legendary",
+			magicItemTable : "I",
+			description: "Select one of the choices.",
+			descriptionFull: [
+				"You gain a +1 bonus to attack and damage rolls made with this magic weapon.",
+				"***Giant's Bane (Requires Attunement)***. You must be wearing a *belt of giant strength* (any variety) and *gauntlets of ogre power* to attune to this weapon. The attunement ends if you take off either of those items. While you are attuned to this weapon and holding it, your Strength score increases by 4 and can exceed 20, but not 30. When you roll a 20 on an attack roll made with this weapon against a giant, the giant must succeed on a DC 17 Constitution saving throw or die.",
+				"The hammer also has 5 charges. While attuned to it, you can expend 1 charge and make a ranged weapon attack with the hammer, hurling it as if it had the thrown property with a normal range of 20 feet and a long range of 60 feet. If the attack hits, the hammer unleashes a thunderclap audible out to 300 feet. The target and every creature within 30 feet of it must succeed on a DC 17 Constitution saving throw or be stunned until the end of your next turn. The hammer regains 1d4+1 expended charges daily at dawn.",
+			],
+			weight : 10,
+			selfChoosing : function () {
+				var returnValue = "Not wearing both Belt of Giant Strength and Gauntlets of Ogre Power";
+				var hasGauntlets = CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1;
+				var hasBelt = CurrentMagicItems.known.indexOf("belt of giant strength") !== -1;
+				// If it doesn't have both, stop now
+				if (!hasGauntlets || !hasBelt) return returnValue.toLowerCase(); 
+				returnValue = "Wearing, but not attuned to, Belt of Giant Strength and Gauntlets of Ogre Power";
+				// Loop through all the magic items and see attuned to which belt
+				var strOverride = 0;
+				for (var i = 0; i < CurrentMagicItems.known.length; i++) {
+					if (CurrentMagicItems.known[i] !== "belt of giant strength") continue;
+					if (!isMagicItemAttuned(i)) continue; // not attuned
+					var oItem = MagicItemsList[CurrentMagicItems.known[i]];
+					if (oItem && oItem.choices) {
+						oItem = oItem[CurrentMagicItems.choices[i]];
+					};
+					if (oItem && oItem.scoresOverride[0] > strOverride) {
+						strOverride = oItem.scoresOverride[0];
+						returnValue = "Attuned to " + oItem.name + " (and wearing Gauntlets of Ogre Power)";
+					};
+				};
+				return returnValue.toLowerCase();
 			},
-			usages : 5,
-			recovery : "dawn",
-			additional : "regains 1d4+1",
-			scores : [4, 0, 0, 0, 0, 0],
-			scoresMaximum : [30, 0, 0, 0, 0, 0],
-			weaponOptions : [{
-				baseWeapon : "maul",
-				regExpSearch : /^(?=.*hammer)(?=.*thunderbolts).*$/i,
-				name : "Hammer of Thunderbolts",
-				source : [["SRD", 224], ["D", 173]],
-				description : "Heavy, two-handed; On 20 to hit vs. Giant: DC 17 Con save or die; Expend charge to throw",
-				modifiers : [1, 1],
-				selectNow : true
-			}]
-		}
-	},
+			choices : [
+				"Not wearing both Belt of Giant Strength and Gauntlets of Ogre Power",
+				"Wearing, but not attuned to, Belt of Giant Strength and Gauntlets of Ogre Power",
+			],
+			"not wearing both belt of giant strength and gauntlets of ogre power" : {
+				name : "Hammer of Thunderbolts [not attuned]",
+				description : "This magical maul adds a +1 bonus to attack and damage rolls made with it. It has additional features when I'm attuned to it, which requires me to wear both a *belt of giant strength* (any variety) and *gauntlets of ogre power*.",
+				weaponOptions : [baseWeapon]
+			},
+			"wearing, but not attuned to, belt of giant strength and gauntlets of ogre power" : {
+				name : "Hammer of Thunderbolts [attuned]",
+				attunement: true,
+				description : "This +1 maul has 5 charges, regaining 1d4+1 at dawn. I can use 1 charge to make it Thrown (20/60 ft) for 1 attack. If that hits, it's audible out to 300 ft and all within 30 ft of the target must make a DC 17 Con save or be Stunned until the end of my next turn. On a 20 to hit vs Giant: must make a DC 17 Con save or die.",
+				prerequisite : "Requires wearing a Belt of Giant Strength and Gauntlets of Ogre Power to attune",
+				prereqeval : function () {
+					// Don't have to be attuned, just wearing https://twitter.com/jeremyecrawford/status/948346891296653315
+					return CurrentMagicItems.known.indexOf("belt of giant strength") !== -1 && CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1;
+				},
+				extraLimitedFeatures: [{
+					name : "Hammer of Thunderbolts",
+					usages : 5,
+					recovery : "dawn",
+					additional : "regains 1d4+1",
+				}],
+				weaponOptions : [Object.assign({}, baseWeapon, {
+					description: "Heavy, two-handed; 1 charge to throw (20/60 ft); On 20 to hit Giant: DC 17 Con save or die",
+				})]
+			}
+		};
+		tDoc.createHammerOfThunderboltsChoices = function () {
+			if (!tDoc.MagicItemsList) {
+				tDoc.hammerOfThunderboltsTimeOut = app.setTimeOut("tDoc.createHammerOfThunderboltsChoices();", 500);
+				return;
+			}
+			var oHammer = MagicItemsList["hammer of thunderbolts"];
+			var oBelt = MagicItemsList["belt of giant strength"];
+			if (!oHammer || !oBelt) return;
+			var oHammerBase = oHammer["wearing, but not attuned to, belt of giant strength and gauntlets of ogre power"];
+			var sBaseDescription = oHammerBase.description + " My Strength is ";
+			if (typePF) sBaseDescription = sBaseDescription.replace(" of the target", "");
+			oBelt.choices.forEach(function (beltChoice) {
+				var beltChoiceLC = beltChoice.toLowerCase();
+				var oChoice = oBelt[beltChoiceLC];
+				var sGiant = beltChoice.replace(/ giant.*/i, "");
+				var sChoice = "Attuned to " + oChoice.name + " (and wearing Gauntlets of Ogre Power)";
+				var sChoiceLS = sChoice.toLowerCase();
+				var iOverride = Math.min(oChoice.scoresOverride[0] + 4, 30);
+				oHammer.choices.push(sChoice);
+				oHammer[sChoiceLS] = {
+					name: "Hammer of Thunderbolts [" + sGiant + "]",
+					attunement: true,
+					description: sBaseDescription + iOverride + ".",
+					extraLimitedFeatures: oHammerBase.extraLimitedFeatures,
+					weaponOptions: oHammerBase.weaponOptions,
+					scoresOverride: [iOverride, 0, 0, 0, 0, 0],
+					prerequisite: "Requires attunement to " + oChoice.name + " and to be wearing Gauntlets of Ogre Power",
+				};
+				// Add the prerequisite function
+				eval("oHammer[sChoiceLS].prereqeval = function () {\n\tif (CurrentMagicItems.known.indexOf('gauntlets of ogre power') === -1) return false;\n\tvar knownIdx = CurrentMagicItems.choices.indexOf('" + beltChoiceLC + "');\n\treturn knownIdx !== -1 && CurrentMagicItems.known[knownIdx] === 'belt of giant strength' && isMagicItemAttuned(knownIdx) ? true : false;\n}");
+			});
+			delete tDoc.hammerOfThunderboltsTimeOut;
+			delete tDoc.createHammerOfThunderboltsChoices;
+		};
+		tDoc.hammerOfThunderboltsTimeOut = app.setTimeOut("tDoc.createHammerOfThunderboltsChoices();", 1000);
+		return obj;
+	}(),
 	"hat of disguise" : { // contributed by Larry Hoy
 		name : "Hat of Disguise",
 		source : [["SRD", 225], ["D", 173]],
@@ -2632,7 +2700,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + '+2d10 radiant damage vs. fiends and undead';
 					}
 				},
-				'If I include the words "Holy Avenger" in a the name of a sword, it will be treated as the magic weapon Holy Avenger. It has +3 to hit and damage and does +2d10 radiant damage to fiends and undead.'
+				'If I include the words "Holy Avenger" in the name of a sword, it will be treated as the magic weapon Holy Avenger. It has +3 to hit and damage and does +2d10 radiant damage to fiends and undead.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -3027,7 +3095,7 @@ var Base_MagicItemsList = {
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 					}
 				},
-				'If I include the words "Luck Blade" in a the name of a sword, it will be treated as the magic weapon Luck Blade. It has +1 to hit and damage.'
+				'If I include the words "Luck Blade" in the name of a sword, it will be treated as the magic weapon Luck Blade. It has +1 to hit and damage.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -3044,7 +3112,7 @@ var Base_MagicItemsList = {
 		type : "weapon (mace)",
 		rarity : "rare",
 		magicItemTable : "G",
-		description : "While held, this magic mace sheds bright light in a 20-ft radius and dim light for another 20 ft. It deals +2d6 radiant damage vs. fiends and undead. If it has less than 26 HP after this damage, it must make a DC 15 Wis save or be destroyed. If successfully, it instead becomes frightened of me until the end of my next turn.",
+		description : "While held, this magic mace sheds bright light in a 20-ft radius and dim light for another 20 ft. It deals +2d6 radiant damage vs. fiends and undead. If it has less than 26 HP after this damage, it must make a DC 15 Wis save or be destroyed. If successful, it instead becomes frightened of me until the end of my next turn.",
 		descriptionFull : "When you hit a fiend or an undead with this magic weapon, that creature takes an extra 2d6 radiant damage. If the target has 25 hit points or fewer after taking this damage, it must succeed on a DC 15 Wisdom saving throw or be destroyed. On a successful save, the creature becomes frightened of you until the end of your next turn.\n   While you hold this weapon, it sheds bright light in a 20-foot radius and dim light for an additional 20 feet.",
 		attunement : true,
 		weight : 4,
@@ -3071,7 +3139,7 @@ var Base_MagicItemsList = {
 			regExpSearch : /^(?=.*mace)(?=.*smiting).*$/i,
 			name : "Mace of Smiting",
 			source : [["SRD", 229], ["D", 179]],
-			description : "+2 to hit/damage vs. constructs; On 20 to hit: +7 damage (+14 vs. constructs); Constructs HP<26 destroyed",
+			description : "+2 to hit/damage vs. constructs; On 20 to hit: +7 damage (+14 vs. constructs and destroyed if HP<26)",
 			modifiers : [1, 1],
 			selectNow : true
 		}]
@@ -3090,13 +3158,7 @@ var Base_MagicItemsList = {
 		usages : 3,
 		recovery : "dawn",
 		additional : "regains 1d3",
-		weaponOptions : [{
-			baseWeapon : "mace",
-			regExpSearch : /^(?=.*mace)(?=.*terror).*$/i,
-			name : "Mace of Terror",
-			source : [["SRD", 229], ["D", 180]],
-			selectNow : true
-		}]
+		weaponsAdd: { select: ["Mace of Terror"], options: ["Mace of Terror"] },
 	},
 	"mantle of spell resistance" : {
 		name : "Mantle of Spell Resistance",
@@ -3379,7 +3441,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'On crit to target <100 HP, DC 15 Con save or die';
 					}
 				},
-				'If I include the words "Nine Lives Stealer" in a the name of a sword, it will be treated as the magic weapon Nine Lives Stealer. It has +2 to hit and damage. Also, as long as it has charges left, when it does a critical hit against a creature with fewer than 100 HP, that creature must make a DC 15 Constitution saving throw or die.'
+				'If I include the words "Nine Lives Stealer" in the name of a sword, it will be treated as the magic weapon Nine Lives Stealer. It has +2 to hit and damage. Also, as long as it has charges left, when it does a critical hit against a creature with fewer than 100 HP, that creature must make a DC 15 Constitution saving throw or die.'
 			],
 			atkCalc : [
 				function (fields, v, output) {
@@ -4851,7 +4913,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + '+2d6 fire damage';
 					}
 				},
-				'If I include the words "Lordly Might" in a the name of a sword, it will be treated as the magic weapon Flame Tongue. It adds +2d6 fire damage on a hit and shines light.'
+				'If I include the words "Lordly Might" in the name of a sword, it will be treated as the magic weapon Flame Tongue. It adds +2d6 fire damage on a hit and shines light.'
 			]
 		}
 	},
@@ -5924,7 +5986,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +10 Necrotic dmg, 10 temp HP';
 					}
 				},
-				'If I include the words "Life Stealing" in a the name of a sword, it will be treated as the magic weapon Sword of Life Stealing. It does +10 necrotic damage when I roll a 20 on the attack roll and then gives me 10 temporary hit points. It doesn\'t work against Constructs or Undead.'
+				'If I include the words "Life Stealing" in the name of a sword, it will be treated as the magic weapon Sword of Life Stealing. It does +10 necrotic damage when I roll a 20 on the attack roll and then gives me 10 temporary hit points. It doesn\'t work against Constructs or Undead.'
 			]
 		}
 	},
@@ -5944,20 +6006,20 @@ var Base_MagicItemsList = {
 			prefixOrSuffix : "prefix",
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
-				var testRegex = /sword|scimitar|rapier/i;
+				var testRegex = /sword|scimitar/i;
 				return (!testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon))) || (inObj.baseWeapon && !inObj.damage ? WeaponsList[inObj.baseWeapon].damage : inObj.damage)[2] !== "slashing";
 			}
 		},
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/of sharpness/i).test(v.WeaponTextName) && v.theWea.damage[2] == "slashing") {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar/i.test(v.baseWeaponName) && (/of sharpness/i).test(v.WeaponTextName) && v.theWea.damage[2] == "slashing") {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +14 damage \u0026 5% chance to sever limb; Max damage vs. objects';
 					}
 				},
-				'If I include the words "of Sharpness" in a the name of a sword that deals slashing damage, it will be treated as the magic weapon Sword of Sharpness. It deals maximum damage against objects. On a roll of 20 to hit against creatures, it deals +14 slashing damage and has a 5% chance to lop off one limb.'
+				'If I include the words "of Sharpness" in the name of a sword that deals slashing damage, it will be treated as the magic weapon Sword of Sharpness. It deals maximum damage against objects. On a roll of 20 to hit against creatures, it deals +14 slashing damage and has a 5% chance to lop off one limb.'
 			]
 		}
 	},
@@ -5990,7 +6052,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'Damage can only be healed by resting; Once per turn, wound target';
 					}
 				},
-				'If I include the words "of Wounding" in a the name of a sword, it will be treated as the magic weapon Sword of Wounding. Damage by the sword can only be regained with a short or long rest. Once per turn when I hit with the sword, I can inflict a lingering wound on a target, causing it pain every turn thereafter.'
+				'If I include the words "of Wounding" in the name of a sword, it will be treated as the magic weapon Sword of Wounding. Damage by the sword can only be regained with a short or long rest. Once per turn when I hit with the sword, I can inflict a lingering wound on a target, causing it pain every turn thereafter.'
 			]
 		}
 	},
@@ -6161,7 +6223,7 @@ var Base_MagicItemsList = {
 						fields.Description += (fields.Description ? '; ' : '') + 'On 20 to hit: +7 damage';
 					}
 				},
-				'If I include the word "Vicious" in a the name of a weapon, it will be treated as the magic weapon Vicious Weapon. On a roll of 20 to hit, it does +7 damage of the weapons type.'
+				'If I include the word "Vicious" in the name of a weapon, it will be treated as the magic weapon Vicious Weapon. On a roll of 20 to hit, it does +7 damage of the weapons type.'
 			]
 		}
 	},
@@ -6180,7 +6242,7 @@ var Base_MagicItemsList = {
 			prefixOrSuffix : "suffix",
 			descriptionChange : ["replace", "sword"],
 			excludeCheck : function (inObjKey, inObj) {
-				var testRegex = /sword|scimitar|rapier/i;
+				var testRegex = /sword|scimitar/i;
 				var damageArr = inObj.baseWeapon && !inObj.damage ? WeaponsList[inObj.baseWeapon].damage : inObj.damage;
 				return (!testRegex.test(inObjKey) && (!inObj.baseWeapon || !testRegex.test(inObj.baseWeapon))) || !/slash(\.|ing)/i.test(damageArr.toString());
 			}
@@ -6188,13 +6250,13 @@ var Base_MagicItemsList = {
 		calcChanges : {
 			atkAdd : [
 				function (fields, v) {
-					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar|rapier/i.test(v.baseWeaponName) && (/vorpal/i).test(v.WeaponTextName) && v.theWea.damage[2] == "slashing") {
+					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar/i.test(v.baseWeaponName) && (/vorpal/i).test(v.WeaponTextName) && v.theWea.damage[2] == "slashing") {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, '');
 						fields.Description += (fields.Description ? '; ' : '') + 'Ignores slashing resistance; On 20 to hit: cut off head';
 					}
 				},
-				'If I include the word "Vorpal" in a the name of a sword that deals slashing damage, it will be treated as the magic weapon Vorpal Sword. It has +3 to hit and damage and on a roll of 20 on the attack roll, it cuts off a head of the target.'
+				'If I include the word "Vorpal" in the name of a sword that deals slashing damage, it will be treated as the magic weapon Vorpal Sword. It has +3 to hit and damage and on a roll of 20 on the attack roll, it cuts off a head of the target.'
 			],
 			atkCalc : [
 				function (fields, v, output) {

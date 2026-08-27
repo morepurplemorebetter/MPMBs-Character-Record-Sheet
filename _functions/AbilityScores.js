@@ -452,7 +452,7 @@ function initiateCurrentStats(forceIt) {
 			scores: [0,0,0,0,0,0,0],
 		}, {
 			type: "levels",
-			name: "ASIs from Class",
+			name: "ASIs from Classes",
 			scores: [0,0,0,0,0,0,0],
 		}, {
 			type: "items", 

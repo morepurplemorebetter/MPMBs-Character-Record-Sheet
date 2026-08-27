@@ -39,7 +39,7 @@
 				You will also need the syntax for adding a source if you want the feat
 				to have a source that doesn't yet exist in the sheet.
 
-	Sheet:		v14.0.5 and above
+	Sheet:		v14.0.13 and above
 
 */
 
@@ -244,6 +244,7 @@ FeatsList["purple power"] = {
 	TYPE:	string
 	USE:	the text to be filled in the description field of the feat
 	CHANGE: v14.0.0 (formatting characters)
+	CHANGE: v14.0.13 (array input joined by carriage return "\r")
 
 	Note that the sheet normally uses the first person for this.
 	Make sure that this description is not too long and fits in the description field.
@@ -287,6 +288,8 @@ FeatsList["purple power"] = {
 
 	Be aware that the default font on the Colourful sheets is already italic,
 	so making something only italic won't be visible on the Colourful sheets.
+
+	If this attribute is an array, the sheet will join it with a carriage return "\r".
 */
 	descriptionFull : "I gain proficiency in any combination of three skills or tools of my choice.",
 	descriptionFull : [
