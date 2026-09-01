@@ -17,186 +17,186 @@ var iFileName = "Merfolk, with 4 subraces [by Sarixis].js";
 RequiredSheetVersion(13);
 
 RaceList["ocean merfolk"] = {
-	regExpSearch : /^(?=.*merfolk)(?=.*(ocean|sea)).*$/i,
-	name : "Ocean Merfolk",
-	sortname : "Merfolk, Ocean",
-	source : [["HB", 0]],
-	plural : "Ocean Merfolk",
-	size : 3,
-	speed : {
-		walk : { spd : 10, enc : 5 },
-		swim : { spd : 40, enc : 30 }
+	regExpSearch: /^(?=.*merfolk)(?=.*(ocean|sea)).*$/i,
+	name: "Ocean Merfolk",
+	sortname: "Merfolk, Ocean",
+	source: [["HB", 0]],
+	plural: "Ocean Merfolk",
+	size: 3,
+	speed: {
+		walk: { spd: 10, enc: 5 },
+		swim: { spd: 40, enc: 30 },
 	},
-	languageProfs : ["Common", "Aquan"],
-	weaponProfs : [false, false, ["spear", "shortsword", "trident", "net"]],
-	skills : ["Perception", "Performance"],
-	age : " reach adulthood in their late teens and live around 100 years",
-	height : " range from 5 to over 6 feet tall (4'9\" + 2d10\")",
-	weight : " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
-	scores : [0, 0, 0, 0, 2, 2],
-	trait : "Ocean Merfolk (+2 Wisdom, +2 Charisma) Amphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nMusical Aptitude: I can use my voice as a spell focus instead of a musical instrument\nSiren Song: As an action, I can use my singing to affect a creature that can hear and understand me as the Friends spell. The target isn't immediately hostile when the effect ends but they can still be angry with me. I can use this ability once per short rest",
-	spellcastingAbility : 5,
-	spellcastingBonus : [{
-		name : "Aquitect (level 1)",
-		spells : ["shape water"],
-		selection : ["shape water"],
-		firstCol : 'atwill'
+	languageProfs: ["Common", "Aquan"],
+	weaponProfs: [false, false, ["spear", "shortsword", "trident", "net"]],
+	skills: ["Perception", "Performance"],
+	age: " reach adulthood in their late teens and live around 100 years",
+	height: " range from 5 to over 6 feet tall (4'9\" + 2d10\")",
+	weight: " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
+	scores: [0, 0, 0, 0, 2, 2],
+	trait: "Ocean Merfolk (+2 Wisdom, +2 Charisma) Amphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nMusical Aptitude: I can use my voice as a spell focus instead of a musical instrument\nSiren Song: As an action, I can use my singing to affect a creature that can hear and understand me as the Friends spell. The target isn't immediately hostile when the effect ends but they can still be angry with me. I can use this ability once per short rest",
+	spellcastingAbility: 5,
+	spellcastingBonus: [{
+		name: "Aquitect (level 1)",
+		spells: ["shape water"],
+		selection: ["shape water"],
+		firstCol: "atwill",
 	}],
-	features : {
-		"create or destroy water" : {
-			name : "Aquitect",
-			limfeaname : "Create/Destroy Water (level 2)",
-			minlevel : 3,
-			usages : 1,
-			recovery : "long rest",
-			spellcastingBonus : [{
-				name : "Aquitect (level 3)",
-				spells : ["create or destroy water"],
-				selection : ["create or destroy water"],
-				firstCol : 'oncelr'
+	features: {
+		"create or destroy water": {
+			name: "Aquitect",
+			limfeaname: "Create/Destroy Water (level 2)",
+			minlevel: 3,
+			usages: 1,
+			recovery: "long rest",
+			spellcastingBonus: [{
+				name: "Aquitect (level 3)",
+				spells: ["create or destroy water"],
+				selection: ["create or destroy water"],
+				firstCol: "oncelr",
 			}],
 		},
-		"siren song" : {
-			name : "Siren Song",
-			minlevel : 1,
-			usages : 1,
-			recovery : "short rest",
-			action : [["action", ""]]
-		}
-	}
+		"siren song": {
+			name: "Siren Song",
+			minlevel: 1,
+			usages: 1,
+			recovery: "short rest",
+			action: [["action", ""]],
+		},
+	},
 };
 
 RaceList["river merfolk"] = {
-	regExpSearch : /^(?=.*merfolk)(?=.*river).*$/i,
-	name : "River Merfolk",
-	sortname : "Merfolk, River",
-	source : [["HB", 0]],
-	plural : "River Merfolk",
-	size : 3,
-	speed : {
-		walk : { spd : 10, enc : 5 },
-		swim : { spd : 40, enc : 30 }
+	regExpSearch: /^(?=.*merfolk)(?=.*river).*$/i,
+	name: "River Merfolk",
+	sortname: "Merfolk, River",
+	source: [["HB", 0]],
+	plural: "River Merfolk",
+	size: 3,
+	speed: {
+		walk: { spd: 10, enc: 5 },
+		swim: { spd: 40, enc: 30 },
 	},
-	languageProfs : ["Common", "Aquan"],
-	weaponProfs : [false, false, ["spear", "shortsword", "trident", "net"]],
-	skills : ["Animal Handling", "Perception"],
-	age : " reach adulthood in their late teens and live around 100 years",
-	height : " range from 5 to over 6 feet tall (4'9\" + 2d10\")",
-	weight : " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
-	scores : [0, 2, 0, 0, 2, 0],
-	trait : "River Merfolk (+2 Dexterity, +2 Wisdom)\nAmphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nFarming Experience: I have advantage on Animal Handling checks regarding farm animals\nSwamp Camouflage: I have advantage on Dexterity (Stealth) checks made to hide in forested terrain or fresh water",
-	spellcastingAbility : 5,
-	spellcastingBonus : [{
-		name : "Aquitect (level 1)",
-		spells : ["shape water"],
-		selection : ["shape water"],
-		firstCol : 'atwill'
+	languageProfs: ["Common", "Aquan"],
+	weaponProfs: [false, false, ["spear", "shortsword", "trident", "net"]],
+	skills: ["Animal Handling", "Perception"],
+	age: " reach adulthood in their late teens and live around 100 years",
+	height: " range from 5 to over 6 feet tall (4'9\" + 2d10\")",
+	weight: " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
+	scores: [0, 2, 0, 0, 2, 0],
+	trait: "River Merfolk (+2 Dexterity, +2 Wisdom)\nAmphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nFarming Experience: I have advantage on Animal Handling checks regarding farm animals\nSwamp Camouflage: I have advantage on Dexterity (Stealth) checks made to hide in forested terrain or fresh water",
+	spellcastingAbility: 5,
+	spellcastingBonus: [{
+		name: "Aquitect (level 1)",
+		spells: ["shape water"],
+		selection: ["shape water"],
+		firstCol: "atwill",
 	}],
-	features : {
-		"create or destroy water" : {
-			name : "Aquitect",
-			limfeaname : "Create/Destroy Water (level 2)",
-			minlevel : 3,
-			usages : 1,
-			recovery : "long rest",
-			spellcastingBonus : [{
-				name : "Aquitect (level 3)",
-				spells : ["create or destroy water"],
-				selection : ["create or destroy water"],
-				firstCol : 'oncelr'
-			}]
-		}
-	}
+	features: {
+		"create or destroy water": {
+			name: "Aquitect",
+			limfeaname: "Create/Destroy Water (level 2)",
+			minlevel: 3,
+			usages: 1,
+			recovery: "long rest",
+			spellcastingBonus: [{
+				name: "Aquitect (level 3)",
+				spells: ["create or destroy water"],
+				selection: ["create or destroy water"],
+				firstCol: "oncelr",
+			}],
+		},
+	},
 };
 
 RaceList["deep merfolk"] = {
-	regExpSearch : /^(?=.*merfolk)(?=.*deep).*$/i,
-	name : "Deep Merfolk",
-	sortname : "Merfolk, Deep",
-	source : [["HB", 0]],
-	plural : "Deep Merfolk",
-	size : 3,
-	speed : {
-		walk : { spd : 10, enc : 5 },
-		swim : { spd : 40, enc : 30 }
+	regExpSearch: /^(?=.*merfolk)(?=.*deep).*$/i,
+	name: "Deep Merfolk",
+	sortname: "Merfolk, Deep",
+	source: [["HB", 0]],
+	plural: "Deep Merfolk",
+	size: 3,
+	speed: {
+		walk: { spd: 10, enc: 5 },
+		swim: { spd: 40, enc: 30 },
 	},
-	languageProfs : ["Common", "Aquan"],
-	weaponProfs : [false, false, ["spear", "shortsword", "trident", "net"]],
-	skills : ["Animal Handling", "Perception"],
-	age : " reach adulthood in their late teens and live around 100 years",
-	height : " range from 5 to over 6 feet tall (4'9\" + 2d10\")",
-	weight : " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
-	vision : [["Darkvision", 60]],
-	scores : [0, 0, 2, 0, 2, 0],
-	trait : "Deep Merfolk (+2 Constitution, +2 Wisdom)\nAmphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nBioluminescent: I emit dim light in a 5-foot radius around myself. This can be covered with opaque cloth or objects",
-	spellcastingAbility : 5,
-	spellcastingBonus : [{
-		name : "Aquitect (level 1)",
-		spells : ["shape water"],
-		selection : ["shape water"],
-		firstCol : 'atwill'
+	languageProfs: ["Common", "Aquan"],
+	weaponProfs: [false, false, ["spear", "shortsword", "trident", "net"]],
+	skills: ["Animal Handling", "Perception"],
+	age: " reach adulthood in their late teens and live around 100 years",
+	height: " range from 5 to over 6 feet tall (4'9\" + 2d10\")",
+	weight: " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
+	vision: [["Darkvision", 60]],
+	scores: [0, 0, 2, 0, 2, 0],
+	trait: "Deep Merfolk (+2 Constitution, +2 Wisdom)\nAmphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nBioluminescent: I emit dim light in a 5-foot radius around myself. This can be covered with opaque cloth or objects",
+	spellcastingAbility: 5,
+	spellcastingBonus: [{
+		name: "Aquitect (level 1)",
+		spells: ["shape water"],
+		selection: ["shape water"],
+		firstCol: "atwill",
 	}],
-	features : {
-		"create or destroy water" : {
-			name : "Aquitect",
-			limfeaname : "Create/Destroy Water (level 2)",
-			minlevel : 3,
-			usages : 1,
-			recovery : "long rest",
-			spellcastingBonus : [{
-				name : "Aquitect (level 3)",
-				spells : ["create or destroy water"],
-				selection : ["create or destroy water"],
-				firstCol : 'oncelr'
-			}]
-		}
-	}
+	features: {
+		"create or destroy water": {
+			name: "Aquitect",
+			limfeaname: "Create/Destroy Water (level 2)",
+			minlevel: 3,
+			usages: 1,
+			recovery: "long rest",
+			spellcastingBonus: [{
+				name: "Aquitect (level 3)",
+				spells: ["create or destroy water"],
+				selection: ["create or destroy water"],
+				firstCol: "oncelr",
+			}],
+		},
+	},
 };
 
 RaceList["awakened merrow"] = {
-	regExpSearch : /^(?=.*awakened)(?=.*merrow).*$/i,
-	name : "Awakened Merrow",
-	sortname : "Merfolk, Awakened Merrow",
-	source : [["HB", 0]],
-	plural : "Awakened Merrow",
-	size : 3,
-	speed : {
-		walk : { spd : 10, enc : 5 },
-		swim : { spd : 40, enc : 30 }
+	regExpSearch: /^(?=.*awakened)(?=.*merrow).*$/i,
+	name: "Awakened Merrow",
+	sortname: "Merfolk, Awakened Merrow",
+	source: [["HB", 0]],
+	plural: "Awakened Merrow",
+	size: 3,
+	speed: {
+		walk: { spd: 10, enc: 5 },
+		swim: { spd: 40, enc: 30 },
 	},
-	languageProfs : ["Common", "Aquan"],
-	weaponProfs : [false, false, ["spear", "shortsword", "trident", "net"]],
-	skills : ["Perception", "Religion"],
-	age : " reach adulthood in their late teens and live around 100 years",
-	height : " range from 5 to over 6 feet tall (4'9\" + 2d10\")",
-	weight : " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
-	scores : [2, 0, 0, 0, 2, 0],
-	trait : "Awakened Merrow (+2 Strength, +2 Wisdom)\nAmphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nDevout: I have advantage on Intelligence (Religion) checks regarding human and oceanic deities",
-	extraAC : [{
-		mod : 1,
-		name : "Tough Scales",
-		text : "As an Awakened Merrow, I gain a +1 bonus to AC from my scales."
+	languageProfs: ["Common", "Aquan"],
+	weaponProfs: [false, false, ["spear", "shortsword", "trident", "net"]],
+	skills: ["Perception", "Religion"],
+	age: " reach adulthood in their late teens and live around 100 years",
+	height: " range from 5 to over 6 feet tall (4'9\" + 2d10\")",
+	weight: " weigh around 165 lb (110 + 2d10 \xD7 2d4 lb)",
+	scores: [2, 0, 0, 0, 2, 0],
+	trait: "Awakened Merrow (+2 Strength, +2 Wisdom)\nAmphibious: I can breathe air and water\nAquitect: I know the Shape Water cantrip. At 3rd level, I can cast Create or Destroy Water as a 2nd-level spell once per long rest. Wisdom is my spellcasting ability for these\nDevout: I have advantage on Intelligence (Religion) checks regarding human and oceanic deities",
+	extraAC: [{
+		mod: 1,
+		name: "Tough Scales",
+		text: "As an Awakened Merrow, I gain a +1 bonus to AC from my scales.",
 	}],
-	spellcastingAbility : 5,
-	spellcastingBonus : [{
-		name : "Aquitect (level 1)",
-		spells : ["shape water"],
-		selection : ["shape water"],
-		firstCol : 'atwill'
+	spellcastingAbility: 5,
+	spellcastingBonus: [{
+		name: "Aquitect (level 1)",
+		spells: ["shape water"],
+		selection: ["shape water"],
+		firstCol: "atwill",
 	}],
-	features : {
-		"create or destroy water" : {
-			name : "Aquitect",
-			limfeaname : "Create/Destroy Water (level 2)",
-			minlevel : 3,
-			usages : 1,
-			recovery : "long rest",
-			spellcastingBonus : [{
-				name : "Aquitect (level 3)",
-				spells : ["create or destroy water"],
-				selection : ["create or destroy water"],
-				firstCol : 'oncelr'
-			}]
-		}
-	}
+	features: {
+		"create or destroy water": {
+			name: "Aquitect",
+			limfeaname: "Create/Destroy Water (level 2)",
+			minlevel: 3,
+			usages: 1,
+			recovery: "long rest",
+			spellcastingBonus: [{
+				name: "Aquitect (level 3)",
+				spells: ["create or destroy water"],
+				selection: ["create or destroy water"],
+				firstCol: "oncelr",
+			}],
+		},
+	},
 };

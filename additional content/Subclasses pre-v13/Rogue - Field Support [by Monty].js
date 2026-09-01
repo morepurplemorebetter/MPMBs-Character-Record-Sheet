@@ -18,21 +18,21 @@ var iFileName = "Rogue - Field Support [by Monty].js";
 RequiredSheetVersion(12.999);
 
 AddSubClass("rogue", "field support", {
-	regExpSearch : /^(?=.*(rogue|miscreant))(?=.*support).*$/i,
-	subname : "Field Support",
-	source : ["HB", 0],
-	features : {
-		"subclassfeature3" : {
-			name : "On your side",
-			source : ["HB", 0],
-			minlevel : 3,
+	regExpSearch: /^(?=.*(rogue|miscreant))(?=.*support).*$/i,
+	subname: "Field Support",
+	source: ["HB", 0],
+	features: {
+		"subclassfeature3": {
+			name: "On your side",
+			source: ["HB", 0],
+			minlevel: 3,
 			description: desc("As a bonus action, I can use a healer's kit, get one up from prone, or do the Help action"),
-			action : [["bonus action", ""]]
+			action: [["bonus action", ""]],
 			},
-		"subclassfeature3.1" : {
-			name : "Feel the heat",
-			source : ["HB", 0],
-			minlevel : 3,
+		"subclassfeature3.1": {
+			name: "Feel the heat",
+			source: ["HB", 0],
+			minlevel: 3,
 			description: desc([
 				"As a reaction, I can detect who is in the worst danger in the immediate future",
 				"With a DC 10 Wisdom (Perception) check, I can detect the dangers to those I can see",
@@ -40,42 +40,42 @@ AddSubClass("rogue", "field support", {
 				"With a DC 10 Dex (Acrobatics) check, this move does not provoke opportunity attacks",
 				"If failed, I fall prone next to my starting position and opportunity attacks have adv.",
 			]),
-			action : [["reaction", ""]]
+			action: [["reaction", ""]],
 		},
-		"subclassfeature9" : {
-			name : "Elusive Abusive",
-			source : ["HB", 0],
-			minlevel : 9,
+		"subclassfeature9": {
+			name: "Elusive Abusive",
+			source: ["HB", 0],
+			minlevel: 9,
 			description: desc([
 				"As an action, I can Disengage and attack once, if I move no more than half my speed",
 				"I can make a single ranged attack against the target I was in reach of before moving",
 				"If this attack hits, the target has disadvantage on its next attack roll",
 			]),
-			action : [["action", ""]]
+			action: [["action", ""]],
 		},
-		"subclassfeature13" : {
-			name : "Adrenaline Surge",
-			source : ["HB", 0],
-			minlevel : 13,
+		"subclassfeature13": {
+			name: "Adrenaline Surge",
+			source: ["HB", 0],
+			minlevel: 13,
 			description: desc([
 				"As an action, I can pick up a friendly creature, regardless of weight, and move it",
 				"At the end of my turn, I drop the creature prone in an adjacent space of my choice",
 			]),
-			action : [["action", ""]]
+			action: [["action", ""]],
 		},
-		"subclassfeature17" : {
-			name : "Quicksilver",
-			source : ["HB", 0],
-			minlevel : 17,
-			usages : 1,
-			recovery : "short rest",
+		"subclassfeature17": {
+			name: "Quicksilver",
+			source: ["HB", 0],
+			minlevel: 17,
+			usages: 1,
+			recovery: "short rest",
 			description: desc([
 				"As an action, I can stop the flow of time and take 3 turns, as Time Stop (PHB 283)",
 				"Unlike the spell, this ends when I am more than 3 times my speed away from an ally",
 				"Also unlike the spell, I can effect other creatures during and this does not end the spell",
 				"Using this ability gives me a level of exhaustion",
 			]),
-			action : [["action", ""]]
-		}
-	}
+			action: [["action", ""]],
+		},
+	},
 });

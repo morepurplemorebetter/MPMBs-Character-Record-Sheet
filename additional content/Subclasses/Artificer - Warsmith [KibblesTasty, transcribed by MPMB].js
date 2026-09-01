@@ -158,7 +158,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		var theRe = [];
 		for (var aFea in CurrentClasses[aClass].features) {
 			var feaObj = CurrentClasses[aClass].features[aFea];
-			if ((/^subclassfeature/).test(aFea) && feaObj.extrachoices && (/upgrade/i).test(feaObj.name)) {
+			if (/^subclassfeature/).test(aFea) && feaObj.extrachoices && (/upgrade/i.test(feaObj.name)) {
 				theRe = theRe.concat(GetFeatureChoice("class", aClass, aFea, true));
 			}
 		}
@@ -472,7 +472,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		calcChanges : {
 			spellAdd : [
 				function (spellKey, spellObj, spName) {
-					if (spName == "artificer-ua3" && spellObj.school == "Div" && (spellObj.time != "1 bns" || (/conc,/i).test(spellObj.duration))) {
+					if (spName == "artificer-ua3" && spellObj.school == "Div" && (spellObj.time != "1 bns" || /conc,/i.test(spellObj.duration))) {
 						spellObj.time = "1 bns";
 						spellObj.duration = spellObj.duration.replace(/conc, ?/i, "");
 						return true;
@@ -513,7 +513,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 						var rangeFT = fields.Range.match(/(\d+) ?ft/);
 						fields.Range = fields.Range.replace(rangeFT[0], Number(rangeFT[1]) + 30 + " ft");
 					}
-					if (v.isSpell && (/^(?!.*melee).*\d+.*$/i).test(fields.Range)) {
+					if (v.isSpell && /^(?!.*melee).*\d+.*$/i.test(fields.Range)) {
 						output.extraHit += 2;
 					}
 				},
@@ -951,7 +951,7 @@ if (SourceList["UA:A3"] && ClassList["artificer-ua3"]) {
 		}
 		for (var aFea in ClassSubList[warsmithSubname].features) {
 			var feaObj = ClassSubList[warsmithSubname].features[aFea];
-			if (!(/upgrade/i).test(feaObj.name) || !feaObj.extrachoices || feaObj.minlevel < upgLevel) continue;
+			if (!/upgrade/i.test(feaObj.name) || !feaObj.extrachoices || feaObj.minlevel < upgLevel) continue;
 			feaObj.extrachoices.push(upgName);
 			feaObj[upgNameLC] = aObj;
 		}

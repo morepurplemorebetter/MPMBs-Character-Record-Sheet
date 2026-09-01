@@ -108,7 +108,7 @@ CompanionList["purple familiar"] = {
 	Note the use of only lower case!
 	Also note the absence of the word "var" and the use of brackets [].
 */
-	name : "Purple Familiar",
+	name: "Purple Familiar",
 /*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the companion option as it will be displayed on the sheet
@@ -116,14 +116,14 @@ CompanionList["purple familiar"] = {
 	This name will be used to populate the Notes field on the companion page, as the header of its attributes.
 	This name will not be used in the Companion Options menu, the `nameMenu` will be used instead.
 */
-	nameMenu : "Familiar (Purple Familiar class feature)",
+	nameMenu: "Familiar (Purple Familiar class feature)",
 /*	nameMenu // REQUIRED //
 	TYPE:	string
 	USE:	name of the companion option as it will appear in the Companion Options menu
 
 	This name will also be used on several other places, like the changes dialog pop-up or in error messages.
 */
-	nameTooltip : "the Purple Familiar class feature",
+	nameTooltip: "the Purple Familiar class feature",
 /*	nameTooltip // OPTIONAL //
 	TYPE:	string
 	USE:	name of the companion options as it will appear in tooltips for actions on the 1st page
@@ -131,7 +131,7 @@ CompanionList["purple familiar"] = {
 	This attribute is only used if the `action` attribute is present as well.
 	If `nameTooltip` is not defined, the `name` attribute will be used instead.
 */
-	nameOrigin : "variant of the Find Familiar 1st-level conjuration [ritual] spell",
+	nameOrigin: "variant of the Find Familiar 1st-level conjuration [ritual] spell",
 /*	nameOrigin // OPTIONAL //
 	TYPE:	string
 	USE:	additional information displayed in the 
@@ -147,8 +147,8 @@ CompanionList["purple familiar"] = {
 		"**Purple Familiar** (variant of the Find Familiar 1st-level conjuration [ritual] spell, HB 105)"
 	Note that only the first source option is used that is not set to excluded in the Source Material dialog.
 */
-	source : ["SRD", 204],
-	source : [["E", 7], ["S", 115]],
+	source: ["SRD", 204],
+	source: [["E", 7], ["S", 115]],
 /*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the companion option is found
@@ -173,7 +173,7 @@ CompanionList["purple familiar"] = {
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
-	defaultExcluded : true,
+	defaultExcluded: true,
 /*	defaultExcluded // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this companion option should be excluded by default (true) or included by default (false)
@@ -187,9 +187,9 @@ CompanionList["purple familiar"] = {
 
 	Setting this attribute to false is the same as not including this attribute.
 */
-action : [
+action: [
 	["reaction", " (start)"],
-	["bonus action", "Shove"]
+	["bonus action", "Shove"],
 ],
 /*	action // OPTIONAL //
 	TYPE:	array (variable length)
@@ -207,8 +207,8 @@ action : [
 	For the tooltip of the origin of these action(s), the `nameTooltip` will be used if
 	defined, see above. If `nameTooltip` isn't defined, the `name` will be used instead.
 */
-	includeCheck : function(sCrea, objCrea, iCreaCR, bIsAL) {
-		return objCrea.type.toLowerCase() === "beast" && objCrea.size >= 3 && iCreaCR <= 1/4 ? true : false;
+	includeCheck: function(sCrea, objCrea, iCreaCR, bIsAL) {
+		return objCrea.type.toLowerCase() === "beast" && objCrea.size >= 3 && iCreaCR <= 1 / 4 ? true : false;
 	},
 /*	includeCheck // OPTIONAL //
 	TYPE:	function
@@ -264,15 +264,15 @@ action : [
 	Together the two create a new object that will be used to populate the Companion Page.
 	You can use the CompanionList object to add, change, or remove attributes of a CreatureList object.
 */
-	attributesAdd : {
-		header : "Familiar",
-		type : ["Celestial", "Fey", "Fiend"],
-		attacks : [{
-			name : "Acid Spit",
-			ability : 2,
-			damage : [1, 6, "acid"],
-			range : "60 ft",
-			description : ""
+	attributesAdd: {
+		header: "Familiar",
+		type: ["Celestial", "Fey", "Fiend"],
+		attacks: [{
+			name: "Acid Spit",
+			ability: 2,
+			damage: [1, 6, "acid"],
+			range: "60 ft",
+			description: "",
 		}],
 	},
 /*	attributesAdd // OPTIONAL //
@@ -310,7 +310,7 @@ action : [
 	It is recommended to not include a `calcChanges` this way, but to add it to the main CompanionList object
 	instead, see below at `calcChanges`.
 */
-	attributesChange : function(sCrea, objCrea) {
+	attributesChange: function(sCrea, objCrea) {
 		// can't do any attacks
 		objCrea.attacks = [];
 		if (objCrea.type.toLowerCase() === "beast") {
@@ -341,27 +341,27 @@ action : [
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 // >>> Add text to Notes section >>> //
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-	notes : [{
-		name : "False Appearance",
-		description : "While the purple familiar remains motionless, it is indistinguishable from an ordinary purple flower.",
-		joinString : "\n   "
+	notes: [{
+		name: "False Appearance",
+		description: "While the purple familiar remains motionless, it is indistinguishable from an ordinary purple flower.",
+		joinString: "\n   ",
 	}, {
-		name : "Invisibility",
-		minlevel : 5,
-		description : "As an action, the purple familiar magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell).",
-		addMod : [{ type : "skill", field : "all", mod : "max(oCha|1)", text : "The purple familiar adds its master's Charisma modifier (min 1) to all its skill checks." }]
+		name: "Invisibility",
+		minlevel: 5,
+		description: "As an action, the purple familiar magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell).",
+		addMod: [{ type: "skill", field: "all", mod: "max(oCha|1)", text: "The purple familiar adds its master's Charisma modifier (min 1) to all its skill checks." }],
 	}, {
-		name : "Keen Sight",
-		minlevel : 8,
-		description : "The purple familiar has advantage on Wisdom (Perception) checks that rely on sight. It size increases to Large.",
-		eval : function(prefix, lvl) {
+		name: "Keen Sight",
+		minlevel: 8,
+		description: "The purple familiar has advantage on Wisdom (Perception) checks that rely on sight. It size increases to Large.",
+		eval: function(prefix, lvl) {
 			// Increase size to Large
 			PickDropdown(prefix + "Comp.Desc.Size", 2);
 		},
-		removeeval : function(prefix, lvl) {
+		removeeval: function(prefix, lvl) {
 			// Change size back to Medium
 			PickDropdown(prefix + "Comp.Desc.Size", 3);
-		}
+		},
 	}],
 /*	notes // OPTIONAL //
 	TYPE:	array (variable length) with objects
@@ -468,7 +468,7 @@ action : [
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 // >>> Change Companion Page calculations >>> //
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-	calcChanges : {
+	calcChanges: {
 /*	calcChanges // OPTIONAL //
 	TYPE:	object (optional attributes)
 	USE:	change how the hit points automation works
@@ -485,7 +485,7 @@ action : [
 	By adding a `calcChanges` object to the main CompanionList object, both extra hp calculation options
 	will be added.
 */
-		hp : function (totalHD, HDobj, prefix) {
+		hp: function (totalHD, HDobj, prefix) {
 			if (!classes.known.ranger) return;
 			var creaHP = CurrentCompRace[prefix] && CurrentCompRace[prefix].hp ? CurrentCompRace[prefix].hp : 0;
 			var creaName = CurrentCompRace[prefix] && CurrentCompRace[prefix].name ? CurrentCompRace[prefix].name : "the creature";
@@ -502,7 +502,7 @@ action : [
 		"_common attributes.js" file.
 		Please look there for a complete explanation.
 	*/
-		setAltHp : true,
+		setAltHp: true,
 	/*	setAltHp // OPTIONAL //
 		TYPE:	boolean
 		USE:	set the maximum HP field to automatically assume the alternative calculation method added with the `hp` function
@@ -518,8 +518,8 @@ action : [
 // >>>>>>>>>>>>>>>>>>>>>>>>>>> //
 // >>> Run custom function >>> //
 // >>>>>>>>>>>>>>>>>>>>>>>>>>> //
-	eval : function(prefix, lvl) {
-		AddString(prefix + 'Cnote.Left', 'The purple familiar always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.', true);
+	eval: function(prefix, lvl) {
+		AddString(prefix + "Cnote.Left", "The purple familiar always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.", true);
 	},
 /*	eval // OPTIONAL //
 	TYPE:	function
@@ -544,8 +544,8 @@ action : [
 	the same name from the CreatureList object has been processed.
 */
 
-	removeeval : function(prefix, lvl) {
-		RemoveString(prefix + 'Cnote.Left', 'The purple familiar always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.', true);
+	removeeval: function(prefix, lvl) {
+		RemoveString(prefix + "Cnote.Left", "The purple familiar always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.", true);
 	},
 /*	removeeval // OPTIONAL //
 	TYPE:	function
@@ -566,7 +566,7 @@ action : [
 	the same name from the CreatureList object has been processed.
 */
 
-	changeeval : function(prefix, lvl) {
+	changeeval: function(prefix, lvl) {
 		Value( prefix + "Comp.Use.HD.Die", lvl[1] < 15 ? 8 : 10 );
 	},
 /*	changeeval // OPTIONAL //

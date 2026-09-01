@@ -98,7 +98,7 @@ AmmoList["purple bullets"] = {
 	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
-	name : "Purple Bullets",
+	name: "Purple Bullets",
 /*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the ammunition as it will be used by the sheet
@@ -107,8 +107,8 @@ AmmoList["purple bullets"] = {
 
 	This name will be capitalized (first letter of every word) before being added to the ammo drop-down.
 */
-	source : ["SRD", 204],
-	source : [["E", 7], ["S", 115]],
+	source: ["SRD", 204],
+	source: [["E", 7], ["S", 115]],
 /*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the ammunition is found
@@ -132,7 +132,7 @@ AmmoList["purple bullets"] = {
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
-	defaultExcluded : true,
+	defaultExcluded: true,
 /*	defaultExcluded // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this ammunition should be excluded by default (true) or included by default (false)
@@ -146,7 +146,7 @@ AmmoList["purple bullets"] = {
 
 	Setting this attribute to false is the same as not including this attribute.
 */
-	icon : "Bullets",
+	icon: "Bullets",
 /*	icon // REQUIRED //
 	TYPE:	string
 	USE:	icon to use for the ammunition
@@ -164,7 +164,7 @@ AmmoList["purple bullets"] = {
 
 	If this is not one of the options listed above, the "Arrows" icons will be used.
 */
-	weight : 24,
+	weight: 24,
 /*	weight // OPTIONAL //
 	TYPE:	number
 	USE:	the weight of a single piece of the ammunition in lb
@@ -172,7 +172,7 @@ AmmoList["purple bullets"] = {
 	If the ammunition doesn't have a listed weight, you can just leave this attribute out.
 	Setting this to 0 is the same as not including this attribute.
 */
-	isMagicAmmo : true,
+	isMagicAmmo: true,
 /*	isMagicAmmo // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether (true) or not (false) this ammunition is magical ammunition
@@ -184,7 +184,7 @@ AmmoList["purple bullets"] = {
 
 	Setting this to false is the same as not including this attribute.
 */
-	invName : "Bullets, Purple",
+	invName: "Bullets, Purple",
 /*	invName // OPTIONAL //
 	TYPE:	string
 	USE:	the name used when adding the ammunition from the Ammo section to the Equipment section
@@ -196,7 +196,7 @@ AmmoList["purple bullets"] = {
 
 	Setting this to and empty string ("") is the same as not including this attribute.
 */
-	alternatives : ["bullets, purple", "purple bullet", /^(?=.*bullet)(?=.*purple).*$/i],
+	alternatives: ["bullets, purple", "purple bullet", /^(?=.*bullet)(?=.*purple).*$/i],
 /*	alternatives // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	used to match the text in the ammunition field to see if this ammo is present

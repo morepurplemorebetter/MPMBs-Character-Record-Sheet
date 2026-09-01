@@ -128,46 +128,46 @@ function SelectElement_Dialog(theNodes) {
 	var theElem = countNodes[0] === 1 ? countNodes[1] : false;
 	var theTxt = "This pop-up is necessary because Adobe Acrobat can only detect if you selected an element, and not if you selected a node (i.e. an element you can collapse/expand).\nPlease select which node you want to move from the options below, or press cancel if you don't want anything to move.";
 	var dialogue = {
-		selection : false,
-		initialize : function (dialog) {
+		selection: false,
+		initialize: function (dialog) {
 			dialog.load({
-				"sele" : theNodes
+				"sele": theNodes,
 			});
 		},
-		commit : function (dialog) {
+		commit: function (dialog) {
 			var oResult = dialog.store();
 			this.selection = FindActiveElement(oResult["sele"]);
 		},
-		description : {
-			name : "NODE SELECTION DIALOG",
-			elements : [{
-				type : "view",
-				align_children : "align_left",
-				elements : [{
-					type : "static_text",
-					item_id : "head",
-					font : "heading",
-					bold : true,
-					wrap_name : true,
-					width : 400,
-					name : "Select a node to use (because Adobe Acrobat is stupid)"
+		description: {
+			name: "NODE SELECTION DIALOG",
+			elements: [{
+				type: "view",
+				align_children: "align_left",
+				elements: [{
+					type: "static_text",
+					item_id: "head",
+					font: "heading",
+					bold: true,
+					wrap_name: true,
+					width: 400,
+					name: "Select a node to use (because Adobe Acrobat is stupid)",
 				}, {
-					type : "static_text",
-					item_id : "txt0",
-					wrap_name : true,
-					width : 400,
-					name : theTxt
+					type: "static_text",
+					item_id: "txt0",
+					wrap_name: true,
+					width: 400,
+					name: theTxt,
 				}, {
-					type : "hier_list_box",
-					item_id : "sele",
-					width : 400,
-					height : 200
+					type: "hier_list_box",
+					item_id: "sele",
+					width: 400,
+					height: 200,
 				}, {
-					type : "ok_cancel",
-					ok_name : "Select"
-				}]
-			}]
-		}
+					type: "ok_cancel",
+					ok_name: "Select",
+				}],
+			}],
+		},
 	}
 
 	if (!theElem && app.execDialog(dialogue) === "ok") {
@@ -191,8 +191,8 @@ function ObjectToArray(obj, type, testObj) {
 	for (var p in obj) {
 		if (obj[p].constructor == Object) {
 			theArr.push.apply(theArr, ObjectToArray(obj[p], type, testObj));
-			if ((/nodes|all/i).test(type) && testArr.indexOf(p) === -1) theArr.push(p);
-		} else if ((/elements|all/i).test(type) && testArr.indexOf(p.replace(/^ basic /, "")) === -1) {
+			if (/nodes|all/i.test(type) && testArr.indexOf(p) === -1) theArr.push(p);
+		} else if (/elements|all/i.test(type) && testArr.indexOf(p.replace(/^ basic /, "")) === -1) {
 			theArr.push(p);
 		}
 	}
@@ -227,74 +227,74 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 	}
 	// Exclude new objects that have the defaultExcluded flag
 	var resourceOptions = [{
-		exclObj : "classExcl",
-		name : "Classes",
-		listObj : "ClassList",
-		subAttribute : "subclasses",
-		subName : "Archetypes",
-		subListObj : "ClassSubList",
-		subListObjName : "subname"
+		exclObj: "classExcl",
+		name: "Classes",
+		listObj: "ClassList",
+		subAttribute: "subclasses",
+		subName: "Archetypes",
+		subListObj: "ClassSubList",
+		subListObjName: "subname",
 	}, {
-		exclObj : "racesExcl",
-		name : "Player Races",
-		listObj : "RaceList",
-		subAttribute : "variants",
-		subName : "Racial Variants",
-		subListObj : "RaceSubList"
+		exclObj: "racesExcl",
+		name: "Player Races",
+		listObj: "RaceList",
+		subAttribute: "variants",
+		subName: "Racial Variants",
+		subListObj: "RaceSubList",
 	}, {
-		exclObj : "backgrExcl",
-		name : "Backgrounds",
-		listObj : "BackgroundList",
-		subAttribute : "variant",
-		subName : "Backgrounds",
-		subListObj : "BackgroundSubList"
+		exclObj: "backgrExcl",
+		name: "Backgrounds",
+		listObj: "BackgroundList",
+		subAttribute: "variant",
+		subName: "Backgrounds",
+		subListObj: "BackgroundSubList",
 	}, {
-		exclObj : "backFeaExcl",
-		name : "Background Features",
-		listObj : "BackgroundFeatureList"
+		exclObj: "backFeaExcl",
+		name: "Background Features",
+		listObj: "BackgroundFeatureList",
 	}, {
-		exclObj : "featsExcl",
-		name : "Feats",
-		listObj : "FeatsList",
-		subAttribute : "choices"
+		exclObj: "featsExcl",
+		name: "Feats",
+		listObj: "FeatsList",
+		subAttribute: "choices",
 	}, {
-		exclObj : "weapExcl",
-		name : "Weapons/Attacks",
-		listObj : "WeaponsList"
+		exclObj: "weapExcl",
+		name: "Weapons/Attacks",
+		listObj: "WeaponsList",
 	}, {
-		exclObj : "armorExcl",
-		name : "Armor",
-		listObj : "ArmourList"
+		exclObj: "armorExcl",
+		name: "Armor",
+		listObj: "ArmourList",
 	}, {
-		exclObj : "ammoExcl",
-		name : "Ammunition",
-		listObj : "AmmoList"
+		exclObj: "ammoExcl",
+		name: "Ammunition",
+		listObj: "AmmoList",
 	}, {
-		exclObj : "magicitemExcl",
-		name : "Magic Items",
-		listObj : "MagicItemsList",
-		subAttribute : "choices"
+		exclObj: "magicitemExcl",
+		name: "Magic Items",
+		listObj: "MagicItemsList",
+		subAttribute: "choices",
 	}, {
-		exclObj : "spellsExcl",
-		name : "Spells/Psionics",
-		listObj : "SpellsList"
+		exclObj: "spellsExcl",
+		name: "Spells/Psionics",
+		listObj: "SpellsList",
 	}, {
-		exclObj : "creaExcl",
-		name : "Creatures",
-		listObj : "CreatureList"
+		exclObj: "creaExcl",
+		name: "Creatures",
+		listObj: "CreatureList",
 	}, {
-		exclObj : "compExcl",
-		name : "Companion Options",
-		listObj : "CompanionList"
+		exclObj: "compExcl",
+		name: "Companion Options",
+		listObj: "CompanionList",
 	}];
 	if (tDoc.info.SpellsOnly) {
 		resourceOptions = [{
-			exclObj : "spellsExcl",
-			name : "Spells/Psionics",
-			listObj : "SpellsList"
+			exclObj: "spellsExcl",
+			name: "Spells/Psionics",
+			listObj: "SpellsList",
 		}];
 	}
-	var theExclusions = {}, returnObj = { str : [], new : [], all : [], found : false };
+	var theExclusions = {}, returnObj = { str: [], new: [], all: [], found: false };
 	var newTxt = toUni("NEW ");
 	var addNewExcl = function(type, typeNm, obj, objID, objNm) {
 		if (!obj.defaultExcluded) return;
@@ -304,7 +304,7 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 		returnObj.found = true;
 		var srcExcl = testSource(objID, obj);
 		var curExcl = CurrentSources[type].indexOf(objID) !== -1;
-		var treatAsNew = oldResults && (oldResults.new.indexOf(type+objID) !== -1 || oldResults.all.indexOf(type+objID) == -1);
+		var treatAsNew = oldResults && (oldResults.new.indexOf(type + objID) !== -1 || oldResults.all.indexOf(type + objID) == -1);
 		var exclName = objNm + stringSource(obj, "first", " (", ")");
 		if (CurrentSources[type + "Default"].indexOf(objID) == -1) {
 			CurrentSources[type + "Default"].push(objID);
@@ -312,15 +312,15 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 				CurrentSources[type].push(objID);
 				curExcl = true;
 				exclName = newTxt + exclName;
-				returnObj.new.push(type+objID);
+				returnObj.new.push(type + objID);
 			}
 		} else if (treatAsNew) {
 			exclName = newTxt + exclName;
-			returnObj.new.push(type+objID);
+			returnObj.new.push(type + objID);
 		}
 		if (curExcl && !srcExcl) {
 			theExclusions[typeNm].push(exclName);
-			returnObj.all.push(type+objID);
+			returnObj.all.push(type + objID);
 		}
 	}
 	for (var i = 0; i < resourceOptions.length; i++) {
@@ -402,8 +402,8 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	// Create the CurrentSources object if this is the first time
 	if (isFirstTime) {
 		CurrentSources = {
-			firstTime : atReset ? "nextOpen" : false,
-			globalExcl : [], globalKnown : []
+			firstTime: atReset ? "nextOpen" : false,
+			globalExcl: [], globalKnown: [],
 		};
 	};
 	// Update default excluded if this is the first time or import scripts were changed
@@ -461,27 +461,27 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	var txtDefaultExcluded1 = "Note that elements whose sourcebook have been excluded are not part of this list, nor are those that you've already manually included. This list can change when you include/exclude sourcebooks or elements, or import new content.";
 
 	var selectionDialogue = {
-		exclActive : false,
-		inclActive : false,
-		exclObject : exclObj,
-		inclObject : inclObj,
-		sourceLink : "",
-		scrpMenu : false,
-		defaultExcl : newExcluded,
-		spellSources : spellSources,
-		initialize : function (dialog) {
+		exclActive: false,
+		inclActive: false,
+		exclObject: exclObj,
+		inclObject: inclObj,
+		sourceLink: "",
+		scrpMenu: false,
+		defaultExcl: newExcluded,
+		spellSources: spellSources,
+		initialize: function (dialog) {
 			dialog.load({
-				"img1" : allIcons.sources,
-				"ExcL" : this.exclObject,
-				"IncL" : this.inclObject,
-				"ExTx" : this.defaultExcl.str
+				"img1": allIcons.sources,
+				"ExcL": this.exclObject,
+				"IncL": this.inclObject,
+				"ExTx": this.defaultExcl.str,
 			});
 			dialog.visible({
-				"bWhy" : onlySRD
+				"bWhy": onlySRD,
 			});
 			dialog.setForeColorRed("tx02");
 		},
-		updateLink : function (dialog, ExcInc) {
+		updateLink: function (dialog, ExcInc) {
 			//get the positive element
 			var exclNow = dialog.store()[ExcInc];
 			var sourceNm = GetPositiveElement(exclNow);
@@ -498,11 +498,11 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			if (theSrc && SourceList[theSrc].url) {
 				this.sourceLink = SourceList[theSrc].url;
 				dialog.load({
-					"bLin" : 'Lookup "' + SourceList[theSrc].name + '" resource'
+					"bLin": 'Lookup "' + SourceList[theSrc].name + '" resource',
 				});
 			};
 		},
-		updateCS : function (dialog, oResultExcL) {
+		updateCS: function (dialog, oResultExcL) {
 			//put the excluded element into an array
 			var exclArr = ObjectToArray(oResultExcL, "elements");
 			//set the CurrentSources variable
@@ -514,12 +514,12 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 				this.updateDefExcl(dialog);
 			};
 		},
-		updateDefExcl : function (dialog) {
+		updateDefExcl: function (dialog) {
 			if (!this.defaultExcl.found) return;
 			this.defaultExcl = resourceExclusionSetting(this.spellSources, true, this.defaultExcl);
-			dialog.load({ "ExTx" : this.defaultExcl.str });
+			dialog.load({ "ExTx": this.defaultExcl.str });
 		},
-		ExcL : function (dialog) {
+		ExcL: function (dialog) {
 			var exclElems = dialog.store()["ExcL"];
 			var isGetItem = GetPositiveElement(exclElems) === getMoreCont;
 			if (isGetItem) {
@@ -530,17 +530,17 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 					this.exclActive = false;
 				};
 				exclElems[getMoreCont] = -1;
-				dialog.load({"ExcL" : exclElems});
+				dialog.load({ "ExcL": exclElems });
 			} else {
 				this.exclActive = true;
 				this.updateLink(dialog, "ExcL");
 			};
 		},
-		IncL : function (dialog) {
+		IncL: function (dialog) {
 			this.inclActive = true;
 			this.updateLink(dialog, "IncL");
 		},
-		BTRA : function (dialog) {
+		BTRA: function (dialog) {
 			// move all (remaining) items from ExcL to IncL
 			var elements = dialog.store();
 			var exclNow = elements["ExcL"];
@@ -548,15 +548,15 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			var inclNow = elements["IncL"];
 			var exclNew = {}; exclNew[getMoreCont] = -1;
 			dialog.load({
-				"ExcL" : exclNew,
-				"IncL" : MergeRecursive(inclNow, exclNow)
+				"ExcL": exclNew,
+				"IncL": MergeRecursive(inclNow, exclNow),
 			});
 			dialog.focus("IncL");
 			this.exclActive = false;
 			this.inclActive = true;
 			CurrentSources.globalExcl = [];
 		},
-		BTR1 : function (dialog) {
+		BTR1: function (dialog) {
 			// move selected (one) item from ExcL to IncL
 			if (!this.exclActive) return;
 			var elements = dialog.store();
@@ -567,8 +567,8 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			if (moveThem) {
 				moveThem[0][getMoreCont] = -1;
 				dialog.load({
-					"ExcL" : moveThem[0],
-					"IncL" : moveThem[1]
+					"ExcL": moveThem[0],
+					"IncL": moveThem[1],
 				});
 				dialog.focus("IncL");
 				this.exclActive = false;
@@ -576,7 +576,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			}
 			this.updateCS(dialog, moveThem[0]);
 		},
-		BTL1 : function (dialog) {
+		BTL1: function (dialog) {
 			// move selected (one) item from IncL to ExcL
 			if (!this.inclActive) return;
 			var elements = dialog.store();
@@ -585,8 +585,8 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			var moveThem = GetElementAndMerge(inclNow, exclNow);
 			if (moveThem) {
 				dialog.load({
-					"IncL" : moveThem[0],
-					"ExcL" : moveThem[1]
+					"IncL": moveThem[0],
+					"ExcL": moveThem[1],
 				});
 				dialog.focus("ExcL");
 				this.exclActive = true;
@@ -594,36 +594,36 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 			}
 			this.updateCS(dialog, moveThem[1]);
 		},
-		BTLA : function (dialog) {
+		BTLA: function (dialog) {
 			// move all items from IncL to ExcL and sort ExcL
 			var elements = dialog.store()
 			var exclNow = elements["ExcL"];
 			var inclNow = elements["IncL"];
 			var allExcl = MergeRecursive(exclNow, inclNow)
 			dialog.load({
-				"ExcL" : allExcl,
-				"IncL" : {}
+				"ExcL": allExcl,
+				"IncL": {},
 			});
 			dialog.focus("ExcL");
 			this.exclActive = true;
 			this.inclActive = false;
 			this.updateCS(dialog, allExcl);
 		},
-		bCla : function (dialog) {resourceSelectionDialog("class"); this.updateDefExcl(dialog);},
-		bRac : function (dialog) {resourceSelectionDialog("race"); this.updateDefExcl(dialog);},
-		bFea : function (dialog) {resourceSelectionDialog("feat"); this.updateDefExcl(dialog);},
-		bSpe : function (dialog) {resourceSelectionDialog("spell"); this.updateDefExcl(dialog);},
-		bBac : function (dialog) {resourceSelectionDialog("background"); this.updateDefExcl(dialog);},
-		bBaF : function (dialog) {resourceSelectionDialog("background feature"); this.updateDefExcl(dialog);},
-		bCre : function (dialog) {resourceSelectionDialog("creature"); this.updateDefExcl(dialog);},
-		bCom : function (dialog) {resourceSelectionDialog("companion"); this.updateDefExcl(dialog);},
-		bAtk : function (dialog) {resourceSelectionDialog("weapon"); this.updateDefExcl(dialog);},
-		bArm : function (dialog) {resourceSelectionDialog("armor"); this.updateDefExcl(dialog);},
-		bAmm : function (dialog) {resourceSelectionDialog("ammo"); this.updateDefExcl(dialog);},
-		bMag : function (dialog) {resourceSelectionDialog("magic item"); this.updateDefExcl(dialog);},
-		bLin : function (dialog) {if (this.sourceLink) app.launchURL(this.sourceLink, true)},
-		bSrc : function (dialog) { MakeSourceMenu_SourceOptions(); },
-		bMor : function (dialog) {
+		bCla: function (dialog) {resourceSelectionDialog("class"); this.updateDefExcl(dialog);},
+		bRac: function (dialog) {resourceSelectionDialog("race"); this.updateDefExcl(dialog);},
+		bFea: function (dialog) {resourceSelectionDialog("feat"); this.updateDefExcl(dialog);},
+		bSpe: function (dialog) {resourceSelectionDialog("spell"); this.updateDefExcl(dialog);},
+		bBac: function (dialog) {resourceSelectionDialog("background"); this.updateDefExcl(dialog);},
+		bBaF: function (dialog) {resourceSelectionDialog("background feature"); this.updateDefExcl(dialog);},
+		bCre: function (dialog) {resourceSelectionDialog("creature"); this.updateDefExcl(dialog);},
+		bCom: function (dialog) {resourceSelectionDialog("companion"); this.updateDefExcl(dialog);},
+		bAtk: function (dialog) {resourceSelectionDialog("weapon"); this.updateDefExcl(dialog);},
+		bArm: function (dialog) {resourceSelectionDialog("armor"); this.updateDefExcl(dialog);},
+		bAmm: function (dialog) {resourceSelectionDialog("ammo"); this.updateDefExcl(dialog);},
+		bMag: function (dialog) {resourceSelectionDialog("magic item"); this.updateDefExcl(dialog);},
+		bLin: function (dialog) {if (this.sourceLink) app.launchURL(this.sourceLink, true)},
+		bSrc: function (dialog) { MakeSourceMenu_SourceOptions(); },
+		bMor: function (dialog) {
 			var MenuSelection = getMenu("importscripts");
 			if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
 				MenuSelection[3] = true;
@@ -631,300 +631,300 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 				dialog.end("scrp");
 			};
 		},
-		bWhy : function (dialog) {
+		bWhy: function (dialog) {
 			var goToWeb = {
-				cTitle : "Why do I only see content from the SRD?",
-				cMsg : "This sheet only includes content from the System Reference Document (SRD), because including any other material from Wizards of the Coast (WotC) would be a violation of their copyright. MorePurpleMoreBetter (MPMB) can't provide you with anything more from WotC other than the SRD, which is published under the Creative Commons Attribution 4.0 International License (CC-BY-4.0) and thus free to use.\n\nHowever, using the 'Get more' button, you can add content to the sheet that you or somebody else made.\n\nMPMB has some pre-written 3rd-party materials such as the Blood Hunter by Matt Mercer and fans have made many more. You can find all those in the Community Add-on Script Index.\n\nWould you like to go a website where you can learn more about how this works and where you can find more content?",
-				nIcon : 2,
-				nType : 2
+				cTitle: "Why do I only see content from the SRD?",
+				cMsg: "This sheet only includes content from the System Reference Document (SRD), because including any other material from Wizards of the Coast (WotC) would be a violation of their copyright. MorePurpleMoreBetter (MPMB) can't provide you with anything more from WotC other than the SRD, which is published under the Creative Commons Attribution 4.0 International License (CC-BY-4.0) and thus free to use.\n\nHowever, using the 'Get more' button, you can add content to the sheet that you or somebody else made.\n\nMPMB has some pre-written 3rd-party materials such as the Blood Hunter by Matt Mercer and fans have made many more. You can find all those in the Community Add-on Script Index.\n\nWould you like to go a website where you can learn more about how this works and where you can find more content?",
+				nIcon: 2,
+				nType: 2,
 			};
 			if (app.alert(goToWeb) === 4) contactMPMB("how to add content");
 		},
-		description : {
-			name : "SOURCE SELECTION DIALOG",
-			first_tab : "appl",
-			elements : [{
-				type : "view",
-				align_children : "align_left",
-				elements : [{
-					type : "view",
-					align_children : "align_row",
-					elements : [{
-						type : "image",
-						item_id : "img1",
-						width : 20,
-						height : 20
+		description: {
+			name: "SOURCE SELECTION DIALOG",
+			first_tab: "appl",
+			elements: [{
+				type: "view",
+				align_children: "align_left",
+				elements: [{
+					type: "view",
+					align_children: "align_row",
+					elements: [{
+						type: "image",
+						item_id: "img1",
+						width: 20,
+						height: 20,
 					}, {
-						type : "static_text",
-						item_id : "head",
-						alignment : "align_fill",
-						font : "title",
-						bold : true,
-						wrap_name : true,
-						width : 770,
-						name : "Select which resources the sheet's automation should use"
-					}]
+						type: "static_text",
+						item_id: "head",
+						alignment: "align_fill",
+						font: "title",
+						bold: true,
+						wrap_name: true,
+						width: 770,
+						name: "Select which resources the sheet's automation should use",
+					}],
 				}, {
-					type : "view",
-					align_children : "align_top",
-					elements : [{
-						type : "view",
-						align_children : "align_left",
-						elements : [{
-							type : "static_text",
-							item_id : "tx00",
-							wrap_name : true,
-							font : "palette",
-							width : 815,
-							name : Text00 + (isFirstTime ? "\n\n" + Text01 : "")
+					type: "view",
+					align_children: "align_top",
+					elements: [{
+						type: "view",
+						align_children: "align_left",
+						elements: [{
+							type: "static_text",
+							item_id: "tx00",
+							wrap_name: true,
+							font: "palette",
+							width: 815,
+							name: Text00 + (isFirstTime ? "\n\n" + Text01 : ""),
 						}, {
-							type : "cluster",
-							name : "The Sourcebooks",
-							font : "heading",
-							bold : true,
-							elements : [{
-								type : "view",
-								align_children : "align_distribute",
-								elements : [{
-									type : "view",
-									elements : [{
-										type : "static_text",
-										height : 21,
-										alignment : "align_center",
-										item_id : "Etxt",
-										name : "Excluded from the automation",
-										font : "heading"
+							type: "cluster",
+							name: "The Sourcebooks",
+							font: "heading",
+							bold: true,
+							elements: [{
+								type: "view",
+								align_children: "align_distribute",
+								elements: [{
+									type: "view",
+									elements: [{
+										type: "static_text",
+										height: 21,
+										alignment: "align_center",
+										item_id: "Etxt",
+										name: "Excluded from the automation",
+										font: "heading",
 									}, {
-										width : 325,
-										height : selBoxHeight,
-										type : "hier_list_box",
-										item_id : "ExcL"
-									}]
+										width: 325,
+										height: selBoxHeight,
+										type: "hier_list_box",
+										item_id: "ExcL",
+									}],
 								}, {
-									type : "view",
-									alignment : "align_top",
-									elements : [{
-										type : "button",
-										item_id : "bMor",
-										name : "Get more",
-										font : "dialog",
-										bold : true
+									type: "view",
+									alignment: "align_top",
+									elements: [{
+										type: "button",
+										item_id: "bMor",
+										name: "Get more",
+										font: "dialog",
+										bold: true,
 									}, {
-										type : "button",
-										item_id : "bWhy",
-										name : "Missing content?",
-										font : "dialog",
-										bold : true
+										type: "button",
+										item_id: "bWhy",
+										name: "Missing content?",
+										font: "dialog",
+										bold: true,
 									}, {
-										type : "gap"
+										type: "gap",
 									}, {
-										type : "button",
-										item_id : "BTRA",
-										name : ">>"
+										type: "button",
+										item_id: "BTRA",
+										name: ">>",
 									}, {
-										type : "button",
-										item_id : "BTR1",
-										name : ">"
+										type: "button",
+										item_id: "BTR1",
+										name: ">",
 									}, {
-										type : "button",
-										item_id : "BTL1",
-										name : "<"
+										type: "button",
+										item_id: "BTL1",
+										name: "<",
 									}, {
-										type : "button",
-										item_id : "BTLA",
-										name : "<<"
-									}]
+										type: "button",
+										item_id: "BTLA",
+										name: "<<",
+									}],
 								}, {
-									type : "view",
-									elements : [{
-										type : "static_text",
-										height : 21,
-										alignment : "align_center",
-										item_id : "Itxt",
-										name : "Included in the automation",
-										font : "heading"
+									type: "view",
+									elements: [{
+										type: "static_text",
+										height: 21,
+										alignment: "align_center",
+										item_id: "Itxt",
+										name: "Included in the automation",
+										font: "heading",
 									}, {
-										width : 325,
-										height : selBoxHeight,
-										type : "hier_list_box",
-										item_id : "IncL"
-									}]
-								}]
+										width: 325,
+										height: selBoxHeight,
+										type: "hier_list_box",
+										item_id: "IncL",
+									}],
+								}],
 							}, {
-								type : "view",
-								align_children : "align_distribute",
-								alignment : "align_fill",
-								elements : [{
-									type : "link_text",
-									font : "dialog",
-									bold : true,
-									item_id : "bLin",
-									alignment : "align_left",
-									width : 575
+								type: "view",
+								align_children: "align_distribute",
+								alignment: "align_fill",
+								elements: [{
+									type: "link_text",
+									font: "dialog",
+									bold: true,
+									item_id: "bLin",
+									alignment: "align_left",
+									width: 575,
 								}, {
-									type : "button",
-									item_id : "bSrc",
-									alignment : "align_right",
-									name : "List Source Abbreviations"
-								}]
-							}]
+									type: "button",
+									item_id: "bSrc",
+									alignment: "align_right",
+									name: "List Source Abbreviations",
+								}],
+							}],
 						}, {
-							type : "cluster",
-							name : "Exclude elements of the sourcebooks included above",
-							font : "heading",
-							bold : true,
-							elements : [{
-								type : "static_text",
-								item_id : "txt1",
-								wrap_name : true,
-								font : "palette",
-								width : 775,
-								name : Text1
+							type: "cluster",
+							name: "Exclude elements of the sourcebooks included above",
+							font: "heading",
+							bold: true,
+							elements: [{
+								type: "static_text",
+								item_id: "txt1",
+								wrap_name: true,
+								font: "palette",
+								width: 775,
+								name: Text1,
 							}].concat(minVer ? [{
-								type : "button",
-								font : "dialog",
-								bold : true,
-								item_id : "bSpe",
-								name : "Spells/Psionics",
-								alignment : "align_center"
+								type: "button",
+								font: "dialog",
+								bold: true,
+								item_id: "bSpe",
+								name: "Spells/Psionics",
+								alignment: "align_center",
 							}] : [{
-								type : "view",
-								align_children : "align_distribute",
-								alignment : "align_fill",
-								elements : [{
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bCla",
-									name : "Classes/Archetypes"
+								type: "view",
+								align_children: "align_distribute",
+								alignment: "align_fill",
+								elements: [{
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bCla",
+									name: "Classes/Archetypes",
 								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bBac",
-									name : "Backgrounds"
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bBac",
+									name: "Backgrounds",
 								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bAtk",
-									name : "Weapons/Attacks"
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bAtk",
+									name: "Weapons/Attacks",
 								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bMag",
-									name : "Magic Items"
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bMag",
+									name: "Magic Items",
 								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bSpe",
-									name : "Spells/Psionics"
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bSpe",
+									name: "Spells/Psionics",
 								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bCom",
-									name : "Companion Options"
-								}]
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bCom",
+									name: "Companion Options",
+								}],
 							}, {
-								type : "view",
-								align_children : "align_distribute",
-								alignment : "align_fill",
-								elements : [{
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bRac",
-									name : "Player Races"
+								type: "view",
+								align_children: "align_distribute",
+								alignment: "align_fill",
+								elements: [{
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bRac",
+									name: "Player Races",
 								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bBaF",
-									name : "Background Features"
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bBaF",
+									name: "Background Features",
 								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bAmm",
-									name : "Ammunition"
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bAmm",
+									name: "Ammunition",
 								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bArm",
-									name : "Armor"
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bArm",
+									name: "Armor",
 								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bFea",
-									name : "Feats"
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bFea",
+									name: "Feats",
 								}, {
-									type : "button",
-									font : "dialog",
-									bold : true,
-									item_id : "bCre",
-									name : "Creatures"
-								}]
-							}])
-						}]
+									type: "button",
+									font: "dialog",
+									bold: true,
+									item_id: "bCre",
+									name: "Creatures",
+								}],
+							}]),
+						}],
 					}].concat(!newExcluded.found ? [] : [{
-						type : "view",
-						alignment : "align_fill",
-						align_children : "align_left",
-						elements : [{
-							type : "cluster",
-							name : "Automatically Excluded Elements",
-							font : "heading",
-							bold : true,
-							alignment : "align_top",
-							elements : [{
-								type : "static_text",
-								item_id : "ExH0",
-								wrap_name : true,
-								font : "palette",
-								width : 275,
-								name : txtDefaultExcluded0
+						type: "view",
+						alignment: "align_fill",
+						align_children: "align_left",
+						elements: [{
+							type: "cluster",
+							name: "Automatically Excluded Elements",
+							font: "heading",
+							bold: true,
+							alignment: "align_top",
+							elements: [{
+								type: "static_text",
+								item_id: "ExH0",
+								wrap_name: true,
+								font: "palette",
+								width: 275,
+								name: txtDefaultExcluded0,
 							}, {
-								type : "static_text",
-								item_id : "ExH1",
-								wrap_name : true,
-								font : "palette",
-								width : 275,
-								name : txtDefaultExcluded1
+								type: "static_text",
+								item_id: "ExH1",
+								wrap_name: true,
+								font: "palette",
+								width: 275,
+								name: txtDefaultExcluded1,
 							}, {
-								type : "edit_text",
-								item_id : "ExTx",
-								alignment : "align_fill",
-								readonly : true,
+								type: "edit_text",
+								item_id: "ExTx",
+								alignment: "align_fill",
+								readonly: true,
 								multiline: true,
-								height : isFirstTime ? 398 : 360,
-								width : 275
-							}]
-						}]
-					}])
+								height: isFirstTime ? 398 : 360,
+								width: 275,
+							}],
+						}],
+					}]),
 				}, {
-					type : "view",
-					alignment : "align_fill",
-					align_children : "align_distribute",
-					elements : [{
-						type : "static_text",
-						item_id : "tx02",
-						wrap_name : true,
-						width : newExcluded.found ? 815 : 510,
-						name : Text02
+					type: "view",
+					alignment: "align_fill",
+					align_children: "align_distribute",
+					elements: [{
+						type: "static_text",
+						item_id: "tx02",
+						wrap_name: true,
+						width: newExcluded.found ? 815 : 510,
+						name: Text02,
 					}, {
-						item_id : "appl",
-						type : "ok_cancel",
-						alignment : "align_right",
-						ok_name : "Apply"
-					}]
-				}]
-			}]
-		}
+						item_id: "appl",
+						type: "ok_cancel",
+						alignment: "align_right",
+						ok_name: "Apply",
+					}],
+				}],
+			}],
+		},
 	};
 
 	var CallDialogue = app.execDialog(selectionDialogue);
@@ -1133,7 +1133,7 @@ function resourceSelectionDialog(type) {
 			var uTest = testSource(u, SpellsList[u], CSatt, true);
 			if (uTest === "source" || !SpellsList[u] || !SpellsList[u].classes) continue;
 			if (spellSchoolList[SpellsList[u].school]) {
-				var uGroup = ((/avatar|awakened|immortal|nomad|wu jen/i).test(spellSchoolList[SpellsList[u].school]) ? "Order of " : "School of ") + spellSchoolList[SpellsList[u].school].capitalize();
+				var uGroup = (/avatar|awakened|immortal|nomad|wu jen/i.test(spellSchoolList[SpellsList[u].school]) ? "Order of " : "School of ") + spellSchoolList[SpellsList[u].school].capitalize();
 			} else {
 				var uGroup = SpellsList[u].level == 0 && SpellsList[u].classes[0] === "mystic" ? "Psionic Talents" : "Other";
 			};
@@ -1243,7 +1243,7 @@ function resourceSelectionDialog(type) {
 			var uName = amendSource(WeaponsList[u].name, WeaponsList[u]);
 			var uTest = testSource(u, WeaponsList[u], CSatt, true);
 			if (uTest === "source" || WeaponsList[u].list == "startlist") continue;
-			var uGroup = !(/martial|simple/i).test(WeaponsList[u].type) ? WeaponsList[u].type : WeaponsList[u].list ? WeaponsList[u].type + " - " + WeaponsList[u].list : WeaponsList[u].baseWeapon ? WeaponsList[u].baseWeapon + " - variants" : "Other";
+			var uGroup = !/martial|simple/i.test(WeaponsList[u].type) ? WeaponsList[u].type : WeaponsList[u].list ? WeaponsList[u].type + " - " + WeaponsList[u].list : WeaponsList[u].baseWeapon ? WeaponsList[u].baseWeapon + " - variants" : "Other";
 			refObj[uName] = u;
 			if (!exclObj[uGroup]) exclObj[uGroup] = {};
 			if (!inclObj[uGroup]) inclObj[uGroup] = {};
@@ -1299,43 +1299,43 @@ function resourceSelectionDialog(type) {
 	var Text0 = "Please select which " + theName + " you want to exclude or include from being used by the sheet." + theExtra[0] + "\n\nNote that " + theName + " from sourcebooks that you excluded in the previous dialog are not shown here at all.";
 
 	var selectionDialogue = {
-		inclInA : inclInArr,
-		exclActive : true,
-		inclActive : false,
-		exclObject : exclObj,
-		inclObject : inclObj,
-		exclArr : [],
-		initialize : function (dialog) {
+		inclInA: inclInArr,
+		exclActive: true,
+		inclActive: false,
+		exclObject: exclObj,
+		inclObject: inclObj,
+		exclArr: [],
+		initialize: function (dialog) {
 			dialog.load({
-				"ExcL" : this.exclObject,
-				"IncL" : this.inclObject
+				"ExcL": this.exclObject,
+				"IncL": this.inclObject,
 			});
 		},
-		commit : function (dialog) {
+		commit: function (dialog) {
 			//put both elements into the arrays
 			var oResult = dialog.store();
 			this.exclArr = ObjectToArray(oResult["ExcL"], this.inclInA, this.inclInA === "all" ? oResult["IncL"] : false);
 		},
-		ExcL : function (dialog) {
+		ExcL: function (dialog) {
 			this.exclActive = true;
 		},
-		IncL : function (dialog) {
+		IncL: function (dialog) {
 			this.inclActive = true;
 		},
-		BTRA : function (dialog) {
+		BTRA: function (dialog) {
 			// move all (remaining) items from ExcL to IncL
 			var elements = dialog.store();
 			var exclNow = elements["ExcL"];
 			var inclNow = elements["IncL"];
 			dialog.load({
-				"ExcL" : {},
-				"IncL" : MergeRecursive(inclNow, exclNow)
+				"ExcL": {},
+				"IncL": MergeRecursive(inclNow, exclNow),
 			});
 			dialog.focus("IncL");
 			this.exclActive = false;
 			this.inclActive = true;
 		},
-		BTR1 : function (dialog) {
+		BTR1: function (dialog) {
 			// move selected (one) item from ExcL to IncL
 			if (!this.exclActive) return;
 			var elements = dialog.store();
@@ -1344,15 +1344,15 @@ function resourceSelectionDialog(type) {
 			var moveThem = GetElementAndMerge(exclNow, inclNow);
 			if (moveThem) {
 				dialog.load({
-					"ExcL" : moveThem[0],
-					"IncL" : moveThem[1]
+					"ExcL": moveThem[0],
+					"IncL": moveThem[1],
 				});
 				dialog.focus("IncL");
 				this.exclActive = false;
 				this.inclActive = true;
 			}
 		},
-		BTL1 : function (dialog) {
+		BTL1: function (dialog) {
 			// move selected (one) item from IncL to ExcL
 			if (!this.inclActive) return;
 			var elements = dialog.store();
@@ -1361,108 +1361,108 @@ function resourceSelectionDialog(type) {
 			var moveThem = GetElementAndMerge(inclNow, exclNow);
 			if (moveThem) {
 				dialog.load({
-					"IncL" : moveThem[0],
-					"ExcL" : moveThem[1]
+					"IncL": moveThem[0],
+					"ExcL": moveThem[1],
 				});
 				dialog.focus("ExcL");
 				this.exclActive = true;
 				this.inclActive = false;
 			}
 		},
-		BTLA : function (dialog) {
+		BTLA: function (dialog) {
 			// move all items from IncL to ExcL and sort ExcL
 			var elements = dialog.store()
 				var exclNow = elements["ExcL"];
 			var inclNow = elements["IncL"];
 			dialog.load({
-				"ExcL" : MergeRecursive(exclNow, inclNow),
-				"IncL" : {}
+				"ExcL": MergeRecursive(exclNow, inclNow),
+				"IncL": {},
 			});
 			dialog.focus("ExcL");
 			this.exclActive = true;
 			this.inclActive = false;
 		},
-		bSrc : function (dialog) { MakeSourceMenu_SourceOptions(); },
-		description : {
-			name : theName.toUpperCase() + " SOURCE SELECTION DIALOG",
-			elements : [{
-				type : "view",
-				align_children : "align_left",
-				elements : [{
-					type : "static_text",
-					item_id : "head",
-					alignment : "align_fill",
-					font : "title",
-					bold : true,
-					height : 21,
-					width : 720,
-					name : "Select which " + theName + " the sheet's automation should use"
+		bSrc: function (dialog) { MakeSourceMenu_SourceOptions(); },
+		description: {
+			name: theName.toUpperCase() + " SOURCE SELECTION DIALOG",
+			elements: [{
+				type: "view",
+				align_children: "align_left",
+				elements: [{
+					type: "static_text",
+					item_id: "head",
+					alignment: "align_fill",
+					font: "title",
+					bold: true,
+					height: 21,
+					width: 720,
+					name: "Select which " + theName + " the sheet's automation should use",
 				}, {
-					type : "static_text",
-					item_id : "txt0",
-					wrap_name : true,
-					width : 710,
-					name : Text0
+					type: "static_text",
+					item_id: "txt0",
+					wrap_name: true,
+					width: 710,
+					name: Text0,
 				}, {
-					type : "view",
-					align_children : "align_row",
-					elements : [{
-						type : "cluster",
-						name : "Excluded from the automation",
-						font : "heading",
-						elements : [{
-							width : 250,
-							height : 250,
-							type : "hier_list_box",
-							item_id : "ExcL"
-						}]
+					type: "view",
+					align_children: "align_row",
+					elements: [{
+						type: "cluster",
+						name: "Excluded from the automation",
+						font: "heading",
+						elements: [{
+							width: 250,
+							height: 250,
+							type: "hier_list_box",
+							item_id: "ExcL",
+						}],
 					}, {
-						type : "view",
-						elements : [{
-							type : "button",
-							item_id : "BTRA",
-							name : ">>"
+						type: "view",
+						elements: [{
+							type: "button",
+							item_id: "BTRA",
+							name: ">>",
 						}, {
-							type : "button",
-							item_id : "BTR1",
-							name : ">"
+							type: "button",
+							item_id: "BTR1",
+							name: ">",
 						}, {
-							type : "button",
-							item_id : "BTL1",
-							name : "<"
+							type: "button",
+							item_id: "BTL1",
+							name: "<",
 						}, {
-							type : "button",
-							item_id : "BTLA",
-							name : "<<"
-						}]
+							type: "button",
+							item_id: "BTLA",
+							name: "<<",
+						}],
 					}, {
-						type : "cluster",
-						name : "Included in the automation",
-						font : "heading",
-						elements : [{
-							width : 250,
-							height : 250,
-							type : "hier_list_box",
-							item_id : "IncL"
-						}]
-					}]
+						type: "cluster",
+						name: "Included in the automation",
+						font: "heading",
+						elements: [{
+							width: 250,
+							height: 250,
+							type: "hier_list_box",
+							item_id: "IncL",
+						}],
+					}],
 				}, {
-					type : "view", // the bottom row of buttons
-					align_children : "align_distribute",
-					alignment : "align_fill",
-					elements : [{
-						item_id : "bSrc",
-						type : "button",
-						alignment : "align_left",
-						name : "List Source Abbreviations"
+					type: "view", // the bottom row of buttons
+					align_children: "align_distribute",
+					alignment: "align_fill",
+					elements: [{
+						item_id: "bSrc",
+						type: "button",
+						alignment: "align_left",
+						name: "List Source Abbreviations",
 					}, {
-						type : "ok_cancel",
-						alignment : "align_right",
-						ok_name : "Apply"
-					}]
-				}]
-			}]
-		}
+						type: "ok_cancel",
+						alignment: "align_right",
+						ok_name: "Apply",
+					}],
+				}],
+			}],
+		},
 	};
 
 	if (app.execDialog(selectionDialogue) === "ok") {
@@ -1563,41 +1563,41 @@ function stringSource(obj, verbosity, prefix, suffix) {
 // make a menu off all the sources where clicking on them gets you to their linked URL
 function MakeSourceMenu_SourceOptions() {
 	var SourceMenu = [{
-		cName : "[clicking a source will open a web page]",
-		bEnabled : false
+		cName: "[clicking a source will open a web page]",
+		bEnabled: false,
 	}, {
-		cName : "All",
-		oSubMenu : []
+		cName: "All",
+		oSubMenu: [],
 	}, {
-		cName : "Core Sources",
-		oSubMenu : []
+		cName: "Core Sources",
+		oSubMenu: [],
 	}, {
-		cName : "Primary Sources",
-		oSubMenu : []
+		cName: "Primary Sources",
+		oSubMenu: [],
 	}, {
-		cName : "Adventure Books",
-		oSubMenu : []
+		cName: "Adventure Books",
+		oSubMenu: [],
 	}, {
-		cName : "Adventurers League",
-		oSubMenu : []
+		cName: "Adventurers League",
+		oSubMenu: [],
 	}, {
-		cName : "Extra Life",
-		oSubMenu : []
+		cName: "Extra Life",
+		oSubMenu: [],
 	}, {
-		cName : "Unearthed Arcana",
-		oSubMenu : []
+		cName: "Unearthed Arcana",
+		oSubMenu: [],
 	}];
 
 	var menuLoc = {
-		"core sources" : 2,
-		"primary sources" : 3,
-		"adventure books" : 4,
-		"adventurers league" : 5,
-		"extra life" : 6,
-		"unearthed arcana" : 7
+		"core sources": 2,
+		"primary sources": 3,
+		"adventure books": 4,
+		"adventurers league": 5,
+		"extra life": 6,
+		"unearthed arcana": 7,
 	};
 
-	var abbrObj = { arr : [], obj : {}, lowObj : {} };
+	var abbrObj = { arr: [], obj: {}, lowObj: {} };
 	for (var aSource in SourceList) {
 		abbrObj.arr.push(SourceList[aSource].abbreviation);
 		abbrObj.obj[SourceList[aSource].abbreviation] = aSource;
@@ -1614,26 +1614,26 @@ function MakeSourceMenu_SourceOptions() {
 		var theIndex = menuLoc[useGroup];
 		if (!theIndex) {
 			if (!extraMenuItems) {
-				SourceMenu.push({ cName : "-" });
+				SourceMenu.push({ cName: "-" });
 				extraMenuItems = true;
 			};
 			theIndex = SourceMenu.length;
 			SourceMenu.push({
-				cName : src.group,
-				oSubMenu : []
+				cName: src.group,
+				oSubMenu: [],
 			});
 			menuLoc[useGroup] = theIndex;
 		};
 
 		var allItem = {
-			cName : (src.abbreviation + (new Array(10)).join("\u2002")).substr(0, 10) + src.name,
-			cReturn : "sourcelist#" + aSource
+			cName: (src.abbreviation + (new Array(10)).join("\u2002")).substr(0, 10) + src.name,
+			cReturn: "sourcelist#" + aSource,
 		};
 		if ((/(\d+\/\d+\/\d+)(.*)/).test(allItem.cName)) allItem.cName = allItem.cName.replace(/(\d+\/\d+\/\d+)(.*)/, "$2 ($1)");
 		SourceMenu[1].oSubMenu.push(allItem);
 		var srcItem = {
-			cName : allItem.cName.replace(RegExp(src.group + ":? ?", "i"), ""),
-			cReturn : allItem.cReturn
+			cName: allItem.cName.replace(RegExp(src.group + ":? ?", "i"), ""),
+			cReturn: allItem.cReturn,
 		};
 		SourceMenu[theIndex].oSubMenu.push(srcItem);
 	};
@@ -1648,10 +1648,10 @@ function MakeSourceMenu_SourceOptions() {
 		}
 	}
 
-	SourceMenu.push({ cName : "-" });
+	SourceMenu.push({ cName: "-" });
 	SourceMenu.push({
-		cName : "Open a dialog with a list of the sources",
-		cReturn : "sourcelist#dialogue"
+		cName: "Open a dialog with a list of the sources",
+		cReturn: "sourcelist#dialogue",
 	});
 
 	//parse it into a global variable

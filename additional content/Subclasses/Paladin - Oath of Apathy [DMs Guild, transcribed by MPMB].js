@@ -29,92 +29,92 @@ var iFileName = "Paladin - Oath of Apathy [DMs Guild, transcribed by MPMB].js";
 RequiredSheetVersion("13.0.6");
 
 SourceList["DDAL00-09"] = {
-	name : "Minsc & Boo's Guide to Stuff and Things",
-	abbreviation : "DDAL00-09",
-	group : "Dungeon Masters Guild",
-	url : "https://www.dmsguild.com/product/271488/",
-	date : "2019/04/01"
+	name: "Minsc & Boo's Guide to Stuff and Things",
+	abbreviation: "DDAL00-09",
+	group: "Dungeon Masters Guild",
+	url: "https://www.dmsguild.com/product/271488/",
+	date: "2019/04/01",
 };
 
 AddSubClass("paladin", "apathy", {
-	regExpSearch : /^(?=.*apathy)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
-	subname : "Oath of Apathy",
-	source : ["DDAL00-09", 14],
-	spellcastingExtra : ["sanctuary", "sleep", "calm emotions", "suggestion", "hypnotic pattern", "slow", "confusion", "mordenkainen's private sanctum", "dream", "mislead"],
-	features : {
-		"subclassfeature3" : {
-			name : "Channel Divinity: Stubborn Tenacity",
-			source : ["DDAL00-09", 14],
-			minlevel : 3,
-			description : desc([
+	regExpSearch: /^(?=.*apathy)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
+	subname: "Oath of Apathy",
+	source: ["DDAL00-09", 14],
+	spellcastingExtra: ["sanctuary", "sleep", "calm emotions", "suggestion", "hypnotic pattern", "slow", "confusion", "mordenkainen's private sanctum", "dream", "mislead"],
+	features: {
+		"subclassfeature3": {
+			name: "Channel Divinity: Stubborn Tenacity",
+			source: ["DDAL00-09", 14],
+			minlevel: 3,
+			description: desc([
 				"As an action, I can target a charmed, frightened, or stunned creature within 60 ft",
-				"If the condition allows a save, the target immediately makes a save with adv. to do so"
+				"If the condition allows a save, the target immediately makes a save with adv. to do so",
 			]),
-			action : [["action", ""]]
+			action: [["action", ""]],
 		},
-		"subclassfeature3.1" : {
-			name : "Channel Divinity: Whoa, Everybody Chill!",
-			source : ["DDAL00-09", 14],
-			minlevel : 3,
-			description : desc([
+		"subclassfeature3.1": {
+			name: "Channel Divinity: Whoa, Everybody Chill!",
+			source: ["DDAL00-09", 14],
+			minlevel: 3,
+			description: desc([
 				"As an action, I can have chosen creatures in 30 ft that can see me make a Cha save",
 				"If failed, they must mime taking a 'chill pill' and gain disadv. on attack rolls for 1 min",
-				"Affected targets can repeat this save at the end of each of their turns"
+				"Affected targets can repeat this save at the end of each of their turns",
 			]),
-			action : [["action", ""]]
+			action: [["action", ""]],
 		},
-		"subclassfeature7" : {
-			name : "Stubborn with a Capital T",
-			source : ["DDAL00-09", 14],
-			minlevel : 7,
-			description : desc([
+		"subclassfeature7": {
+			name: "Stubborn with a Capital T",
+			source: ["DDAL00-09", 14],
+			minlevel: 7,
+			description: desc([
 				"As a reaction when a creature causes me to be pushed or pulled, I can reverse the effect",
-				"I remain where I am, and I target the creature with the effect instead"
+				"I remain where I am, and I target the creature with the effect instead",
 			]),
-			action : [["reaction", ""]]
+			action: [["reaction", ""]],
 		},
-		"subclassfeature15" : {
-			name : "Don’t Be a Party Pooper",
-			source : ["DDAL00-09", 14],
-			minlevel : 15,
-			description : desc([
+		"subclassfeature15": {
+			name: "Don’t Be a Party Pooper",
+			source: ["DDAL00-09", 14],
+			minlevel: 15,
+			description: desc([
 				"As a reaction when one affected by Whoa, Everybody Chill! makes an attack, I attack it",
-				"If I'm within range of that creature, I can make a melee weapon attack against it"
+				"If I'm within range of that creature, I can make a melee weapon attack against it",
 			]),
-			action : [["reaction", ""]]
+			action: [["reaction", ""]],
 		},
-		"subclassfeature18" : {
-			name : "Stubborn with a Capital U",
-			source : ["DDAL00-09", 14],
-			minlevel : 18,
+		"subclassfeature18": {
+			name: "Stubborn with a Capital U",
+			source: ["DDAL00-09", 14],
+			minlevel: 18,
 			description: desc("As a reaction when an ally I can see is being pushed or pulled, I can negate the push/pull"),
-			action : [["reaction", ""]]
+			action: [["reaction", ""]],
 		},
-		"subclassfeature20" : {
-			name : "Avatar of Apathy",
-			source : ["DDAL00-09", 14],
-			minlevel : 20,
-			description : desc([
+		"subclassfeature20": {
+			name: "Avatar of Apathy",
+			source: ["DDAL00-09", 14],
+			minlevel: 20,
+			description: desc([
 				"As an action, I can stop caring about everything and the rules no longer apply to me",
-				'This lasts for 1 minute; See the 3rd page "Notes" section for the benefits this gives me'
+				'This lasts for 1 minute; See the 3rd page "Notes" section for the benefits this gives me',
 			]),
-			recovery : "long rest",
-			usages : 1,
-			action : [["action", ""]],
-			"avatar of apathy benefits" : {
-				name : "Avatar of Apathy Benefits",
-				extraname : "Oath of Apathy 20",
-				source : ["DDAL00-09", 14],
-				description : desc([
+			recovery: "long rest",
+			usages: 1,
+			action: [["action", ""]],
+			"avatar of apathy benefits": {
+				name: "Avatar of Apathy Benefits",
+				extraname: "Oath of Apathy 20",
+				source: ["DDAL00-09", 14],
+				description: desc([
 					"While I'm transformed into an Avatar of Apathy, I gain the following benefits:",
 					" \u2022 I gain a climb, fly, and swim speed equal to my walking speed",
 					" \u2022 I can move through other creatures and object as if they are difficult terrain",
 					"   If I end my turn inside a creature or object, I take 1d10 force damage",
 					" \u2022 As a reaction when I'm hit by an attack or fail a save, I can cause it to miss/succeed",
-					" \u2022 When I use Lay on Hands on myself, I also remove one condition affecting me"
-				])
+					" \u2022 When I use Lay on Hands on myself, I also remove one condition affecting me",
+				]),
 			},
-			autoSelectExtrachoices : [{ extrachoice : "avatar of apathy benefits" }]
-		}
-	}
+			autoSelectExtrachoices: [{ extrachoice: "avatar of apathy benefits" }],
+		},
+	},
 });

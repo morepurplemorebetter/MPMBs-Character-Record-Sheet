@@ -36,7 +36,7 @@ function StartDirectImport() {
 	if (app.viewerVersion < 15) {
 		app.alert({
 			cMsg: "This features requires Adobe Acrobat DC or newer (Reader, Standard, or Pro).\n\nYou can get Adobe Acrobat Reader DC for free at get.adobe.com/reader/",
-			cTitle: "Old version of Adobe Acrobat"
+			cTitle: "Old version of Adobe Acrobat",
 		});
 		return;
 	} else if (MPMBImportFunctionsInstalled) {
@@ -54,199 +54,199 @@ function AddFolderJavaScript(justConsole) {
 	var isContin = app.viewerVersion.substring(6, 8) != 30;
 	var vYear = 20 + app.viewerVersion.substring(0, 2);
 
-	var textLoc = "The 'JavaScripts' folder" + (isWindows ? 's' : '') + " for Adobe Acrobat " + isType + " DC on " + (isWindows ? "Windows are:" : "macOS is:");
+	var textLoc = "The 'JavaScripts' folder" + (isWindows ? "s" : "") + " for Adobe Acrobat " + isType + " DC on " + (isWindows ? "Windows are:" : "macOS is:");
 	var locWin = "C:\\Program Files (x86)\\Adobe\\Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + "\\" + (isType === "Reader" ? "Reader" : "Acrobat") + "\\Javascripts\\";
-	var locWin64 = locWin.replace(' (x86)', '');
+	var locWin64 = locWin.replace(" (x86)", "");
 	var locMac = "/Applications/Adobe Acrobat " + (isType === "Reader" ? "Reader " : "") + (isContin ? "DC" : vYear) + ".app/Contents/Resources/JavaScripts/";
 
 	var Text0 = justConsole ? "In order to import user-defined icons, you will have to manually add a JavaScript file to your Adobe Acrobat installation. This is necessary, because of Adobe Acrobat's security protocol. You will have to do this only once to get this function working." : "In order to use the 'Direct Import' functionality, you will need to do something to appease Adobe Acrobat's security settings. You have two options:\nOption 1 is that you add a JavaScript file to your installation. After you've done this, you will never see this dialog again.\nOption 2 is that you run the code from console, but you will have to do this every time if you want to use this function.";
 	var Text1 = "Do the following steps:\n   1)  Use the button below to save the file somewhere (don't change the filename).\n   2)  Rename the file so that its extension is \".js\" (can't be done while saving).\n   3)  Move the file to the right location mentioned below (can't be saved there directly).\n   4)  Restart Adobe Acrobat and try the 'Direct Import' function again.";
-	var Text2 = (isWindows ? "The paths shown above are an estimated guess for your installation. Use the x64 or x86 path, depending on which version of Adobe Acrobat you have installed." : "The path shown above is an estimated guess for your installation.")+
+	var Text2 = (isWindows ? "The paths shown above are an estimated guess for your installation. Use the x64 or x86 path, depending on which version of Adobe Acrobat you have installed." : "The path shown above is an estimated guess for your installation.") +
 		" You can select and copy the path above. It is possible that this folder doesn't exist yet, or that it is hidden.\n" + toUni("Note that you can't save the file directly to this location!\n ");
 	var Text3 = 'Open the console (a.k.a. "JavaScript Debugger") and run the code that is printed there. Running the code is done by selecting the line it is on and pressing ' + (isWindows ? "Ctrl+Enter" : "Command+Enter") + " (or the numpad Enter).";
 
 	var windowsLocations = {
-		type : "view",
-		align_children : "align_left",
-		elements : [{
-			type : "view",
-			align_children : "align_row",
-			elements : [{
-				type : "static_text",
-				item_id : "l1tx",
-				name : " 32-bit Acrobat (x86):",
-				width : 80,
-				font : "dialog",
-				bold : true
+		type: "view",
+		align_children: "align_left",
+		elements: [{
+			type: "view",
+			align_children: "align_row",
+			elements: [{
+				type: "static_text",
+				item_id: "l1tx",
+				name: " 32-bit Acrobat (x86):",
+				width: 80,
+				font: "dialog",
+				bold: true,
 			}, {
-				type : "edit_text",
-				item_id : "loc1",
-				alignment : "align_fill",
-				font : "dialog",
-				width : 390,
-				readonly : true
-			}]
+				type: "edit_text",
+				item_id: "loc1",
+				alignment: "align_fill",
+				font: "dialog",
+				width: 390,
+				readonly: true,
+			}],
 		}, {
-			type : "view",
-			align_children : "align_row",
-			elements : [{
-				type : "static_text",
-				item_id : "l2tx",
-				name : " 64-bit Acrobat (x64):",
-				width : 80,
-				font : "dialog",
-				bold : true
+			type: "view",
+			align_children: "align_row",
+			elements: [{
+				type: "static_text",
+				item_id: "l2tx",
+				name: " 64-bit Acrobat (x64):",
+				width: 80,
+				font: "dialog",
+				bold: true,
 			}, {
-				type : "edit_text",
-				item_id : "loc2",
-				alignment : "align_fill",
-				font : "dialog",
-				width : 390,
-				readonly : true
-			}]
-		}]
+				type: "edit_text",
+				item_id: "loc2",
+				alignment: "align_fill",
+				font: "dialog",
+				width: 390,
+				readonly: true,
+			}],
+		}],
 	};
 	var macLocations = {
-		type : "edit_text",
-		item_id : "loc1",
-		alignment : "align_fill",
-		font : "dialog",
-		width : 470,
-		readonly : true
+		type: "edit_text",
+		item_id: "loc1",
+		alignment: "align_fill",
+		font: "dialog",
+		width: 470,
+		readonly: true,
 	};
 	var AddJS_dialog = {
-		initialize : function(dialog) {
+		initialize: function(dialog) {
 			if (isWindows) {
 				var toLoad = {
-					loc1 : locWin,
-					loc2 : locWin64
+					loc1: locWin,
+					loc2: locWin64,
 				};
 			} else {
 				var toLoad = {
-					loc1 : locMac
+					loc1: locMac,
 				};
 			}
 			dialog.load(toLoad);
 		},
-		bADD : function(dialog) {
-			tDoc.exportDataObject({ cName: "MPMB-IF Remove '.txt' from the end.js.txt", nLaunch: 0});
+		bADD: function(dialog) {
+			tDoc.exportDataObject({ cName: "MPMB-IF Remove '.txt' from the end.js.txt", nLaunch: 0 });
 		},
-		bCON : function(dialog) {
+		bCON: function(dialog) {
 			dialog.end("cons");
 		},
-		description : {
-			name : "ADD FILE TO ACROBAT INSTALLATION DIALOG",
-			first_tab : "bADD",
-			elements : [{
-				type : "view",
-				align_children : "align_left",
-				elements : [{
-					type : "view",
-					elements : [{
-						type : "static_text",
-						item_id : "head",
-						alignment : "align_fill",
-						font : "heading",
-						bold : true,
-						name : justConsole ? "User-defined Icons: requires JavaScript file to be added" : "Add a JavaScript file to your Acrobat installation or use the Console",
-						height : 21,
-						width : 530
+		description: {
+			name: "ADD FILE TO ACROBAT INSTALLATION DIALOG",
+			first_tab: "bADD",
+			elements: [{
+				type: "view",
+				align_children: "align_left",
+				elements: [{
+					type: "view",
+					elements: [{
+						type: "static_text",
+						item_id: "head",
+						alignment: "align_fill",
+						font: "heading",
+						bold: true,
+						name: justConsole ? "User-defined Icons: requires JavaScript file to be added" : "Add a JavaScript file to your Acrobat installation or use the Console",
+						height: 21,
+						width: 530,
 					}, {
-						type : "static_text",
-						item_id : "txt0",
-						alignment : "align_fill",
-						font : "dialog",
-						wrap_name : true,
-						width : 530,
-						name : Text0
+						type: "static_text",
+						item_id: "txt0",
+						alignment: "align_fill",
+						font: "dialog",
+						wrap_name: true,
+						width: 530,
+						name: Text0,
 					}, {
-						type : "view",
-						item_id : "viJ1",
+						type: "view",
+						item_id: "viJ1",
 						back_color: "windowBackground",
-						alignment : "align_fill",
-						width : 530,
-						elements : [{
-							type : "cluster",
-							item_id : "cluJ",
-							alignment : "align_fill",
-							font : "heading",
-							name : justConsole ? "Add the JavaScript File" : "Option 1: Add a JavaScript File",
-							height : 21,
-							width : 530,
-							elements : [{
-								type : "static_text",
-								item_id : "txt1",
-								alignment : "align_fill",
-								font : "dialog",
-								bold : true,
-								wrap_name : true,
-								width : 500,
-								name : Text1
+						alignment: "align_fill",
+						width: 530,
+						elements: [{
+							type: "cluster",
+							item_id: "cluJ",
+							alignment: "align_fill",
+							font: "heading",
+							name: justConsole ? "Add the JavaScript File" : "Option 1: Add a JavaScript File",
+							height: 21,
+							width: 530,
+							elements: [{
+								type: "static_text",
+								item_id: "txt1",
+								alignment: "align_fill",
+								font: "dialog",
+								bold: true,
+								wrap_name: true,
+								width: 500,
+								name: Text1,
 							}, {
-								type : "button",
-								item_id : "bADD",
-								name : "Click here to save the JavaScript file",
-								font : "heading",
-								bold : true,
-								alignment : "align_center"
+								type: "button",
+								item_id: "bADD",
+								name: "Click here to save the JavaScript file",
+								font: "heading",
+								bold: true,
+								alignment: "align_center",
 							}, {
-								type : "view",
-								item_id : "viJ2",
+								type: "view",
+								item_id: "viJ2",
 								back_color: "windowDialog",
-								alignment : "align_fill",
-								width : 500,
-								elements : [isWindows ? windowsLocations : macLocations].concat([{
-									type : "static_text",
-									item_id : "txt2",
-									alignment : "align_fill",
-									font : "dialog",
-									wrap_name : true,
-									width : 470,
-									name : Text2
-								}])
-							}]
-						}]
+								alignment: "align_fill",
+								width: 500,
+								elements: [isWindows ? windowsLocations : macLocations].concat([{
+									type: "static_text",
+									item_id: "txt2",
+									alignment: "align_fill",
+									font: "dialog",
+									wrap_name: true,
+									width: 470,
+									name: Text2,
+								}]),
+							}],
+						}],
 					}, {
-						type : "gap",
-						height : 5
+						type: "gap",
+						height: 5,
 					}].concat(justConsole ? [] : [{
-						type : "view",
-						item_id : "vieC",
+						type: "view",
+						item_id: "vieC",
 						back_color: "windowBackground",
-						alignment : "align_fill",
-						width : 530,
-						elements : [{
-							type : "cluster",
-							item_id : "cluC",
-							alignment : "align_fill",
-							font : "heading",
-							name : "Option 2: Run the Code in the Console",
-							height : 21,
-							width : 530,
-							elements : [{
-								type : "static_text",
-								item_id : "txt3",
-								alignment : "align_fill",
-								wrap_name : true,
-								width : 500,
-								name : Text3
+						alignment: "align_fill",
+						width: 530,
+						elements: [{
+							type: "cluster",
+							item_id: "cluC",
+							alignment: "align_fill",
+							font: "heading",
+							name: "Option 2: Run the Code in the Console",
+							height: 21,
+							width: 530,
+							elements: [{
+								type: "static_text",
+								item_id: "txt3",
+								alignment: "align_fill",
+								wrap_name: true,
+								width: 500,
+								name: Text3,
 							}, {
-								type : "button",
-								item_id : "bCON",
-								name : "Click here to Open the Console",
-								font : "heading",
-								bold : true,
-								alignment : "align_center"
-							}]
-						}]
-					}])
+								type: "button",
+								item_id: "bCON",
+								name: "Click here to Open the Console",
+								font: "heading",
+								bold: true,
+								alignment: "align_center",
+							}],
+						}],
+					}]),
 				}, {
-					type : justConsole ? "ok_cancel" : "ok",
-					ok_name : "Done",
-					cancel_name : "Continue without importing icons"
-				}]
-			}]
-		}
+					type: justConsole ? "ok_cancel" : "ok",
+					ok_name: "Done",
+					cancel_name: "Continue without importing icons",
+				}],
+			}],
+		},
 	};
 
 	var theDialog = app.execDialog(AddJS_dialog);
@@ -267,180 +267,180 @@ function DirectImport_Dialogue() {
 		"To do this, give the full or relative path to a local file you want to import from.",
 		"You can use the 'Browse' button to get the full path.",
 		"Acrobat crashes if you try this in MacOS because of a bug in this version of Adobe Acrobat " + isType + " DC, please update your installation to the latest version.",
-		(buggedVer ? "[1] Place" : "Alternatively,\n[1] place") + " the sheet you want to import from in the same folder as this sheet,\n[2] give the file name of the sheet you want to import from below (including file extension '.pdf'), and\n[3] make sure the box to use a relative path is checked."
+		(buggedVer ? "[1] Place" : "Alternatively,\n[1] place") + " the sheet you want to import from in the same folder as this sheet,\n[2] give the file name of the sheet you want to import from below (including file extension '.pdf'), and\n[3] make sure the box to use a relative path is checked.",
 	];
 	var Text01 = (buggedVer ? [TextExpl[0], TextExpl[3], "\n" + TextExpl[1], TextExpl[2]] : [TextExpl[0], TextExpl[1], "\n" + TextExpl[3]]).join("\n");
 	var Text1 = "If you continue with importing, the current sheet will first be reset without notice!";
 	var TextIcons = (app.viewerType === "Reader" ? "Because of limitations in Adobe Acrobat Reader, this function is not available." : "'User-defined icons\' refers to those images that have been set for the symbol, portrait, companion(s) appearance, etc. that have been added from another file.") + "\n\nIcons that have been selected from the sheet built-in options will be imported regardless (faction symbols, Adventure League season icons, class icons).";
 	var DirectImport_dialog = {
-		fileLoc : "",
-		relPath : buggedVer,
-		importIcons : false,
-		initialize : function(dialog) {
+		fileLoc: "",
+		relPath: buggedVer,
+		importIcons: false,
+		initialize: function(dialog) {
 			var isReader = app.viewerType === "Reader";
 			dialog.load({
-				"img1" : allIcons.import,
-				"fLoc" : this.fileLoc,
-				"icCl" : "Import user-defined icons as well?" + (isReader ? " (Requires Acrobat Pro or Standard)" : ""),
-				"icNo" : true,
-				"fRel" : this.relPath
+				"img1": allIcons.import,
+				"fLoc": this.fileLoc,
+				"icCl": "Import user-defined icons as well?" + (isReader ? " (Requires Acrobat Pro or Standard)" : ""),
+				"icNo": true,
+				"fRel": this.relPath,
 			});
 			dialog.enable({
-				"icNo" : !isReader,
-				"icYe" : !isReader,
-				"bFND" : !buggedVer
+				"icNo": !isReader,
+				"icYe": !isReader,
+				"bFND": !buggedVer,
 			});
 			dialog.setForeColorRed("txt1");
 		},
-		bFND : function(dialog) {
+		bFND: function(dialog) {
 			tDoc.getField("SelectFile").browseForFileToSubmit();
 			this.fileLoc = What("SelectFile");
 			dialog.load({
-				"fLoc" : this.fileLoc,
-				"fRel" : false
+				"fLoc": this.fileLoc,
+				"fRel": false,
 			});
 		},
-		commit : function(dialog) {
+		commit: function(dialog) {
 			var oResult = dialog.store();
 			this.fileLoc = oResult["fLoc"];
 			this.relPath = oResult["fRel"];
 			this.importIcons = oResult["icYe"];
 		},
-		description : {
-			name : "IMPORT FROM PDF DIALOG",
-			first_tab : buggedVer ? "fLoc" : "bFND",
-			elements : [{
-				type : "view",
-				align_children : "align_left",
-				elements : [{
-					type : "view",
-					elements : [{
-						type : "view",
-						align_children : "align_row",
-						elements : [{
-							type : "image",
-							item_id : "img1",
-							width : 20,
-							height : 20
+		description: {
+			name: "IMPORT FROM PDF DIALOG",
+			first_tab: buggedVer ? "fLoc" : "bFND",
+			elements: [{
+				type: "view",
+				align_children: "align_left",
+				elements: [{
+					type: "view",
+					elements: [{
+						type: "view",
+						align_children: "align_row",
+						elements: [{
+							type: "image",
+							item_id: "img1",
+							width: 20,
+							height: 20,
 						}, {
-							type : "static_text",
-							item_id : "head",
-							alignment : "align_fill",
-							font : "heading",
-							bold : true,
-							height : 21,
-							width : 470,
-							name : "Import all data, settings, and layout from a MPMB's Character Sheet"
-						}]
+							type: "static_text",
+							item_id: "head",
+							alignment: "align_fill",
+							font: "heading",
+							bold: true,
+							height: 21,
+							width: 470,
+							name: "Import all data, settings, and layout from a MPMB's Character Sheet",
+						}],
 					}, {
-						type : "static_text",
-						item_id : "txt0",
-						alignment : "align_fill",
-						font : "dialog",
-						wrap_name : true,
-						width : 500,
-						name : Text0
+						type: "static_text",
+						item_id: "txt0",
+						alignment: "align_fill",
+						font: "dialog",
+						wrap_name: true,
+						width: 500,
+						name: Text0,
 					}, {
-						type : "static_text",
-						item_id : "txtx",
-						alignment : "align_fill",
-						font : "dialog",
-						wrap_name : true,
-						width : 500,
-						name : Text01
+						type: "static_text",
+						item_id: "txtx",
+						alignment: "align_fill",
+						font: "dialog",
+						wrap_name: true,
+						width: 500,
+						name: Text01,
 					}, {
-						type : "cluster",
-						item_id : "fTxt",
-						alignment : "align_fill",
-						font : "heading",
-						bold : true,
-						width : 500,
-						name : "Full or relative path to a MPMB's Character Record Sheet",
-						elements : [{
-							type : "view",
-							align_children : "align_row",
-							elements : [{
-								type : "edit_text",
-								item_id : "fLoc",
-								alignment : "align_fill",
-								font : "dialog",
-								width : 345,
-								next_tab : "bFND"
+						type: "cluster",
+						item_id: "fTxt",
+						alignment: "align_fill",
+						font: "heading",
+						bold: true,
+						width: 500,
+						name: "Full or relative path to a MPMB's Character Record Sheet",
+						elements: [{
+							type: "view",
+							align_children: "align_row",
+							elements: [{
+								type: "edit_text",
+								item_id: "fLoc",
+								alignment: "align_fill",
+								font: "dialog",
+								width: 345,
+								next_tab: "bFND",
 							}, {
-								type : "button",
-								item_id : "bFND",
-								name : "Browse" + (buggedVer ? " (disabled, see above)" : ""),
-								font : "dialog",
-								bold : true,
-								alignment : "align_center",
-								next_tab : "fRel"
-							}]
+								type: "button",
+								item_id: "bFND",
+								name: "Browse" + (buggedVer ? " (disabled, see above)" : ""),
+								font: "dialog",
+								bold: true,
+								alignment: "align_center",
+								next_tab: "fRel",
+							}],
 						}, {
-							type : "check_box",
-							item_id : "fRel",
-							alignment : "align_left",
-							name : "Relative path (resolve above path relative to the current folder, see below)."
+							type: "check_box",
+							item_id: "fRel",
+							alignment: "align_left",
+							name: "Relative path (resolve above path relative to the current folder, see below).",
 						}, {
-							type : "static_text",
-							item_id : "cLoc",
-							font : "palette",
-							width : 470 + (buggedVer ? 30 : 0),
-							wrap_name : true,
-							name : 'Current folder:\n' + tDoc.path.replace(tDoc.documentFileName, '')
-						}]
+							type: "static_text",
+							item_id: "cLoc",
+							font: "palette",
+							width: 470 + (buggedVer ? 30 : 0),
+							wrap_name: true,
+							name: "Current folder:\n" + tDoc.path.replace(tDoc.documentFileName, ""),
+						}],
 					}, {
-						type : "cluster",
-						item_id : "icCl",
-						alignment : "align_fill",
-						font : "dialog",
-						bold : app.viewerType !== "Reader",
-						width : 500,
-						elements : [{
-							type : "view",
-							align_children :  "align_left",
-							elements : [{
-								type : "radio",
-								item_id : "icNo",
-								name : "No. I will set them again manually (recommended).",
-								group_id : "icon",
-								height : 20
+						type: "cluster",
+						item_id: "icCl",
+						alignment: "align_fill",
+						font: "dialog",
+						bold: app.viewerType !== "Reader",
+						width: 500,
+						elements: [{
+							type: "view",
+							align_children: "align_left",
+							elements: [{
+								type: "radio",
+								item_id: "icNo",
+								name: "No. I will set them again manually (recommended).",
+								group_id: "icon",
+								height: 20,
 							}, {
-								type : "radio",
-								item_id : "icYe",
-								name : "Yes. Import the user-defined icons as well (experimental).",
-								group_id : "icon",
-								height : 20
-							}]
+								type: "radio",
+								item_id: "icYe",
+								name: "Yes. Import the user-defined icons as well (experimental).",
+								group_id: "icon",
+								height: 20,
+							}],
 						}, {
-							type : "static_text",
-							item_id : "icTx",
-							alignment : "align_fill",
-							font : "palette",
-							width : 470,
-							wrap_name : true,
-							name : TextIcons
+							type: "static_text",
+							item_id: "icTx",
+							alignment: "align_fill",
+							font: "palette",
+							width: 470,
+							wrap_name: true,
+							name: TextIcons,
 						}, {
-							type : "gap",
-							height : 2
-						}]
+							type: "gap",
+							height: 2,
+						}],
 					}, {
-						type : "static_text",
-						item_id : "txt1",
-						alignment : "align_fill",
-						font : "dialog",
-						bold : true,
-						wrap_name : true,
-						width : 500,
-						name : Text1
-					}]
+						type: "static_text",
+						item_id: "txt1",
+						alignment: "align_fill",
+						font: "dialog",
+						bold: true,
+						wrap_name: true,
+						width: 500,
+						name: Text1,
+					}],
 				}, {
-					type : "ok_cancel",
-					item_id : "okca",
-					ok_name : "Import (takes a while)",
-					next_tab : "bFND"
-				}]
-			}]
-		}
+					type: "ok_cancel",
+					item_id: "okca",
+					ok_name: "Import (takes a while)",
+					next_tab: "bFND",
+				}],
+			}],
+		},
 	};
 
 	var theDialog = app.execDialog(DirectImport_dialog);
@@ -470,12 +470,12 @@ function DirectImport(consoleTrigger) {
 	try {
 		if (consoleTrigger && !MPMBImportFunctionsInstalled) {
 			global.docTo = this;
-			global.docFrom = importFromPath[1] ? app.openDoc({cPath: importFromPath[0], oDoc: this}) : app.openDoc(importFromPath[0]);
+			global.docFrom = importFromPath[1] ? app.openDoc({ cPath: importFromPath[0], oDoc: this }) : app.openDoc(importFromPath[0]);
 			global.docTo.bringToFront();
 		} else {
 			MPMBOpenFile(this, importFromPath[0], importFromPath[1]);
 		}
-		closeAlert = global.docFrom && (/^(?=.*morepurplemorebetter)(?=.*character)(?=.*sheet).*$/i).test(global.docFrom.info.title) && global.docFrom.info.SheetVersion ? false : ["File is not one of MPMB's Character Record Sheets", "The opened document is not recognized as being one of MPMB's Character Record Sheets.\nNote that even though it might look like one of MPMB's Character Record Sheets, no form-fillable fields and back-end code was detected. Possibly the document was flattened (printed to PDF) or opened with Preview for Mac, subsequently destroying its automations. Unfortunately nothing can be imported from such a file.\n\nIt will now be closed and no changes will be made to either documents."];
+		closeAlert = global.docFrom && /^(?=.*morepurplemorebetter)(?=.*character)(?=.*sheet).*$/i.test(global.docFrom.info.title) && global.docFrom.info.SheetVersion ? false : ["File is not one of MPMB's Character Record Sheets", "The opened document is not recognized as being one of MPMB's Character Record Sheets.\nNote that even though it might look like one of MPMB's Character Record Sheets, no form-fillable fields and back-end code was detected. Possibly the document was flattened (printed to PDF) or opened with Preview for Mac, subsequently destroying its automations. Unfortunately nothing can be imported from such a file.\n\nIt will now be closed and no changes will be made to either documents."];
 	} catch (errorCode) {
 		closeAlert = ["File not found", "Invalid file location or file type \"" + (importFromPath[1] ? tDoc.path.replace(tDoc.documentFileName, "") : "") + importFromPath[0] + "\".\n\nPlease try again and don't forget that the path must include the file extension (.pdf)."];
 	};
@@ -488,7 +488,7 @@ function DirectImport(consoleTrigger) {
   if (closeAlert) {
 	app.alert({
 		cTitle: closeAlert[0],
-		cMsg: closeAlert[1]
+		cMsg: closeAlert[1],
 	});
   } else if (global.docFrom && global.docTo) { //we are good to go and import stuff!
 	try {
@@ -511,17 +511,17 @@ function DirectImport(consoleTrigger) {
 			// If importing from a newer version or from a v13.0.0-beta1-beta13
 			var versTypeTxt = FromVersion > ToVersion ? ["this sheet is", "newer", "than the one you are importing"] : ["the other sheet is an", "unsupported beta", "that can't be imported to any other MPMB's Character Record Sheet"];
 			app.alert({
-				cTitle : "Unable to import from " + versTypeTxt[1] + " version",
-				cMsg : "The MPMB's Character Record Sheet you are trying to import from is version '" + FromVersionSem + "', while the sheet you are trying to import to is version '" + global.docTo.semVers + "'. This operation is not allowed, because " + versTypeTxt.join(" ") + ".\n\nThe importing process will now be cancelled."
+				cTitle: "Unable to import from " + versTypeTxt[1] + " version",
+				cMsg: "The MPMB's Character Record Sheet you are trying to import from is version '" + FromVersionSem + "', while the sheet you are trying to import to is version '" + global.docTo.semVers + "'. This operation is not allowed, because " + versTypeTxt.join(" ") + ".\n\nThe importing process will now be cancelled.",
 			});
 			closeAlert = true;
 			throw "user stop";
 		} else if (FromVersion < semVersToNmbr(12.999)) { // give a warning about importing from a version that had all materials included automatically
 			var askUserIsSure = {
-				cTitle : "Continue with import?",
-				cMsg : "You are about to import from a sheet with version " + FromVersionSem + ". Unlike the sheet you are importing to (which is v" + global.docTo.semVers + "), v" + FromVersionSem + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material by default.\n\nIf the same resources weren't added to the current sheet as are used in the old sheet, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet! See the \"Add Extra Materials\" bookmark for more information on what is already added and how to add the required resources." + (patreonVersion ? "\n\nIf you got this sheet from MPMB's Patreon, you are probably fine to proceed!" : "") + "\n\nAre you sure you want to continue importing?",
-				nIcon : 2, //Status
-				nType : 2 //Yes, No
+				cTitle: "Continue with import?",
+				cMsg: "You are about to import from a sheet with version " + FromVersionSem + ". Unlike the sheet you are importing to (which is v" + global.docTo.semVers + "), v" + FromVersionSem + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material by default.\n\nIf the same resources weren't added to the current sheet as are used in the old sheet, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet! See the \"Add Extra Materials\" bookmark for more information on what is already added and how to add the required resources." + (patreonVersion ? "\n\nIf you got this sheet from MPMB's Patreon, you are probably fine to proceed!" : "") + "\n\nAre you sure you want to continue importing?",
+				nIcon: 2, //Status
+				nType: 2, //Yes, No
 			};
 			if (app.alert(askUserIsSure) !== 4) {
 				closeAlert = true;
@@ -538,8 +538,8 @@ function DirectImport(consoleTrigger) {
 		// Make sure no pop-up comes up with welcome text
 		if (global.docFrom.getField("Opening Remember")) global.docFrom.Value("Opening Remember", "Yes");
 
-		var fromSheetTypePF = global.docFrom.info.SheetType ? (/printer friendly/i).test(global.docFrom.info.SheetType) : false;
-		var fromSheetTypeLR = global.docFrom.info.SheetType ? (/letter/i).test(global.docFrom.info.SheetType) : (global.docFrom.info.Title ? (/letter/i).test(global.docFrom.info.Title) : false);
+		var fromSheetTypePF = global.docFrom.info.SheetType ? /printer friendly/i.test(global.docFrom.info.SheetType) : false;
+		var fromSheetTypeLR = global.docFrom.info.SheetType ? /letter/i.test(global.docFrom.info.SheetType) : (global.docFrom.info.Title ? /letter/i.test(global.docFrom.info.Title) : false);
 		var bothPF = typePF && fromSheetTypePF;
 		var bothCF = !typePF && !fromSheetTypePF;
 		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
@@ -632,7 +632,7 @@ function DirectImport(consoleTrigger) {
 		//set some remember fields that might impact new page generation
 		if (ImportField("Unit System") && typePF) Value("Display.Weighttxt.LbKg", What("Unit System") === "imperial" ? "LB" : "KG");
 		ImportField("Decimal Separator"); ImportField("DateFormat_Remember");
-		ImportField("BlueText.Players Make All Rolls", {notSubmitName : true, notTooltip : true});
+		ImportField("BlueText.Players Make All Rolls", { notSubmitName: true, notTooltip: true });
 
 		//set the text options
 		if (fromBefore13) {
@@ -657,11 +657,11 @@ function DirectImport(consoleTrigger) {
 			if (FromVersion < semVersToNmbr(12.99)) {
 				if (What("League Remember") === "On") {
 					ToggleAdventureLeague({
-						dci : true,
-						factionrank : true,
-						renown : true,
-						actions : true,
-						asterisks : true
+						dci: true,
+						factionrank: true,
+						renown: true,
+						actions: true,
+						asterisks: true,
 					});
 				} else {
 					global.docTo.resetForm(["League Remember"]);
@@ -670,11 +670,11 @@ function DirectImport(consoleTrigger) {
 				try {
 					var theAdvL = eval(What("League Remember"));
 					ToggleAdventureLeague({
-						dci : theAdvL.dci,
-						factionrank : theAdvL.factionrank,
-						renown : theAdvL.renown,
-						actions : theAdvL.actions,
-						asterisks : theAdvL.asterisks
+						dci: theAdvL.dci,
+						factionrank: theAdvL.factionrank,
+						renown: theAdvL.renown,
+						actions: theAdvL.actions,
+						asterisks: theAdvL.asterisks,
 					});
 				} catch (e) {
 					global.docTo.resetForm(["League Remember"]);
@@ -711,23 +711,23 @@ function DirectImport(consoleTrigger) {
 		//set the magic item row in the equipment sections
 		if (ImportField("Adventuring Gear Remember")) ShowAttunedMagicalItems();
 		//set the carrying capacity type
-		ImportField("Weight Carrying Capacity", {doVisiblity: true}, "Weight Carrying Capacity.Field"); ImportField("Weight Heavily Encumbered", {doVisiblity: true});
+		ImportField("Weight Carrying Capacity", { doVisiblity: true }, "Weight Carrying Capacity.Field"); ImportField("Weight Heavily Encumbered", { doVisiblity: true });
 		//set the weight remember fields
 		if (fromBefore13) {
 			global.docTo.CurrentVars.weight = [];
 			var weightTypes = {
-				cArm : "Weight Remember Armor",
-				cShi : "Weight Remember Shield",
-				cWea : "Weight Remember Weapons",
-				cAmL : "Weight Remember Ammo Left",
-				cAmR : "Weight Remember Ammo Right",
-				cCoi : "Weight Remember Coins",
-				cP2L : "Weight Remember Page2 Left",
-				cP2M : "Weight Remember Page2 Middle",
-				cP2R : "Weight Remember Page2 Right",
-				cP3L : "Weight Remember Page3 Left",
-				cP3R : "Weight Remember Page3 Right",
-				cMaI : "Weight Remember Magic Items"
+				cArm: "Weight Remember Armor",
+				cShi: "Weight Remember Shield",
+				cWea: "Weight Remember Weapons",
+				cAmL: "Weight Remember Ammo Left",
+				cAmR: "Weight Remember Ammo Right",
+				cCoi: "Weight Remember Coins",
+				cP2L: "Weight Remember Page2 Left",
+				cP2M: "Weight Remember Page2 Middle",
+				cP2R: "Weight Remember Page2 Right",
+				cP3L: "Weight Remember Page3 Left",
+				cP3R: "Weight Remember Page3 Right",
+				cMaI: "Weight Remember Magic Items",
 			}
 			for (var weightType in weightTypes) {
 				var aWeightFld = global.docFrom.getField(weightTypes[weightType]);
@@ -785,7 +785,7 @@ function DirectImport(consoleTrigger) {
 
 		//add the weapons (before the rest so weapons added by any new automation are still added)
 		for (var i = 1; i <= FieldNumbers.attacks; i++) {
-			if (ImportField("Attack." + i + ".Weapon Selection", {notTooltip: true})) ImportField("Attack." + i + ".Description", {notTooltip: true});
+			if (ImportField("Attack." + i + ".Weapon Selection", { notTooltip: true })) ImportField("Attack." + i + ".Description", { notTooltip: true });
 		}
 		var weaNrFrom = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.attacks ? global.docFrom.FieldNumbers.attacks : 5;
 		if (weaNrFrom > FieldNumbers.attacks) {
@@ -796,11 +796,11 @@ function DirectImport(consoleTrigger) {
 		}
 		var weaBTflds = global.docTo.getField("BlueText.Attack").getArray();
 		for (var i = 0; i < weaBTflds.length; i++) {
-			if (weaBTflds[i].name.indexOf("Modifiers Title") === -1) ImportField(weaBTflds[i].name, {notTooltip: true, notSubmitName: true});
+			if (weaBTflds[i].name.indexOf("Modifiers Title") === -1) ImportField(weaBTflds[i].name, { notTooltip: true, notSubmitName: true });
 		}
 		//the ammo
-		ImportField("AmmoLeftDisplay.Amount", {notTooltip: true}); ImportField("AmmoLeftDisplay.Name", {notTooltip: true}); ImportField("AmmoLeftDisplay.Weight", {notTooltip: true});
-		ImportField("AmmoRightDisplay.Amount", {notTooltip: true}); ImportField("AmmoRightDisplay.Name", {notTooltip: true}); ImportField("AmmoRightDisplay.Weight", {notTooltip: true});
+		ImportField("AmmoLeftDisplay.Amount", { notTooltip: true }); ImportField("AmmoLeftDisplay.Name", { notTooltip: true }); ImportField("AmmoLeftDisplay.Weight", { notTooltip: true });
+		ImportField("AmmoRightDisplay.Amount", { notTooltip: true }); ImportField("AmmoRightDisplay.Name", { notTooltip: true }); ImportField("AmmoRightDisplay.Weight", { notTooltip: true });
 
 		//set the more proficiencies overflow field before the automation
 		ImportField("MoreProficiencies");
@@ -809,7 +809,7 @@ function DirectImport(consoleTrigger) {
 		if (ImportField("CurrentFeatureChoices.Stringified")) CurrentFeatureChoices = eval(What("CurrentFeatureChoices.Stringified"));
 
 		//set the level and xp
-		ImportField("Character Level", {notTooltip: true}); ImportField("Total Experience", {notTooltip: true}); ImportField("Add Experience", {notTooltip: true});
+		ImportField("Character Level", { notTooltip: true }); ImportField("Total Experience", { notTooltip: true }); ImportField("Add Experience", { notTooltip: true });
 		ProfBonus("Proficiency Bonus"); //make sure the proficiency bonus is updated
 
 		// >> RACE <<
@@ -828,7 +828,7 @@ function DirectImport(consoleTrigger) {
 			ApplyRace(What("Race Remember"), true);
 			if (global.docTo.CurrentRace.known) IsSetDropDowns = true; // After this, we import the race field, but no need to do the automation as the race is already set
 		}
-		ImportField("Race", {notTooltip: true, notSubmitName: true});
+		ImportField("Race", { notTooltip: true, notSubmitName: true });
 		IsSetDropDowns = false; // reset this setting after setting the race from manual or through "Race Remember", otherwise it was already false
 
 		// >> BACKGROUND <<
@@ -836,8 +836,8 @@ function DirectImport(consoleTrigger) {
 			ApplyBackground(docFromManual.background);
 			IsSetDropDowns = true; // After this, we import the background field, but it shouldn't do any automation
 		}
-		ImportField("Background", {notTooltip: true, notSubmitName: true});
-		ImportField("Background Extra", {notTooltip: true});
+		ImportField("Background", { notTooltip: true, notSubmitName: true });
+		ImportField("Background Extra", { notTooltip: true });
 		IsSetDropDowns = false; // reset this setting if backgrounds was set to manual, otherwise it was already false
 
 		// reset the values of the ability score dialog (after race and background, so scores manually set for race are not undone)
@@ -912,7 +912,7 @@ function DirectImport(consoleTrigger) {
 			IsCharLvlVal = false; // reset setting
 			global.docTo.getField("Class and Levels").remVal = global.docFrom.What("Class and Levels"); // After this, we import the Class and Levels field, but it shouldn't do any automation, so trick it into thinking there is nothing to validate
 		}
-		ImportField("Class and Levels", {notTooltip: true});
+		ImportField("Class and Levels", { notTooltip: true });
 		AddExtraOtherChoices();
 
 		// >> FEATS <<
@@ -993,32 +993,32 @@ function DirectImport(consoleTrigger) {
 			var abiS = abiScoreFlds[a];
 			ImportField(abiS);
 			Value(abiS + " Mod", Math.round((What(abiS) - 10.5) * 0.5));
-			ImportField(abiS + " ST Prof", {notTooltip: true});
-			ImportField(abiS + " ST Bonus", {notTooltip: true, notSubmitName: true});
-			ImportField(abiS + " ST Adv", {doReadOnly: true});
-			ImportField(abiS + " ST Dis", {doReadOnly: true});
+			ImportField(abiS + " ST Prof", { notTooltip: true });
+			ImportField(abiS + " ST Bonus", { notTooltip: true, notSubmitName: true });
+			ImportField(abiS + " ST Adv", { doReadOnly: true });
+			ImportField(abiS + " ST Dis", { doReadOnly: true });
 		};
-		ImportField("All ST Bonus", {notTooltip: true, notSubmitName: true});
+		ImportField("All ST Bonus", { notTooltip: true, notSubmitName: true });
 		if (FromVersion >= semVersToNmbr("13.0.9") && global.docFrom.CurrentVars.AbilitySaveDcBonus) {
 			global.docTo.CurrentVars.AbilitySaveDcBonus = global.docFrom.CurrentVars.AbilitySaveDcBonus;
 			global.docTo.SetStringifieds("vars");
 		}
 
 		//set the ability save DC
-		ImportField("Spell DC 1 Mod", {notTooltip: true}); ImportField("Spell DC 1 Bonus", {notTooltip: true, notSubmitName: true});
-		ImportField("Spell DC 2 Bonus", {notTooltip: true, notSubmitName: true});
-		if (ImportField("Spell DC 2 Mod", {notTooltip: true, doVisiblity: true})); Toggle2ndAbilityDC(global.docTo.getField("Spell DC 2 Mod").display === display.visible ? "show" : "hide");
+		ImportField("Spell DC 1 Mod", { notTooltip: true }); ImportField("Spell DC 1 Bonus", { notTooltip: true, notSubmitName: true });
+		ImportField("Spell DC 2 Bonus", { notTooltip: true, notSubmitName: true });
+		if (ImportField("Spell DC 2 Mod", { notTooltip: true, doVisiblity: true })); Toggle2ndAbilityDC(global.docTo.getField("Spell DC 2 Mod").display === display.visible ? "show" : "hide");
 
 		//set the prof bonus and inspiration
-		ImportField("Proficiency Bonus Dice", {notTooltip: true}); ImportField("Proficiency Bonus Modifier", {notTooltip: true, notSubmitName: true}); ImportField("Inspiration", {notTooltip: true});
+		ImportField("Proficiency Bonus Dice", { notTooltip: true }); ImportField("Proficiency Bonus Modifier", { notTooltip: true, notSubmitName: true }); ImportField("Inspiration", { notTooltip: true });
 
 		//set the skills and associated fields
 		var CurrentProfsFrom = global.docFrom.getField("CurrentProfs.Stringified") ? eval(global.docFrom.getField("CurrentProfs.Stringified").value) : false;
-		var isAltSkillOrder = Who('Text.SkillsNames') === 'alphabeta' ? false : true;
-		ImportField("Jack of All Trades", {notTooltip: true}); ImportField("Remarkable Athlete", {notTooltip: true}); ImportField("All Skills Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Passive Perception Bonus", {notTooltip: true, notSubmitName: true}); ImportField("Too Text", {notTooltip: true, notSubmitName: true});
+		var isAltSkillOrder = Who("Text.SkillsNames") === "alphabeta" ? false : true;
+		ImportField("Jack of All Trades", { notTooltip: true }); ImportField("Remarkable Athlete", { notTooltip: true }); ImportField("All Skills Bonus", { notTooltip: true, notSubmitName: true }); ImportField("Passive Perception Bonus", { notTooltip: true, notSubmitName: true }); ImportField("Too Text", { notTooltip: true, notSubmitName: true });
 		for (var i = 0; i < SkillsList.abbreviations.length; i++) {
 			var aSkill = SkillsList.abbreviations[i];
-			ImportField(aSkill + " Bonus", {notTooltip: true, notSubmitName: true}); ImportField(aSkill + " Prof", {notTooltip: true}); ImportField(aSkill + " Exp", {notTooltip: true}); ImportField(aSkill + " Adv", {doReadOnly: true}); ImportField(aSkill + " Dis", {doReadOnly: true});
+			ImportField(aSkill + " Bonus", { notTooltip: true, notSubmitName: true }); ImportField(aSkill + " Prof", { notTooltip: true }); ImportField(aSkill + " Exp", { notTooltip: true }); ImportField(aSkill + " Adv", { doReadOnly: true }); ImportField(aSkill + " Dis", { doReadOnly: true });
 			if (!(/^(Init|Too)$/).test(aSkill) && fromBefore13 && global.docTo.getField(aSkill + " Prof").isBoxChecked(0)) {
 				// set the "manualClick" entries in the CurrentProfs
 				var useSkill = isAltSkillOrder ? SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(aSkill)] : aSkill;
@@ -1027,7 +1027,7 @@ function DirectImport(consoleTrigger) {
 				}
 				if (global.docTo.getField(aSkill + " Exp").isBoxChecked(0)) {
 					if (!CurrentProfs.skill[useSkill + "_Exp"]) {
-						CurrentProfs.skill[useSkill + "_Exp"] = { manualClick : "full" };
+						CurrentProfs.skill[useSkill + "_Exp"] = { manualClick: "full" };
 					} else {
 						for (var aSkillExp in CurrentProfs.skill[useSkill + "_Exp"]) {
 							var theSkillExp = CurrentProfs.skill[useSkill + "_Exp"][aSkillExp];
@@ -1056,7 +1056,7 @@ function DirectImport(consoleTrigger) {
 		}
 
 		//set the description fields
-		ImportField("PC Name"); ImportField("Player Name"); ImportField("Size Category", {notTooltip: true}); ImportField("Height", {notTooltip: true}); ImportField("Weight", {notTooltip: true}); ImportField("Sex"); ImportField("Hair colour", {notTooltip: true}); ImportField("Eyes colour", {notTooltip: true}); ImportField("Skin colour", {notTooltip: true}); ImportField("Age", {notTooltip: true}); ImportField("Alignment", {notTooltip: true}); ImportField("Faith/Deity", {notTooltip: true}); ImportField("Speed", {notTooltip: true}); ImportField("Speed encumbered", {notTooltip: true});
+		ImportField("PC Name"); ImportField("Player Name"); ImportField("Size Category", { notTooltip: true }); ImportField("Height", { notTooltip: true }); ImportField("Weight", { notTooltip: true }); ImportField("Sex"); ImportField("Hair colour", { notTooltip: true }); ImportField("Eyes colour", { notTooltip: true }); ImportField("Skin colour", { notTooltip: true }); ImportField("Age", { notTooltip: true }); ImportField("Alignment", { notTooltip: true }); ImportField("Faith/Deity", { notTooltip: true }); ImportField("Speed", { notTooltip: true }); ImportField("Speed encumbered", { notTooltip: true });
 
 		//add the content from the saving throw and vision field, but not if importing from an older version
 		if (FromVersion >= semVersToNmbr(12.998)) {
@@ -1124,10 +1124,10 @@ function DirectImport(consoleTrigger) {
 		};
 
 		//add the spell boxes
-		for (var i = 1; i <= 9; i++) ImportField("SpellSlots.CheckboxesSet.lvl" + i, {notTooltip: true});
+		for (var i = 1; i <= 9; i++) ImportField("SpellSlots.CheckboxesSet.lvl" + i, { notTooltip: true });
 
 		//set the armour and weapon proficiencies
-		ImportField("Proficiency Armor Other Description", {notTooltip: true});
+		ImportField("Proficiency Armor Other Description", { notTooltip: true });
 		if (fromBefore13) {
 			// manually set proficiency checkboxes
 			var profFldsArray = [
@@ -1136,7 +1136,7 @@ function DirectImport(consoleTrigger) {
 				"Proficiency Armor Heavy",
 				"Proficiency Shields",
 				"Proficiency Weapon Simple",
-				"Proficiency Weapon Martial"
+				"Proficiency Weapon Martial",
 			];
 			for (var i = 0; i < profFldsArray.length; i++) {
 				var profFromFld = global.docFrom.getField(profFldsArray[i]);
@@ -1167,19 +1167,19 @@ function DirectImport(consoleTrigger) {
 			// manually set proficiency checkboxes
 			var profFromVar = global.docFrom.CurrentProfs;
 			var profFldsArray = [
-				['armour', 'light'],
-				['armour', 'medium'],
-				['armour', 'heavy'],
-				['armour', 'shields'],
-				['weapon', 'simple'],
-				['weapon', 'martial']
+				["armour", "light"],
+				["armour", "medium"],
+				["armour", "heavy"],
+				["armour", "shields"],
+				["weapon", "simple"],
+				["weapon", "martial"],
 			];
 			for (var i = 0; i < profFldsArray.length; i++) {
 				var profSort = profFldsArray[i][0];
 				var profType = profFldsArray[i][1];
 				var normalState = CurrentProfs[profSort][profType] ? true : false;
-				if (profFromVar[profSort][profType+"_manual" + (normalState ? "off" : "on")]) {
-					CurrentProfs[profSort][profType+"_manual" + (normalState ? "off" : "on")] = true;
+				if (profFromVar[profSort][profType + "_manual" + (normalState ? "off" : "on")]) {
+					CurrentProfs[profSort][profType + "_manual" + (normalState ? "off" : "on")] = true;
 					SetProf(profSort, undefined, profType, undefined, true);
 				}
 			};
@@ -1235,24 +1235,24 @@ function DirectImport(consoleTrigger) {
 		addNotDefined("Resistance Damage Type ", 6);
 
 		//armor
-		ImportField("AC Armor Description", {notTooltip: true}); ImportField("AC Armor Bonus", {notTooltip: true}); ImportField("AC Armor Weight", {notTooltip: true}); ImportField("AC during Rest");
-		ImportField("AC Shield Bonus Description", {notTooltip: true}); ImportField("AC Shield Bonus", {notTooltip: true}); ImportField("AC Shield Weight", {notTooltip: true});
-		ImportField("Medium Armor", {notTooltip: true}); ImportField("Heavy Armor", {notTooltip: true});
-		if (ImportField("AC Stealth Disadvantage", {notTooltip: true})) ConditionSet();
+		ImportField("AC Armor Description", { notTooltip: true }); ImportField("AC Armor Bonus", { notTooltip: true }); ImportField("AC Armor Weight", { notTooltip: true }); ImportField("AC during Rest");
+		ImportField("AC Shield Bonus Description", { notTooltip: true }); ImportField("AC Shield Bonus", { notTooltip: true }); ImportField("AC Shield Weight", { notTooltip: true });
+		ImportField("Medium Armor", { notTooltip: true }); ImportField("Heavy Armor", { notTooltip: true });
+		if (ImportField("AC Stealth Disadvantage", { notTooltip: true })) ConditionSet();
 
 		//hit points, hit die
-		ImportField("HP Max", {notTooltip: true}); ImportField("HP Max Current", {notTooltip: true}); ImportField("HP Temp", {notTooltip: true}); ImportField("HP Current", {notTooltip: true});
+		ImportField("HP Max", { notTooltip: true }); ImportField("HP Max Current", { notTooltip: true }); ImportField("HP Temp", { notTooltip: true }); ImportField("HP Current", { notTooltip: true });
 		ImportField("HD1 Level"); ImportField("HD1 Die"); ImportField("HD2 Level"); ImportField("HD2 Die"); ImportField("HD3 Level"); ImportField("HD3 Die"); SetHPTooltip(false, false);
 
 		//do the second page
 		ImportField("Personality Trait"); ImportField("Ideal"); ImportField("Bond"); ImportField("Flaw");
-		ImportField("Background Feature", {notTooltip: true, notSubmitName: true}); ImportField("Background Feature Description", {notTooltip: true, compareNoSpaces: true});
-		ImportField("Racial Traits", {notTooltip: true, compareNoSpaces: true});
+		ImportField("Background Feature", { notTooltip: true, notSubmitName: true }); ImportField("Background Feature Description", { notTooltip: true, compareNoSpaces: true });
+		ImportField("Racial Traits", { notTooltip: true, compareNoSpaces: true });
 
 		//do the adventure gear sections
 		ImportField("Platinum Pieces"); ImportField("Gold Pieces"); ImportField("Electrum Pieces"); ImportField("Silver Pieces"); ImportField("Copper Pieces");
 		ImportField("Valuables1"); ImportField("Valuables2"); ImportField("Valuables3"); ImportField("Valuables4");
-		ImportField("Carrying Capacity Multiplier", {notTooltip: true});
+		ImportField("Carrying Capacity Multiplier", { notTooltip: true });
 
 		nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.gear ? global.docFrom.FieldNumbers.gear : FieldNumbers.gear;
 		for (var i = 1; i <= nmbrFlds; i++) {
@@ -1297,7 +1297,7 @@ function DirectImport(consoleTrigger) {
 		} else if (!typePF && fromSheetTypePF) {
 			ImportField("Background_Organisation", false, "Background_Organisation.Left");
 		}
-		ImportField("Lifestyle", {cleanValue: true});
+		ImportField("Lifestyle", { cleanValue: true });
 
 		//some hidden fields that we should do now
 		ImportField("ChangesDialogSkip.Stringified"); ImportField("Print Remember"); ImportField("SubClass Remember"); ImportField("Wildshapes.Remember");
@@ -1316,7 +1316,7 @@ function DirectImport(consoleTrigger) {
 				var pAnameTo = parentA[pA].name;
 				if (excludeRegEx && excludeRegEx.test(pAnameTo)) continue;
 				var pAnameFrom = pAnameTo.replace(toPre, fromPre);
-				ImportField(pAnameTo, actionsObj ? actionsObj : {notTooltip: true, doVisiblity: inclVisibility}, pAnameFrom);
+				ImportField(pAnameTo, actionsObj ? actionsObj : { notTooltip: true, doVisiblity: inclVisibility }, pAnameFrom);
 			}
 		}
 
@@ -1328,7 +1328,7 @@ function DirectImport(consoleTrigger) {
 			var prefixTo = prefixA[1][i];
 
 			//set the visibility of the different elements
-			if (ImportField(prefixTo + "Companion.Layers.Remember", {notTooltip: true, notSubmitName: true}, prefixFrom + "Companion.Layers.Remember")) ShowCompanionLayer(prefixTo);
+			if (ImportField(prefixTo + "Companion.Layers.Remember", { notTooltip: true, notSubmitName: true }, prefixFrom + "Companion.Layers.Remember")) ShowCompanionLayer(prefixTo);
 			doChildren("Whiteout.Cnote", prefixFrom, prefixTo, false, true);
 
 			//get and apply the race and companion type
@@ -1343,12 +1343,12 @@ function DirectImport(consoleTrigger) {
 			//set companion ability scores and modifiers
 			for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
 				var abiS = AbilityScores.abbreviations[a];
-				ImportField(prefixTo+"Comp.Use.Ability."+abiS+".Score", {notTooltip: true, notSubmitName: true}, prefixFrom+"Comp.Use.Ability."+abiS+".Score");
-				Value(prefixTo+"Comp.Use.Ability."+abiS+".Mod", Math.round((What(prefixTo+"Comp.Use.Ability."+abiS+".Score") - 10.5) * 0.5));
+				ImportField(prefixTo + "Comp.Use.Ability." + abiS + ".Score", { notTooltip: true, notSubmitName: true }, prefixFrom + "Comp.Use.Ability." + abiS + ".Score");
+				Value(prefixTo + "Comp.Use.Ability." + abiS + ".Mod", Math.round((What(prefixTo + "Comp.Use.Ability." + abiS + ".Score") - 10.5) * 0.5));
 			}
 
 			//set some one-off fields
-			ImportField(prefixTo + "Comp.Type", {notTooltip: true, notSubmitName: true}, prefixFrom + "Comp.Type");
+			ImportField(prefixTo + "Comp.Type", { notTooltip: true, notSubmitName: true }, prefixFrom + "Comp.Type");
 
 			//do the description fields
 			doChildren("Comp.Desc", prefixFrom, prefixTo);
@@ -1360,19 +1360,19 @@ function DirectImport(consoleTrigger) {
 			// Because of a bug in v13.1.4 and older, we need to do something special for creatures that have an alt HP calculation
 			var keepCompRaceHPsetting = false;
 			if (fromBefore13_1_5 && global.docTo.CurrentEvals.Comp && global.docTo.CurrentEvals.Comp[prefixTo] && global.docTo.CurrentEvals.Comp[prefixTo].hp) {
-				var compRaceHPsetFrom = global.docFrom.getField(prefixFrom + "Comp.Use.HP.Max").submitName.split(',');
-				var compRaceHPsetTo = global.docTo.getField(prefixTo + "Comp.Use.HP.Max").submitName.split(',');
-				keepCompRaceHPsetting = compRaceHPsetFrom[3] !== compRaceHPsetTo[3] && compRaceHPsetTo[3].indexOf('alt') !== -1;
+				var compRaceHPsetFrom = global.docFrom.getField(prefixFrom + "Comp.Use.HP.Max").submitName.split(",");
+				var compRaceHPsetTo = global.docTo.getField(prefixTo + "Comp.Use.HP.Max").submitName.split(",");
+				keepCompRaceHPsetting = compRaceHPsetFrom[3] !== compRaceHPsetTo[3] && compRaceHPsetTo[3].indexOf("alt") !== -1;
 				if (keepCompRaceHPsetting) {
 					// add text to the dialog
 					var sCompHpTitle = toUni("\nFixed special HP calculation for companions");
 					if (aTextExtra.indexOf(sCompHpTitle) === -1) aTextExtra.push(sCompHpTitle);
-					var sCompName = What(prefixTo + 'Comp.Desc.Name');
+					var sCompName = What(prefixTo + "Comp.Desc.Name");
 					if (!sCompName) sCompName = compRaceFldTo.value;
-					aTextExtra.push('  \u2022 For the companion "' + sCompName + '" on page ' + (compRaceFldFrom.page+1));
+					aTextExtra.push('  \u2022 For the companion "' + sCompName + '" on page ' + (compRaceFldFrom.page + 1));
 				}
 			}
-			ImportField(prefixTo + "Comp.Use.HP.Max", {notTooltip: true, notSubmitName: keepCompRaceHPsetting}, prefixFrom + "Comp.Use.HP.Max");
+			ImportField(prefixTo + "Comp.Use.HP.Max", { notTooltip: true, notSubmitName: keepCompRaceHPsetting }, prefixFrom + "Comp.Use.HP.Max");
 
 			//do the BlueText fields
 			doChildren("BlueText.Comp.Use", prefixFrom, prefixTo);
@@ -1473,7 +1473,7 @@ function DirectImport(consoleTrigger) {
 				classesArray.push(aCast);
 				var aCastFrom = aCast;
 				if (!global.docFrom.CurrentSpells[aCastFrom]) {
-					aCastFrom = aCastFrom.replace(/.*_-_/, '');
+					aCastFrom = aCastFrom.replace(/.*_-_/, "");
 					if (!global.docFrom.CurrentSpells[aCastFrom]) continue; //doesn't exist in the sheet importing from
 				}
 				var spCastTo = CurrentSpells[aCast];
@@ -1553,15 +1553,15 @@ function DirectImport(consoleTrigger) {
 					}
 					//set the spell remember fields
 					for (var a = 0; a <= nmbrFlds; a++) {
-						ImportField(prefixTo + "spells.remember." + a, {notTooltip: true, notSubmitName: true}, prefixFrom + "spells.remember." + a);
+						ImportField(prefixTo + "spells.remember." + a, { notTooltip: true, notSubmitName: true }, prefixFrom + "spells.remember." + a);
 					}
 					//set the headers and spell dividers
 					for (var a = 0; a <= 9; a++) {
 						if (a < 4) {
-							ImportField(prefixTo + "spellshead.Text.header." + a, {notTooltip: true, notSubmitName: true, cleanValue: true}, prefixFrom + "spellshead.Text.header." + a);
-							ImportField(prefixTo + "spellshead.ability." + a, {notTooltip: true, notSubmitName: true, cleanValue: true}, prefixFrom + "spellshead.ability." + a);
+							ImportField(prefixTo + "spellshead.Text.header." + a, { notTooltip: true, notSubmitName: true, cleanValue: true }, prefixFrom + "spellshead.Text.header." + a);
+							ImportField(prefixTo + "spellshead.ability." + a, { notTooltip: true, notSubmitName: true, cleanValue: true }, prefixFrom + "spellshead.ability." + a);
 						}
-						ImportField(prefixTo + "spellsdiv.Text." + a, {notTooltip: true, notSubmitName: true, cleanValue: true}, prefixFrom + "spellsdiv.Text." + a);
+						ImportField(prefixTo + "spellsdiv.Text." + a, { notTooltip: true, notSubmitName: true, cleanValue: true }, prefixFrom + "spellsdiv.Text." + a);
 					};
 					//set the headers spellcasting abilities
 					doChildren("spellshead.ability", prefixFrom, prefixTo);
@@ -1597,7 +1597,7 @@ function DirectImport(consoleTrigger) {
 		// set the focus to the top of the first page
 		tDoc.getField("Player Name").setFocus();
 	} catch (error) {
-		if (error !== "user stop") displayError(error, 'An error occurred during importing:');
+		if (error !== "user stop") displayError(error, "An error occurred during importing:");
 	};
 
 	// A pop-up to inform the user of the changes
@@ -1635,7 +1635,7 @@ function DirectImport(consoleTrigger) {
 			"Companion pages have been copied exactly, not using any updates in automation.",
 			"Wild Shapes have been re-calculated, manual changes have been ignored.",
 			"Ability Score dialog has been duplicated from the old version, changes by newer automation have been ignored. Read that dialog's text carefully to see if you are missing anything.",
-			sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "No spell sheets have been generated."
+			sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "No spell sheets have been generated.",
 		].join("\n  \u2022 ");
 		if (abiScoreDialogReset) {
 			var columNames = ["base", tDoc.use2024Rules ? "background" : "race", "levels"].map(function (type) {
@@ -1655,23 +1655,23 @@ function DirectImport(consoleTrigger) {
 				"\n\n" + toUni("Bonuses from Magic Items"),
 				"Be aware that v13 introduces automation for magic items which has immediately been applied on import.",
 				"If you added bonuses to modifier fields to account for magic items, those bonuses will have been imported, but the magic item automation will have applied those bonuses as well. It could well be that some things now have twice the bonus that they should have! Please check carefully if all the modifier fields still display the right numbers.",
-				"The modifier fields are hidden by default, but you can toggle their visiblity with the Functions >> Modifiers bookmark."
+				"The modifier fields are hidden by default, but you can toggle their visiblity with the Functions >> Modifiers bookmark.",
 			].join("\n  \u2022 ");
 		} else if (fromBefore13_2 && (docFromManual.feats || docFromManual.items)) {
 			aText += [
 				"\n\n" + toUni("Manual Option for Feats / Magic Items"),
 				"From v13.2.0 onwards, importing feats or magic items that have been set to manual is fully supported.",
-				"As you are importing from an older version, features granted by feats/items before calculations were disabled (set to manual) have not been imported."
+				"As you are importing from an older version, features granted by feats/items before calculations were disabled (set to manual) have not been imported.",
 			].join("\n  \u2022 ");
 		}
 		if (FromVersion < semVersToNmbr(12.998)) {
 			aText += [
 				"\n\n" + toUni("Importing from older version, before v12.998"),
 				"Some proficiencies you adjusted manually, like languages and tools, might not have transferred over correctly. This is because the new version of the sheet uses a different way of setting proficiencies that offer a choice.",
-				"Things manually added/changed in the fields for Saving Throw Advantages/Disadvantages and Senses have not been copied."
+				"Things manually added/changed in the fields for Saving Throw Advantages/Disadvantages and Senses have not been copied.",
 			].join("\n  \u2022 ");
 		};
-		if (aTextExtra.length) aText += '\n' + aTextExtra.join("\n");
+		if (aTextExtra.length) aText += "\n" + aTextExtra.join("\n");
 		app.alert({
 			cMsg: aText,
 			nIcon: 3,
@@ -1779,7 +1779,7 @@ function ImportField(fldNm, actionsObj, fromFldNm) {
 function ImportIcons(pagesLayout, viaSaving) {
 	if (!global.docTo || !global.docFrom) return true; //either of the documents or fields doesn't exist
 
-	var fromSheetTypePF = global.docFrom.info.SheetType ? (/printer friendly/i).test(global.docFrom.info.SheetType) : false;
+	var fromSheetTypePF = global.docFrom.info.SheetType ? /printer friendly/i.test(global.docFrom.info.SheetType) : false;
 	var bothPF = typePF && fromSheetTypePF;
 	var bothCF = !typePF && !fromSheetTypePF;
 	var FromVersionSem = getSemVers(global.docFrom.info.SheetVersion, global.docFrom.info.SheetVersionType, global.docFrom.info.SheetVersionBuild);
@@ -1789,7 +1789,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 	var IconArray = [
 		["Portrait", "Portrait"],
 		["Symbol", "Symbol"],
-		["Comp.img.Portrait", "Comp.img.Portrait"]
+		["Comp.img.Portrait", "Comp.img.Portrait"],
 	];
 	if (pagesLayout && pagesLayout.AScompExtras) {
 		for (var i = 0; i < pagesLayout.AScompExtraNmFrom.length; i++) {
@@ -1822,7 +1822,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 				["SaveIMG.emeraldenclave", "SaveIMG.Faction.emeraldenclave.symbol"],
 				["SaveIMG.lordsalliance", "SaveIMG.Faction.lordsalliance.symbol"],
 				["SaveIMG.ordergauntlet", "SaveIMG.Faction.ordergauntlet.symbol"],
-				["SaveIMG.zhentarim", "SaveIMG.Faction.zhentarim.symbol"]
+				["SaveIMG.zhentarim", "SaveIMG.Faction.zhentarim.symbol"],
 			];
 			var KnownIcons = [];
 			for (var iL = 0; iL < IconsList.length; iL++) {
@@ -1898,10 +1898,10 @@ function ImportIcons(pagesLayout, viaSaving) {
 				//check if this icon is actually in use and not just an empty one
 				if ((ClickIMG && ClickIMG === fromIcon) || (EmptyIMG && EmptyIMG === fromIcon)) continue;
 				var nwFld = global.docFrom.addField({
-					cName : "tempIconImports." + fldIncr,
-					cFieldType : "button",
-					nPageNum : usePage,
-					oCoords : [40, 40, 0, 0]
+					cName: "tempIconImports." + fldIncr,
+					cFieldType: "button",
+					nPageNum: usePage,
+					oCoords: [40, 40, 0, 0],
 				});
 				nwFld.buttonPosition = position.iconOnly;
 				nwFld.buttonSetIcon(fromIcon);
@@ -1995,8 +1995,13 @@ function AddExtraOtherChoices() {
 			if (!oProp[aChoices[c]]) continue;
 			// add the feature
 			ClassFeatureOptions([
-				oBonus.class, oBonus.feature, aChoices[c], 'extra',
-				"add", true, oBonus.subclass
+				oBonus.class,
+oBonus.feature,
+aChoices[c],
+"extra",
+				"add",
+true,
+oBonus.subclass,
 			], "add");
 		}
 		// remove the temporary addition to classes.known
@@ -2009,10 +2014,10 @@ function Import(type) {
 
 	//first ask if this sheet is already set-up the right way before importing and if we can continue
 	var AskFirst = {
-		cMsg : "This method is no longer supported and will result in your character only being partially imported. If you want to be guaranteed of a good import, use the option \"Import Directly from a MPMB's PDF\" instead!"+"\n\nBefore you import anything into this sheet, please make sure that the following things are set correctly. If you don't do this, not everything will import. You will have to make the following things identical to the sheet you exported the data from:" + "\n  \u2022  The unit and decimal system;" + "\n  \u2022  The layout of the pages.\n      In order to do this, you will have to hide and/or add pages in the same order as you did in the sheet you are importing from. This is because the moment you add an extra page (so after the first of its type), that page gets a name based on the location of that page in the document. That location is based solely on the pages that are visible at the time of itscreation.\n      For example, if the sheet you are importing from has two Adventurers Logsheet pages, and these were added after generating a Spell Sheet of three pages long, while all of the other pages were visible as well, the second Adventurers Logsheet page would have been generated as page number 12. In order for this sheet to properly receive the import for that page, you will first need to generate an Adventurers Logsheet page at page number 12." + "\n\n\nDo you want to continue importing?",
-		nIcon : 2,
-		cTitle : "Is everything ready for importing?",
-		nType : 2
+		cMsg: "This method is no longer supported and will result in your character only being partially imported. If you want to be guaranteed of a good import, use the option \"Import Directly from a MPMB's PDF\" instead!" + "\n\nBefore you import anything into this sheet, please make sure that the following things are set correctly. If you don't do this, not everything will import. You will have to make the following things identical to the sheet you exported the data from:" + "\n  \u2022  The unit and decimal system;" + "\n  \u2022  The layout of the pages.\n      In order to do this, you will have to hide and/or add pages in the same order as you did in the sheet you are importing from. This is because the moment you add an extra page (so after the first of its type), that page gets a name based on the location of that page in the document. That location is based solely on the pages that are visible at the time of itscreation.\n      For example, if the sheet you are importing from has two Adventurers Logsheet pages, and these were added after generating a Spell Sheet of three pages long, while all of the other pages were visible as well, the second Adventurers Logsheet page would have been generated as page number 12. In order for this sheet to properly receive the import for that page, you will first need to generate an Adventurers Logsheet page at page number 12." + "\n\n\nDo you want to continue importing?",
+		nIcon: 2,
+		cTitle: "Is everything ready for importing?",
+		nType: 2,
 	};
 
 
@@ -2028,7 +2033,7 @@ function Import(type) {
 		["Template.extras.AScomp", What("Template.extras.AScomp")],
 		["Template.extras.ASnotes", What("Template.extras.ASnotes")],
 		["Template.extras.WSfront", What("Template.extras.WSfront")],
-		["Template.extras.ALlog", What("Template.extras.ALlog")]
+		["Template.extras.ALlog", What("Template.extras.ALlog")],
 	];
 	var locStateOld = What("Gear Location Remember").split(",");
 
@@ -2052,7 +2057,7 @@ function Import(type) {
 		Value(templateA[i][0], templateA[i][1]);
 	}
 
-	thermoM(13/25); //increment the progress dialog's progress
+	thermoM(13 / 25); //increment the progress dialog's progress
 	thermoTxt = thermoM("Getting the sheet ready...", false); //change the progress dialog text
 
 	//set the layer visibility to what the imported field says
@@ -2061,62 +2066,62 @@ function Import(type) {
 	//set the visibility of Honor/Sanity as imported
 	ShowHonorSanity();
 
-	thermoM(14/25); //increment the progress dialog's progress
+	thermoM(14 / 25); //increment the progress dialog's progress
 
 	if (CurrentVars.mobileset) CurrentVars.mobileset.active = false;
 
-	thermoM(15/25); //increment the progress dialog's progress
+	thermoM(15 / 25); //increment the progress dialog's progress
 
 	//set the visiblity of the text lines as the imported remember field has been set to
 	ToggleWhiteout(CurrentVars.whiteout);
 
-	thermoM(16/25); //increment the progress dialog's progress
+	thermoM(16 / 25); //increment the progress dialog's progress
 
 	//set the text size for multiline fields as the imported remember field has been set to
 	ToggleTextSize(CurrentVars.fontsize);
 
-	thermoM(17/25); //increment the progress dialog's progress
+	thermoM(17 / 25); //increment the progress dialog's progress
 
 	//set the visiblity of the manual attack fields on the first page as the imported remember field has been set to
 	if (CurrentVars.manual.attacks) ToggleAttacks(true);
 
-	thermoM(18/25); //increment the progress dialog's progress
+	thermoM(18 / 25); //increment the progress dialog's progress
 
 	//set the visiblity of the adventure league as the imported field has been set to
 	if (What("League Remember") === "On") {
 		ToggleAdventureLeague({
-			dci : true,
-			factionrank : true,
-			renown : true,
-			actions : true,
-			asterisks : true
+			dci: true,
+			factionrank: true,
+			renown: true,
+			actions: true,
+			asterisks: true,
 		});
 	} else {
 		try {
 			var theAdvL = eval(What("League Remember"));
 			ToggleAdventureLeague({
-				dci : theAdvL.dci,
-				factionrank : theAdvL.factionrank,
-				renown : theAdvL.renown,
-				actions : theAdvL.actions,
-				asterisks : theAdvL.asterisks
+				dci: theAdvL.dci,
+				factionrank: theAdvL.factionrank,
+				renown: theAdvL.renown,
+				actions: theAdvL.actions,
+				asterisks: theAdvL.asterisks,
 			});
 		} catch (e) {
 			global.docTo.resetForm(["League Remember"]);
 		};
 	};
 
-	thermoM(19/25); //increment the progress dialog's progress
+	thermoM(19 / 25); //increment the progress dialog's progress
 
 	//set the visiblity of the Blue Text fields as the imported remember field has been set to
 	ToggleBlueText(CurrentVars.bluetxt);
 
-	thermoM(20/25); //increment the progress dialog's progress
+	thermoM(20 / 25); //increment the progress dialog's progress
 
 	//set the visiblity of the spell slots on the first page as the imported remember field has been set to
 	SetSpellSlotsVisibility();
 
-	thermoM(21/25); //increment the progress dialog's progress
+	thermoM(21 / 25); //increment the progress dialog's progress
 
 	//set the visiblity of the location columns as the imported remember field has been set to
 
@@ -2128,30 +2133,30 @@ function Import(type) {
 		HideInvLocationColumn("Extra.Gear ", locStateOld[1] === "true");
 	}
 
-	thermoM(22/25); //increment the progress dialog's progress
+	thermoM(22 / 25); //increment the progress dialog's progress
 
 	//set the visiblity of the attuned magical item line on the second page as the imported remember field has been set to
 	if (What("Adventuring Gear Remember") !== false) {
 		ShowAttunedMagicalItems(false);
 	}
 
-	thermoM(23/25); //increment the progress dialog's progress
+	thermoM(23 / 25); //increment the progress dialog's progress
 
 	//set all the color schemes as the newly imported fields dictate
 	setColorThemes();
 
-	thermoM(24/25); //increment the progress dialog's progress
+	thermoM(24 / 25); //increment the progress dialog's progress
 
 	//set the weight carried multiplier back one if a race with powerful build was added
-	if (CurrentRace.known && (/powerful build/i).test(CurrentRace.trait) && What("Carrying Capacity Multiplier") === 3) {
+	if (CurrentRace.known && /powerful build/i.test(CurrentRace.trait) && What("Carrying Capacity Multiplier") === 3) {
 		tDoc.getField("Carrying Capacity Multiplier").value -= 1;
 	}
 
 	app.alert({
-		cMsg : "Be aware that some fields might not have imported correctly if you imported data that you exported from another version of this sheet.\n\nTooltips might no longer display the correct information after importing (especially if you exported all the fields and not just the non-calculated ones). Also, some fields may be left empty and other fields may display the wrong information. Unfortunately, this can't be helped.\n\nIt is recommended that you check all the fields whether or not correspond with the data that you wanted to import.\n\nUnfortunately, the portrait and symbol on the fourth page can't be imported, you will have to re-do them manually.\n\nIf the sheet you exported information from has extra pages added (e.g. two companion pages, or multiple adventurers logsheets), than those will only be imported if you create those pages first in this document as well, in the exact same order as you did in the previous document.\n\nThe following only applies if you are importing from a version before v11:\nIf you imported a class and/or race that has any options that are selected via the buttons on the second page, then please select those features that grant spellcasting again (even if they are already displayed). Selecting them again will give the automation the information necessary to produce the proper Spell Sheets.",
-		nIcon : 1,
-		cTitle : "Notes on Importing",
-		nType : 0
+		cMsg: "Be aware that some fields might not have imported correctly if you imported data that you exported from another version of this sheet.\n\nTooltips might no longer display the correct information after importing (especially if you exported all the fields and not just the non-calculated ones). Also, some fields may be left empty and other fields may display the wrong information. Unfortunately, this can't be helped.\n\nIt is recommended that you check all the fields whether or not correspond with the data that you wanted to import.\n\nUnfortunately, the portrait and symbol on the fourth page can't be imported, you will have to re-do them manually.\n\nIf the sheet you exported information from has extra pages added (e.g. two companion pages, or multiple adventurers logsheets), than those will only be imported if you create those pages first in this document as well, in the exact same order as you did in the previous document.\n\nThe following only applies if you are importing from a version before v11:\nIf you imported a class and/or race that has any options that are selected via the buttons on the second page, then please select those features that grant spellcasting again (even if they are already displayed). Selecting them again will give the automation the information necessary to produce the proper Spell Sheets.",
+		nIcon: 1,
+		cTitle: "Notes on Importing",
+		nType: 0,
 	});
 
 	thermoM(thermoTxt, true); // Stop progress bar
@@ -2183,15 +2188,15 @@ function MakeExportArray() {
 		"SheetInformation",
 		"SpellSheetInformation",
 		"CopyrightInformation",
-		"Opening Remember"
+		"Opening Remember",
 	]
 	var tempArray = [];
 	for (var F = 0; F < tDoc.numFields; F++) {
 		var Fname = tDoc.getNthFieldName(F);
 		var Fvalue = What(Fname) !== tDoc.getField(Fname).defaultValue;
 		var Frtf = tDoc.getField(Fname).type === "text" && tDoc.getField(Fname).richText;
-		var Fcalc = (/Bonus$/i).test(Fname) || tDoc.getField(Fname).calcOrderIndex === -1;
-		if (!Frtf && Fvalue && Fcalc && notExport.indexOf(Fname) === -1 && Fname.indexOf("Limited Feature") === -1 && Fname.indexOf("SpellSlots") === -1 && !(/^(Comp.Use.)?Attack.\d.(?!Weapon Selection)|^Feat Description \d$|^Tool \d$|^Language \d$|^(bonus |re)?action \d$|^HD\d (Used|Level|Die|Con Mod)$|Wildshape.\d.|^Resistance Damage Type \d$|^Extra.Exhaustion Level \d$|^Extra.Condition \d+$|^Template\.extras.+$|spells\..*\.\d+|spellshead|spellsdiv|spellsgloss/i).test(Fname)) {
+		var Fcalc = /Bonus$/i.test(Fname) || tDoc.getField(Fname).calcOrderIndex === -1;
+		if (!Frtf && Fvalue && Fcalc && notExport.indexOf(Fname) === -1 && Fname.indexOf("Limited Feature") === -1 && Fname.indexOf("SpellSlots") === -1 && !/^(Comp.Use.)?Attack.\d.(?!Weapon Selection)|^Feat Description \d$|^Tool \d$|^Language \d$|^(bonus |re)?action \d$|^HD\d (Used|Level|Die|Con Mod)$|Wildshape.\d.|^Resistance Damage Type \d$|^Extra.Exhaustion Level \d$|^Extra.Condition \d+$|^Template\.extras.+$|spells\..*\.\d+|spellshead|spellsdiv|spellsgloss/i.test(Fname)) {
 			tempArray.push(Fname);
 		}
 	}
@@ -2207,7 +2212,7 @@ function MakeEquipmentExportArray() {
 		"Silver Pieces",
 		"Copper Pieces",
 		"Lifestyle",
-		"Extra.Other Holdings"
+		"Extra.Other Holdings",
 	];
 	for (var i = 1; i <= FieldNumbers.gear; i++) {
 		toExport.push("Adventuring Gear Row " + i);
@@ -2271,7 +2276,7 @@ function MakeDescriptionExportArray() {
 		"Comp.Desc.Weight",
 		"Comp.Desc.Alignment",
 		"Notes.Left",
-		"Notes.Right"
+		"Notes.Right",
 	];
 	var tempArray = [];
 	for (var F = 0; F < toExport.length; F++) {
@@ -2292,9 +2297,9 @@ function MakeXFDFExport(partial) {
 			app.alert("Nothing was found that was worthy to export. None of the fields that are not auto-filled seem to have anything but there default values in them. If you still want to export the settings, try exporting all field values.", 0, 0, "Nothing to Export");
 			return; // stop the function, because no fields were found that are exportable
 		}
-		var theSettings = {aFields: theArray};
+		var theSettings = { aFields: theArray };
 	} else {
-		var theSettings = {bAllFields: true};
+		var theSettings = { bAllFields: true };
 	}
 	try {
 		tDoc.exportAsXFDF(theSettings);
@@ -2308,57 +2313,57 @@ function MakeXFDFExport(partial) {
 
 			initialize: function(dialog) {
 				dialog.load({
-					"expo": toExport
+					"expo": toExport,
 				});
 			},
 
-			description : {
-				name : "XFDF FILE CREATION DIALOG",
-				elements : [{
-					type : "view",
-					elements : [{
-						type : "view",
-						elements : [{
-							type : "static_text",
-							item_id : "head",
-							alignment : "align_fill",
-							font : "heading",
-							bold : true,
-							height : 21,
-							char_width : 39,
-							name : "Create a .xfdf file from the text below"
+			description: {
+				name: "XFDF FILE CREATION DIALOG",
+				elements: [{
+					type: "view",
+					elements: [{
+						type: "view",
+						elements: [{
+							type: "static_text",
+							item_id: "head",
+							alignment: "align_fill",
+							font: "heading",
+							bold: true,
+							height: 21,
+							char_width: 39,
+							name: "Create a .xfdf file from the text below",
 						}, {
-							type : "static_text",
-							item_id : "txt0",
-							alignment : "align_fill",
-							font : "dialog",
-							wrap_name : true,
-							char_width : 55,
-							name : explainTXT
+							type: "static_text",
+							item_id: "txt0",
+							alignment: "align_fill",
+							font: "dialog",
+							wrap_name: true,
+							char_width: 55,
+							name: explainTXT,
 						}, {
-							type : "static_text",
-							item_id : "txt1",
-							alignment : "align_fill",
-							font : "dialog",
-							wrap_name : true,
-							char_width : 55,
-							name : explainTXT2
+							type: "static_text",
+							item_id: "txt1",
+							alignment: "align_fill",
+							font: "dialog",
+							wrap_name: true,
+							char_width: 55,
+							name: explainTXT2,
 						}, {
-							type : "edit_text",
-							item_id : "expo",
-							alignment : "align_fill",
+							type: "edit_text",
+							item_id: "expo",
+							alignment: "align_fill",
 							multiline: true,
-							char_height : 35,
-							char_width : 55
+							char_height: 35,
+							char_width: 55,
 						}, {
-							type : "gap",
-							height : 5
-						}]
+							type: "gap",
+							height: 5,
+						}],
 					}, {
-						type : "ok"
-					}]
-				}]
-			}
+						type: "ok",
+					}],
+				}],
+			},
 		}
 		app.execDialog(DisplayExport_dialog);
 	}
@@ -2394,19 +2399,19 @@ function AddUserScript(retResDia) {
 		var diaMax = Math.max(theUserScripts.length, diaIteration);
 		var moreDialogues = diaMax > diaIteration;
 		var AddUserScript_dialog = {
-			initScripts : theUserScripts,
-			iteration : diaIteration,
-			diaMax : diaMax,
+			initScripts: theUserScripts,
+			iteration: diaIteration,
+			diaMax: diaMax,
 			script: theUserScripts.length >= diaIteration ? theUserScripts[diaIteration - 1] : "",
 
 			initialize: function(dialog) {
 				dialog.load({
-					"img1" : allIcons.import,
-					"jscr" : this.script,
-					"head" : "Manually add custom JavaScript that is run on startup (dialog " + this.iteration + "/" + this.diaMax + ")"
+					"img1": allIcons.import,
+					"jscr": this.script,
+					"head": "Manually add custom JavaScript that is run on startup (dialog " + this.iteration + "/" + this.diaMax + ")",
 				});
 				dialog.enable({
-					bPre : this.iteration > 1
+					bPre: this.iteration > 1,
 				});
 				dialog.setForeColorRed("txtB");
 				dialog.setForeColorRed("txtF");
@@ -2439,156 +2444,156 @@ function AddUserScript(retResDia) {
 				this.script = results["jscr"];
 				dialog.end("bcon");
 			},
-			description : {
-				name : "MANUAL CUSTOM SCRIPT DIALOG",
-				first_tab : "OKbt",
-				elements : [{
-					type : "view",
-					align_children : "align_left",
-					elements : [{
-						type : "view",
-						elements : [{
-							type : "view",
-							align_children : "align_row",
-							elements : [{
-								type : "image",
-								item_id : "img1",
-								height : 20,
-								width : 20
+			description: {
+				name: "MANUAL CUSTOM SCRIPT DIALOG",
+				first_tab: "OKbt",
+				elements: [{
+					type: "view",
+					align_children: "align_left",
+					elements: [{
+						type: "view",
+						elements: [{
+							type: "view",
+							align_children: "align_row",
+							elements: [{
+								type: "image",
+								item_id: "img1",
+								height: 20,
+								width: 20,
 							}, {
-								type : "static_text",
-								item_id : "head",
-								alignment : "align_fill",
-								font : "heading",
-								bold : true,
-								height : 21,
-								width : 720
-							}]
+								type: "static_text",
+								item_id: "head",
+								alignment: "align_fill",
+								font: "heading",
+								bold: true,
+								height: 21,
+								width: 720,
+							}],
 						}, {
-							type : "static_text",
-							item_id : "txtD",
-							alignment : "align_fill",
-							font : "dialog",
-							wrap_name : diaIteration === 1,
-							char_height : -1,
-							width : 750,
-							name : diaIteration !== 1 ? "" : defaultTxt
+							type: "static_text",
+							item_id: "txtD",
+							alignment: "align_fill",
+							font: "dialog",
+							wrap_name: diaIteration === 1,
+							char_height: -1,
+							width: 750,
+							name: diaIteration !== 1 ? "" : defaultTxt,
 						}, {
-							type : "static_text",
-							item_id : "txtB",
-							alignment : "align_fill",
-							font : "dialog",
-							bold : true,
-							wrap_name : diaIteration === 1,
-							char_height : -1,
-							width : 750,
-							name : diaIteration !== 1 ? "" : defaultTxt2
+							type: "static_text",
+							item_id: "txtB",
+							alignment: "align_fill",
+							font: "dialog",
+							bold: true,
+							wrap_name: diaIteration === 1,
+							char_height: -1,
+							width: 750,
+							name: diaIteration !== 1 ? "" : defaultTxt2,
  						}, {
-							type : "cluster",
-							width : 750,
-							font : "heading",
-							bold : true,
-							name : "How to get/make the JavaScript script to enter here?",
-							elements : [{
-								type : "view",
-								align_children : "align_distribute",
-								elements : [{
-									type : "button",
-									item_id : "bCoC",
-									name : "Get Add-on Scripts",
-									font : "dialog",
-									bold : true
+							type: "cluster",
+							width: 750,
+							font: "heading",
+							bold: true,
+							name: "How to get/make the JavaScript script to enter here?",
+							elements: [{
+								type: "view",
+								align_children: "align_distribute",
+								elements: [{
+									type: "button",
+									item_id: "bCoC",
+									name: "Get Add-on Scripts",
+									font: "dialog",
+									bold: true,
 								}, {
-									type : "button",
-									item_id : "bWhy",
-									name : "I don't get it?",
-									font : "dialog",
-									bold : true
+									type: "button",
+									item_id: "bWhy",
+									name: "I don't get it?",
+									font: "dialog",
+									bold: true,
 								}, {
-									type : "button",
-									item_id : "bFAQ",
-									name : "Open the FAQ",
-									font : "dialog",
-									bold : true
+									type: "button",
+									item_id: "bFAQ",
+									name: "Open the FAQ",
+									font: "dialog",
+									bold: true,
 								}, {
-									type : "button",
-									item_id : "bCon",
-									name : "JavaScript Console",
-									font : "dialog",
-									bold : true
-								}]
+									type: "button",
+									item_id: "bCon",
+									name: "JavaScript Console",
+									font: "dialog",
+									bold: true,
+								}],
 							}, {
-								type : "static_text",
-								item_id : "txtG",
-								alignment : "align_fill",
-								font : "dialog",
-								wrap_name : true,
-								width : 720,
-								name : getTxt
+								type: "static_text",
+								item_id: "txtG",
+								alignment: "align_fill",
+								font: "dialog",
+								wrap_name: true,
+								width: 720,
+								name: getTxt,
 							}, {
-								type : "static_text",
-								item_id : "txtH",
-								alignment : "align_fill",
-								font : "dialog",
-								wrap_name : true,
-								width : 720,
-								name : getTxt2
+								type: "static_text",
+								item_id: "txtH",
+								alignment: "align_fill",
+								font: "dialog",
+								wrap_name: true,
+								width: 720,
+								name: getTxt2,
 							}, {
-								type : "static_text",
-								item_id : "txtI",
-								alignment : "align_fill",
-								font : "dialog",
-								wrap_name : true,
-								width : 720,
-								name : getTxt3
-							}]
+								type: "static_text",
+								item_id: "txtI",
+								alignment: "align_fill",
+								font: "dialog",
+								wrap_name: true,
+								width: 720,
+								name: getTxt3,
+							}],
 						}, {
-							type : "static_text",
-							item_id : "txtE",
-							alignment : "align_fill",
-							font : "dialog",
-							wrap_name : true,
-							width : 750,
-							name : extraTxt
+							type: "static_text",
+							item_id: "txtE",
+							alignment: "align_fill",
+							font: "dialog",
+							wrap_name: true,
+							width: 750,
+							name: extraTxt,
 						}, {
-							type : "static_text",
-							item_id : "txtF",
-							alignment : "align_fill",
-							font : "dialog",
-							bold : true,
-							wrap_name : true,
-							width : 750,
-							name : extraTxt2
+							type: "static_text",
+							item_id: "txtF",
+							alignment: "align_fill",
+							font: "dialog",
+							bold: true,
+							wrap_name: true,
+							width: 750,
+							name: extraTxt2,
 						}, {
-							type : "edit_text",
-							item_id : "jscr",
-							alignment : "align_fill",
+							type: "edit_text",
+							item_id: "jscr",
+							alignment: "align_fill",
 							multiline: true,
-							height : selBoxHeight,
-							width : 750
+							height: selBoxHeight,
+							width: 750,
 						}, {
-							type : "gap",
-							height : 5
-						}]
+							type: "gap",
+							height: 5,
+						}],
 					}, {
-						type : "view",
-						align_children : "align_row",
-						alignment : "align_fill",
-						elements : [{
-							type : "button",
-							name : "<< Go to Previous Dialog",
-							item_id : "bPre",
-							alignment : "align_left"
+						type: "view",
+						align_children: "align_row",
+						alignment: "align_fill",
+						elements: [{
+							type: "button",
+							name: "<< Go to Previous Dialog",
+							item_id: "bPre",
+							alignment: "align_left",
 						}, {
-							type : "ok_cancel_other",
-							other_name : "Open Another Dialog",
-							ok_name : "Add Script to Sheet",
-							item_id : "OKbt",
-							alignment : "align_right"
-						}]
-					}]
-				}]
-			}
+							type: "ok_cancel_other",
+							other_name: "Open Another Dialog",
+							ok_name: "Add Script to Sheet",
+							item_id: "OKbt",
+							alignment: "align_right",
+						}],
+					}],
+				}],
+			},
 		};
  		if (moreDialogues) {
 			setDialogName(AddUserScript_dialog, "OKbt", "type", "ok_cancel");
@@ -2620,9 +2625,9 @@ function AddUserScript(retResDia) {
 		if (!theUserScripts || RunUserScript(false, theUserScripts)) {
 			Value("User Script", theUserScripts);
 			app.alert({
-				cMsg : "Your script has been successfully added/changed in the sheet!\n\nYou will now be returned to the Source Selection Dialog so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialog, all drop-down boxes will be updated so that your changes will be visible on the sheet. This can take some time.",
-				nIcon : 3,
-				cTitle : "Success!"
+				cMsg: "Your script has been successfully added/changed in the sheet!\n\nYou will now be returned to the Source Selection Dialog so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialog, all drop-down boxes will be updated so that your changes will be visible on the sheet. This can take some time.",
+				nIcon: 3,
+				cTitle: "Success!",
 			});
 			retResDia = "also";
 		} else {
@@ -2669,10 +2674,10 @@ function RunUserScript(atStartup, manualUserScripts) {
 			var failedTestMsg;
 			if (sheetVersion < minSheetVersion[0]) {
 				failedTestMsg = {
-					cMsg: 'The add-on script "' + scriptName + '" reports that it requires at least version number v' + minSheetVersion[1] + ", and is thus probably not compatible with the version of the sheet that you are using (which is v" + semVers + ').'+
-						(sheetVersion >= maxSheetVersion[0] ? "\nThe add-on script also has a maximum version requirement. Adding it to a v" + maxSheetVersion[0] + " or higher sheet will result in this same error message." : '')+
-						(minSheetVersion[0] >= 24000000 ? '' : '\nThis could be because from v24.0.0 onwards, the sheet uses the 5.5e (2024) rules, while lower versions use the 5e (2014) rules.')+
-						'\n\nDo you want to continue using this add-on script in the sheet? If you select NO, the "' + scriptName + '" add-on script will be skipped and removed.'+
+					cMsg: 'The add-on script "' + scriptName + '" reports that it requires at least version number v' + minSheetVersion[1] + ", and is thus probably not compatible with the version of the sheet that you are using (which is v" + semVers + ")." +
+						(sheetVersion >= maxSheetVersion[0] ? "\nThe add-on script also has a maximum version requirement. Adding it to a v" + maxSheetVersion[0] + " or higher sheet will result in this same error message." : "") +
+						(minSheetVersion[0] >= 24000000 ? "" : "\nThis could be because from v24.0.0 onwards, the sheet uses the 5.5e (2024) rules, while lower versions use the 5e (2014) rules.") +
+						'\n\nDo you want to continue using this add-on script in the sheet? If you select NO, the "' + scriptName + '" add-on script will be skipped and removed.' +
 						'\n\nYou can find other versions of the sheet with the "Get Latest Version" bookmark.',
 					nIcon: 2,
 					cTitle: "Add-on script was made for " + (sheetVersion >= maxSheetVersion[0] ? "another" : "newer") + " version of the PDF!",
@@ -2680,8 +2685,8 @@ function RunUserScript(atStartup, manualUserScripts) {
 				};
 			} else if (sheetVersion >= maxSheetVersion[0]) {
 				failedTestMsg = {
-					cMsg: 'The add-on script "' + scriptName + '" reports that it requires a sheet with a version number lower than v' + maxSheetVersion[1] + ", and is thus probably not compatible with the version of the sheet that you are using (which is v" + semVers + ').'+
-						'\n\nDo you want to continue using this add-on script in the sheet? If you select NO, the "' + scriptName + '" add-on script will be skipped and removed.'+
+					cMsg: 'The add-on script "' + scriptName + '" reports that it requires a sheet with a version number lower than v' + maxSheetVersion[1] + ", and is thus probably not compatible with the version of the sheet that you are using (which is v" + semVers + ")." +
+						'\n\nDo you want to continue using this add-on script in the sheet? If you select NO, the "' + scriptName + '" add-on script will be skipped and removed.' +
 						'\n\nYou can find other versions of the sheet with the "Get Latest Version" bookmark.',
 					nIcon: 2,
 					cTitle: "Add-on script was made for lower version of the PDF!",
@@ -2710,14 +2715,14 @@ function RunUserScript(atStartup, manualUserScripts) {
 			eText += 'it returns the following error when run:\n\t"' + error;
 			if (typeof error === "object") for (var e in error) eText += "\n\t  " + e + ": " + error[e];
 			eText += '"\n\n';
-			if (forNewerVersion || forOlderVersion) eText += 'This could be because from v24.0.0 onwards, the sheet uses the 5.5e (2024) rules, while lower versions use the 5e (2014) rules.\n\n';
+			if (forNewerVersion || forOlderVersion) eText += "This could be because from v24.0.0 onwards, the sheet uses the 5.5e (2024) rules, while lower versions use the 5e (2014) rules.\n\n";
 			eText += isManual ? "Your add-on script has not been added to the sheet, please try again after fixing the problem." : "The add-on script has been removed from this pdf.";
 			eText += "\n\nFor a more specific error and one that includes the error's line number, try running the add-on script from the JavaScript Console.";
 			if (!forNewerVersion && !forOlderVersion) eText += "\n\nPlease contact the add-on script's author to report this issue.";
 			app.alert({
 				cMsg: eText,
 				nIcon: 0,
-				cTitle: forNewerVersion || forOlderVersion ? "Add-on script was made for another version!" : "Error in running user add-on script"
+				cTitle: forNewerVersion || forOlderVersion ? "Add-on script was made for another version!" : "Error in running user add-on script",
 			});
 			return false;
 		};
@@ -2760,9 +2765,9 @@ function RunUserScript(atStartup, manualUserScripts) {
 		IsNotUserScript = true;
 		if (!atStartup && functionErrors.length > 0) {
 			app.alert({
-				cMsg : "One or more of the script you entered has a 'RunFunctionAtEnd()' statement. One or more of those functions gave an error. The sheet can't tell you which of those gave an error exactly, but it can tell you what the errors are:\n\n" + functionErrors.join("\n\n"),
-				nIcon : 0,
-				cTitle : "Error in RunFunctionAtEnd() from user script(s)"
+				cMsg: "One or more of the script you entered has a 'RunFunctionAtEnd()' statement. One or more of those functions gave an error. The sheet can't tell you which of those gave an error exactly, but it can tell you what the errors are:\n\n" + functionErrors.join("\n\n"),
+				nIcon: 0,
+				cTitle: "Error in RunFunctionAtEnd() from user script(s)",
 			});
 		};
 	};
@@ -2791,7 +2796,7 @@ function fixClassReferences(bDontKickSubclasses) {
 		if (!oClass.subclasses || !isArray(oClass.subclasses) || !isArray(oClass.subclasses[1])) {
 			oClass.subclasses = [
 				oClass.subclasses[0] && typeof oClass.subclasses[0] === "string" ? oClass.subclasses[0] : oClass.name + " Subclass",
-				[]
+				[],
 			];
 		} else if (!bDontKickSubclasses) {
 			// Loop through all the subclasses from end to start and delete any that don't exist in the ClassSubList object and any duplicates
@@ -2834,8 +2839,8 @@ function RequiredSheetVersion(minNumber, maxNumber) {
 	}
 	if (sheetVersion < testMinNmbr || (testMax && sheetVersion >= testMaxNmbr)) {
 		app.alert({
-			cMsg: "The RequiredSheetVersion() function in your script suggests that the script is made for another version of the MPMB's Character Sheet, minimally requiring v" + minSemVers + (testMax ? ", but lower than v" + maxSemVers : "") + "."+
-				"\nThis current PDF is v" + semVers + " and will likely not work properly."+
+			cMsg: "The RequiredSheetVersion() function in your script suggests that the script is made for another version of the MPMB's Character Sheet, minimally requiring v" + minSemVers + (testMax ? ", but lower than v" + maxSemVers : "") + "." +
+				"\nThis current PDF is v" + semVers + " and will likely not work properly." +
 				"\nAlternatively, you might not be using the RequiredSheetVersion() function correctly.",
 			nIcon: 2,
 			cTitle: "Script was made for another version of the PDF!",
@@ -2846,17 +2851,17 @@ function RunFunctionAtEnd(inFunc) {
 	if (!inFunc && typeof inFunc !== "function") return;
 	var funcstart = inFunc.toString().replace(/function *\([^)]*\) *{(\r\n)*\t*/i,"").substr(0,50);
 	app.alert({
-		cMsg : "The script you are running from the console contains the function RunFunctionAtEnd(). This function can be exectured from the console, but will be executed immediately after you close this dialog, and not at the end of all the code you are trying to run from console. When you import this script as a file, or manually paste it into the dialog for scripts, it will be run at the end of all scripts as intended.\n\nAfter clicking 'OK', the function will be run that starts with the following:\n\t\"" + funcstart + "...\"",
-		nIcon : 1,
-		cTitle : "RunFunctionAtEnd() works different when executed from the console"
+		cMsg: "The script you are running from the console contains the function RunFunctionAtEnd(). This function can be exectured from the console, but will be executed immediately after you close this dialog, and not at the end of all the code you are trying to run from console. When you import this script as a file, or manually paste it into the dialog for scripts, it will be run at the end of all scripts as intended.\n\nAfter clicking 'OK', the function will be run that starts with the following:\n\t\"" + funcstart + "...\"",
+		nIcon: 1,
+		cTitle: "RunFunctionAtEnd() works different when executed from the console",
 	});
 	try {
 		inFunc();
 	} catch(e) {
 		app.alert({
-			cMsg : "The function entered in 'RunFunctionAtEnd()', that starts with:\n\t\"" + funcstart + "...\"\nproduces the following error, which might be because it was executed from the console:\n\n" + e,
-			nIcon : 0,
-			cTitle : "Error in RunFunctionAtEnd() from user script(s)"
+			cMsg: "The function entered in 'RunFunctionAtEnd()', that starts with:\n\t\"" + funcstart + "...\"\nproduces the following error, which might be because it was executed from the console:\n\n" + e,
+			nIcon: 0,
+			cTitle: "Error in RunFunctionAtEnd() from user script(s)",
 		});
 	};
 };
@@ -2998,7 +3003,7 @@ function AddFightingStyle(classArr, fsName, fsObj) {
 		} else if (sClass) {
 			for (var clFea in sClass.features) {
 				var sFea = sClass.features[clFea];
-				if (sFea.choices && (/^(?=.*fighting)(?=.*style).*$/i).test(sFea.name)) {
+				if (sFea.choices && /^(?=.*fighting)(?=.*style).*$/i.test(sFea.name)) {
 					AddFeatureChoice(sClass.features[clFea], false, fsName, fsObj);
 				}
 			}
@@ -3021,13 +3026,13 @@ function CreateClassFeatureVariant(clName, clFea, varName, varObj) {
 		var choiceNm = "\x1B[original] " + origFea.name;
 		var choiceNmLC = choiceNm.toLowerCase();
 		aFea[clFea] = {
-			name : origFea.name + " or a Variant",
+			name: origFea.name + " or a Variant",
 			source: origFea.source,
-			minlevel : origFea.minlevel,
-			description : '\n   Select ' + origFea.name + ' or a variant using the "Choose Feature" button above',
-			choices : [choiceNm],
-			defaultChoice : choiceNmLC,
-			choiceSetsExtrachoices : origFea.extrachoices ? true : false
+			minlevel: origFea.minlevel,
+			description: "\n   Select " + origFea.name + ' or a variant using the "Choose Feature" button above',
+			choices: [choiceNm],
+			defaultChoice: choiceNmLC,
+			choiceSetsExtrachoices: origFea.extrachoices ? true : false,
 		}
 		aFea[clFea][choiceNmLC] = origFea;
 		if (origFea.autoSelectExtrachoices) {
@@ -3071,19 +3076,19 @@ function ImportUserScriptFile(filePath) {
 	var iFileStream = filePath ? util.readFileIntoStream(filePath) : util.readFileIntoStream();
 	if (!iFileStream) return false;
 	var iFileCont = util.stringFromStream(iFileStream);
-	if ((/<(!DOCTYPE )?html/i).test(iFileCont)) {
+	if (/<(!DOCTYPE )?html/i.test(iFileCont)) {
 		// Import is probably an HTML file, lets try and get the JavaScript from it in case it's from GitHub or PasteBin
 		var htmlAttr = {
-			github : {
-				"class" : "data",
-				"nodeNm" : "table"
+			github: {
+				"class": "data",
+				"nodeNm": "table",
 			},
-			pastebin : {
-				"class" : "textarea",
-				"nodeNm" : "#text"
-			}
+			pastebin: {
+				"class": "textarea",
+				"nodeNm": "#text",
+			},
 		}
-		var knownHTML = (/github/i).test(iFileCont) ? "github" : (/pastebin/i).test(iFileCont) ? "pastebin" : false;
+		var knownHTML = /github/i.test(iFileCont) ? "github" : /pastebin/i.test(iFileCont) ? "pastebin" : false;
 		if (knownHTML) {
 			try {
 				var scriptContent = "", fndNode;
@@ -3093,14 +3098,14 @@ function ImportUserScriptFile(filePath) {
 				for (var i = 0; jsElem[0].childNodes.length; i++) {
 					if (jsElem[0].childNodes[i].nodeName == htmlAttr[knownHTML].nodeNm) {
 						fndNode = jsElem[0].childNodes[i];
-						scriptContent = decodeXml(fndNode.textContent).replace(/^\s+|\s+$/, '');
+						scriptContent = decodeXml(fndNode.textContent).replace(/^\s+|\s+$/, "");
 						break;
 					}
 				}
 				if ( !scriptContent || ( /view raw/i.test(scriptContent) && /href=("|').*?raw=true\1/i.test(jsElem[0].innerHTML) ) ) {
 					throw "didn't work as expected";
 				} else if (knownHTML === "github") {
-					scriptContent = scriptContent.replace(/(\n )+/g, '\n');
+					scriptContent = scriptContent.replace(/(\n )+/g, "\n");
 				}
 				iFileCont = scriptContent;
 			} catch (error) {
@@ -3110,9 +3115,9 @@ function ImportUserScriptFile(filePath) {
 		}
 		if (!knownHTML) {
 			app.alert({
-				cTitle : "Please select a JavaScript file",
-				cMsg : "The file you imported is an HTML document (a website). Please make sure that the file you select to import is JavaScript.\n\nYou can create a JavaScript file by copying code, pasting it into your favourite plain-text editor (such as Notepad on Windows), and subsequently saving it. You don't necessarily need the .js file extension for the file to be importable into this character sheet." + (!isWindows ? "" : "\n\nNote that you can input a URL into the 'Open file' dialog, but that URL has to point to a plain code file. A good example of a URL that points to a plain code file is the URL you are send to when you select the 'Raw' option on GitHub: https://raw.githubusercontent.com/") + "\n\nThe file you selected will not be imported.",
-				nIcon : 1
+				cTitle: "Please select a JavaScript file",
+				cMsg: "The file you imported is an HTML document (a website). Please make sure that the file you select to import is JavaScript.\n\nYou can create a JavaScript file by copying code, pasting it into your favourite plain-text editor (such as Notepad on Windows), and subsequently saving it. You don't necessarily need the .js file extension for the file to be importable into this character sheet." + (!isWindows ? "" : "\n\nNote that you can input a URL into the 'Open file' dialog, but that URL has to point to a plain code file. A good example of a URL that points to a plain code file is the URL you are send to when you select the 'Raw' option on GitHub: https://raw.githubusercontent.com/") + "\n\nThe file you selected will not be imported.",
+				nIcon: 1,
 			});
 			return false;
 		}
@@ -3137,10 +3142,10 @@ function ImportUserScriptFile(filePath) {
 	};
 	if (iFileNameMatch && CurrentScriptFiles[iFileNameMatch]) {
 		var askToOverwrite = {
-			cMsg : "There is already a file by the name \"" + endFileName + "\", do you want to overwrite it?\n\nIf you select 'No', the file will not be changed.",
-			nIcon : 2, //question mark
-			cTitle : "File already exists, overwrite it?",
-			nType : 2, //Yes-No
+			cMsg: "There is already a file by the name \"" + endFileName + "\", do you want to overwrite it?\n\nIf you select 'No', the file will not be changed.",
+			nIcon: 2, //question mark
+			cTitle: "File already exists, overwrite it?",
+			nType: 2, //Yes-No
 		};
 		if (app.alert(askToOverwrite) !== 4) return false;
 		delete CurrentScriptFiles[iFileNameMatch];
@@ -3167,14 +3172,14 @@ function ImportScriptFileDialog(retResDia) {
 	var AddScriptFiles_dialog = {
 		initialize: function(dialog) {
 			dialog.load({
-				img1 : allIcons.import,
-				scrF : dialogObj,
-				head : defaultTxt
+				img1: allIcons.import,
+				scrF: dialogObj,
+				head: defaultTxt,
 			});
 			dialog.setForeColorRed("txtB");
 			dialog.enable({
-				bRem : false,
-				bSee : false
+				bRem: false,
+				bSee: false,
 			});
 		},
 		commit: function(dialog) {},
@@ -3198,12 +3203,12 @@ function ImportScriptFileDialog(retResDia) {
 			if (remElem) {
 				var remElemNm = remElem.length > 50 ? remElem.substr(0,50) + "..." : remElem;
 				dialog.load({
-					bRem : "DELETE " + remElemNm,
-					bSee : "SEE CONTENT of " + remElemNm
+					bRem: "DELETE " + remElemNm,
+					bSee: "SEE CONTENT of " + remElemNm,
 				});
 				dialog.enable({
-					bRem : true,
-					bSee : true
+					bRem: true,
+					bSee: true,
 				});
 			};
 		},
@@ -3214,13 +3219,13 @@ function ImportScriptFileDialog(retResDia) {
 				dialogObj[scriptFile] = -1;
 			};
 			dialog.load({
-				"scrF" : dialogObj,
-				bRem : "DELETE selected file",
-				bSee : "SEE CONTENT of selected file"
+				"scrF": dialogObj,
+				bRem: "DELETE selected file",
+				bSee: "SEE CONTENT of selected file",
 			});
 			dialog.enable({
-				bRem : false,
-				bSee : false
+				bRem: false,
+				bSee: false,
 			});
 		},
 		removeOrSee: function(dialog, deleteIt) {
@@ -3240,158 +3245,158 @@ function ImportScriptFileDialog(retResDia) {
 			};
 			if (deleteIt) {
 				delete allElem[fndElem];
-				dialog.load({ scrF : allElem });
+				dialog.load({ scrF: allElem });
 			}
 		},
 		bRem: function(dialog) { this.removeOrSee(dialog, true); },
 		bSee: function(dialog) { this.removeOrSee(dialog, false); },
-		description : {
-			name : "IMPORT CUSTOM SCRIPT DIALOG",
-			first_tab : "OKbt",
-			elements : [{
-				type : "view",
-				elements : [{
-					type : "view",
-					align_children : "align_left",
-					elements : [{
-						type : "view",
-						align_children : "align_row",
-						elements : [{
-							type : "image",
-							item_id : "img1",
-							width : 20,
-							height : 20
+		description: {
+			name: "IMPORT CUSTOM SCRIPT DIALOG",
+			first_tab: "OKbt",
+			elements: [{
+				type: "view",
+				elements: [{
+					type: "view",
+					align_children: "align_left",
+					elements: [{
+						type: "view",
+						align_children: "align_row",
+						elements: [{
+							type: "image",
+							item_id: "img1",
+							width: 20,
+							height: 20,
 						}, {
-							type : "static_text",
-							item_id : "head",
-							alignment : "align_fill",
-							font : "heading",
-							bold : true,
-							height : 21,
-							width : 720
-						}]
+							type: "static_text",
+							item_id: "head",
+							alignment: "align_fill",
+							font: "heading",
+							bold: true,
+							height: 21,
+							width: 720,
+						}],
 					}, {
-						type : "cluster",
-						font : "heading",
-						bold : true,
-						name : "Current files with JavaScript additions",
-						align_children : "align_row",
-						elements : [{
-							width : 300,
-							height : 150,
-							type : "hier_list_box",
-							item_id : "scrF"
+						type: "cluster",
+						font: "heading",
+						bold: true,
+						name: "Current files with JavaScript additions",
+						align_children: "align_row",
+						elements: [{
+							width: 300,
+							height: 150,
+							type: "hier_list_box",
+							item_id: "scrF",
 						}, {
-							type : "view",
-							elements : [{
-								type : "view",
-								align_children : "align_row",
-								elements : [{
-									type : "button",
-									item_id : "bAdd",
-									name : "Add file",
-									font : "heading",
-									bold : true
+							type: "view",
+							elements: [{
+								type: "view",
+								align_children: "align_row",
+								elements: [{
+									type: "button",
+									item_id: "bAdd",
+									name: "Add file",
+									font: "heading",
+									bold: true,
 								}, {
-									type : "static_text",
-									item_id : "txtT",
-									alignment : "align_fill",
-									font : "dialog",
-									bold : true,
-									wrap_name : true,
-									width : 300,
-									name : defaultTxt2
-								}]
+									type: "static_text",
+									item_id: "txtT",
+									alignment: "align_fill",
+									font: "dialog",
+									bold: true,
+									wrap_name: true,
+									width: 300,
+									name: defaultTxt2,
+								}],
 							}, {
-								type : "button",
-								item_id : "bRem",
-								name : "DELETE selected file",
-								width : 380
+								type: "button",
+								item_id: "bRem",
+								name: "DELETE selected file",
+								width: 380,
 							}, {
-								type : "button",
-								item_id : "bSee",
-								name : "SEE CONTENT of selected file",
-								width : 380
+								type: "button",
+								item_id: "bSee",
+								name: "SEE CONTENT of selected file",
+								width: 380,
 							}, {
-								type : "static_text",
-								item_id : "txtB",
-								alignment : "align_fill",
-								font : "dialog",
-								bold : true,
-								wrap_name : true,
-								width : 380,
-								name : defaultTxt3
-							}]
-						}]
+								type: "static_text",
+								item_id: "txtB",
+								alignment: "align_fill",
+								font: "dialog",
+								bold: true,
+								wrap_name: true,
+								width: 380,
+								name: defaultTxt3,
+							}],
+						}],
 					}, {
-						type : "cluster",
-						font : "heading",
-						bold : true,
-						name : "How to get/make the JavaScript files to enter here?",
-						elements : [{
-							type : "view",
-							alignmen : "align_fill",
-							align_children : "align_row",
-							width : 730,
-							elements : [{
-								type : "button",
-								item_id : "bCoC",
-								name : "Get Add-on Scripts",
-								font : "dialog",
-								bold : true
+						type: "cluster",
+						font: "heading",
+						bold: true,
+						name: "How to get/make the JavaScript files to enter here?",
+						elements: [{
+							type: "view",
+							alignmen: "align_fill",
+							align_children: "align_row",
+							width: 730,
+							elements: [{
+								type: "button",
+								item_id: "bCoC",
+								name: "Get Add-on Scripts",
+								font: "dialog",
+								bold: true,
 							}, {
-								type : "button",
-								item_id : "bWhy",
-								name : "I don't get it?",
-								font : "dialog",
-								bold : true
+								type: "button",
+								item_id: "bWhy",
+								name: "I don't get it?",
+								font: "dialog",
+								bold: true,
 							}, {
-								type : "button",
-								item_id : "bFAQ",
-								name : "Open the FAQ",
-								font : "dialog",
-								bold : true
+								type: "button",
+								item_id: "bFAQ",
+								name: "Open the FAQ",
+								font: "dialog",
+								bold: true,
 							}, {
-								type : "button",
-								item_id : "bCon",
-								name : "JavaScript Console",
-								font : "dialog",
-								bold : true
-							}]
+								type: "button",
+								item_id: "bCon",
+								name: "JavaScript Console",
+								font: "dialog",
+								bold: true,
+							}],
 						}, {
-							type : "static_text",
-							item_id : "txtC",
-							alignment : "align_fill",
-							font : "dialog",
-							wrap_name : true,
-							width : 720,
-							name : getTxt
+							type: "static_text",
+							item_id: "txtC",
+							alignment: "align_fill",
+							font: "dialog",
+							wrap_name: true,
+							width: 720,
+							name: getTxt,
 						}, {
-							type : "static_text",
-							item_id : "txtD",
-							alignment : "align_fill",
-							font : "dialog",
-							wrap_name : true,
-							width : 720,
-							name : getTxt2
+							type: "static_text",
+							item_id: "txtD",
+							alignment: "align_fill",
+							font: "dialog",
+							wrap_name: true,
+							width: 720,
+							name: getTxt2,
 						}, {
-							type : "static_text",
-							item_id : "txtE",
-							alignment : "align_fill",
-							font : "dialog",
-							wrap_name : true,
-							width : 720,
-							name : getTxt3
-						}]
-					}]
+							type: "static_text",
+							item_id: "txtE",
+							alignment: "align_fill",
+							font: "dialog",
+							wrap_name: true,
+							width: 720,
+							name: getTxt3,
+						}],
+					}],
 				}, {
-					item_id : "OKbt",
-					type : "ok_cancel",
-					ok_name : "Apply changes",
-					cancel_name : "Cancel changes"
-				}]
-			}]
-		}
+					item_id: "OKbt",
+					type: "ok_cancel",
+					ok_name: "Apply changes",
+					cancel_name: "Cancel changes",
+				}],
+			}],
+		},
 	};
 
 
@@ -3416,9 +3421,9 @@ function ImportScriptFileDialog(retResDia) {
 			if (filesScriptRem !== What("User_Imported_Files.Stringified") || runScriptsTest) {
 				retResDia = "also";
 				app.alert({
-					cMsg : (runScriptsTest ? "All" : "Some") + " of the script file(s) have been " + (runScriptsTest ? "successfully " : "") + "changed in the sheet!\n\nYou will now be returned to the Source Selection Dialog so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialog, all drop-down boxes will be updated so that your changes will be visible on the sheet. This can take some time.",
-					nIcon : 3,
-					cTitle : runScriptsTest ? "Success!" : "Partial success"
+					cMsg: (runScriptsTest ? "All" : "Some") + " of the script file(s) have been " + (runScriptsTest ? "successfully " : "") + "changed in the sheet!\n\nYou will now be returned to the Source Selection Dialog so that you can choose with more detail how your script interact with the sheet.\n\nNote that once you close the Source Selection Dialog, all drop-down boxes will be updated so that your changes will be visible on the sheet. This can take some time.",
+					nIcon: 3,
+					cTitle: runScriptsTest ? "Success!" : "Partial success",
 				});
 			};
 		};

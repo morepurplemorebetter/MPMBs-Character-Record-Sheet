@@ -20,13 +20,19 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# VS Code and Node.js
+node_modules/
+.vscode
+
+# ESlint config file
+eslint.config.js
+
 # =========================
 # Operating System Files
 # =========================
 
 # OSX
 # =========================
-
 .DS_Store
 .AppleDouble
 .LSOverride

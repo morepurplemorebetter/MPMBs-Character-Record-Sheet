@@ -98,15 +98,15 @@ FeatsList["purple power"] = {
 	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
-	name : "Purple Power",
+	name: "Purple Power",
 /*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the feat as it will be used by the sheet
 
 	This name will also be used to recognize what is selected in the feat drop-down.
 */
-	source : ["SRD", 204],
-	source : [["E", 7], ["S", 115]],
+	source: ["SRD", 204],
+	source: [["E", 7], ["S", 115]],
 /*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the feat is found
@@ -157,7 +157,7 @@ FeatsList["purple power"] = {
 	For example, "origin (dwarf)" would have the feat appear both when `featsAdd.type` is
 	set to `type: "origin"` and `type: "origin (dwarf)"`.
 */
-	defaultExcluded : true,
+	defaultExcluded: true,
 /*	defaultExcluded // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this feat should be excluded by default (true) or included by default (false)
@@ -171,7 +171,7 @@ FeatsList["purple power"] = {
 
 	Setting this attribute to false is the same as not including this attribute.
 */
-	prerequisite : "Dexterity 13 or higher",
+	prerequisite: "Dexterity 13 or higher",
 /*	prerequisite // OPTIONAL //
 	TYPE:	string
 	USE:	textual explanation of a prerequisite the feat has
@@ -179,10 +179,10 @@ FeatsList["purple power"] = {
 	If the feat doesn't have a prerequisite, you can just leave this attribute out.
 	Setting this to "" is the same as not including this attribute.
 */
-	prereqeval : function(v) {
-		return v.isSpellcaster && CurrentRace.known.indexOf('dwarf') !== -1;
+	prereqeval: function(v) {
+		return v.isSpellcaster && CurrentRace.known.indexOf("dwarf") !== -1;
 	},
-	prereqeval : "CurrentSpells.toSource() !== '({})' && CurrentRace.known.indexOf('dwarf') !== -1",
+	prereqeval: "CurrentSpells.toSource() !== '({})' && CurrentRace.known.indexOf('dwarf') !== -1",
 /*	prereqeval // OPTIONAL //
 	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 	USE:	this should return 'true' if the prerequisite is met or 'false' otherwise
@@ -225,7 +225,7 @@ FeatsList["purple power"] = {
 		"return classes.known.cleric ? true : false;" // Test if character has any levels in the cleric class
 		"return What('Dex') >= 13;" // Test if character has a Dexterity score of 13 or more
 */
-	allowDuplicates : true,
+	allowDuplicates: true,
 /*	allowDuplicates // OPTIONAL //
 	TYPE:	boolean
 	USE:	set to true if multiples can exist of this feat (e.g. Elemental Adept using the 'choices' attribute)
@@ -239,7 +239,7 @@ FeatsList["purple power"] = {
 	If you don't set this attribute to true, the sheet will only allow this feat to exist once,
 	regardless if another instance has another form (choices) selected.
 */
-	description : "Advantage on Charisma (Deception) and (Performance) if wearing something purple. I can mimic casting any spell perfectly, even producing a purple haze while doing so. Wisdom (Insight) vs. Charisma (Deception) to determine there is no spell being cast. [+1 Charisma]",
+	description: "Advantage on Charisma (Deception) and (Performance) if wearing something purple. I can mimic casting any spell perfectly, even producing a purple haze while doing so. Wisdom (Insight) vs. Charisma (Deception) to determine there is no spell being cast. [+1 Charisma]",
 /*	description // REQUIRED //
 	TYPE:	string
 	USE:	the text to be filled in the description field of the feat
@@ -291,8 +291,8 @@ FeatsList["purple power"] = {
 
 	If this attribute is an array, the sheet will join it with a carriage return "\r".
 */
-	descriptionFull : "I gain proficiency in any combination of three skills or tools of my choice.",
-	descriptionFull : [
+	descriptionFull: "I gain proficiency in any combination of three skills or tools of my choice.",
+	descriptionFull: [
 		"Introduction text of the feat. This will not be preceded by a line break or three spaces as this is the first paragraph.",
 		"Second entry, which will be preceded by a line break and three spaces.",
 		" \u2022 Bullet point entry. This will be preceded by a line break, but not with three spaces, as this entry starts with a space.",
@@ -349,7 +349,7 @@ FeatsList["purple power"] = {
 	This can happen if the feat has the `toNotesPage` attribute with
 	`useFullDescription: true`, for example.
 */
-	calculate : "event.value = \"I can spend 10 minutes inspiring up to 6 friendly creatures within 30 feet who can see or hear and can understand me. Each gains lvl (\" + What(\"Character Level\") + \") + Cha mod (\" + What(\"Cha Mod\") + \") temporary hit points. One can't gain temporary hit points from this feat again until after a short rest.\";",
+	calculate: "event.value = \"I can spend 10 minutes inspiring up to 6 friendly creatures within 30 feet who can see or hear and can understand me. Each gains lvl (\" + What(\"Character Level\") + \") + Cha mod (\" + What(\"Cha Mod\") + \") temporary hit points. One can't gain temporary hit points from this feat again until after a short rest.\";",
 /*	calculate // OPTIONAL //
 	TYPE:	string
 	USE:	this string is set as the field calculation method for the description field of the feat
@@ -394,7 +394,7 @@ FeatsList["purple power"] = {
 	To set up a choice, add the 'choices' attribute, see below, and add an object for each of those choices.
 	The object name has to be exactly the same as the string in the 'choices' array, but need to be all lowercase.
 */
-	choices : ['Fire', 'Ice'],
+	choices: ["Fire", "Ice"],
 /*	choices // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	options for the feat
@@ -407,7 +407,7 @@ FeatsList["purple power"] = {
 	To make a choice object, use the exact name of the entry in this array, but lowercase.
 	See the below example "fire" for more information.
 */
-	selfChoosing : function () {
+	selfChoosing: function () {
 		return classes.known.cleric ? "fire" : "";
 	},
 /*	selfChoosing // OPTIONAL //
@@ -427,7 +427,7 @@ FeatsList["purple power"] = {
 	Even with this attribute present, the player can always change the 'choice' using the button on the sheet.
 */
 
-	"fire" : {
+	"fire": {
 	/*	Choice Object Name
 		TYPE:	object name
 		USE:	this has to be identical to the entry in the 'choices' array that this refers to, but all lowercase
@@ -437,7 +437,7 @@ FeatsList["purple power"] = {
 		The parent FeatsList object wil be referred to as 'parent' from here on in.
 	*/
 
-		name : "Purple Fire Power",
+		name: "Purple Fire Power",
 	/*	name (inside choice) // OPTIONAL //
 		TYPE:	string
 		USE:	name of the feat option as it will be used by the sheet
@@ -453,7 +453,7 @@ FeatsList["purple power"] = {
 		The name of an option should be unique, it can't be the same as the parent feat.
 	*/
 
-		description : "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\rThe potion's yellow fluid is streaked with black and swirls on its own.",
+		description: "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\rThe potion's yellow fluid is streaked with black and swirls on its own.",
 	/*
 		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		>>> FeatsList Attributes (inside choice) >>>
@@ -501,5 +501,5 @@ FeatsList["purple power"] = {
 		'usages', 'additional', 'recovery', 'usagesCalc', and 'limfeaname' will all be
 		merged from the choice object into the parent to generate a single limited feature.
 	*/
-	}
+	},
 }

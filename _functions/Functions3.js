@@ -127,11 +127,11 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		if (!evalThing) return;
 		try {
 			var convertUnits = false;
-			if (typeof evalThing == 'string') {
+			if (typeof evalThing == "string") {
 				var convertUnits = !defaultUnits && !ignoreUnits && !(/ConvertTo(Metric|Imperial)/).test(evalThing);
 				if (convertUnits) evalThing = ConvertToMetric(evalThing, 0.5);
 				eval(evalThing);
-			} else if (typeof evalThing == 'function') {
+			} else if (typeof evalThing == "function") {
 				evalThing(lvlA, choiceA);
 			}
 		} catch (error) {
@@ -260,7 +260,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			logChangedSpells = true;
 		};
 		if (logChangedSpells) {
-			SetStringifieds('spells');
+			SetStringifieds("spells");
 			CurrentUpdates.types.push("spells");
 		}
 		if (uObj.spellcastingBonusElsewhere) processSpellcastingBonusElsewhere(addIt, type, tipNm, uniqueObjNm, uObj.spellcastingBonusElsewhere);
@@ -286,7 +286,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		// --- backwards compatibility --- //
 		// skills additions
 		var skillsTxt = uObj.skillstxt ? uObj.skillstxt : uObj.skills && type == "feat" && !isArray(uObj.skills) ? uObj.skills : false;
-		if (skillsTxt) skillsTxt = skillsTxt.replace(/^[\r\n]{2,}.+: ?|[;.]$/g, '');
+		if (skillsTxt) skillsTxt = skillsTxt.replace(/^[\r\n]{2,}.+: ?|[;.]$/g, "");
 		var skills = uObj.skills && (type != "feat" || (type == "feat" && isArray(uObj.skills))) ? uObj.skills : false;
 		if (skills || skillsTxt) processSkills(addIt, tipNmF, skills, skillsTxt);
 
@@ -361,7 +361,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	};
 
 	if (!fObj) {
-		displayError(false, '"The "' + fObjName + (aParent ? '" of the "' + aParent : "") + '" ' + type + ' could not be found! Please contact the author of the feature to correct this issue.');
+		displayError(false, '"The "' + fObjName + (aParent ? '" of the "' + aParent : "") + '" ' + type + " could not be found! Please contact the author of the feature to correct this issue.");
 		return false;
 	};
 
@@ -423,12 +423,12 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	// First do the level-dependent limited feature, if any of them changed or we are supposed to add/remove them
 	if ((CheckLVL || Fea.changed) && (Fea.UseOld || Fea.UseCalcOld || Fea.Use || Fea.UseCalc)) {
 		// remove the limited feature entry if it is no longer applicable
-		if (lvlA[0] && (!AddFea || ((Fea.UseOld || Fea.UseCalcOld) && (Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc) || (/unlimited|\u221E/i).test(Fea.Use))))) {
+		if (lvlA[0] && (!AddFea || ((Fea.UseOld || Fea.UseCalcOld) && (Fea.UseName !== Fea.UseNameOld || (!Fea.Use && !Fea.UseCalc) || /unlimited|\u221E/i.test(Fea.Use))))) {
 			RemoveFeature(Fea.UseNameOld ? Fea.UseNameOld : Fea.UseName, lvlA[1] === 0 && !fObj.limfeaAddToExisting ? "" : Fea.UseOld, "", "", tooltipName, "", Fea.UseCalcOld);
 			Fea.UseOld = 0;
 		}
 		// add the limited feature entry if it changed or added for the first time
-		if (AddFea && (Fea.UseCalc || Fea.Use) && !(/unlimited|\u221E/i).test(Fea.Use)) {
+		if (AddFea && (Fea.UseCalc || Fea.Use) && !/unlimited|\u221E/i.test(Fea.Use)) {
 			var tooltipName = choiceLimFeaTooltip ? choiceLimFeaTooltip : displName + (fObj.tooltip ? fObj.tooltip : displName !== fObj.name ? ": " + fObj.name : "");
 			var oldUsages = !Fea.UseOld && fObj.limfeaAddToExisting ? "bonus" : Fea.UseOld;
 			AddFeature(Fea.UseName, Fea.Use, Fea.Add ? " (" + Fea.Add + ")" : "", Fea.Recov, tooltipName, oldUsages, Fea.UseCalc, Fea.AltRecov);
@@ -453,9 +453,9 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	}
 
 	// changeeval always at the end and regardless of AddFea or CheckLVL
-	if (!cOnly && fObj.changeeval) runEval(fObj.changeeval, 'changeeval');
-	if (cOldObj && cOldObj.changeeval) runEval(cOldObj.changeeval, 'changeeval');
-	if (cNewObj && cNewObj.changeeval) runEval(cNewObj.changeeval, 'changeeval');
+	if (!cOnly && fObj.changeeval) runEval(fObj.changeeval, "changeeval");
+	if (cOldObj && cOldObj.changeeval) runEval(cOldObj.changeeval, "changeeval");
+	if (cNewObj && cNewObj.changeeval) runEval(cNewObj.changeeval, "changeeval");
 
 	// if this is a class feature (and not doing an extrachoice), always check if we need to update the dependencies
 	if (type == "class" && !cOnly) {
@@ -505,10 +505,10 @@ function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 	// loop through the attributes and apply them
 	var processAttributes = function (uObj, addIt, tipNmF, ifInObj, ifNotInObj) {
 		// saves, if primary class
-		if (primaryClass && checkIfIn(uObj, ifInObj, ['saves'], true)[0]) processSaves(addIt, tipNmF, uObj.saves);
+		if (primaryClass && checkIfIn(uObj, ifInObj, ["saves"], true)[0]) processSaves(addIt, tipNmF, uObj.saves);
 
 		// skills
-		var doSkills = checkIfIn(uObj, ifInObj, ['skills', 'skillstxt'], false, ifNotInObj);
+		var doSkills = checkIfIn(uObj, ifInObj, ["skills", "skillstxt"], false, ifNotInObj);
 		if (doSkills[0]) {
 			var oSkills = false;
 			var oSkillsTxt = false;
@@ -522,7 +522,7 @@ function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 			} else if (doSkills[2] == n && !isArray(uObj.skills[n]) && SkillsList.abbreviations.indexOf(uObj.skills[n]) == -1 && SkillsList.names.indexOf(uObj.skills[n]) == -1) {
 				// --- backwards compatibility --- //
 				// the class has skillstxt as skills attribute (pre v13)
-				oSkillsTxt = uObj.skills[n].replace(/^( |\n)*.*: |\;$/g, '');
+				oSkillsTxt = uObj.skills[n].replace(/^( |\n)*.*: |\;$/g, "");
 			} else {
 				// no 'skillstxt' attribute, only 'skills'
 				oSkills = uObj.skills[doSkills[2]];
@@ -531,19 +531,19 @@ function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 		}
 
 		// weapon proficiencies ('weapons' attribute for backwards compatibility)
-		var doWeapons = checkIfIn(uObj, ifInObj, ['weaponProfs', 'weapons'], false, ifNotInObj);
+		var doWeapons = checkIfIn(uObj, ifInObj, ["weaponProfs", "weapons"], false, ifNotInObj);
 		if (doWeapons[0]) processWeaponProfs(addIt, tipNmF, uObj[doWeapons[1]][doWeapons[2]]);
 
 		// armour proficiencies ('armor' attribute for backwards compatibility)
-		var doArmour = checkIfIn(uObj, ifInObj, ['armorProfs', 'armor'], false, ifNotInObj);
+		var doArmour = checkIfIn(uObj, ifInObj, ["armorProfs", "armor"], false, ifNotInObj);
 		if (doArmour[0]) processArmourProfs(addIt, tipNmF, uObj[doArmour[1]][doArmour[2]]);
 
 		// tool proficiencies
-		var doTools = checkIfIn(uObj, ifInObj, ['toolProfs'], false, ifNotInObj);
+		var doTools = checkIfIn(uObj, ifInObj, ["toolProfs"], false, ifNotInObj);
 		if (doTools[0]) processTools(addIt, tipNmF, uObj.toolProfs[doTools[2]]);
 
 		// spellcasting extra array
-		if (CurrentSpells[aClass] && checkIfIn(uObj, ifInObj, ['spellcastingExtra'], true, ifNotInObj)[0]) {
+		if (CurrentSpells[aClass] && checkIfIn(uObj, ifInObj, ["spellcastingExtra"], true, ifNotInObj)[0]) {
 			processSpellcastingExtra(addIt, aClass, 0, "", uObj.spellcastingExtra, uObj.spellcastingExtraApplyNonconform);
 		}
 	}
@@ -653,7 +653,7 @@ function processBonusClassExtraChoices(bAddRemove, sType, aItems) {
 				if (!classes.known[sClass] || (oItem["subclass"] && classes.known[sClass].subclass !== oItem["subclass"])) {
 					var extrasKnown = GetFeatureChoice("classes", sClass, sFea, true);
 					for (var i = 0; i < extrasKnown.length; i++) {
-						ClassFeatureOptions([sClass, sFea, extrasKnown[i], 'extra', "remove", true, oItem["subclass"]]);
+						ClassFeatureOptions([sClass, sFea, extrasKnown[i], "extra", "remove", true, oItem["subclass"]]);
 					}
 				}
 			}
@@ -698,10 +698,10 @@ function getBonusClassExtraChoices(bIgnoreNotInMenu) {
 				if (!oUseObj[sFeaNm] || !oUseObj[sFeaNm].extrachoices || (!bIgnoreNotInMenu && oUseObj[sFeaNm].extrachoicesNotInMenu) || (bTestLvl && oUseObj[sFeaNm].minlevel <= iClassLvl)) continue;
 				// feature is not available for the character, so return its object
 				aReturn.push({
-					"class" : sClass,
-					"subclass" : bIsMainClass ? false : sSubclass,
-					"feature" : sFeaNm,
-					"bonus" : oSubclass[sFeaNm]
+					"class": sClass,
+					"subclass": bIsMainClass ? false : sSubclass,
+					"feature": sFeaNm,
+					"bonus": oSubclass[sFeaNm],
 				});
 			}
 		}
@@ -719,14 +719,14 @@ function GetFightingStyleSelection() {
 			for (var aFea in clObj) {
 				var feaObj = clObj[aFea];
 				var feaNm = CurrentClasses[aClass] && CurrentClasses[aClass].features[aFea] ? CurrentClasses[aClass].features[aFea].name : aFea.capitalize();
-				if (typeof feaObj == "object" && feaObj.choice && (/fighting style/i).test(aFea + feaNm)) fndObj[feaObj.choice] = ["classes", aClass, "\t   (selected: " + clNm + " - " + feaNm + ")"];
+				if (typeof feaObj == "object" && feaObj.choice && /fighting style/i.test(aFea + feaNm)) fndObj[feaObj.choice] = ["classes", aClass, "\t   (selected: " + clNm + " - " + feaNm + ")"];
 			}
 		}
 	}
 	for (var i = 0; i < CurrentFeats.known.length; i++) {
 		var sFeat = CurrentFeats.known[i];
 		var oFeat = FeatsList[sFeat];
-		if (!sFeat || !oFeat || !(/fighting style/i).test(oFeat.descriptionFull)) continue;
+		if (!sFeat || !oFeat || !/fighting style/i.test(oFeat.descriptionFull)) continue;
 		var sFeatChoice = CurrentFeats.choices[CurrentFeats.known.indexOf(sFeat)];
 		if (sFeatChoice) fndObj[sFeatChoice] = ["feats", sFeat, "\t   (selected: " + oFeat.name + " - " + sFeatChoice.capitalize() + ")"];
 	};
@@ -766,7 +766,7 @@ function ReturnSpellcastingAbility(sCast, vAbility, bAbilitySave) {
 	var sType = bAbilitySave ? "Ability Save DC" : "Spellcasting Ability";
 	var sTypeLC = sType.replace("A", "a").replace("S", "s");
 	var sTypePage = bAbilitySave ? "first page" : "spell sheet once you generate the spell sheet";
-	var sAsk = AskUserOptions("Select " + sType + " for " + sCastName, "The " + sTypeLC + " for " + sCastName + " can be one of multiple options. It is up to you to select which the sheet will use from now on.", aAbiOptions, "radio", true, 'You can always change the ' + sTypeLC + ' for ' + sCastName + ' on the ' + sTypePage + '. What you select here is the "default" ' + sTypeLC + '.');
+	var sAsk = AskUserOptions("Select " + sType + " for " + sCastName, "The " + sTypeLC + " for " + sCastName + " can be one of multiple options. It is up to you to select which the sheet will use from now on.", aAbiOptions, "radio", true, "You can always change the " + sTypeLC + " for " + sCastName + " on the " + sTypePage + '. What you select here is the "default" ' + sTypeLC + ".");
 	if (oAbiRef[sAsk]) {
 		return oAbiRef[sAsk];
 	} else {
@@ -781,7 +781,7 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 	var fObjP = false;
 	var setCSobj = function(oName) {
 		if (!CurrentSpells[oName]) {
-			CurrentSpells[oName] = {bonus : {}};
+			CurrentSpells[oName] = { bonus: {} };
 			CurrentUpdates.types.push("spells");
 		}
 		return CurrentSpells[oName];
@@ -845,7 +845,7 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 	if (aChoice && (type == "items" || type == "feats") && !fObj.name && fObjP && fObjP.choices) {
 		for (var j = 0; j < fObjP.choices.length; j++) {
 			if (fObjP.choices[j].toLowerCase() == aChoice) {
-				sObj.name = fObjP.name + " [" + fObjP.choices[j] + "]" + " (" + sObj.typeSp+ ")";
+				sObj.name = fObjP.name + " [" + fObjP.choices[j] + "]" + " (" + sObj.typeSp + ")";
 				break;
 			}
 		}
@@ -904,7 +904,7 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, force
 		// if concerning a feat or item, set the level only if the spellcastingBonus needs it
 		if (/feat|item/i.test(sObj.typeSp) && spFeatItemLvl) sObj.level = Math.max(Number(What("Character Level")), 1);
 	}
-	SetStringifieds('spells');
+	SetStringifieds("spells");
 	CurrentUpdates.types.push("spells");
 }
 
@@ -916,7 +916,7 @@ function processSpChanges(AddRemove, srcNm, spChng, spObjName) {
 	if (AddRemove) { // adding
 		if (!spCast.spellAttrOverride) spCast.spellAttrOverride = {};
 		for (var aSpell in spChng) {
-			if (!spCast.spellAttrOverride[aSpell]) spCast.spellAttrOverride[aSpell] = { changesObj : {} };
+			if (!spCast.spellAttrOverride[aSpell]) spCast.spellAttrOverride[aSpell] = { changesObj: {} };
 			var spObj = spCast.spellAttrOverride[aSpell];
 			if (spChng[aSpell].changes) spObj.changesObj[changeHead] = "\n \u2022 " + spChng[aSpell].changes;
 			for (var key in spChng[aSpell]) {
@@ -939,7 +939,7 @@ function processSpChanges(AddRemove, srcNm, spChng, spObjName) {
 		// now maybe delete the whole spellAttrOverride if it is empty
 		if (!ObjLength(spCast.spellAttrOverride)) delete spCast.spellAttrOverride;
 	}
-	SetStringifieds('spells');
+	SetStringifieds("spells");
 	CurrentUpdates.types.push("spells");
 }
 
@@ -954,7 +954,7 @@ function processSpellcastingExtra(AddRemove, spObjName, lvl, name, spExtra, spNo
 	var objNm = ("0" + (lvl ? lvl : 0)).substr(-2) + (name ? name.toLowerCase() : "");
 	var arrDo = [
 		[spExtra, "extra"],
-		[hasNonconform, "extraSpecial"]
+		[hasNonconform, "extraSpecial"],
 	];
 	for (var i = 0; i < arrDo.length; i++) {
 		if (arrDo[i][0] === undefined) continue;
@@ -973,7 +973,7 @@ function processSpellcastingExtra(AddRemove, spObjName, lvl, name, spExtra, spNo
 		var keysArrSort = Object.keys(aCast[remNm]).sort().reverse();
 		aCast[useNm] = aCast[remNm][keysArrSort[0]];
 	}
-	SetStringifieds('spells');
+	SetStringifieds("spells");
 	CurrentUpdates.types.push("spells");
 }
 
@@ -1061,7 +1061,9 @@ function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrc
 				var sUserSelect = AskUserOptions(
 					"Which spellcasting to add " + sSrcNm + " spells to",
 					'The spells gained from "' + sSrcNm + '" are meant to be automatically added to a "'  + oSpElse.addTo + '" spellcasting entry. Several entries are a match, thus it is up to you to decide which of these to add the spells to.',
-					aCastNames, "radio", true,
+					aCastNames,
+"radio",
+true,
 					"You can't change what you select here other than by removing " + sSrcNm + ", and then selecting it again.");
 				sSpMain = oRefCasts[sUserSelect];
 			}
@@ -1069,9 +1071,9 @@ function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrc
 		if (!CurrentSpells[sSpMain]) {
 			// Still no match was found. Alert the player that this item doesn't do anything and a spellcasting thing needs to be added first for it work, then end this function
 			app.alert({
-				nIcon : 1,
-				cTitle : sSrcNm + " spells have not been added to " + oSpElse.addTo,
-				cMsg : 'The spells gained from "' + sSrcNm + '" are meant to be automatically added to a "'  + oSpElse.addTo + '" spellcasting entry. No entry for this was found, thus no spells have been added anywhere.\n\nTo get the spells from "' + sSrcNm + '" added to the automation, first remove ' + sSrcNm + ' and make sure there is a spellcasting entry for a '  + oSpElse.addTo + '. Then, add ' + sSrcNm + ' again.'
+				nIcon: 1,
+				cTitle: sSrcNm + " spells have not been added to " + oSpElse.addTo,
+				cMsg: 'The spells gained from "' + sSrcNm + '" are meant to be automatically added to a "'  + oSpElse.addTo + '" spellcasting entry. No entry for this was found, thus no spells have been added anywhere.\n\nTo get the spells from "' + sSrcNm + '" added to the automation, first remove ' + sSrcNm + " and make sure there is a spellcasting entry for a "  + oSpElse.addTo + ". Then, add " + sSrcNm + " again.",
 			});
 			return;
 		}
@@ -1090,7 +1092,7 @@ function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrc
 				.concat(oSpMain.selectSpSB ? oSpMain.selectSpSB : []);
 			var aCurrentSelectAll = aCurrentSelectCa.concat(aCurrentSelectSp);
 			var aNewSelectSp = [].concat(aCurrentSelectSp);
-			var iMaxLengthSp = oSpMain.typeSp === 'list' ? 0 : oSpMain.typeSp === 'known' ? 20 : 9999;
+			var iMaxLengthSp = oSpMain.typeSp === "list" ? 0 : oSpMain.typeSp === "known" ? 20 : 9999;
 			// Loop through the spells to add them in the right spot, if not already known
 			for (var i = 0; i < oSpElse.addToKnown.length; i++) {
 				var sSpell = oSpElse.addToKnown[i];
@@ -1111,7 +1113,7 @@ function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrc
 					aNewSelectSp.push(sSpell);
 					oSpMain.bonusElsewhere[sUniqueSrcNm].push(sSpell);
 					// Increment the offset of spells known (i.e. not with a spellbook)
-					if (!oSpElse.countsTowardsKnown && oSpMain.typeSp !== 'book') oSpMain.offsetSp = (oSpMain.offsetSp ? oSpMain.offsetSp : 0) + 1;
+					if (!oSpElse.countsTowardsKnown && oSpMain.typeSp !== "book") oSpMain.offsetSp = (oSpMain.offsetSp ? oSpMain.offsetSp : 0) + 1;
 				}
 			}
 			// If there is a cantrip array, sort it for good order
@@ -1123,7 +1125,7 @@ function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrc
 				// Set the selectSp to the first 20 of the array (or if not a spellbook, this will be all the spells added)
 				oSpMain.selectSp = aTotalSelectSp.slice(0, 20);
 				// If this concerns a spellbook, we add the rest to selectSpSB
-				if (oSpMain.typeSp === 'book' && aTotalSelectSp.length > 20) {
+				if (oSpMain.typeSp === "book" && aTotalSelectSp.length > 20) {
 					oSpMain.selectSpSB = aTotalSelectSp.slice(20);
 				} else {
 					// If not a spellbook or not enough spells, delete this attribute
@@ -1195,17 +1197,17 @@ function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrc
 			if (!bDoBonus && !bDoAddToKnown) break; // Stop the loop if both are false
 		}
 	}
-	SetStringifieds('spells');
+	SetStringifieds("spells");
 }
 
 // set the armour (if more AC than current armour) or remove the armour
 function processAddArmour(AddRemove, armorAdd, srcNm) {
 	if (!armorAdd || isArray(armorAdd)) return;
 	if (typeof armorAdd === "string") {
-		armorAdd = { select : armorAdd };
+		armorAdd = { select: armorAdd };
 	}
 	var updateVars = false;
-	srcNm = srcNm ? srcNm.toLowerCase() : 'unknownSource';
+	srcNm = srcNm ? srcNm.toLowerCase() : "unknownSource";
 	if (armorAdd.options) {
 		if (!CurrentVars.extraArmourDisplay) CurrentVars.extraArmourDisplay = {};
 		for (var i = 0; i < armorAdd.options.length; i++) {
@@ -1225,17 +1227,17 @@ function processAddArmour(AddRemove, armorAdd, srcNm) {
 	for (var i = 0; i < stealOverrides.length; i++) {
 		var override = stealOverrides[i];
 		if (!armorAdd[override]) continue;
-		if (!CurrentVars["armour_"+override]) CurrentVars["armour_"+override] = {};
+		if (!CurrentVars["armour_" + override]) CurrentVars["armour_" + override] = {};
 		if (AddRemove) {
 			var exception = armorAdd[override];
 			// make sure this is a regular expression
 			if (exception instanceof RegExp !== true) {
 				exception = RegExp(exception.toString().RegEscape(), "i");
 			}
-			CurrentVars["armour_"+override][srcNm] = exception;
-		} else if (CurrentVars["armour_"+override][srcNm]) {
-			delete CurrentVars["armour_"+override][srcNm];
-			if (!ObjLength(CurrentVars["armour_"+override])) delete CurrentVars["armour_"+override];
+			CurrentVars["armour_" + override][srcNm] = exception;
+		} else if (CurrentVars["armour_" + override][srcNm]) {
+			delete CurrentVars["armour_" + override][srcNm];
+			if (!ObjLength(CurrentVars["armour_" + override])) delete CurrentVars["armour_" + override];
 		}
 		updateVars = true;
 	}
@@ -1305,11 +1307,11 @@ function processAddShield(AddRemove, shield, weight) {
 function processAddWeapons(AddRemove, weaponsAdd, srcNm) {
 	if (!weaponsAdd) return;
 	if (typeof weaponsAdd === "string") {
-		weaponsAdd = { select : [weaponsAdd] };
+		weaponsAdd = { select: [weaponsAdd] };
 	} else if (isArray(weaponsAdd)) {
-		weaponsAdd = { select : weaponsAdd };
+		weaponsAdd = { select: weaponsAdd };
 	}
-	srcNm = srcNm ? srcNm.toLowerCase() : 'unknownSource';
+	srcNm = srcNm ? srcNm.toLowerCase() : "unknownSource";
 	if (weaponsAdd.options) {
 		if (!CurrentVars.extraWeaponsDisplay) CurrentVars.extraWeaponsDisplay = {};
 		if (!isArray(weaponsAdd.options)) weaponsAdd.options = [weaponsAdd.options];
@@ -1397,7 +1399,7 @@ function processArmorOptions(AddRemove, srcNm, itemArr, magical) {
 	if (AddRemove && setSelection.length) {
 		// when adding, add the armour after changing the drop-down box
 		for (var i = 0; i < setSelection.length; i++) {
-			processAddArmour(true, { select : setSelection[i] }, srcNm);
+			processAddArmour(true, { select: setSelection[i] }, srcNm);
 		}
 	}
 }
@@ -1424,7 +1426,7 @@ function processWeaponOptions(AddRemove, srcNm, itemArr, magical) {
 		} else {
 			// remove the entries if they exist and delete any weapons like it
 			for (var j = FieldNumbers.attacks - 1; j >= 0; j--) {
-				if (CurrentWeapons.known[j][0] == newName) WeaponDelete(j+1);
+				if (CurrentWeapons.known[j][0] == newName) WeaponDelete(j + 1);
 			}
 			if (CurrentVars.extraWeapons[newName]) delete CurrentVars.extraWeapons[newName];
 			if (WeaponsList[newName]) delete WeaponsList[newName];
@@ -1437,7 +1439,7 @@ function processWeaponOptions(AddRemove, srcNm, itemArr, magical) {
 	SetStringifieds("vars"); // Save the new settings to a field
 	if (AddRemove && setSelection.length) {
 		// when adding, add the weapons after changing the drop-down box
-		processAddWeapons(true, { select : setSelection }, srcNm);
+		processAddWeapons(true, { select: setSelection }, srcNm);
 	}
 }
 
@@ -1480,7 +1482,7 @@ function processCreatureOptions(AddRemove, srcNm, creaArr) {
 	if (AddRemove && !CurrentVars.extraCreatures) CurrentVars.extraCreatures = {};
 
 	srcNm = srcNm.toLowerCase();
-	var AScompA = isTemplVis('AScomp') ? What('Template.extras.AScomp').split(',') : false;
+	var AScompA = isTemplVis("AScomp") ? What("Template.extras.AScomp").split(",") : false;
 	var affectsWildShape = false;
 	for (var i = 0; i < creaArr.length; i++) {
 		var newName = srcNm + "-" + creaArr[i].name.toLowerCase();
@@ -1493,8 +1495,8 @@ function processCreatureOptions(AddRemove, srcNm, creaArr) {
 			if (AScompA) {
 				for (var a = 1; a < AScompA.length; a++) {
 					var prefix = AScompA[a];
-					if (CurrentCompRace[prefix].typeFound === 'creature' && CurrentCompRace[prefix].known === newName) {
-						Value(prefix + 'Comp.Race', '');
+					if (CurrentCompRace[prefix].typeFound === "creature" && CurrentCompRace[prefix].known === newName) {
+						Value(prefix + "Comp.Race", "");
 					}
 				}
 			}
@@ -1537,7 +1539,7 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 
 	// make some regex objects
 	var getRx = function(str) {
-		var sEscaped = str.replace(/\n/g, '\r').replace(/^\r+/, '').RegEscape();
+		var sEscaped = str.replace(/\n/g, "\r").replace(/^\r+/, "").RegEscape();
 		var sJustLine = RegExp(sEscaped + ".*", "i");
 		// Regex for everything until the first empty line or the first line that doesn't start with a "#" (the header format character)
 		var sFullSection = RegExp("\\r?" + sEscaped + ".*(\\r(?!\\s*\\r|#).*)*", "i");
@@ -1582,7 +1584,7 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 			var changeTxt = prevTxtFound ? fldTxt.replace(prevTxtFound[0], newTxtA[1] + prevTxtFound[0] ) : fldTxt;
 			break;
 		case "remove": // remove the oldTxt
-			var changeTxt = fldTxt.replace(oldRx.full, '');
+			var changeTxt = fldTxt.replace(oldRx.full, "");
 			break;
 		default:
 			return false;
@@ -1607,7 +1609,7 @@ function UpdateSheetWeapons() {
 	if (CurrentUpdates.types.find(/^(xp|classchange)$/) !== -1 && CurrentEvals.atkAdd) {
 		for (addEval in CurrentEvals.atkAdd) {
 			var evalThing = CurrentEvals.atkAdd[addEval];
-			if (typeof evalThing == 'function') evalThing = evalThing.toSource();
+			if (typeof evalThing == "function") evalThing = evalThing.toSource();
 			if ((/\.(total)?level|Proficiency Bonus/).test(evalThing)) {
 				isLvlDepAtkAdd = true;
 				break;
@@ -1625,7 +1627,7 @@ function UpdateSheetWeapons() {
 // this function is called whenever the calculations are activated again
 function UpdateSheetDisplay() {
 	if (!CurrentUpdates.types.length || !IsNotReset || !IsNotImport) {
-		CurrentUpdates = {types : []}; // reset the CurrentUpdates variable
+		CurrentUpdates = { types: [] }; // reset the CurrentUpdates variable
 		return;
 	}
 
@@ -1647,7 +1649,7 @@ function UpdateSheetDisplay() {
 
 	// Show the progress dialog
 	var thermoTxt = thermoM("Finalizing changes...", false);
-	thermoM(2/5); // Increment the progress bar
+	thermoM(2 / 5); // Increment the progress bar
 
 	// initialize some variables
 	var dialogParts = [];
@@ -1660,10 +1662,10 @@ function UpdateSheetDisplay() {
 	var checkboxTxt = "Don't alert me about these changes (unless there is another change I do want to be alerted about).";
 	var Changes_Dialog = {
 		// when starting the dialog
-		initialize : function (dialog) {
+		initialize: function (dialog) {
 			var thermoTxt = thermoM("Finalizing changes...", false);
-			thermoM(2/5); // Increment the progress bar
-			var toLoad = { "img1" : allIcons.automanual };
+			thermoM(2 / 5); // Increment the progress bar
+			var toLoad = { "img1": allIcons.automanual };
 			for (var p = 0; p < dialogParts.length; p++) {
 				var skType = dialogParts[p].skipType;
 				toLoad[skType] = ChangesDialogSkip[skType];
@@ -1671,66 +1673,66 @@ function UpdateSheetDisplay() {
 			dialog.load(toLoad);
 		},
 		// when closing the dialog, one way or another
-		destroy : function (dialog) {
+		destroy: function (dialog) {
 			Value("ChangesDialogSkip.Stringified", ChangesDialogSkip.toSource());
 		},
-		description : {
-			name : "CHANGES ALERT DIALOG",
-			first_tab : "CLOS",
-			elements : [{
-				type : "view",
-				elements : [{
-					type : "view", // the top row
-					alignment : "align_fill",
-					align_children : "align_row",
-					elements : [{
-						type : "image",
-						item_id : "img1",
-						width : 20,
-						height : 20
+		description: {
+			name: "CHANGES ALERT DIALOG",
+			first_tab: "CLOS",
+			elements: [{
+				type: "view",
+				elements: [{
+					type: "view", // the top row
+					alignment: "align_fill",
+					align_children: "align_row",
+					elements: [{
+						type: "image",
+						item_id: "img1",
+						width: 20,
+						height: 20,
 					}, {
-						type : "static_text",
-						item_id : "Hea0",
-						alignment : "align_fill",
-						font : "title",
-						bold : true,
-						height : 23,
-						width : 250,
-						name : titleTxt
-					}]
+						type: "static_text",
+						item_id: "Hea0",
+						alignment: "align_fill",
+						font: "title",
+						bold: true,
+						height: 23,
+						width: 250,
+						name: titleTxt,
+					}],
 				}, {
-					type : "static_text", // explanatory text
-					item_id : "txt0",
-					alignment : "align_fill",
-					font : "palette",
-					name : explTxt,
-					wrap_name : true,
-					width : 500
+					type: "static_text", // explanatory text
+					item_id: "txt0",
+					alignment: "align_fill",
+					font: "palette",
+					name: explTxt,
+					wrap_name: true,
+					width: 500,
 				}, {
-					type : "view",
-					item_id : "sect",
-					align_children : "align_left",
-					elements : []
+					type: "view",
+					item_id: "sect",
+					align_children: "align_left",
+					elements: [],
 				}, {
-					type : "view",
-					alignment : "align_fill",
-					align_children : "align_center",
-					elements : [{
-						type : "ok",
-						item_id : "CLOS",
-						alignment : "align_center",
-						ok_name : "Close"
+					type: "view",
+					alignment: "align_fill",
+					align_children: "align_center",
+					elements: [{
+						type: "ok",
+						item_id: "CLOS",
+						alignment: "align_center",
+						ok_name: "Close",
 					}, {
-						type : "ok_cancel",
-						alignment : "align_offscreen",
-						item_id : "CNCL",
-						ok_name : "Close",
-						cancel_name : "Close",
-						height : tDoc.isWindows ? -12 : -6,
-					}]
-				}]
-			}]
-		}
+						type: "ok_cancel",
+						alignment: "align_offscreen",
+						item_id: "CNCL",
+						ok_name: "Close",
+						cancel_name: "Close",
+						height: tDoc.isWindows ? -12 : -6,
+					}],
+				}],
+			}],
+		},
 	};
 
 	// if the level changed but the xp (or similar system) is not correct, update the xp to the needed value for the level
@@ -1745,36 +1747,36 @@ function UpdateSheetDisplay() {
 			Value("Total Experience", LvlXp[1]);
 			// make the xp dialog insert
 			dialogParts.push({
-				skipType : "chXP",
-				type : "cluster",
-				align_children : "align_left",
-				alignment : "align_fill",
-				width : 500,
-				font : "heading",
-				name : "Experience Points",
-				elements : [{
-					type : "view",
-					align_children : "align_row",
-					alignment : "align_fill",
-					elements : [{
-						type : "static_text",
-						width : 375,
-						alignment : "align_fill",
-						font : "dialog",
-						wrap_name : true,
-						name : "The current amount of experience points (" + toUni(curExp) + ") are not enough to attain the current level (" + toUni(curLvl) + "), as that requires " + toUni(LvlXp[1]) + " experience points.\nThe total XP has now been updated to " + toUni(LvlXp[1]) + "."
+				skipType: "chXP",
+				type: "cluster",
+				align_children: "align_left",
+				alignment: "align_fill",
+				width: 500,
+				font: "heading",
+				name: "Experience Points",
+				elements: [{
+					type: "view",
+					align_children: "align_row",
+					alignment: "align_fill",
+					elements: [{
+						type: "static_text",
+						width: 375,
+						alignment: "align_fill",
+						font: "dialog",
+						wrap_name: true,
+						name: "The current amount of experience points (" + toUni(curExp) + ") are not enough to attain the current level (" + toUni(curLvl) + "), as that requires " + toUni(LvlXp[1]) + " experience points.\nThe total XP has now been updated to " + toUni(LvlXp[1]) + ".",
 					}, {
-						type : "button",
-						item_id : "bXPo",
-						name : "Change XP back to " + curExp
-					}]
+						type: "button",
+						item_id: "bXPo",
+						name: "Change XP back to " + curExp,
+					}],
 				}, {
-					type : "check_box",
-					item_id : "chXP",
-					alignment : "align_fill",
-					font : "palette",
-					name : checkboxTxt
-				}]
+					type: "check_box",
+					item_id: "chXP",
+					alignment: "align_fill",
+					font: "palette",
+					name: checkboxTxt,
+				}],
 			});
 			Changes_Dialog.bXPo = function (dialog) {
 				Value("Total Experience", this.oldXPval);
@@ -1821,51 +1823,51 @@ function UpdateSheetDisplay() {
 			if (strStats) {
 				// make the Stats dialog insert
 				dialogParts.push({
-					skipType : "chAS",
-					type : "cluster",
-					align_children : "align_left",
-					alignment : "align_fill",
-					width : 500,
-					font : "heading",
-					name : "Ability Scores",
-					elements : [{
-						type : "view",
-						align_children : "align_row",
-						alignment : "align_fill",
-						elements : [{
-							type : "static_text",
-							width : 375,
-							alignment : "align_fill",
-							font : "dialog",
-							wrap_name : true,
-							name : "A change to ability scores has been detected. This is not applied automatically, but you can use the Ability Scores Dialog for that." + strStats
+					skipType: "chAS",
+					type: "cluster",
+					align_children: "align_left",
+					alignment: "align_fill",
+					width: 500,
+					font: "heading",
+					name: "Ability Scores",
+					elements: [{
+						type: "view",
+						align_children: "align_row",
+						alignment: "align_fill",
+						elements: [{
+							type: "static_text",
+							width: 375,
+							alignment: "align_fill",
+							font: "dialog",
+							wrap_name: true,
+							name: "A change to ability scores has been detected. This is not applied automatically, but you can use the Ability Scores Dialog for that." + strStats,
 						}, {
-							type : "view",
-							align_children : "align_right",
-							elements : [{
-								type : "button",
-								item_id : "bSTc",
-								name : "See Changes"
+							type: "view",
+							align_children: "align_right",
+							elements: [{
+								type: "button",
+								item_id: "bSTc",
+								name: "See Changes",
 							}, {
-								type : "button",
-								item_id : "bSTo",
-								name : "Open Ability Scores Dialog"
-							}]
-						}]
+								type: "button",
+								item_id: "bSTo",
+								name: "Open Ability Scores Dialog",
+							}],
+						}],
 					}, {
-						type : "check_box",
-						item_id : "chAS",
-						alignment : "align_fill",
-						font : "palette",
-						name : checkboxTxt
-					}]
+						type: "check_box",
+						item_id: "chAS",
+						alignment: "align_fill",
+						font: "palette",
+						name: checkboxTxt,
+					}],
 				});
 				Changes_Dialog.bSTc = function (dialog) {
 					ShowCompareDialog(
 						["Ability Score changes", "The text above is part of the 'Ability Scores Dialog' and the tooltip (mouseover text) of the ability score fields.\nYou can always open the 'Ability Scores Dialog' using the 'Scores' button in the 'JavaScript Window'-toolbar or the 'Ability Scores' bookmark."],
 						[
 							["Old ability score modifiers", this.oldStats],
-							["New ability score modifiers", Who("Str")]
+							["New ability score modifiers", Who("Str")],
 						],
 						true
 					);
@@ -1895,36 +1897,36 @@ function UpdateSheetDisplay() {
 			strHP += "\nAs HP has been set to update automatically, the Maximum Hit Points have been changed from " + toUni(oldHPmax) + " to " + toUni(What("HP Max")) + ".";
 		}
 		dialogParts.push({
-			skipType : "chHP",
-			type : "cluster",
-			align_children : "align_left",
-			alignment : "align_fill",
-			width : 500,
-			font : "heading",
-			name : "Hit Points",
-			elements : [{
-				type : "view",
-				align_children : "align_row",
-				alignment : "align_fill",
-				elements : [{
-					type : "static_text",
-					width : 400,
-					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					name : strHP
+			skipType: "chHP",
+			type: "cluster",
+			align_children: "align_left",
+			alignment: "align_fill",
+			width: 500,
+			font: "heading",
+			name: "Hit Points",
+			elements: [{
+				type: "view",
+				align_children: "align_row",
+				alignment: "align_fill",
+				elements: [{
+					type: "static_text",
+					width: 400,
+					alignment: "align_fill",
+					font: "dialog",
+					wrap_name: true,
+					name: strHP,
 				}, {
-					type : "button",
-					item_id : "bHPc",
-					name : "See Changes"
-				}]
+					type: "button",
+					item_id: "bHPc",
+					name: "See Changes",
+				}],
 			}, {
-				type : "check_box",
-				item_id : "chHP",
-				alignment : "align_fill",
-				font : "palette",
-				name : checkboxTxt
-			}]
+				type: "check_box",
+				item_id: "chHP",
+				alignment: "align_fill",
+				font: "palette",
+				name: checkboxTxt,
+			}],
 		});
 		Changes_Dialog.bHPc = function (dialog) {
 			ShowCompareDialog(
@@ -1991,53 +1993,53 @@ function UpdateSheetDisplay() {
 		var buttonSpellStr = changedSpellEval ? "Spells \u0026\u0026 -List Changes" : "Affecting Spells \u0026\u0026 -Lists";
 		// make the Spells dialog insert
 		dialogParts.push({
-			skipType : "chSP",
-			type : "cluster",
-			align_children : "align_left",
-			alignment : "align_fill",
-			width : 500,
-			font : "heading",
-			name : "Spellcasting",
-			elements : [{
-				type : "view",
-				align_children : "align_row",
-				alignment : "align_fill",
-				elements : [{
-					type : "static_text",
-					width : 375,
-					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					name : strSpells
+			skipType: "chSP",
+			type: "cluster",
+			align_children: "align_left",
+			alignment: "align_fill",
+			width: 500,
+			font: "heading",
+			name: "Spellcasting",
+			elements: [{
+				type: "view",
+				align_children: "align_row",
+				alignment: "align_fill",
+				elements: [{
+					type: "static_text",
+					width: 375,
+					alignment: "align_fill",
+					font: "dialog",
+					wrap_name: true,
+					name: strSpells,
 				}, {
-					type : "view",
-					align_children : "align_right",
-					elements : (changedSpellEval || CurrentEvals.spellStr ? [{
-						type : "button",
-						item_id : "bSPs",
-						name : buttonSpellStr
+					type: "view",
+					align_children: "align_right",
+					elements: (changedSpellEval || CurrentEvals.spellStr ? [{
+						type: "button",
+						item_id: "bSPs",
+						name: buttonSpellStr,
 					}] : []).concat([{
-						type : "button",
-						item_id : "bSPo",
-						name : buttonSpells
-					}])
-				}]
+						type: "button",
+						item_id: "bSPo",
+						name: buttonSpells,
+					}]),
+				}],
 			}, {
-				type : "check_box",
-				item_id : "chSP",
-				alignment : "align_fill",
-				font : "palette",
-				name : checkboxTxt
-			}]
+				type: "check_box",
+				item_id: "chSP",
+				alignment: "align_fill",
+				font: "palette",
+				name: checkboxTxt,
+			}],
 		});
 		Changes_Dialog.curSpLen = CurrentSpellsLen;
 		Changes_Dialog.bSPo = function (dialog) {
 			if (this.curSpLen) {
 				if (GenerateSpellSheet(undefined, true)) {
 					app.alert({
-						cTitle : "New spell sheets have been generated",
-						nIcon : 3,
-						cMsg : "The new spell sheets have been generated. You will be taken to them as soon as you close the 'Changes' dialog."
+						cTitle: "New spell sheets have been generated",
+						nIcon: 3,
+						cMsg: "The new spell sheets have been generated. You will be taken to them as soon as you close the 'Changes' dialog.",
 					})
 				};
 			} else {
@@ -2053,9 +2055,9 @@ function UpdateSheetDisplay() {
 					this.spellStrChange ?
 					[
 						["Old spell list/attribute manipulations", this.oldSpellStr],
-						["New spell list/attribute manipulations", StringEvals("spellStr")]
+						["New spell list/attribute manipulations", StringEvals("spellStr")],
 					] : [
-						["Spell list/attribute manipulations", StringEvals("spellStr")]
+						["Spell list/attribute manipulations", StringEvals("spellStr")],
 					],
 					true
 				);
@@ -2069,43 +2071,43 @@ function UpdateSheetDisplay() {
 		Changes_Dialog.oldSkillStr = CurrentUpdates.skillStrOld ? CurrentUpdates.skillStrOld : "";
 		// make the skills dialog insert
 		dialogParts.push({
-			skipType : "chSK",
-			type : "cluster",
-			align_children : "align_left",
-			alignment : "align_fill",
-			width : 500,
-			font : "heading",
-			name : "Skill Proficiencies",
-			elements : [{
-				type : "view",
-				align_children : "align_row",
-				alignment : "align_fill",
-				elements : [{
-					type : "static_text",
-					width : 400,
-					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					name : "Proficiency with one or more skill has been added or removed. If this change offers you a choice, nothing on the sheet will have been altered and you will have to assign/remove the proficiency manually."
+			skipType: "chSK",
+			type: "cluster",
+			align_children: "align_left",
+			alignment: "align_fill",
+			width: 500,
+			font: "heading",
+			name: "Skill Proficiencies",
+			elements: [{
+				type: "view",
+				align_children: "align_row",
+				alignment: "align_fill",
+				elements: [{
+					type: "static_text",
+					width: 400,
+					alignment: "align_fill",
+					font: "dialog",
+					wrap_name: true,
+					name: "Proficiency with one or more skill has been added or removed. If this change offers you a choice, nothing on the sheet will have been altered and you will have to assign/remove the proficiency manually.",
 				}, {
-					type : "button",
-					item_id : "bSKc",
-					name : "See Changes"
-				}]
+					type: "button",
+					item_id: "bSKc",
+					name: "See Changes",
+				}],
 			}, {
-				type : "check_box",
-				item_id : "chSK",
-				alignment : "align_fill",
-				font : "palette",
-				name : checkboxTxt
-			}]
+				type: "check_box",
+				item_id: "chSK",
+				alignment: "align_fill",
+				font: "palette",
+				name: checkboxTxt,
+			}],
 		});
 		Changes_Dialog.bSKc = function (dialog) {
 			ShowCompareDialog(
 				["Skill proficiencies", "You can always find the current skill proficiencies in the tooltip (mouseover text) of the skill fields."],
 				[
 					["Old skill proficiencies", this.oldSkillStr],
-					["New skill proficiencies", Who("Acr Prof").replace(/.+(\r|\n)*/, '')]
+					["New skill proficiencies", Who("Acr Prof").replace(/.+(\r|\n)*/, "")],
 				],
 				true
 			);
@@ -2118,43 +2120,43 @@ function UpdateSheetDisplay() {
 		Changes_Dialog.oldAtkStr = CurrentUpdates.atkStrOld ? CurrentUpdates.atkStrOld : "";
 		// make the attack dialog insert
 		dialogParts.push({
-			skipType : "chAT",
-			type : "cluster",
-			align_children : "align_left",
-			alignment : "align_fill",
-			width : 500,
-			font : "heading",
-			name : "Attack Calculations (possibly including spellcasting DC)",
-			elements : [{
-				type : "view",
-				align_children : "align_row",
-				alignment : "align_fill",
-				elements : [{
-					type : "static_text",
-					width : 400,
-					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					name : "A change was detected in the things that affect how (spell) attacks and/or how spell save DCs are calculated."
+			skipType: "chAT",
+			type: "cluster",
+			align_children: "align_left",
+			alignment: "align_fill",
+			width: 500,
+			font: "heading",
+			name: "Attack Calculations (possibly including spellcasting DC)",
+			elements: [{
+				type: "view",
+				align_children: "align_row",
+				alignment: "align_fill",
+				elements: [{
+					type: "static_text",
+					width: 400,
+					alignment: "align_fill",
+					font: "dialog",
+					wrap_name: true,
+					name: "A change was detected in the things that affect how (spell) attacks and/or how spell save DCs are calculated.",
 				}, {
-					type : "button",
-					item_id : "bAtk",
-					name : "See Changes"
-				}]
+					type: "button",
+					item_id: "bAtk",
+					name: "See Changes",
+				}],
 			}, {
-				type : "check_box",
-				item_id : "chAT",
-				alignment : "align_fill",
-				font : "palette",
-				name : checkboxTxt
-			}]
+				type: "check_box",
+				item_id: "chAT",
+				alignment: "align_fill",
+				font: "palette",
+				name: checkboxTxt,
+			}],
 		});
 		Changes_Dialog.bAtk = function (dialog) {
 			ShowCompareDialog(
 				["Things affecting attack/DC calculations", "You can always see what things are affecting the attack calculations with the small buttons in front of each attack entry on the first page.", "Be aware that things affecting spell attacks and spell save DCs are applied in the attack section and on the spell sheet pages, but not to the 'Ability Save DC' on the first page."],
 				[
 					["Old attack/DC manipulations", this.oldAtkStr],
-					["New attack/DC manipulations", StringEvals(["atkStr", "spellAtkStr"])]
+					["New attack/DC manipulations", StringEvals(["atkStr", "spellAtkStr"])],
 				],
 				true
 			);
@@ -2165,52 +2167,52 @@ function UpdateSheetDisplay() {
 	if (CurrentUpdates.notesChanges || CurrentUpdates.remarks) {
 		// get a nice list of the notes changes
 		Changes_Dialog.notesChange = (
-			(CurrentUpdates.remarks ? (CurrentUpdates.notesChanges ? "REMARKS" : "") + desc(CurrentUpdates.remarks, "\n\u2022 ") : "")+
+			(CurrentUpdates.remarks ? (CurrentUpdates.notesChanges ? "REMARKS" : "") + desc(CurrentUpdates.remarks, "\n\u2022 ") : "") +
 			(CurrentUpdates.notesChanges ? (CurrentUpdates.remarks ? "\n\nNOTEs ADDITIONS" : "") + desc(CurrentUpdates.notesChanges, "\n\u2022 ") : "")
 		).replace(/^\n+/, "");
 		var sRemarksNoteTitle = (CurrentUpdates.notesChanges && CurrentUpdates.remarks) ? "Remarks and Notes Additions" : CurrentUpdates.remarks ? "Remarks" : "Notes Additions";
 		// make the attack dialog insert
 		dialogParts.push({
-			skipType : "chNO",
-			type : "cluster",
-			align_children : "align_left",
-			alignment : "align_fill",
-			width : 500,
-			font : "heading",
-			name : sRemarksNoteTitle,
-			elements : [{
-				type : "view",
-				align_children : "align_row",
-				alignment : "align_fill",
-				elements : [{
-					type : "static_text",
-					width : 410,
-					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					name : (CurrentUpdates.remarks ? "An important remark was added by the sheet, click the button to see it.\n" : "") + (CurrentUpdates.notesChanges ? "A text has been added to the Notes section on the 3rd page and/or a separate Notes page because it didn't fit into the space originally meant for it." : "")
+			skipType: "chNO",
+			type: "cluster",
+			align_children: "align_left",
+			alignment: "align_fill",
+			width: 500,
+			font: "heading",
+			name: sRemarksNoteTitle,
+			elements: [{
+				type: "view",
+				align_children: "align_row",
+				alignment: "align_fill",
+				elements: [{
+					type: "static_text",
+					width: 410,
+					alignment: "align_fill",
+					font: "dialog",
+					wrap_name: true,
+					name: (CurrentUpdates.remarks ? "An important remark was added by the sheet, click the button to see it.\n" : "") + (CurrentUpdates.notesChanges ? "A text has been added to the Notes section on the 3rd page and/or a separate Notes page because it didn't fit into the space originally meant for it." : ""),
 				}, {
-					type : "button",
-					item_id : "bNot",
-					name : "See " + sRemarksNoteTitle.replace("and", "&&")
-				}]
+					type: "button",
+					item_id: "bNot",
+					name: "See " + sRemarksNoteTitle.replace("and", "&&"),
+				}],
 			}, {
-				type : "check_box",
-				item_id : "chNO",
-				alignment : "align_fill",
-				font : "palette",
-				name : checkboxTxt
-			}]
+				type: "check_box",
+				item_id: "chNO",
+				alignment: "align_fill",
+				font: "palette",
+				name: checkboxTxt,
+			}],
 		});
 		Changes_Dialog.bNot = function (dialog) {
 			ShowCompareDialog(
 				[
 					(CurrentUpdates.notesChanges && CurrentUpdates.remarks) ? "Important Remarks and Things added to Notes section(s)" : CurrentUpdates.remarks ? "ImportantRemarks" : "Things added to Notes section(s)",
 					CurrentUpdates.notesChanges ? "You can always edit the text in the Notes section or Notes pages, you don't have to keep it as set by the automation." : "",
-					CurrentUpdates.notesChanges ? 'Class features added to the third page can always be moved to the Class Features section on the second page, it will not interfere with the sheet\'s automation. You will still be able to remove them using the "Choose Feature" button.' : ""
+					CurrentUpdates.notesChanges ? 'Class features added to the third page can always be moved to the Class Features section on the second page, it will not interfere with the sheet\'s automation. You will still be able to remove them using the "Choose Feature" button.' : "",
 				],
 				[
-					["", this.notesChange]
+					["", this.notesChange],
 				],
 				true
 			);
@@ -2227,9 +2229,9 @@ function UpdateSheetDisplay() {
 			Changes_Dialog.companionChange = "\u2022 " + CurrentUpdates.companionChanges.join("\n\u2022 ");
 			Changes_Dialog.bCOa = function (dialog) {
 				ShowCompareDialog(
-					["Additions/removals on the Companion pages", "You can always edit the companion pages how you see fit, you don't have to leave it as it has been set with the automation. You could add more companion pages, for example.", 'You can also add multiples of the same companion, just add another page and select the same companion race.'],
+					["Additions/removals on the Companion pages", "You can always edit the companion pages how you see fit, you don't have to leave it as it has been set with the automation. You could add more companion pages, for example.", "You can also add multiples of the same companion, just add another page and select the same companion race."],
 					[
-						["", this.companionChange]
+						["", this.companionChange],
 					],
 					true
 				);
@@ -2240,10 +2242,10 @@ function UpdateSheetDisplay() {
 			Changes_Dialog.oldCreaStr = CurrentUpdates.creaStrOld ? CurrentUpdates.creaStrOld : "";
 			Changes_Dialog.bCOe = function (dialog) {
 				ShowCompareDialog(
-					["Callback changes for the Companion pages", "You can always edit the companion pages how you see fit, you don't have to leave it as it has been set with the automation. You could remove or add text, for example.", 'You can always see what things are affecting the companion page automation with the Companion Options button on each companion page.'],
+					["Callback changes for the Companion pages", "You can always edit the companion pages how you see fit, you don't have to leave it as it has been set with the automation. You could remove or add text, for example.", "You can always see what things are affecting the companion page automation with the Companion Options button on each companion page."],
 					[
 						["Old callback manipulations", this.oldCreaStr],
-						["New callback manipulations", StringEvals("creaStr")]
+						["New callback manipulations", StringEvals("creaStr")],
 					],
 					true
 				);
@@ -2251,44 +2253,44 @@ function UpdateSheetDisplay() {
 		}
 		// make the companion dialog insert
 		dialogParts.push({
-			skipType : "chCO",
-			type : "cluster",
-			align_children : "align_left",
-			alignment : "align_fill",
-			width : 500,
-			font : "heading",
-			name : "Companions",
-			elements : [{
-				type : "view",
-				align_children : "align_row",
-				alignment : "align_fill",
-				elements : [{
-					type : "static_text",
-					width : 400,
-					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					name : strCompanion
+			skipType: "chCO",
+			type: "cluster",
+			align_children: "align_left",
+			alignment: "align_fill",
+			width: 500,
+			font: "heading",
+			name: "Companions",
+			elements: [{
+				type: "view",
+				align_children: "align_row",
+				alignment: "align_fill",
+				elements: [{
+					type: "static_text",
+					width: 400,
+					alignment: "align_fill",
+					font: "dialog",
+					wrap_name: true,
+					name: strCompanion,
 				}, {
-					type : "view",
-					align_children : "align_right",
-					elements : (CurrentUpdates.companionChanges ? [{
-						type : "button",
-						item_id : "bCOa",
-						name : "See Additions/Removals"
+					type: "view",
+					align_children: "align_right",
+					elements: (CurrentUpdates.companionChanges ? [{
+						type: "button",
+						item_id: "bCOa",
+						name: "See Additions/Removals",
 					}] : []).concat(changedCompCallback ? [{
-						type : "button",
-						item_id : "bCOe",
-						name : "See Callback Changes"
-					}] : [])
-				}]
+						type: "button",
+						item_id: "bCOe",
+						name: "See Callback Changes",
+					}] : []),
+				}],
 			}, {
-				type : "check_box",
-				item_id : "chCO",
-				alignment : "align_fill",
-				font : "palette",
-				name : checkboxTxt
-			}]
+				type: "check_box",
+				item_id: "chCO",
+				alignment: "align_fill",
+				font: "palette",
+				name: checkboxTxt,
+			}],
 		});
 	}
 
@@ -2298,40 +2300,40 @@ function UpdateSheetDisplay() {
 		Changes_Dialog.oldWildStr = CurrentUpdates.wildStrOld ? CurrentUpdates.wildStrOld : "";
 		// make the attack dialog insert
 		dialogParts.push({
-			skipType : "chWS",
-			type : "cluster",
-			align_children : "align_left",
-			alignment : "align_fill",
-			width : 500,
-			font : "heading",
-			name : "Wild Shape Automation",
-			elements : [{
-				type : "view",
-				align_children : "align_row",
-				alignment : "align_fill",
-				elements : [{
-					type : "static_text",
-					width : 400,
-					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					name : "A change was detected in the things that manipulate how Wild Shape entries are calculated from the base creature."
+			skipType: "chWS",
+			type: "cluster",
+			align_children: "align_left",
+			alignment: "align_fill",
+			width: 500,
+			font: "heading",
+			name: "Wild Shape Automation",
+			elements: [{
+				type: "view",
+				align_children: "align_row",
+				alignment: "align_fill",
+				elements: [{
+					type: "static_text",
+					width: 400,
+					alignment: "align_fill",
+					font: "dialog",
+					wrap_name: true,
+					name: "A change was detected in the things that manipulate how Wild Shape entries are calculated from the base creature.",
 				}, {
-					type : "button",
-					item_id : "bWSa",
-					name : "See Changes"
-				}]
+					type: "button",
+					item_id: "bWSa",
+					name: "See Changes",
+				}],
 			}, {
-				type : "check_box",
-				item_id : "chWS",
-				alignment : "align_fill",
-				font : "palette",
-				name : checkboxTxt
-			}]
+				type: "check_box",
+				item_id: "chWS",
+				alignment: "align_fill",
+				font: "palette",
+				name: checkboxTxt,
+			}],
 		});
 		Changes_Dialog.bWSa = function (dialog) {
 			ShowCompareDialog(
-				["Things affecting wild shape automations", "You can always edit the wild shape entries to how you see fit, you don't have to leave it as it has been set with the automation. However, they are recalculated whenever you change character level.", 'You can always see what things are affecting the wild shape automation with the Wild Shape Options button on each wild shape page.'],
+				["Things affecting wild shape automations", "You can always edit the wild shape entries to how you see fit, you don't have to leave it as it has been set with the automation. However, they are recalculated whenever you change character level.", "You can always see what things are affecting the wild shape automation with the Wild Shape Options button on each wild shape page."],
 				[
 					["Old wild shape manipulations", this.oldWildStr],
 					["New wild shape manipulations", StringEvals("wildStr")],
@@ -2354,7 +2356,7 @@ function UpdateSheetDisplay() {
 	// if there is nothing to show, stop the function now
 	if (!cancelDia) {
 		// reset the CurrentUpdates variable
-		CurrentUpdates = {types : []};
+		CurrentUpdates = { types: [] };
 		// add the sections to the dialog
 		setDialogName(Changes_Dialog, "sect", "elements", dialogParts);
 		// open the dialog
@@ -2362,7 +2364,7 @@ function UpdateSheetDisplay() {
 	}
 
 	// reset the CurrentUpdates variable
-	CurrentUpdates = {types : []};
+	CurrentUpdates = { types: [] };
 
 	// Stop progress bar
 	thermoM(thermoTxt, true);
@@ -2379,16 +2381,16 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 
 	for (var i = 0; i < arr.length; i++) {
 		var nextElem = {
-			type : "cluster",
-			alignment : "align_top",
-			font : "heading",
-			name : arr[i][0],
-			elements : [{
-				item_id : "tx" + ("0" + i).slice(-2),
-				width : 300,
-				alignment : "align_fill",
-				font : "dialog"
-			}]
+			type: "cluster",
+			alignment: "align_top",
+			font: "heading",
+			name: arr[i][0],
+			elements: [{
+				item_id: "tx" + ("0" + i).slice(-2),
+				width: 300,
+				alignment: "align_fill",
+				font: "dialog",
+			}],
 		};
 		if (canBeLong) {
 			nextElem.elements[0].type = "edit_text";
@@ -2409,7 +2411,7 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 		clusterArr[0].elements[0].width = 400;
 	}
 	var ShowCompare_Dialog = {
-		initialize : function (dialog) {
+		initialize: function (dialog) {
 			if (!canBeLong) return;
 			var toLoad = {};
 			for (var i = 0; i < arr.length; i++) {
@@ -2417,64 +2419,64 @@ function ShowCompareDialog(txtA, arr, canBeLong) {
 			}
 			dialog.load(toLoad);
 		},
-		description : {
-			name : "COMPARE DIALOG",
-			elements : [{
-				type : "view",
-				align_children : "align_left",
-				elements : (headTxt ? [{
-					type : "static_text",
-					item_id : "head",
-					alignment : "align_fill",
-					font : "heading",
-					wrap_name : true,
-					width : otherWidths,
-					name : txtA[0]
+		description: {
+			name: "COMPARE DIALOG",
+			elements: [{
+				type: "view",
+				align_children: "align_left",
+				elements: (headTxt ? [{
+					type: "static_text",
+					item_id: "head",
+					alignment: "align_fill",
+					font: "heading",
+					wrap_name: true,
+					width: otherWidths,
+					name: txtA[0],
 				}, {
-					type : "static_text",
-					item_id : "txt2",
-					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					width : otherWidths,
-					name : headTxt
+					type: "static_text",
+					item_id: "txt2",
+					alignment: "align_fill",
+					font: "dialog",
+					wrap_name: true,
+					width: otherWidths,
+					name: headTxt,
 				}] : []).concat([{
-					type : "view",
-					align_children : "align_row",
-					elements : [{
-						type : "static_text",
-						item_id : "txt0",
-						alignment : "align_fill",
-						font : "palette",
-						wrap_name : true,
-						height : 20,
-						name : "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]",
-						width : otherWidths
+					type: "view",
+					align_children: "align_row",
+					elements: [{
+						type: "static_text",
+						item_id: "txt0",
+						alignment: "align_fill",
+						font: "palette",
+						wrap_name: true,
+						height: 20,
+						name: "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]",
+						width: otherWidths,
 					}, {
-						type : "edit_text",
-						item_id : "ding",
-						alignment : "align_fill",
-						readonly : true,
-						height : 1,
-						width : 1
-					}]
+						type: "edit_text",
+						item_id: "ding",
+						alignment: "align_fill",
+						readonly: true,
+						height: 1,
+						width: 1,
+					}],
 				}, {
-					type : "view",
-					align_children : "align_top",
-					elements : clusterArr
+					type: "view",
+					align_children: "align_top",
+					elements: clusterArr,
 				}]).concat(extraTxt ? [{
-					type : "static_text",
-					item_id : "txt1",
-					alignment : "align_fill",
-					font : "dialog",
-					wrap_name : true,
-					width : otherWidths,
-					name : extraTxt
+					type: "static_text",
+					item_id: "txt1",
+					alignment: "align_fill",
+					font: "dialog",
+					wrap_name: true,
+					width: otherWidths,
+					name: extraTxt,
 				}] : []).concat([{
-					type : "ok"
-				}])
-			}]
-		}
+					type: "ok",
+				}]),
+			}],
+		},
 	}
 	var dia = app.execDialog(ShowCompare_Dialog);
 }
@@ -2517,7 +2519,7 @@ function ReturnMagicItemFieldsArray(fldNmbr) {
 		"Extra.Magic Item Description " + fldNmbr,	// 2
 		"Extra.Magic Item Weight " + fldNmbr,		// 3
 		"Extra.Magic Item Attuned " + fldNmbr,		// 4
-		"Image.MagicItemAttuned." + fldNmbr			// 5
+		"Image.MagicItemAttuned." + fldNmbr,			// 5
 	];
 }
 
@@ -2701,8 +2703,8 @@ function ApplyMagicItem(input, FldNmbr) {
 			failedChoice = true;
 		} else {
 			app.alert({
-				cTitle : "Error processing options for " + aMI.name,
-				cMsg : "The magic item that you have selected, '" + aMI.name + "' offers a choice for the form it comes in. Unfortunately, the sheet has run into an issue where there are no forms to choose from because of resources being excluded. Use the \"Source Material\" bookmark to correct this.\n\nThis could also be an issue with the imported script containing the item not being written correctly. If so, please contact the author of that import script."
+				cTitle: "Error processing options for " + aMI.name,
+				cMsg: "The magic item that you have selected, '" + aMI.name + "' offers a choice for the form it comes in. Unfortunately, the sheet has run into an issue where there are no forms to choose from because of resources being excluded. Use the \"Source Material\" bookmark to correct this.\n\nThis could also be an issue with the imported script containing the item not being written correctly. If so, please contact the author of that import script.",
 			});
 			doNotCommit();
 			return;
@@ -2727,7 +2729,7 @@ function ApplyMagicItem(input, FldNmbr) {
 
 	// Start progress bar
 	var thermoTxt = thermoM("Applying magic item...");
-	thermoM(1/6); // Increment the progress bar
+	thermoM(1 / 6); // Increment the progress bar
 
 	// Create the object to use (merge parent and choice)
 	if (!aMIvar) {
@@ -2735,7 +2737,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		newMIvar = "";
 	} else {
 		var theMI = {
-			name : aMIvar.name ? aMIvar.name : event.target.setValPrepared ? event.target.setValPrepared : input
+			name: aMIvar.name ? aMIvar.name : event.target.setValPrepared ? event.target.setValPrepared : input,
 		}
 		var MIattr = ["source", "type", "rarity", "attunement", "magicItemTable", "weight", "description", "descriptionLong", "descriptionFull", "calculate", "prerequisite", "prereqeval", "chooseGear", "extraTooltip", "storyItemAL"];
 		for (var a = 0; a < MIattr.length; a++) {
@@ -2762,10 +2764,10 @@ function ApplyMagicItem(input, FldNmbr) {
 		}
 		if ((parentDupl && !aMI.allowDuplicates) || (choiceDupl && !aMIvar.allowDuplicates)) {
 			var stopFunct = app.alert({
-				cTitle : "Can only have one instance of a magic item",
-				cMsg : "The magic item that you have selected, '" + (choiceDupl ? theMI.name : aMI.name) + "' is already present on the sheet and you can't have duplicates of it.\n\nIf you want to show that your character has multiples of this item, consider adding \"(2)\" after its name. You can also list it in one of the equipment sections, where you can denote the number you have." + (newMIvar && !choiceDupl ? "\n\nHowever, as this is a composite item that exists in different forms, and you don't have '" + theMI.name + "' yet, the sheet can allow you to add it regardless of the rules. Do you want to continue adding this item?" : ""),
-				nIcon : !newMIvar || choiceDupl ? 0 : 1,
-				nType : !newMIvar || choiceDupl ? 0 : 2
+				cTitle: "Can only have one instance of a magic item",
+				cMsg: "The magic item that you have selected, '" + (choiceDupl ? theMI.name : aMI.name) + "' is already present on the sheet and you can't have duplicates of it.\n\nIf you want to show that your character has multiples of this item, consider adding \"(2)\" after its name. You can also list it in one of the equipment sections, where you can denote the number you have." + (newMIvar && !choiceDupl ? "\n\nHowever, as this is a composite item that exists in different forms, and you don't have '" + theMI.name + "' yet, the sheet can allow you to add it regardless of the rules. Do you want to continue adding this item?" : ""),
+				nIcon: !newMIvar || choiceDupl ? 0 : 1,
+				nType: !newMIvar || choiceDupl ? 0 : 2,
 			});
 			if (stopFunct === 1 || stopFunct === 3) {
 				doNotCommit();
@@ -2777,9 +2779,9 @@ function ApplyMagicItem(input, FldNmbr) {
 	// Before stopping the calculations, first test if the magic item has a prerequisite and if it meets that
 	if (IsNotImport && IsNotReset && theMI && theMI.prereqeval && !ignorePrereqs && event.target && event.target.name == MIflds[0]) {
 		try {
-			if (typeof theMI.prereqeval == 'string') {
+			if (typeof theMI.prereqeval == "string") {
 				var meetsPrereq = eval(theMI.prereqeval);
-			} else if (typeof theMI.prereqeval == 'function') {
+			} else if (typeof theMI.prereqeval == "function") {
 				var gatherVars = gatherPrereqevalVars();
 				gatherVars.choice = newMIvar;
 				var meetsPrereq = theMI.prereqeval(gatherVars);
@@ -2790,13 +2792,13 @@ function ApplyMagicItem(input, FldNmbr) {
 		};
 		if (!meetsPrereq) {
 			thermoTxt = thermoM("The magic item '" + theMI.name + "' has prerequisites that have not been met...", false); //change the progress dialog text
-			thermoM(1/5); //increment the progress dialog's progress
+			thermoM(1 / 5); //increment the progress dialog's progress
 
 			var askUserMI = app.alert({
-				cTitle : "The prerequisites for '" + theMI.name + "' have not been met",
-				cMsg : "The magic item that you have selected, '" + theMI.name + "' has a prerequisite listed" + (theMI.prerequisite ? ' as: \n\t"' + theMI.prerequisite + '"' : ".") + "\n\nYour character does not meet this requirement. Are you sure you want to apply this magic item?",
-				nIcon : 1,
-				nType : 2
+				cTitle: "The prerequisites for '" + theMI.name + "' have not been met",
+				cMsg: "The magic item that you have selected, '" + theMI.name + "' has a prerequisite listed" + (theMI.prerequisite ? ' as: \n\t"' + theMI.prerequisite + '"' : ".") + "\n\nYour character does not meet this requirement. Are you sure you want to apply this magic item?",
+				nIcon: 1,
+				nType: 2,
 			});
 
 			if (askUserMI !== 4) { // If "NO" was pressed
@@ -2847,7 +2849,7 @@ function ApplyMagicItem(input, FldNmbr) {
 	// Do something if there is a new magic item to apply
 	if (aMI) {
 		thermoTxt = thermoM("Applying '" + theMI.name + "' magic item...", false); //change the progress dialog text
-		thermoM(1/3); //increment the progress dialog's progress
+		thermoM(1 / 3); //increment the progress dialog's progress
 
 		// Set the field calculation
 		if (theMI.calculate) {
@@ -2990,7 +2992,7 @@ function ApplyAttunementMI(FldNmbr) {
 	// Start progress bar and stop calculation
 	var thermoTxt = thermoM((isChecked ? "Applying" : "Removing") + " magic item features...");
 	calcStop();
-	thermoM(1/2); // Increment the progress bar
+	thermoM(1 / 2); // Increment the progress bar
 
 	// now apply or remove the magic item's features
 	var Fea = ApplyFeatureAttributes(
@@ -3093,41 +3095,41 @@ function SetMagicItemsDropdown(forceTooltips) {
 //make a menu of all the magic items, sorted by different criteria
 function ParseMagicItemMenu() {
 	var iMenus = {
-		alphabetical : {},
-		wondrousAlphabetical : {},
-		rarity : {
-			common : [],
-			uncommon : [],
-			rare : [],
-			"very rare" : [],
-			legendary : [],
-			artifact : []
+		alphabetical: {},
+		wondrousAlphabetical: {},
+		rarity: {
+			common: [],
+			uncommon: [],
+			rare: [],
+			"very rare": [],
+			legendary: [],
+			artifact: [],
 		},
-		type : {
-			"Armor, shield, AC bonus" : [],
-			Instrument : [],
-			Potion : [],
-			Ring : [],
-			Rod : [],
-			Scroll : [],
-			Staff : [],
-			Tattoo : [],
-			Wand : [],
-			"Wondrous item" : [],
-			Weapon : []
+		type: {
+			"Armor, shield, AC bonus": [],
+			Instrument: [],
+			Potion: [],
+			Ring: [],
+			Rod: [],
+			Scroll: [],
+			Staff: [],
+			Tattoo: [],
+			Wand: [],
+			"Wondrous item": [],
+			Weapon: [],
 		},
-		special : {
-			"Ability score increase" : [],
-			"Hit points" : [],
-			Movement : [],
-			"Resistances or immunities" : [],
-			Skills : [],
-			Spells : [],
-			"Spellcasting improvement" : [],
-			Vision : []
+		special: {
+			"Ability score increase": [],
+			"Hit points": [],
+			Movement: [],
+			"Resistances or immunities": [],
+			Skills: [],
+			Spells: [],
+			"Spellcasting improvement": [],
+			Vision: [],
 		},
-		source : { namesArr : [] },
-		ref : {}
+		source: { namesArr: [] },
+		ref: {},
 	};
 	var spaceArr = new Array(38).join("\u2002");
 	var amendSrc = function(nameTxt, srcTxt) {
@@ -3184,7 +3186,7 @@ function ParseMagicItemMenu() {
 		var searchType = tObj.type ? tObj.type.toLowerCase() : false;
 		for (var aType in iMenus.type) {
 			if (!searchType) break;
-			if ((/weapon|armor|shield|wondrous item/i).test(aType)) continue;
+			if (/weapon|armor|shield|wondrous item/i.test(aType)) continue;
 			if (searchType.indexOf(aType.toLowerCase()) !== -1) {
 				iMenus.type[aType].push(itemName);
 			}
@@ -3245,15 +3247,15 @@ function ParseMagicItemMenu() {
 		tempMenu2.sort();
 		for (var a = 0; a < tempMenu2.length; a++) {
 			tempMenu2[a] = {
-				cName : tempMenu2[a],
-				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+				cName: tempMenu2[a],
+				cReturn: "item#set#" + iMenus.ref[tempMenu2[a]],
 			}
 		}
-		tempMenu.push({ cName : sLetter, oSubMenu : [].concat(tempMenu2) });
+		tempMenu.push({ cName: sLetter, oSubMenu: [].concat(tempMenu2) });
 	}
 	AddMagicItemsMenu = [{
-		cName : "Alphabetically",
-		oSubMenu : [].concat(tempMenu)
+		cName: "Alphabetically",
+		oSubMenu: [].concat(tempMenu),
 	}]
 	for (var i = 0; i < woundrousAlphabetaArr.length; i++) {
 		var sLetter = woundrousAlphabetaArr[i];
@@ -3261,11 +3263,11 @@ function ParseMagicItemMenu() {
 		tempMenu2.sort();
 		for (var a = 0; a < tempMenu2.length; a++) {
 			tempMenu2[a] = {
-				cName : tempMenu2[a],
-				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+				cName: tempMenu2[a],
+				cReturn: "item#set#" + iMenus.ref[tempMenu2[a]],
 			}
 		}
-		iMenus.type["Wondrous item"].push({ cName : sLetter, oSubMenu : [].concat(tempMenu2) });
+		iMenus.type["Wondrous item"].push({ cName: sLetter, oSubMenu: [].concat(tempMenu2) });
 	}
 	// Also parse the wondrous items
 	// Then a menu per rarity
@@ -3276,15 +3278,15 @@ function ParseMagicItemMenu() {
 		tempMenu2.sort();
 		for (var a = 0; a < tempMenu2.length; a++) {
 			tempMenu2[a] = {
-				cName : tempMenu2[a],
-				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+				cName: tempMenu2[a],
+				cReturn: "item#set#" + iMenus.ref[tempMenu2[a]],
 			}
 		}
-		tempMenu.push({ cName : entry[0].toUpperCase() + entry.substr(1), oSubMenu : [].concat(tempMenu2) });
+		tempMenu.push({ cName: entry[0].toUpperCase() + entry.substr(1), oSubMenu: [].concat(tempMenu2) });
 	}
 	AddMagicItemsMenu.push({
-		cName : "By rarity",
-		oSubMenu : [].concat(tempMenu)
+		cName: "By rarity",
+		oSubMenu: [].concat(tempMenu),
 	});
 	// Then a menu per source
 	var tempMenu = [];
@@ -3296,16 +3298,16 @@ function ParseMagicItemMenu() {
 		tempMenu2.sort();
 		for (var a = 0; a < tempMenu2.length; a++) {
 			tempMenu2[a] = {
-				cName : tempMenu2[a],
-				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+				cName: tempMenu2[a],
+				cReturn: "item#set#" + iMenus.ref[tempMenu2[a]],
 			}
 		}
-		tempMenu.push({ cName : entry, oSubMenu : [].concat(tempMenu2) });
+		tempMenu.push({ cName: entry, oSubMenu: [].concat(tempMenu2) });
 	}
 	AddMagicItemsMenu.push({
-		cName : "By source",
-		oSubMenu : [].concat(tempMenu)
-	}, { cName : "-" });
+		cName: "By source",
+		oSubMenu: [].concat(tempMenu),
+	}, { cName: "-" });
 	// Then a main menu item per type
 	for (var entry in iMenus.type) {
 		var tempMenu2 = iMenus.type[entry];
@@ -3314,14 +3316,14 @@ function ParseMagicItemMenu() {
 			tempMenu2.sort();
 			for (var a = 0; a < tempMenu2.length; a++) {
 				tempMenu2[a] = {
-					cName : tempMenu2[a],
-					cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+					cName: tempMenu2[a],
+					cReturn: "item#set#" + iMenus.ref[tempMenu2[a]],
 				}
 			}
 		}
-		AddMagicItemsMenu.push({ cName : entry, oSubMenu : [].concat(tempMenu2) });
+		AddMagicItemsMenu.push({ cName: entry, oSubMenu: [].concat(tempMenu2) });
 	}
-	AddMagicItemsMenu.push({ cName : "-" });
+	AddMagicItemsMenu.push({ cName: "-" });
 	// Then a main menu item per bonus
 	for (var entry in iMenus.special) {
 		var tempMenu2 = iMenus.special[entry];
@@ -3329,11 +3331,11 @@ function ParseMagicItemMenu() {
 		tempMenu2.sort();
 		for (var a = 0; a < tempMenu2.length; a++) {
 			tempMenu2[a] = {
-				cName : tempMenu2[a],
-				cReturn : "item#set#" + iMenus.ref[tempMenu2[a]]
+				cName: tempMenu2[a],
+				cReturn: "item#set#" + iMenus.ref[tempMenu2[a]],
 			}
 		}
-		AddMagicItemsMenu.push({ cName : entry, oSubMenu : [].concat(tempMenu2) });
+		AddMagicItemsMenu.push({ cName: entry, oSubMenu: [].concat(tempMenu2) });
 	}
 };
 
@@ -3369,10 +3371,10 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 		var menuLVL1 = function (array) {
 			for (i = 0; i < array.length; i++) {
 				magicMenu.push({
-					cName : array[i][0],
-					cReturn : "item#" + array[i][1],
-					bEnabled : array[i][2] !== undefined ? array[i][2] : true,
-					bMarked : array[i][3] !== undefined ? array[i][3] : false
+					cName: array[i][0],
+					cReturn: "item#" + array[i][1],
+					bEnabled: array[i][2] !== undefined ? array[i][2] : true,
+					bMarked: array[i][3] !== undefined ? array[i][3] : false,
 				});
 			}
 		};
@@ -3383,17 +3385,17 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			if (aMI.choices) {
 				var aMIopts = aMI.choices;
 				var choiceMenu = {
-					cName : "Change type of " + aMI.name,
-					oSubMenu : []
+					cName: "Change type of " + aMI.name,
+					oSubMenu: [],
 				};
 				for (var i = 0; i < aMIopts.length; i++) {
 					var aCh = aMIopts[i];
 					var aChL = aCh.toLowerCase();
 					if (!aMI[aChL] || testSource(theMI + "-" + aChL, aMI[aChL], "magicitemExcl")) continue;
 					choiceMenu.oSubMenu.push({
-						cName : aCh + stringSource(aMI[aChL].source ? aMI[aChL] : aMI, "first,abbr", "\t   [", "]"),
-						cReturn : "item#choice#" + aChL,
-						bMarked : theMIchoice == aChL
+						cName: aCh + stringSource(aMI[aChL].source ? aMI[aChL] : aMI, "first,abbr", "\t   [", "]"),
+						cReturn: "item#choice#" + aChL,
+						bMarked: theMIchoice == aChL,
 					});
 				}
 				if (choiceMenu.oSubMenu.length > 1) magicMenu.push(choiceMenu);
@@ -3405,14 +3407,14 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			// an option to read the whole description
 			if (Who(MIflds[2])) menuLVL1([["Show full text of " + fullMIname, "popup"]]);
 			// add a separator if we have any items in the menu so far
-			if (magicMenu.length) magicMenu.push({ cName : "-" });
+			if (magicMenu.length) magicMenu.push({ cName: "-" });
 		}
 		// a way to select another magic item
 		if (!AddMagicItemsMenu) ParseMagicItemMenu();
 		magicMenu.push({
-			cName : theMI ? "Change item to" : "Apply item",
-			oSubMenu : AddMagicItemsMenu
-		},{ cName : "-" });
+			cName: theMI ? "Change item to" : "Apply item",
+			oSubMenu: AddMagicItemsMenu,
+		},{ cName: "-" });
 		// now all the default options
 		var magicArray = [
 			["Move up" + upToOtherPage, "up", !noUp],
@@ -3424,11 +3426,11 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			["-", "-"],
 			["Show attuned checkbox", "attunement", undefined, visibleAttunement],
 			["-", "-"],
-			["Copy to Adventuring Gear (page 2)", "equipment#gear#r", theField]
+			["Copy to Adventuring Gear (page 2)", "equipment#gear#r", theField],
 		].concat(What("Adventuring Gear Remember") !== false || !visibleAttunement ? [] : [
-			["Copy to Attuned Magical Items (page 2)", "equipment#magic#", theField]
+			["Copy to Attuned Magical Items (page 2)", "equipment#magic#", theField],
 		]).concat([
-			["Copy to Extra Equipment (page 3)", "equipment#extra#", theField]
+			["Copy to Extra Equipment (page 3)", "equipment#extra#", theField],
 		]);
 		menuLVL1(magicArray);
 		// set it to the global variable
@@ -3470,9 +3472,9 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 			var MIfldsO = ReturnMagicItemFieldsArray(otherNmbr);
 			// Now swap all the fields
 			for (var i = 0; i < MIflds.length - 1; i++) {
-				var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
+				var exclObj = i != 0 ? {} : { userName: true, submitName: true, noCalc: true };
 				copyField(MIflds[i], MIfldsO[i], exclObj, true);
-				thermoM(i/(MIflds.length - 1)); //increment the progress dialog's progress
+				thermoM(i / (MIflds.length - 1)); //increment the progress dialog's progress
 			}
 			// Correct the visibility of the attuned fields
 			setMIattunedVisibility(itemNmbr);
@@ -3660,7 +3662,7 @@ function MagicItemInsert(itemNmbr) {
 			var MIfldsFrom = ReturnMagicItemFieldsArray(it - 1);
 			var MIfldsTo = ReturnMagicItemFieldsArray(it);
 			for (var i = 0; i < MIfldsFrom.length - 1; i++) {
-				var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
+				var exclObj = i != 0 ? {} : { userName: true, submitName: true, noCalc: true };
 				copyField(MIfldsFrom[i], MIfldsTo[i], exclObj);
 			}
 			// Correct the known array & choices arrays
@@ -3702,7 +3704,7 @@ function MagicItemDelete(itemNmbr) {
 		var MIfldsFrom = ReturnMagicItemFieldsArray(it + 1);
 		var MIfldsTo = ReturnMagicItemFieldsArray(it);
 		for (var i = 0; i < MIfldsFrom.length - 1; i++) {
-			var exclObj = i != 0 ? {} : { userName : true, submitName : true, noCalc : true };
+			var exclObj = i != 0 ? {} : { userName: true, submitName: true, noCalc: true };
 			copyField(MIfldsFrom[i], MIfldsTo[i], exclObj);
 		}
 		// Correct the known & choices arrays
@@ -3796,7 +3798,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			case "suffix":
 				return fixed.toString() + " " + addition;
 			case "brackets":
-				return fixed.toString() + " (" + addition.replace(/ ?\(.+\)/, '') + ")";
+				return fixed.toString() + " (" + addition.replace(/ ?\(.+\)/, "") + ")";
 		}
 	}
 	var MIflds = ReturnMagicItemFieldsArray(FldNmbr);
@@ -3809,7 +3811,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	var curName = curChoice ? MagicItemsList[curItem][curChoice].name : MagicItemsList[curItem].name;
 	var itemToProcess, selectedItem;
 	var rxComma = /(.*?), (.*)/;
-	var rxPluralS = typeObj.removePluralS ? /s$/ : '';
+	var rxPluralS = typeObj.removePluralS ? /s$/ : "";
 
 	// use the name of the choice object (if any) or the shortest of the name, nameAlt, and nameTest of the parent object
 	var nameObj = aMIvar && aMIvar.name ? aMIvar : aMI;
@@ -3822,14 +3824,14 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	var isItem = tDoc[parseFnct](useVal, true);
 	// if this is recognized as a weapon, make sure we are not just triggering on the default words (axe, sword, hammer, bow, crossbow)
 	var defaultItems = {
-		"battleaxe" : [/\baxes?\b/i, /battle/i],
-		"longsword" : [/\bswords?\b/i, /long/i],
-		"warhammer" : [/\bhammers?\b/i, /war/i],
-		"shortbow" : [/\bbows?\b/i, /short/i],
-		"light crossbow" : [/\bcrossbows?\b/i, /light/i]
+		"battleaxe": [/\baxes?\b/i, /battle/i],
+		"longsword": [/\bswords?\b/i, /long/i],
+		"warhammer": [/\bhammers?\b/i, /war/i],
+		"shortbow": [/\bbows?\b/i, /short/i],
+		"light crossbow": [/\bcrossbows?\b/i, /light/i],
 	}
 	if (typeNm == "weapon" && defaultItems[isItem] && (defaultItems[isItem][0]).test(useVal) && !(defaultItems[isItem][1]).test(useVal)) {
-		isItem = ParseWeapon(useVal.replace(defaultItems[isItem][0], ''));
+		isItem = ParseWeapon(useVal.replace(defaultItems[isItem][0], ""));
 	}
 	// if removing this item
 	if (!AddRemove) {
@@ -3849,7 +3851,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			// some type-dependent filters
 			if (typeNm == "armor" && (!kObj.type || kObj.isMagicArmor)) {
 				continue;
-			} else if (typeNm == "weapon" && (kObj.isMagicWeapon) || (/natural|spell|cantrip|improvised/i).test(kObj.type + kObj.list)) {
+			} else if (typeNm == "weapon" && (kObj.isMagicWeapon) || /natural|spell|cantrip|improvised/i.test(kObj.type + kObj.list)) {
 				continue;
 			} else if (typeNm == "ammunition" && (kObj.isMagicAmmo || WeaponsList[key])) {
 				continue;
@@ -3858,7 +3860,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 				var gatherVars = typeNm == "weapon" ? gatherWeaponVars(key, kObj) : false;
 				if (typeObj.excludeCheck(key, kObj, gatherVars)) continue;
 			}
-			var capName = (kObj.invName ? kObj.invName : kObj.name).capitalize().replace(rxComma, "$2 $1").replace(rxPluralS, '');
+			var capName = (kObj.invName ? kObj.invName : kObj.name).capitalize().replace(rxComma, "$2 $1").replace(rxPluralS, "");
 			if (itemChoices.indexOf(capName) == -1) itemChoices.push(capName);
 			itemRefs[capName] = key;
 		}
@@ -3878,10 +3880,10 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 		var theItemName = (baseList[isItem].invName ? baseList[isItem].invName : baseList[isItem].name);
 	}
 	// Make lower case if using 5e rules or capitalized if using 2024 rules
-	theItemName = tDoc.use2024Rules ? theItemName.capitalize(): theItemName.toLowerCase();
+	theItemName = tDoc.use2024Rules ? theItemName.capitalize() : theItemName.toLowerCase();
 	// Inverse if written with a comma
-	theItemName = theItemName.replace(rxComma, "$2 $1").replace(rxPluralS, '');
-	if (selectedItem) selectedItem = selectedItem.replace(rxComma, "$2 $1").replace(rxPluralS, '');
+	theItemName = theItemName.replace(rxComma, "$2 $1").replace(rxPluralS, "");
+	if (selectedItem) selectedItem = selectedItem.replace(rxComma, "$2 $1").replace(rxPluralS, "");
 	// get the new name of the magic item
 	var theItemNameCap = tDoc.use2024Rules ? theItemName : theItemName.capitalize();
 	var newMIname = useVal;
@@ -3902,8 +3904,8 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			itemToProcess = newMIname.replace(/(ammunition|ammo|weapon|armou?r) (\+\d+)/i, "$1").replace(/(\+\d+) *\((.*?)\)/i, "$1 $2");
 		}
 		if (isItem && baseList[isItem] && baseList[isItem].invName) {
-			var firstPageName = baseList[isItem].name.replace(rxComma, "$2 $1").replace(rxPluralS, '').capitalize();
-			var invName = baseList[isItem].invName.replace(rxComma, "$2 $1").replace(rxPluralS, '').capitalize();
+			var firstPageName = baseList[isItem].name.replace(rxComma, "$2 $1").replace(rxPluralS, "").capitalize();
+			var invName = baseList[isItem].invName.replace(rxComma, "$2 $1").replace(rxPluralS, "").capitalize();
 			if (firstPageName !== invName) {
 				itemToProcess = itemToProcess.replace(invName, firstPageName);
 			}
@@ -3913,14 +3915,14 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 				processAddAmmo(AddRemove, [[itemToProcess, typeObj.ammoAmount && !isNaN(typeObj.ammoAmount) ? typeObj.ammoAmount : 1]]);
 				break;
 			case "weapon":
-				processAddWeapons(AddRemove, {select : [itemToProcess], options : [itemToProcess]}, itemToProcess);
+				processAddWeapons(AddRemove, { select: [itemToProcess], options: [itemToProcess] }, itemToProcess);
 				break;
 			case "armor":
 				processAddArmour(AddRemove, {
 					"select": itemToProcess,
 					"options": [itemToProcess],
 					"noStealthDis": typeObj.noStealthDis,
-					"forceStealthDis": typeObj.forceStealthDis
+					"forceStealthDis": typeObj.forceStealthDis,
 				}, itemToProcess);
 				break;
 		}
@@ -3955,25 +3957,25 @@ function gatherPrereqevalVars() {
 	var moreProfs = What("MoreProficiencies");
 	var gObj = {
 		// general character abilities
-		isSpellcaster : isSpellcaster(),
-		isSpellcastingClass : isSpellcaster("class"),
-		characterLevel : Number(What("Character Level")),
+		isSpellcaster: isSpellcaster(),
+		isSpellcastingClass: isSpellcaster("class"),
+		characterLevel: Number(What("Character Level")),
 		// armour proficiencies
-		shieldProf : tDoc.getField("Proficiency Shields").isBoxChecked(0),
-		lightArmorProf : tDoc.getField("Proficiency Armor Light").isBoxChecked(0),
-		mediumArmorProf : tDoc.getField("Proficiency Armor Medium").isBoxChecked(0),
-		heavyArmorProf : tDoc.getField("Proficiency Armor Heavy").isBoxChecked(0),
+		shieldProf: tDoc.getField("Proficiency Shields").isBoxChecked(0),
+		lightArmorProf: tDoc.getField("Proficiency Armor Light").isBoxChecked(0),
+		mediumArmorProf: tDoc.getField("Proficiency Armor Medium").isBoxChecked(0),
+		heavyArmorProf: tDoc.getField("Proficiency Armor Heavy").isBoxChecked(0),
 		// weapon proficiencies
-		simpleWeaponsProf : tDoc.getField("Proficiency Weapon Simple").isBoxChecked(0),
-		martialWeaponsProf : tDoc.getField("Proficiency Weapon Martial").isBoxChecked(0),
-		otherWeaponsProf : CurrentProfs.weapon.otherWea ? CurrentProfs.weapon.otherWea.finalProfs : [],
+		simpleWeaponsProf: tDoc.getField("Proficiency Weapon Simple").isBoxChecked(0),
+		martialWeaponsProf: tDoc.getField("Proficiency Weapon Martial").isBoxChecked(0),
+		otherWeaponsProf: CurrentProfs.weapon.otherWea ? CurrentProfs.weapon.otherWea.finalProfs : [],
 		// other proficiencies
-		toolProfs : [moreProfs],
-		languageProfs : [moreProfs],
-		skillProfs : [],
-		skillExpertise : [],
+		toolProfs: [moreProfs],
+		languageProfs: [moreProfs],
+		skillProfs: [],
+		skillExpertise: [],
 		// specifics
-		hasEldritchBlast : (/,eldritch blast,/i).test(CurrentWeapons.known) || isSpellUsed("eldritch blast", true)
+		hasEldritchBlast: /,eldritch blast,/i.test(CurrentWeapons.known) || isSpellUsed("eldritch blast", true),
 	};
 
 	// fill the arrays for tool, language, and skill proficiencies
@@ -3983,7 +3985,7 @@ function gatherPrereqevalVars() {
 		var aTool = What("Tool " + i);
 		if (aTool) gObj.toolProfs.push(aTool);
 	}
-	var skillsAlphaBeta = Who('Text.SkillsNames') === 'alphabeta';
+	var skillsAlphaBeta = Who("Text.SkillsNames") === "alphabeta";
 	for (var i = 0; i < SkillsList.abbreviations.length - 2; i++) {
 		var skillAbbr = SkillsList.abbreviations[i];
 		var skillNm = SkillsList[skillsAlphaBeta ? "names" : "namesByAS"][i];
@@ -4084,13 +4086,13 @@ function applyExtrachoicesOfChoice(sClass, sProp, aChoice, bOnlyObject) {
 	}
 	// Check if the autoSelectExtrachoices changes with the new selection
 	var oldAutoSelectExtrachoices = propFea.autoSelectExtrachoices ? propFea.autoSelectExtrachoices : false;
-	setProperty(propFea, propChoiceNew, 'autoSelectExtrachoices');
+	setProperty(propFea, propChoiceNew, "autoSelectExtrachoices");
 	var bChangedAutoSelectExtrachoices = bOnlyObject ? false : oldAutoSelectExtrachoices.toSource() !== (propFea.autoSelectExtrachoices ? propFea.autoSelectExtrachoices : false).toSource();
 	// First remove extrachoices and autoSelectExtrachoices from the old choice before possibly overwritting it with options from the new choice
 	if (!bOnlyObject) {
 		// Remove the old autoSelectExtrachoices, if changed
 		if (bChangedAutoSelectExtrachoices) {
-			processClassFeatureExtraChoiceDependencies([classes.known[sClass].level, 0], sClass, sProp, { autoSelectExtrachoices : oldAutoSelectExtrachoices, minlevel : propFea.minlevel }, true);
+			processClassFeatureExtraChoiceDependencies([classes.known[sClass].level, 0], sClass, sProp, { autoSelectExtrachoices: oldAutoSelectExtrachoices, minlevel: propFea.minlevel }, true);
 		}
 		// Remove any extrachoices that were related to the old choice if there was a change
 		if (propChoiceOld && aChoice[0] !== aChoice[1] && propChoiceOld.extrachoices && propFea.extrachoices) {
@@ -4099,7 +4101,7 @@ function applyExtrachoicesOfChoice(sClass, sProp, aChoice, bOnlyObject) {
 			var skipAutoExtras = propFea.autoSelectExtrachoices ? propFea.autoSelectExtrachoices.map( function (eObj) { return eObj.extrachoice; }) : [];
 			for (var i = 0; i < curExtras.length; i++) {
 				if (skipAutoExtras.indexOf(curExtras[i]) !== -1) continue;
-				ClassFeatureOptions([sClass, sProp, curExtras[i], 'extra'], "remove", propChoiceOld.extraname);
+				ClassFeatureOptions([sClass, sProp, curExtras[i], "extra"], "remove", propChoiceOld.extraname);
 			};
 		}
 	}

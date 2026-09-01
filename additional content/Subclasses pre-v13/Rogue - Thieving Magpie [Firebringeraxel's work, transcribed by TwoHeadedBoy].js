@@ -22,7 +22,7 @@ SourceList["FC:TM"] = {
 	abbreviation: "FC:TM",
 	group: "Homebrew",
 	url: "https://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison",
-	date : "2017/07/11"
+	date: "2017/07/11",
 };
 
 AddSubClass("rogue", "thieving magpie", {
@@ -37,14 +37,14 @@ AddSubClass("rogue", "thieving magpie", {
 			description: desc([
 				"I can use Find Familiar as a ritual, but with a limited number of animals to choose from",
 				"I can select a cat, corvid (raven stats), ferret, monkey, rat, spider, squirrel, or weasel",
-				"It gains proficiency in Sleight of Hand and Stealth, using my proficiency bonus"
+				"It gains proficiency in Sleight of Hand and Stealth, using my proficiency bonus",
 			]),
-			spellcastingBonus : [{
-				name : "Partner in Crime",
-				spells : ["find familiar"],
-				selection : ["find familiar"],
-				firstCol : "(R)"
-			}]
+			spellcastingBonus: [{
+				name: "Partner in Crime",
+				spells: ["find familiar"],
+				selection: ["find familiar"],
+				firstCol: "(R)",
+			}],
 		},
 		"subclassfeature3.1": {
 			name: "Mugger",
@@ -53,8 +53,8 @@ AddSubClass("rogue", "thieving magpie", {
 			description: desc([
 				"If my familiar performs the Help action to give me adv. in melee, I can also steal stuff",
 				"My melee attack has be eligible for sneak attack and I require a free hand",
-				"What I steal, coins or small object, has a value equal to the sneak attack damage in gp"
-			])
+				"What I steal, coins or small object, has a value equal to the sneak attack damage in gp",
+			]),
 		},
 		"subclassfeature9": {
 			name: "Slippery As A Snake",
@@ -65,17 +65,17 @@ AddSubClass("rogue", "thieving magpie", {
 				"As a reaction when my familiar takes damage or needs to save, I can dismiss it",
 				"When dismissed, it is no longer affected by the conditions leading to the saving throw",
 				"When I use uncanny dodge or succeed a Dex save that evasion affects, I can move 5 ft",
-				"I don't provoke opportunity attacks for moving these 5 ft"
+				"I don't provoke opportunity attacks for moving these 5 ft",
 			]),
 			action: ["bonus action", " (Dash, Disengage, Hide)"],
-			eval : "AddAction('reaction', 'Dismiss Familiar (when attacked)', 'Rogue (Thieving Magpie)');",
-			removeeval : "RemoveAction('reaction', 'Dismiss Familiar (when attacked)')"
+			eval: "AddAction('reaction', 'Dismiss Familiar (when attacked)', 'Rogue (Thieving Magpie)');",
+			removeeval: "RemoveAction('reaction', 'Dismiss Familiar (when attacked)')",
 		},
 		"subclassfeature13": {
 			name: "Grow Together",
 			source: ["FC:TM", 0],
 			minlevel: 13,
-			description: desc("My familiar gains additional HD equal to my proficiency bonus; This affect HP as well")
+			description: desc("My familiar gains additional HD equal to my proficiency bonus; This affect HP as well"),
 		},
 		"subclassfeature17": {
 			name: "Act As One",
@@ -84,8 +84,8 @@ AddSubClass("rogue", "thieving magpie", {
 			description: desc([
 				"If my familiar is within 5 ft and performs the Help action to assist me, I gain bonuses",
 				"I add my proficiency bonus to ability checks and weapon damage rolls",
-				"This lasts until the start of my next turn or until my familiar is more than 5 ft away"
-			])
-		}
-	}
+				"This lasts until the start of my next turn or until my familiar is more than 5 ft away",
+			]),
+		},
+	},
 });

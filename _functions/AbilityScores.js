@@ -17,7 +17,7 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 	var aHasMax = aHasMaxIn && isArray(aHasMaxIn) ? [].concat(aHasMaxIn) : null;
 
 	// Fix old style of writing `scorestxt`
-	if (dialogTxt) dialogTxt = dialogTxt.replace(/^\s*|^.{1,20}: |;$/g, '');
+	if (dialogTxt) dialogTxt = dialogTxt.replace(/^\s*|^.{1,20}: |;$/g, "");
 
 	var firstLevelStatFrom = tDoc.use2024Rules ? "background" : "race";
 
@@ -25,7 +25,7 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 	if (isSpecialIdx === -1) isSpecial = null; // Special type not recognized
 
 	sType = GetFeatureType(sType);
-	var type = isSpecial && isSpecialIdx > 0 ? isSpecial.replace(/s$/, '') : sType;
+	var type = isSpecial && isSpecialIdx > 0 ? isSpecial.replace(/s$/, "") : sType;
 
 	// Special actions depending on type
 	if (type === "items" && !isSpecial && aScores) {
@@ -343,7 +343,7 @@ function scoresMaxLimitedItemAskUser(AddRemove, sItemName, aScores, aMaximums, i
 				bonus: total.bonus + obj.bonus,
 				maximum: Math.max(total.maximum, obj.maximum),
 			};
-		}, {bonus: 0, maximum: 0 })
+		}, { bonus: 0, maximum: 0 })
 		// Create its string and add that to benefitsOld
 		if (oTotals.bonus) {
 			oCompiled.benefitsOld.push((oTotals.bonus > 0 ? "+" : "") + oTotals.bonus + " " + scoreName);
@@ -379,13 +379,13 @@ function scoresMaxLimitedItemAskUser(AddRemove, sItemName, aScores, aMaximums, i
 		// Compile the message when removing
 		var listCaption = isStackable && oCompiled.hasAmount > 1 ? "The total from its " + oCompiled.hasAmount + " additions is:" : "Its addition is:";
 		var aMessage = [
-			"Do you want the ability score increases from the " + sItemName + " to remain after the " + sItemName + " is removed from the sheet?\n"+
+			"Do you want the ability score increases from the " + sItemName + " to remain after the " + sItemName + " is removed from the sheet?\n" +
 			formatLineList(listCaption, oCompiled.benefitsOld) + ".",
 		];
 		if (isStackable) {
 			aMessage.push("You can benefit from the " + sItemName + " multiple times. If you have its benefits remain now, the next time you select it you will be asked to apply its benefits on top of its current benefits.");
 		}
-		aMessage.push('Click "Yes" to keep the above ability score increases.\n'+
+		aMessage.push('Click "Yes" to keep the above ability score increases.\n' +
 			'Click "No" to remove all the above ability score increases.');
 	}
 	// Upon applying the item with `scoresMaxLimited`, ask user if they want to add its score bonus (a extra time if `scoresStackable = true`)
@@ -480,10 +480,10 @@ function initiateCurrentStats(forceIt) {
 			"items": {},
 			"magic": {},
 		},
-		overrides:       [{}, {}, {}, {}, {}, {}, {}], // `scoresOverride`
-		maximums:        [{}, {}, {}, {}, {}, {}, {}], // maximums to display (all except those in `this.ongoingItems`)
-		ongoingItems:    [{}, {}, {}, {}, {}, {}, {}], // items with `scoresMaximum`
-		refMaxLimited:   [{}, {}, {}, {}, {}, {}, {}], // store applied `scores` &&`scoresMaxLimited` so we know what to remove
+		overrides: [{}, {}, {}, {}, {}, {}, {}], // `scoresOverride`
+		maximums: [{}, {}, {}, {}, {}, {}, {}], // maximums to display (all except those in `this.ongoingItems`)
+		ongoingItems: [{}, {}, {}, {}, {}, {}, {}], // items with `scoresMaximum`
+		refMaxLimited: [{}, {}, {}, {}, {}, {}, {}], // store applied `scores` &&`scoresMaxLimited` so we know what to remove
 		applied: false, // if the score dialog has been used and should be leading or not
 	}
 	SetStringifieds("stats");
@@ -541,51 +541,51 @@ function AbilityScores_Button(onlySetTooltip) {
 
 	// set the descriptive text for the dialog
 	var sections = {
-		ref : {
-			title : "Primary class abilities \x26 Multiclassing prerequisites",
-			loc : "left",
-			txt : ""
+		ref: {
+			title: "Primary class abilities \x26 Multiclassing prerequisites",
+			loc: "left",
+			txt: "",
 		},
-		background : {
-			title : "Background ability score improvements",
-			loc : "right",
-			txt : ""
+		background: {
+			title: "Background ability score improvements",
+			loc: "right",
+			txt: "",
 		},
-		race : {
-			title : (tDoc.use2024Rules ? "Species" : "Racial") + " ability score improvements",
-			loc : "right",
-			txt : ""
+		race: {
+			title: (tDoc.use2024Rules ? "Species" : "Racial") + " ability score improvements",
+			loc: "right",
+			txt: "",
 		},
-		asi : {
-			title : "Class levels ability score improvements",
-			loc : "left",
-			txt : ""
+		asi: {
+			title: "Class levels ability score improvements",
+			loc: "left",
+			txt: "",
 		},
-		classes : {
-			title : "Class Features ability score improvements",
-			loc : "right",
-			txt : ""
+		classes: {
+			title: "Class Features ability score improvements",
+			loc: "right",
+			txt: "",
 		},
-		feats : {
-			title : "Feat ability score improvements",
-			loc : "right",
-			txt : ""
+		feats: {
+			title: "Feat ability score improvements",
+			loc: "right",
+			txt: "",
 		},
-		items : {
-			title : "Magic Item ability score boosts",
-			loc : "left",
-			txt : ""
+		items: {
+			title: "Magic Item ability score boosts",
+			loc: "left",
+			txt: "",
 		},
-		magic : {
-			title : "Other magic ability score boosts",
-			loc : "right",
-			txt : ""
+		magic: {
+			title: "Other magic ability score boosts",
+			loc: "right",
+			txt: "",
 		},
-		background : {
-			title : "Background ability score improvements",
-			loc : "left",
-			txt : ""
-		}
+		background: {
+			title: "Background ability score improvements",
+			loc: "left",
+			txt: "",
+		},
 	};
 
 	// Create the strings from the CurrentClasses objects
@@ -597,7 +597,7 @@ function AbilityScores_Button(onlySetTooltip) {
 		var clHead = "\u2022 " + toUni(tClass.name) + ": ";
 		// String for class primary abilities and multiclass prerequisites
 		var primeAbi = multiClass && tClass.prereqs ? tClass.prereqs : tClass.primaryAbility;
-		if (primeAbi) primeAbi = primeAbi.replace(/^( |\n)*.*: |;$/g, '');
+		if (primeAbi) primeAbi = primeAbi.replace(/^( |\n)*.*: |;$/g, "");
 		refTxt.push(clHead + primeAbi);
 		// String for ASI from class level
 		var imprLVL = Math.min(classes.known[aClass].level, tClass.improvements.length);
@@ -646,21 +646,21 @@ function AbilityScores_Button(onlySetTooltip) {
 		var sect = sections[section];
 		if (!sect.txt) continue;
 		var newCluster = {
-			name : sect.title.replace("\x26", "\x26\x26"),
-			type : "cluster",
-			alignment : "align_" + sect.loc,
-			item_id : "cl" + section.substr(0,2),
-			font : "dialog",
-			bold : true,
-			elements : [{
-				name : sect.txt.replace("\x26", "\x26\x26"),
-				type : "static_text",
-				item_id : "tx" + section.substr(0,2),
-				alignment : "align_fill",
-				font : "dialog",
-				wrap_name : true,
-				char_width : halfWidth
-			}]
+			name: sect.title.replace("\x26", "\x26\x26"),
+			type: "cluster",
+			alignment: "align_" + sect.loc,
+			item_id: "cl" + section.substr(0,2),
+			font: "dialog",
+			bold: true,
+			elements: [{
+				name: sect.txt.replace("\x26", "\x26\x26"),
+				type: "static_text",
+				item_id: "tx" + section.substr(0,2),
+				alignment: "align_fill",
+				font: "dialog",
+				wrap_name: true,
+				char_width: halfWidth,
+			}],
 		};
 		if (sect.loc == "left") {
 			leftTxts.push(newCluster);
@@ -705,7 +705,7 @@ function AbilityScores_Button(onlySetTooltip) {
 					readonly: uneditable,
 				});
 			}
-			if (theStat.type == 'maximum') {
+			if (theStat.type == "maximum") {
 				var theMaxCol = theCol;
 			} else {
 				theColumns.push(theCol);
@@ -714,55 +714,55 @@ function AbilityScores_Button(onlySetTooltip) {
 
 		// Create the dialog variable
 		var AbilityScores_Dialog = {
-			fieldHoS : curHoS,
+			fieldHoS: curHoS,
 
-			initialize : function (dialog) {
+			initialize: function (dialog) {
 				var popupHoS = {
-					"*7th ability*" : !curHoS,
-					"Honor" : curHoS == "Honor",
-					"Sanity" : curHoS == "Sanity"
+					"*7th ability*": !curHoS,
+					"Honor": curHoS == "Honor",
+					"Sanity": curHoS == "Sanity",
 				};
 				// set the current scores, stat names, and dialog icon
 				var toSet = {
-					"exT0" : explanatoryTxt[0],
-					"exT1" : explanatoryTxt[1],
-					"img1" : allIcons.scores,
-					"olNm" : "Current Score",
-					"olSt" : ASround(What("Str")),
-					"olDx" : ASround(What("Dex")),
-					"olCn" : ASround(What("Con")),
-					"olIn" : ASround(What("Int")),
-					"olWs" : ASround(What("Wis")),
-					"olCh" : ASround(What("Cha")),
-					"olHS" : ASround(What("HoS")),
-					"nmNm" : "Ability Name",
-					"nmSt" : "Strength",
-					"nmDx" : "Dexterity",
-					"nmCn" : "Constitution",
-					"nmIn" : "Intelligence",
-					"nmWs" : "Wisdom",
-					"nmCh" : "Charisma",
-					"nmHS" : popupHoS,
-					"pbNm" : "Point Buy",
-					"tPNm" : "Point Buy total:",
-					"tNm0" : "New Total",
-					"00Nm" : CurrentStats.cols[0].name,
-					"abNm" : "Ability Abbr.",
-					"abSt" : "Str",
-					"abDx" : "Dex",
-					"abCn" : "Con",
-					"abIn" : "Int",
-					"abWs" : "Wis",
-					"abCh" : "Cha",
-					"abHS" : "HoS",
-					"cAdB" : "Add Column",
-					"cReB" : "Remove Column"
+					"exT0": explanatoryTxt[0],
+					"exT1": explanatoryTxt[1],
+					"img1": allIcons.scores,
+					"olNm": "Current Score",
+					"olSt": ASround(What("Str")),
+					"olDx": ASround(What("Dex")),
+					"olCn": ASround(What("Con")),
+					"olIn": ASround(What("Int")),
+					"olWs": ASround(What("Wis")),
+					"olCh": ASround(What("Cha")),
+					"olHS": ASround(What("HoS")),
+					"nmNm": "Ability Name",
+					"nmSt": "Strength",
+					"nmDx": "Dexterity",
+					"nmCn": "Constitution",
+					"nmIn": "Intelligence",
+					"nmWs": "Wisdom",
+					"nmCh": "Charisma",
+					"nmHS": popupHoS,
+					"pbNm": "Point Buy",
+					"tPNm": "Point Buy total:",
+					"tNm0": "New Total",
+					"00Nm": CurrentStats.cols[0].name,
+					"abNm": "Ability Abbr.",
+					"abSt": "Str",
+					"abDx": "Dex",
+					"abCn": "Con",
+					"abIn": "Int",
+					"abWs": "Wis",
+					"abCh": "Cha",
+					"abHS": "HoS",
+					"cAdB": "Add Column",
+					"cReB": "Remove Column",
 				};
 				// set the values
 				var anyExtraCols = false;
 				for (var i = 0; i < CurrentStats.cols.length; i++) {
 					var thisCol = CurrentStats.cols[i];
-					if (thisCol.type == 'extra') anyExtraCols = true;
+					if (thisCol.type == "extra") anyExtraCols = true;
 					var aNo = ("0" + i).slice(-2);
 					for (var s = 0; s < 7; s++) {
 						if (thisCol.scores[s]) toSet[aNo + asab2[s]] = thisCol.scores[s].toString();
@@ -772,7 +772,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				dialog.load(toSet);
 
 				// disable the 'remove column' button if there are no extra columns
-				if (!anyExtraCols) dialog.enable({ "cReB" : false });
+				if (!anyExtraCols) dialog.enable({ "cReB": false });
 
 				// now update the totals
 				for (var s = 0; s < 7; s++) {
@@ -784,7 +784,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				if (curHoS == "") this.showHoS(dialog, false);
 			},
 
-			commit : function (dialog) {
+			commit: function (dialog) {
 				var res = dialog.store();
 				// Save to the global variable
 				this.setCurrentStats(dialog);
@@ -792,10 +792,10 @@ function AbilityScores_Button(onlySetTooltip) {
 				// Update the Honor/Sanity
 				if (this.fieldHoS !== curHoS) ShowHonorSanity(this.fieldHoS);
 				// See if any stats changed
-				var statChange = { any : false, con : false, mental : false };
+				var statChange = { any: false, con: false, mental: false };
 				for (var s = 0; s < 7; s++) {
 					var abbr2 = asab2[s];
-					if (res["ol"+abbr2] != res["to"+abbr2]) {
+					if (res["ol" + abbr2] != res["to" + abbr2]) {
 						statChange.any = true;
 						if (abbr2 == "Cn") {
 							statChange.con = true;
@@ -811,7 +811,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				calcStop();
 				// Set the new ability scores to the fields (and their mods, so functions use the new one)
 				for (var s = 0; s < 7; s++) {
-					var theAbi = Number(res["to"+asab2[s]]);
+					var theAbi = Number(res["to" + asab2[s]]);
 					Value(asab3[s], theAbi);
 					Value(asab3[s] + " Mod", Math.round((theAbi - 10.5) * 0.5));
 				}
@@ -831,7 +831,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				thermoM(thermoTxt, true); // Stop progress bar
 			},
 
-			setCurrentStats : function (dialog) {
+			setCurrentStats: function (dialog) {
 				var res = dialog.store();
 				for (var i = 0; i < CurrentStats.cols.length; i++) {
 					var aNo = ("0" + i).slice(-2);
@@ -842,7 +842,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				}
 			},
 
-			nmHS : function (dialog) {
+			nmHS: function (dialog) {
 				var popupHoS = dialog.store()["nmHS"];
 				for (var thing in popupHoS) {
 					if (popupHoS[thing] > 0) {
@@ -854,12 +854,12 @@ function AbilityScores_Button(onlySetTooltip) {
 				};
 			},
 
-			showHoS : function (dialog, showIt) {
+			showHoS: function (dialog, showIt) {
 				var toShow = {
-					"olHS" : showIt,
-					"pbHS" : showIt,
-					"toHS" : showIt,
-					"abHS" : showIt
+					"olHS": showIt,
+					"pbHS": showIt,
+					"toHS": showIt,
+					"abHS": showIt,
 				};
 				for (var i = 0; i < CurrentStats.cols.length; i++) {
 					var aNo = ("0" + i).slice(-2);
@@ -868,7 +868,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				dialog.visible(toShow);
 			},
 
-			updateVals : function (dialog, fldNm, alsoPB) {
+			updateVals: function (dialog, fldNm, alsoPB) {
 				// make sure it is a number
 				var res = dialog.store();
 				var newLoad = {};
@@ -880,7 +880,7 @@ function AbilityScores_Button(onlySetTooltip) {
 				if (alsoPB) this.updatePB(dialog, fldNm);
 			},
 
-			updateTotal : function (dialog, fldNm) {
+			updateTotal: function (dialog, fldNm) {
 				var res = dialog.store();
 				var type = fldNm.slice(-2);
 				var stat = getAbilityScoreTotals(type, res);
@@ -890,18 +890,18 @@ function AbilityScores_Button(onlySetTooltip) {
 				dialog.load(totalLoad);
 			},
 
-			updatePB : function (dialog, fldNm) {
+			updatePB: function (dialog, fldNm) {
 				var res = dialog.store();
 				var type = fldNm.slice(-2);
 				var PBset = {};
-				PBset["pb"+type] = ASCalcPointBuy(res["00"+type]);
+				PBset["pb" + type] = ASCalcPointBuy(res["00" + type]);
 				dialog.load(PBset);
 				this.updatePBtotal(dialog);
 			},
 
-			updatePBtotal : function (dialog) {
+			updatePBtotal: function (dialog) {
 				var res = dialog.store();
-				var PBset = { "toPB" : 0 };
+				var PBset = { "toPB": 0 };
 				for (var s = 0; s < 7; s++) {
 					var toAdd = res["pb" + asab2[s]];
 					PBset.toPB += isNaN(toAdd) ? 0 : Number(toAdd);
@@ -910,435 +910,433 @@ function AbilityScores_Button(onlySetTooltip) {
 				dialog.load(PBset);
 			},
 
-			cAdB : function (dialog) { // add a column
+			cAdB: function (dialog) { // add a column
 				this.setCurrentStats(dialog);
 				dialog.end("cadd");
 			},
 
-			cReB : function (dialog) { // remove a column
+			cReB: function (dialog) { // remove a column
 				this.setCurrentStats(dialog);
 				dialog.end("crem");
 			},
 
-			description : {
-				name : "ABILITY SCORES DIALOG",
-				elements : [{
-					type : "view",
-					elements : [{
-						type : "view", // the top row
-						align_children : "align_row",
-						elements : [{
-							type : "image",
-							item_id : "img1",
-							width : 20,
-							height : 20
+			description: {
+				name: "ABILITY SCORES DIALOG",
+				elements: [{
+					type: "view",
+					elements: [{
+						type: "view", // the top row
+						align_children: "align_row",
+						elements: [{
+							type: "image",
+							item_id: "img1",
+							width: 20,
+							height: 20,
 						}, {
-							type : "static_text",
-							item_id : "Hea0",
-							alignment : "align_fill",
-							font : "title",
-							bold : true,
-							height : 23,
-							width : 100,
-							name : titleTxt
-						}]
+							type: "static_text",
+							item_id: "Hea0",
+							alignment: "align_fill",
+							font: "title",
+							bold: true,
+							height: 23,
+							width: 100,
+							name: titleTxt,
+						}],
 					}, {
-						type : "view", // improvement texts
-						align_children : "align_distribute",
-						elements : [{
-							type : "view", // left column of clusters
-							align_children : "align_left",
-							elements : leftTxts
+						type: "view", // improvement texts
+						align_children: "align_distribute",
+						elements: [{
+							type: "view", // left column of clusters
+							align_children: "align_left",
+							elements: leftTxts,
 						}, {
-							type : "view", // right column of clusters
-							align_children : "align_right",
-							elements : rightTxts
-						}]
+							type: "view", // right column of clusters
+							align_children: "align_right",
+							elements: rightTxts,
+						}],
 					}, {
-						type : "view", // the value columns
-						alignment : "align_fill",
-						align_children : "align_distribute",
-						elements : ([{
-							type : "view", // old scores
-							elements : [{
-								type : "static_text",
-								item_id : "olNm",
-								font : "dialog",
-								bold : true,
-								char_width : 5,
-								height : 32,
-								alignment : "align_center",
-								wrap_name : true,
-								name : "Current Score"
+						type: "view", // the value columns
+						alignment: "align_fill",
+						align_children: "align_distribute",
+						elements: ([{
+							type: "view", // old scores
+							elements: [{
+								type: "static_text",
+								item_id: "olNm",
+								font: "dialog",
+								bold: true,
+								char_width: 5,
+								height: 32,
+								alignment: "align_center",
+								wrap_name: true,
+								name: "Current Score",
 							}, {
-								type : "static_text",
-								item_id : "olSt",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "olSt",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "olDx",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "olDx",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "olCn",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "olCn",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "olIn",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "olIn",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "olWs",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "olWs",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "olCh",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "olCh",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "olHS",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
-							}]
+								type: "static_text",
+								item_id: "olHS",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
+							}],
 						}, {
-							type : "view", // a combined view for two columns to have the point buy total text
-							elements : [{
-								type : "view",
-								align_children : "align_distribute",
-								elements : [{
-									type : "view", // ability score names
-									elements : [{
-										type : "static_text",
-										item_id : "nmNm",
-										font : "dialog",
-										bold : true,
-										char_width : 4,
-										height : 32,
-										wrap_name : true,
-										alignment : "align_left",
-										name : "Ability Name"
+							type: "view", // a combined view for two columns to have the point buy total text
+							elements: [{
+								type: "view",
+								align_children: "align_distribute",
+								elements: [{
+									type: "view", // ability score names
+									elements: [{
+										type: "static_text",
+										item_id: "nmNm",
+										font: "dialog",
+										bold: true,
+										char_width: 4,
+										height: 32,
+										wrap_name: true,
+										alignment: "align_left",
+										name: "Ability Name",
 									}, {
-										type : "static_text",
-										item_id : "nmSt",
-										height : 25,
-										name : "Strength"
+										type: "static_text",
+										item_id: "nmSt",
+										height: 25,
+										name: "Strength",
 									}, {
-										type : "static_text",
-										item_id : "nmDx",
-										height : 25,
-										name : "Dexterity"
+										type: "static_text",
+										item_id: "nmDx",
+										height: 25,
+										name: "Dexterity",
 									}, {
-										type : "static_text",
-										item_id : "nmCn",
-										height : 25,
-										name : "Constitution"
+										type: "static_text",
+										item_id: "nmCn",
+										height: 25,
+										name: "Constitution",
 									}, {
-										type : "static_text",
-										item_id : "nmIn",
-										height : 25,
-										name : "Intelligence"
+										type: "static_text",
+										item_id: "nmIn",
+										height: 25,
+										name: "Intelligence",
 									}, {
-										type : "static_text",
-										item_id : "nmWs",
-										height : 25,
-										name : "Wisdom"
+										type: "static_text",
+										item_id: "nmWs",
+										height: 25,
+										name: "Wisdom",
 									}, {
-										type : "static_text",
-										item_id : "nmCh",
-										height : 24,
-										name : "Charisma"
+										type: "static_text",
+										item_id: "nmCh",
+										height: 24,
+										name: "Charisma",
 									}, {
-										type : "popup",
-										item_id : "nmHS",
-										height : 22,
-										char_width : 6
-									}]
+										type: "popup",
+										item_id: "nmHS",
+										height: 22,
+										char_width: 6,
+									}],
 								}, {
-									type : "view", // base scores
-									elements : [{
-										type : "static_text",
-										item_id : "00Nm",
-										font : "dialog",
-										bold : true,
-										char_width : 4,
-										height : 30,
-										alignment : "align_left",
-										wrap_name : true,
-										name : "Base Score"
+									type: "view", // base scores
+									elements: [{
+										type: "static_text",
+										item_id: "00Nm",
+										font: "dialog",
+										bold: true,
+										char_width: 4,
+										height: 30,
+										alignment: "align_left",
+										wrap_name: true,
+										name: "Base Score",
 									}, {
-										type : "edit_text",
-										item_id : "00St",
-										char_width : 3,
-										height : 25,
-										SpinEdit : true
+										type: "edit_text",
+										item_id: "00St",
+										char_width: 3,
+										height: 25,
+										SpinEdit: true,
 									}, {
-										type : "edit_text",
-										item_id : "00Dx",
-										char_width : 3,
-										height : 25,
-										SpinEdit : true
+										type: "edit_text",
+										item_id: "00Dx",
+										char_width: 3,
+										height: 25,
+										SpinEdit: true,
 									}, {
-										type : "edit_text",
-										item_id : "00Cn",
-										char_width : 3,
-										height : 25,
-										SpinEdit : true
+										type: "edit_text",
+										item_id: "00Cn",
+										char_width: 3,
+										height: 25,
+										SpinEdit: true,
 									}, {
-										type : "edit_text",
-										item_id : "00In",
-										char_width : 3,
-										height : 25,
-										SpinEdit : true
+										type: "edit_text",
+										item_id: "00In",
+										char_width: 3,
+										height: 25,
+										SpinEdit: true,
 									}, {
-										type : "edit_text",
-										item_id : "00Ws",
-										char_width : 3,
-										height : 25,
-										SpinEdit : true
+										type: "edit_text",
+										item_id: "00Ws",
+										char_width: 3,
+										height: 25,
+										SpinEdit: true,
 									}, {
-										type : "edit_text",
-										item_id : "00Ch",
-										char_width : 3,
-										height : 25,
-										SpinEdit : true
+										type: "edit_text",
+										item_id: "00Ch",
+										char_width: 3,
+										height: 25,
+										SpinEdit: true,
 									}, {
-										type : "edit_text",
-										item_id : "00HS",
-										char_width : 3,
-										height : 25,
-										SpinEdit : true
-									}]
-								}]
+										type: "edit_text",
+										item_id: "00HS",
+										char_width: 3,
+										height: 25,
+										SpinEdit: true,
+									}],
+								}],
 							}, {
-								type : "static_text",
-								item_id : "tPNm",
-								font : "dialog",
-								bold : true,
-								height : 25,
-								char_width : 8,
-								alignment : "align_right",
-								name : "Point Buy total:"
-							}]
+								type: "static_text",
+								item_id: "tPNm",
+								font: "dialog",
+								bold: true,
+								height: 25,
+								char_width: 8,
+								alignment: "align_right",
+								name: "Point Buy total:",
+							}],
 						}, {
-							type : "view", // point buy values
-							elements : [{
-								type : "static_text",
-								item_id : "pbNm",
-								font : "dialog",
-								bold : true,
-								char_width : 4,
-								height : 32,
-								wrap_name : true,
-								alignment : "align_center",
-								name : "Point Buy"
+							type: "view", // point buy values
+							elements: [{
+								type: "static_text",
+								item_id: "pbNm",
+								font: "dialog",
+								bold: true,
+								char_width: 4,
+								height: 32,
+								wrap_name: true,
+								alignment: "align_center",
+								name: "Point Buy",
 							}, {
-								type : "static_text",
-								item_id : "pbSt",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "pbSt",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "pbDx",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "pbDx",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "pbCn",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "pbCn",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "pbIn",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "pbIn",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "pbWs",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "pbWs",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "pbCh",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "pbCh",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "pbHS",
-								name : "0",
-								char_width : 3,
-								height : 22,
-								alignment : "align_center"
+								type: "static_text",
+								item_id: "pbHS",
+								name: "0",
+								char_width: 3,
+								height: 22,
+								alignment: "align_center",
 							}, {
-								type : "static_text",
-								item_id : "toPB",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								font : "dialog",
-								bold : true,
-								alignment : "align_center"
-							}]
-						}]).concat(
-							theColumns // the columns created above
-						).concat([{
-							type : "view", // the totals
-							elements : [{
-								type : "static_text",
-								item_id : "toNm",
-								font : "dialog",
-								bold : true,
-								char_width : 4,
-								height : 32,
-								wrap_name : true,
-								alignment : "align_center",
-								name : "New Total"
+								type: "static_text",
+								item_id: "toPB",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								font: "dialog",
+								bold: true,
+								alignment: "align_center",
+							}],
+						}]).concat(theColumns) // the columns created above
+						.concat([{
+							type: "view", // the totals
+							elements: [{
+								type: "static_text",
+								item_id: "toNm",
+								font: "dialog",
+								bold: true,
+								char_width: 4,
+								height: 32,
+								wrap_name: true,
+								alignment: "align_center",
+								name: "New Total",
 							}, {
-								type : "static_text",
-								item_id : "toSt",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center",
-								font : "dialog",
-								bold : true
+								type: "static_text",
+								item_id: "toSt",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
+								font: "dialog",
+								bold: true,
 							}, {
-								type : "static_text",
-								item_id : "toDx",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center",
-								font : "dialog",
-								bold : true
+								type: "static_text",
+								item_id: "toDx",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
+								font: "dialog",
+								bold: true,
 							}, {
-								type : "static_text",
-								item_id : "toCn",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center",
-								font : "dialog",
-								bold : true
+								type: "static_text",
+								item_id: "toCn",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
+								font: "dialog",
+								bold: true,
 							}, {
-								type : "static_text",
-								item_id : "toIn",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center",
-								font : "dialog",
-								bold : true
+								type: "static_text",
+								item_id: "toIn",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
+								font: "dialog",
+								bold: true,
 							}, {
-								type : "static_text",
-								item_id : "toWs",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center",
-								font : "dialog",
-								bold : true
+								type: "static_text",
+								item_id: "toWs",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
+								font: "dialog",
+								bold: true,
 							}, {
-								type : "static_text",
-								item_id : "toCh",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center",
-								font : "dialog",
-								bold : true
+								type: "static_text",
+								item_id: "toCh",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
+								font: "dialog",
+								bold: true,
 							}, {
-								type : "static_text",
-								item_id : "toHS",
-								name : "0",
-								char_width : 3,
-								height : 25,
-								alignment : "align_center",
-								font : "dialog",
-								bold : true
-							}]
-						}]).concat(
-							theMaxCol // the maximum column created above
-						).concat([{
-							type : "view", // ability score names
-							elements : [{
-								type : "static_text",
-								item_id : "abNm",
-								font : "dialog",
-								bold : true,
-								char_width : 4,
-								height : 32,
-								wrap_name : true,
-								aligabent : "align_left",
-								name : "Ability Abbr."
+								type: "static_text",
+								item_id: "toHS",
+								name: "0",
+								char_width: 3,
+								height: 25,
+								alignment: "align_center",
+								font: "dialog",
+								bold: true,
+							}],
+						}]).concat(theMaxCol) // the maximum column created above
+						.concat([{
+							type: "view", // ability score names
+							elements: [{
+								type: "static_text",
+								item_id: "abNm",
+								font: "dialog",
+								bold: true,
+								char_width: 4,
+								height: 32,
+								wrap_name: true,
+								aligabent: "align_left",
+								name: "Ability Abbr.",
 							}, {
-								type : "static_text",
-								item_id : "abSt",
-								height : 25,
-								name : "Str"
+								type: "static_text",
+								item_id: "abSt",
+								height: 25,
+								name: "Str",
 							}, {
-								type : "static_text",
-								item_id : "abDx",
-								height : 25,
-								name : "Dex"
+								type: "static_text",
+								item_id: "abDx",
+								height: 25,
+								name: "Dex",
 							}, {
-								type : "static_text",
-								item_id : "abCn",
-								height : 25,
-								name : "Con"
+								type: "static_text",
+								item_id: "abCn",
+								height: 25,
+								name: "Con",
 							}, {
-								type : "static_text",
-								item_id : "abIn",
-								height : 25,
-								name : "Int"
+								type: "static_text",
+								item_id: "abIn",
+								height: 25,
+								name: "Int",
 							}, {
-								type : "static_text",
-								item_id : "abWs",
-								height : 25,
-								name : "Wis"
+								type: "static_text",
+								item_id: "abWs",
+								height: 25,
+								name: "Wis",
 							}, {
-								type : "static_text",
-								item_id : "abCh",
-								height : 25,
-								name : "Cha"
+								type: "static_text",
+								item_id: "abCh",
+								height: 25,
+								name: "Cha",
 							}, {
-								type : "static_text",
-								item_id : "abHS",
-								height : 25,
-								name : "HoS"
-							}]
-						}])
+								type: "static_text",
+								item_id: "abHS",
+								height: 25,
+								name: "HoS",
+							}],
+						}]),
 					}, {
 						type: "view",
 						align_children: "align_distribute",
@@ -1367,29 +1365,29 @@ function AbilityScores_Button(onlySetTooltip) {
 								name: explanatoryTxt[1],
 							}],
 						}, {
-							type : "cluster",
-							name : "Add or Remove Columns",
-							align_children : "align_center",
-							item_id : "coCl",
-							font : "dialog",
-							bold : true,
-							elements : [{
-								type : "button",
-								item_id : "cAdB",
-								name : "Add Column"
+							type: "cluster",
+							name: "Add or Remove Columns",
+							align_children: "align_center",
+							item_id: "coCl",
+							font: "dialog",
+							bold: true,
+							elements: [{
+								type: "button",
+								item_id: "cAdB",
+								name: "Add Column",
 							}, {
-								type : "button",
-								item_id : "cReB",
-								name : "Remove Column"
-							}]
-						}]
+								type: "button",
+								item_id: "cReB",
+								name: "Remove Column",
+							}],
+						}],
 					}, {
-						item_id : "appl",
-						type : "ok_cancel",
-						ok_name : "Apply"
-					}]
-				}]
-			}
+						item_id: "appl",
+						type: "ok_cancel",
+						ok_name: "Apply",
+					}],
+				}],
+			},
 		}
 
 		// Add the functions to the dialog variables
@@ -1533,7 +1531,7 @@ function ASaddColumn(inputName, typeName, index) {
 	var theDialog = {
 		initialize: function (dialog) {
 			dialog.load({
-				"img1" : allIcons.scores
+				"img1": allIcons.scores,
 			});
 		},
 		commit: function (dialog) {
@@ -1569,7 +1567,7 @@ function ASaddColumn(inputName, typeName, index) {
 					item_id: "txt0",
 					wrap_name: true,
 					char_width: 30,
-					name: diaText
+					name: diaText,
 				}, {
 					type: "edit_text",
 					alignment: "align_center",
@@ -1596,7 +1594,7 @@ function ASaddColumn(inputName, typeName, index) {
 	var newColName = inputName ? inputName : app.execDialog(theDialog) === "ok" && theDialog.column ? theDialog.column : false;
 	if (newColName) {
 		var oColumn = {
-			type: typeName ? typeName : 'extra',
+			type: typeName ? typeName : "extra",
 			name: newColName,
 			scores: [0,0,0,0,0,0,0],
 		};
@@ -1613,79 +1611,79 @@ function ASremoveColumn() {
 	var diaHead = "Select the column to remove";
 	var diaText = "Removing a column can't be undone once you press 'Apply' in the ability scores dialog! Any values in the column will then forever be lost.";
 	var diaText2 = "If you leave the selection blank, nothing will be removed.";
-	var diaPopup = { " " : 1 };
+	var diaPopup = { " ": 1 };
 	for (var i = 6; i < CurrentStats.cols.length; i++) {
 		var theCol = CurrentStats.cols[i];
-		if (theCol.type == 'extra') diaPopup[theCol.name] = -1;
+		if (theCol.type == "extra") diaPopup[theCol.name] = -1;
 	}
 	var theDialog = {
-		popupObj : diaPopup,
-		initialize : function (dialog) {
+		popupObj: diaPopup,
+		initialize: function (dialog) {
 			dialog.load({
-				"img1" : allIcons.scores,
-				"popu" : this.popupObj
+				"img1": allIcons.scores,
+				"popu": this.popupObj,
 			});
 		},
-		commit : function (dialog) {
+		commit: function (dialog) {
 			var res = dialog.store()["popu"];
 			this.column = GetPositiveElement(res);
 		},
-		description : {
-			name : "REMOVE COLUMN DIALOG",
-			elements : [{
-				type : "view",
-				align_children : "align_left",
-				elements : [{
-					type : "view", // the top row
-					align_children : "align_row",
-					elements : [{
-						type : "image",
-						item_id : "img1",
-						width : 20,
-						height : 20
+		description: {
+			name: "REMOVE COLUMN DIALOG",
+			elements: [{
+				type: "view",
+				align_children: "align_left",
+				elements: [{
+					type: "view", // the top row
+					align_children: "align_row",
+					elements: [{
+						type: "image",
+						item_id: "img1",
+						width: 20,
+						height: 20,
 					}, {
-						type : "static_text",
-						item_id : "head",
-						alignment : "align_fill",
-						font : "heading",
-						bold : true,
-						height : 21,
-						char_width : 25,
-						name : diaHead
-					}]
+						type: "static_text",
+						item_id: "head",
+						alignment: "align_fill",
+						font: "heading",
+						bold: true,
+						height: 21,
+						char_width: 25,
+						name: diaHead,
+					}],
 				}, {
-					type : "static_text",
-					alignment : "align_fill",
-					item_id : "txt1",
-					wrap_name : true,
-					char_width : 30,
-					name : diaText
+					type: "static_text",
+					alignment: "align_fill",
+					item_id: "txt1",
+					wrap_name: true,
+					char_width: 30,
+					name: diaText,
 				}, {
-					type : "popup",
-					alignment : "align_center",
-					item_id : "popu",
-					char_width : 12,
-					height : 25
+					type: "popup",
+					alignment: "align_center",
+					item_id: "popu",
+					char_width: 12,
+					height: 25,
 				}, {
-					type : "static_text",
-					alignment : "align_fill",
-					item_id : "txt1",
-					wrap_name : true,
-					char_width : 30,
-					font : "dialog",
-					bold : true,
-					name : diaText2
+					type: "static_text",
+					alignment: "align_fill",
+					item_id: "txt1",
+					wrap_name: true,
+					char_width: 30,
+					font: "dialog",
+					bold: true,
+					name: diaText2,
 				}, {
-					type : "ok_cancel",
-					ok_nam : "Add Column"
-				}]
-			}]
-		}
+					type: "ok_cancel",
+					ok_nam: "Add Column",
+				}],
+			}],
+		},
 	};
 	if (app.execDialog(theDialog) != "ok" || !theDialog.column || theDialog.column == " ") return;
 	for (var i = 6; i < CurrentStats.cols.length; i++) {
 		var theCol = CurrentStats.cols[i];
-		if (theCol.type == 'extra' && theCol.name == theDialog.column) {
+		if (theCol.type == "extra" && theCol.name == theDialog.column) {
 			CurrentStats.cols.splice(i, 1);
 			break;
 		}

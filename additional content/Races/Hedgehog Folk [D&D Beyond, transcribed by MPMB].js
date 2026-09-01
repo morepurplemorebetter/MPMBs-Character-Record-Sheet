@@ -22,31 +22,31 @@ var iFileName = "Hedgehog Folk [D&D Beyond, transcribed by MPMB].js";
 RequiredSheetVersion(13);
 
 SourceList["DnD-B:HF"] = {
-	name : "D&D Beyond: Hedgehog Folk",
-	abbreviation : "DnD-B:HF",
-	group : "D&D Beyond",
-	url : "https://www.dndbeyond.com/characters/races/9921-hedgehog-folk",
-	date : "2018/02/21"
+	name: "D&D Beyond: Hedgehog Folk",
+	abbreviation: "DnD-B:HF",
+	group: "D&D Beyond",
+	url: "https://www.dndbeyond.com/characters/races/9921-hedgehog-folk",
+	date: "2018/02/21",
 };
 
 RaceList["hedgehog folk"] = {
-	regExpSearch : /^((?=.*hedgehog)(?=.*folk)|(?=.*erina)).*$/i,
-	name : "Erina",
-	sortname : "Hedgehog Folk (Erina)",
-	source : [["DnD-B:HF", 0]],
-	plural : "Erinas",
-	size : 4,
-	speed : {
-		walk : { spd : 25, enc : 15 },
-		burrow : { spd : 40, enc : 30 }
+	regExpSearch: /^((?=.*hedgehog)(?=.*folk)|(?=.*erina)).*$/i,
+	name: "Erina",
+	sortname: "Hedgehog Folk (Erina)",
+	source: [["DnD-B:HF", 0]],
+	plural: "Erinas",
+	size: 4,
+	speed: {
+		walk: { spd: 25, enc: 15 },
+		burrow: { spd: 40, enc: 30 },
 	},
-	languageProfs : ["Common", "Sylvan"],
-	skills : ["Survival"],
-	age : " reach maturity by age 2, but usually don't live past 20 years",
-	height : " stand around 2 feet tall",
-	weight : " have thin, lightweight bodies that weigh between 30 and 40 pounds",
-	heightMetric : " stand around 60 cm tall",
-	weightMetric : " have thin, lightweight bodies that weigh between 13 and 18 kg",
-	scores : [1, 2, 0, 0, 0, 0],
-	trait : "Erina (+1 Strength, +2 Dexterity)\n   Burrowed Villages: I have advantage on initiative and ability checks when underground\n\n   Scroungers and Gatherers: I have proficiency in survival and advantage on survival checks\n\n   Spiny Back: I have a quilled back that grants me advantage on grapple (athletics) checks"
+	languageProfs: ["Common", "Sylvan"],
+	skills: ["Survival"],
+	age: " reach maturity by age 2, but usually don't live past 20 years",
+	height: " stand around 2 feet tall",
+	weight: " have thin, lightweight bodies that weigh between 30 and 40 pounds",
+	heightMetric: " stand around 60 cm tall",
+	weightMetric: " have thin, lightweight bodies that weigh between 13 and 18 kg",
+	scores: [1, 2, 0, 0, 0, 0],
+	trait: "Erina (+1 Strength, +2 Dexterity)\n   Burrowed Villages: I have advantage on initiative and ability checks when underground\n\n   Scroungers and Gatherers: I have proficiency in survival and advantage on survival checks\n\n   Spiny Back: I have a quilled back that grants me advantage on grapple (athletics) checks",
 };

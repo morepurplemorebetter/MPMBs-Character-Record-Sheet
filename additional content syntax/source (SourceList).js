@@ -103,7 +103,7 @@ SourceList["BoP"] = {
 	Note that this doesn't have to be only lower case!
 	Also note the absence of the word "var" and the use of brackets [].
 */
-	name : "Book of Purple",
+	name: "Book of Purple",
 /*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the source as it will be used by the sheet
@@ -111,7 +111,7 @@ SourceList["BoP"] = {
 	This is the full name of the source.
 	The full name will only be used in tooltips and dialogs, so make it as long as you want.
 */
-	abbreviation : "BoP",
+	abbreviation: "BoP",
 /*	abbreviation // REQUIRED //
 	TYPE:	string
 	USE:	abbreviation of the source as it will be used by the sheet
@@ -121,7 +121,7 @@ SourceList["BoP"] = {
 	This is a greatly shortened name of the source.
 	The abbreviation will be used extensively throughout the sheets, so be sure to make it easily recognizable.
 */
-	abbreviationSpellsheet : "P",
+	abbreviationSpellsheet: "P",
 /*	abbreviationSpellsheet // OPTIONAL //
 	TYPE:	string
 	USE:	abbreviation of the source as it will be used on the spell sheet pages in the "B" column
@@ -139,7 +139,7 @@ SourceList["BoP"] = {
 	(not the `abbreviation` attribute).
 	For example, for the above `SourceList["BoP"]`, the sheet will put a "B" on the spell sheet page.
 */
-	date : "2019/02/26",
+	date: "2019/02/26",
 /*	date // OPTIONAL //
 	TYPE:	string
 	USE:	date of the source
@@ -153,7 +153,7 @@ SourceList["BoP"] = {
 
 	A SourceList entry without this attribute will always considered to be newer than one with it.
 */
-	group : "BoP",
+	group: "BoP",
 /*	group // OPTIONAL //
 	TYPE:	string
 	USE:	group to list the source under in the Source Materials dialog
@@ -176,7 +176,7 @@ SourceList["BoP"] = {
 	 "Reddit/r/UnearthedArcana" // Homebrew found on the /r/UnearthedArcana subreddit
 	 "D&D Beyond"               // Homebrew found on the D&D Beyond website
 */
-	campaignSetting : "Forgotten Realms",
+	campaignSetting: "Forgotten Realms",
 /*	campaignSetting // OPTIONAL //
 	TYPE:	string
 	USE:	the setting for which this source is written, if any
@@ -184,7 +184,7 @@ SourceList["BoP"] = {
 	Added the setting will make it possible, in the future, to sort/group the sources for that setting,
 	thus making it easier to include or exclude everything from a specific setting.
 */
-	url : "https://nonexisting-website.com/Book_of_Purple.pdf",
+	url: "https://nonexisting-website.com/Book_of_Purple.pdf",
 /*	url // OPTIONAL //
 	TYPE:	string
 	USE:	link to the source online
@@ -193,7 +193,7 @@ SourceList["BoP"] = {
 
 	Please use https if available.
 */
-	defaultExcluded : true,
+	defaultExcluded: true,
 /*	defaultExcluded // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this source should be excluded by default (true) or included by default (false)

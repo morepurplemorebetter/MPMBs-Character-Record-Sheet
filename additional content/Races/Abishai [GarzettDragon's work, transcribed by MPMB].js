@@ -19,36 +19,36 @@ var iFileName = "Abishai [GarzettDragon's work, transcribed by MPMB].js";
 RequiredSheetVersion("13.1.14");
 
 RaceList["abishai"] = {
-	regExpSearch : /abishai/i,
-	name : "Abishai",
-	sortname : "Abishai",
-	source : [["HB", 0]],
-	plural : "Abishais",
-	size : 3,
-	speed : {
-		walk : { spd : 30, enc : 20 },
-		walk : { spd : 40, enc : 30 }
+	regExpSearch: /abishai/i,
+	name: "Abishai",
+	sortname: "Abishai",
+	source: [["HB", 0]],
+	plural: "Abishais",
+	size: 3,
+	speed: {
+		walk: { spd: 30, enc: 20 },
+		walk: { spd: 40, enc: 30 },
 	},
-	languageProfs : ["Common", "Draconic", "Infernal"],
-	vision : [["Darkvision", 120]],
-	savetxt : { immune : ["poison", "disease"] },
-	scores : [0, 0, 2, 0, 0, 1],
-	armorOptions : [{
-		regExpSearch : /^(?=.*natural)(?=.*armou?r).*$/i,
-		name : "Natural Armor",
-		source : [["HB", 0]],
-		ac : "10+Con+Cha",
-		dex : -10,
-		selectNow : true
+	languageProfs: ["Common", "Draconic", "Infernal"],
+	vision: [["Darkvision", 120]],
+	savetxt: { immune: ["poison", "disease"] },
+	scores: [0, 0, 2, 0, 0, 1],
+	armorOptions: [{
+		regExpSearch: /^(?=.*natural)(?=.*armou?r).*$/i,
+		name: "Natural Armor",
+		source: [["HB", 0]],
+		ac: "10+Con+Cha",
+		dex: -10,
+		selectNow: true,
 	}],
-	abilitySave : 6,
-	trait : [
+	abilitySave: 6,
+	trait: [
 		"Abishai (+2 Constitution, +1 Charisma)",
 		"Devil: my creature type is fiend (devil), rather than humanoid.",
 		"Natural Armor: I have an AC of 10 + Constitution modifier + Charisma modifier + shield.",
-		"Fearful Presence: Each creature of my choice that I can see that starts its turn within 10 ft of me, must succeed on a Wisdom save (DC 8 + Prof B. + Cha mod) or become frightened of me until the end of their next turn. If they roll a 1 on the save, they become paralyzed instead. Once they succeed a save, they can't be affected again by this for 24 hours."
+		"Fearful Presence: Each creature of my choice that I can see that starts its turn within 10 ft of me, must succeed on a Wisdom save (DC 8 + Prof B. + Cha mod) or become frightened of me until the end of their next turn. If they roll a 1 on the save, they become paralyzed instead. Once they succeed a save, they can't be affected again by this for 24 hours.",
 	].join("\n\u2022 "),
-	variants : []
+	variants: [],
 };
 
 [
@@ -59,12 +59,12 @@ RaceList["abishai"] = {
 	["Purple", "Necrotic"],
 	["Red", "Fire"],
 	["White", "Radiant"],
-	["Yellow", "Lightning"]
+	["Yellow", "Lightning"],
 ].forEach(function(n) {
 	AddRacialVariant("abishai", n[0].toLowerCase(), {
-		regExpSearch : RegExp(n[0], "i"),
-		name : n[0] + " Abishai",
-		trait : n[0] + " " + RaceList["abishai"].trait,
-		dmgres : [n[1]]
+		regExpSearch: RegExp(n[0], "i"),
+		name: n[0] + " Abishai",
+		trait: n[0] + " " + RaceList["abishai"].trait,
+		dmgres: [n[1]],
 	});
 });

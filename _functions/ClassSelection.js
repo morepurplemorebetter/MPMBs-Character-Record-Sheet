@@ -20,10 +20,10 @@ function SelectClass() {
 		return;
 	} else if (CurrentVars.manual.classes) {
 		var openManualDia = app.alert({
-			cTitle : "Class processing is set to manual",
-			nType : 2,
-			nIcon : 1,
-			cMsg : "Class processing has been turned off. Because of that, the class selection dialog won't work.\n\nWould you like to open the dialog to turn class processing back on?"
+			cTitle: "Class processing is set to manual",
+			nType: 2,
+			nIcon: 1,
+			cMsg: "Class processing has been turned off. Because of that, the class selection dialog won't work.\n\nWould you like to open the dialog to turn class processing back on?",
 		});
 		if (openManualDia == 4) SetToManual_Button();
 		if (CurrentVars.manual.classes) return;
@@ -36,7 +36,7 @@ function SelectClass() {
 	//make an object for each class' list of subclasses
 	var setClassesToDialog = function() {
 		hasUAranger = !testSource("rangerua", ClassList.rangerua, "classExcl");
-		ClassSelection_Dialog.classes = {" " : 1};
+		ClassSelection_Dialog.classes = { " ": 1 };
 		ClassSelection_Dialog.classesRef = {};
 		ClassSelection_Dialog.subclasses = {};
 		ClassSelection_Dialog.subclassesRef = {};
@@ -45,12 +45,12 @@ function SelectClass() {
 			if (testSource(aClass, ClassList[aClass], "classExcl") || aClass != ParseClass(CL.name)[0]) continue; // Only include if the class or its source isn't excluded and parsing its name yields the right reference
 			ClassSelection_Dialog.classes[CL.name] = -1;
 			ClassSelection_Dialog.classesRef[CL.name] = aClass;
-			ClassSelection_Dialog.subclasses[aClass] = {" " : 1};
+			ClassSelection_Dialog.subclasses[aClass] = { " ": 1 };
 			CL.subclasses[1].forEach( function(aSubClass) {
 				var sCL = ClassSubList[aSubClass];
 				if (!sCL || testSource(aSubClass, sCL, "classExcl") || aSubClass != ParseClass(sCL.fullname ? sCL.fullname : CL.name + " (" + sCL.subname + ")")[1]) return;
 				ClassSelection_Dialog.subclasses[aClass][sCL.subname] = -1;
-				ClassSelection_Dialog.subclassesRef[aClass+"-"+sCL.subname] = aSubClass;
+				ClassSelection_Dialog.subclassesRef[aClass + "-" + sCL.subname] = aSubClass;
 			});
 		};
 		setDialogName(ClassSelection_Dialog, "rngr", "wrap_name", hasUAranger ? true : false);
@@ -70,7 +70,7 @@ function SelectClass() {
 				clP[1], // level
 				clP[0], // string as it is in the class field
 				"", // recognized class
-				"" // recognized subclass
+				"", // recognized subclass
 			]);
 		});
 		ClassSelection_Dialog.currentLevel = charLvl;
@@ -118,33 +118,33 @@ function SelectClass() {
 		};
 	};
 	var dialogTxt = {
-		dsc1 : "When you select a class or a subclass in the drop-down boxes in this dialog, the text field in the same line will update accordingly, and vice versa.\nThe drop-down boxes will only update once you click/tab outside of the text field.",
-		dsc2 : "Although the sheet knows of only one way to set the text field from the drop-down boxes, it understands very many different textual inputs. You can test this by typing something in the text field and see what the sheet recognizes it as. For example, if you enter 'War Priest' it will be recognized as a 'Cleric (War Domain)', and when you enter 'Exalted Knight of Obedience' it will be recognized as 'Paladin (Oath of Devotion)'.",
-		lvlu : theChar + "'s level has increased by 1, to a total of 1. Please change the level of one or more classes accordingly, or add a new class.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level).",
-		note : "* This first row has to be used and is considered the class taken at 1st level, i.e. the class that grants all its proficiencies.",
-		rngr : "IMPORTANT: As you have included the source 'Unearthed Arcana: The Ranger, Revised', the UA Ranger will be used when you select a Ranger. If you want to make a PHB Ranger, you will first have to exclude the Revised Ranger or its source (UA:RR). You can do so with the button below.",
+		dsc1: "When you select a class or a subclass in the drop-down boxes in this dialog, the text field in the same line will update accordingly, and vice versa.\nThe drop-down boxes will only update once you click/tab outside of the text field.",
+		dsc2: "Although the sheet knows of only one way to set the text field from the drop-down boxes, it understands very many different textual inputs. You can test this by typing something in the text field and see what the sheet recognizes it as. For example, if you enter 'War Priest' it will be recognized as a 'Cleric (War Domain)', and when you enter 'Exalted Knight of Obedience' it will be recognized as 'Paladin (Oath of Devotion)'.",
+		lvlu: theChar + "'s level has increased by 1, to a total of 1. Please change the level of one or more classes accordingly, or add a new class.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level).",
+		note: "* This first row has to be used and is considered the class taken at 1st level, i.e. the class that grants all its proficiencies.",
+		rngr: "IMPORTANT: As you have included the source 'Unearthed Arcana: The Ranger, Revised', the UA Ranger will be used when you select a Ranger. If you want to make a PHB Ranger, you will first have to exclude the Revised Ranger or its source (UA:RR). You can do so with the button below.",
 	};
 	var ClassSelection_Dialog = {
-		finalText : "",
-		finalLevel : 0,
-		currentLevel : 0,
-		LVLchange : 0,
-		curSelec : [],
-		delimiter : What("Delimiter"),
-		lines : 1,
-		initialize : function (dialog) {
+		finalText: "",
+		finalLevel: 0,
+		currentLevel: 0,
+		LVLchange: 0,
+		curSelec: [],
+		delimiter: What("Delimiter"),
+		lines: 1,
+		initialize: function (dialog) {
 			var toLoad = {
-				img1 : allIcons.classes,
-				full : this.finalText,
-				lvlu : this.LVLchange ? theChar + "'s level has increased by " + this.LVLchange + ", to a total of " + this.currentLevel + ". Please change the level of one or more classes accordingly, or add a new class.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level)." : "",
-				tLVL : this.finalLevel.toString(),
-				nLVL : "\u03B4-level: " + (this.currentLevel - this.finalLevel),
-				DeLi : this.delimiter,
-				bAdR : this.lines > 9 ? "Max 10 Rows" : "Add Extra Row"
+				img1: allIcons.classes,
+				full: this.finalText,
+				lvlu: this.LVLchange ? theChar + "'s level has increased by " + this.LVLchange + ", to a total of " + this.currentLevel + ". Please change the level of one or more classes accordingly, or add a new class.\nYou can see the amount of levels that you still have left to distribute at the bottom in red (\u03B4-level)." : "",
+				tLVL: this.finalLevel.toString(),
+				nLVL: "\u03B4-level: " + (this.currentLevel - this.finalLevel),
+				DeLi: this.delimiter,
+				bAdR: this.lines > 9 ? "Max 10 Rows" : "Add Extra Row",
 			};
 			var toUse = {
-				bAdR : this.lines < 10,
-				nLVL : this.LVLchange ? this.currentLevel - this.finalLevel : false
+				bAdR: this.lines < 10,
+				nLVL: this.LVLchange ? this.currentLevel - this.finalLevel : false,
 			};
 			for (var i = 0; i <= 9; i++) {
 				toUse["r" + i + "VW"] = i < this.lines;
@@ -176,7 +176,7 @@ function SelectClass() {
 			dialog.setForeColorRed("nLVL");
 			dialog.setForeColorRed("rngr");
 		},
-		lvlChange : function (dialog, e) {
+		lvlChange: function (dialog, e) {
 			var cs = this.curSelec[e];
 			cs[0] = dialog.store()["r" + e + "LV"];
 			if (isNaN(cs[0]) || cs[0] < 0) {
@@ -187,12 +187,12 @@ function SelectClass() {
 			};
 			this.updateFull(dialog);
 		},
-		getSrc : function (obj) {
+		getSrc: function (obj) {
 			if (!obj.source) return "";
 			var theSrc = parseSource(obj.source);
 			return theSrc ? SourceList[theSrc[0][0]].abbreviation : "";
 		},
-		textChange : function (dialog, e) {
+		textChange: function (dialog, e) {
 			var cs = this.curSelec[e];
 			var oldLvl = cs[0];
 			//set the new things
@@ -213,7 +213,7 @@ function SelectClass() {
 			dialog.load(toLoad);
 			this.updateFull(dialog);
 		},
-		classChange : function (dialog, e) {
+		classChange: function (dialog, e) {
 			var result = GetPositiveElement(dialog.store()["r" + e + "CD"]);
 			var cs = this.curSelec[e];
 			var oldLvl = cs[0];
@@ -234,7 +234,7 @@ function SelectClass() {
 			dialog.load(toLoad);
 			this.updateFull(dialog);
 		},
-		subChange : function (dialog, e) {
+		subChange: function (dialog, e) {
 			var result = GetPositiveElement(dialog.store()["r" + e + "SD"]);
 			var cs = this.curSelec[e];
 			//remember some of the old things
@@ -243,7 +243,7 @@ function SelectClass() {
 			var oldSubNameSrch = RegExp("( ?\\(?)" + oldSubName.RegEscape() + "(\\)?)", "i");
 			var oldNameMatch = (!cs[3] ? ClassList[cs[2]].name : ClassSubList[cs[3]].fullname ? oldSubName : ClassList[cs[2]].name + oldSubName).toLowerCase() == clean(cs[1]).toLowerCase();
 			//set the new things
-			cs[3] = result && result !== " " ? this.subclassesRef[cs[2]+"-"+result] : "";
+			cs[3] = result && result !== " " ? this.subclassesRef[cs[2] + "-" + result] : "";
 			var newSubName = !cs[3] ? "" : ClassSubList[cs[3]].fullname ? ClassSubList[cs[3]].fullname : ClassSubList[cs[3]].subname;
 			var newName = !cs[3] ? ClassList[cs[2]].name : ClassSubList[cs[3]].fullname ? newSubName : ClassList[cs[2]].name + " (" + newSubName + ")";
 			cs[1] = !cs[3] ? ClassList[cs[2]].name : oldNameMatch ? newName : !oldSubCl ? cs[1] + " (" + newSubName + ")" : (oldSubNameSrch).test(cs[1]) ? cs[1].replace(oldSubNameSrch, "$1" + newSubName + "$2") : newName;
@@ -254,9 +254,9 @@ function SelectClass() {
 			dialog.load(toLoad);
 			this.updateFull(dialog);
 		},
-		getRemainingClassList : function(currentClass) {
+		getRemainingClassList: function(currentClass) {
 			var self = this;
-			var selectedClasses = this.curSelec.map(function(classInfo){return classInfo[2] || '';});
+			var selectedClasses = this.curSelec.map(function(classInfo){return classInfo[2] || "";});
 			var filteredClasses = Object.keys(this.classes)
 				.filter(function(className){
 					return className === currentClass || selectedClasses.indexOf(className.toLowerCase()) === -1;
@@ -267,7 +267,7 @@ function SelectClass() {
 				}, {});
 			return filteredClasses;
 		},
-		reloadClassDropdowns : function (toLoad) {
+		reloadClassDropdowns: function (toLoad) {
 			for (var i = 0; i <= 9; i++) {
 				var loopClass = this.curSelec[i];
 				if (!loopClass || loopClass.length === 0) {
@@ -280,9 +280,9 @@ function SelectClass() {
 			}
 			return toLoad;
 		},
-		updateFull : function (dialog) {
+		updateFull: function (dialog) {
 			var oResult = dialog.store();
-			var toLoad = {full : "", tLVL : 0};
+			var toLoad = { full: "", tLVL: 0 };
 			for (var i = 0; i < this.curSelec.length; i++) {
 				var cs = this.curSelec[i];
 				if (!cs || !Number(cs[0]) || !cs[1]) {
@@ -290,697 +290,697 @@ function SelectClass() {
 					continue;
 				};
 				toLoad.tLVL += !isNaN(cs[0]) ? Number(cs[0]) : 0;
-				if (i > 0 && toLoad.full === this.curSelec[0][1].replace(/\d/g, '')) toLoad.full += " " + this.curSelec[0][0];
-				toLoad.full += (toLoad.full ? this.delimiter : "") + cs[1].replace(/\d/g, '');
+				if (i > 0 && toLoad.full === this.curSelec[0][1].replace(/\d/g, "")) toLoad.full += " " + this.curSelec[0][0];
+				toLoad.full += (toLoad.full ? this.delimiter : "") + cs[1].replace(/\d/g, "");
 				if (i > 0) toLoad.full += " " + cs[0];
 			};
 			this.finalText = toLoad.full;
 			this.finalLevel = toLoad.tLVL;
 			toLoad.tLVL = toLoad.tLVL.toString();
 			toLoad.nLVL = "\u03B4-level: " + (this.currentLevel - this.finalLevel);
-			var toUse = { nLVL : this.LVLchange ? this.currentLevel - this.finalLevel : false };
+			var toUse = { nLVL: this.LVLchange ? this.currentLevel - this.finalLevel : false };
 			dialog.load(toLoad);
 			dialog.enable(toUse);
 			dialog.visible(toUse);
 		},
-		commit : function (dialog) {},
-		DeLi : function (dialog) {
+		commit: function (dialog) {},
+		DeLi: function (dialog) {
 			this.delimiter = dialog.store()["DeLi"];
 			this.updateFull(dialog);
 		},
-		bAdR : function (dialog) { dialog.end("bAdR"); },
-		bSrc : function (dialog) { MakeSourceMenu_SourceOptions(); },
-		bCSS : function (dialog) { dialog.end("bCSS"); },
-		r0LV : function (dialog) { this.lvlChange(dialog, 0); },
-		r0TX : function (dialog) { this.textChange(dialog, 0); },
-		r0CD : function (dialog) { this.classChange(dialog, 0); },
-		r0SD : function (dialog) { this.subChange(dialog, 0); },
-		r1LV : function (dialog) { this.lvlChange(dialog, 1); },
-		r1TX : function (dialog) { this.textChange(dialog, 1); },
-		r1CD : function (dialog) { this.classChange(dialog, 1); },
-		r1SD : function (dialog) { this.subChange(dialog, 1); },
-		r2LV : function (dialog) { this.lvlChange(dialog, 2); },
-		r2TX : function (dialog) { this.textChange(dialog, 2); },
-		r2CD : function (dialog) { this.classChange(dialog, 2); },
-		r2SD : function (dialog) { this.subChange(dialog, 2); },
-		r3LV : function (dialog) { this.lvlChange(dialog, 3); },
-		r3TX : function (dialog) { this.textChange(dialog, 3); },
-		r3CD : function (dialog) { this.classChange(dialog, 3); },
-		r3SD : function (dialog) { this.subChange(dialog, 3); },
-		r4LV : function (dialog) { this.lvlChange(dialog, 4); },
-		r4TX : function (dialog) { this.textChange(dialog, 4); },
-		r4CD : function (dialog) { this.classChange(dialog, 4); },
-		r4SD : function (dialog) { this.subChange(dialog, 4); },
-		r5LV : function (dialog) { this.lvlChange(dialog, 5); },
-		r5TX : function (dialog) { this.textChange(dialog, 5); },
-		r5CD : function (dialog) { this.classChange(dialog, 5); },
-		r5SD : function (dialog) { this.subChange(dialog, 5); },
-		r6LV : function (dialog) { this.lvlChange(dialog, 6); },
-		r6TX : function (dialog) { this.textChange(dialog, 6); },
-		r6CD : function (dialog) { this.classChange(dialog, 6); },
-		r6SD : function (dialog) { this.subChange(dialog, 6); },
-		r7LV : function (dialog) { this.lvlChange(dialog, 7); },
-		r7TX : function (dialog) { this.textChange(dialog, 7); },
-		r7CD : function (dialog) { this.classChange(dialog, 7); },
-		r7SD : function (dialog) { this.subChange(dialog, 7); },
-		r8LV : function (dialog) { this.lvlChange(dialog, 8); },
-		r8TX : function (dialog) { this.textChange(dialog, 8); },
-		r8CD : function (dialog) { this.classChange(dialog, 8); },
-		r8SD : function (dialog) { this.subChange(dialog, 8); },
-		r9LV : function (dialog) { this.lvlChange(dialog, 9); },
-		r9TX : function (dialog) { this.textChange(dialog, 9); },
-		r9CD : function (dialog) { this.classChange(dialog, 9); },
-		r9SD : function (dialog) { this.subChange(dialog, 9); },
-		description : {
-			name : "CLASS SELECTION DIALOG",
-			elements : [{
-				type : "view",
-				elements : [{
-					type : "view",
-					align_children : "align_row",
-					elements : [{
-						type : "image",
-						item_id : "img1",
-						width : 20,
-						height : 20
+		bAdR: function (dialog) { dialog.end("bAdR"); },
+		bSrc: function (dialog) { MakeSourceMenu_SourceOptions(); },
+		bCSS: function (dialog) { dialog.end("bCSS"); },
+		r0LV: function (dialog) { this.lvlChange(dialog, 0); },
+		r0TX: function (dialog) { this.textChange(dialog, 0); },
+		r0CD: function (dialog) { this.classChange(dialog, 0); },
+		r0SD: function (dialog) { this.subChange(dialog, 0); },
+		r1LV: function (dialog) { this.lvlChange(dialog, 1); },
+		r1TX: function (dialog) { this.textChange(dialog, 1); },
+		r1CD: function (dialog) { this.classChange(dialog, 1); },
+		r1SD: function (dialog) { this.subChange(dialog, 1); },
+		r2LV: function (dialog) { this.lvlChange(dialog, 2); },
+		r2TX: function (dialog) { this.textChange(dialog, 2); },
+		r2CD: function (dialog) { this.classChange(dialog, 2); },
+		r2SD: function (dialog) { this.subChange(dialog, 2); },
+		r3LV: function (dialog) { this.lvlChange(dialog, 3); },
+		r3TX: function (dialog) { this.textChange(dialog, 3); },
+		r3CD: function (dialog) { this.classChange(dialog, 3); },
+		r3SD: function (dialog) { this.subChange(dialog, 3); },
+		r4LV: function (dialog) { this.lvlChange(dialog, 4); },
+		r4TX: function (dialog) { this.textChange(dialog, 4); },
+		r4CD: function (dialog) { this.classChange(dialog, 4); },
+		r4SD: function (dialog) { this.subChange(dialog, 4); },
+		r5LV: function (dialog) { this.lvlChange(dialog, 5); },
+		r5TX: function (dialog) { this.textChange(dialog, 5); },
+		r5CD: function (dialog) { this.classChange(dialog, 5); },
+		r5SD: function (dialog) { this.subChange(dialog, 5); },
+		r6LV: function (dialog) { this.lvlChange(dialog, 6); },
+		r6TX: function (dialog) { this.textChange(dialog, 6); },
+		r6CD: function (dialog) { this.classChange(dialog, 6); },
+		r6SD: function (dialog) { this.subChange(dialog, 6); },
+		r7LV: function (dialog) { this.lvlChange(dialog, 7); },
+		r7TX: function (dialog) { this.textChange(dialog, 7); },
+		r7CD: function (dialog) { this.classChange(dialog, 7); },
+		r7SD: function (dialog) { this.subChange(dialog, 7); },
+		r8LV: function (dialog) { this.lvlChange(dialog, 8); },
+		r8TX: function (dialog) { this.textChange(dialog, 8); },
+		r8CD: function (dialog) { this.classChange(dialog, 8); },
+		r8SD: function (dialog) { this.subChange(dialog, 8); },
+		r9LV: function (dialog) { this.lvlChange(dialog, 9); },
+		r9TX: function (dialog) { this.textChange(dialog, 9); },
+		r9CD: function (dialog) { this.classChange(dialog, 9); },
+		r9SD: function (dialog) { this.subChange(dialog, 9); },
+		description: {
+			name: "CLASS SELECTION DIALOG",
+			elements: [{
+				type: "view",
+				elements: [{
+					type: "view",
+					align_children: "align_row",
+					elements: [{
+						type: "image",
+						item_id: "img1",
+						width: 20,
+						height: 20,
 					}, {
-						type : "static_text",
-						item_id : "titl",
-						alignment : "align_fill",
-						font : "title",
-						bold : true,
-						height : 23,
-						char_width : 80,
-						name : "Select the class(es) for " + theChar
-					}]
+						type: "static_text",
+						item_id: "titl",
+						alignment: "align_fill",
+						font: "title",
+						bold: true,
+						height: 23,
+						char_width: 80,
+						name: "Select the class(es) for " + theChar,
+					}],
 				}, {
-					type : "static_text",
-					item_id : "lvlu",
-					alignment : "align_fill",
-					font : "dialog",
-					bold : true,
-					name : dialogTxt.lvlu,
-					wrap_name : true,
-					char_height : -1,
-					char_width : 80
+					type: "static_text",
+					item_id: "lvlu",
+					alignment: "align_fill",
+					font: "dialog",
+					bold: true,
+					name: dialogTxt.lvlu,
+					wrap_name: true,
+					char_height: -1,
+					char_width: 80,
 				}, {
-					type : "static_text",
-					item_id : "dsc1",
-					alignment : "align_fill",
-					font : "dialog",
-					name : dialogTxt.dsc1,
-					wrap_name : true,
-					char_width : 80
+					type: "static_text",
+					item_id: "dsc1",
+					alignment: "align_fill",
+					font: "dialog",
+					name: dialogTxt.dsc1,
+					wrap_name: true,
+					char_width: 80,
 				}, {
-					type : "static_text",
-					item_id : "dsc2",
-					alignment : "align_fill",
-					font : "palette",
-					name : dialogTxt.dsc2,
-					wrap_name : true,
-					char_width : 80
+					type: "static_text",
+					item_id: "dsc2",
+					alignment: "align_fill",
+					font: "palette",
+					name: dialogTxt.dsc2,
+					wrap_name: true,
+					char_width: 80,
 				}, {
-					type : "cluster", //the cluster that contains all the rows
-					align_children : "align_center",
-					char_width : 80,
-					font : "heading",
-					bold : true,
-					name : theChar + "'s Classes",
-					elements : [{
-						item_id : "r0VW", // row 0 (with heading row)
-						type : "view",
-						align_children : "align_distribute",
-						elements : [{
-							type : "view",
-							align_children : "align_left",
-							elements : [{
-								item_id : "heNR",
-								type : "static_text",
-								font : "heading",
-								height : 20,
-								char_width : 3,
-								name : "#"
+					type: "cluster", //the cluster that contains all the rows
+					align_children: "align_center",
+					char_width: 80,
+					font: "heading",
+					bold: true,
+					name: theChar + "'s Classes",
+					elements: [{
+						item_id: "r0VW", // row 0 (with heading row)
+						type: "view",
+						align_children: "align_distribute",
+						elements: [{
+							type: "view",
+							align_children: "align_left",
+							elements: [{
+								item_id: "heNR",
+								type: "static_text",
+								font: "heading",
+								height: 20,
+								char_width: 3,
+								name: "#",
 							}, {
-								item_id : "r0NR",
-								type : "static_text",
-								height : 23,
-								char_width : 3,
-								font : "heading",
-								name : "1*"
-							}]
+								item_id: "r0NR",
+								type: "static_text",
+								height: 23,
+								char_width: 3,
+								font: "heading",
+								name: "1*",
+							}],
 						}, {
-							type : "view",
-							align_children : "align_left",
-							elements : [{
-								item_id : "heLV",
-								type : "static_text",
-								font : "dialog",
-								bold : true,
-								height : 20,
-								char_width : 3,
-								name : "Level"
+							type: "view",
+							align_children: "align_left",
+							elements: [{
+								item_id: "heLV",
+								type: "static_text",
+								font: "dialog",
+								bold: true,
+								height: 20,
+								char_width: 3,
+								name: "Level",
 							}, {
-								item_id : "r0LV",
-								type : "edit_text",
-								height : 23,
-								char_width : 2,
-								SpinEdit : true
-							}]
+								item_id: "r0LV",
+								type: "edit_text",
+								height: 23,
+								char_width: 2,
+								SpinEdit: true,
+							}],
 						}, {
-							type : "view",
-							align_children : "align_left",
-							elements : [{
-								item_id : "heTX",
-								type : "static_text",
-								font : "dialog",
-								bold : true,
-								height : 20,
-								char_width : 25,
-								name : "Text per class, as it will appear on the sheet"
+							type: "view",
+							align_children: "align_left",
+							elements: [{
+								item_id: "heTX",
+								type: "static_text",
+								font: "dialog",
+								bold: true,
+								height: 20,
+								char_width: 25,
+								name: "Text per class, as it will appear on the sheet",
 							}, {
-								item_id : "r0TX",
-								type : "edit_text",
-								height : 23,
-								char_width : 25,
-								truncate : "truncate_end"
-							}]
+								item_id: "r0TX",
+								type: "edit_text",
+								height: 23,
+								char_width: 25,
+								truncate: "truncate_end",
+							}],
 						}, {
-							type : "view",
-							align_children : "align_left",
-							elements : [{
-								item_id : "heCD",
-								type : "static_text",
-								font : "dialog",
-								bold : true,
-								height : 20,
-								char_width : 8,
-								name : " Class"
+							type: "view",
+							align_children: "align_left",
+							elements: [{
+								item_id: "heCD",
+								type: "static_text",
+								font: "dialog",
+								bold: true,
+								height: 20,
+								char_width: 8,
+								name: " Class",
 							}, {
-								item_id : "r0CD",
-								type : "popup",
-								char_width : 8
-							}]
+								item_id: "r0CD",
+								type: "popup",
+								char_width: 8,
+							}],
 						}, {
-							type : "view",
-							align_children : "align_left",
-							elements : [{
-								item_id : "heCS",
-								type : "static_text",
-								height : 20,
-								char_width : 7,
-								name : "Source"
+							type: "view",
+							align_children: "align_left",
+							elements: [{
+								item_id: "heCS",
+								type: "static_text",
+								height: 20,
+								char_width: 7,
+								name: "Source",
 							}, {
-								item_id : "r0CS",
-								type : "static_text",
-								height : 23,
-								char_width : 7
-							}]
+								item_id: "r0CS",
+								type: "static_text",
+								height: 23,
+								char_width: 7,
+							}],
 						}, {
-							type : "view",
-							align_children : "align_left",
-							elements : [{
-								item_id : "heSD",
-								type : "static_text",
-								font : "dialog",
-								bold : true,
-								height : 20,
-								char_width : 15,
-								name : " Subclass / Archetype"
+							type: "view",
+							align_children: "align_left",
+							elements: [{
+								item_id: "heSD",
+								type: "static_text",
+								font: "dialog",
+								bold: true,
+								height: 20,
+								char_width: 15,
+								name: " Subclass / Archetype",
 							}, {
-								item_id : "r0SD",
-								type : "popup",
-								char_width : 15
-							}]
+								item_id: "r0SD",
+								type: "popup",
+								char_width: 15,
+							}],
 						}, {
-							type : "view",
-							align_children : "align_left",
-							elements : [{
-								item_id : "heSS",
-								type : "static_text",
-								height : 20,
-								char_width : 6,
-								name : "Source"
+							type: "view",
+							align_children: "align_left",
+							elements: [{
+								item_id: "heSS",
+								type: "static_text",
+								height: 20,
+								char_width: 6,
+								name: "Source",
 							}, {
-								item_id : "r0SS",
-								type : "static_text",
-								height : 23,
-								char_width : 6
-							}]
-						}]
+								item_id: "r0SS",
+								type: "static_text",
+								height: 23,
+								char_width: 6,
+							}],
+						}],
 					}, {
-						item_id : "r1VW", // row 1
-						type : "view",
-						align_children : "align_distribute",
-						elements : [{
-							item_id : "r1NR",
-							type : "static_text",
-							char_width : 3,
-							font : "heading",
-							name : "2"
+						item_id: "r1VW", // row 1
+						type: "view",
+						align_children: "align_distribute",
+						elements: [{
+							item_id: "r1NR",
+							type: "static_text",
+							char_width: 3,
+							font: "heading",
+							name: "2",
 						}, {
-							item_id : "r1LV",
-							type : "edit_text",
-							char_width : 2,
-							SpinEdit : true
+							item_id: "r1LV",
+							type: "edit_text",
+							char_width: 2,
+							SpinEdit: true,
 						}, {
-							item_id : "r1TX",
-							type : "edit_text",
-							char_width : 25
+							item_id: "r1TX",
+							type: "edit_text",
+							char_width: 25,
 						}, {
-							item_id : "r1CD",
-							type : "popup",
-							char_width : 8
+							item_id: "r1CD",
+							type: "popup",
+							char_width: 8,
 						}, {
-							item_id : "r1CS",
-							type : "static_text",
-							char_width : 7
+							item_id: "r1CS",
+							type: "static_text",
+							char_width: 7,
 						}, {
-							item_id : "r1SD",
-							type : "popup",
-							char_width : 15
+							item_id: "r1SD",
+							type: "popup",
+							char_width: 15,
 						}, {
-							item_id : "r1SS",
-							type : "static_text",
-							char_width : 6
-						}]
+							item_id: "r1SS",
+							type: "static_text",
+							char_width: 6,
+						}],
 					}, {
-						item_id : "r2VW", // row 2
-						type : "view",
-						align_children : "align_distribute",
-						elements : [{
-							item_id : "r2NR",
-							type : "static_text",
-							char_width : 3,
-							font : "heading",
-							name : "3"
+						item_id: "r2VW", // row 2
+						type: "view",
+						align_children: "align_distribute",
+						elements: [{
+							item_id: "r2NR",
+							type: "static_text",
+							char_width: 3,
+							font: "heading",
+							name: "3",
 						}, {
-							item_id : "r2LV",
-							type : "edit_text",
-							char_width : 2,
-							SpinEdit : true
+							item_id: "r2LV",
+							type: "edit_text",
+							char_width: 2,
+							SpinEdit: true,
 						}, {
-							item_id : "r2TX",
-							type : "edit_text",
-							char_width : 25
+							item_id: "r2TX",
+							type: "edit_text",
+							char_width: 25,
 						}, {
-							item_id : "r2CD",
-							type : "popup",
-							char_width : 8
+							item_id: "r2CD",
+							type: "popup",
+							char_width: 8,
 						}, {
-							item_id : "r2CS",
-							type : "static_text",
-							char_width : 7
+							item_id: "r2CS",
+							type: "static_text",
+							char_width: 7,
 						}, {
-							item_id : "r2SD",
-							type : "popup",
-							char_width : 15
+							item_id: "r2SD",
+							type: "popup",
+							char_width: 15,
 						}, {
-							item_id : "r2SS",
-							type : "static_text",
-							char_width : 6
-						}]
+							item_id: "r2SS",
+							type: "static_text",
+							char_width: 6,
+						}],
 					}, {
-						item_id : "r3VW", // row 3
-						type : "view",
-						align_children : "align_distribute",
-						elements : [{
-							item_id : "r3NR",
-							type : "static_text",
-							char_width : 3,
-							font : "heading",
-							name : "4"
+						item_id: "r3VW", // row 3
+						type: "view",
+						align_children: "align_distribute",
+						elements: [{
+							item_id: "r3NR",
+							type: "static_text",
+							char_width: 3,
+							font: "heading",
+							name: "4",
 						}, {
-							item_id : "r3LV",
-							type : "edit_text",
-							char_width : 2,
-							SpinEdit : true
+							item_id: "r3LV",
+							type: "edit_text",
+							char_width: 2,
+							SpinEdit: true,
 						}, {
-							item_id : "r3TX",
-							type : "edit_text",
-							char_width : 25
+							item_id: "r3TX",
+							type: "edit_text",
+							char_width: 25,
 						}, {
-							item_id : "r3CD",
-							type : "popup",
-							char_width : 8
+							item_id: "r3CD",
+							type: "popup",
+							char_width: 8,
 						}, {
-							item_id : "r3CS",
-							type : "static_text",
-							char_width : 7
+							item_id: "r3CS",
+							type: "static_text",
+							char_width: 7,
 						}, {
-							item_id : "r3SD",
-							type : "popup",
-							char_width : 15
+							item_id: "r3SD",
+							type: "popup",
+							char_width: 15,
 						}, {
-							item_id : "r3SS",
-							type : "static_text",
-							char_width : 6
-						}]
+							item_id: "r3SS",
+							type: "static_text",
+							char_width: 6,
+						}],
 					}, {
-						item_id : "r4VW", // row 4
-						type : "view",
-						align_children : "align_distribute",
-						elements : [{
-							item_id : "r4NR",
-							type : "static_text",
-							char_width : 3,
-							font : "heading",
-							name : "5"
+						item_id: "r4VW", // row 4
+						type: "view",
+						align_children: "align_distribute",
+						elements: [{
+							item_id: "r4NR",
+							type: "static_text",
+							char_width: 3,
+							font: "heading",
+							name: "5",
 						}, {
-							item_id : "r4LV",
-							type : "edit_text",
-							char_width : 2,
-							SpinEdit : true
+							item_id: "r4LV",
+							type: "edit_text",
+							char_width: 2,
+							SpinEdit: true,
 						}, {
-							item_id : "r4TX",
-							type : "edit_text",
-							char_width : 25
+							item_id: "r4TX",
+							type: "edit_text",
+							char_width: 25,
 						}, {
-							item_id : "r4CD",
-							type : "popup",
-							char_width : 8
+							item_id: "r4CD",
+							type: "popup",
+							char_width: 8,
 						}, {
-							item_id : "r4CS",
-							type : "static_text",
-							char_width : 7
+							item_id: "r4CS",
+							type: "static_text",
+							char_width: 7,
 						}, {
-							item_id : "r4SD",
-							type : "popup",
-							char_width : 15
+							item_id: "r4SD",
+							type: "popup",
+							char_width: 15,
 						}, {
-							item_id : "r4SS",
-							type : "static_text",
-							char_width : 6
-						}]
+							item_id: "r4SS",
+							type: "static_text",
+							char_width: 6,
+						}],
 					}, {
-						item_id : "r5VW", // row 5
-						type : "view",
-						align_children : "align_distribute",
-						elements : [{
-							item_id : "r5NR",
-							type : "static_text",
-							char_width : 3,
-							font : "heading",
-							name : "6"
+						item_id: "r5VW", // row 5
+						type: "view",
+						align_children: "align_distribute",
+						elements: [{
+							item_id: "r5NR",
+							type: "static_text",
+							char_width: 3,
+							font: "heading",
+							name: "6",
 						}, {
-							item_id : "r5LV",
-							type : "edit_text",
-							char_width : 2,
-							SpinEdit : true
+							item_id: "r5LV",
+							type: "edit_text",
+							char_width: 2,
+							SpinEdit: true,
 						}, {
-							item_id : "r5TX",
-							type : "edit_text",
-							char_width : 25
+							item_id: "r5TX",
+							type: "edit_text",
+							char_width: 25,
 						}, {
-							item_id : "r5CD",
-							type : "popup",
-							char_width : 8
+							item_id: "r5CD",
+							type: "popup",
+							char_width: 8,
 						}, {
-							item_id : "r5CS",
-							type : "static_text",
-							char_width : 7
+							item_id: "r5CS",
+							type: "static_text",
+							char_width: 7,
 						}, {
-							item_id : "r5SD",
-							type : "popup",
-							char_width : 15
+							item_id: "r5SD",
+							type: "popup",
+							char_width: 15,
 						}, {
-							item_id : "r5SS",
-							type : "static_text",
-							char_width : 6
-						}]
+							item_id: "r5SS",
+							type: "static_text",
+							char_width: 6,
+						}],
 					}, {
-						item_id : "r6VW", // row 6
-						type : "view",
-						align_children : "align_distribute",
-						elements : [{
-							item_id : "r6NR",
-							type : "static_text",
-							char_width : 3,
-							font : "heading",
-							name : "7"
+						item_id: "r6VW", // row 6
+						type: "view",
+						align_children: "align_distribute",
+						elements: [{
+							item_id: "r6NR",
+							type: "static_text",
+							char_width: 3,
+							font: "heading",
+							name: "7",
 						}, {
-							item_id : "r6LV",
-							type : "edit_text",
-							char_width : 2,
-							SpinEdit : true
+							item_id: "r6LV",
+							type: "edit_text",
+							char_width: 2,
+							SpinEdit: true,
 						}, {
-							item_id : "r6TX",
-							type : "edit_text",
-							char_width : 25
+							item_id: "r6TX",
+							type: "edit_text",
+							char_width: 25,
 						}, {
-							item_id : "r6CD",
-							type : "popup",
-							char_width : 8
+							item_id: "r6CD",
+							type: "popup",
+							char_width: 8,
 						}, {
-							item_id : "r6CS",
-							type : "static_text",
-							char_width : 7
+							item_id: "r6CS",
+							type: "static_text",
+							char_width: 7,
 						}, {
-							item_id : "r6SD",
-							type : "popup",
-							char_width : 15
+							item_id: "r6SD",
+							type: "popup",
+							char_width: 15,
 						}, {
-							item_id : "r6SS",
-							type : "static_text",
-							char_width : 6
-						}]
+							item_id: "r6SS",
+							type: "static_text",
+							char_width: 6,
+						}],
 					}, {
-						item_id : "r2VW", // row 7
-						type : "view",
-						align_children : "align_distribute",
-						elements : [{
-							item_id : "r7NR",
-							type : "static_text",
-							char_width : 3,
-							font : "heading",
-							name : "8"
+						item_id: "r2VW", // row 7
+						type: "view",
+						align_children: "align_distribute",
+						elements: [{
+							item_id: "r7NR",
+							type: "static_text",
+							char_width: 3,
+							font: "heading",
+							name: "8",
 						}, {
-							item_id : "r7LV",
-							type : "edit_text",
-							char_width : 2,
-							SpinEdit : true
+							item_id: "r7LV",
+							type: "edit_text",
+							char_width: 2,
+							SpinEdit: true,
 						}, {
-							item_id : "r7TX",
-							type : "edit_text",
-							char_width : 25
+							item_id: "r7TX",
+							type: "edit_text",
+							char_width: 25,
 						}, {
-							item_id : "r7CD",
-							type : "popup",
-							char_width : 8
+							item_id: "r7CD",
+							type: "popup",
+							char_width: 8,
 						}, {
-							item_id : "r7CS",
-							type : "static_text",
-							char_width : 7
+							item_id: "r7CS",
+							type: "static_text",
+							char_width: 7,
 						}, {
-							item_id : "r7SD",
-							type : "popup",
-							char_width : 15
+							item_id: "r7SD",
+							type: "popup",
+							char_width: 15,
 						}, {
-							item_id : "r7SS",
-							type : "static_text",
-							char_width : 6
-						}]
+							item_id: "r7SS",
+							type: "static_text",
+							char_width: 6,
+						}],
 					}, {
-						item_id : "r2VW", // row 8
-						type : "view",
-						align_children : "align_distribute",
-						elements : [{
-							item_id : "r8NR",
-							type : "static_text",
-							char_width : 3,
-							font : "heading",
-							name : "9"
+						item_id: "r2VW", // row 8
+						type: "view",
+						align_children: "align_distribute",
+						elements: [{
+							item_id: "r8NR",
+							type: "static_text",
+							char_width: 3,
+							font: "heading",
+							name: "9",
 						}, {
-							item_id : "r8LV",
-							type : "edit_text",
-							char_width : 2,
-							SpinEdit : true
+							item_id: "r8LV",
+							type: "edit_text",
+							char_width: 2,
+							SpinEdit: true,
 						}, {
-							item_id : "r8TX",
-							type : "edit_text",
-							char_width : 25
+							item_id: "r8TX",
+							type: "edit_text",
+							char_width: 25,
 						}, {
-							item_id : "r8CD",
-							type : "popup",
-							char_width : 8
+							item_id: "r8CD",
+							type: "popup",
+							char_width: 8,
 						}, {
-							item_id : "r8CS",
-							type : "static_text",
-							char_width : 7
+							item_id: "r8CS",
+							type: "static_text",
+							char_width: 7,
 						}, {
-							item_id : "r8SD",
-							type : "popup",
-							char_width : 15
+							item_id: "r8SD",
+							type: "popup",
+							char_width: 15,
 						}, {
-							item_id : "r8SS",
-							type : "static_text",
-							char_width : 6
-						}]
+							item_id: "r8SS",
+							type: "static_text",
+							char_width: 6,
+						}],
 					}, {
-						item_id : "r2VW", // row 9
-						type : "view",
-						align_children : "align_distribute",
-						elements : [{
-							item_id : "r9NR",
-							type : "static_text",
-							char_width : 3,
-							font : "heading",
-							name : "10"
+						item_id: "r2VW", // row 9
+						type: "view",
+						align_children: "align_distribute",
+						elements: [{
+							item_id: "r9NR",
+							type: "static_text",
+							char_width: 3,
+							font: "heading",
+							name: "10",
 						}, {
-							item_id : "r9LV",
-							type : "edit_text",
-							char_width : 2,
-							SpinEdit : true
+							item_id: "r9LV",
+							type: "edit_text",
+							char_width: 2,
+							SpinEdit: true,
 						}, {
-							item_id : "r9TX",
-							type : "edit_text",
-							char_width : 25
+							item_id: "r9TX",
+							type: "edit_text",
+							char_width: 25,
 						}, {
-							item_id : "r9CD",
-							type : "popup",
-							char_width : 8
+							item_id: "r9CD",
+							type: "popup",
+							char_width: 8,
 						}, {
-							item_id : "r9CS",
-							type : "static_text",
-							char_width : 7
+							item_id: "r9CS",
+							type: "static_text",
+							char_width: 7,
 						}, {
-							item_id : "r9SD",
-							type : "popup",
-							char_width : 15
+							item_id: "r9SD",
+							type: "popup",
+							char_width: 15,
 						}, {
-							item_id : "r9SS",
-							type : "static_text",
-							char_width : 6
-						}]
+							item_id: "r9SS",
+							type: "static_text",
+							char_width: 6,
+						}],
 					}, {
-						type : "view", // asterisk and add extra row button
-						align_children : "align_row",
-						alignment : "align_fill",
-						elements : [{
-							item_id : "note",
-							type : "static_text",
-							font : "dialog",
-							bold : true,
-							name : dialogTxt.note,
-							wrap_name : true,
-							char_width : 69
+						type: "view", // asterisk and add extra row button
+						align_children: "align_row",
+						alignment: "align_fill",
+						elements: [{
+							item_id: "note",
+							type: "static_text",
+							font: "dialog",
+							bold: true,
+							name: dialogTxt.note,
+							wrap_name: true,
+							char_width: 69,
 						}, {
-							item_id : "bAdR",
-							type : "button",
-							alignment : "align_right",
-							name : "Add Extra Row"
-						}]
-					}]
+							item_id: "bAdR",
+							type: "button",
+							alignment: "align_right",
+							name: "Add Extra Row",
+						}],
+					}],
 				}, {
-					type : "view", // totals and delimiter
-					align_children : "align_row",
-					alignment : "align_center",
-					elements : [{
-						type : "view",
+					type: "view", // totals and delimiter
+					align_children: "align_row",
+					alignment: "align_center",
+					elements: [{
+						type: "view",
 						back_color: "dialogBackground",
 						gradient_direction: "topToBottom",
 						gradient_type: "normalToDark",
-						item_id : "viJ1",
-						alignment : "align_fill",
-						elements : [{
-							type : "cluster",
-							char_width : 12,
-							alignment : "align_left",
-							align_children : "align_row",
-							font : "heading",
-							bold : true,
-							name : "Total Level",
-							elements : [{
-								item_id : "tLVL",
-								type : "static_text",
-								font : "heading",
-								bold : true,
-								height : 25,
-								char_width : 2
+						item_id: "viJ1",
+						alignment: "align_fill",
+						elements: [{
+							type: "cluster",
+							char_width: 12,
+							alignment: "align_left",
+							align_children: "align_row",
+							font: "heading",
+							bold: true,
+							name: "Total Level",
+							elements: [{
+								item_id: "tLVL",
+								type: "static_text",
+								font: "heading",
+								bold: true,
+								height: 25,
+								char_width: 2,
 							}, {
-								item_id : "nLVL",
-								type : "static_text",
-								font : "heading",
-								bold : true,
-								height : 25,
-								char_width : 9
-							},]
-						}]
+								item_id: "nLVL",
+								type: "static_text",
+								font: "heading",
+								bold: true,
+								height: 25,
+								char_width: 9,
+							}],
+						}],
 					}, {
-						type : "view",
+						type: "view",
 						back_color: "dialogBackground",
 						gradient_direction: "topToBottom",
 						gradient_type: "normalToDark",
-						item_id : "viJ2",
-						alignment : "align_fill",
-						elements : [{
-							type : "cluster",
-							alignment : "align_right",
-							font : "heading",
-							bold : true,
-							name : "Text that will be put in the Class field on the 1st page",
-							elements : [{
-								item_id : "full",
-								type : "static_text",
-								font : "dialog",
-								bold : true,
-								height : 25,
-								char_width : 55,
-								truncate : "truncate_end"
-							}]
-						}]
+						item_id: "viJ2",
+						alignment: "align_fill",
+						elements: [{
+							type: "cluster",
+							alignment: "align_right",
+							font: "heading",
+							bold: true,
+							name: "Text that will be put in the Class field on the 1st page",
+							elements: [{
+								item_id: "full",
+								type: "static_text",
+								font: "dialog",
+								bold: true,
+								height: 25,
+								char_width: 55,
+								truncate: "truncate_end",
+							}],
+						}],
 					}, {
-						type : "cluster",
-						char_width : 6,
-						alignment : "align_left",
-						align_children : "align_center",
-						font : "heading",
-						bold : true,
-						name : "Delimiter",
-						elements : [{
-							item_id : "DeLi",
-							type : "edit_text",
-							height : 25,
-							char_width : 4
-						}]
-					}]
+						type: "cluster",
+						char_width: 6,
+						alignment: "align_left",
+						align_children: "align_center",
+						font: "heading",
+						bold: true,
+						name: "Delimiter",
+						elements: [{
+							item_id: "DeLi",
+							type: "edit_text",
+							height: 25,
+							char_width: 4,
+						}],
+					}],
 				}, {
-					item_id : "rngr", // UA ranger warning text
-					type : "static_text",
-					alignment : "align_fill",
-					font : "palette",
-					bold : true,
-					name : dialogTxt.rngr,
-					wrap_name : true,
-					char_height : -1,
-					char_width : 80
+					item_id: "rngr", // UA ranger warning text
+					type: "static_text",
+					alignment: "align_fill",
+					font: "palette",
+					bold: true,
+					name: dialogTxt.rngr,
+					wrap_name: true,
+					char_height: -1,
+					char_width: 80,
 				}, {
-					type : "view", // the bottom row of buttons
-					align_children : "align_distribute",
-					alignment : "align_fill",
-					elements : [{
-						type : "view", // buttons for viewing/changing sources
-						align_children : "align_row",
-						alignment : "align_left",
-						elements : [{
-							item_id : "bCSS",
-							type : "button",
-							font : "dialog",
-							bold : true,
-							name : "Change Available Classes && Archetypes"
+					type: "view", // the bottom row of buttons
+					align_children: "align_distribute",
+					alignment: "align_fill",
+					elements: [{
+						type: "view", // buttons for viewing/changing sources
+						align_children: "align_row",
+						alignment: "align_left",
+						elements: [{
+							item_id: "bCSS",
+							type: "button",
+							font: "dialog",
+							bold: true,
+							name: "Change Available Classes && Archetypes",
 						}, {
-							item_id : "bSrc",
-							type : "button",
-							name : "List Source Abbreviations"
-						}]
+							item_id: "bSrc",
+							type: "button",
+							name: "List Source Abbreviations",
+						}],
 					}, {
-						type : "ok",
-						item_id : "bOKE",
-						alignment : "align_right",
-						ok_name : "Apply"
-					}]
-				}]
-			}]
-		}
+						type: "ok",
+						item_id: "bOKE",
+						alignment: "align_right",
+						ok_name: "Apply",
+					}],
+				}],
+			}],
+		},
 	};
 	setClassesToDialog();
 	loadKnownClassesToDialog();
@@ -1005,7 +1005,7 @@ function SelectClass() {
 			for (var c = 0; c < ClassSelection_Dialog.curSelec.length; c++) {
 				var sel = ClassSelection_Dialog.curSelec[c];
 				if (!sel || !sel[2]) continue;
-				if (remUArgr !== hasUAranger && (/ranger(ua)?/i).test(sel[2])) {
+				if (remUArgr !== hasUAranger && /ranger(ua)?/i.test(sel[2])) {
 					sel[1] = "Ranger";
 					sel[2] = hasUAranger ? "rangerua" : "ranger";
 					sel[3] = "";
@@ -1020,10 +1020,10 @@ function SelectClass() {
 			setNumberOfLinesInDialog(true);
 		} else if (dia === "ok" && ClassFld && (!txtFinal || !lvlFinal)) {
 			var askSure = app.alert({
-				nIcon : 2,
-				cTitle : "Are You Sure? - Remove All Classes & Levels",
-				cMsg : "You are about to remove all levels and classes from your character!\nAre you sure you want to continue?" + (IsCharLvlVal == 0 && !dia ? "" : "\n\nNote that you have to use the first line in the Class Selection dialog, for that is the class your character took at 1st level. If the first line if left empty or its level is set to zero, the sheet will assume you want to delete all the character's classes and levels.") + "\n\nClick 'No' to go back to the Class Selection dialog.",
-				nType : 2
+				nIcon: 2,
+				cTitle: "Are You Sure? - Remove All Classes & Levels",
+				cMsg: "You are about to remove all levels and classes from your character!\nAre you sure you want to continue?" + (IsCharLvlVal == 0 && !dia ? "" : "\n\nNote that you have to use the first line in the Class Selection dialog, for that is the class your character took at 1st level. If the first line if left empty or its level is set to zero, the sheet will assume you want to delete all the character's classes and levels.") + "\n\nClick 'No' to go back to the Class Selection dialog.",
+				nType: 2,
 			});
 			if (askSure !== 4) dia = "Go Again!";
 		};
@@ -1063,51 +1063,51 @@ function AskMulticlassing(lvlAlreadyAdded) {
 	};
 	var Multiclassing_Dialog = {
 		//variables to be set by the calling function
-		Class1 : "",
-		Class2 : "",
-		Class3 : "",
-		Class4 : "",
-		ClassNmbrs : 0,
-		All : true,
-		LVLchange : 1,
-		Selection : 0,
+		Class1: "",
+		Class2: "",
+		Class3: "",
+		Class4: "",
+		ClassNmbrs: 0,
+		All: true,
+		LVLchange: 1,
+		Selection: 0,
 
 		//when starting the dialog
-		initialize : function (dialog) {
+		initialize: function (dialog) {
 			var theChar = What("PC Name") ? What("PC Name") : "your character";
 			dialog.load({
-				"txt0" : theChar.substring(0,1).toUpperCase() + theChar.substring(1) + "'s level has increased by " + parseFloat(this.LVLchange) + ". Select one of the classes of " + theChar + " that you want to add this to. Alternatively, you can fill out a new class to add the level to.",
-				"txt1" : "Because you changed the character level by more than 1, you can choose to either have all levels be added to the selected class, or only 1. If you want only 1 level to be added to the class, uncheck the box below. That way you will be prompted for the next levels with this dialog again.",
-				"tCl1" : this.Class1,
-				"tCl2" : this.Class2,
-				"tCl3" : this.Class3,
-				"tCl4" : this.Class4,
-				"cAll" : true,
-				"rCl1" : parseFloat(this.ClassNmbrs) >= 1,
-				"rCl2" : false,
-				"rCl3" : false,
-				"rCl4" : false,
-				"rClN" : parseFloat(this.ClassNmbrs) <= 0
+				"txt0": theChar.substring(0,1).toUpperCase() + theChar.substring(1) + "'s level has increased by " + parseFloat(this.LVLchange) + ". Select one of the classes of " + theChar + " that you want to add this to. Alternatively, you can fill out a new class to add the level to.",
+				"txt1": "Because you changed the character level by more than 1, you can choose to either have all levels be added to the selected class, or only 1. If you want only 1 level to be added to the class, uncheck the box below. That way you will be prompted for the next levels with this dialog again.",
+				"tCl1": this.Class1,
+				"tCl2": this.Class2,
+				"tCl3": this.Class3,
+				"tCl4": this.Class4,
+				"cAll": true,
+				"rCl1": parseFloat(this.ClassNmbrs) >= 1,
+				"rCl2": false,
+				"rCl3": false,
+				"rCl4": false,
+				"rClN": parseFloat(this.ClassNmbrs) <= 0,
 			});
 			dialog.enable({
-				"rClN" : true,
-				"rCl1" : parseFloat(this.ClassNmbrs) >= 1,
-				"rCl2" : parseFloat(this.ClassNmbrs) >= 2,
-				"rCl3" : parseFloat(this.ClassNmbrs) >= 3,
-				"rCl4" : parseFloat(this.ClassNmbrs) >= 4,
-				"cAll" : true
+				"rClN": true,
+				"rCl1": parseFloat(this.ClassNmbrs) >= 1,
+				"rCl2": parseFloat(this.ClassNmbrs) >= 2,
+				"rCl3": parseFloat(this.ClassNmbrs) >= 3,
+				"rCl4": parseFloat(this.ClassNmbrs) >= 4,
+				"cAll": true,
 			});
 			dialog.visible({
-				"vCl1" : parseFloat(this.ClassNmbrs) >= 1,
-				"vCl2" : parseFloat(this.ClassNmbrs) >= 2,
-				"vCl3" : parseFloat(this.ClassNmbrs) >= 3,
-				"vCl4" : parseFloat(this.ClassNmbrs) >= 4,
-				"vAll" : Math.abs(this.LVLchange) > 1
+				"vCl1": parseFloat(this.ClassNmbrs) >= 1,
+				"vCl2": parseFloat(this.ClassNmbrs) >= 2,
+				"vCl3": parseFloat(this.ClassNmbrs) >= 3,
+				"vCl4": parseFloat(this.ClassNmbrs) >= 4,
+				"vAll": Math.abs(this.LVLchange) > 1,
 			})
 		},
 
 		//when pressing the ok button
-		commit : function (dialog) {
+		commit: function (dialog) {
 			var oResult = dialog.store();
 			if (oResult["rCl1"]) {
 				this.Selection = 1;
@@ -1124,159 +1124,159 @@ function AskMulticlassing(lvlAlreadyAdded) {
 		},
 
 		//do this whenever a custom text is entered so that the right bullet point is selected
-		tClN : function (dialog) {
+		tClN: function (dialog) {
 			dialog.load({
-				"rClN" : true
+				"rClN": true,
 			});
 		},
 
-		description : {
-			name : "LEVEL UP CLASS DIALOG",
-			elements : [{
-				type : "view",
-				elements : [{
-					type : "view",
-					elements : [{
-						type : "static_text",
-						item_id : "head",
-						alignment : "align_fill",
-						font : "heading",
-						bold : true,
-						height : 21,
-						char_width : 43,
-						name : "Choose Which Class to Level Up"
+		description: {
+			name: "LEVEL UP CLASS DIALOG",
+			elements: [{
+				type: "view",
+				elements: [{
+					type: "view",
+					elements: [{
+						type: "static_text",
+						item_id: "head",
+						alignment: "align_fill",
+						font: "heading",
+						bold: true,
+						height: 21,
+						char_width: 43,
+						name: "Choose Which Class to Level Up",
 					}, {
-						type : "static_text",
-						item_id : "txt0",
-						alignment : "align_fill",
-						font : "dialog",
-						char_height : 5,
-						char_width : 40
+						type: "static_text",
+						item_id: "txt0",
+						alignment: "align_fill",
+						font: "dialog",
+						char_height: 5,
+						char_width: 40,
 					}, {
-						type : "view",
-						align_children : "align_left",
-						char_width : 40,
-						elements : [{
-							type : "view",
-							item_id : "vClN",
-							align_children : "align_row",
-							elements : [{
-								type : "radio",
-								item_id : "rClN",
-								group_id : "Class",
-								name : "New class:",
-								char_width : 10
+						type: "view",
+						align_children: "align_left",
+						char_width: 40,
+						elements: [{
+							type: "view",
+							item_id: "vClN",
+							align_children: "align_row",
+							elements: [{
+								type: "radio",
+								item_id: "rClN",
+								group_id: "Class",
+								name: "New class:",
+								char_width: 10,
 							}, {
-								type : "edit_text",
-								item_id : "tClN",
-								alignment : "align_fill",
-								char_width : 30,
-								height : 20
-							}, ]
+								type: "edit_text",
+								item_id: "tClN",
+								alignment: "align_fill",
+								char_width: 30,
+								height: 20,
+							} ],
 						}, {
-							type : "view",
-							item_id : "vCl1",
-							align_children : "align_row",
-							elements : [{
-								type : "radio",
-								item_id : "rCl1",
-								group_id : "Class",
-								name : "Class 1:",
-								char_width : 10
+							type: "view",
+							item_id: "vCl1",
+							align_children: "align_row",
+							elements: [{
+								type: "radio",
+								item_id: "rCl1",
+								group_id: "Class",
+								name: "Class 1:",
+								char_width: 10,
 							}, {
-								type : "static_text",
-								item_id : "tCl1",
-								char_width : 30,
-								height : 20,
-								alignment : "align_fill",
-								font : "dialog",
-								bold : true
-							}, ]
+								type: "static_text",
+								item_id: "tCl1",
+								char_width: 30,
+								height: 20,
+								alignment: "align_fill",
+								font: "dialog",
+								bold: true,
+							} ],
 						}, {
-							type : "view",
-							item_id : "vCl2",
-							align_children : "align_row",
-							elements : [{
-								type : "radio",
-								item_id : "rCl2",
-								group_id : "Class",
-								name : "Class 2:",
-								char_width : 10
+							type: "view",
+							item_id: "vCl2",
+							align_children: "align_row",
+							elements: [{
+								type: "radio",
+								item_id: "rCl2",
+								group_id: "Class",
+								name: "Class 2:",
+								char_width: 10,
 							}, {
-								type : "static_text",
-								item_id : "tCl2",
-								char_width : 30,
-								height : 20,
-								alignment : "align_fill",
-								font : "dialog",
-								bold : true
-							}, ]
+								type: "static_text",
+								item_id: "tCl2",
+								char_width: 30,
+								height: 20,
+								alignment: "align_fill",
+								font: "dialog",
+								bold: true,
+							} ],
 						}, {
-							type : "view",
-							item_id : "vCl3",
-							align_children : "align_row",
-							elements : [{
-								type : "radio",
-								item_id : "rCl3",
-								group_id : "Class",
-								name : "Class 3:",
-								char_width : 10
+							type: "view",
+							item_id: "vCl3",
+							align_children: "align_row",
+							elements: [{
+								type: "radio",
+								item_id: "rCl3",
+								group_id: "Class",
+								name: "Class 3:",
+								char_width: 10,
 							}, {
-								type : "static_text",
-								item_id : "tCl3",
-								char_width : 30,
-								height : 20,
-								alignment : "align_fill",
-								font : "dialog",
-								bold : true
-							}, ]
+								type: "static_text",
+								item_id: "tCl3",
+								char_width: 30,
+								height: 20,
+								alignment: "align_fill",
+								font: "dialog",
+								bold: true,
+							} ],
 						}, {
-							type : "view",
-							item_id : "vCl4",
-							align_children : "align_row",
-							elements : [{
-								type : "radio",
-								item_id : "rCl4",
-								group_id : "Class",
-								name : "Class 4:",
-								char_width : 10
+							type: "view",
+							item_id: "vCl4",
+							align_children: "align_row",
+							elements: [{
+								type: "radio",
+								item_id: "rCl4",
+								group_id: "Class",
+								name: "Class 4:",
+								char_width: 10,
 							}, {
-								type : "static_text",
-								item_id : "tCl4",
-								char_width : 30,
-								height : 20,
-								alignment : "align_fill",
-								font : "dialog",
-								bold : true
-							}, ]
-						}, ]
+								type: "static_text",
+								item_id: "tCl4",
+								char_width: 30,
+								height: 20,
+								alignment: "align_fill",
+								font: "dialog",
+								bold: true,
+							} ],
+						} ],
 					}, {
-						type : "view",
-						item_id : "vAll",
-						align_children : "align_left",
-						char_width : 40,
-						elements : [{
-							type : "static_text",
-							item_id : "txt1",
-							alignment : "align_fill",
-							font : "dialog",
-							char_height : 6,
-							char_width : 38
+						type: "view",
+						item_id: "vAll",
+						align_children: "align_left",
+						char_width: 40,
+						elements: [{
+							type: "static_text",
+							item_id: "txt1",
+							alignment: "align_fill",
+							font: "dialog",
+							char_height: 6,
+							char_width: 38,
 						}, {
-							type : "view",
-							align_children : "align_left",
-							elements : [{
-								type : "check_box",
-								item_id : "cAll",
-								name : "Apply the entire level change to the selected class."
-							}, ]
-						}, ]
-					}, ]
+							type: "view",
+							align_children: "align_left",
+							elements: [{
+								type: "check_box",
+								item_id: "cAll",
+								name: "Apply the entire level change to the selected class.",
+							} ],
+						} ],
+					} ],
 				}, {
-					type : "ok"
-				}, ]
-			}, ]
-		}
+					type: "ok",
+				} ],
+			} ],
+		},
 	};
 
 	var CharLVL = IsCharLvlVal !== false ? IsCharLvlVal : Number(What("Character Level"));
@@ -1285,10 +1285,10 @@ function AskMulticlassing(lvlAlreadyAdded) {
 	if (!IsNotReset || !IsNotImport || !toAdd) return;
 
 	Multiclassing_Dialog.ClassNmbrs = classes.parsed.length;
-	Multiclassing_Dialog.Class1 = classes.parsed[0] ? classes.parsed[0][0]: "";
-	Multiclassing_Dialog.Class2 = classes.parsed[1] ? classes.parsed[1][0]: "";
-	Multiclassing_Dialog.Class3 = classes.parsed[2] ? classes.parsed[2][0]: "";
-	Multiclassing_Dialog.Class4 = classes.parsed[3] ? classes.parsed[3][0]: "";
+	Multiclassing_Dialog.Class1 = classes.parsed[0] ? classes.parsed[0][0] : "";
+	Multiclassing_Dialog.Class2 = classes.parsed[1] ? classes.parsed[1][0] : "";
+	Multiclassing_Dialog.Class3 = classes.parsed[2] ? classes.parsed[2][0] : "";
+	Multiclassing_Dialog.Class4 = classes.parsed[3] ? classes.parsed[3][0] : "";
 	Multiclassing_Dialog.LVLchange = toAdd;
 
 	//call the dialog
@@ -1300,7 +1300,7 @@ function AskMulticlassing(lvlAlreadyAdded) {
 	if (dResult !== "" && isNaN(dResult)) {
 		classes.parsed[classes.parsed.length] = [
 			dResult,
-			AddAll ? toAdd : sign(toAdd)
+			AddAll ? toAdd : sign(toAdd),
 		];
 	} else if (dResult !== "") { //do something if one of the existing classes was chosen, and do nothing if an empty string was chosen
 		classes.parsed[dResult - 1][1] += AddAll ? toAdd : sign(toAdd);
@@ -1308,7 +1308,7 @@ function AskMulticlassing(lvlAlreadyAdded) {
 
 	if (!AddAll || dResult === "") {
 		// not everything was applied yet, so lets ask what to do for the next level
-		AskMulticlassing(dResult === "" ? 0 : lvlAlreadyAdded? lvlAlreadyAdded + 1 : 1);
+		AskMulticlassing(dResult === "" ? 0 : lvlAlreadyAdded ? lvlAlreadyAdded + 1 : 1);
 		return;
 	}
 
@@ -1389,17 +1389,17 @@ function PleaseSubclass(aClass, classString) {
 	}
 
 	var SubclassSelect_Dialog = {
-		result : -1,
+		result: -1,
 
 		//when starting the dialog
-		initialize : function (dialog) {
+		initialize: function (dialog) {
 			dialog.load({
-				img1 : allIcons.classes
+				img1: allIcons.classes,
 			});
 		},
 
 		//when pressing the ok button
-		commit : function (dialog) {
+		commit: function (dialog) {
 			var oResult = dialog.store();
 			for (var i = 0; i < options.length; i++) {
 				if (oResult[options[i].id]) {
@@ -1410,88 +1410,88 @@ function PleaseSubclass(aClass, classString) {
 		},
 
 		//when pressing the other button
-		other : function (dialog) {
+		other: function (dialog) {
 			AddString("SubClass Remember", aClass, false);
 			dialog.end("other");
 		},
 
-		description : {
-			name : "SUBCLASS SELECTION DIALOG",
-			elements : [{
-				type : "view",
-				elements : [{
-					type : "view",
-					elements : [{
-						type : "view",
-						align_children : "align_row",
-						elements : [{
-							type : "image",
-							item_id : "img1",
-							width : 20,
-							height : 20
+		description: {
+			name: "SUBCLASS SELECTION DIALOG",
+			elements: [{
+				type: "view",
+				elements: [{
+					type: "view",
+					elements: [{
+						type: "view",
+						align_children: "align_row",
+						elements: [{
+							type: "image",
+							item_id: "img1",
+							width: 20,
+							height: 20,
 						}, {
-							type : "static_text",
-							item_id : "titl",
-							alignment : "align_fill",
-							font : "title",
-							bold : true,
-							height : 23,
-							width : 470,
-							name : oClass.name + " has no detectable " + oClass.subclasses[0]
-						}]
+							type: "static_text",
+							item_id: "titl",
+							alignment: "align_fill",
+							font: "title",
+							bold: true,
+							height: 23,
+							width: 470,
+							name: oClass.name + " has no detectable " + oClass.subclasses[0],
+						}],
 					}, {
-						type : "static_text",
-						item_id : "tex0",
-						alignment : "align_fill",
-						font : "dialog",
-						name : theString,
-						wrap_name : true,
-						width : 500
+						type: "static_text",
+						item_id: "tex0",
+						alignment: "align_fill",
+						font: "dialog",
+						name: theString,
+						wrap_name: true,
+						width: 500,
 					}, {
-						type : "cluster",
-						item_id : "clu1",
-						name : clusterString,
-						font : "dialog",
-						bold : true,
-						elements : [{
-							type : "view",
-							align_children : "align_distribute",
-							alignment : "align_center",
-							elements : [{
-									type : "view",
-									elements : SubclassArrayLeft
+						type: "cluster",
+						item_id: "clu1",
+						name: clusterString,
+						font: "dialog",
+						bold: true,
+						elements: [{
+							type: "view",
+							align_children: "align_distribute",
+							alignment: "align_center",
+							elements: [{
+									type: "view",
+									elements: SubclassArrayLeft,
 								}, {
-									type : "gap",
-									width : 5
+									type: "gap",
+									width: 5,
 								}, {
-									type : "view",
-									elements : SubclassArrayRight
-								}]
+									type: "view",
+									elements: SubclassArrayRight,
+								}],
 						}].concat(!asteriskString ? [] : [{
-							type : "static_text",
-							item_id : "tex1",
-							alignment : "align_fill",
-							font : "dialog",
-							name : asteriskString,
-							wrap_name : true,
-							width : 480
-						}])
+							type: "static_text",
+							item_id: "tex1",
+							alignment: "align_fill",
+							font: "dialog",
+							name: asteriskString,
+							wrap_name: true,
+							width: 480,
+						}]),
 					}, {
-						type : "static_text",
-						item_id : "tex2",
-						alignment : "align_fill",
-						font : "dialog",
-						name : moreString,
-						wrap_name : true,
-						width : 500
-					}]
+						type: "static_text",
+						item_id: "tex2",
+						alignment: "align_fill",
+						font: "dialog",
+						name: moreString,
+						wrap_name: true,
+						width: 500,
+					}],
 				}, {
-					type : "ok_cancel_other",
-					ok_name : "Add " + oClass.subclasses[0],
-					other_name : "I get it, don't show me this again"
-				}]
-			}]
-		}
+					type: "ok_cancel_other",
+					ok_name: "Add " + oClass.subclasses[0],
+					other_name: "I get it, don't show me this again",
+				}],
+			}],
+		},
 	};
 
 	var theDialog = app.execDialog(SubclassSelect_Dialog);

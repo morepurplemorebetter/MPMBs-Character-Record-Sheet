@@ -95,12 +95,12 @@ ToolsList["purplemancer's tools"] = {
 	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
-	infoname : "Purplemancer's tools [500 gp]",
+	infoname: "Purplemancer's tools [500 gp]",
 /*	infoname // REQUIRED //
 	TYPE:	string
 	USE:	name of the tool as it will be displayed in the equipment menu
 */
-	name : "Purplemancer's tools",
+	name: "Purplemancer's tools",
 /*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the tool as it will be added in the equipment fields
@@ -108,7 +108,7 @@ ToolsList["purplemancer's tools"] = {
 	This name will also be used to recognize what is typed into an equipment field.
 	Once you select a tool from the equipment menu, it is this attribute that will be used to fill the field.
 */
-	amount : "",
+	amount: "",
 /*	amount // REQUIRED //
 	TYPE:	number or empty string ("")
 	USE:	number of the tool as it will be added in the equipment fields, "#" column
@@ -122,14 +122,14 @@ ToolsList["purplemancer's tools"] = {
 
 	If the equipment doesn't normally come in multiples, you can just let this attribute be an empty string ("").
 */
-	weight : 12,
+	weight: 12,
 /*	weight // REQUIRED //
 	TYPE:	number or empty string ("")
 	USE:	the weight of the tool in lb
 
 	If the tool doesn't have a listed weight, you can just let this attribute be an empty string ("").
 */
-	type : "artisan's tools",
+	type: "artisan's tools",
 /*	type // OPTIONAL //
 	TYPE:	string
 	USE:	the grouping of this tool
@@ -146,8 +146,8 @@ ToolsList["purplemancer's tools"] = {
 
 	Setting this to an empty string ("") is the same as not including this attribute.
 */
-	source : ["SRD", 204],
-	source : [["E", 7], ["S", 115]],
+	source: ["SRD", 204],
+	source: [["E", 7], ["S", 115]],
 /*	source // OPTIONAL //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the tool is found

@@ -22,168 +22,168 @@ var iFileName = "Bard - College of the Maestro [Matthew Mercer's work, transcrib
 RequiredSheetVersion(12.999);
 
 SourceList["MM:CM"] = {
-	name : "Matthew Mercer: College of the Maestro",
-	abbreviation : "MM:CM",
-	group : "Dungeon Masters Guild",
-	url : "https://www.dmsguild.com/product/183630/College-of-the-Maestro--Bard-College-Option",
-	date : "2016/06/21"
+	name: "Matthew Mercer: College of the Maestro",
+	abbreviation: "MM:CM",
+	group: "Dungeon Masters Guild",
+	url: "https://www.dmsguild.com/product/183630/College-of-the-Maestro--Bard-College-Option",
+	date: "2016/06/21",
 };
 
 AddSubClass("bard", "college of the maestro", {
-	regExpSearch : /^(?=.*(college|bard|minstrel|troubadour|jongleur))(?=.*maestro).*$/i,
-	subname : "College of the Maestro",
-	source : ["MM:CM", 1],
-	features : {
-		"subclassfeature3" : {
-			name : "Battle Muse",
-			source : ["MM:CM", 1],
-			minlevel : 3,
+	regExpSearch: /^(?=.*(college|bard|minstrel|troubadour|jongleur))(?=.*maestro).*$/i,
+	subname: "College of the Maestro",
+	source: ["MM:CM", 1],
+	features: {
+		"subclassfeature3": {
+			name: "Battle Muse",
+			source: ["MM:CM", 1],
+			minlevel: 3,
 			description: desc("I gain an extra use of my Bard Inspiration feature, and again at both level 6 and 14"),
-			additional : ["", "", "+1 bardic inspiration", "+1 bardic inspiration", "+1 bardic inspiration", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations"],
-			changeeval : "var bardLVL = classes.known.bard.level; var recov = bardLVL < 5 ? 'long rest' : 'short rest'; var extr = bardLVL < 2 ? 0 : (bardLVL < 6 ? 1 : (bardLVL < 14 ? 2 : 3)); var addi = ' [' + CurrentClasses.bard.features['bardic inspiration'].additional[bardLVL - 1] + ']'; if (CurrentFeats.known.indexOf('journeyman conductor') !== -1) { extr += 1; }; AddFeature('Bardic Inspiration', '', addi, recov, 'Bard (College of the Maestro)', 'replace', 'event.value = Math.max(1 + ' + extr + \", What('Cha Mod') + \" + extr + ');');"
+			additional: ["", "", "+1 bardic inspiration", "+1 bardic inspiration", "+1 bardic inspiration", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations"],
+			changeeval: "var bardLVL = classes.known.bard.level; var recov = bardLVL < 5 ? 'long rest' : 'short rest'; var extr = bardLVL < 2 ? 0 : (bardLVL < 6 ? 1 : (bardLVL < 14 ? 2 : 3)); var addi = ' [' + CurrentClasses.bard.features['bardic inspiration'].additional[bardLVL - 1] + ']'; if (CurrentFeats.known.indexOf('journeyman conductor') !== -1) { extr += 1; }; AddFeature('Bardic Inspiration', '', addi, recov, 'Bard (College of the Maestro)', 'replace', 'event.value = Math.max(1 + ' + extr + \", What('Cha Mod') + \" + extr + ');');",
 		},
-		"subclassfeature3.1" : {
-			name : "Symphony of Conflict",
-			source : ["MM:CM", 1],
-			minlevel : 3,
-			description : desc([
+		"subclassfeature3.1": {
+			name: "Symphony of Conflict",
+			source: ["MM:CM", 1],
+			minlevel: 3,
+			description: desc([
 				'Use the "Choose Feature" button above to add Conducting Techniques to the third page',
 				"This requires a free hand, baton or wand; I need to see the target and it must hear me",
 				"Any saving throws have a DC equal to my spell save DC",
 			]),
-			additional : ["", "", "2 conducting techniques", "2 conducting techniques", "2 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "4 conducting techniques", "4 conducting techniques", "4 conducting techniques", "4 conducting techniques", "4 conducting techniques", "4 conducting techniques", "4 conducting techniques"],
-			extraname : "Conducting Technique",
-			extrachoices : ["Aria of Suspense (Ansia)", "Crash (Marcato)", "Dirge of Dread (Finale)", "Dissonance (Discordia)", "Guiding Tone (Fermata)", "Hasten Tempo (Accelerando)", "Hymn of Harmony (Armonia)", "Majestic Anthem (Maestoso)", "Resonance (Risonanza)", "Sprint (Presto)"],
-			"aria of suspense (ansia)" : {
-				name : "Aria of Suspense (Ansia)",
+			additional: ["", "", "2 conducting techniques", "2 conducting techniques", "2 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "3 conducting techniques", "4 conducting techniques", "4 conducting techniques", "4 conducting techniques", "4 conducting techniques", "4 conducting techniques", "4 conducting techniques", "4 conducting techniques"],
+			extraname: "Conducting Technique",
+			extrachoices: ["Aria of Suspense (Ansia)", "Crash (Marcato)", "Dirge of Dread (Finale)", "Dissonance (Discordia)", "Guiding Tone (Fermata)", "Hasten Tempo (Accelerando)", "Hymn of Harmony (Armonia)", "Majestic Anthem (Maestoso)", "Resonance (Risonanza)", "Sprint (Presto)"],
+			"aria of suspense (ansia)": {
+				name: "Aria of Suspense (Ansia)",
 				additional: "1 bardic inspiration die",
 				description: desc([
 					"As an action, anyone of my choosing within 60 ft of me can't be surprised for 10 minutes",
 					"They also add the die roll on saves vs. traps and environmental effects for the duration",
 				]),
-				source : ["MM:CM", 1],
-				action : [["action", ""]]
+				source: ["MM:CM", 1],
+				action: [["action", ""]],
 			},
-			"crash (marcato)" : {
-				name : "Crash (Marcato)",
+			"crash (marcato)": {
+				name: "Crash (Marcato)",
 				additional: "1 bardic inspiration die",
 				description: desc([
 					"When someone within 60 ft hits with an attack, I can use my reaction to amplify it",
 					"The target of the attack must make a Strength saving throw or be knocked prone",
 					"If failed, the target of the attack also takes half the die roll worth of thunder damage",
 				]),
-				source : ["MM:CM", 1],
-				action : [["reaction", ""]]
+				source: ["MM:CM", 1],
+				action: [["reaction", ""]],
 			},
-			"dirge of dread (finale)" : {
-				name : "Dirge of Dread (Finale)",
+			"dirge of dread (finale)": {
+				name: "Dirge of Dread (Finale)",
 				additional: "1 bardic inspiration die",
 				description: desc([
 					"When an ally within 60 ft reduces a creature to 0 HP, I can use my reaction to frighten",
 					"Half the die roll (min 1) of creatures within 15 ft of the ally have to make a Wisdom save",
 					"If failed, frightened until the end of the ally's next turn; can only affect once per 24 hours",
 				]),
-				source : ["MM:CM", 1],
-				action : [["reaction", ""]]
+				source: ["MM:CM", 1],
+				action: [["reaction", ""]],
 			},
-			"dissonance (discordia)" : {
-				name : "Dissonance (Discordia)",
+			"dissonance (discordia)": {
+				name: "Dissonance (Discordia)",
 				additional: "1 bardic inspiration die",
 				description: desc([
 					"When a creature within 60 ft makes a saving throw, I can use my reaction to thwart it",
 					"I reduce the save total by half the die roll; I can do this after the save was rolled",
 				]),
-				source : ["MM:CM", 1],
-				action : [["reaction", ""]]
+				source: ["MM:CM", 1],
+				action: [["reaction", ""]],
 			},
-			"guiding tone (fermata)" : {
-				name : "Guiding Tone (Fermata)",
+			"guiding tone (fermata)": {
+				name: "Guiding Tone (Fermata)",
 				additional: "1 bardic inspiration die",
 				description: desc([
 					"As a bonus action, a target within 60 ft has to make a Wis save or is pushed back 10 ft",
 					"I choose the direction of the push; If failed, it also takes half the die roll in psychic damage",
 				]),
-				source : ["MM:CM", 1],
-				action : [["bonus action", ""]]
+				source: ["MM:CM", 1],
+				action: [["bonus action", ""]],
 			},
-			"hasten tempo (accelerando)" : {
-				name : "Hasten Tempo (Accelerando)",
+			"hasten tempo (accelerando)": {
+				name: "Hasten Tempo (Accelerando)",
 				additional: "1 bardic inspiration die",
 				description: desc([
 					"As a bonus action, a creature within 60 ft adds the die roll to its current initiative value",
 					"If this moves the target up the initiative order above me, it can immidiately take its turn",
 					"A creature can't be affected by this again until after finishing a short or long rest",
 				]),
-				source : ["MM:CM", 2],
-				action : [["bonus action", ""]]
+				source: ["MM:CM", 2],
+				action: [["bonus action", ""]],
 			},
-			"hymn of harmony (armonia)" : {
-				name : "Hymn of Harmony (Armonia)",
+			"hymn of harmony (armonia)": {
+				name: "Hymn of Harmony (Armonia)",
 				description: desc("My Bardic Inspiration dice can be used to regain extra HP, whenever any HP is regained"),
-				source : ["MM:CM", 2],
+				source: ["MM:CM", 2],
 			},
-			"majestic anthem (maestoso)" : {
-				name : "Majestic Anthem (Maestoso)",
+			"majestic anthem (maestoso)": {
+				name: "Majestic Anthem (Maestoso)",
 				additional: "1 bardic inspiration die",
 				description: desc([
 					"As an action, any within 60 ft gain temporary HP equal to the die roll + my Cha modifier",
 					"I can select any creatures in range; The temporary HP last until the end of my next turn",
 				]),
-				source : ["MM:CM", 2],
-				action : [["action", ""]]
+				source: ["MM:CM", 2],
+				action: [["action", ""]],
 			},
-			"resonance (risonanza)" : {
-				name : "Resonance (Risonanza)",
+			"resonance (risonanza)": {
+				name: "Resonance (Risonanza)",
 				additional: "1 bardic inspiration die",
 				description: desc([
 					"As a bonus action, I select a weapon within 60 ft to deal additional thunder damage",
 					"Until the end of my next turn, the weapon adds half the die roll (min 1) to its damage",
 				]),
-				source : ["MM:CM", 2],
-				action : [["bonus action", ""]]
+				source: ["MM:CM", 2],
+				action: [["bonus action", ""]],
 			},
-			"sprint (presto)" : {
-				name : "Sprint (Presto)",
+			"sprint (presto)": {
+				name: "Sprint (Presto)",
 				description: desc([
 					"My Bardic Inspiration dice can be expended to increase movement speed for one turn",
 					"The speed gained depends on the die roll: 1-4: +10 ft; 5-8: +15 ft; 9-12: +20 ft.",
 				]),
-				source : ["MM:CM", 2]
-			}
+				source: ["MM:CM", 2],
+			},
 		},
-		"subclassfeature6" : {
-			name : "Frenetic Crescendo",
-			source : ["MM:CM", 1],
-			minlevel : 6,
-			usages : 1,
-			recovery : "long rest",
+		"subclassfeature6": {
+			name: "Frenetic Crescendo",
+			source: ["MM:CM", 1],
+			minlevel: 6,
+			usages: 1,
+			recovery: "long rest",
 			description: desc([
 				"As an action, I can grant one Bardic Inspiration die to any creature within 60 ft",
 				"All normal restrictions of Bardic Inspiration dice apply",
 			]),
-			action : [["action", ""]]
+			action: [["action", ""]],
 		},
-		"subclassfeature14" : {
-			name : "Virtuoso of Captivation",
-			source : ["MM:CM", 1],
-			minlevel : 14,
-			usages : 1,
-			recovery : "short rest",
+		"subclassfeature14": {
+			name: "Virtuoso of Captivation",
+			source: ["MM:CM", 1],
+			minlevel: 14,
+			usages: 1,
+			recovery: "short rest",
 			description: desc([
 				"As an action, I start a mystical symphony that affects any that can hear me in 60 ft",
 				"Any creature of my choosing has disadv. on saves vs. being charmed and magical sleep",
 				"Affected also have disadv. on Wis (Perception) checks to see or hear others than me",
 				"To keep the symphony going, for up to 10 min, I have to expend my action every turn",
 			]),
-			action : [["action", ""]]
-		}
-	}
+			action: [["action", ""]],
+		},
+	},
 });
 
 FeatsList["journeyman conductor"] = { // The limited feature listing of this feat only works if the character has either no Bard levels or has the College of the Maestro archetype
-	name : "Journeyman Conductor",
-	source : ["MM:CM", 3],
-	calculate : "event.value = 'I learn two conducting techniques of my choice from those available to the College of the Maestro. The saving throw DC for this is ' + (8 + How('Proficiency Bonus') + What('Cha Mod')) + ' (8 + proficiency bonus + Cha mod). I gain one bardic inspiration die (d6), which I regain when I finish a short rest.';",
-	eval : "if (classes.known.bard && classes.known.bard.subclass.indexOf('college of the maestro') !== -1) { UpdateLevelFeatures() } else { AddFeature('Bardic Inspiration ', 1, '(d6)', 'short rest', 'the Journeyman Conductor feat', 'bonus'); };",
-	removeeval : "if (!classes.known.bard || classes.known.bard.subclass.indexOf('college of the maestro') === -1) { RemoveFeature('Bardic Inspiration ', 1); };"
+	name: "Journeyman Conductor",
+	source: ["MM:CM", 3],
+	calculate: "event.value = 'I learn two conducting techniques of my choice from those available to the College of the Maestro. The saving throw DC for this is ' + (8 + How('Proficiency Bonus') + What('Cha Mod')) + ' (8 + proficiency bonus + Cha mod). I gain one bardic inspiration die (d6), which I regain when I finish a short rest.';",
+	eval: "if (classes.known.bard && classes.known.bard.subclass.indexOf('college of the maestro') !== -1) { UpdateLevelFeatures() } else { AddFeature('Bardic Inspiration ', 1, '(d6)', 'short rest', 'the Journeyman Conductor feat', 'bonus'); };",
+	removeeval: "if (!classes.known.bard || classes.known.bard.subclass.indexOf('college of the maestro') === -1) { RemoveFeature('Bardic Inspiration ', 1); };",
 };

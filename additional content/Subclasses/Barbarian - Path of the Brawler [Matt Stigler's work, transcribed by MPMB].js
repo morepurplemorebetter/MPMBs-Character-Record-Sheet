@@ -23,95 +23,95 @@ var iFileName = "Barbarian - Path of the Brawler [Matt Stigler's work, transcrib
 RequiredSheetVersion(13);
 
 SourceList["FBC:PotB"] = {
-	name : "Fantasy Band Camp: Path of the Brawler",
-	abbreviation : "FBC:PotB",
-	group : "Fantasy Band Camp",
-	url : "https://fantasybandcamp.blogspot.com/2015/02/d-young-justice-superboy.html",
-	date : "2015/02/17"
+	name: "Fantasy Band Camp: Path of the Brawler",
+	abbreviation: "FBC:PotB",
+	group: "Fantasy Band Camp",
+	url: "https://fantasybandcamp.blogspot.com/2015/02/d-young-justice-superboy.html",
+	date: "2015/02/17",
 };
 
 AddSubClass("barbarian", "path of the brawler", {
-	regExpSearch : /^(?=.*brawler)(?=.*(warrior|fighter|marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n)).*$/i,
-	subname : "Path of the Brawler",
-	source : [["FBC:PotB", 0]],
-	features : {
-		"subclassfeature3" : {
-			name : "Powerful Blows",
-			source : [["FBC:PotB", 0]],
-			minlevel : 3,
+	regExpSearch: /^(?=.*brawler)(?=.*(warrior|fighter|marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n)).*$/i,
+	subname: "Path of the Brawler",
+	source: [["FBC:PotB", 0]],
+	features: {
+		"subclassfeature3": {
+			name: "Powerful Blows",
+			source: [["FBC:PotB", 0]],
+			minlevel: 3,
 			description: desc("My unarmed strikes deal 1d6 damage (1d8 in rage) instead of their usual amount"),
-			calcChanges : {
-				atkAdd : [
+			calcChanges: {
+				atkAdd: [
 					function (fields, v) { 
 						if (v.baseWeaponName == "unarmed strike") {
 							try {
-								var curDie = eval_ish(fields.Damage_Die.replace('d', '*'));
+								var curDie = eval_ish(fields.Damage_Die.replace("d", "*"));
 							} catch (e) {
-								var curDie = 'x';
+								var curDie = "x";
 							};
 							var powerfulBlowsDie = /\brage\b/i.test(v.WeaponTextName) ? 8 : 6;
 							if (isNaN(curDie) || curDie < powerfulBlowsDie) {
-								fields.Damage_Die = '1d' + powerfulBlowsDie;
+								fields.Damage_Die = "1d" + powerfulBlowsDie;
 							};
 						};
 					},
-					"My unarmed strikes deal 1d6 damage and 1d8 in rage. If I include the word 'Rage' in an unarmed stike's name or description, the calculation will add set the damage die to 1d8, otherwise to 1d6."
-				]
-			}
+					"My unarmed strikes deal 1d6 damage and 1d8 in rage. If I include the word 'Rage' in an unarmed stike's name or description, the calculation will add set the damage die to 1d8, otherwise to 1d6.",
+				],
+			},
 		},
-		"subclassfeature3.1" : {
-			name : "Massive Leap",
-			source : [["FBC:PotB", 0]],
-			minlevel : 3,
-			description: desc("While raging, my jump distance is doubled and I have adv. on checks related to jumping")
+		"subclassfeature3.1": {
+			name: "Massive Leap",
+			source: [["FBC:PotB", 0]],
+			minlevel: 3,
+			description: desc("While raging, my jump distance is doubled and I have adv. on checks related to jumping"),
 		},
-		"subclassfeature6" : {
-			name : "Iron Body",
-			source : [["FBC:PotB", 0]],
-			minlevel : 6,
-			description : desc([
+		"subclassfeature6": {
+			name: "Iron Body",
+			source: [["FBC:PotB", 0]],
+			minlevel: 6,
+			description: desc([
 				"My unarmed strikes count as magical for overcoming resistances and immunities",
-				"When I enter rage, I gain a number of temporary hit points equal to my barbarian level"
+				"When I enter rage, I gain a number of temporary hit points equal to my barbarian level",
 			]),
-			additional : levels.map(function(n) {
-				return n < 6 ? '' : n + " temp HP";
-			})
+			additional: levels.map(function(n) {
+				return n < 6 ? "" : n + " temp HP";
+			}),
 		},
-		"subclassfeature10" : {
-			name : "Shockwave",
-			source : [["FBC:PotB", 0]],
-			minlevel : 10,
-			description : desc([
+		"subclassfeature10": {
+			name: "Shockwave",
+			source: [["FBC:PotB", 0]],
+			minlevel: 10,
+			description: desc([
 				"As a bonus action when I land from a jump, I can create a powerful shockwave",
 				"All creatures within 5 ft of where I land take 5d10 force damage and are knocked prone",
-				"Targets make a Dex save (DC 8 + Prof Bonus + Str mod) to avoid being knocked prone"
+				"Targets make a Dex save (DC 8 + Prof Bonus + Str mod) to avoid being knocked prone",
 			]),
-			action : [["bonus action", " (after jump)"]],
-			usages : 1,
-			recovery : "short rest",
-			weaponsAdd : ["Shockwave"],
-			weaponOptions : [{
-				regExpSearch : /shockwave/i,
-				name : "Shockwave",
-				source : [["FBC:PotB", 0]],
-				ability : 1,
-				type : "Natural",
-				damage : [5, 10, "force"],
-				range : "5-ft radius",
-				description : "As bonus action after jump, all within 5 ft of where I land Dex save or knocked prone",
-				abilitytodamage : false,
-				dc : true
-			}]
+			action: [["bonus action", " (after jump)"]],
+			usages: 1,
+			recovery: "short rest",
+			weaponsAdd: ["Shockwave"],
+			weaponOptions: [{
+				regExpSearch: /shockwave/i,
+				name: "Shockwave",
+				source: [["FBC:PotB", 0]],
+				ability: 1,
+				type: "Natural",
+				damage: [5, 10, "force"],
+				range: "5-ft radius",
+				description: "As bonus action after jump, all within 5 ft of where I land Dex save or knocked prone",
+				abilitytodamage: false,
+				dc: true,
+			}],
 		},
-		"subclassfeature14" : {
-			name : "Knockout",
-			source : [["FBC:PotB", 0]],
-			minlevel : 14,
-			description : desc([
+		"subclassfeature14": {
+			name: "Knockout",
+			source: [["FBC:PotB", 0]],
+			minlevel: 14,
+			description: desc([
 				"As a bonus action after I hit a creature with an unarmed strike, I can knock it prone",
-				"The creature has to be Large or smaller for this to work"
+				"The creature has to be Large or smaller for this to work",
 			]),
-			action : [["bonus action", " (with unarmed strike)"]]
-		}
-	}
+			action: [["bonus action", " (with unarmed strike)"]],
+		},
+	},
 });

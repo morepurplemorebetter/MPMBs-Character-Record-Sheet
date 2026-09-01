@@ -97,13 +97,13 @@ PacksList["purplepack"] = {
 	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
-	name : "Purple pack (10 gp)",
+	name: "Purple pack (10 gp)",
 /*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the adventuring pack as it will be displayed in the equipment menu
 */
-	source : ["SRD", 204],
-	source : [["E", 7], ["S", 115]],
+	source: ["SRD", 204],
+	source: [["E", 7], ["S", 115]],
 /*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the adventuring pack is found
@@ -127,13 +127,13 @@ PacksList["purplepack"] = {
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
-	items : [
+	items: [
 		["Backpack, with:", "", 5],
 		["Rations, days of", 5, 2],
 		["Tinderbox", "", 1],
 		["Waterskin", "", 5],
-		["Hempen rope, feet of", 50, 0.2]
-	]
+		["Hempen rope, feet of", 50, 0.2],
+	],
 /*	items // REQUIRED //
 	TYPE:	array (variable length) with arrays (3 entries each)
 	USE:	the items to add to the equipment section

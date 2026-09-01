@@ -20,90 +20,90 @@ var iFileName = "Paladin - Hammer of Moradin [MFoV, transcribed by MPMB].js";
 RequiredSheetVersion(13);
 
 SourceList["MFoV:HM"] = {
-	name : "Middle Finger of Vecna: Hammer of Moradin",
-	abbreviation : "MFoV:HM",
-	group : "Middle Finger of Vecna",
-	url : "http://mfov.magehandpress.com/2016/04/hammer-of-moradin.html",
-	date : "2016/04/15"
+	name: "Middle Finger of Vecna: Hammer of Moradin",
+	abbreviation: "MFoV:HM",
+	group: "Middle Finger of Vecna",
+	url: "http://mfov.magehandpress.com/2016/04/hammer-of-moradin.html",
+	date: "2016/04/15",
 };
 
 AddSubClass("paladin", "hammer", {
-	regExpSearch : /^(?=.*hammer)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
-	subname : "Oath of the Hammer",
-	source : [["MFoV:HM", 0]],
-	spellcastingExtra : ["bane", "shield of faith", "spiritual weapon", "warding bond", "meld into stone", "protection from energy", "stone shape", "stoneskin", "passwall", "wall of stone"],
-	features : {
-		"subclassfeature3" : {
-			name : "Channel Divinity: Bane",
-			source : [["MFoV:HM", 0]],
-			minlevel : 3,
-			description : desc([
+	regExpSearch: /^(?=.*hammer)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
+	subname: "Oath of the Hammer",
+	source: [["MFoV:HM", 0]],
+	spellcastingExtra: ["bane", "shield of faith", "spiritual weapon", "warding bond", "meld into stone", "protection from energy", "stone shape", "stoneskin", "passwall", "wall of stone"],
+	features: {
+		"subclassfeature3": {
+			name: "Channel Divinity: Bane",
+			source: [["MFoV:HM", 0]],
+			minlevel: 3,
+			description: desc([
 				"As a bonus action, I can imbue one weapon I'm wielding with magical energy for 1 min",
-				"The weapon is magical and deals +1d8 damage against one creature type chosen by me"
+				"The weapon is magical and deals +1d8 damage against one creature type chosen by me",
 			]),
-			action : [["bonus action", ""]]
+			action: [["bonus action", ""]],
 		},
-		"subclassfeature3.1" : {
-			name : "Channel Divinity: Quake",
-			source : [["MFoV:HM", 0]],
-			minlevel : 3,
-			description : desc([
+		"subclassfeature3.1": {
+			name: "Channel Divinity: Quake",
+			source: [["MFoV:HM", 0]],
+			minlevel: 3,
+			description: desc([
 				"As an action, I smash a maul or warhammer I'm wielding to the ground",
-				"Each creature of my choice within 20 ft must make a Strength save or be knocked prone"
+				"Each creature of my choice within 20 ft must make a Strength save or be knocked prone",
 			]),
-			action : [["action", ""]]
+			action: [["action", ""]],
 		},
-		"subclassfeature7" : {
-			name : "Hammer Throw",
-			source : [["MFoV:HM", 0]],
-			minlevel : 7,
-			description : desc([
+		"subclassfeature7": {
+			name: "Hammer Throw",
+			source: [["MFoV:HM", 0]],
+			minlevel: 7,
+			description: desc([
 				"Any hammer I wield is considered magical and has the Thrown property (30/60 ft)",
-				"Hammers I throw return to my hand at the end of my turn"
+				"Hammers I throw return to my hand at the end of my turn",
 			]),
-			calcChanges : {
-				atkAdd : [
+			calcChanges: {
+				atkAdd: [
 					function (fields, v) {
 						if ((/hammer|maul/).test(v.WeaponName)) {
-							fields.Description += (fields.Description ? '; ' : '') + 'Thrown, Returning, Magical';
-							fields.Range = 'Melee, 30/60 ft';
+							fields.Description += (fields.Description ? "; " : "") + "Thrown, Returning, Magical";
+							fields.Range = "Melee, 30/60 ft";
 						};
 					},
-					"Any hammer I wield, including light hammers, mauls, and warhammers, becomes magical and gains the Thrown property with a range of 30/60 feet."
-				]
-			}
+					"Any hammer I wield, including light hammers, mauls, and warhammers, becomes magical and gains the Thrown property with a range of 30/60 feet.",
+				],
+			},
 		},
-		"subclassfeature15" : {
-			name : "Stoneguard",
-			source : [["MFoV:HM", 0]],
-			minlevel : 15,
-			description : desc([
-				"As a reaction when I take nonmagical bludg./pierc./slash. damage, I can reduce it by 5"
+		"subclassfeature15": {
+			name: "Stoneguard",
+			source: [["MFoV:HM", 0]],
+			minlevel: 15,
+			description: desc([
+				"As a reaction when I take nonmagical bludg./pierc./slash. damage, I can reduce it by 5",
 			]),
-			action : [["reaction", ""]]
+			action: [["reaction", ""]],
 		},
-		"subclassfeature18" : {
-			name : "Hammer Strike",
-			source : [["MFoV:HM", 0]],
-			minlevel : 18,
-			description : desc([
+		"subclassfeature18": {
+			name: "Hammer Strike",
+			source: [["MFoV:HM", 0]],
+			minlevel: 18,
+			description: desc([
 				"As an action, I can throw a hammer in a 60-ft line, dealing damage as a normal attack",
-				"I make a single attack roll and compare it to the AC of each target, possibly hitting all"
+				"I make a single attack roll and compare it to the AC of each target, possibly hitting all",
 			]),
-			action : [['action', '']]
+			action: [["action", ""]],
 		},
-		"subclassfeature20" : {
-			name : "Avatar of the Stone Father",
-			source : [["MFoV:HM", 0]],
-			minlevel : 20,
-			description : desc([
+		"subclassfeature20": {
+			name: "Avatar of the Stone Father",
+			source: [["MFoV:HM", 0]],
+			minlevel: 20,
+			description: desc([
 				"As an action, I imbue myself with power for 1 minute and gain the following benefits:",
 				" \u2022 I have resistance against all damage and I can't be moved against my will",
-				" \u2022 My attacks deal an additional 1d8 damage"
+				" \u2022 My attacks deal an additional 1d8 damage",
 			]),
-			recovery : "long rest",
-			usages : 1,
-			action : [["action", ""]]
-		}
-	}
+			recovery: "long rest",
+			usages: 1,
+			action: [["action", ""]],
+		},
+	},
 });

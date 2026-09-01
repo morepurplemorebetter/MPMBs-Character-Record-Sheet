@@ -98,15 +98,15 @@ ArmourList["purple mail"] = {
 	If you do use an object name that is already in use, you will be overwriting that object.
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
-	name : "Purple Mail",
+	name: "Purple Mail",
 /*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the armour as it will be used by the sheet
 
 	This name will be capitalized (first letter of every word) before being added to the armour drop-down.
 */
-	source : ["SRD", 204],
-	source : [["E", 7], ["S", 115]],
+	source: ["SRD", 204],
+	source: [["E", 7], ["S", 115]],
 /*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the armour is found
@@ -130,7 +130,7 @@ ArmourList["purple mail"] = {
 		source : ["HB", 0],
 	"HB" refers to the 'homebrew' source.
 */
-	defaultExcluded : true,
+	defaultExcluded: true,
 /*	defaultExcluded // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this armour should be excluded by default (true) or included by default (false)
@@ -144,7 +144,7 @@ ArmourList["purple mail"] = {
 
 	Setting this attribute to false is the same as not including this attribute.
 */
-	regExpSearch : /^(?=.*purple)(?=.*mail).*$/i,
+	regExpSearch: /^(?=.*purple)(?=.*mail).*$/i,
 /*	regExpSearch // REQUIRED //
 	TYPE:	regular expression
 	USE:	used to match the text in the armour field to see if this armour is present
@@ -155,8 +155,8 @@ ArmourList["purple mail"] = {
 	If this looks too complicated, or you want to match only a single word, or a fixed order of words, just write it like this:
 		regExpSearch : /purple mail/i,
 */
-	ac : 12,
-	ac : "10+Wis",
+	ac: 12,
+	ac: "10+Wis",
 /*	ac // REQUIRED //
 	TYPE:	number or string (since v13.0.6)
 	USE:	the base AC the armour gives without modifiers from Dexterity or other ability scores
@@ -183,7 +183,7 @@ ArmourList["purple mail"] = {
 
 	If you use a string here, it is recommended to omit the `addMod` attribute.
 */
-	type : "heavy",
+	type: "heavy",
 /*	type // OPTIONAL //
 	TYPE:	string
 	USE:	type of the armour: "light", "medium", or "heavy"
@@ -196,7 +196,7 @@ ArmourList["purple mail"] = {
 
 	Setting this to and empty string ("") is the same as not including this attribute.
 */
-	list : "magic",
+	list: "magic",
 /*	list // OPTIONAL //
 	TYPE:	string
 	USE:	determines the sorting of the armour in the drop-down field
@@ -218,7 +218,7 @@ ArmourList["purple mail"] = {
 	The 'list' attribute is ignored for ArmourList objects used in the 'armorOptions' attribute.
 	Instead, all things added using the 'armorOptions' attribute will always be added at the top of the drop-down field.
 */
-	dex : 3,
+	dex: 3,
 /*	dex // OPTIONAL //
 	TYPE:	number
 	USE:	the maximum Dexterity modifier that can be added to the AC with this armour
@@ -232,7 +232,7 @@ ArmourList["purple mail"] = {
 
 	Simply don't include this attribute if the max Dex mod is determined by the armour type or if there is no limit.
 */
-	stealthdis : true,
+	stealthdis: true,
 /*	stealthdis // OPTIONAL //
 	TYPE:	boolean
 	USE:	set to 'true' if the armour gives disadvantage on stealth checks
@@ -242,7 +242,7 @@ ArmourList["purple mail"] = {
 
 	Setting this to false is the same as not including this attribute.
 */
-	addMod : true,
+	addMod: true,
 /*	addMod // OPTIONAL //
 	TYPE:	boolean
 	USE:	set to 'true' if the armour can have a secondary ability score modifier added to the AC
@@ -262,7 +262,7 @@ ArmourList["purple mail"] = {
 
 	Setting this to false is the same as not including this attribute.
 */
-	isMagicArmor : true,
+	isMagicArmor: true,
 /*	isMagicArmor // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether (true) or not (false) this armour is a magical armour
@@ -274,7 +274,7 @@ ArmourList["purple mail"] = {
 
 	Setting this to false is the same as not including this attribute.
 */
-	weight : 24,
+	weight: 24,
 /*	weight // OPTIONAL //
 	TYPE:	number
 	USE:	the weight of the armour in lb
@@ -282,7 +282,7 @@ ArmourList["purple mail"] = {
 	If the armour doesn't have a listed weight, you can just leave this attribute out.
 	Setting this to 0 is the same as not including this attribute.
 */
-	strReq : 15,
+	strReq: 15,
 /*	strReq // OPTIONAL //
 	TYPE:	number
 	USE:	the minimum required Strength score to wear this armour without being encumbered
@@ -292,7 +292,7 @@ ArmourList["purple mail"] = {
 
 	Setting this to 0 is the same as not including this attribute.
 */
-	invName : "Purple Mail Armor",
+	invName: "Purple Mail Armor",
 /*	invName // OPTIONAL //
 	TYPE:	string
 	USE:	the name used when adding the armour from the Armor/Defense section to the Equipment section
@@ -304,7 +304,7 @@ ArmourList["purple mail"] = {
 
 	Setting this to and empty string ("") is the same as not including this attribute.
 */
-	affectsWildShape : true,
+	affectsWildShape: true,
 /*	affectsWildShape // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether (true) or not (false) this armour can be used while in a Wild Shape
@@ -317,7 +317,7 @@ ArmourList["purple mail"] = {
 
 	Setting this to false is the same as not including this attribute.
 */
-	selectNow : true,
+	selectNow: true,
 /*	selectNow // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether (true) or not (false) this armour should immediately be selected

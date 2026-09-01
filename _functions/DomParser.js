@@ -8,41 +8,41 @@ function Node(cfg) {
 
 	Object.defineProperties(this, {
 		nodeType: {
-			value: cfg.nodeType
+			value: cfg.nodeType,
 		},
 		nodeName: {
-			value: cfg.nodeType == 3 ? '#text' : cfg.nodeName,
+			value: cfg.nodeType == 3 ? "#text" : cfg.nodeName,
 		},
 		childNodes: {
-			value: cfg.childNodes
+			value: cfg.childNodes,
 		},
 		firstChild: {
 			get: function() {
 				return this.childNodes[0] || null;
-			}
+			},
 		},
 		lastChild: {
 			get: function() {
 				return this.childNodes[this.childNodes.length - 1] || null;
-			}
+			},
 		},
 		parentNode: {
-			value: cfg.parentNode || null
+			value: cfg.parentNode || null,
 		},
 		attributes: {
-			value: cfg.attributes || []
+			value: cfg.attributes || [],
 		},
 		innerHTML: {
 			get: function() {
 				var
-					result = '',
+					result = "",
 					cNode;
 				for (var i = 0, l = this.childNodes.length; i < l; i++) {
 					cNode = this.childNodes[i];
 					result += cNode.nodeType === 3 ? cNode.text : cNode.outerHTML;
 				}
 				return result;
-			}
+			},
 		},
 		outerHTML: {
 			get: function() {
@@ -50,25 +50,25 @@ function Node(cfg) {
 					var
 						str,
 						attrs = (this.attributes.map(function(elem) {
-							return elem.name + (elem.value ? '=' + '"' + elem.value + '"' : '');
-						}) || []).join(' '),
-						childs = '';
+							return elem.name + (elem.value ? "=" + '"' + elem.value + '"' : "");
+						}) || []).join(" "),
+						childs = "";
 
-					str = '<' + this.nodeName + (attrs ? ' ' + attrs : '') + (this._selfCloseTag ? '/' : '') + '>';
+					str = "<" + this.nodeName + (attrs ? " " + attrs : "") + (this._selfCloseTag ? "/" : "") + ">";
 
 					if (!this._selfCloseTag) {
-						childs = (this._selfCloseTag ? '' : this.childNodes.map(function(child) {
+						childs = (this._selfCloseTag ? "" : this.childNodes.map(function(child) {
 							return child.outerHTML;
-						}) || []).join('');
+						}) || []).join("");
 
 						str += childs;
-						str += '</' + this.nodeName + '>';
+						str += "</" + this.nodeName + ">";
 					}
 				} else {
 					str = this.textContent;
 				}
 				return str;
-			}
+			},
 		},
 		textContent: {
 			get: function() {
@@ -77,10 +77,10 @@ function Node(cfg) {
 				} else {
 					return this.childNodes.map(function(node) {
 						return node.textContent;
-					}).join('').replace(/\x20+/g, ' ');
+					}).join("").replace(/\x20+/g, " ");
 				}
-			}
-		}
+			},
+		},
 	});
 }
 
@@ -117,21 +117,21 @@ Node.prototype.getElementsByTagName = function(tagName) {
 };
 
 Node.prototype.getElementsByClassName = function(className) {
-	var expr = new RegExp('^(.*?\\s)?' + className + '(\\s.*?)?$');
+	var expr = new RegExp("^(.*?\\s)?" + className + "(\\s.*?)?$");
 	return searchElements(this, function(elem) {
-		return elem.attributes.length && expr.test(elem.getAttribute('class'));
+		return elem.attributes.length && expr.test(elem.getAttribute("class"));
 	})
 };
 
 Node.prototype.getElementById = function(id) {
 	return searchElements(this, function(elem) {
-		return elem.attributes.length && elem.getAttribute('id') == id;
+		return elem.attributes.length && elem.getAttribute("id") == id;
 	}, true)
 };
 
 Node.prototype.getElementsByName = function(name) {
 	return searchElements(this, function(elem) {
-		return elem.attributes.length && elem.getAttribute('name') == name;
+		return elem.attributes.length && elem.getAttribute("name") == name;
 	})
 };
 
@@ -168,7 +168,7 @@ function findByRegExp(html, selector, onlyFirst) {
 
 	var docNode = new Node({
 		nodeType: 9,
-		nodeName: '#document',
+		nodeName: "#document",
 		childNodes: [],
 		parentNode: null,
 		selfCloseTag: false,
@@ -191,7 +191,7 @@ function findByRegExp(html, selector, onlyFirst) {
 				attrBuffer = splitAttrRegExp.exec(attrStr[aI]);
 				attributes.push({
 					name: attrBuffer[1].trim(),
-					value: (attrBuffer[2] || '').trim().replace(attributeQuotesExp, '')
+					value: (attrBuffer[2] || "").trim().replace(attributeQuotesExp, ""),
 				});
 			}
 
@@ -203,7 +203,7 @@ function findByRegExp(html, selector, onlyFirst) {
 				childNodes: [],
 				parentNode: currentObject,
 				startTag: tag,
-				selfCloseTag: selfCloseTag
+				selfCloseTag: selfCloseTag,
 			});
 			if (currentObject && currentObject.childNodes) {
 				currentObject.childNodes.push(buffer);
@@ -228,13 +228,13 @@ function findByRegExp(html, selector, onlyFirst) {
 			currentObject.childNodes.push(new Node({
 				nodeType: 10,
 				nodeName: docTypeExp.exec(tag)[1],
-				parentNode: currentObject
+				parentNode: currentObject,
 			}));
 		} else {
 			currentObject.childNodes.push(new Node({
 				nodeType: 3,
 				text: tag,
-				parentNode: currentObject
+				parentNode: currentObject,
 			}));
 		}
 
@@ -251,37 +251,37 @@ function Dom(rawHTML) {
 }
 
 Dom.prototype.getElementsByClassName = function(className) {
-	var selector = new RegExp('class=(\'|")(.*?\\s)?' + className + '(\\s.*?)?\\1');
+	var selector = new RegExp('class=(\'|")(.*?\\s)?' + className + "(\\s.*?)?\\1");
 	return findByRegExp(this.rawHTML, selector);
 };
 
 Dom.prototype.getElementsByTagName = function(tagName) {
-	var selector = new RegExp('^<' + tagName + '[^a-z0-9]', 'i');
+	var selector = new RegExp("^<" + tagName + "[^a-z0-9]", "i");
 	return findByRegExp(this.rawHTML, selector);
 };
 
 Dom.prototype.getElementById = function(id) {
-	var selector = new RegExp('id=(\'|")' + id + '\\1');
+	var selector = new RegExp('id=(\'|")' + id + "\\1");
 	return findByRegExp(this.rawHTML, selector, true);
 };
 
 Dom.prototype.getElementsByName = function(name) {
-	return this.getElementsByAttribute('name', name);
+	return this.getElementsByAttribute("name", name);
 };
 
 Dom.prototype.getElementsByAttribute = function(attr, value) {
-	var selector = new RegExp('\\s' + attr + '=(\'|")' + value + '\\1');
+	var selector = new RegExp("\\s" + attr + '=(\'|")' + value + "\\1");
 	return findByRegExp(this.rawHTML, selector);
 };
 
 function decodeXml(string) {
 	var xmlEscChars = {
-		'&amp;' : '&',
-		'&quot;' : '"',
-		'&apos;' : "'",
-		'&#39;' : "'",
-		'&lt;' : '<',
-		'&gt;' : '>'
+		"&amp;": "&",
+		"&quot;": '"',
+		"&apos;": "'",
+		"&#39;": "'",
+		"&lt;": "<",
+		"&gt;": ">",
 	};
 	return string.replace(/(&quot;|&lt;|&gt;|&amp;|&apos;|&#39;)/g,
 		function(str, item) {

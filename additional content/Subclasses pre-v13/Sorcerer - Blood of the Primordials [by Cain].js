@@ -20,148 +20,148 @@ var iFileName = "Sorcerer - Blood of the Primordials [by Cain].js";
 RequiredSheetVersion(12.999);
 
 AddSubClass("sorcerer", "blood of the primordials", {
-	regExpSearch : /^(?=.*(sorcerer|witch))(?=.*primordials?).*$/i,
-	subname : "Blood of the Primordials",
-	source : ["HB", 0],
-	features : {
-		"subclassfeature1" : {
-			name : "Primordial Ancestor",
-			source : ["HB", 0],
-			minlevel : 1,
-			description : desc([
+	regExpSearch: /^(?=.*(sorcerer|witch))(?=.*primordials?).*$/i,
+	subname: "Blood of the Primordials",
+	source: ["HB", 0],
+	features: {
+		"subclassfeature1": {
+			name: "Primordial Ancestor",
+			source: ["HB", 0],
+			minlevel: 1,
+			description: desc([
 				'Choose a Primordial Ancestor using the "Choose Feature" button above',
 				"When interacting with elementals, if I can add my proficiency bonus, I can double it",
 			]),
-			choices : ["Akadi", "Grumbar", "Istishia", "Kossuth"],
-			"akadi" : {
-				name : "Akadi",
+			choices: ["Akadi", "Grumbar", "Istishia", "Kossuth"],
+			"akadi": {
+				name: "Akadi",
 				description: desc([
 					"I have primordial ancestry from the goddess Akadi, who is affiliated with lightning",
 					"When interacting with elementals, if I can add my proficiency bonus, I can double it",
 				]),
-				eval : "var ToAdd = [\"sorcerer\", \"subclassfeature6\", \"lightning\"]; if (classes.known.sorcerer.level >= 6 && tDoc.getField(\"Class Features Remember\").value.indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
-				primordialElement : "lightning"
+				eval: "var ToAdd = [\"sorcerer\", \"subclassfeature6\", \"lightning\"]; if (classes.known.sorcerer.level >= 6 && tDoc.getField(\"Class Features Remember\").value.indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+				primordialElement: "lightning",
 			},
-			"grumbar" : {
-				name : "Grumbar",
+			"grumbar": {
+				name: "Grumbar",
 				description: desc([
 					"I have primordial ancestry from the god Grumbar, who is affiliated with acid damage",
 					"When interacting with elementals, if I can add my proficiency bonus, I can double it",
 				]),
-				eval : "var ToAdd = [\"sorcerer\", \"subclassfeature6\", \"acid\"]; if (classes.known.sorcerer.level >= 6 && tDoc.getField(\"Class Features Remember\").value.indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
-				primordialElement : "acid"
+				eval: "var ToAdd = [\"sorcerer\", \"subclassfeature6\", \"acid\"]; if (classes.known.sorcerer.level >= 6 && tDoc.getField(\"Class Features Remember\").value.indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+				primordialElement: "acid",
 			},
-			"istishia" : {
-				name : "Istishia",
+			"istishia": {
+				name: "Istishia",
 				description: desc([
 					"I have primordial ancestry from the goddess Istishia, who is affiliated with cold damage",
 					"When interacting with elementals, if I can add my proficiency bonus, I can double it",
 				]),
-				eval : "var ToAdd = [\"sorcerer\", \"subclassfeature6\", \"cold\"]; if (classes.known.sorcerer.level >= 6 && tDoc.getField(\"Class Features Remember\").value.indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
-				primordialElement : "cold"
+				eval: "var ToAdd = [\"sorcerer\", \"subclassfeature6\", \"cold\"]; if (classes.known.sorcerer.level >= 6 && tDoc.getField(\"Class Features Remember\").value.indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+				primordialElement: "cold",
 			},
-			"kossuth" : {
-				name : "Kossuth",
+			"kossuth": {
+				name: "Kossuth",
 				description: desc([
 					"I have primordial ancestry from the god Kossuth, who is affiliated with fire damage",
 					"When interacting with elementals, if I can add my proficiency bonus, I can double it",
 				]),
-				eval : "var ToAdd = [\"sorcerer\", \"subclassfeature6\", \"fire\"]; if (classes.known.sorcerer.level >= 6 && tDoc.getField(\"Class Features Remember\").value.indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
-				primordialElement : "fire"
+				eval: "var ToAdd = [\"sorcerer\", \"subclassfeature6\", \"fire\"]; if (classes.known.sorcerer.level >= 6 && tDoc.getField(\"Class Features Remember\").value.indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+				primordialElement: "fire",
 			},
-			languageProfs : ["Primordial"]
+			languageProfs: ["Primordial"],
 		},
-		"subclassfeature1.1" : {
-			name : "Primordial Resilience",
-			source : ["HB", 0],
-			minlevel : 1,
+		"subclassfeature1.1": {
+			name: "Primordial Resilience",
+			source: ["HB", 0],
+			minlevel: 1,
 			description: desc([
 				"When I am not wearing armor, my AC is 13 + Dexterity modifier",
 				"My hit point maximum increases by an amount equal to my sorcerer level",
 			]),
-			additional : "like draconic resilience" //so that the bonus hp is calculated
+			additional: "like draconic resilience", //so that the bonus hp is calculated
 		},
-		"subclassfeature6" : {
-			name : "Elemental Affinity",
-			source : ["HB", 0],
-			minlevel : 6,
-			description : desc([
+		"subclassfeature6": {
+			name: "Elemental Affinity",
+			source: ["HB", 0],
+			minlevel: 6,
+			description: desc([
 				'Choose a Primordial Ancestor using the "Choose Feature" button above',
 				"I add Cha mod for spell damage if matching my primordial ancestor's affiliated type",
 				"I can spend 1 sorcery point to gain resistance to my ancestor's affiliated type",
 			]),
-			choices : ["acid", "cold", "fire", "lightning", "poison"],
-			choicesNotInMenu : true,
-			"acid" : {
-				name : "Acid Elemental Affinity",
+			choices: ["acid", "cold", "fire", "lightning", "poison"],
+			choicesNotInMenu: true,
+			"acid": {
+				name: "Acid Elemental Affinity",
 				additional: "1 sorcery point",
 				description: desc([
 					"I add my Charisma modifier to one damage roll of a spell if it does acid damage",
 					"When I do this, I can spend 1 sorcery point to gain acid resistance for 1 hour",
 				]),
 			},
-			"cold" : {
-				name : "Cold Elemental Affinity",
+			"cold": {
+				name: "Cold Elemental Affinity",
 				additional: "1 sorcery point",
 				description: desc([
 					"I add my Charisma modifier to one damage roll of a spell if it does cold damage",
 					"When I do this, I can spend 1 sorcery point to gain cold resistance for 1 hour",
 				]),
 			},
-			"fire" : {
-				name : "Fire Elemental Affinity",
+			"fire": {
+				name: "Fire Elemental Affinity",
 				additional: "1 sorcery point",
 				description: desc([
 					"I add my Charisma modifier to one damage roll of a spell if it does fire damage",
 					"When I do this, I can spend 1 sorcery point to gain fire resistance for 1 hour",
 				]),
 			},
-			"lightning" : {
-				name : "Lightning Elemental Affinity",
+			"lightning": {
+				name: "Lightning Elemental Affinity",
 				additional: "1 sorcery point",
 				description: desc([
 					"I add my Charisma modifier to one damage roll of a spell if it does lightning damage",
 					"When I do this, I can spend 1 sorcery point to gain lightning resistance for 1 hour",
 				]),
 			},
-			eval : "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?sorcerer,subclassfeature1,(akadi|grumbar|istishia|kossuth).*/i; if ((tReg).test(CFrem)) {FeaChoice = CurrentClasses.sorcerer.features.subclassfeature1[CFrem.replace(tReg, \"$1\")].primordialElement; AddString(\"Class Features Remember\", \"sorcerer,subclassfeature6,\" + FeaChoice, false);};};",
+			eval: "if (FeaChoice === \"\") {var CFrem = What(\"Class Features Remember\"); var tReg = /.*?sorcerer,subclassfeature1,(akadi|grumbar|istishia|kossuth).*/i; if ((tReg).test(CFrem)) {FeaChoice = CurrentClasses.sorcerer.features.subclassfeature1[CFrem.replace(tReg, \"$1\")].primordialElement; AddString(\"Class Features Remember\", \"sorcerer,subclassfeature6,\" + FeaChoice, false);};};",
 		},
-		"subclassfeature14" : {
-			name : "Elemental Wings",
-			source : ["HB", 0],
-			minlevel : 14,
+		"subclassfeature14": {
+			name: "Elemental Wings",
+			source: ["HB", 0],
+			minlevel: 14,
 			description: desc([
 				"As a bonus action, unless armor is in the way, I can sprout elemental wings from my back",
 				"They are magical and are not affected by the environment",
 				"I gain a fly speed equal to my current speed until I dismiss the wings as a bonus action",
 			]),
-			action : [["bonus action", " (start/stop)"]],
-			speed : { fly : { spd : "walk", enc : "walk" } }
+			action: [["bonus action", " (start/stop)"]],
+			speed: { fly: { spd: "walk", enc: "walk" } },
 		},
-		"subclassfeature18" : {
-			name : "Presence of the Dawn Titans",
-			source : ["HB", 0],
-			minlevel : 18,
+		"subclassfeature18": {
+			name: "Presence of the Dawn Titans",
+			source: ["HB", 0],
+			minlevel: 18,
 			description: desc([
 				"As an action, I create 60-ft radius aura of awe/fear for concentration up to 1 minute",
 				"All hostiles in this aura must make a Wis save or be charmed (awe) or frightened (fear)",
 				"They make their saves at the beginning of their turns",
 				"A creature that succeeds on the save is immune to my aura for 24 hours",
 			]),
-			additional : "5 sorcery points",
-			action : [["action", ""]]
-		}
-	}
+			additional: "5 sorcery points",
+			action: [["action", ""]],
+		},
+	},
 });
 
 ArmourList["primordial resilience"] = {
-	regExpSearch : /^(?=.*(primordials?|elementals?))(?=.*(hide|skin|scales|resilience)).*$/i,
-	name : "Primordial resilience",
-	type : "",
-	ac : 13,
-	dex : 2000,
-	stealthdis : false,
-	weight : 0,
-	inventory : false,
-	strReq : 0
+	regExpSearch: /^(?=.*(primordials?|elementals?))(?=.*(hide|skin|scales|resilience)).*$/i,
+	name: "Primordial resilience",
+	type: "",
+	ac: 13,
+	dex: 2000,
+	stealthdis: false,
+	weight: 0,
+	inventory: false,
+	strReq: 0,
 };
