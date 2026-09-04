@@ -9307,7 +9307,8 @@ function ConvertToFirstPerson(inputString, convertFunction, origin) {
 		.replace(/you were/ig, "I was")
 		.replace(/(w)ere(n['\u2019]t)? you\b/ig, "$1as$2 I")
 		.replace(/\byou\b/ig, "I")
-		.replace(/(\d+.?(square |cubic )?)f(oo|ee)t\b/ig, "$1ft");
+		.replace(/(\d+.?(square |cubic )?)f(oo|ee)t\b/ig, "$1ft")
+		.replace(/\b(m|ft) of myself/ig, "$1 of me");
 	// Now correct prepositions where "I" should be "me"
 	firstPerson = firstPerson.replace(/\b(at|to|of|for|on|in|with|by|under|over|above|below|into|towards?|through|around|past|as|about|near|granting|against|from) I\b/ig, "$1 me");
 	// If provided with a convertFunction, run it

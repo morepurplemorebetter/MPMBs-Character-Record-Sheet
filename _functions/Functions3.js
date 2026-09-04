@@ -2823,7 +2823,8 @@ function ApplyMagicItem(input, FldNmbr) {
 				if (anOldMI.chooseGear || (oldMIvar && anOldMI[oldMIvar].chooseGear)) {
 					selectMagicItemGearType(false, FldNmbr, oldMIvar && anOldMI[oldMIvar].chooseGear ? anOldMI[oldMIvar].chooseGear : anOldMI.chooseGear);
 				}
-
+				// Add the potion action if applicable
+				addPotionAction(MagicItemsList[oldMI]);
 				// Remove its attributes
 				var Fea = ApplyFeatureAttributes(
 					"item", // type
@@ -2915,6 +2916,8 @@ function ApplyMagicItem(input, FldNmbr) {
 
 		// Apply the rest of its attributes
 		if (oldMI !== newMI || oldMIvar !== newMIvar) {
+			// Add the potion action if applicable
+			addPotionAction(MagicItemsList[newMI]);
 			// Set the attunement
 			Checkbox(MIflds[4], theMI.attunement ? true : false, undefined, theMI.attunement ? "" : "hide");
 			var justChange = oldMI == newMI && oldMIvar !== newMIvar;
@@ -2944,6 +2947,14 @@ function ApplyMagicItem(input, FldNmbr) {
 
 	thermoM(thermoTxt, true); // Stop progress bar
 };
+
+function addPotionAction(objMI) {
+	if (!objMI || !/potion/i.test(objMI.type) || objMI.action !== undefined) return;
+	objMI.action = [[
+		tDoc.use2024Rules ? "bonus action" : "action",
+		"Drink/Administer Potion",
+	]];
+}
 
 function correctMIdescriptionLong(FldNmbr) {
 	if (CurrentVars.manual.items) return;
