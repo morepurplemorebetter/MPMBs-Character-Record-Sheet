@@ -352,7 +352,7 @@ function ApplySpell(FldValue, rememberFldName) {
 	var base = rememberFldName ? rememberFldName : event.target.name;
 	var spFlds = ReturnSpellFieldsArray(undefined, undefined, base);
 
-	//set the icon of the first field
+	// Set the icon of the first field
 	var setCheck = function() {
 		var okChecks = ["atwill", "checkbox", "checkedbox", "markedbox", "oncelr", "oncelr_used", "oncelr+markedbox", "oncelr+markedbox_used", "oncesr", "oncesr_used", "oncesr+markedbox", "oncesr+markedbox_used"];
 		var currentCheck = What(spFlds[0]).toLowerCase();
@@ -360,24 +360,32 @@ function ApplySpell(FldValue, rememberFldName) {
 		if (currentCheck === input1) return;
 		var isImage = okChecks.indexOf(input1) !== -1;
 		if (!input1 || !isImage) {
-			Value(spFlds[0], input1 ? input1.toUpperCase().substring(0, /\(.\)|\d-\d/.test(input1) ? 3 : 2) : "");
+			var checkText = "";
+			if (input1) {
+				var isDie = /^d\d+/i.test(input1);
+				var isLong = isDie || /^\(.\)|^\d-\d/.test(input1);
+				checkText = input1.substring(0, isLong ? 3 : 2);
+				checkText = isDie ? checkText.toLowerCase() : checkText.toUpperCase();
+			}
+			Value(spFlds[0], checkText);
 		} else if (isImage) {
 			var isCheckedAlt = (/^check(ed)?box$/.test(currentCheck) && /^check(ed)?box$/.test(input1)) || currentCheck === (input1 + "_used") || input1 === (currentCheck + "_used");
 			if (!isCheckedAlt) Value(spFlds[0], input1);
 		}
 	}
 
-	//have a function to create rich text span
+	// Function to create rich text span
 	var createSpan = function(inTxt) {
-		var toCap = inTxt.substring(0, inTxt.indexOf(" ") === 0 ? 2 : 1)
-		// First build up an array of Span objects
-		var spans = [{
-			text: toCap,
-			textSize: 7,
-		}, {
-			text: inTxt.replace(toCap, ""),
-			textSize: 5.6,
-		}];
+		var spans = [];
+		if (/^d\d+/i.test(inTxt)) { // is a die "dX", would look ugly with the "D" bigger than the number
+			spans.push({ text: inTxt, textSize: 5.75 });
+		} else {
+			var toBig = inTxt.substring(0, inTxt.indexOf(" ") === 0 ? 2 : 1);
+			spans.push(
+				{ text: toBig, textSize: 7 },
+				{ text: inTxt.replace(toBig, ""), textSize: 5.6 }
+			);
+		}
 		return spans;
 	}
 
@@ -2164,11 +2172,11 @@ function DefineSpellSheetDialogs(force, formHeight) {
 		},
 
 		ok: function (dialog) {
-			if (this.typeSp === "book") this.SpBook = true;
 			this.saveIt(dialog);
 		},
 
 		other: function (dialog) {
+			this.SpBook = true;
 			this.saveIt(dialog);
 			dialog.end("ok");
 		},
@@ -2342,8 +2350,8 @@ function DefineSpellSheetDialogs(force, formHeight) {
 						type: "ok_cancel_other",
 						item_id: "OKbt",
 						alignment: "align_right",
-						ok_name: "Add More Spells to the Spellbook",
-						other_name: "Continue to Next Dialog >>",
+						ok_name: "Continue to Next Dialog >>",
+						other_name: "Add More Spells to the Spellbook",
 						cancel_name: "Cancel and Stop",
 					}],
 				}],
@@ -3183,7 +3191,6 @@ function AskUserSpellSheet() {
 		// Set the parts of the dialog
 			// First the ok / cancel buttons
 			setDialogName(dia, "OKbt", "type", dia.typeSp !== "book" ? "ok_cancel" : "ok_cancel_other");
-			setDialogName(dia, "OKbt", "ok_name", dia.typeSp !== "book" ? "Continue to Next Dialog >>" : "Add More Spells to the Spellbook");
 			// Then the dynamic parts
 			setDialogName(spDias.spellSelect, "col1", "elements", diaDynCol1); // add to the 1st column
 			setDialogName(spDias.spellSelect, "colE", "elements", diaDynCols); // the rest of the dialog
@@ -3561,7 +3568,7 @@ function GenerateSpellSheet(GoOn) {
 							// List casters with `extraSpecial == false` have these marked as Always Prepared
 							alwaysPrepared = spCast.extra;
 						} else if (preparingCantrips) {
-							// If the Cantrips  can be prepared, mark these as Always Prepared.
+							// If the Cantrips can be prepared, mark these as Always Prepared.
 							alwaysPrepared = OrderSpells(spCast.extra, "single", false, false, 0);
 						}
 					} else if (listCaster) {
@@ -3698,7 +3705,7 @@ function GenerateSpellSheet(GoOn) {
 			// so 3 (divider + title line) + 4 (header, if applicable) + lowest of [10, arrayLength]
 			// Also go to a next page if there is no header or divider left
 			var needSpace = 3 + (start ? 4 : 0) + Math.min(10, spArray.length);
-			if (needSpace > (lineMax - lineCurrent + 1) || headerCurrent > 3 || dividerCurrent > 9) AddPage();
+			if (needSpace > (lineMax - lineCurrent + 1) || (start && headerCurrent > 3) || dividerCurrent > 9) AddPage();
 
 			//the first spells to add needs a header in front of it
 			if (start) {
@@ -4638,11 +4645,6 @@ function MakeSpellLineMenu_SpellLineOptions() {
 function AskUserTwoLetters(caption) {
 	var theDialog = {
 		theTXT: "",
-		initialize: function (dialog) {
-			dialog.load({
-				"txt0": "Please type the two characters you want to have as the " + (caption ? "caption for the " : "") + "first column.\n\nAlternatively, you can type a single character between brackets, e.g. '(R)', or two numbers with a hyphen.",
-			});
-		},
 		destroy: function (dialog) {
 			var oResult = dialog.store();
 			this.theTXT = oResult["user"];
@@ -4659,15 +4661,27 @@ function AskUserTwoLetters(caption) {
 					font: "heading",
 					bold: true,
 					height: 21,
-					char_width: 30,
+					char_width: 35,
 					name: "Set the first column " + (caption ? "caption" : ""),
 				}, {
 					type: "static_text",
 					alignment: "align_fill",
 					item_id: "txt0",
 					wrap_name: true,
-					char_width: 30,
-					name: "Please type the two characters you want to have as the caption for the first column.\n\nAlternatively, you can type a single character between brackets, e.g. '(R)', or two numbers with a hyphen.",
+					char_width: 35,
+					name: "You can have the " + (caption ? "caption in the " : "") + "first column be one of the following.",
+				}, {
+					type: "static_text",
+					alignment: "align_fill",
+					item_id: "txt1",
+					wrap_name: true,
+					char_width: 35,
+					name: [
+						' \u2022 Any two characters (e.g. "Ch" for "Charges").',
+						' \u2022 One character in brackets (e.g. "(R)").',
+						' \u2022 Two numbers with a hyphen (e.g. "1-7").',
+						' \u2022 A die written as "dX" (e.g. "d12"). Beware that "d100" doesn\'t fit.',
+					].join("\n"),
 				}, {
 					type: "edit_text",
 					alignment: "align_center",

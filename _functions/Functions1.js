@@ -9159,14 +9159,14 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 		 case "cm": case "centimeter":
 			if (amount < 30) {
 				total = amount / UnitsList[ratio].lengthInch;
-				unit = "in";
+				unit = "inch";
 				break;
 			}
 			amount /= 10;
 		 case "dm": case "decimeter":
 			if (amount < 3) {
 				total = amount * 10 / UnitsList[ratio].lengthInch;
-				unit = "in";
+				unit = "inch";
 				break;
 			}
 			amount /= 10;

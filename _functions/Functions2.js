@@ -558,10 +558,19 @@ function ApplyCompRace(newRace, prefix, sCompType) {
 		thermoM(5 / 10); //increment the progress dialog's progress
 
 		//add skill proficiencies
+		var perceptionBonus = mods[4];
 		if (aCrea.skills) {
 			for (var aSkill in aCrea.skills) {
 				var profSkill = CompSkillRefer(aSkill, aCrea.skills[aSkill], aCrea.scores, aCrea.proficiencyBonus);
 				AddSkillProf(profSkill[0], profSkill[1] !== "nothing", profSkill[1] === "expertise", false, profSkill[2], prefix); //set the proficiency
+				if (profSkill[0] === "Perc") perceptionBonus = aCrea.skills[aSkill];
+			}
+		}
+		// Add Passive Perception bonus, if any
+		if (aCrea.passivePerception) {
+			var passivePerceptionBonus = aCrea.passivePerception - 10 - perceptionBonus;
+			if (passivePerceptionBonus) {
+				Value(prefix + "BlueText.Comp.Use.Skills.Perc.Pass.Bonus", passivePerceptionBonus);
 			}
 		}
 
@@ -1543,10 +1552,11 @@ function ApplyWildshape() {
 
 	// Passive Perception
 	var creaPercValue = oWS.skill.perception.creature.value !== "" ? oWS.skill.perception.creature.value : Math.round((oWS.scores[4] - 10.5) * 0.5);
+	var creaPassPerc = oWS.passivePerception !== undefined ? oWS.passivePerception : 10 + creaPercValue;
 	oWS.skill.passivePerception = {
 		creature: {
-			value: oWS.passivePerception,
-			bonus: oWS.passivePerception - 10 - creaPercValue,
+			value: creaPassPerc,
+			bonus: creaPassPerc - 10 - creaPercValue,
 		},
 		character: {
 			value: What("Passive Perception"),

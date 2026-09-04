@@ -2534,8 +2534,11 @@ var Base_MagicItemsList = {
 		description: "This helm is set with diamonds, rubies, fire opals, and opals. Gems pried from the helm turn to dust. When all the gems are removed or destroyed, the helm loses its magic. I can use an action to cast a spell by having a gem crumble to dust. The helm has special properties for each type of gem, see Notes page.",
 		descriptionFull: "This dazzling helm is set with 1d10 diamonds, 2d10 rubies, 3d10 fire opals, and 4d10 opals. Any gem pried from the helm crumbles to dust. When all the gems are removed or destroyed, the helm loses its magic.\n   You gain the following benefits while wearing it:\n \u2022 You can use an action to cast one of the following spells (save DC 18), using one of the helm's gems of the specified type as a component: Daylight (opal), Fireball (fire opal), Prismatic Spray (diamond), or Wall of Fire (ruby). The gem is destroyed when the spell is cast and disappears from the helm.\n \u2022 As long as it has at least one diamond, the helm emits dim light in a 30-foot radius when at least one undead is within that area. Any undead that starts its turn in that area takes 1d6 radiant damage.\n \u2022 As long as the helm has at least one ruby, you have resistance to fire damage.\n \u2022 As long as the helm has at least one fire opal, you can use an action and speak a command word to cause one weapon you are holding to burst into flames. The flames emit bright light in a 10-foot radius and dim light for an additional 10 feet. The flames are harmless to you and the weapon. When you hit with an attack using the blazing weapon, the target takes an extra 1d6 fire damage. The flames last until you use a bonus action to speak the command word again or until you drop or stow the weapon.\n\nRoll a d20 if you are wearing the helm and take fire damage as a result of failing a saving throw against a spell. On a roll of 1, the helm emits beams of light from its remaining gems. Each creature within 60 feet of the helm other than you must succeed on a DC 17 Dexterity saving throw or be struck by a beam, taking radiant damage equal to the number of gems in the helm. The helm and its gems are then destroyed.",
 		attunement: true,
-		dmgres: ["Fire"],
-		action: [["action", " (spell/blazing weapon)"]],
+		dmgres: ["Fire (if Ruby)"],
+		action: [
+			["action", " (fire opal flames)"],
+			["bonus action", " (end fire opal flames)"],
+		],
 		extraLimitedFeatures: [{
 			name: "Helm of Brilliance - Diamonds (D)",
 			usages: "1d10",
@@ -2799,6 +2802,8 @@ var Base_MagicItemsList = {
 			source: [["SRD", 397], ["M", 344]],
 			eval: function(prefix) {
 				Value(prefix + "Comp.Desc.Name", "Warrior Spirit");
+				Value(prefix + "Comp.Type", "Summon");
+				Value(prefix + "Comp.Use.Attack.1.Weapon Selection", "Greataxe");
 			},
 			size: 3,
 			type: "Humanoid",
@@ -2808,26 +2813,19 @@ var Base_MagicItemsList = {
 			hd: [9, 8],
 			speed: "30 ft",
 			scores: [16, 12, 17, 9, 11, 9],
-			senses: "",
 			passivePerception: 10,
 			languages: "any one language (usually Common)",
 			challengeRating: "2",
 			proficiencyBonus: 2,
 			attacksAction: 1,
-			attacks: [{
-				name: "Greataxe",
-				ability: 1,
-				damage: [1, 12, "slashing"],
-				range: "Melee (5 ft)",
-				description: "Heavy, two-handed",
-			}],
+			attacks: [],
 			traits: [{
 				name: "Reckless",
 				description: "At the start of its turn, the berserker can gain advantage on all melee weapon attack rolls during that turn, but attack rolls against it have advantage until the start of its next turn.",
 			}],
 			features: [{
 				name: "Summoned",
-				description: "The Warrior Spirit is friendly to you and your companions and follow your commands. They return to Ysgard after 1 hour or when they drop to 0 hit points.",
+				description: "The Warrior Spirit is friendly to its summoner and their companions and follows the commands of its summoner. They return to Ysgard after 1 hour or when they drop to 0 hit points.",
 			}],
 		}],
 	},
@@ -3373,14 +3371,13 @@ var Base_MagicItemsList = {
 		descriptionLong: "This necklace has many beads, 1d4+2 are magical aquamarine, black pearl, or topaz beads and can each be used to cast a spell once per dawn as a bonus action. The DM selects the bead from: blessing bead (Bless), curing bead (Cure Wounds \u0026 Lesser Restoration), favor bead (Greater Restoration), smiting bead (Branding Smite), summons bead (Planar Ally), and wind walking bead (Wind Walk). Multiple beads of the same type can be on one necklace.",
 		descriptionFull: "This necklace has 1d4+2 magic beads made from aquamarine, black pearl, or topaz. It also has many nonmagical beads made from stones such as amber, bloodstone, citrine, coral, jade, pearl, or quartz. If a magic bead is removed from the necklace, that bead loses its magic.\n   Six types of magic beads exist. The DM decides the type of each bead on the necklace or determines it randomly. A necklace can have more than one bead of the same type. To use one, you must be wearing the necklace. Each bead contains a spell that you can cast from it as a bonus action (using your spell save DC if a save is necessary). Once a magic bead's spell is cast, that bead can't be used again until the next dawn.\n\n" + toUni("d20\tBead of ...\tSpell") + "\n1-6\tBlessing\t\tBless\n7-12\tCuring\t\tCure Wounds (2nd level) or Lesser Restoration\n13-16\tFavor\t\tGreater Restoration\n17-18\tSmiting\t\tBranding Smite\n19\tSummons   \tPlanar Ally\n20\tWind walking\tWind Walk",
 		weight: 1,
-		usages: "1d4+2",
-		recovery: "dawn",
 		spellcastingAbility: "class",
 		spellFirstColTitle: "Us",
 		spellcastingBonus: [{
 			name: "Bead Spell",
 			spells: ["bless", "cure wounds", "lesser restoration", "greater restoration", "branding smite", "planar ally", "wind walk"],
-			times: 12,
+			selection: ["bless", "cure wounds", "lesser restoration", "greater restoration", "branding smite", "planar ally", "wind walk"],
+			times: 7,
 		}],
 		calcChanges: {
 			spellAdd: [
@@ -3593,7 +3590,10 @@ var Base_MagicItemsList = {
 		descriptionFull: "You must be proficient with wind instruments to use these pipes. While you are attuned to the pipes, ordinary rats and giant rats are indifferent toward you and will not attack you unless you threaten or harm them.\n   The pipes have 3 charges. If you play the pipes as an action, you can use a bonus action to expend 1 to 3 charges, calling forth one swarm of rats with each expended charge, provided that enough rats are within half a mile of you to be called in this fashion (as determined by the DM). If there aren't enough rats to form a swarm, the charge is wasted. Called swarms move toward the music by the shortest available route but aren't under your control otherwise. The pipes regain 1d3 expended charges daily at dawn.\n   Whenever a swarm of rats that isn't under another creature's control comes within 30 feet of you while you are playing the pipes, you can make a Charisma check contested by the swarm's Wisdom check. If you lose the contest, the swarm behaves as it normally would and can't be swayed by the pipes' music for the next 24 hours. If you win the contest, the swarm is swayed by the pipes' music and becomes friendly to you and your companions for as long as you continue to play the pipes each round as an action. A friendly swarm obeys your commands. If you issue no commands to a friendly swarm, it defends itself but otherwise takes no actions. If a friendly swarm starts its turn and can't hear the pipes' music, your control over that swarm ends, and the swarm behaves as it normally would and can't be swayed by the pipes' music for the next 24 hours.",
 		attunement: true,
 		weight: 2,
-		action: [["action", ""]],
+		action: [
+			["action", " (play)"],
+			["bonus action", " (call swarm)"],
+		],
 		usages: 3,
 		recovery: "dawn",
 		additional: "regains 1d3",
@@ -3601,8 +3601,43 @@ var Base_MagicItemsList = {
 		prereqeval: function (v) {
 			for (var i = 0; i < v.toolProfs.length; i++) {
 				if (/pipe|flute|horn|trumpet|horn|ocarina|sackbut|shawm|trombone|tuba|bombard|cornett|flageolet|^(?=.*(air|wind))(?=.*instrument).*$/i.test(v.toolProfs[i])) return true;
-			}
+			};
 		},
+		creaturesAdd: [["Swarm of Rats", true]],
+		creatureOptions: [{
+			name: "Swarm of Rats",
+			nameThis: "swarm",
+			source: [["SRD", 390], ["M", 339]],
+			size: 3,
+			type: "Beast",
+			alignment: "Unaligned",
+			ac: 10,
+			hp: 24,
+			hd: [7, 8],
+			speed: "30 ft",
+			scores: [9, 11, 9, 2, 10, 3],
+			damage_resistances: "bludgeoning, piercing, slashing",
+			condition_immunities: "charmed, frightened, grappled, paralyzed, petrified, prone, restrained, stunned",
+			senses: "Darkvision 30 ft",
+			passivePerception: 10,
+			challengeRating: "1/4",
+			proficiencyBonus: 2,
+			attacksAction: 1,
+			attacks: [{
+				name: "Bites",
+				ability: 2,
+				damage: [2, 6, "piercing"],
+				range: "Melee (0 ft)",
+				description: "Only 1d6 damage if the swarm has half its hp or less",
+			}],
+			traits: [{
+				name: "Keen Smell",
+				description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
+			}, {
+				name: "Swarm",
+				description: "The [THIS] can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny rat. The swarm can't regain hit points or gain temporary hit points.",
+			}],
+		}],
 	},
 	"plate armor of etherealness": {
 		name: "Plate Armor of Etherealness",
