@@ -109,7 +109,7 @@ CompanionList["purple familiar"] = {
 	Also note the absence of the word "var" and the use of brackets [].
 */
 	name: "Purple Familiar",
-/*	name // REQUIRED //
+	/*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the companion option as it will be displayed on the sheet
 
@@ -117,14 +117,14 @@ CompanionList["purple familiar"] = {
 	This name will not be used in the Companion Options menu, the `nameMenu` will be used instead.
 */
 	nameMenu: "Familiar (Purple Familiar class feature)",
-/*	nameMenu // REQUIRED //
+	/*	nameMenu // REQUIRED //
 	TYPE:	string
 	USE:	name of the companion option as it will appear in the Companion Options menu
 
 	This name will also be used on several other places, like the changes dialog pop-up or in error messages.
 */
 	nameTooltip: "the Purple Familiar class feature",
-/*	nameTooltip // OPTIONAL //
+	/*	nameTooltip // OPTIONAL //
 	TYPE:	string
 	USE:	name of the companion options as it will appear in tooltips for actions on the 1st page
 
@@ -132,9 +132,9 @@ CompanionList["purple familiar"] = {
 	If `nameTooltip` is not defined, the `name` attribute will be used instead.
 */
 	nameOrigin: "variant of the Find Familiar 1st-level conjuration [ritual] spell",
-/*	nameOrigin // OPTIONAL //
+	/*	nameOrigin // OPTIONAL //
 	TYPE:	string
-	USE:	additional information displayed in the 
+	USE:	additional information displayed in the
 
 	This attribute is added in brackets after the `name` attribute and together with the `source`
 	to form the heading in the Notes section of the companion page.
@@ -149,7 +149,7 @@ CompanionList["purple familiar"] = {
 */
 	source: ["SRD", 204],
 	source: [["E", 7], ["S", 115]],
-/*	source // REQUIRED //
+	/*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the companion option is found
 
@@ -174,7 +174,7 @@ CompanionList["purple familiar"] = {
 	"HB" refers to the 'homebrew' source.
 */
 	defaultExcluded: true,
-/*	defaultExcluded // OPTIONAL //
+	/*	defaultExcluded // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this companion option should be excluded by default (true) or included by default (false)
 
@@ -187,11 +187,11 @@ CompanionList["purple familiar"] = {
 
 	Setting this attribute to false is the same as not including this attribute.
 */
-action: [
-	["reaction", " (start)"],
-	["bonus action", "Shove"],
-],
-/*	action // OPTIONAL //
+	action: [
+		["reaction", " (start)"],
+		["bonus action", "Shove"],
+	],
+	/*	action // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add entry to the "Actions", "Bonus Actions", or "Reactions" section on the 1st page
 
@@ -203,14 +203,14 @@ action: [
 			This amended total is then added as an action.
 		2.2 When the first character of the string is an alphabetic character (e.g. everything from a-Z), it is not amended to the name of the feature.
 			The string is taken as-is and added as an action.
-	
+
 	For the tooltip of the origin of these action(s), the `nameTooltip` will be used if
 	defined, see above. If `nameTooltip` isn't defined, the `name` will be used instead.
 */
-	includeCheck: function(sCrea, objCrea, iCreaCR, bIsAL) {
+	includeCheck: function (sCrea, objCrea, iCreaCR, bIsAL) {
 		return objCrea.type.toLowerCase() === "beast" && objCrea.size >= 3 && iCreaCR <= 1 / 4 ? true : false;
 	},
-/*	includeCheck // OPTIONAL //
+	/*	includeCheck // OPTIONAL //
 	TYPE:	function
 	USE:	filter things from the list of creatures to create the menu options
 	CHANGE:	v13.1.12 (bIsAL variable, "_not_al" suffix)
@@ -254,10 +254,10 @@ action: [
 	to make it easier to check against it using this `includeCheck` function.
 */
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Change CreatureList object >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-/*
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Change CreatureList object >>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	/*
 	When a companion template option is selected, the sheet will create a temporary CreatureList object.
 	This object is based on the CreatureList object of the base selected creature (the "Race" dropdown)
 	but will be amended with the settings of the CompanionList object.
@@ -275,7 +275,7 @@ action: [
 			description: "",
 		}],
 	},
-/*	attributesAdd // OPTIONAL //
+	/*	attributesAdd // OPTIONAL //
 	TYPE:	object containing any attributes of the CreatureList object
 	USE:	add or overwrite attributes in the base CreatureList object
 
@@ -306,11 +306,11 @@ action: [
 		`eval`, `removeeval`, or `changeeval`
 	If `attributesAdd` contains any of the following attributes, they will always overwrite the base:
 		`challengeRating`, `header`, `subtype`, `type`, and `wildshapeString`
-	
+
 	It is recommended to not include a `calcChanges` this way, but to add it to the main CompanionList object
 	instead, see below at `calcChanges`.
 */
-	attributesChange: function(sCrea, objCrea) {
+	attributesChange: function (sCrea, objCrea) {
 		// can't do any attacks
 		objCrea.attacks = [];
 		if (objCrea.type.toLowerCase() === "beast") {
@@ -318,7 +318,7 @@ action: [
 			objCrea.subtype = "";
 		}
 	},
-/*	attributesChange // OPTIONAL //
+	/*	attributesChange // OPTIONAL //
 	TYPE:	function
 	USE:	change attributes of the temporary CreatureList object
 
@@ -338,9 +338,9 @@ action: [
 		The object that you can change the attributes off so they will be applied on the Companion page
 */
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Add text to Notes section >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Add text to Notes section >>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 	notes: [{
 		name: "False Appearance",
 		description: "While the purple familiar remains motionless, it is indistinguishable from an ordinary purple flower.",
@@ -354,16 +354,16 @@ action: [
 		name: "Keen Sight",
 		minlevel: 8,
 		description: "The purple familiar has advantage on Wisdom (Perception) checks that rely on sight. It size increases to Large.",
-		eval: function(prefix, lvl) {
+		eval: function (prefix, lvl) {
 			// Increase size to Large
 			PickDropdown(prefix + "Comp.Desc.Size", 2);
 		},
-		removeeval: function(prefix, lvl) {
+		removeeval: function (prefix, lvl) {
 			// Change size back to Medium
 			PickDropdown(prefix + "Comp.Desc.Size", 3);
 		},
 	}],
-/*	notes // OPTIONAL //
+	/*	notes // OPTIONAL //
 	TYPE:	array (variable length) with objects
 	USE:	add text to the leftmost Notes sections on the Companion page
 	CHANGE: v14.0.0 (formatting characters)
@@ -375,7 +375,7 @@ action: [
 
 	Each object can also have the following optional attributes:
 		ATTRIBUTE   EXPLANATION
-		minlevel    determines at which level the feature is added 
+		minlevel    determines at which level the feature is added
 		addMod      add custom modifiers to calculated values
 		eval        run a function when added (useful combined with minlevel)
 		removeeval  run a function when removed (useful combined with minlevel)
@@ -425,7 +425,7 @@ action: [
 	The array is processed in the order it is in the code, no sorting will take place.
 */
 
-/*	minlevel // OPTIONAL //
+	/*	minlevel // OPTIONAL //
 	(Part of `notes` object, see above)
 	TYPE:	number
 	USE:	the level at which to add the note
@@ -440,7 +440,7 @@ action: [
 	Setting this attribute to 1 is the same as not including it.
 */
 
-/*	addMod // OPTIONAL //
+	/*	addMod // OPTIONAL //
 	(Part of `notes` object, see above)
 	TYPE:	array of objects (variable length)
 	USE:	add value to a modifier field
@@ -453,7 +453,7 @@ action: [
 	Please look there for a complete explanation.
 */
 
-/*	eval & removeeval // OPTIONAL //
+	/*	eval & removeeval // OPTIONAL //
 	(Part of `notes` object, see above)
 	TYPE:	variable, see the entries for `eval` or `removeeval`
 	USE:	variable, see the entries for `eval` or `removeeval`
@@ -465,11 +465,11 @@ action: [
 */
 
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Change Companion Page calculations >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Change Companion Page calculations >>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 	calcChanges: {
-/*	calcChanges // OPTIONAL //
+		/*	calcChanges // OPTIONAL //
 	TYPE:	object (optional attributes)
 	USE:	change how the hit points automation works
 
@@ -494,7 +494,7 @@ action: [
 			HDobj.alt.push( Math.max(creaHP, rngrCompHp) );
 			HDobj.altStr.push(" = the highest of either\n \u2022 " + creaHp + " from " + creaName + "'s normal maximum HP, or\n \u2022 4 \xD7 " + rngrLvl + " from four times my ranger level (" + rngrCompHp + ")");
 		},
-	/*	hp // OPTIONAL //
+		/*	hp // OPTIONAL //
 		TYPE:	function
 		USE:	change how Hit Points are calculated and what the Hit Points tooltip says
 
@@ -515,13 +515,13 @@ action: [
 	},
 
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Run custom function >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>>>>> //
-	eval: function(prefix, lvl) {
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Run custom function >>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	eval: function (prefix, lvl) {
 		AddString(prefix + "Cnote.Left", "The purple familiar always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.", true);
 	},
-/*	eval // OPTIONAL //
+	/*	eval // OPTIONAL //
 	TYPE:	function
 	USE:	runs a piece of code when the companion option is selected
 
@@ -544,10 +544,10 @@ action: [
 	the same name from the CreatureList object has been processed.
 */
 
-	removeeval: function(prefix, lvl) {
+	removeeval: function (prefix, lvl) {
 		RemoveString(prefix + "Cnote.Left", "The purple familiar always serves a singular master. If that master gets killed, it will serve the one who killed its master, if any.", true);
 	},
-/*	removeeval // OPTIONAL //
+	/*	removeeval // OPTIONAL //
 	TYPE:	function
 	USE:	runs a piece of code when the companion options is removed
 
@@ -566,7 +566,7 @@ action: [
 	the same name from the CreatureList object has been processed.
 */
 
-	changeeval: function(prefix, lvl) {
+	changeeval: function (prefix, lvl) {
 		Value( prefix + "Comp.Use.HD.Die", lvl[1] < 15 ? 8 : 10 );
 	},
 /*	changeeval // OPTIONAL //

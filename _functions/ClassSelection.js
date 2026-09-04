@@ -34,7 +34,7 @@ function SelectClass() {
 	var ClassFld = What("Class and Levels");
 	var charLvl = IsCharLvlVal !== false ? IsCharLvlVal : Number(What("Character Level"));
 	//make an object for each class' list of subclasses
-	var setClassesToDialog = function() {
+	var setClassesToDialog = function () {
 		hasUAranger = !testSource("rangerua", ClassList.rangerua, "classExcl");
 		ClassSelection_Dialog.classes = { " ": 1 };
 		ClassSelection_Dialog.classesRef = {};
@@ -46,7 +46,7 @@ function SelectClass() {
 			ClassSelection_Dialog.classes[CL.name] = -1;
 			ClassSelection_Dialog.classesRef[CL.name] = aClass;
 			ClassSelection_Dialog.subclasses[aClass] = { " ": 1 };
-			CL.subclasses[1].forEach( function(aSubClass) {
+			CL.subclasses[1].forEach( function (aSubClass) {
 				var sCL = ClassSubList[aSubClass];
 				if (!sCL || testSource(aSubClass, sCL, "classExcl") || aSubClass != ParseClass(sCL.fullname ? sCL.fullname : CL.name + " (" + sCL.subname + ")")[1]) return;
 				ClassSelection_Dialog.subclasses[aClass][sCL.subname] = -1;
@@ -57,14 +57,14 @@ function SelectClass() {
 		setDialogName(ClassSelection_Dialog, "rngr", "name", hasUAranger ? dialogTxt.rngr : "");
 	};
 	//add the classes to the dialog
-	var loadKnownClassesToDialog = function() {
+	var loadKnownClassesToDialog = function () {
 		//first add the class field text
 		ClassSelection_Dialog.finalText = ClassFld;
 		//then add the total level
 		ClassSelection_Dialog.finalLevel = 0;
 		//then fill the text for each class
 		ClassSelection_Dialog.curSelec = [];
-		classes.parsed.forEach( function(clP) {
+		classes.parsed.forEach( function (clP) {
 			ClassSelection_Dialog.finalLevel += clP[1];
 			ClassSelection_Dialog.curSelec.push([
 				clP[1], // level
@@ -81,7 +81,7 @@ function SelectClass() {
 			setDialogName(ClassSelection_Dialog, "bOKE", "type", "ok_cancel");
 		};
 		//have something to compare the classes.known against for filling in the other variables
-		var selecCompare = ClassSelection_Dialog.curSelec.reduce(function(acc, val) { return acc.concat(val[1]); }, []);
+		var selecCompare = ClassSelection_Dialog.curSelec.reduce(function (acc, val) { return acc.concat(val[1]); }, []);
 		//now fill in the recognized class and subclass, if any
 		for (var aClass in classes.known) {
 			var theCl = classes.known[aClass];
@@ -94,7 +94,7 @@ function SelectClass() {
 			};
 		};
 	};
-	var setNumberOfLinesInDialog = function(AddExtra) {
+	var setNumberOfLinesInDialog = function (AddExtra) {
 		var setHeight = 23;
 		ClassSelection_Dialog.lines = 0;
 		for (var i = 0; i <= 9; i++) {
@@ -254,14 +254,14 @@ function SelectClass() {
 			dialog.load(toLoad);
 			this.updateFull(dialog);
 		},
-		getRemainingClassList: function(currentClass) {
+		getRemainingClassList: function (currentClass) {
 			var self = this;
-			var selectedClasses = this.curSelec.map(function(classInfo){return classInfo[2] || "";});
+			var selectedClasses = this.curSelec.map(function (classInfo){return classInfo[2] || "";});
 			var filteredClasses = Object.keys(this.classes)
-				.filter(function(className){
+				.filter(function (className){
 					return className === currentClass || selectedClasses.indexOf(className.toLowerCase()) === -1;
 				})
-				.reduce(function(obj, key) {
+				.reduce(function (obj, key) {
 					obj[key] = self.classes[key];
 					return obj;
 				}, {});
@@ -1358,7 +1358,7 @@ function PleaseSubclass(aClass, classString) {
 		return array;
 	}, []);
 	if (!options.length) return false; // No subclasses got through the tests
-	options.sort(function(a, b) { return a.name.localeCompare(b.name); });
+	options.sort(function (a, b) { return a.name.localeCompare(b.name); });
 
 	// Create explanatory strings
 	var testSubClass = options[Math.round(options.length / 2) - 1].ref;
@@ -1458,15 +1458,15 @@ function PleaseSubclass(aClass, classString) {
 							align_children: "align_distribute",
 							alignment: "align_center",
 							elements: [{
-									type: "view",
-									elements: SubclassArrayLeft,
-								}, {
-									type: "gap",
-									width: 5,
-								}, {
-									type: "view",
-									elements: SubclassArrayRight,
-								}],
+								type: "view",
+								elements: SubclassArrayLeft,
+							}, {
+								type: "gap",
+								width: 5,
+							}, {
+								type: "view",
+								elements: SubclassArrayRight,
+							}],
 						}].concat(!asteriskString ? [] : [{
 							type: "static_text",
 							item_id: "tex1",

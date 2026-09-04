@@ -1,4 +1,4 @@
-// Taken from https://github.com/ershov-konst/dom-parser with some small changes 
+// Taken from https://github.com/ershov-konst/dom-parser with some small changes
 function Node(cfg) {
 
 	this.namespace = cfg.namespace || null;
@@ -17,12 +17,12 @@ function Node(cfg) {
 			value: cfg.childNodes,
 		},
 		firstChild: {
-			get: function() {
+			get: function () {
 				return this.childNodes[0] || null;
 			},
 		},
 		lastChild: {
-			get: function() {
+			get: function () {
 				return this.childNodes[this.childNodes.length - 1] || null;
 			},
 		},
@@ -33,7 +33,7 @@ function Node(cfg) {
 			value: cfg.attributes || [],
 		},
 		innerHTML: {
-			get: function() {
+			get: function () {
 				var
 					result = "",
 					cNode;
@@ -45,11 +45,11 @@ function Node(cfg) {
 			},
 		},
 		outerHTML: {
-			get: function() {
+			get: function () {
 				if (this.nodeType != 3) {
 					var
 						str,
-						attrs = (this.attributes.map(function(elem) {
+						attrs = (this.attributes.map(function (elem) {
 							return elem.name + (elem.value ? "=" + '"' + elem.value + '"' : "");
 						}) || []).join(" "),
 						childs = "";
@@ -57,7 +57,7 @@ function Node(cfg) {
 					str = "<" + this.nodeName + (attrs ? " " + attrs : "") + (this._selfCloseTag ? "/" : "") + ">";
 
 					if (!this._selfCloseTag) {
-						childs = (this._selfCloseTag ? "" : this.childNodes.map(function(child) {
+						childs = (this._selfCloseTag ? "" : this.childNodes.map(function (child) {
 							return child.outerHTML;
 						}) || []).join("");
 
@@ -71,11 +71,11 @@ function Node(cfg) {
 			},
 		},
 		textContent: {
-			get: function() {
+			get: function () {
 				if (this.nodeType == Node.TEXT_NODE) {
 					return this.text;
 				} else {
-					return this.childNodes.map(function(node) {
+					return this.childNodes.map(function (node) {
 						return node.textContent;
 					}).join("").replace(/\x20+/g, " ");
 				}
@@ -84,7 +84,7 @@ function Node(cfg) {
 	});
 }
 
-Node.prototype.getAttribute = function(attributeName) {
+Node.prototype.getAttribute = function (attributeName) {
 	for (var i = 0, l = this.attributes.length; i < l; i++) {
 		if (this.attributes[i].name == attributeName) {
 			return this.attributes[i].value;
@@ -110,27 +110,27 @@ function searchElements(root, conditionFn, onlyFirst) {
 	return onlyFirst ? result[0] : result;
 }
 
-Node.prototype.getElementsByTagName = function(tagName) {
-	return searchElements(this, function(elem) {
+Node.prototype.getElementsByTagName = function (tagName) {
+	return searchElements(this, function (elem) {
 		return elem.nodeName == tagName;
 	})
 };
 
-Node.prototype.getElementsByClassName = function(className) {
+Node.prototype.getElementsByClassName = function (className) {
 	var expr = new RegExp("^(.*?\\s)?" + className + "(\\s.*?)?$");
-	return searchElements(this, function(elem) {
+	return searchElements(this, function (elem) {
 		return elem.attributes.length && expr.test(elem.getAttribute("class"));
 	})
 };
 
-Node.prototype.getElementById = function(id) {
-	return searchElements(this, function(elem) {
+Node.prototype.getElementById = function (id) {
+	return searchElements(this, function (elem) {
 		return elem.attributes.length && elem.getAttribute("id") == id;
 	}, true)
 };
 
-Node.prototype.getElementsByName = function(name) {
-	return searchElements(this, function(elem) {
+Node.prototype.getElementsByName = function (name) {
+	return searchElements(this, function (elem) {
 		return elem.attributes.length && elem.getAttribute("name") == name;
 	})
 };
@@ -250,26 +250,26 @@ function Dom(rawHTML) {
 	this.rawHTML = rawHTML;
 }
 
-Dom.prototype.getElementsByClassName = function(className) {
+Dom.prototype.getElementsByClassName = function (className) {
 	var selector = new RegExp('class=(\'|")(.*?\\s)?' + className + "(\\s.*?)?\\1");
 	return findByRegExp(this.rawHTML, selector);
 };
 
-Dom.prototype.getElementsByTagName = function(tagName) {
+Dom.prototype.getElementsByTagName = function (tagName) {
 	var selector = new RegExp("^<" + tagName + "[^a-z0-9]", "i");
 	return findByRegExp(this.rawHTML, selector);
 };
 
-Dom.prototype.getElementById = function(id) {
+Dom.prototype.getElementById = function (id) {
 	var selector = new RegExp('id=(\'|")' + id + "\\1");
 	return findByRegExp(this.rawHTML, selector, true);
 };
 
-Dom.prototype.getElementsByName = function(name) {
+Dom.prototype.getElementsByName = function (name) {
 	return this.getElementsByAttribute("name", name);
 };
 
-Dom.prototype.getElementsByAttribute = function(attr, value) {
+Dom.prototype.getElementsByAttribute = function (attr, value) {
 	var selector = new RegExp("\\s" + attr + '=(\'|")' + value + "\\1");
 	return findByRegExp(this.rawHTML, selector);
 };
@@ -284,7 +284,7 @@ function decodeXml(string) {
 		"&gt;": ">",
 	};
 	return string.replace(/(&quot;|&lt;|&gt;|&amp;|&apos;|&#39;)/g,
-		function(str, item) {
+		function (str, item) {
 			return xmlEscChars[item];
-	});
+		});
 }

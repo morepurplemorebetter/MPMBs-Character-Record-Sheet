@@ -45,7 +45,7 @@ AddSubClass("warlock", "the dead king", {
 			calcChanges: {
 				atkAdd: ["if (isMeleeWeapon && /\\breaping\\b/i.test(WeaponText)) { fields.Mod = What('Cha Mod') > What(AbilityScores.abbreviations[fields.Mod - 1] + ' Mod') ? 6 : fields.Mod; fields.Damage_Type = fields.Damage_Type + '/Necrotic'; }; ", "If I include either the word 'Reaping' in a melee weapon's name, it gets treated as the weapon I imbued to use Charisma instead of Strength or Dexterity, if my Charisma modifier is higher than the ability it would otherwise use. Additionally, I can choose to have the weapon deal necrotic damage instead of its normal damage."],
 			},
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				var halfWL = Math.max(1, Math.floor(n / 2));
 				return halfWL < 9 ? "spell slot level " + halfWL + " or higher to raise undead" : "can't be raised as undead";
 			}),
@@ -92,7 +92,7 @@ AddSubClass("warlock", "the dead king", {
 });
 
 warlock_the_dead_king_functions = {
-	add: function(wlvl) {
+	add: function (wlvl) {
 		if (wlvl < 6) return;
 		var AScompA = isTemplVis("AScomp") ? What("Template.extras.AScomp").split(",") : false;
 		var prefix = false;
@@ -118,7 +118,7 @@ warlock_the_dead_king_functions = {
 		tDoc.getField(prefix + "Comp.Use.AC").submitName = What(prefix + "Comp.Use.AC");
 		Value(prefix + "Cnote.Left", "Undead Cohort (the Dead King 6, D\u0026Dwiki):\n\u2022 Add the warlock's proficiency bonus to AC, attack rolls, and damage rolls\n\u2022 Maximum hit points is equal to four times the warlock level\n\u2022 As a bonus action, the warlock can command the Undead Cohort as per the Animate Dead spell\n\u2022 The warlock can fully restore the Undead Cohort after a long rest, even if it as destroyed");
 	},
-	remove: function() {
+	remove: function () {
 		var AScompA = isTemplVis("AScomp") ? What("Template.extras.AScomp").split(",") : false;
 		if (AScompA) {
 			for (var a = 1; a < AScompA.length; a++) {
@@ -129,7 +129,7 @@ warlock_the_dead_king_functions = {
 			}
 		}
 	},
-	update: function(wlvl) {
+	update: function (wlvl) {
 		if (wlvl < 6) return;
 		var AScompA = isTemplVis("AScomp") ? What("Template.extras.AScomp").split(",") : false;
 		var prefix = false;

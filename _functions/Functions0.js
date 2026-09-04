@@ -106,9 +106,9 @@ function setPrototypes() {
 				// Ignore URLs.
 				(input.charAt(index + token.length) !== ":" ||
 					WHITESPACE.test(input.charAt(index + token.length + 1)))
-				) {
+			) {
 				// Find and uppercase first word character, skips over *modifiers*.
-				result += token.replace(ALPHANUMERIC_PATTERN, function(m) {
+				result += token.replace(ALPHANUMERIC_PATTERN, function (m) {
 					return m.toUpperCase()
 				});
 			} else {
@@ -251,7 +251,7 @@ function setPrototypes() {
 	RegExp.prototype.match = function (regexpObj) {
 		return this.toInnerString().match(regexpObj);
 	};
-	RegExp.prototype.replace = function(oldstr, newstr) {
+	RegExp.prototype.replace = function (oldstr, newstr) {
 		return RegExp(this.toInnerString().replace(oldstr, newstr), this.toString().replace(/.*\/(\w*)$/, "$1"));
 	};
 	RegExp.prototype.search = function (regexpObj) {
@@ -292,7 +292,7 @@ function setPrototypes() {
 		}
 		return -1;
 	};
-	Array.prototype.findIndex = Array.prototype.findIndex || function(callback) {
+	Array.prototype.findIndex = Array.prototype.findIndex || function (callback) {
 		if (this === null) {
 			throw new TypeError("Array.prototype.findIndex called on null or undefined");
 		} else if (typeof callback !== "function") {
@@ -304,7 +304,7 @@ function setPrototypes() {
 		var thisArg = arguments[1];
 		for (var i = 0; i < length; i++) {
 			if ( callback.call(thisArg, list[i], i, list) ) {
-			return i;
+				return i;
 			}
 		}
 		return -1;
@@ -324,7 +324,7 @@ function setPrototypes() {
 	Array.prototype.toUpperCase = function () {
 		return this.toString().toUpperCase();
 	};
-	Array.prototype.trailingIndexOf = function(e) {
+	Array.prototype.trailingIndexOf = function (e) {
 		var index = -1, len = this.length;
 		for (var i = len - 1; i > -1; i--) {
 			if (i in this && e === this[i]) {
@@ -352,7 +352,7 @@ function setPrototypes() {
 			return [...new Set([...this, ...arr])];
 		} catch (e) {
 			// ES5 and older will have to rely on old, slow method
-			return this.concat(arr.filter(function(item) { return this.indexOf(item) < 0; }));
+			return this.concat(arr.filter(function (item) { return this.indexOf(item) < 0; }));
 		}
 	};
 };
@@ -891,7 +891,7 @@ function toUni(input, format) {
 
 function toSup(inString, forceNoUnicode) {
 	if (forceNoUnicode || !What("UseUnicode")) return " [" + inString + "]";
-	var doChar = function(aChar) {
+	var doChar = function (aChar) {
 		switch(aChar) {
 			case "0" : return "\u2070";
 			case "1" : return "\xB9";
@@ -1341,7 +1341,7 @@ function pageErrorCleanup(tempNm, prefixes) {
 	}
 	Value("Template.extras." + tempNm, tempPrefixList);
 	// Distill the template prefixes to just their page number (0-index)
-	var expectedPageNo = prefixes.map(function(n) {
+	var expectedPageNo = prefixes.map(function (n) {
 		return Number(n.replace(/P(\d+)\..+/, "$1"));
 	});
 	// Find all pages with fields on them
@@ -1512,7 +1512,7 @@ function sourceDate(srcArr) {
 	return Math.max.apply(Math, dateArr);
 };
 
-function leftpad (str, len, ch) {
+function leftpad(str, len, ch) {
 	str = String(str);
 	var i = -1;
 	if (!ch && ch !== 0) ch = " ";
@@ -1568,7 +1568,7 @@ function formatDescriptionFull(sDescFull, bReturnRichTextStyled) {
 					var richTextHeader = idx === 0 && bReturnRichTextStyled;
 					var joinString = richTextHeader ? "**\t**" : "\t";
 					var tableRow = typeof t === "string" ? t :
-					               isArray(t) ? t.join(joinString) : false;
+						isArray(t) ? t.join(joinString) : false;
 					if (!tableRow) return finalStr;
 					if (richTextHeader) {
 						tableRow = "**" + tableRow + "**";
@@ -1760,11 +1760,11 @@ function correctRichTextLineSpacing() {
 	// Make sure the linespacing adheres to the sheet
 	var val = event.richValue;
 	if (!val) return;
-	var processed = CurrentVars.fixRichTextFormatting ? false : val.every(function(span) { return span.linespacing !== undefined; });
+	var processed = CurrentVars.fixRichTextFormatting ? false : val.every(function (span) { return span.linespacing !== undefined; });
 	if (processed) return;
 	var style = event.target.defaultStyle;
 	var lineHeight = CurrentVars.linespacing !== undefined ? CurrentVars.linespacing : typePF ? 11 : 10;
-	var spans = val.map(function(span, idx, spans) {
+	var spans = val.map(function (span, idx, spans) {
 		if (span.linespacing === undefined || CurrentVars.fixRichTextFormatting) {
 			span.linespacing = lineHeight;
 		}

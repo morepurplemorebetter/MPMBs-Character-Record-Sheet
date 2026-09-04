@@ -265,7 +265,7 @@ var createDragonCompanion = function (colour, origColour) {
 			name: "Draconic Growth",
 			minlevel: 5,
 			description: undefined, // if description is undefined, no text will be added but the (remove)eval will still run
-			eval: function(prefix, lvl) {
+			eval: function (prefix, lvl) {
 				// upgrade the speed
 				var fldName = prefix + "Comp.Use.Speed";
 				var speedExtra = /climb/i.test(What(fldName)) ? "climb" : "swim";
@@ -278,7 +278,7 @@ var createDragonCompanion = function (colour, origColour) {
 				var newLimAbi = global_DragonKnight.str.limitedAbilities[2];
 				Value(fldName, What(fldName).replace(origLimAbi, newLimAbi));
 			},
-			removeeval: function(prefix, lvl) {
+			removeeval: function (prefix, lvl) {
 				// downgrade the speed
 				var fldName = prefix + "Comp.Use.Speed";
 				var speedExtra = /climb/i.test(What(fldName)) ? "climb" : "swim";
@@ -296,7 +296,7 @@ var createDragonCompanion = function (colour, origColour) {
 			name: "Draconic Advancement (Dragon Knight 9)",
 			minlevel: 9,
 			description: typePF ? "The dragon has advantage on all saves while it can see its bond." : "Adv. on saves while the dragon can see its bond.",
-			eval: function(prefix, lvl) {
+			eval: function (prefix, lvl) {
 				// upgrade size
 				PickDropdown(prefix + "Comp.Desc.Size", 2);
 				// upgrade the speed (gained from Draconic Growth at level 9)
@@ -311,7 +311,7 @@ var createDragonCompanion = function (colour, origColour) {
 				var curString = What(fldName);
 				if (rx.test(curString)) Value(fldName, curString.replace(rx, ""));
 			},
-			removeeval: function(prefix, lvl) {
+			removeeval: function (prefix, lvl) {
 				// downgrade size
 				PickDropdown(prefix + "Comp.Desc.Size", 3);
 				// downgrade the speed (gained from Draconic Growth at level 9)
@@ -331,7 +331,7 @@ var createDragonCompanion = function (colour, origColour) {
 			name: "Dragon's Fury (Dragon Knight 2)",
 			minlevel: 2,
 			description: "The dragon gains special bite, tail and beat wings attacks, which it can use its Strength modifier times per short rest (minimum 1).",
-			eval: function(prefix, lvl) {
+			eval: function (prefix, lvl) {
 				var crea = CurrentCompRace[prefix];
 				// display the other attack options
 				Value(prefix + "Comp.Use.Attack.1.Weapon Selection", crea.attacks[0].name);
@@ -347,7 +347,7 @@ var createDragonCompanion = function (colour, origColour) {
 				// Add a continued entry to fit all the attack options
 				global_DragonKnight.fn.addDragonCompanion(true, crea.dragonCompanionType, true, crea.dragonCompanionTypeSubclass ? false : true);
 			},
-			removeeval: function(prefix, lvl) {
+			removeeval: function (prefix, lvl) {
 				var crea = CurrentCompRace[prefix];
 				// display only the claw attack option
 				Value(prefix + "Comp.Use.Attack.1.Weapon Selection", crea.attacks[0].name);
@@ -409,7 +409,7 @@ var createDragonCompanion = function (colour, origColour) {
 				setAltHp: true,
 			},
 		}],
-		eval: function(prefix, lvl) {
+		eval: function (prefix, lvl) {
 			// Set the hit points to automatically assume the fixed value
 			var crea = CurrentCompRace[prefix];
 			var sHPfld = prefix + "Comp.Use.HP.Max";
@@ -434,7 +434,7 @@ var createDragonCompanion = function (colour, origColour) {
 				cTitle: "Don't forget the Skills and Ability Score Improvements!",
 			});
 		},
-		removeeval: function(prefix, lvl) {
+		removeeval: function (prefix, lvl) {
 			// Undo linking saving throw proficiencies
 			global_DragonKnight.fn.linkToChar(false, prefix);
 		},
@@ -502,22 +502,22 @@ var createDragonCompanion = function (colour, origColour) {
 			name: "Breath Weapon (Dragon Knight 6)",
 			minlevel: 6,
 			description: "Once per short rest as an action on the dragon's turn, it can exhale destructive energy. See attack entry.",
-			eval: function(prefix, lvl) {
+			eval: function (prefix, lvl) {
 				var crea = CurrentCompRace[prefix];
 				Value(prefix + "Comp.Use.Attack.2.Weapon Selection", crea.attacks[4].name);
 			},
-			removeeval: function(prefix, lvl) {
+			removeeval: function (prefix, lvl) {
 				Value(prefix + "Comp.Use.Attack.2.Weapon Selection", "");
 			},
 		}, {
 			name: "Titanic Roar (Dragon Knight 13)",
 			minlevel: 13,
 			description: "Once per long rest as an action on its turn, the dragon can roar. Chosen creatures within 20 ft of the dragon must make a Wisdom saving throw or be frightened of it for 1 minute. The creature can repeat the saving throw at the end each of their turns, ending the effect on a success. See attack entry.",
-			eval: function(prefix, lvl) {
+			eval: function (prefix, lvl) {
 				var crea = CurrentCompRace[prefix];
 				Value(prefix + "Comp.Use.Attack.3.Weapon Selection", crea.attacks[5].name);
 			},
-			removeeval: function(prefix, lvl) {
+			removeeval: function (prefix, lvl) {
 				Value(prefix + "Comp.Use.Attack.3.Weapon Selection", "");
 			},
 		}].concat(type.actions_cont ? type.actions_cont : []),
@@ -531,7 +531,7 @@ var createDragonCompanion = function (colour, origColour) {
 			]),
 			joinString: "",
 		}],
-		eval: function(prefix, lvl) {
+		eval: function (prefix, lvl) {
 			// Link to main entry
 			global_DragonKnight.fn.linkToMain(true, prefix);
 			// Select weapons
@@ -543,7 +543,7 @@ var createDragonCompanion = function (colour, origColour) {
 			// Show the equipment section
 			ShowCompanionLayer(prefix, [undefined, true]);
 		},
-		removeeval: function(prefix, lvl) {
+		removeeval: function (prefix, lvl) {
 			// Undo linking to main entry
 			global_DragonKnight.fn.linkToMain(false, prefix);
 		},
@@ -552,160 +552,160 @@ var createDragonCompanion = function (colour, origColour) {
 }
 
 global_DragonKnight = {
-  str: {
-	limitedAbilities: [
-		"can't take the Attack action", // until dragon knight level 2
-		"falls it if it ends its turn in the air", // until dragon knight level 5
-		"can't be used as a mount, and can't fly while grappling a creature.", // until dragon knight level 9
-	],
-	and: typePF ? "and" : "\u0026",
-  },
-  fn: {
-	linkToChar: function(bLink, prefix) {
-		bLink = bLink ? true : false;
-		// Link saving throw proficiencies to main character
-		for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
-			var Abi = AbilityScores.abbreviations[i];
-			var sFldNm = prefix + "Comp.Use.Ability." + Abi + ".ST";
-			var svFld = tDoc.getField(sFldNm + ".Prof");
-			if (!svFld) continue;
-			var sCalc = bLink ? "event.value = tDoc.getField('" + Abi + " ST Prof').isBoxChecked(0) ? 'True' : 'False';" : "";
-			svFld.setAction("Calculate", sCalc);
-			svFld.readonly = bLink;
-			// make sure it is calculated before the result field
-			if (bLink) svFld.calcOrderIndex = tDoc.getField(sFldNm + ".Mod").calcOrderIndex - 1;
-		}
-		// Link alignment to main character
-		var sCalc = bLink ? "event.value = What('Alignment');" : "";
-		tDoc.getField(prefix + "Comp.Desc.Alignment").setAction("Calculate", sCalc);
+	str: {
+		limitedAbilities: [
+			"can't take the Attack action", // until dragon knight level 2
+			"falls it if it ends its turn in the air", // until dragon knight level 5
+			"can't be used as a mount, and can't fly while grappling a creature.", // until dragon knight level 9
+		],
+		and: typePF ? "and" : "\u0026",
 	},
-	linkToMain: function(bLink, prefixTarget) {
-		bLink = bLink ? true : false;
-		var prefixSource = "";
-		if (bLink) {
-			prefixSource = global_DragonKnight.fn.getDragonCompPrefix()[0];
-			if (!prefixSource) {
-				app.alert("No dragon companion found to link this continued page to. This page will now effectively be useless. Please first select dragon companion on this companion page. Once that is done, you can select a 'continued' option on another companion page.\n\nYou can add more companion pages using the 'Layout' bookmark and the button on the top of every companion page.\n\nBe aware that only one dragon companion and one continued companion page can exist (the continued page will always link to the first found dragon companion page).")
-				return;
+	fn: {
+		linkToChar: function (bLink, prefix) {
+			bLink = bLink ? true : false;
+			// Link saving throw proficiencies to main character
+			for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
+				var Abi = AbilityScores.abbreviations[i];
+				var sFldNm = prefix + "Comp.Use.Ability." + Abi + ".ST";
+				var svFld = tDoc.getField(sFldNm + ".Prof");
+				if (!svFld) continue;
+				var sCalc = bLink ? "event.value = tDoc.getField('" + Abi + " ST Prof').isBoxChecked(0) ? 'True' : 'False';" : "";
+				svFld.setAction("Calculate", sCalc);
+				svFld.readonly = bLink;
+				// make sure it is calculated before the result field
+				if (bLink) svFld.calcOrderIndex = tDoc.getField(sFldNm + ".Mod").calcOrderIndex - 1;
 			}
-		}
-		var linkFld = function(fldBase, fldName, fldModName, defaultCalc, specialCalc) {
-			if (!fldName) fldName = ""; // if fldName is nothing, fldModName is the full field name, not just a suffix
-			if (!defaultCalc) defaultCalc = "";
-			var oFldTar = tDoc.getField(prefixTarget + fldBase + fldName);
-			var sFldSrc = prefixSource + fldBase + fldName;
-			var bIsCFskill = fldBase.indexOf("Text.Comp.Use.Skills.") !== -1;
-			if (!oFldTar || !tDoc.getField(sFldSrc)) return;
-			var sCalc = bLink ? (specialCalc ? specialCalc : "var sFld = event.target.name.replace('" + prefixTarget + "', '" + prefixSource + "'); event.value = tDoc.getField(sFld) ? tDoc.getField(sFld).value : ''; " + defaultCalc) : defaultCalc;
-			oFldTar.setAction("Calculate", sCalc);
-			if (!bIsCFskill) oFldTar.readonly = bLink;
-			// make sure it is calculated before the result field
-			if (bLink && fldModName) {
-				var sFldMod = prefixTarget + (fldName ? fldBase + fldModName : fldModName)
-				oFldTar.calcOrderIndex = tDoc.getField(sFldMod).calcOrderIndex - 1;
+			// Link alignment to main character
+			var sCalc = bLink ? "event.value = What('Alignment');" : "";
+			tDoc.getField(prefix + "Comp.Desc.Alignment").setAction("Calculate", sCalc);
+		},
+		linkToMain: function (bLink, prefixTarget) {
+			bLink = bLink ? true : false;
+			var prefixSource = "";
+			if (bLink) {
+				prefixSource = global_DragonKnight.fn.getDragonCompPrefix()[0];
+				if (!prefixSource) {
+					app.alert("No dragon companion found to link this continued page to. This page will now effectively be useless. Please first select dragon companion on this companion page. Once that is done, you can select a 'continued' option on another companion page.\n\nYou can add more companion pages using the 'Layout' bookmark and the button on the top of every companion page.\n\nBe aware that only one dragon companion and one continued companion page can exist (the continued page will always link to the first found dragon companion page).")
+					return;
+				}
 			}
-			if (bIsCFskill) {
+			var linkFld = function (fldBase, fldName, fldModName, defaultCalc, specialCalc) {
+				if (!fldName) fldName = ""; // if fldName is nothing, fldModName is the full field name, not just a suffix
+				if (!defaultCalc) defaultCalc = "";
+				var oFldTar = tDoc.getField(prefixTarget + fldBase + fldName);
+				var sFldSrc = prefixSource + fldBase + fldName;
+				var bIsCFskill = fldBase.indexOf("Text.Comp.Use.Skills.") !== -1;
+				if (!oFldTar || !tDoc.getField(sFldSrc)) return;
+				var sCalc = bLink ? (specialCalc ? specialCalc : "var sFld = event.target.name.replace('" + prefixTarget + "', '" + prefixSource + "'); event.value = tDoc.getField(sFld) ? tDoc.getField(sFld).value : ''; " + defaultCalc) : defaultCalc;
+				oFldTar.setAction("Calculate", sCalc);
+				if (!bIsCFskill) oFldTar.readonly = bLink;
+				// make sure it is calculated before the result field
+				if (bLink && fldModName) {
+					var sFldMod = prefixTarget + (fldName ? fldBase + fldModName : fldModName)
+					oFldTar.calcOrderIndex = tDoc.getField(sFldMod).calcOrderIndex - 1;
+				}
+				if (bIsCFskill) {
 				// Special for the skill names on the colourful sheets, make the '.Name' field read only
-				tDoc.getField(prefixTarget + fldBase.replace(".Prof", ".Name")).readonly = bLink;
+					tDoc.getField(prefixTarget + fldBase.replace(".Prof", ".Name")).readonly = bLink;
+				}
 			}
-		}
-		var hideFld = function(fldName, bNoPrint) {
-			var oFld = tDoc.getField(prefixTarget + fldName);
-			if (!oFld) return;
-			oFld.display = display[bLink ? "hidden" : bNoPrint ? "noPrint" : "visible"];
-		}
-		// Link ability scores and saves
-		for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
-			var Abi = AbilityScores.abbreviations[i];
-			linkFld("Comp.Use.Ability." + Abi, ".Score", ".Mod");
-			linkFld("Comp.Use.Ability." + Abi + ".ST", ".Prof", ".Mod", false, "event.value = tDoc.getField('" + Abi + " ST Prof').isBoxChecked(0) ? 'True' : 'False';");
-			linkFld("BlueText.Comp.Use.Ability." + Abi + ".ST.Bonus", false, "Comp.Use.Ability." + Abi + ".ST.Mod");
-		}
-		linkFld("BlueText.Comp.Use.Ability.All.ST.Bonus", false, "Comp.Use.Ability.Str.ST.Mod");
-		// Link skill proficiencies
-		for (var i = 0; i < SkillsList.abbreviations.length; i++) {
-			var skill = SkillsList.abbreviations[i];
-			if (skill === "Init" || skill === "Too") continue;
-			var skFldBase = "Comp.Use.Skills." + skill;
-			if (typePF) {
-				linkFld(skFldBase + ".Exp", false, "Comp.Use.Skills.Acr.Mod");
-				linkFld(skFldBase, ".Prof", ".Exp");
-			} else {
-				linkFld("Text." + skFldBase + ".Prof", false, "Comp.Use.Skills.Acr.Mod");
+			var hideFld = function (fldName, bNoPrint) {
+				var oFld = tDoc.getField(prefixTarget + fldName);
+				if (!oFld) return;
+				oFld.display = display[bLink ? "hidden" : bNoPrint ? "noPrint" : "visible"];
 			}
-			linkFld("BlueText." + skFldBase + ".Bonus", false, skFldBase + ".Mod");
-		}
-		linkFld("BlueText.Comp.Use.Skills.All.Bonus", false, "Comp.Use.Skills.Acr.Mod");
-		linkFld("BlueText.Comp.Use.Skills.Perc.Pass.Bonus", false, "Comp.Use.Skills.Perc.Pass.Mod");
-		// Link HD and HP
-		linkFld("Comp.Use.HD.Level");
-		linkFld("Comp.Use.HD.Die");
-		linkFld("Comp.Use.HD.Used");
-		linkFld("Comp.Use.HP");
-		// Hide buttons
-		hideFld("Buttons.Comp.Use.HP.Max", true);
-		hideFld("Comp.Heal", true);
-		// Hide death saves
-		hideFld("Comp.Use.DeathSave");
-		// Link descriptive fields
-		linkFld("Comp.Desc");
-		// Link Initiative, AC, Proficiency bonus, speed, attacks per action, senses
-		linkFld("Comp.Use.Combat.Init", ".Bonus", ".Mod", "DisplayBonusCalculate();");
-		linkFld("Comp.Use.AC", false, false, "DisplayBonusCalculate();");
-		linkFld("Comp.Use.Proficiency Bonus", false, "Comp.Use.Ability.Str.ST.Mod");
-		linkFld("BlueText.Comp.Use.Proficiency Bonus Dice", false, "Comp.Use.Proficiency Bonus");
-		linkFld("Comp.Use.Speed");
-		linkFld("Comp.Use.Attack.perAction");
-		linkFld("Comp.Use.Senses");
-	},
-	getDragonCompPrefix: function () {
-		var returnArray = ["", ""];
-		// Loop through all the companion pages and get the first one that is a dragon companion or its linked version
-		for (var prefix in CurrentCompRace) {
-			if (CurrentCompRace[prefix].isDragonKnightCompanion && !returnArray[0]) {
-				returnArray[0] = prefix;
+			// Link ability scores and saves
+			for (var i = 0; i < AbilityScores.abbreviations.length; i++) {
+				var Abi = AbilityScores.abbreviations[i];
+				linkFld("Comp.Use.Ability." + Abi, ".Score", ".Mod");
+				linkFld("Comp.Use.Ability." + Abi + ".ST", ".Prof", ".Mod", false, "event.value = tDoc.getField('" + Abi + " ST Prof').isBoxChecked(0) ? 'True' : 'False';");
+				linkFld("BlueText.Comp.Use.Ability." + Abi + ".ST.Bonus", false, "Comp.Use.Ability." + Abi + ".ST.Mod");
 			}
-			if (CurrentCompRace[prefix].isDragonKnightCompanionLinked && !returnArray[1]) {
-				returnArray[1] = prefix;
+			linkFld("BlueText.Comp.Use.Ability.All.ST.Bonus", false, "Comp.Use.Ability.Str.ST.Mod");
+			// Link skill proficiencies
+			for (var i = 0; i < SkillsList.abbreviations.length; i++) {
+				var skill = SkillsList.abbreviations[i];
+				if (skill === "Init" || skill === "Too") continue;
+				var skFldBase = "Comp.Use.Skills." + skill;
+				if (typePF) {
+					linkFld(skFldBase + ".Exp", false, "Comp.Use.Skills.Acr.Mod");
+					linkFld(skFldBase, ".Prof", ".Exp");
+				} else {
+					linkFld("Text." + skFldBase + ".Prof", false, "Comp.Use.Skills.Acr.Mod");
+				}
+				linkFld("BlueText." + skFldBase + ".Bonus", false, skFldBase + ".Mod");
 			}
-		}
-		return returnArray;
-	},
-	addDragonCompanion: function(bAddRemove, colour, bContinued, bIgnoreSubclass) {
+			linkFld("BlueText.Comp.Use.Skills.All.Bonus", false, "Comp.Use.Skills.Acr.Mod");
+			linkFld("BlueText.Comp.Use.Skills.Perc.Pass.Bonus", false, "Comp.Use.Skills.Perc.Pass.Mod");
+			// Link HD and HP
+			linkFld("Comp.Use.HD.Level");
+			linkFld("Comp.Use.HD.Die");
+			linkFld("Comp.Use.HD.Used");
+			linkFld("Comp.Use.HP");
+			// Hide buttons
+			hideFld("Buttons.Comp.Use.HP.Max", true);
+			hideFld("Comp.Heal", true);
+			// Hide death saves
+			hideFld("Comp.Use.DeathSave");
+			// Link descriptive fields
+			linkFld("Comp.Desc");
+			// Link Initiative, AC, Proficiency bonus, speed, attacks per action, senses
+			linkFld("Comp.Use.Combat.Init", ".Bonus", ".Mod", "DisplayBonusCalculate();");
+			linkFld("Comp.Use.AC", false, false, "DisplayBonusCalculate();");
+			linkFld("Comp.Use.Proficiency Bonus", false, "Comp.Use.Ability.Str.ST.Mod");
+			linkFld("BlueText.Comp.Use.Proficiency Bonus Dice", false, "Comp.Use.Proficiency Bonus");
+			linkFld("Comp.Use.Speed");
+			linkFld("Comp.Use.Attack.perAction");
+			linkFld("Comp.Use.Senses");
+		},
+		getDragonCompPrefix: function () {
+			var returnArray = ["", ""];
+			// Loop through all the companion pages and get the first one that is a dragon companion or its linked version
+			for (var prefix in CurrentCompRace) {
+				if (CurrentCompRace[prefix].isDragonKnightCompanion && !returnArray[0]) {
+					returnArray[0] = prefix;
+				}
+				if (CurrentCompRace[prefix].isDragonKnightCompanionLinked && !returnArray[1]) {
+					returnArray[1] = prefix;
+				}
+			}
+			return returnArray;
+		},
+		addDragonCompanion: function (bAddRemove, colour, bContinued, bIgnoreSubclass) {
 		// Add the dragon companion using an custom function so that we can immediately add the correct one (platinum/shadow) with CompanionList selection (if present)
-		if (bAddRemove === undefined) bAddRemove = true;
+			if (bAddRemove === undefined) bAddRemove = true;
 
-		// get the colour from the choice passed to this eval or from the GetFeatureChoice
-		if (!colour) colour = GetFeatureChoice("classes", "dragon knight", "dragon covenant");
+			// get the colour from the choice passed to this eval or from the GetFeatureChoice
+			if (!colour) colour = GetFeatureChoice("classes", "dragon knight", "dragon covenant");
 
-		// if not a passible option, exit
-		var oSubfeature = CurrentClasses["dragon knight"] ? CurrentClasses["dragon knight"].features["dragon covenant"][colour] : false;
-		if (!oSubfeature) return;
+			// if not a passible option, exit
+			var oSubfeature = CurrentClasses["dragon knight"] ? CurrentClasses["dragon knight"].features["dragon covenant"][colour] : false;
+			if (!oSubfeature) return;
 
-		var dkLvl = classes.known["dragon knight"] ? classes.known["dragon knight"].level : 0;
-		// see if we should use a subclass instead
-		var oAltSubfeature = bIgnoreSubclass || !classes.known["dragon knight"].subclass ? false : CurrentClasses["dragon knight"].features["subclassfeature3_dragoncolor"];
-		var bUseAltFeature = oAltSubfeature && oAltSubfeature[colour] && oAltSubfeature[colour].creatureOptions && dkLvl >= oAltSubfeature.minlevel;
-		var oUseFeature = bUseAltFeature ? oAltSubfeature[colour] : oSubfeature;
+			var dkLvl = classes.known["dragon knight"] ? classes.known["dragon knight"].level : 0;
+			// see if we should use a subclass instead
+			var oAltSubfeature = bIgnoreSubclass || !classes.known["dragon knight"].subclass ? false : CurrentClasses["dragon knight"].features["subclassfeature3_dragoncolor"];
+			var bUseAltFeature = oAltSubfeature && oAltSubfeature[colour] && oAltSubfeature[colour].creatureOptions && dkLvl >= oAltSubfeature.minlevel;
+			var oUseFeature = bUseAltFeature ? oAltSubfeature[colour] : oSubfeature;
 
-		// get the name of the creature to add, its source, and possible CompanionList entry
-		var addCrea = oUseFeature.creatureOptions[bContinued ? 1 : 0].name;
-		var sourceName = CurrentClasses["dragon knight"].name + ": " + oUseFeature.name;
-		var subclassCompanionApply = global_DragonKnight.fn.getLinkedCompanionListing(bContinued);
+			// get the name of the creature to add, its source, and possible CompanionList entry
+			var addCrea = oUseFeature.creatureOptions[bContinued ? 1 : 0].name;
+			var sourceName = CurrentClasses["dragon knight"].name + ": " + oUseFeature.name;
+			var subclassCompanionApply = global_DragonKnight.fn.getLinkedCompanionListing(bContinued);
 
-		var processArray = [[addCrea, false, false, subclassCompanionApply]];
+			var processArray = [[addCrea, false, false, subclassCompanionApply]];
 
-		if (bContinued || bIgnoreSubclass) {
+			if (bContinued || bIgnoreSubclass) {
 			// bContinued: Add/remove the continued directly, it will exist already
 			// bIgnoreSubclass: Add/remove the original colour before/after a subclass special will be added/has been removed
-			processAddCompanions(bAddRemove, sourceName, processArray);
-		} else {
+				processAddCompanions(bAddRemove, sourceName, processArray);
+			} else {
 			// If this is not a continued version and is called from a feature choice, we can just change the `creaturesAdd` attribute for the desired outcome
 			// However, if the alt feature is to be used, there should be no `creaturesAdd` attribute of the main feature as the alt feature will do the adding/removing
-			oSubfeature.creaturesAdd = !bUseAltFeature ? processArray : false;
-		}
-	},
-	incrementDragonAttacks: function(prefix, aLvl) {
+				oSubfeature.creaturesAdd = !bUseAltFeature ? processArray : false;
+			}
+		},
+		incrementDragonAttacks: function (prefix, aLvl) {
 		/*
 			As there is no dynamic function for companion page attacks, this is a workaround
 			to update these attacks when changing level or adding a new companion.
@@ -715,97 +715,97 @@ global_DragonKnight = {
 			That way, the sheet will not only apply the correct attacks currently visible, but also when they are manually changed, and after a close-open cycle.
 			We start with updating the attacks in the CurrentCompRace object CurrentVars.extraCreatures and copy that value to the other objects.
 		*/
-		var lvl = aLvl[1];
-		var oCrea = CurrentCompRace[prefix];
-		var updateColour = oCrea.dragonCompanionType;
-		if (!updateColour || oCrea.dragonKnightLevel === lvl) return;
+			var lvl = aLvl[1];
+			var oCrea = CurrentCompRace[prefix];
+			var updateColour = oCrea.dragonCompanionType;
+			if (!updateColour || oCrea.dragonKnightLevel === lvl) return;
 
-		var subclass = classes.known["dragon knight"] ? classes.known["dragon knight"].subclass : "";
-		var subclassCompanionApply = global_DragonKnight.fn.getLinkedCompanionListing(false, subclass);
-		var subclassContinuedApply = global_DragonKnight.fn.getLinkedCompanionListing(true, subclass);
+			var subclass = classes.known["dragon knight"] ? classes.known["dragon knight"].subclass : "";
+			var subclassCompanionApply = global_DragonKnight.fn.getLinkedCompanionListing(false, subclass);
+			var subclassContinuedApply = global_DragonKnight.fn.getLinkedCompanionListing(true, subclass);
 
-		// First update the attacks array to the current level
-		var preAttacks = oCrea.attacks.toSource();
-		for (var i = 0; i < oCrea.attacks.length; i++) {
-			var atk = oCrea.attacks[i];
-			// Rending Strikes
-			if (/\b(claw|bite|tail)s?\b/i.test(atk.name)) {
-				atk.damage[0] = lvl < 5 ? 1 : 2;
-				atk.description = atk.description_base + (lvl < 5 ? "" : (atk.description_base ? "; " : "") + "Counts as magical");
-			}
-			// Dragon's Fury
-			if (/\bbite\b/i.test(atk.name)) {
-				atk.description = atk.description.replace("1d6", (lvl < 6 ? 1 : lvl < 10 ? 2 : lvl < 14 ? 3 : 4) + "d6");
-			}
-			if (/\btail\b/i.test(atk.name)) {
-				atk.range = "Melee (" + (lvl < 6 ? 5 : lvl < 10 ? 10 : lvl < 14 ? 15 : 20) + " ft)";
-			}
-			if (/wing/i.test(atk.name)) {
-				var sRange = lvl < 6 ? 5 : lvl < 10 ? 10 : lvl < 14 ? 15 : 20;
-				atk.range = sRange + " ft";
-				atk.description = atk.description_base.replace("5", sRange);
-			}
-			// Breath Weapon
-			if (/breath weapon/i.test(atk.name)) {
-				atk.damage[0] = lvl < 10 ? 4 : lvl < 14 ? 6 : 8;
-				atk.range = /cone/i.test(atk.range) ?
-					(lvl < 10 ? 15 : lvl < 14 ? 30 : 60) + "-ft cone" :
-					(lvl < 10 ? 5 : 10) + "-ft \xD7 " + (lvl < 10 ? 30 : lvl < 14 ? 60 : 120) + "-ft line";
-			}
-			// Titanic roar (Rider Practice only)
-			if (subclass.indexOf("rider") !== -1 && /titanic roar/i.test(atk.name)) {
-				atk.range = lvl < 18 ? "20 ft" : "120 ft";
-			}
-		}
-		var postAttacks = oCrea.attacks.toSource();
-		var bUpdateOnlyLevel = preAttacks === postAttacks; // Nothing changed, only update level remember attribute
-
-		var updateCreaObject = function(oCreaObj, sPrefix) {
-			if (!oCreaObj.dragonCompanionType || oCreaObj.dragonCompanionType !== updateColour) return; // Not a dragon companion
-			oCreaObj.dragonKnightLevel = lvl;
-			if (bUpdateOnlyLevel) return true; // don't continue further
-			if (!sPrefix || sPrefix !== prefix) oCreaObj.attacks = oCrea.attacks; // Don't do this for the initializing object
-			oCreaObj.companionApply = oCreaObj.isDragonKnightCompanion ? subclassCompanionApply : subclassContinuedApply;
-			if (sPrefix) {
-				// This is an object linked to a companion page, so also update the attack entries by removing and re-adding them
-				for (var i = 1; i <= 3; i++) {
-					var fldName = sPrefix + "Comp.Use.Attack." + i + ".Weapon Selection";
-					var fldVal = What(fldName);
-					if (fldVal) {
-						Value(fldName, ""); // reset
-						Value(fldName, fldVal); // reapply
-					}
+			// First update the attacks array to the current level
+			var preAttacks = oCrea.attacks.toSource();
+			for (var i = 0; i < oCrea.attacks.length; i++) {
+				var atk = oCrea.attacks[i];
+				// Rending Strikes
+				if (/\b(claw|bite|tail)s?\b/i.test(atk.name)) {
+					atk.damage[0] = lvl < 5 ? 1 : 2;
+					atk.description = atk.description_base + (lvl < 5 ? "" : (atk.description_base ? "; " : "") + "Counts as magical");
+				}
+				// Dragon's Fury
+				if (/\bbite\b/i.test(atk.name)) {
+					atk.description = atk.description.replace("1d6", (lvl < 6 ? 1 : lvl < 10 ? 2 : lvl < 14 ? 3 : 4) + "d6");
+				}
+				if (/\btail\b/i.test(atk.name)) {
+					atk.range = "Melee (" + (lvl < 6 ? 5 : lvl < 10 ? 10 : lvl < 14 ? 15 : 20) + " ft)";
+				}
+				if (/wing/i.test(atk.name)) {
+					var sRange = lvl < 6 ? 5 : lvl < 10 ? 10 : lvl < 14 ? 15 : 20;
+					atk.range = sRange + " ft";
+					atk.description = atk.description_base.replace("5", sRange);
+				}
+				// Breath Weapon
+				if (/breath weapon/i.test(atk.name)) {
+					atk.damage[0] = lvl < 10 ? 4 : lvl < 14 ? 6 : 8;
+					atk.range = /cone/i.test(atk.range) ?
+						(lvl < 10 ? 15 : lvl < 14 ? 30 : 60) + "-ft cone" :
+						(lvl < 10 ? 5 : 10) + "-ft \xD7 " + (lvl < 10 ? 30 : lvl < 14 ? 60 : 120) + "-ft line";
+				}
+				// Titanic roar (Rider Practice only)
+				if (subclass.indexOf("rider") !== -1 && /titanic roar/i.test(atk.name)) {
+					atk.range = lvl < 18 ? "20 ft" : "120 ft";
 				}
 			}
-			return true; // True to signal something changed
-		}
-		// Now we go over all the creatures in the different variables and update them
-		// First the CurrentVars, which updates the CreatureList
-		for (var sCrea in CurrentVars.extraCreatures) {
-			var bUpdated = updateCreaObject(CurrentVars.extraCreatures[sCrea]);
-			if (bUpdated) CreatureList[sCrea] = CurrentVars.extraCreatures[sCrea];
-		}
-		// Then the CurrentCompRace object (the initiating one included), as they will have different attributes and signal a field update
-		for (var sPrefix in CurrentCompRace) {
-			updateCreaObject(CurrentCompRace[sPrefix], sPrefix);
-		}
-		// Update the field to save the global variable for persistance over closing PDF
-		SetStringifieds("vars");
-	},
-	getLinkedCompanionListing: function(bContinued, subclass) {
-		// Return the entry of the CompanionList object associated with currently selected Dragon Knight subclass
-		if (!subclass) {
-			subclass = classes.known["dragon knight"] && classes.known["dragon knight"].subclass ? classes.known["dragon knight"].subclass : false;
-		}
-		if (subclass) {
-			for (var sComp in CompanionList) {
-				if (CompanionList[sComp].dragonKnightSubclass && CompanionList[sComp].dragonKnightSubclass === subclass && (!bContinued || CompanionList[sComp].dragonKnightContinued)) return sComp;
+			var postAttacks = oCrea.attacks.toSource();
+			var bUpdateOnlyLevel = preAttacks === postAttacks; // Nothing changed, only update level remember attribute
+
+			var updateCreaObject = function (oCreaObj, sPrefix) {
+				if (!oCreaObj.dragonCompanionType || oCreaObj.dragonCompanionType !== updateColour) return; // Not a dragon companion
+				oCreaObj.dragonKnightLevel = lvl;
+				if (bUpdateOnlyLevel) return true; // don't continue further
+				if (!sPrefix || sPrefix !== prefix) oCreaObj.attacks = oCrea.attacks; // Don't do this for the initializing object
+				oCreaObj.companionApply = oCreaObj.isDragonKnightCompanion ? subclassCompanionApply : subclassContinuedApply;
+				if (sPrefix) {
+				// This is an object linked to a companion page, so also update the attack entries by removing and re-adding them
+					for (var i = 1; i <= 3; i++) {
+						var fldName = sPrefix + "Comp.Use.Attack." + i + ".Weapon Selection";
+						var fldVal = What(fldName);
+						if (fldVal) {
+							Value(fldName, ""); // reset
+							Value(fldName, fldVal); // reapply
+						}
+					}
+				}
+				return true; // True to signal something changed
 			}
-		}
-		return "";
+			// Now we go over all the creatures in the different variables and update them
+			// First the CurrentVars, which updates the CreatureList
+			for (var sCrea in CurrentVars.extraCreatures) {
+				var bUpdated = updateCreaObject(CurrentVars.extraCreatures[sCrea]);
+				if (bUpdated) CreatureList[sCrea] = CurrentVars.extraCreatures[sCrea];
+			}
+			// Then the CurrentCompRace object (the initiating one included), as they will have different attributes and signal a field update
+			for (var sPrefix in CurrentCompRace) {
+				updateCreaObject(CurrentCompRace[sPrefix], sPrefix);
+			}
+			// Update the field to save the global variable for persistance over closing PDF
+			SetStringifieds("vars");
+		},
+		getLinkedCompanionListing: function (bContinued, subclass) {
+		// Return the entry of the CompanionList object associated with currently selected Dragon Knight subclass
+			if (!subclass) {
+				subclass = classes.known["dragon knight"] && classes.known["dragon knight"].subclass ? classes.known["dragon knight"].subclass : false;
+			}
+			if (subclass) {
+				for (var sComp in CompanionList) {
+					if (CompanionList[sComp].dragonKnightSubclass && CompanionList[sComp].dragonKnightSubclass === subclass && (!bContinued || CompanionList[sComp].dragonKnightContinued)) return sComp;
+				}
+			}
+			return "";
+		},
 	},
-  },
-  creatureCallback: [function(prefix, oCrea, bAdd) {
+	creatureCallback: [function (prefix, oCrea, bAdd) {
 		if (!bAdd || (!oCrea.isDragonKnightCompanion && !oCrea.isDragonKnightCompanionLinked)) return;
 		var subclassCompanionApply = global_DragonKnight.fn.getLinkedCompanionListing(oCrea.isDragonKnightCompanionLinked);
 		if (subclassCompanionApply && What(prefix + "Companion.Remember") !== subclassCompanionApply) {
@@ -864,10 +864,10 @@ ClassList["dragon knight"] = {
 				]),
 				dependentChoices: "acid",
 				creatureOptions: createDragonCompanion("black"),
-				eval: function(lvl, chc) {
+				eval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(true, "black");
 				},
-				removeeval: function(lvl, chc) {
+				removeeval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(false, "black");
 				},
 			},
@@ -882,10 +882,10 @@ ClassList["dragon knight"] = {
 				]),
 				dependentChoices: "lightning",
 				creatureOptions: createDragonCompanion("blue"),
-				eval: function(lvl, chc) {
+				eval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(true, "blue");
 				},
-				removeeval: function(lvl, chc) {
+				removeeval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(false, "blue");
 				},
 			},
@@ -900,10 +900,10 @@ ClassList["dragon knight"] = {
 				]),
 				dependentChoices: "fire",
 				creatureOptions: createDragonCompanion("brass"),
-				eval: function(lvl, chc) {
+				eval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(true, "brass");
 				},
-				removeeval: function(lvl, chc) {
+				removeeval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(false, "brass");
 				},
 			},
@@ -918,10 +918,10 @@ ClassList["dragon knight"] = {
 				]),
 				dependentChoices: "lightning",
 				creatureOptions: createDragonCompanion("bronze"),
-				eval: function(lvl, chc) {
+				eval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(true, "bronze");
 				},
-				removeeval: function(lvl, chc) {
+				removeeval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(false, "bronze");
 				},
 			},
@@ -936,10 +936,10 @@ ClassList["dragon knight"] = {
 				]),
 				dependentChoices: "acid",
 				creatureOptions: createDragonCompanion("copper"),
-				eval: function(lvl, chc) {
+				eval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(true, "copper");
 				},
-				removeeval: function(lvl, chc) {
+				removeeval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(false, "copper");
 				},
 			},
@@ -954,10 +954,10 @@ ClassList["dragon knight"] = {
 				]),
 				dependentChoices: "fire",
 				creatureOptions: createDragonCompanion("gold"),
-				eval: function(lvl, chc) {
+				eval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(true, "gold");
 				},
-				removeeval: function(lvl, chc) {
+				removeeval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(false, "gold");
 				},
 			},
@@ -972,10 +972,10 @@ ClassList["dragon knight"] = {
 				]),
 				dependentChoices: "poison",
 				creatureOptions: createDragonCompanion("green"),
-				eval: function(lvl, chc) {
+				eval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(true, "green");
 				},
-				removeeval: function(lvl, chc) {
+				removeeval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(false, "green");
 				},
 			},
@@ -990,10 +990,10 @@ ClassList["dragon knight"] = {
 				]),
 				dependentChoices: "fire",
 				creatureOptions: createDragonCompanion("red"),
-				eval: function(lvl, chc) {
+				eval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(true, "red");
 				},
-				removeeval: function(lvl, chc) {
+				removeeval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(false, "red");
 				},
 			},
@@ -1008,10 +1008,10 @@ ClassList["dragon knight"] = {
 				]),
 				dependentChoices: "cold",
 				creatureOptions: createDragonCompanion("silver"),
-				eval: function(lvl, chc) {
+				eval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(true, "silver");
 				},
-				removeeval: function(lvl, chc) {
+				removeeval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(false, "silver");
 				},
 			},
@@ -1026,10 +1026,10 @@ ClassList["dragon knight"] = {
 				]),
 				dependentChoices: "cold",
 				creatureOptions: createDragonCompanion("white"),
-				eval: function(lvl, chc) {
+				eval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(true, "white");
 				},
-				removeeval: function(lvl, chc) {
+				removeeval: function (lvl, chc) {
 					global_DragonKnight.fn.addDragonCompanion(false, "white");
 				},
 			},
@@ -1056,7 +1056,7 @@ ClassList["dragon knight"] = {
 			"dueling": FightingStyles.dueling,
 			"great weapon fighting": FightingStyles.great_weapon,
 			"two-weapon fighting": FightingStyles.two_weapon,
-		}, 
+		},
 		"dragon's fury": { // naar 3e pagina verplaatsen
 			name: "Dragon's Fury",
 			source: [["RJ:DK", 5]],
@@ -1788,11 +1788,11 @@ AddSubClass("dragon knight", "platinum", {
 				creatureOptions: createDragonCompanion("platinum", "white"),
 				dependentChoices: "radiant",
 			},
-			eval: function(lvl, chc) {
+			eval: function (lvl, chc) {
 				// Remove the current dragon companion colour (bIgnoreSubclass = true) before processing the choice that adds the Platinum Dragon Companion
 				global_DragonKnight.fn.addDragonCompanion(false, "", false, true);
 			},
-			removeeval: function(lvl, chc) {
+			removeeval: function (lvl, chc) {
 				if (lvl[1] === 0) return; // no reason to do anything as the whole class is being removed
 				// Add the original colour again (bIgnoreSubclass = true), but only after the Platinum Dragon Companion was removed, thus use a timeout (might not work)
 				global_DragonKnight_timeout = app.setTimeout("global_DragonKnight.fn.addDragonCompanion(true, '', false, true);", 450);
@@ -1958,12 +1958,12 @@ AddSubClass("dragon knight", "shadow", {
 				creatureOptions: createDragonCompanion("shadow", "white"),
 				dependentChoices: "necrotic",
 			},
-			eval: function(lvl, chc) {
+			eval: function (lvl, chc) {
 				// Remove the current dragon companion colour (bIgnoreSubclass = true) before processing the choice that adds the Shadow Dragon Companion
 				global_DragonKnight.fn.addDragonCompanion(false, "", true, true);
 				global_DragonKnight.fn.addDragonCompanion(false, "", false, true);
 			},
-			removeeval: function(lvl, chc) {
+			removeeval: function (lvl, chc) {
 				if (lvl[1] === 0) return; // no reason to do anything as the whole class is being removed
 				// Add the original colour again (bIgnoreSubclass = true), but only after the Shadow Dragon Companion was removed, thus use a timeout (might not work)
 				global_DragonKnight_timeout = app.setTimeout("global_DragonKnight.fn.addDragonCompanion(true, '', false, true);", 450);

@@ -59,7 +59,7 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 
 	var aDescriptions = []; // Gather descriptions for all the ability scores to create one string for the feature at the end
 
-	var applyBonusToColumn = function(objCol, idxScore, iBonus) {
+	var applyBonusToColumn = function (objCol, idxScore, iBonus) {
 		// Make sure iBonus is a round number
 		if (isNaN(iBonus)) {
 			if (!/\d/.test(iBonus)) return;
@@ -74,11 +74,11 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 		}
 	}
 
-	// Types that have their value 
-	var registerSpecial = function(sRef, idxScore, sName, iValue) {
+	// Types that have their value
+	var registerSpecial = function (sRef, idxScore, sName, iValue) {
 		var oRef = CurrentStats[sRef + "s"][idxScore];
 		// Get the total before making the change
-		var reducerFunc = function(iTotal, key) { return Math.max(iTotal, oRef[key]); };
+		var reducerFunc = function (iTotal, key) { return Math.max(iTotal, oRef[key]); };
 		var iValueBefore = Object.keys(oRef).reduce(reducerFunc, 0);
 		if (sRef === "maximum" && iValueBefore === 0) iValueBefore = 20; // default is max 20
 		// Save this for safekeeping
@@ -126,115 +126,115 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 		}
 
 		switch (isSpecial) {
-		  case "limited": // type 3 & 6, score and max to apply depend on current state
-			if (!iScore) continue;
-			if (!iMax) iMax = 20; // Set to 20 if no maximum is provided
-			// Gather the previous entries and the next key
-			var oKeys = getFeatureNameIterations(featureName, CurrentStats.refMaxLimited[i], isStackable);
-			if (AddRemove) {
-				var description = type === "items" ? "one-time " : "";
-				description += (iScore >= 0 ? "+" : "") + iScore + " " + oScoreNow.name;
-				var displayMax = iMax;
-				if (iScoreNow + iScore > iMax) {
+			case "limited": // type 3 & 6, score and max to apply depend on current state
+				if (!iScore) continue;
+				if (!iMax) iMax = 20; // Set to 20 if no maximum is provided
+				// Gather the previous entries and the next key
+				var oKeys = getFeatureNameIterations(featureName, CurrentStats.refMaxLimited[i], isStackable);
+				if (AddRemove) {
+					var description = type === "items" ? "one-time " : "";
+					description += (iScore >= 0 ? "+" : "") + iScore + " " + oScoreNow.name;
+					var displayMax = iMax;
+					if (iScoreNow + iScore > iMax) {
 					// The score would increase the total beyond its max, so reduce the addition
-					iScore = Math.max(0, iMax - iScoreNow);
-				} else if (iScoreNow + iScore < iMax) {
+						iScore = Math.max(0, iMax - iScoreNow);
+					} else if (iScoreNow + iScore < iMax) {
 					// The total is less than the max, so set the max to the new total
-					iMax = Math.max(20, iScoreNow + iScore);
-				}
-				// Maximum and changes to the description
-				var sScoreChange = " (" + iScoreNow + (iScore >= 0 ? "+" : "") + iScore + "=" + (iScoreNow + iScore) + ")";
-				if (isModMax) {
-					description += " to its maximum " + isModMax + sScoreChange;
+						iMax = Math.max(20, iScoreNow + iScore);
+					}
+					// Maximum and changes to the description
+					var sScoreChange = " (" + iScoreNow + (iScore >= 0 ? "+" : "") + iScore + "=" + (iScoreNow + iScore) + ")";
+					if (isModMax) {
+						description += " to its maximum " + isModMax + sScoreChange;
+					} else {
+						description += " to a maximum of " + displayMax + sScoreChange;
+					}
+					aDescriptions.push(description); // Add description for the tooltip and dialog
+
+					// Store for safekeeping so we know what values to remove when the time comes
+					CurrentStats.refMaxLimited[i][oKeys.next] = {
+						key: oKeys.next,
+						name: featureName,
+						iteration: oKeys.iteration,
+						type: sType,
+						bonusOriginal: aScores[i],
+						bonus: iScore,
+						maximumOriginal: aHasMax ? aHasMax[i] : null,
+						maximum: iMax,
+						description: description,
+					}
+					// Apply the values
+					applyBonusToColumn(oCol, i, iScore);
+					registerSpecial("maximum", i, oKeys.next, iMax);
 				} else {
-					description += " to a maximum of " + displayMax + sScoreChange;
+					oKeys.has.forEach(function (obj) {
+						var sKey = obj.key;
+						var refObj = CurrentStats.refMaxLimited[i][sKey];
+						applyBonusToColumn(oCol, i, refObj.bonus);
+						registerSpecial("maximum", i, sKey, refObj.maximum);
+						delete CurrentStats.refMaxLimited[i][sKey];
+					});
 				}
-				aDescriptions.push(description); // Add description for the tooltip and dialog
+				break;
 
-				// Store for safekeeping so we know what values to remove when the time comes
-				CurrentStats.refMaxLimited[i][oKeys.next] = {
-					key: oKeys.next,
-					name: featureName,
-					iteration: oKeys.iteration,
-					type: sType,
-					bonusOriginal: aScores[i],
-					bonus: iScore,
-					maximumOriginal: aHasMax ? aHasMax[i] : null,
-					maximum: iMax,
-					description: description,
-				}
-				// Apply the values
-				applyBonusToColumn(oCol, i, iScore);
-				registerSpecial("maximum", i, oKeys.next, iMax);
-			} else {
-				oKeys.has.forEach(function (obj) {
-					var sKey = obj.key;
-					var refObj = CurrentStats.refMaxLimited[i][sKey];
-					applyBonusToColumn(oCol, i, refObj.bonus);
-					registerSpecial("maximum", i, sKey, refObj.maximum);
-					delete CurrentStats.refMaxLimited[i][sKey];
-				});
-			}
-			break;
-
-		  case "ongoing": // type 4 & 5: magic items without `scoresMaxLimited`
+			case "ongoing": // type 4 & 5: magic items without `scoresMaxLimited`
 			// Magic items are special cases, as their bonus is not tied to a single moment
 
-			if (!iMax) iMax = 20; // Set to 20 if no maximum is provided
+				if (!iMax) iMax = 20; // Set to 20 if no maximum is provided
 
-			if (AddRemove) {
-				CurrentStats.ongoingItems[i][featureName] = {
-					name: featureName,
-					type: sType,
-					bonus: iScore,
-					maximum: iMax,
-					maximumIsMod: isModMax,
-				}
-				// Create and add description for the tooltip and dialog
-				var description = "ongoing " + (iScore >= 0 ? "+" : "") + iScore + " " + oScoreNow.name;
-				if (isModMax) {
-					description += " to its maximum " + isModMax;
-				} else {
-					description += " to a maximum of " + iMax;
-				}
-				aDescriptions.push(description);
-			} else {
-				delete CurrentStats.ongoingItems[i][featureName];
-			}
-			break;
-
-		  case "overrides": // type 8: only sets override
-			registerSpecial("override", i, featureName, iScore);
-			if (AddRemove) {
-				aDescriptions.push(oScoreNow.name + " is " + iScore);
-			}
-			break;
-
-		  default: // type 1, 2, and 7. type 1: score and no maximum (not magic item).
-		  // type 2: maximum applicable separately (legacy, not magic item).
-		  // type 7: set only maximum.
-
-			// iScores apply to column
-			if (iScore) {
-				applyBonusToColumn(oCol, i, iScore);
-				// Create iScores description for the tooltip and dialog if adding
 				if (AddRemove) {
-					aDescriptions.push((iScore >= 0 ? "+" : "") + iScore + " " + oScoreNow.name);
-				}
-			}
-
-			// iMax apply to column
-			if (iMax) {
-				registerSpecial("maximum", i, featureName, iMax);
-				if (AddRemove) {
+					CurrentStats.ongoingItems[i][featureName] = {
+						name: featureName,
+						type: sType,
+						bonus: iScore,
+						maximum: iMax,
+						maximumIsMod: isModMax,
+					}
+					// Create and add description for the tooltip and dialog
+					var description = "ongoing " + (iScore >= 0 ? "+" : "") + iScore + " " + oScoreNow.name;
 					if (isModMax) {
-						aDescriptions.push(oScoreNow.name + " maximum adds " + isModMax +
-							" (" + oScoreNow.maximum + isModMax + "=" + iMax + ")");
+						description += " to its maximum " + isModMax;
 					} else {
-						aDescriptions.push(oScoreNow.name + " maximum is " + iMax);
+						description += " to a maximum of " + iMax;
+					}
+					aDescriptions.push(description);
+				} else {
+					delete CurrentStats.ongoingItems[i][featureName];
+				}
+				break;
+
+			case "overrides": // type 8: only sets override
+				registerSpecial("override", i, featureName, iScore);
+				if (AddRemove) {
+					aDescriptions.push(oScoreNow.name + " is " + iScore);
+				}
+				break;
+
+			default: // type 1, 2, and 7. type 1: score and no maximum (not magic item).
+				// type 2: maximum applicable separately (legacy, not magic item).
+				// type 7: set only maximum.
+
+				// iScores apply to column
+				if (iScore) {
+					applyBonusToColumn(oCol, i, iScore);
+					// Create iScores description for the tooltip and dialog if adding
+					if (AddRemove) {
+						aDescriptions.push((iScore >= 0 ? "+" : "") + iScore + " " + oScoreNow.name);
 					}
 				}
-			}
+
+				// iMax apply to column
+				if (iMax) {
+					registerSpecial("maximum", i, featureName, iMax);
+					if (AddRemove) {
+						if (isModMax) {
+							aDescriptions.push(oScoreNow.name + " maximum adds " + isModMax +
+							" (" + oScoreNow.maximum + isModMax + "=" + iMax + ")");
+						} else {
+							aDescriptions.push(oScoreNow.name + " maximum is " + iMax);
+						}
+					}
+				}
 		} // end of switch
 	} // end of loop
 
@@ -301,7 +301,7 @@ function getFeatureNameIterations(baseName, inObj, isStackable) {
  * @param {number[]|string[]} aMaximums array with 6 or 7 numbers or modifier strings: maximum that the corresponding aScores is limited to
  * @param {boolean} isStackable if the item can be applied multiple times on top of itself
  * @param {boolean} bCancelToRemove for the function `recurringItemApplyLegacy`
- * @returns 
+ * @returns
  */
 function scoresMaxLimitedItemAskUser(AddRemove, sItemName, aScores, aMaximums, isStackable, bCancelToRemove) {
 	var oCompiled = {
@@ -332,13 +332,13 @@ function scoresMaxLimitedItemAskUser(AddRemove, sItemName, aScores, aMaximums, i
 		if (benefit) oCompiled.benefitsNew.push(benefit)
 		// Get previous additions of this
 		var oKeys = getFeatureNameIterations(sItemName, CurrentStats.refMaxLimited[i], isStackable);
-		if (oKeys.has.length === 0) continue; // No previous editions, so nothing to do 
+		if (oKeys.has.length === 0) continue; // No previous editions, so nothing to do
 		// Update the number of iterations that have already gone before
 		if (oKeys.has.length >= oCompiled.hasAmount) oCompiled.hasAmount = oKeys.has.length;
 		// If there can't be multiple of this and we are adding a second one, stop this function
 		if (AddRemove && !isStackable && oCompiled.hasAmount > 0) return false;
 		// Total the bonus to this stat
-		var oTotals = oKeys.has.reduce(function(total, obj) {
+		var oTotals = oKeys.has.reduce(function (total, obj) {
 			return {
 				bonus: total.bonus + obj.bonus,
 				maximum: Math.max(total.maximum, obj.maximum),
@@ -397,7 +397,7 @@ function scoresMaxLimitedItemAskUser(AddRemove, sItemName, aScores, aMaximums, i
 		cMsg: aMessage.join("\n\n"),
 	});
 	if (iResponse == 4) { // Yes
-		return AddRemove; 
+		return AddRemove;
 	} else if (iResponse == 3) { // No
 		return !AddRemove;
 	} else if (iResponse == 2) { // Cancel (legacy option)
@@ -455,7 +455,7 @@ function initiateCurrentStats(forceIt) {
 			name: "ASIs from Classes",
 			scores: [0,0,0,0,0,0,0],
 		}, {
-			type: "items", 
+			type: "items",
 			name: "Magic Items",
 			scores: [0,0,0,0,0,0,0],
 		}, {
@@ -671,7 +671,7 @@ function AbilityScores_Button(onlySetTooltip) {
 	}
 
 	// a function to create the dialog from the global CurrentStats variable
-	var openStatsDialog = function() {
+	var openStatsDialog = function () {
 		// Create the columns
 		var theColumns = [];
 
@@ -1211,132 +1211,132 @@ function AbilityScores_Button(onlySetTooltip) {
 								alignment: "align_center",
 							}],
 						}]).concat(theColumns) // the columns created above
-						.concat([{
-							type: "view", // the totals
-							elements: [{
-								type: "static_text",
-								item_id: "toNm",
-								font: "dialog",
-								bold: true,
-								char_width: 4,
-								height: 32,
-								wrap_name: true,
-								alignment: "align_center",
-								name: "New Total",
-							}, {
-								type: "static_text",
-								item_id: "toSt",
-								name: "0",
-								char_width: 3,
-								height: 25,
-								alignment: "align_center",
-								font: "dialog",
-								bold: true,
-							}, {
-								type: "static_text",
-								item_id: "toDx",
-								name: "0",
-								char_width: 3,
-								height: 25,
-								alignment: "align_center",
-								font: "dialog",
-								bold: true,
-							}, {
-								type: "static_text",
-								item_id: "toCn",
-								name: "0",
-								char_width: 3,
-								height: 25,
-								alignment: "align_center",
-								font: "dialog",
-								bold: true,
-							}, {
-								type: "static_text",
-								item_id: "toIn",
-								name: "0",
-								char_width: 3,
-								height: 25,
-								alignment: "align_center",
-								font: "dialog",
-								bold: true,
-							}, {
-								type: "static_text",
-								item_id: "toWs",
-								name: "0",
-								char_width: 3,
-								height: 25,
-								alignment: "align_center",
-								font: "dialog",
-								bold: true,
-							}, {
-								type: "static_text",
-								item_id: "toCh",
-								name: "0",
-								char_width: 3,
-								height: 25,
-								alignment: "align_center",
-								font: "dialog",
-								bold: true,
-							}, {
-								type: "static_text",
-								item_id: "toHS",
-								name: "0",
-								char_width: 3,
-								height: 25,
-								alignment: "align_center",
-								font: "dialog",
-								bold: true,
-							}],
-						}]).concat(theMaxCol) // the maximum column created above
-						.concat([{
-							type: "view", // ability score names
-							elements: [{
-								type: "static_text",
-								item_id: "abNm",
-								font: "dialog",
-								bold: true,
-								char_width: 4,
-								height: 32,
-								wrap_name: true,
-								aligabent: "align_left",
-								name: "Ability Abbr.",
-							}, {
-								type: "static_text",
-								item_id: "abSt",
-								height: 25,
-								name: "Str",
-							}, {
-								type: "static_text",
-								item_id: "abDx",
-								height: 25,
-								name: "Dex",
-							}, {
-								type: "static_text",
-								item_id: "abCn",
-								height: 25,
-								name: "Con",
-							}, {
-								type: "static_text",
-								item_id: "abIn",
-								height: 25,
-								name: "Int",
-							}, {
-								type: "static_text",
-								item_id: "abWs",
-								height: 25,
-								name: "Wis",
-							}, {
-								type: "static_text",
-								item_id: "abCh",
-								height: 25,
-								name: "Cha",
-							}, {
-								type: "static_text",
-								item_id: "abHS",
-								height: 25,
-								name: "HoS",
-							}],
-						}]),
+							.concat([{
+								type: "view", // the totals
+								elements: [{
+									type: "static_text",
+									item_id: "toNm",
+									font: "dialog",
+									bold: true,
+									char_width: 4,
+									height: 32,
+									wrap_name: true,
+									alignment: "align_center",
+									name: "New Total",
+								}, {
+									type: "static_text",
+									item_id: "toSt",
+									name: "0",
+									char_width: 3,
+									height: 25,
+									alignment: "align_center",
+									font: "dialog",
+									bold: true,
+								}, {
+									type: "static_text",
+									item_id: "toDx",
+									name: "0",
+									char_width: 3,
+									height: 25,
+									alignment: "align_center",
+									font: "dialog",
+									bold: true,
+								}, {
+									type: "static_text",
+									item_id: "toCn",
+									name: "0",
+									char_width: 3,
+									height: 25,
+									alignment: "align_center",
+									font: "dialog",
+									bold: true,
+								}, {
+									type: "static_text",
+									item_id: "toIn",
+									name: "0",
+									char_width: 3,
+									height: 25,
+									alignment: "align_center",
+									font: "dialog",
+									bold: true,
+								}, {
+									type: "static_text",
+									item_id: "toWs",
+									name: "0",
+									char_width: 3,
+									height: 25,
+									alignment: "align_center",
+									font: "dialog",
+									bold: true,
+								}, {
+									type: "static_text",
+									item_id: "toCh",
+									name: "0",
+									char_width: 3,
+									height: 25,
+									alignment: "align_center",
+									font: "dialog",
+									bold: true,
+								}, {
+									type: "static_text",
+									item_id: "toHS",
+									name: "0",
+									char_width: 3,
+									height: 25,
+									alignment: "align_center",
+									font: "dialog",
+									bold: true,
+								}],
+							}]).concat(theMaxCol) // the maximum column created above
+							.concat([{
+								type: "view", // ability score names
+								elements: [{
+									type: "static_text",
+									item_id: "abNm",
+									font: "dialog",
+									bold: true,
+									char_width: 4,
+									height: 32,
+									wrap_name: true,
+									aligabent: "align_left",
+									name: "Ability Abbr.",
+								}, {
+									type: "static_text",
+									item_id: "abSt",
+									height: 25,
+									name: "Str",
+								}, {
+									type: "static_text",
+									item_id: "abDx",
+									height: 25,
+									name: "Dex",
+								}, {
+									type: "static_text",
+									item_id: "abCn",
+									height: 25,
+									name: "Con",
+								}, {
+									type: "static_text",
+									item_id: "abIn",
+									height: 25,
+									name: "Int",
+								}, {
+									type: "static_text",
+									item_id: "abWs",
+									height: 25,
+									name: "Wis",
+								}, {
+									type: "static_text",
+									item_id: "abCh",
+									height: 25,
+									name: "Cha",
+								}, {
+									type: "static_text",
+									item_id: "abHS",
+									height: 25,
+									name: "HoS",
+								}],
+							}]),
 					}, {
 						type: "view",
 						align_children: "align_distribute",
@@ -1393,7 +1393,7 @@ function AbilityScores_Button(onlySetTooltip) {
 		// Add the functions to the dialog variables
 		var addFldFunction = function (i, fldID) {
 			var a = fldID;
-			AbilityScores_Dialog[a] = function(dialog) { this.updateVals(dialog, a, a.indexOf("00") === 0); };
+			AbilityScores_Dialog[a] = function (dialog) { this.updateVals(dialog, a, a.indexOf("00") === 0); };
 		}
 		for (var i = 0; i < CurrentStats.cols.length; i++) {
 			var theStat = CurrentStats.cols[i];
@@ -1422,13 +1422,13 @@ function AbilityScores_Button(onlySetTooltip) {
 
 /** Get the name, index, abbreviations, value and modifier for an ability
  * @param {number|string} ability the index, name, or abbreviation of an ability
- * @returns 
+ * @returns {object}
  */
 function getAbilityScore(ability) {
 	var asab2 = ["St", "Dx", "Cn", "In", "Ws", "Ch", "HS"];
 	var asab3 = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
 	var idx = !isNaN(ability) && asab2[ability] ? ability :
-			ability.length === 2 && asab2.indexOf(ability) !== -1 ? asab2.indexOf(ability) :
+		ability.length === 2 && asab2.indexOf(ability) !== -1 ? asab2.indexOf(ability) :
 			asab3.indexOf(ability.substring(0, 3)) !== -1 ? asab3.indexOf(ability.substring(0, 3)) : false;
 	if (idx === false) return false;
 

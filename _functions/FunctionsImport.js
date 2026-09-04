@@ -115,7 +115,7 @@ function AddFolderJavaScript(justConsole) {
 		readonly: true,
 	};
 	var AddJS_dialog = {
-		initialize: function(dialog) {
+		initialize: function (dialog) {
 			if (isWindows) {
 				var toLoad = {
 					loc1: locWin,
@@ -128,10 +128,10 @@ function AddFolderJavaScript(justConsole) {
 			}
 			dialog.load(toLoad);
 		},
-		bADD: function(dialog) {
+		bADD: function (dialog) {
 			tDoc.exportDataObject({ cName: "MPMB-IF Remove '.txt' from the end.js.txt", nLaunch: 0 });
 		},
-		bCON: function(dialog) {
+		bCON: function (dialog) {
 			dialog.end("cons");
 		},
 		description: {
@@ -276,7 +276,7 @@ function DirectImport_Dialogue() {
 		fileLoc: "",
 		relPath: buggedVer,
 		importIcons: false,
-		initialize: function(dialog) {
+		initialize: function (dialog) {
 			var isReader = app.viewerType === "Reader";
 			dialog.load({
 				"img1": allIcons.import,
@@ -292,7 +292,7 @@ function DirectImport_Dialogue() {
 			});
 			dialog.setForeColorRed("txt1");
 		},
-		bFND: function(dialog) {
+		bFND: function (dialog) {
 			tDoc.getField("SelectFile").browseForFileToSubmit();
 			this.fileLoc = What("SelectFile");
 			dialog.load({
@@ -300,7 +300,7 @@ function DirectImport_Dialogue() {
 				"fRel": false,
 			});
 		},
-		commit: function(dialog) {
+		commit: function (dialog) {
 			var oResult = dialog.store();
 			this.fileLoc = oResult["fLoc"];
 			this.relPath = oResult["fRel"];
@@ -485,1206 +485,1206 @@ function DirectImport(consoleTrigger) {
 	}
 
 	//if opening the doc failed, or it is not one of MPMB's Character Record Sheets (according)
-  if (closeAlert) {
-	app.alert({
-		cTitle: closeAlert[0],
-		cMsg: closeAlert[1],
-	});
-  } else if (global.docFrom && global.docTo) { //we are good to go and import stuff!
-	try {
+	if (closeAlert) {
+		app.alert({
+			cTitle: closeAlert[0],
+			cMsg: closeAlert[1],
+		});
+	} else if (global.docFrom && global.docTo) { //we are good to go and import stuff!
+		try {
 		// Update the progress bar and stop the calculations
-		thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
-		thermoM(0.25);
-		calcStop(true);
+			thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
+			thermoM(0.25);
+			calcStop(true);
 
-		// First we need to reset the prototypes to the current sheet because Acrobat will use the ones from the latest sheet that was opened
-		global.docTo.setPrototypes();
-		var FromVersionSem = getSemVers(global.docFrom.info.SheetVersion, global.docFrom.info.SheetVersionType, global.docFrom.info.SheetVersionBuild);
-		var FromVersion = semVersToNmbr(FromVersionSem);
-		var ToVersion = global.docTo.sheetVersion;
-		var fromBefore13 = FromVersion < semVersToNmbr("13.0.0-beta14");
-		var fromBefore13_1_5 = FromVersion < semVersToNmbr("13.1.5");
-		var fromBefore13_2 = FromVersion < semVersToNmbr("13.2.0");
-		var fromBefore14 = FromVersion < semVersToNmbr(14);
-		var isEditionSwitch = global.docFrom.use2024Rules !== global.docTo.use2024Rules;
-		if (FromVersion > ToVersion || (FromVersion >= semVersToNmbr("13.0.0-beta1") && fromBefore13)) {
+			// First we need to reset the prototypes to the current sheet because Acrobat will use the ones from the latest sheet that was opened
+			global.docTo.setPrototypes();
+			var FromVersionSem = getSemVers(global.docFrom.info.SheetVersion, global.docFrom.info.SheetVersionType, global.docFrom.info.SheetVersionBuild);
+			var FromVersion = semVersToNmbr(FromVersionSem);
+			var ToVersion = global.docTo.sheetVersion;
+			var fromBefore13 = FromVersion < semVersToNmbr("13.0.0-beta14");
+			var fromBefore13_1_5 = FromVersion < semVersToNmbr("13.1.5");
+			var fromBefore13_2 = FromVersion < semVersToNmbr("13.2.0");
+			var fromBefore14 = FromVersion < semVersToNmbr(14);
+			var isEditionSwitch = global.docFrom.use2024Rules !== global.docTo.use2024Rules;
+			if (FromVersion > ToVersion || (FromVersion >= semVersToNmbr("13.0.0-beta1") && fromBefore13)) {
 			// If importing from a newer version or from a v13.0.0-beta1-beta13
-			var versTypeTxt = FromVersion > ToVersion ? ["this sheet is", "newer", "than the one you are importing"] : ["the other sheet is an", "unsupported beta", "that can't be imported to any other MPMB's Character Record Sheet"];
-			app.alert({
-				cTitle: "Unable to import from " + versTypeTxt[1] + " version",
-				cMsg: "The MPMB's Character Record Sheet you are trying to import from is version '" + FromVersionSem + "', while the sheet you are trying to import to is version '" + global.docTo.semVers + "'. This operation is not allowed, because " + versTypeTxt.join(" ") + ".\n\nThe importing process will now be cancelled.",
-			});
-			closeAlert = true;
-			throw "user stop";
-		} else if (FromVersion < semVersToNmbr(12.999)) { // give a warning about importing from a version that had all materials included automatically
-			var askUserIsSure = {
-				cTitle: "Continue with import?",
-				cMsg: "You are about to import from a sheet with version " + FromVersionSem + ". Unlike the sheet you are importing to (which is v" + global.docTo.semVers + "), v" + FromVersionSem + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material by default.\n\nIf the same resources weren't added to the current sheet as are used in the old sheet, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet! See the \"Add Extra Materials\" bookmark for more information on what is already added and how to add the required resources." + (patreonVersion ? "\n\nIf you got this sheet from MPMB's Patreon, you are probably fine to proceed!" : "") + "\n\nAre you sure you want to continue importing?",
-				nIcon: 2, //Status
-				nType: 2, //Yes, No
-			};
-			if (app.alert(askUserIsSure) !== 4) {
+				var versTypeTxt = FromVersion > ToVersion ? ["this sheet is", "newer", "than the one you are importing"] : ["the other sheet is an", "unsupported beta", "that can't be imported to any other MPMB's Character Record Sheet"];
+				app.alert({
+					cTitle: "Unable to import from " + versTypeTxt[1] + " version",
+					cMsg: "The MPMB's Character Record Sheet you are trying to import from is version '" + FromVersionSem + "', while the sheet you are trying to import to is version '" + global.docTo.semVers + "'. This operation is not allowed, because " + versTypeTxt.join(" ") + ".\n\nThe importing process will now be cancelled.",
+				});
 				closeAlert = true;
 				throw "user stop";
+			} else if (FromVersion < semVersToNmbr(12.999)) { // give a warning about importing from a version that had all materials included automatically
+				var askUserIsSure = {
+					cTitle: "Continue with import?",
+					cMsg: "You are about to import from a sheet with version " + FromVersionSem + ". Unlike the sheet you are importing to (which is v" + global.docTo.semVers + "), v" + FromVersionSem + " of the sheet came with all published source materials included, such as the Player's Handbook, Dungeon Master's Guide, etc. From sheet v12.999 onwards, it only includes the SRD material by default.\n\nIf the same resources weren't added to the current sheet as are used in the old sheet, you will see that some things don't fill out automatically, such as subclass features, feats, racial traits, and background features.\n\nPlease make sure that you have the necessary resources available in the current sheet! See the \"Add Extra Materials\" bookmark for more information on what is already added and how to add the required resources." + (patreonVersion ? "\n\nIf you got this sheet from MPMB's Patreon, you are probably fine to proceed!" : "") + "\n\nAre you sure you want to continue importing?",
+					nIcon: 2, //Status
+					nType: 2, //Yes, No
+				};
+				if (app.alert(askUserIsSure) !== 4) {
+					closeAlert = true;
+					throw "user stop";
+				};
 			};
-		};
 
-		IsNotImport = "no progress bar";
-		ignorePrereqs = true;
-		ResetAll(true, true); //first reset the current sheet to its initial state, but without the extra templates generated
-		Value("Opening Remember", "Yes");
-		IsNotImport = false;
+			IsNotImport = "no progress bar";
+			ignorePrereqs = true;
+			ResetAll(true, true); //first reset the current sheet to its initial state, but without the extra templates generated
+			Value("Opening Remember", "Yes");
+			IsNotImport = false;
 
-		// Make sure no pop-up comes up with welcome text
-		if (global.docFrom.getField("Opening Remember")) global.docFrom.Value("Opening Remember", "Yes");
+			// Make sure no pop-up comes up with welcome text
+			if (global.docFrom.getField("Opening Remember")) global.docFrom.Value("Opening Remember", "Yes");
 
-		var fromSheetTypePF = global.docFrom.info.SheetType ? /printer friendly/i.test(global.docFrom.info.SheetType) : false;
-		var fromSheetTypeLR = global.docFrom.info.SheetType ? /letter/i.test(global.docFrom.info.SheetType) : (global.docFrom.info.Title ? /letter/i.test(global.docFrom.info.Title) : false);
-		var bothPF = typePF && fromSheetTypePF;
-		var bothCF = !typePF && !fromSheetTypePF;
-		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
-		var aTextExtra = []; // anything in this array is added to the warning dialog after the import, joined with a line break
+			var fromSheetTypePF = global.docFrom.info.SheetType ? /printer friendly/i.test(global.docFrom.info.SheetType) : false;
+			var fromSheetTypeLR = global.docFrom.info.SheetType ? /letter/i.test(global.docFrom.info.SheetType) : (global.docFrom.info.Title ? /letter/i.test(global.docFrom.info.Title) : false);
+			var bothPF = typePF && fromSheetTypePF;
+			var bothCF = !typePF && !fromSheetTypePF;
+			var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
+			var aTextExtra = []; // anything in this array is added to the warning dialog after the import, joined with a line break
 
-		// Make sure to remove the flattened state from the sheet to import from
-		if (fromBefore13) {
-			if (global.docFrom.getField("MakeMobileReady Remember") && global.docFrom.getField("MakeMobileReady Remember").value !== "") global.docFrom.MakeMobileReady(false);
-		} else {
-			global.docFrom.MakeMobileReady(false);
-		}
+			// Make sure to remove the flattened state from the sheet to import from
+			if (fromBefore13) {
+				if (global.docFrom.getField("MakeMobileReady Remember") && global.docFrom.getField("MakeMobileReady Remember").value !== "") global.docFrom.MakeMobileReady(false);
+			} else {
+				global.docFrom.MakeMobileReady(false);
+			}
 
-		//copy any custom script and run it
-		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && global.docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
-		var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
-		var newFilesScriptFrom = false;
+			//copy any custom script and run it
+			var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && global.docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
+			var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
+			var newFilesScriptFrom = false;
 
-		if (filesScriptFrom) {
+			if (filesScriptFrom) {
 			// add the old to the new, preferring the new if both have the same entries
-			var filesScriptToNms = [], equalScrNmRx = /\d+\/\d+\/\d+ - |[._\- ]min(ified)?\b/ig;
-			for (var toScr in filesScriptTo) filesScriptToNms.push(toScr.replace(equalScrNmRx, ""));
-			var hasAllPubUA = filesScriptToNms.indexOf("all_WotC_pub+UA.js") !== -1, rxAllPubUA = /all_WotC_(published|unearthed_arcana)/i
-			for (var fromScr in filesScriptFrom) {
-				if (filesScriptToNms.indexOf(fromScr.replace(equalScrNmRx, "")) !== -1 || (hasAllPubUA && rxAllPubUA.test(fromScr))) continue;
-				filesScriptTo[fromScr] = filesScriptFrom[fromScr];
-				newFilesScriptFrom = true;
-			};
-			if (newFilesScriptFrom) {
-				CurrentScriptFiles = filesScriptTo;
-				SetStringifieds("scriptfiles");
-			}
-		}
-		if (ImportField("User Script") || newFilesScriptFrom) {
-			InitiateLists();
-			RunUserScript(true);
-			setStuffAfterUserScripts();
-		};
-		// Set the excl./incl. sources
-		if (ImportField("CurrentSources.Stringified")) {
-			CurrentSources = eval(global.docTo.getField("CurrentSources.Stringified").value);
-			if (!CurrentSources.globalKnown) CurrentSources.globalKnown = []; // Doesn't exist in old versions
-			cleanExclSources();
-			var garbage = resourceExclusionSetting([]);
-			SetStringifieds("sources");
-			UpdateDropdown("resources");
-		};
-		//now update the dropdowns and spell menus with these new settings (without unicode if that was set)
-		ImportField("UseUnicode");
-		setUnicodeUse(What("UseUnicode") != "", true); // also sets the dropdowns
-		setSpellVariables(true);
-
-		//reset conditions
-		if (!fromSheetTypePF && global.docFrom.ConditionSet) {
-			// sheets before v14.0.9-beta
-			if (FromVersion < semVersToNmbr("14.0.9-beta")) {
-				var conResets = [];
-				var doCondi = false;
-				for (var c = 1; c <= 14; c++) {
-					if (c <= 6) {
-						conResets.push("Extra.Exhaustion Level " + c);
-						if (!doCondi && global.docFrom.getField("Extra.Exhaustion Level " + c).value !== global.docFrom.getField("Extra.Exhaustion Level " + c).defaultValue) doCondi = true;
-					}
-					conResets.push("Extra.Condition " + c);
-					if (!doCondi && global.docFrom.getField("Extra.Condition " + c).value !== global.docFrom.getField("Extra.Condition " + c).defaultValue) doCondi = true;
+				var filesScriptToNms = [], equalScrNmRx = /\d+\/\d+\/\d+ - |[._\- ]min(ified)?\b/ig;
+				for (var toScr in filesScriptTo) filesScriptToNms.push(toScr.replace(equalScrNmRx, ""));
+				var hasAllPubUA = filesScriptToNms.indexOf("all_WotC_pub+UA.js") !== -1, rxAllPubUA = /all_WotC_(published|unearthed_arcana)/i
+				for (var fromScr in filesScriptFrom) {
+					if (filesScriptToNms.indexOf(fromScr.replace(equalScrNmRx, "")) !== -1 || (hasAllPubUA && rxAllPubUA.test(fromScr))) continue;
+					filesScriptTo[fromScr] = filesScriptFrom[fromScr];
+					newFilesScriptFrom = true;
 				};
-				if (doCondi) {
-					global.docFrom.resetForm(conResets);
-					global.docFrom.ConditionSet();
+				if (newFilesScriptFrom) {
+					CurrentScriptFiles = filesScriptTo;
+					SetStringifieds("scriptfiles");
 				}
-			} else {
-				global.docFrom.ConditionSet(true, true);
 			}
-		}
+			if (ImportField("User Script") || newFilesScriptFrom) {
+				InitiateLists();
+				RunUserScript(true);
+				setStuffAfterUserScripts();
+			};
+			// Set the excl./incl. sources
+			if (ImportField("CurrentSources.Stringified")) {
+				CurrentSources = eval(global.docTo.getField("CurrentSources.Stringified").value);
+				if (!CurrentSources.globalKnown) CurrentSources.globalKnown = []; // Doesn't exist in old versions
+				cleanExclSources();
+				var garbage = resourceExclusionSetting([]);
+				SetStringifieds("sources");
+				UpdateDropdown("resources");
+			};
+			//now update the dropdowns and spell menus with these new settings (without unicode if that was set)
+			ImportField("UseUnicode");
+			setUnicodeUse(What("UseUnicode") != "", true); // also sets the dropdowns
+			setSpellVariables(true);
 
-		//set the colours
-		if (bothCF) {
-			if (ImportField("Color.Theme")) ApplyColorScheme();
-			if (ImportField("Color.DragonHeads")) ApplyDragonColorScheme();
-			if (ImportField("Color.HPDragon")) ApplyHPDragonColorScheme();
-			if (ImportField("Color.DC")) ApplyDCColorScheme();
-		};
-
-		//set the highlighting
-		if (ImportField("Highlighting")) {
-			global.docTo.getField("Highlighting").fillColor = global.docFrom.getField("Highlighting").fillColor;
-			app.runtimeHighlight = eval_ish(What("Highlighting"));
-			app.runtimeHighlightColor = global.docTo.getField("Highlighting").fillColor;
-		};
-
-		//set some remember fields that might impact new page generation
-		if (ImportField("Unit System") && typePF) Value("Display.Weighttxt.LbKg", What("Unit System") === "imperial" ? "LB" : "KG");
-		ImportField("Decimal Separator"); ImportField("DateFormat_Remember");
-		ImportField("BlueText.Players Make All Rolls", { notSubmitName: true, notTooltip: true });
-
-		//set the text options
-		if (fromBefore13) {
-			if (global.docFrom.getField("WhiteoutRemember")) ToggleWhiteout(eval_ish(global.docFrom.What("WhiteoutRemember")));
-			var FontSize_Remember_field = global.docFrom.getField("FontSize Remember") ? global.docFrom.getField("FontSize Remember").value : undefined;
-			if ((bothPF || bothCF || FontSize_Remember_field === 0) && FontSize_Remember_field != undefined) ToggleTextSize(FontSize_Remember_field);
-			LayerVisibilityOptions(false, global.docFrom.getField("Extra.Layers Remember") ? global.docFrom.getField("Extra.Layers Remember").value : undefined);
-			ToggleBlueText(global.docFrom.getField("Extra.Layers Remember") ? global.docFrom.getField("Extra.Layers Remember").value === "Yes" : false);
-		} else {
-			ToggleWhiteout(!!global.docFrom.CurrentVars.whiteout);
-			ToggleTextSize(global.docFrom.CurrentVars.fontsize);
-			LayerVisibilityOptions(false, global.docFrom.CurrentVars.vislayers);
-			ToggleBlueText(!!global.docFrom.CurrentVars.bluetxt);
-		}
-		SetStringifieds("vars");
-
-		if (bothPF && ImportField("BoxesLinesRemember")) ShowCalcBoxesLines(What("BoxesLinesRemember"));
-		if ((bothPF || bothCF) && global.docFrom.getField("Player Name").textFont !== global.docTo.getField("Player Name").textFont) ChangeFont(global.docFrom.getField("Player Name").textFont);
-
-		//set the league remember toggle
-		if (ImportField("League Remember")) {
-			if (FromVersion < semVersToNmbr(12.99)) {
-				if (What("League Remember") === "On") {
-					ToggleAdventureLeague({
-						dci: true,
-						factionrank: true,
-						renown: true,
-						actions: true,
-						asterisks: true,
-					});
+			//reset conditions
+			if (!fromSheetTypePF && global.docFrom.ConditionSet) {
+			// sheets before v14.0.9-beta
+				if (FromVersion < semVersToNmbr("14.0.9-beta")) {
+					var conResets = [];
+					var doCondi = false;
+					for (var c = 1; c <= 14; c++) {
+						if (c <= 6) {
+							conResets.push("Extra.Exhaustion Level " + c);
+							if (!doCondi && global.docFrom.getField("Extra.Exhaustion Level " + c).value !== global.docFrom.getField("Extra.Exhaustion Level " + c).defaultValue) doCondi = true;
+						}
+						conResets.push("Extra.Condition " + c);
+						if (!doCondi && global.docFrom.getField("Extra.Condition " + c).value !== global.docFrom.getField("Extra.Condition " + c).defaultValue) doCondi = true;
+					};
+					if (doCondi) {
+						global.docFrom.resetForm(conResets);
+						global.docFrom.ConditionSet();
+					}
 				} else {
-					global.docTo.resetForm(["League Remember"]);
-				};
+					global.docFrom.ConditionSet(true, true);
+				}
+			}
+
+			//set the colours
+			if (bothCF) {
+				if (ImportField("Color.Theme")) ApplyColorScheme();
+				if (ImportField("Color.DragonHeads")) ApplyDragonColorScheme();
+				if (ImportField("Color.HPDragon")) ApplyHPDragonColorScheme();
+				if (ImportField("Color.DC")) ApplyDCColorScheme();
+			};
+
+			//set the highlighting
+			if (ImportField("Highlighting")) {
+				global.docTo.getField("Highlighting").fillColor = global.docFrom.getField("Highlighting").fillColor;
+				app.runtimeHighlight = eval_ish(What("Highlighting"));
+				app.runtimeHighlightColor = global.docTo.getField("Highlighting").fillColor;
+			};
+
+			//set some remember fields that might impact new page generation
+			if (ImportField("Unit System") && typePF) Value("Display.Weighttxt.LbKg", What("Unit System") === "imperial" ? "LB" : "KG");
+			ImportField("Decimal Separator"); ImportField("DateFormat_Remember");
+			ImportField("BlueText.Players Make All Rolls", { notSubmitName: true, notTooltip: true });
+
+			//set the text options
+			if (fromBefore13) {
+				if (global.docFrom.getField("WhiteoutRemember")) ToggleWhiteout(eval_ish(global.docFrom.What("WhiteoutRemember")));
+				var FontSize_Remember_field = global.docFrom.getField("FontSize Remember") ? global.docFrom.getField("FontSize Remember").value : undefined;
+				if ((bothPF || bothCF || FontSize_Remember_field === 0) && FontSize_Remember_field != undefined) ToggleTextSize(FontSize_Remember_field);
+				LayerVisibilityOptions(false, global.docFrom.getField("Extra.Layers Remember") ? global.docFrom.getField("Extra.Layers Remember").value : undefined);
+				ToggleBlueText(global.docFrom.getField("Extra.Layers Remember") ? global.docFrom.getField("Extra.Layers Remember").value === "Yes" : false);
 			} else {
-				try {
-					var theAdvL = eval(What("League Remember"));
-					ToggleAdventureLeague({
-						dci: theAdvL.dci,
-						factionrank: theAdvL.factionrank,
-						renown: theAdvL.renown,
-						actions: theAdvL.actions,
-						asterisks: theAdvL.asterisks,
-					});
-				} catch (e) {
-					global.docTo.resetForm(["League Remember"]);
+				ToggleWhiteout(!!global.docFrom.CurrentVars.whiteout);
+				ToggleTextSize(global.docFrom.CurrentVars.fontsize);
+				LayerVisibilityOptions(false, global.docFrom.CurrentVars.vislayers);
+				ToggleBlueText(!!global.docFrom.CurrentVars.bluetxt);
+			}
+			SetStringifieds("vars");
+
+			if (bothPF && ImportField("BoxesLinesRemember")) ShowCalcBoxesLines(What("BoxesLinesRemember"));
+			if ((bothPF || bothCF) && global.docFrom.getField("Player Name").textFont !== global.docTo.getField("Player Name").textFont) ChangeFont(global.docFrom.getField("Player Name").textFont);
+
+			//set the league remember toggle
+			if (ImportField("League Remember")) {
+				if (FromVersion < semVersToNmbr(12.99)) {
+					if (What("League Remember") === "On") {
+						ToggleAdventureLeague({
+							dci: true,
+							factionrank: true,
+							renown: true,
+							actions: true,
+							asterisks: true,
+						});
+					} else {
+						global.docTo.resetForm(["League Remember"]);
+					};
+				} else {
+					try {
+						var theAdvL = eval(What("League Remember"));
+						ToggleAdventureLeague({
+							dci: theAdvL.dci,
+							factionrank: theAdvL.factionrank,
+							renown: theAdvL.renown,
+							actions: theAdvL.actions,
+							asterisks: theAdvL.asterisks,
+						});
+					} catch (e) {
+						global.docTo.resetForm(["League Remember"]);
+					};
 				};
 			};
-		};
 
-		//set the D&D logos visiblity
-		if (global.docFrom.getField("Image.DnDLogo.long") && global.docFrom.getField("Image.DnDLogo.long").display !== global.docTo.getField("Image.DnDLogo.long").display) global.docTo.getField("Image.DnDLogo").display = global.docFrom.getField("Image.DnDLogo.long").display;
+			//set the D&D logos visiblity
+			if (global.docFrom.getField("Image.DnDLogo.long") && global.docFrom.getField("Image.DnDLogo.long").display !== global.docTo.getField("Image.DnDLogo.long").display) global.docTo.getField("Image.DnDLogo").display = global.docFrom.getField("Image.DnDLogo.long").display;
 
-		//set the spell slots visiblity
-		if (ImportField("SpellSlotsRemember")) {
-			SetSpellSlotsVisibility();
-			if (What("SpellSlotsRemember") === "[false,false]") {
-				SpellPointsLimFea("Add");
-				Show("Image.SpellPoints");
-				Show("SpellSlots.Checkboxes.SpellPoints");
+			//set the spell slots visiblity
+			if (ImportField("SpellSlotsRemember")) {
+				SetSpellSlotsVisibility();
+				if (What("SpellSlotsRemember") === "[false,false]") {
+					SpellPointsLimFea("Add");
+					Show("Image.SpellPoints");
+					Show("SpellSlots.Checkboxes.SpellPoints");
+				}
 			}
-		}
 
-		//set the order of the skills
-		if (global.docFrom.getField("Text.SkillsNames")) MakeSkillsMenu_SkillsOptions(["go", global.docFrom.Who("Text.SkillsNames")]);
+			//set the order of the skills
+			if (global.docFrom.getField("Text.SkillsNames")) MakeSkillsMenu_SkillsOptions(["go", global.docFrom.Who("Text.SkillsNames")]);
 
-		//set the visibility of Honor/Sanity
-		if (ImportField("HoSRememberState")) ShowHonorSanity();
+			//set the visibility of Honor/Sanity
+			if (ImportField("HoSRememberState")) ShowHonorSanity();
 
-		//set the location columns in the equipment sections
-		if (ImportField("Gear Location Remember")) {
-			var defState = global.docTo.getField("Gear Location Remember").defaultValue.split(",");
-			var newState = What("Gear Location Remember").split(",");
-			if (defState[0] !== newState[0]) HideInvLocationColumn("Adventuring Gear ", newState[0] == true);
-			if (defState[1] !== newState[1]) HideInvLocationColumn("Extra.Gear ", newState[1] == true);
-		}
-		//set the magic item row in the equipment sections
-		if (ImportField("Adventuring Gear Remember")) ShowAttunedMagicalItems();
-		//set the carrying capacity type
-		ImportField("Weight Carrying Capacity", { doVisiblity: true }, "Weight Carrying Capacity.Field"); ImportField("Weight Heavily Encumbered", { doVisiblity: true });
-		//set the weight remember fields
-		if (fromBefore13) {
-			global.docTo.CurrentVars.weight = [];
-			var weightTypes = {
-				cArm: "Weight Remember Armor",
-				cShi: "Weight Remember Shield",
-				cWea: "Weight Remember Weapons",
-				cAmL: "Weight Remember Ammo Left",
-				cAmR: "Weight Remember Ammo Right",
-				cCoi: "Weight Remember Coins",
-				cP2L: "Weight Remember Page2 Left",
-				cP2M: "Weight Remember Page2 Middle",
-				cP2R: "Weight Remember Page2 Right",
-				cP3L: "Weight Remember Page3 Left",
-				cP3R: "Weight Remember Page3 Right",
-				cMaI: "Weight Remember Magic Items",
+			//set the location columns in the equipment sections
+			if (ImportField("Gear Location Remember")) {
+				var defState = global.docTo.getField("Gear Location Remember").defaultValue.split(",");
+				var newState = What("Gear Location Remember").split(",");
+				if (defState[0] !== newState[0]) HideInvLocationColumn("Adventuring Gear ", newState[0] == true);
+				if (defState[1] !== newState[1]) HideInvLocationColumn("Extra.Gear ", newState[1] == true);
 			}
-			for (var weightType in weightTypes) {
-				var aWeightFld = global.docFrom.getField(weightTypes[weightType]);
-				if (aWeightFld && aWeightFld.value !== "No") global.docTo.CurrentVars.weight.push(weightType);
+			//set the magic item row in the equipment sections
+			if (ImportField("Adventuring Gear Remember")) ShowAttunedMagicalItems();
+			//set the carrying capacity type
+			ImportField("Weight Carrying Capacity", { doVisiblity: true }, "Weight Carrying Capacity.Field"); ImportField("Weight Heavily Encumbered", { doVisiblity: true });
+			//set the weight remember fields
+			if (fromBefore13) {
+				global.docTo.CurrentVars.weight = [];
+				var weightTypes = {
+					cArm: "Weight Remember Armor",
+					cShi: "Weight Remember Shield",
+					cWea: "Weight Remember Weapons",
+					cAmL: "Weight Remember Ammo Left",
+					cAmR: "Weight Remember Ammo Right",
+					cCoi: "Weight Remember Coins",
+					cP2L: "Weight Remember Page2 Left",
+					cP2M: "Weight Remember Page2 Middle",
+					cP2R: "Weight Remember Page2 Right",
+					cP3L: "Weight Remember Page3 Left",
+					cP3R: "Weight Remember Page3 Right",
+					cMaI: "Weight Remember Magic Items",
+				}
+				for (var weightType in weightTypes) {
+					var aWeightFld = global.docFrom.getField(weightTypes[weightType]);
+					if (aWeightFld && aWeightFld.value !== "No") global.docTo.CurrentVars.weight.push(weightType);
+				}
+				global.docTo.SetStringifieds("vars");
+			} else {
+				if (global.docFrom.CurrentVars.weight) {
+					global.docTo.CurrentVars.weight = global.docFrom.CurrentVars.weight;
+					global.docTo.SetStringifieds("vars");
+				}
 			}
-			global.docTo.SetStringifieds("vars");
-		} else {
-			if (global.docFrom.CurrentVars.weight) {
-				global.docTo.CurrentVars.weight = global.docFrom.CurrentVars.weight;
+
+			//get the page layout of the sheet and copy it
+			var pagesLayout = {};
+			var onlySpawnsFrom = FromVersion >= semVersToNmbr(12.996);
+			if (global.docFrom.BookMarkList) { //if no bookmarklist exists where we are importing from, don't do anything
+				for (var templ in TemplateDep) {
+					if (templ === "PRsheet" && (!fromSheetTypePF || !typePF)) continue;
+					var onlySpawnsFromT = onlySpawnsFrom || templ.substring(0, 2) === "SS";
+					//see if the template exists in the docFrom
+					var dFfldT = onlySpawnsFrom ? global.docFrom.isTemplVis(templ) : global.docFrom.BookMarkList[templ] ? global.docFrom.getField(global.docFrom.BookMarkList[templ]) : false;
+					if (dFfldT) pagesLayout[templ] = onlySpawnsFrom ? true : dFfldT.page !== -1;
+					var dFfldTE = global.docFrom.getField("Template.extras." + templ); //see if any extra versions have been added
+					if (dFfldTE) {
+						pagesLayout[templ + "Extras"] = dFfldTE.value.split(",").length - (onlySpawnsFromT || !pagesLayout[templ] ? 1 : 0);
+						if (pagesLayout[templ + "Extras"]) {
+							pagesLayout[templ + "ExtraNmFrom"] = dFfldTE.value.split(",").splice(onlySpawnsFromT || !pagesLayout[templ] ? 1 : 0);
+						};
+					};
+				};
+				//now replicate that layout
+				for (var templ in TemplateDep) {
+					if (pagesLayout[templ] !== undefined && global.docTo.getField(BookMarkList[templ])) {
+						var templAte = pagesLayout[templ];
+						var tempExtr = pagesLayout[templ + "Extras"];
+						var templToVis = global.docTo.isTemplVis(templ);
+						if (templToVis && !templAte && !tempExtr) { // remove any visible pages that are not visible in the docFrom
+							DoTemplate(templ, "Remove", false, true);
+						} else if (templAte && !templToVis && TemplatesWithExtras.indexOf(templ) === -1) { //add the non-duplicatable templates
+							DoTemplate(templ);
+						} else if (tempExtr) { // add templates with dependencies
+							if (sameType || (templ !== "SSmore" && (templ !== "SSfront" || !pagesLayout.SSmoreExtras))) {
+								for (var tE = 0; tE < tempExtr; tE++) DoTemplate(templ, "Add");
+							};
+							pagesLayout[templ + "ExtraNmTo"] = What("Template.extras." + templ).split(",").splice(1);
+						};
+					};
+				};
+			};
+
+			//do the fields for the main automations
+			// easy reference for manual caulcations
+			var docFromManual = fromBefore13 ? {} : global.docFrom.CurrentVars.manual;
+
+			//add the weapons (before the rest so weapons added by any new automation are still added)
+			for (var i = 1; i <= FieldNumbers.attacks; i++) {
+				if (ImportField("Attack." + i + ".Weapon Selection", { notTooltip: true })) ImportField("Attack." + i + ".Description", { notTooltip: true });
+			}
+			var weaNrFrom = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.attacks ? global.docFrom.FieldNumbers.attacks : 5;
+			if (weaNrFrom > FieldNumbers.attacks) {
+				for (var i = FieldNumbers.attacks + 1; i <= weaNrFrom; i++) {
+					var weaFldFrom = global.docFrom.getField("Attack." + i + ".Weapon Selection");
+					if (weaFldFrom && weaFldFrom.value) AddWeapon(weaFldFrom.value);
+				}
+			}
+			var weaBTflds = global.docTo.getField("BlueText.Attack").getArray();
+			for (var i = 0; i < weaBTflds.length; i++) {
+				if (weaBTflds[i].name.indexOf("Modifiers Title") === -1) ImportField(weaBTflds[i].name, { notTooltip: true, notSubmitName: true });
+			}
+			//the ammo
+			ImportField("AmmoLeftDisplay.Amount", { notTooltip: true }); ImportField("AmmoLeftDisplay.Name", { notTooltip: true }); ImportField("AmmoLeftDisplay.Weight", { notTooltip: true });
+			ImportField("AmmoRightDisplay.Amount", { notTooltip: true }); ImportField("AmmoRightDisplay.Name", { notTooltip: true }); ImportField("AmmoRightDisplay.Weight", { notTooltip: true });
+
+			//set the more proficiencies overflow field before the automation
+			ImportField("MoreProficiencies");
+
+			//set the feature choices
+			if (ImportField("CurrentFeatureChoices.Stringified")) CurrentFeatureChoices = eval(What("CurrentFeatureChoices.Stringified"));
+
+			//set the level and xp
+			ImportField("Character Level", { notTooltip: true }); ImportField("Total Experience", { notTooltip: true }); ImportField("Add Experience", { notTooltip: true });
+			ProfBonus("Proficiency Bonus"); //make sure the proficiency bonus is updated
+
+			// >> RACE <<
+			if (!fromBefore13 && global.docFrom.CurrentVars.oldRace) {
+				global.docTo.CurrentVars.oldRace = global.docFrom.CurrentVars.oldRace;
+				global.docTo.CurrentVars.oldRaceAmendRemember = global.docFrom.CurrentVars.oldRaceAmendRemember;
 				global.docTo.SetStringifieds("vars");
 			}
-		}
-
-		//get the page layout of the sheet and copy it
-		var pagesLayout = {};
-		var onlySpawnsFrom = FromVersion >= semVersToNmbr(12.996);
-		if (global.docFrom.BookMarkList) { //if no bookmarklist exists where we are importing from, don't do anything
-			for (var templ in TemplateDep) {
-				if (templ === "PRsheet" && (!fromSheetTypePF || !typePF)) continue;
-				var onlySpawnsFromT = onlySpawnsFrom || templ.substring(0, 2) === "SS";
-				//see if the template exists in the docFrom
-				var dFfldT = onlySpawnsFrom ? global.docFrom.isTemplVis(templ) : global.docFrom.BookMarkList[templ] ? global.docFrom.getField(global.docFrom.BookMarkList[templ]) : false;
-				if (dFfldT) pagesLayout[templ] = onlySpawnsFrom ? true : dFfldT.page !== -1;
-				var dFfldTE = global.docFrom.getField("Template.extras." + templ); //see if any extra versions have been added
-				if (dFfldTE) {
-					pagesLayout[templ + "Extras"] = dFfldTE.value.split(",").length - (onlySpawnsFromT || !pagesLayout[templ] ? 1 : 0);
-					if (pagesLayout[templ + "Extras"]) {
-						pagesLayout[templ + "ExtraNmFrom"] = dFfldTE.value.split(",").splice(onlySpawnsFromT || !pagesLayout[templ] ? 1 : 0);
-					};
-				};
-			};
-			//now replicate that layout
-			for (var templ in TemplateDep) {
-				if (pagesLayout[templ] !== undefined && global.docTo.getField(BookMarkList[templ])) {
-					var templAte = pagesLayout[templ];
-					var tempExtr = pagesLayout[templ + "Extras"];
-					var templToVis = global.docTo.isTemplVis(templ);
-					if (templToVis && !templAte && !tempExtr) { // remove any visible pages that are not visible in the docFrom
-						DoTemplate(templ, "Remove", false, true);
-					} else if (templAte && !templToVis && TemplatesWithExtras.indexOf(templ) === -1) { //add the non-duplicatable templates
-						DoTemplate(templ);
-					} else if (tempExtr) { // add templates with dependencies
-						if (sameType || (templ !== "SSmore" && (templ !== "SSfront" || !pagesLayout.SSmoreExtras))) {
-							for (var tE = 0; tE < tempExtr; tE++) DoTemplate(templ, "Add");
-						};
-						pagesLayout[templ + "ExtraNmTo"] = What("Template.extras." + templ).split(",").splice(1);
-					};
-				};
-			};
-		};
-
-	//do the fields for the main automations
-		// easy reference for manual caulcations
-		var docFromManual = fromBefore13 ? {} : global.docFrom.CurrentVars.manual;
-
-		//add the weapons (before the rest so weapons added by any new automation are still added)
-		for (var i = 1; i <= FieldNumbers.attacks; i++) {
-			if (ImportField("Attack." + i + ".Weapon Selection", { notTooltip: true })) ImportField("Attack." + i + ".Description", { notTooltip: true });
-		}
-		var weaNrFrom = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.attacks ? global.docFrom.FieldNumbers.attacks : 5;
-		if (weaNrFrom > FieldNumbers.attacks) {
-			for (var i = FieldNumbers.attacks + 1; i <= weaNrFrom; i++) {
-				var weaFldFrom = global.docFrom.getField("Attack." + i + ".Weapon Selection");
-				if (weaFldFrom && weaFldFrom.value) AddWeapon(weaFldFrom.value);
-			}
-		}
-		var weaBTflds = global.docTo.getField("BlueText.Attack").getArray();
-		for (var i = 0; i < weaBTflds.length; i++) {
-			if (weaBTflds[i].name.indexOf("Modifiers Title") === -1) ImportField(weaBTflds[i].name, { notTooltip: true, notSubmitName: true });
-		}
-		//the ammo
-		ImportField("AmmoLeftDisplay.Amount", { notTooltip: true }); ImportField("AmmoLeftDisplay.Name", { notTooltip: true }); ImportField("AmmoLeftDisplay.Weight", { notTooltip: true });
-		ImportField("AmmoRightDisplay.Amount", { notTooltip: true }); ImportField("AmmoRightDisplay.Name", { notTooltip: true }); ImportField("AmmoRightDisplay.Weight", { notTooltip: true });
-
-		//set the more proficiencies overflow field before the automation
-		ImportField("MoreProficiencies");
-
-		//set the feature choices
-		if (ImportField("CurrentFeatureChoices.Stringified")) CurrentFeatureChoices = eval(What("CurrentFeatureChoices.Stringified"));
-
-		//set the level and xp
-		ImportField("Character Level", { notTooltip: true }); ImportField("Total Experience", { notTooltip: true }); ImportField("Add Experience", { notTooltip: true });
-		ProfBonus("Proficiency Bonus"); //make sure the proficiency bonus is updated
-
-		// >> RACE <<
-		if (!fromBefore13 && global.docFrom.CurrentVars.oldRace) {
-			global.docTo.CurrentVars.oldRace = global.docFrom.CurrentVars.oldRace;
-			global.docTo.CurrentVars.oldRaceAmendRemember = global.docFrom.CurrentVars.oldRaceAmendRemember;
-			global.docTo.SetStringifieds("vars");
-		}
-		if (docFromManual.race) { // if set to manual, use the saved race info
+			if (docFromManual.race) { // if set to manual, use the saved race info
 			// FindRace(docFromManual.race[0], true);
 			// UpdateLevelFeatures("race", docFromManual.race[1]);
-			ApplyRace(docFromManual.race[0], true, docFromManual.race[1]);
-			ImportField("Race Remember");
-			IsSetDropDowns = true; // After this, we import the race field, but it shouldn't do any automation
-		} else if (ImportField("Race Remember")) { // didn't exist in old sheets
-			ApplyRace(What("Race Remember"), true);
-			if (global.docTo.CurrentRace.known) IsSetDropDowns = true; // After this, we import the race field, but no need to do the automation as the race is already set
-		}
-		ImportField("Race", { notTooltip: true, notSubmitName: true });
-		IsSetDropDowns = false; // reset this setting after setting the race from manual or through "Race Remember", otherwise it was already false
+				ApplyRace(docFromManual.race[0], true, docFromManual.race[1]);
+				ImportField("Race Remember");
+				IsSetDropDowns = true; // After this, we import the race field, but it shouldn't do any automation
+			} else if (ImportField("Race Remember")) { // didn't exist in old sheets
+				ApplyRace(What("Race Remember"), true);
+				if (global.docTo.CurrentRace.known) IsSetDropDowns = true; // After this, we import the race field, but no need to do the automation as the race is already set
+			}
+			ImportField("Race", { notTooltip: true, notSubmitName: true });
+			IsSetDropDowns = false; // reset this setting after setting the race from manual or through "Race Remember", otherwise it was already false
 
-		// >> BACKGROUND <<
-		if (docFromManual.background) { // if set to manual, use the saved background info
-			ApplyBackground(docFromManual.background);
-			IsSetDropDowns = true; // After this, we import the background field, but it shouldn't do any automation
-		}
-		ImportField("Background", { notTooltip: true, notSubmitName: true });
-		ImportField("Background Extra", { notTooltip: true });
-		IsSetDropDowns = false; // reset this setting if backgrounds was set to manual, otherwise it was already false
+			// >> BACKGROUND <<
+			if (docFromManual.background) { // if set to manual, use the saved background info
+				ApplyBackground(docFromManual.background);
+				IsSetDropDowns = true; // After this, we import the background field, but it shouldn't do any automation
+			}
+			ImportField("Background", { notTooltip: true, notSubmitName: true });
+			ImportField("Background Extra", { notTooltip: true });
+			IsSetDropDowns = false; // reset this setting if backgrounds was set to manual, otherwise it was already false
 
-		// reset the values of the ability score dialog (after race and background, so scores manually set for race are not undone)
-		var abiScoreFlds = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
-		var abiScoreDialogReset = false;
-		if (isEditionSwitch ||
+			// reset the values of the ability score dialog (after race and background, so scores manually set for race are not undone)
+			var abiScoreFlds = ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"];
+			var abiScoreDialogReset = false;
+			if (isEditionSwitch ||
 			(FromVersion > semVersToNmbr(13.999) && FromVersion < semVersToNmbr("14.0.11-beta")) ||
 			(FromVersion > semVersToNmbr(23) && FromVersion < semVersToNmbr("24.0.11-beta"))
-		) {
+			) {
 			// Switching between the 5e (2014) and 5.5e (2024) rules or importing from an older beta doesn't work for the ability score automation, because things by the same name suddenly work very differently. Thus we are going to let the automation handle it.
-			initiateCurrentStats(true);
-			abiScoreDialogReset = true;
-			// However, we can get the content from the base, levels and any extra columns, as those are the most important ones.
-			// If not an edition switch, do the same for the race (5e) and background (5.5e) columns.
-			var oldCurrentStats = eval(global.docFrom.What("CurrentStats.Stringified"));
-			oldCurrentStats.cols.forEach(function (oCol) {
-				var iColNewIdx = CurrentStats.cols.findIndex(function (obj) { return obj.type === oCol.type; });
-				switch (oCol.type) {
+				initiateCurrentStats(true);
+				abiScoreDialogReset = true;
+				// However, we can get the content from the base, levels and any extra columns, as those are the most important ones.
+				// If not an edition switch, do the same for the race (5e) and background (5.5e) columns.
+				var oldCurrentStats = eval(global.docFrom.What("CurrentStats.Stringified"));
+				oldCurrentStats.cols.forEach(function (oCol) {
+					var iColNewIdx = CurrentStats.cols.findIndex(function (obj) { return obj.type === oCol.type; });
+					switch (oCol.type) {
 					// Always update
-					case "base": case "levels":
-						break;
-					// Only do if the right edition
-					case "race":
-						if (isEditionSwitch || tDoc.use2024Rules) return;
-						break;
-					case "background":
-						if (isEditionSwitch || !tDoc.use2024Rules) return;
-						break;
-					// Never update
-					case "classes": case "items": case "feats":
-					case "magic": case "override": case "maximum":
-						return;
-					// Custom columns
-					case "extra": default:
-						if (iColNewIdx !== -1) {
-							return; // not a column we want to process
-						} else { // custom column
-							iColNewIdx = ASaddColumn(oCol.name, oCol.type);
-						}
+						case "base": case "levels":
+							break;
+							// Only do if the right edition
+						case "race":
+							if (isEditionSwitch || tDoc.use2024Rules) return;
+							break;
+						case "background":
+							if (isEditionSwitch || !tDoc.use2024Rules) return;
+							break;
+							// Never update
+						case "classes": case "items": case "feats":
+						case "magic": case "override": case "maximum":
+							return;
+							// Custom columns
+						case "extra": default:
+							if (iColNewIdx !== -1) {
+								return; // not a column we want to process
+							} else { // custom column
+								iColNewIdx = ASaddColumn(oCol.name, oCol.type);
+							}
+					}
+					if (iColNewIdx === -1) return;
+					var oColNew = CurrentStats.cols[oColNewIdx];
+					oColNew.scores = oCol.scores;
+				});
+				SetStringifieds("stats");
+			} else if (fromBefore13) {
+				initiateCurrentStats();
+				var equalAbiCol = ["base", "race", "levels", "override", "items", "feats"];
+				for (var a = 0; a < abiScoreFlds.length; a++) {
+					var abiR = global.docFrom.getField(abiScoreFlds[a] + " Remember");
+					if (!abiR) continue;
+					var abiScAr = abiR.value.split(",");
+					for (var i = 0; i < abiScAr.length; i++) {
+						var abiSc = Number(abiScAr[i]);
+						if (isNaN(abiSc) || !abiScAr[i] || (i == 0 && abiScAr == 8)) continue;
+						var newAbiColIdx = CurrentStats.cols.findIndex(function (obj) { return obj.type === equalAbiCol[i]; });
+						CurrentStats.cols[newAbiColIdx].scores[a] = abiSc;
+					}
 				}
-				if (iColNewIdx === -1) return;
-				var oColNew = CurrentStats.cols[oColNewIdx];
-				oColNew.scores = oCol.scores;
-			});
-			SetStringifieds("stats");
-		} else if (fromBefore13) {
-			initiateCurrentStats();
-			var equalAbiCol = ["base", "race", "levels", "override", "items", "feats"];
-			for (var a = 0; a < abiScoreFlds.length; a++) {
-				var abiR = global.docFrom.getField(abiScoreFlds[a] + " Remember");
-				if (!abiR) continue;
-				var abiScAr = abiR.value.split(",");
-				for (var i = 0; i < abiScAr.length; i++) {
-					var abiSc = Number(abiScAr[i]);
-					if (isNaN(abiSc) || !abiScAr[i] || (i == 0 && abiScAr == 8)) continue;
-					var newAbiColIdx = CurrentStats.cols.findIndex(function (obj) { return obj.type === equalAbiCol[i]; });
-					CurrentStats.cols[newAbiColIdx].scores[a] = abiSc;
+				CurrentStats.applied = true;
+				SetStringifieds("stats");
+			} else if (ImportField("CurrentStats.Stringified")) {
+				CurrentStats = eval(What("CurrentStats.Stringified"));
+			}
+
+			// >> CLASSES <<
+			if (fromBefore13) ImportExtraChoices();
+			if (docFromManual.classes) { // if set to manual, use the saved class
+				IsCharLvlVal = true; // make sure the level field is not changed
+				ApplyClasses(docFromManual.classes, false); // apply the saved class info
+				UpdateLevelFeatures("class"); // we have to call this manually as we are skipping the level field
+				IsCharLvlVal = false; // reset setting
+				global.docTo.getField("Class and Levels").remVal = global.docFrom.What("Class and Levels"); // After this, we import the Class and Levels field, but it shouldn't do any automation, so trick it into thinking there is nothing to validate
+			}
+			ImportField("Class and Levels", { notTooltip: true });
+			AddExtraOtherChoices();
+
+			// >> FEATS <<
+			// if from version >= 13.2.0 and feats set to manual, first import the ones present before it was toggled to manual
+			if (!fromBefore13_2 && docFromManual.feats && docFromManual.feats[3]) {
+				CurrentFeats.level = docFromManual.feats[1];
+				for (var i = 0; i < docFromManual.feats[3].length; i++) {
+					AddFeat(docFromManual.feats[3][i]);
+				}
+				IsSetDropDowns = true; // After this, we import the feat fields as currently set, but they shouldn't do any automation
+				// Also empty all the drop-down boxes again and disable calculations or AddFeat will not work correctly
+				for (var i = 1; i <= FieldNumbers.feats; i++) {
+					var descFld = "Feat Description " + i;
+					tDoc.getField(descFld).setAction("Calculate", "");
+					AddTooltip(descFld, undefined, "");
+					Value("Feat Name " + i, "");
 				}
 			}
-			CurrentStats.applied = true;
-			SetStringifieds("stats");
-		} else if (ImportField("CurrentStats.Stringified")) {
-			CurrentStats = eval(What("CurrentStats.Stringified"));
-		}
-
-		// >> CLASSES <<
-		if (fromBefore13) ImportExtraChoices();
-		if (docFromManual.classes) { // if set to manual, use the saved class
-			IsCharLvlVal = true; // make sure the level field is not changed
-			ApplyClasses(docFromManual.classes, false); // apply the saved class info
-			UpdateLevelFeatures("class"); // we have to call this manually as we are skipping the level field
-			IsCharLvlVal = false; // reset setting
-			global.docTo.getField("Class and Levels").remVal = global.docFrom.What("Class and Levels"); // After this, we import the Class and Levels field, but it shouldn't do any automation, so trick it into thinking there is nothing to validate
-		}
-		ImportField("Class and Levels", { notTooltip: true });
-		AddExtraOtherChoices();
-
-		// >> FEATS <<
-		// if from version >= 13.2.0 and feats set to manual, first import the ones present before it was toggled to manual
-		if (!fromBefore13_2 && docFromManual.feats && docFromManual.feats[3]) {
-			CurrentFeats.level = docFromManual.feats[1];
-			for (var i = 0; i < docFromManual.feats[3].length; i++) {
-				AddFeat(docFromManual.feats[3][i]);
-			}
-			IsSetDropDowns = true; // After this, we import the feat fields as currently set, but they shouldn't do any automation
-			// Also empty all the drop-down boxes again and disable calculations or AddFeat will not work correctly
-			for (var i = 1; i <= FieldNumbers.feats; i++) {
-				var descFld = "Feat Description " + i;
-				tDoc.getField(descFld).setAction("Calculate", "");
-				AddTooltip(descFld, undefined, "");
-				Value("Feat Name " + i, "");
-			}
-		}
-		// import the feats
-		var nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.feats ? global.docFrom.FieldNumbers.feats : FieldNumbers.feats;
-		for (var i = 1; i <= nmbrFlds; i++) {
-			var fromFld = global.docFrom.getField("Feat Name " + i);
-			if (!fromFld || !fromFld.value) continue;
-			AddFeat(
-				fromFld.value, // sFeat
-				global.docFrom.What("Feat Note " + i), // sFeatNote
-				global.docFrom.What("Feat Description " + i), // sFeatDescr
-				IsSetDropDowns ? i : false // bIgnoreCurrent // if set to manual, tell the function to put the feat at the exact field
-			);
-		};
-		IsSetDropDowns = false; // reset this setting if magic items was set to manual, otherwise it was already false
-
-		// >> MAGIC ITEMS <<
-		// a function to import the magic items
-		var importMagicItems = function () {
-			var nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.magicitems ? global.docFrom.FieldNumbers.magicitems : FieldNumbers.magicitems;
-			// if set to manual, first clear all fields 
+			// import the feats
+			var nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.feats ? global.docFrom.FieldNumbers.feats : FieldNumbers.feats;
 			for (var i = 1; i <= nmbrFlds; i++) {
-				var MIflds = ReturnMagicItemFieldsArray(i);
-				var fromFld = global.docFrom.getField(MIflds[0]);
+				var fromFld = global.docFrom.getField("Feat Name " + i);
 				if (!fromFld || !fromFld.value) continue;
-				AddMagicItem(
-					fromFld.value, // item
-					global.docFrom.getField(MIflds[4]).isBoxChecked(0), // attuned
-					global.docFrom.What(MIflds[2]), // itemDescr
-					global.docFrom.What(MIflds[3]), // itemWeight
-					false, // overflow
-					fromBefore13 ? undefined : global.docFrom.How(MIflds[4]) == "", // forceAttunedVisible
-					global.docFrom.What(MIflds[1]), // sItemNote
-					IsSetDropDowns ? i : false // bIgnoreCurrent // if set to manual, tell the function to put the item at the exact field
+				AddFeat(
+					fromFld.value, // sFeat
+					global.docFrom.What("Feat Note " + i), // sFeatNote
+					global.docFrom.What("Feat Description " + i), // sFeatDescr
+					IsSetDropDowns ? i : false // bIgnoreCurrent // if set to manual, tell the function to put the feat at the exact field
 				);
+			};
+			IsSetDropDowns = false; // reset this setting if magic items was set to manual, otherwise it was already false
+
+			// >> MAGIC ITEMS <<
+			// a function to import the magic items
+			var importMagicItems = function () {
+				var nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.magicitems ? global.docFrom.FieldNumbers.magicitems : FieldNumbers.magicitems;
+				// if set to manual, first clear all fields
+				for (var i = 1; i <= nmbrFlds; i++) {
+					var MIflds = ReturnMagicItemFieldsArray(i);
+					var fromFld = global.docFrom.getField(MIflds[0]);
+					if (!fromFld || !fromFld.value) continue;
+					AddMagicItem(
+						fromFld.value, // item
+						global.docFrom.getField(MIflds[4]).isBoxChecked(0), // attuned
+						global.docFrom.What(MIflds[2]), // itemDescr
+						global.docFrom.What(MIflds[3]), // itemWeight
+						false, // overflow
+						fromBefore13 ? undefined : global.docFrom.How(MIflds[4]) == "", // forceAttunedVisible
+						global.docFrom.What(MIflds[1]), // sItemNote
+						IsSetDropDowns ? i : false // bIgnoreCurrent // if set to manual, tell the function to put the item at the exact field
+					);
+				}
 			}
-		}
 
-		// if from version >= 13.2.0 and magic items set to manual, first import the ones present before it was toggled to manual
-		if (!fromBefore13_2 && docFromManual.items && docFromManual.items[4]) {
-			CurrentMagicItems.level = docFromManual.items[2];
-			for (var i = 0; i < docFromManual.items[4].length; i++) {
-				var sItemName = docFromManual.items[4][i];
-				var bItemAttuned = docFromManual.items[1][i];
-				if (bItemAttuned !== false) AddMagicItem(sItemName);
+			// if from version >= 13.2.0 and magic items set to manual, first import the ones present before it was toggled to manual
+			if (!fromBefore13_2 && docFromManual.items && docFromManual.items[4]) {
+				CurrentMagicItems.level = docFromManual.items[2];
+				for (var i = 0; i < docFromManual.items[4].length; i++) {
+					var sItemName = docFromManual.items[4][i];
+					var bItemAttuned = docFromManual.items[1][i];
+					if (bItemAttuned !== false) AddMagicItem(sItemName);
+				}
+				IsSetDropDowns = true; // After this, we import the magic item fields as currently set, but they shouldn't do any automation
+				// Also empty all the drop-down boxes again and disable calculations or AddMagicItem will not work correctly
+				for (var i = 1; i <= FieldNumbers.magicitems; i++) {
+					var descFld = "Extra.Magic Item Description " + i;
+					tDoc.getField(descFld).setAction("Calculate", "");
+					AddTooltip(descFld, undefined, "");
+					Value("Extra.Magic Item " + i, "");
+				}
 			}
-			IsSetDropDowns = true; // After this, we import the magic item fields as currently set, but they shouldn't do any automation
-			// Also empty all the drop-down boxes again and disable calculations or AddMagicItem will not work correctly
-			for (var i = 1; i <= FieldNumbers.magicitems; i++) {
-				var descFld = "Extra.Magic Item Description " + i;
-				tDoc.getField(descFld).setAction("Calculate", "");
-				AddTooltip(descFld, undefined, "");
-				Value("Extra.Magic Item " + i, "");
+			// if from version >= 13, do magic items before setting the rest of the fields
+			if (!fromBefore13) importMagicItems();
+			IsSetDropDowns = false; // reset this setting if magic items was set to manual, otherwise it was already false
+
+			//set the ability scores and associated fields
+			for (var a = 0; a < abiScoreFlds.length; a++) {
+				var abiS = abiScoreFlds[a];
+				ImportField(abiS);
+				Value(abiS + " Mod", Math.round((What(abiS) - 10.5) * 0.5));
+				ImportField(abiS + " ST Prof", { notTooltip: true });
+				ImportField(abiS + " ST Bonus", { notTooltip: true, notSubmitName: true });
+				ImportField(abiS + " ST Adv", { doReadOnly: true });
+				ImportField(abiS + " ST Dis", { doReadOnly: true });
+			};
+			ImportField("All ST Bonus", { notTooltip: true, notSubmitName: true });
+			if (FromVersion >= semVersToNmbr("13.0.9") && global.docFrom.CurrentVars.AbilitySaveDcBonus) {
+				global.docTo.CurrentVars.AbilitySaveDcBonus = global.docFrom.CurrentVars.AbilitySaveDcBonus;
+				global.docTo.SetStringifieds("vars");
 			}
-		}
-		// if from version >= 13, do magic items before setting the rest of the fields
-		if (!fromBefore13) importMagicItems();
-		IsSetDropDowns = false; // reset this setting if magic items was set to manual, otherwise it was already false
 
-		//set the ability scores and associated fields
-		for (var a = 0; a < abiScoreFlds.length; a++) {
-			var abiS = abiScoreFlds[a];
-			ImportField(abiS);
-			Value(abiS + " Mod", Math.round((What(abiS) - 10.5) * 0.5));
-			ImportField(abiS + " ST Prof", { notTooltip: true });
-			ImportField(abiS + " ST Bonus", { notTooltip: true, notSubmitName: true });
-			ImportField(abiS + " ST Adv", { doReadOnly: true });
-			ImportField(abiS + " ST Dis", { doReadOnly: true });
-		};
-		ImportField("All ST Bonus", { notTooltip: true, notSubmitName: true });
-		if (FromVersion >= semVersToNmbr("13.0.9") && global.docFrom.CurrentVars.AbilitySaveDcBonus) {
-			global.docTo.CurrentVars.AbilitySaveDcBonus = global.docFrom.CurrentVars.AbilitySaveDcBonus;
-			global.docTo.SetStringifieds("vars");
-		}
+			//set the ability save DC
+			ImportField("Spell DC 1 Mod", { notTooltip: true }); ImportField("Spell DC 1 Bonus", { notTooltip: true, notSubmitName: true });
+			ImportField("Spell DC 2 Bonus", { notTooltip: true, notSubmitName: true });
+			if (ImportField("Spell DC 2 Mod", { notTooltip: true, doVisiblity: true })); Toggle2ndAbilityDC(global.docTo.getField("Spell DC 2 Mod").display === display.visible ? "show" : "hide");
 
-		//set the ability save DC
-		ImportField("Spell DC 1 Mod", { notTooltip: true }); ImportField("Spell DC 1 Bonus", { notTooltip: true, notSubmitName: true });
-		ImportField("Spell DC 2 Bonus", { notTooltip: true, notSubmitName: true });
-		if (ImportField("Spell DC 2 Mod", { notTooltip: true, doVisiblity: true })); Toggle2ndAbilityDC(global.docTo.getField("Spell DC 2 Mod").display === display.visible ? "show" : "hide");
+			//set the prof bonus and inspiration
+			ImportField("Proficiency Bonus Dice", { notTooltip: true }); ImportField("Proficiency Bonus Modifier", { notTooltip: true, notSubmitName: true }); ImportField("Inspiration", { notTooltip: true });
 
-		//set the prof bonus and inspiration
-		ImportField("Proficiency Bonus Dice", { notTooltip: true }); ImportField("Proficiency Bonus Modifier", { notTooltip: true, notSubmitName: true }); ImportField("Inspiration", { notTooltip: true });
-
-		//set the skills and associated fields
-		var CurrentProfsFrom = global.docFrom.getField("CurrentProfs.Stringified") ? eval(global.docFrom.getField("CurrentProfs.Stringified").value) : false;
-		var isAltSkillOrder = Who("Text.SkillsNames") === "alphabeta" ? false : true;
-		ImportField("Jack of All Trades", { notTooltip: true }); ImportField("Remarkable Athlete", { notTooltip: true }); ImportField("All Skills Bonus", { notTooltip: true, notSubmitName: true }); ImportField("Passive Perception Bonus", { notTooltip: true, notSubmitName: true }); ImportField("Too Text", { notTooltip: true, notSubmitName: true });
-		for (var i = 0; i < SkillsList.abbreviations.length; i++) {
-			var aSkill = SkillsList.abbreviations[i];
-			ImportField(aSkill + " Bonus", { notTooltip: true, notSubmitName: true }); ImportField(aSkill + " Prof", { notTooltip: true }); ImportField(aSkill + " Exp", { notTooltip: true }); ImportField(aSkill + " Adv", { doReadOnly: true }); ImportField(aSkill + " Dis", { doReadOnly: true });
-			if (!(/^(Init|Too)$/).test(aSkill) && fromBefore13 && global.docTo.getField(aSkill + " Prof").isBoxChecked(0)) {
+			//set the skills and associated fields
+			var CurrentProfsFrom = global.docFrom.getField("CurrentProfs.Stringified") ? eval(global.docFrom.getField("CurrentProfs.Stringified").value) : false;
+			var isAltSkillOrder = Who("Text.SkillsNames") === "alphabeta" ? false : true;
+			ImportField("Jack of All Trades", { notTooltip: true }); ImportField("Remarkable Athlete", { notTooltip: true }); ImportField("All Skills Bonus", { notTooltip: true, notSubmitName: true }); ImportField("Passive Perception Bonus", { notTooltip: true, notSubmitName: true }); ImportField("Too Text", { notTooltip: true, notSubmitName: true });
+			for (var i = 0; i < SkillsList.abbreviations.length; i++) {
+				var aSkill = SkillsList.abbreviations[i];
+				ImportField(aSkill + " Bonus", { notTooltip: true, notSubmitName: true }); ImportField(aSkill + " Prof", { notTooltip: true }); ImportField(aSkill + " Exp", { notTooltip: true }); ImportField(aSkill + " Adv", { doReadOnly: true }); ImportField(aSkill + " Dis", { doReadOnly: true });
+				if (!(/^(Init|Too)$/).test(aSkill) && fromBefore13 && global.docTo.getField(aSkill + " Prof").isBoxChecked(0)) {
 				// set the "manualClick" entries in the CurrentProfs
-				var useSkill = isAltSkillOrder ? SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(aSkill)] : aSkill;
-				if (!CurrentProfs.skill[useSkill] || !CurrentProfs.skill[useSkill].length) {
-					CurrentProfs.skill[useSkill] = ["manualClick"];
-				}
-				if (global.docTo.getField(aSkill + " Exp").isBoxChecked(0)) {
-					if (!CurrentProfs.skill[useSkill + "_Exp"]) {
-						CurrentProfs.skill[useSkill + "_Exp"] = { manualClick: "full" };
-					} else {
-						for (var aSkillExp in CurrentProfs.skill[useSkill + "_Exp"]) {
-							var theSkillExp = CurrentProfs.skill[useSkill + "_Exp"][aSkillExp];
-							if ((/only|full/).test(theSkillExp)) break;
-						}
-						// only 'increment', so add a manualClick to the non-expertise proficiency
-						CurrentProfs.skill[useSkill].push("manualClick");
+					var useSkill = isAltSkillOrder ? SkillsList.abbreviations[SkillsList.abbreviationsByAS.indexOf(aSkill)] : aSkill;
+					if (!CurrentProfs.skill[useSkill] || !CurrentProfs.skill[useSkill].length) {
+						CurrentProfs.skill[useSkill] = ["manualClick"];
 					}
-				}
-			}
-		};
-		// copy the "manualClick" entries from the imported CurrentProfs.skill
-		if (!fromBefore13 && CurrentProfsFrom && CurrentProfsFrom.skill) {
-			for (var anEntry in CurrentProfsFrom.skill) {
-				if (anEntry == "descrTxt") continue;
-				if (anEntry.indexOf("_Exp") !== -1) {
-					if (CurrentProfsFrom.skill[anEntry]["manualClick"]) {
-						if (!CurrentProfs.skill[anEntry]) CurrentProfs.skill[anEntry] = {};
-						CurrentProfs.skill[anEntry]["manualClick"] = "full";
-					}
-				} else if (CurrentProfsFrom.skill[anEntry].indexOf("manualClick") !== -1) {
-					if (!CurrentProfs.skill[anEntry]) CurrentProfs.skill[anEntry] = [];
-					if (CurrentProfs.skill[anEntry].indexOf("manualClick") == -1) CurrentProfs.skill[anEntry].push("manualClick");
-				}
-			}
-		}
-
-		//set the description fields
-		ImportField("PC Name"); ImportField("Player Name"); ImportField("Size Category", { notTooltip: true }); ImportField("Height", { notTooltip: true }); ImportField("Weight", { notTooltip: true }); ImportField("Sex"); ImportField("Hair colour", { notTooltip: true }); ImportField("Eyes colour", { notTooltip: true }); ImportField("Skin colour", { notTooltip: true }); ImportField("Age", { notTooltip: true }); ImportField("Alignment", { notTooltip: true }); ImportField("Faith/Deity", { notTooltip: true }); ImportField("Speed", { notTooltip: true }); ImportField("Speed encumbered", { notTooltip: true });
-
-		//add the content from the saving throw and vision field, but not if importing from an older version
-		if (FromVersion >= semVersToNmbr(12.998)) {
-			//First make sure the "Immune to" and "Adv on saves vs" match with the import
-			var importSaveTxt = function(type) {
-				var preTxt = type === "adv_vs" ? "Adv. on saves vs." : type === "immune" ? "Immune to" : false;
-				var fld = "Saving Throw advantages / disadvantages";
-				var svFld = global.docFrom.getField(fld).value;
-				if (!preTxt || !svFld) return;
-				var fromArr = [], toArr = [];
-				if (CurrentProfsFrom.savetxt[type]) {
-					for (var testAtt in CurrentProfsFrom.savetxt[type]) {
-						if (type === "immune" || !CurrentProfsFrom.savetxt.immune[testAtt]) {
-							fromArr.push(CurrentProfsFrom.savetxt[type][testAtt].name);
-						};
-					};
-				};
-				if (CurrentProfs.savetxt[type]) {
-					for (var testAtt in CurrentProfs.savetxt[type]) {
-						if (type === "immune" || !CurrentProfs.savetxt.immune[testAtt]) {
-							toArr.push(CurrentProfs.savetxt[type][testAtt].name);
-						};
-					};
-				};
-				var newArr = [].concat(toArr);
-				var svMatch = svFld.match(RegExp(preTxt.RegEscape() + ".*?(; |$)", "i"));
-				if (!svMatch) return;
-				var svOpt = svMatch[0].replace(/; ?$/, "").replace(RegExp(preTxt.RegEscape() + " *?", "i"), "").split(/, and | and |, |; /);
-				for (var i = 0; i < svOpt.length; i++) {
-					var addObj = svOpt[i].replace(/^and |^ +/i, "");
-					if (addObj && !(RegExp("\\b" + addObj + "\\b", "i")).test(toArr)) newArr.push(addObj);
-				};
-				newArr.sort();
-				var toStr = formatLineList(preTxt, toArr);
-				var newStr = formatLineList(preTxt, newArr);
-				if (toStr !== newStr) {
-					ReplaceString(fld, newStr, "; ", toStr, false);
-					global.docFrom.getField(fld).value = global.docFrom.getField(fld).value.replace(svMatch[0], "");
-				};
-			};
-			importSaveTxt("adv_vs");
-			importSaveTxt("immune");
-			//Then get the entries in these fields and add them one by one
-			var addConsolidatedEntries = function(fName) {
-				var fFld = global.docFrom.getField(fName);
-				if (!fFld) return;
-				var fArrF = fFld.value.split(/; ?/);
-				var fArrT = global.docTo.getField(fName).value.split(/; ?/);
-				for (var fF = 0; fF < fArrT.length; fF++) fArrT[fF] = clean(fArrT[fF].toLowerCase(), " ");
-				for (var fF = 0; fF < fArrF.length; fF++) {
-					var fVal = clean(fArrF[fF], " ");
-					if (fArrT.indexOf(fVal.toLowerCase()) === -1) AddString(fName, fVal, "; ");
-				};
-			};
-			addConsolidatedEntries("Vision"); addConsolidatedEntries("Saving Throw advantages / disadvantages");
-		};
-
-		//add limited features that are not yet defined (all those without a tooltip)
-		for (var i = 1; i < FieldNumbers.limfea; i++) {
-			var limFeaFrom = global.docFrom.getField("Limited Feature " + i);
-			if (!limFeaFrom || !limFeaFrom.value || limFeaFrom.userName) continue;
-			var lFFusa = global.docFrom.getField("Limited Feature Max Usages " + i).value;
-			var lFFrec = global.docFrom.getField("Limited Feature Recovery " + i).value;
-			AddFeature(limFeaFrom.value, lFFusa, "", lFFrec);
-		};
-
-		//add the spell boxes
-		for (var i = 1; i <= 9; i++) ImportField("SpellSlots.CheckboxesSet.lvl" + i, { notTooltip: true });
-
-		//set the armour and weapon proficiencies
-		ImportField("Proficiency Armor Other Description", { notTooltip: true });
-		if (fromBefore13) {
-			// manually set proficiency checkboxes
-			var profFldsArray = [
-				"Proficiency Armor Light",
-				"Proficiency Armor Medium",
-				"Proficiency Armor Heavy",
-				"Proficiency Shields",
-				"Proficiency Weapon Simple",
-				"Proficiency Weapon Martial",
-			];
-			for (var i = 0; i < profFldsArray.length; i++) {
-				var profFromFld = global.docFrom.getField(profFldsArray[i]);
-				var profToFld = global.docTo.getField(profFldsArray[i]);
-				if (!profFromFld || !profToFld) continue;
-				var profFromChecked = profFromFld.isBoxChecked(0) === 1;
-				var profToChecked = profToFld.isBoxChecked(0) === 1;
-				if (profFromChecked !== profToChecked) {
-					profToFld.checkThisBox(0, profFromChecked);
-					setCheckboxProfsManual(profFldsArray[i]);
-				}
-			}
-			// manual weapon additions
-			var profsManualFromFnd = global.docFrom.CurrentWeapons.proficiencies["Manually added"];
-			var profsManualFromXtr = global.docFrom.CurrentWeapons.manualproficiencies;
-			var profsManualFrom = profsManualFromXtr ? profsManualFromXtr : [];
-			if (profsManualFromFnd) {
-				for (var i = 0; i < profsManualFromFnd.length; i++) {
-					var profManualWea = WeaponsList[profsManualFromFnd[i]];
-					if (profManualWea) profsManualFrom.push(profManualWea.name);
-				}
-			}
-			if (profsManualFrom.length) {
-				Value("Proficiency Weapon Other Description", [What("Proficiency Weapon Other Description")].concat(profsManualFrom).join(", "));
-				setOtherWeaponProfsManual();
-			}
-		} else {
-			// manually set proficiency checkboxes
-			var profFromVar = global.docFrom.CurrentProfs;
-			var profFldsArray = [
-				["armour", "light"],
-				["armour", "medium"],
-				["armour", "heavy"],
-				["armour", "shields"],
-				["weapon", "simple"],
-				["weapon", "martial"],
-			];
-			for (var i = 0; i < profFldsArray.length; i++) {
-				var profSort = profFldsArray[i][0];
-				var profType = profFldsArray[i][1];
-				var normalState = CurrentProfs[profSort][profType] ? true : false;
-				if (profFromVar[profSort][profType + "_manual" + (normalState ? "off" : "on")]) {
-					CurrentProfs[profSort][profType + "_manual" + (normalState ? "off" : "on")] = true;
-					SetProf(profSort, undefined, profType, undefined, true);
-				}
-			};
-			// manual weapon additions
-			if (profFromVar.weapon.otherWea && profFromVar.weapon.otherWea["Manually added"]) {
-				CurrentProfs.weapon.otherWea["Manually added"] = profFromVar.weapon.otherWea["Manually added"];
-				SetProf("weapon", undefined, "other");
-			}
-		}
-
-		//a function to add the 'new' languages, tools, resistances, actions
-		var addNotDefined = function(typeFlds, iterations) {
-			var fromOldVersion = FromVersion < semVersToNmbr(12.998);
-			var functionAdd = function(typeAdd, input, replaceThis) {
-				switch (typeAdd) {
-					case "Language " :
-					case "Tool " :
-						AddLangTool(typeAdd, input, false, false, replaceThis, fromOldVersion);
-						break;
-					case "Resistance Damage Type " :
-						AddResistance(input, false, replaceThis, fromOldVersion);
-						break;
-					case "Action " :
-					case "Bonus Action " :
-					case "Reaction " :
-						AddAction(typeAdd, input, false, replaceThis, fromOldVersion);
-						break;
-				};
-			};
-			for (var i = 1; i <= iterations; i++) {
-				var fromFld = global.docFrom.getField(typeFlds + i);
-				if (!fromFld || !fromFld.value || fromFld.value === fromFld.defaultValue) continue;
-				if (!fromOldVersion) {
-					if (fromFld.value !== fromFld.submitName) {
-						functionAdd(typeFlds, fromFld.value, fromFld.submitName);
-					};
-				} else { // can't use the submitName as it wasn't used before v12.998
-					var fromFldUNit = fromFld.userName && (/.*?\"(.*?)\".*/).test(fromFld.userName) ? fromFld.userName.replace(/.*?\"(.*?)\".*/, "$1") : (fromFld.userName ? fromFld.userName.replace(/.*?resistance to (.*?) was gained from.*/, "$1") : "");
-					if (!fromFld.userName || fromFldUNit.toLowerCase() !== fromFld.value.toLowerCase()) {
-						functionAdd(typeFlds, fromFld.value, fromFldUNit);
-					};
-				};
-			};
-		};
-
-		//languages and tools
-		var nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.langstools ? global.docFrom.FieldNumbers.langstools : FieldNumbers.langstools;
-		addNotDefined("Language ", nmbrFlds); addNotDefined("Tool ", nmbrFlds);
-		nmbrFlds = global.docFrom.FieldNumbers.actions ? global.docFrom.FieldNumbers.actions : FieldNumbers.actions;
-		addNotDefined("Reaction ", nmbrFlds); addNotDefined("Bonus Action ", nmbrFlds);
-		nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.trueactions ? global.docFrom.FieldNumbers.trueactions : FieldNumbers.trueactions;
-		addNotDefined("Action ", nmbrFlds);
-		addNotDefined("Resistance Damage Type ", 6);
-
-		//armor
-		ImportField("AC Armor Description", { notTooltip: true }); ImportField("AC Armor Bonus", { notTooltip: true }); ImportField("AC Armor Weight", { notTooltip: true }); ImportField("AC during Rest");
-		ImportField("AC Shield Bonus Description", { notTooltip: true }); ImportField("AC Shield Bonus", { notTooltip: true }); ImportField("AC Shield Weight", { notTooltip: true });
-		ImportField("Medium Armor", { notTooltip: true }); ImportField("Heavy Armor", { notTooltip: true });
-		if (ImportField("AC Stealth Disadvantage", { notTooltip: true })) ConditionSet();
-
-		//hit points, hit die
-		ImportField("HP Max", { notTooltip: true }); ImportField("HP Max Current", { notTooltip: true }); ImportField("HP Temp", { notTooltip: true }); ImportField("HP Current", { notTooltip: true });
-		ImportField("HD1 Level"); ImportField("HD1 Die"); ImportField("HD2 Level"); ImportField("HD2 Die"); ImportField("HD3 Level"); ImportField("HD3 Die"); SetHPTooltip(false, false);
-
-		//do the second page
-		ImportField("Personality Trait"); ImportField("Ideal"); ImportField("Bond"); ImportField("Flaw");
-		ImportField("Background Feature", { notTooltip: true, notSubmitName: true }); ImportField("Background Feature Description", { notTooltip: true, compareNoSpaces: true });
-		ImportField("Racial Traits", { notTooltip: true, compareNoSpaces: true });
-
-		//do the adventure gear sections
-		ImportField("Platinum Pieces"); ImportField("Gold Pieces"); ImportField("Electrum Pieces"); ImportField("Silver Pieces"); ImportField("Copper Pieces");
-		ImportField("Valuables1"); ImportField("Valuables2"); ImportField("Valuables3"); ImportField("Valuables4");
-		ImportField("Carrying Capacity Multiplier", { notTooltip: true });
-
-		nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.gear ? global.docFrom.FieldNumbers.gear : FieldNumbers.gear;
-		for (var i = 1; i <= nmbrFlds; i++) {
-			var fromFld = global.docFrom.getField("Adventuring Gear Row " + i);
-			if (i <= FieldNumbers.gear) {
-				ImportField("Adventuring Gear Row " + i); ImportField("Adventuring Gear Location.Row " + i); ImportField("Adventuring Gear Amount " + i); ImportField("Adventuring Gear Weight " + i);
-			} else if (fromFld && fromFld.value) {
-				AddToInv("gear", "ronly", fromFld.value, global.docFrom.getField("Adventuring Gear Amount " + i).value, global.docFrom.getField("Adventuring Gear Weight " + i).value, global.docFrom.getField("Adventuring Gear Location.Row " + i).value, false, false, false, true);
-			}
-		}
-
-	//the third page
-		// if from version < 13, do magic items after setting the rest of the fields so their automation is run afterwards
-		if (fromBefore13) importMagicItems();
-
-		ImportField("Extra.Other Holdings");
-
-		//extra equipment
-		nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.extragear ? global.docFrom.FieldNumbers.extragear : FieldNumbers.extragear;
-		for (var i = 1; i <= nmbrFlds; i++) {
-			var fromFld = global.docFrom.getField("Extra.Gear Row " + i);
-			if (i <= FieldNumbers.extragear) {
-				ImportField("Extra.Gear Row " + i); ImportField("Extra.Gear Location.Row " + i); ImportField("Extra.Gear Amount " + i); ImportField("Extra.Gear Weight " + i);
-			} else if (fromFld && fromFld.value) {
-				AddToInv("extra", "ronly", fromFld.value, global.docFrom.getField("Extra.Gear Amount " + i).value, global.docFrom.getField("Extra.Gear Weight " + i).value, global.docFrom.getField("Extra.Gear Location.Row " + i).value, false, false, false, true);
-			}
-		}
-
-
-	//the background page
-		//set the all the organisation/faction texts and other Adventure League fields
-		if (ImportField("Background_Faction.Text")) SetFactionSymbol("Background_Faction.Text", What("Background_Faction.Text"), true);
-		ImportField("Background_FactionRank.Text"); ImportField("Background_Renown.Text"); ImportField("DCI.Text");
-		//set the rest of the background page
-		ImportField("Background_History"); ImportField("Background_Appearance"); ImportField("Background_Enemies");
-		if (bothPF) {
-			ImportField("Background_Organisation.Left"); ImportField("Background_Organisation.Right");
-		} else if (bothCF) {
-			ImportField("Background_Organisation");
-		} else if (typePF && !fromSheetTypePF) {
-			ImportField("Background_Organisation.Left", false, "Background_Organisation");
-		} else if (!typePF && fromSheetTypePF) {
-			ImportField("Background_Organisation", false, "Background_Organisation.Left");
-		}
-		ImportField("Lifestyle", { cleanValue: true });
-
-		//some hidden fields that we should do now
-		ImportField("ChangesDialogSkip.Stringified"); ImportField("Print Remember"); ImportField("SubClass Remember"); ImportField("Wildshapes.Remember");
-
-
-	//>> make a function to do all children of a parent field
-		var doChildren = function(parentFld, fromPre, toPre, excludeRegEx, inclVisibility, actionsObj) {
-			var parentA = global.docTo.getField(toPre + parentFld);
-			if (!parentA) return;
-			if (actionsObj) {
-				actionsObj.notTooltip = true;
-				actionsObj.doVisiblity = inclVisibility
-			};
-			parentA = parentA.getArray();
-			for (var pA =  0; pA < parentA.length; pA++) {
-				var pAnameTo = parentA[pA].name;
-				if (excludeRegEx && excludeRegEx.test(pAnameTo)) continue;
-				var pAnameFrom = pAnameTo.replace(toPre, fromPre);
-				ImportField(pAnameTo, actionsObj ? actionsObj : { notTooltip: true, doVisiblity: inclVisibility }, pAnameFrom);
-			}
-		}
-
-	// do the companion pages
-		//run through each one in the array
-		var prefixA = pagesLayout && pagesLayout.AScompExtras ? [pagesLayout.AScompExtraNmFrom, pagesLayout.AScompExtraNmTo] : [[], []];
-		for (var i = 0; i < prefixA[0].length; i++) {
-			var prefixFrom = prefixA[0][i];
-			var prefixTo = prefixA[1][i];
-
-			//set the visibility of the different elements
-			if (ImportField(prefixTo + "Companion.Layers.Remember", { notTooltip: true, notSubmitName: true }, prefixFrom + "Companion.Layers.Remember")) ShowCompanionLayer(prefixTo);
-			doChildren("Whiteout.Cnote", prefixFrom, prefixTo, false, true);
-
-			//get and apply the race and companion type
-			var compRaceFldFrom = global.docFrom.getField(prefixFrom + "Comp.Race");
-			var compRaceFldTo = global.docFrom.getField(prefixFrom + "Comp.Race");
-			if (compRaceFldFrom.value) {
-				if (compRaceFldFrom.submitName) compRaceFldTo.submitName = compRaceFldFrom.submitName;
-				var compTypeFldFrom = global.docFrom.getField(prefixFrom + "Companion.Remember");
-				global.docTo.ApplyCompRace(compRaceFldFrom.value, prefixTo, compTypeFldFrom ? compTypeFldFrom.value : "");
-			}
-
-			//set companion ability scores and modifiers
-			for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
-				var abiS = AbilityScores.abbreviations[a];
-				ImportField(prefixTo + "Comp.Use.Ability." + abiS + ".Score", { notTooltip: true, notSubmitName: true }, prefixFrom + "Comp.Use.Ability." + abiS + ".Score");
-				Value(prefixTo + "Comp.Use.Ability." + abiS + ".Mod", Math.round((What(prefixTo + "Comp.Use.Ability." + abiS + ".Score") - 10.5) * 0.5));
-			}
-
-			//set some one-off fields
-			ImportField(prefixTo + "Comp.Type", { notTooltip: true, notSubmitName: true }, prefixFrom + "Comp.Type");
-
-			//do the description fields
-			doChildren("Comp.Desc", prefixFrom, prefixTo);
-
-			//do the bulk of the fields (but not HP Max, see below)
-			doChildren("Comp.Use", prefixFrom, prefixTo, /\.Score|\.Mod|Text|Calculated|Button|Init\.Dex|HD\.Con|HP\.Max$/i);
-
-			//do HP
-			// Because of a bug in v13.1.4 and older, we need to do something special for creatures that have an alt HP calculation
-			var keepCompRaceHPsetting = false;
-			if (fromBefore13_1_5 && global.docTo.CurrentEvals.Comp && global.docTo.CurrentEvals.Comp[prefixTo] && global.docTo.CurrentEvals.Comp[prefixTo].hp) {
-				var compRaceHPsetFrom = global.docFrom.getField(prefixFrom + "Comp.Use.HP.Max").submitName.split(",");
-				var compRaceHPsetTo = global.docTo.getField(prefixTo + "Comp.Use.HP.Max").submitName.split(",");
-				keepCompRaceHPsetting = compRaceHPsetFrom[3] !== compRaceHPsetTo[3] && compRaceHPsetTo[3].indexOf("alt") !== -1;
-				if (keepCompRaceHPsetting) {
-					// add text to the dialog
-					var sCompHpTitle = toUni("\nFixed special HP calculation for companions");
-					if (aTextExtra.indexOf(sCompHpTitle) === -1) aTextExtra.push(sCompHpTitle);
-					var sCompName = What(prefixTo + "Comp.Desc.Name");
-					if (!sCompName) sCompName = compRaceFldTo.value;
-					aTextExtra.push('  \u2022 For the companion "' + sCompName + '" on page ' + (compRaceFldFrom.page + 1));
-				}
-			}
-			ImportField(prefixTo + "Comp.Use.HP.Max", { notTooltip: true, notSubmitName: keepCompRaceHPsetting }, prefixFrom + "Comp.Use.HP.Max");
-
-			//do the BlueText fields
-			doChildren("BlueText.Comp.Use", prefixFrom, prefixTo);
-
-			//do the equipment fields
-			doChildren("Comp.eqp", prefixFrom, prefixTo, /Display|Image|Subtotal|Notes|Whiteout|Text/i);
-
-			//do the notes fields
-			doChildren("Cnote", prefixFrom, prefixTo);
-
-			//if importing from Colourful to Colourful, do skills (from Printer Friendly to Printer Friendly is already included above)
-			if (bothCF) {
-				doChildren("Text.Comp.Use.Skills", prefixFrom, prefixTo, /Name/i);
-			} else if (!fromSheetTypePF && typePF) {
-				//if importing from Colourful to Printer Friendly, do skills and the extra equipment rows
-				var skillsOrderFrom = SkillsList["abbreviations" + (Who("Text.SkillsNames") === "abilities" ? "ByAS" : "")].slice(0, -2);
-				var skillsOrderTo = SkillsList.abbreviations.slice(0, -2);
-				for (var sN = 0; sN < skillsOrderTo.length; sN++) {
-					var skillFrom = global.docFrom.getField(prefixFrom + "Text.Comp.Use.Skills." + skillsOrderFrom[sN] + ".Prof");
-					var skillToProf = prefixTo + "Comp.Use.Skills." + skillsOrderTo[sN] + ".Prof";
-					var skillToExp = prefixTo + "Comp.Use.Skills." + skillsOrderTo[sN] + ".Exp";
-					if (skillFrom && skillFrom.value) {
-						Checkbox(skillToProf, skillFrom.value === "proficient" || skillFrom.value === "expertise");
-						Checkbox(skillToExp, skillFrom.value === "expertise");
-					}
-				};
-
-				//companion equipment secion is bigger on the Colourful than on the Printer Friendly
-				nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.compgear ? global.docFrom.FieldNumbers.compgear : FieldNumbers.compgear;
-				for (var i = FieldNumbers.compgear + 1; i <= nmbrFlds; i++) {
-					var fromFld = global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Row " + i);
-					if (fromFld && fromFld.value) {
-						AddToInv(prefixFrom + "Comp.", "l", fromFld.value, global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Amount " + i).value, global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Weight " + i).value, "", false, false, false, true);
-					}
-				}
-			} else if (fromSheetTypePF && !typePF) {
-				//if importing from Printer Friendly to Colourful, do skills
-				var skillsOrderFrom = SkillsList.abbreviations.slice(0, -2);
-				var skillsOrderTo = SkillsList["abbreviations" + (global.docFrom.getField("Text.SkillsNames") && global.docFrom.getField("Text.SkillsNames").userName === "abilities" ? "ByAS" : "")].slice(0, -2);
-				for (var sN = 0; sN < skillsOrderTo.length; sN++) {
-					var skillTo = prefixTo + "Text.Comp.Use.Skills." + skillsOrderFrom[sN] + ".Prof";
-					var skillFromProf = global.docFrom.getField(prefixFrom + "Comp.Use.Skills." + skillsOrderTo[sN] + ".Prof");
-					var skillFromExp = global.docFrom.getField(prefixFrom + "Comp.Use.Skills." + skillsOrderTo[sN] + ".Exp");
-					if (skillFromProf && skillFromExp) {
-						if (skillFromProf.isBoxChecked(0)) {
-							Value(skillTo, skillFromExp.isBoxChecked(0) ? "expertise" : "proficient");
+					if (global.docTo.getField(aSkill + " Exp").isBoxChecked(0)) {
+						if (!CurrentProfs.skill[useSkill + "_Exp"]) {
+							CurrentProfs.skill[useSkill + "_Exp"] = { manualClick: "full" };
 						} else {
-							Value(skillTo, "nothing");
+							for (var aSkillExp in CurrentProfs.skill[useSkill + "_Exp"]) {
+								var theSkillExp = CurrentProfs.skill[useSkill + "_Exp"][aSkillExp];
+								if ((/only|full/).test(theSkillExp)) break;
+							}
+							// only 'increment', so add a manualClick to the non-expertise proficiency
+							CurrentProfs.skill[useSkill].push("manualClick");
 						}
 					}
-				};
-			}
-		}
-
-	//do the notes pages
-		prefixA = pagesLayout && pagesLayout.ASnotesExtras ? [pagesLayout.ASnotesExtraNmFrom, pagesLayout.ASnotesExtraNmTo] : [[], []];
-		for (var i = 0; i < prefixA[0].length; i++) {
-			var prefixFrom = prefixA[0][i];
-			var prefixTo = prefixA[1][i];
-			doChildren("Whiteout.Notes", prefixFrom, prefixTo, false, true);
-			doChildren("Notes", prefixFrom, prefixTo);
-		}
-
-	//do the wildshape pages
-		prefixA = pagesLayout && pagesLayout.WSfrontExtras ? [pagesLayout.WSfrontExtraNmFrom, pagesLayout.WSfrontExtraNmTo] : [[], []];
-		for (var i = 0; i < prefixA[0].length; i++) {
-			var prefixFrom = prefixA[0][i];
-			var prefixTo = prefixA[1][i];
-			doChildren("Wildshapes.Info", prefixFrom, prefixTo); //the info values
-			doChildren("Wildshape.Race", prefixFrom, prefixTo);
-		}
-
-	//do the adventure logsheet pages
-		prefixA = pagesLayout && pagesLayout.ALlogExtras ? [pagesLayout.ALlogExtraNmFrom, pagesLayout.ALlogExtraNmTo] : [[], []];
-		var advLogRegChl = FromVersion < semVersToNmbr(12.994) ? /^(?!.*\d)|(?=.*(start|total|date)).*$/i : /^(?!.*\d)|(?=.*(start|total)).*$/i;
-		for (var i = 0; i < prefixA[0].length; i++) {
-			var prefixFrom = prefixA[0][i];
-			var prefixTo = prefixA[1][i];
-			if (i === 0) doChildren("AdvLog.1", prefixFrom, prefixTo, /^(?!.*start).*$/i); //the starting values
-			if (FromVersion < semVersToNmbr(12.994)) {
-				for (var x = 1; x <= FieldNumbers.logs; x++) {
-					var dateFldFr = global.docFrom.getField(prefixFrom + "AdvLog." + x + ".date");
-					var dateFldTo = global.docTo.getField(prefixTo + "AdvLog." + x + ".date");
-					if (!dateFldTo || !dateFldFr) continue;
-					var theDateForm = global.docFrom.What("DateFormat_Remember") ? global.docFrom.What("DateFormat_Remember") : "d mmm yyyy";
-					var theDateVal = util.scand(theDateForm, dateFldFr.value);
-					if (theDateVal) dateFldTo.value = util.printd("yy-mm-dd", theDateVal);
-				};
-			};
-			doChildren("AdvLog", prefixFrom, prefixTo, advLogRegChl);
-		}
-
-	//do the spell sheet pages
-		//first update the CurrentSpells variable
-		if (global.docFrom.CurrentSpells) {
-			var classesArray = [];
-			for (var aCast in CurrentSpells) {
-				classesArray.push(aCast);
-				var aCastFrom = aCast;
-				if (!global.docFrom.CurrentSpells[aCastFrom]) {
-					aCastFrom = aCastFrom.replace(/.*_-_/, "");
-					if (!global.docFrom.CurrentSpells[aCastFrom]) continue; //doesn't exist in the sheet importing from
 				}
-				var spCastTo = CurrentSpells[aCast];
-				var spCastFrom = global.docFrom.CurrentSpells[aCastFrom];
-				if (spCastFrom.selectCa) spCastTo.selectCa = spCastFrom.selectCa;
-				if (spCastFrom.offsetCa) spCastTo.offsetCa = spCastFrom.offsetCa;
-				if (spCastFrom.selectBo) spCastTo.selectBo = spCastFrom.selectBo;
-				if (spCastFrom.offsetBo) spCastTo.offsetBo = spCastFrom.offsetBo;
-				if (spCastFrom.extraBo) spCastTo.extraBo = spCastFrom.extraBo;
-				if (spCastFrom.selectSp) spCastTo.selectSp = spCastFrom.selectSp;
-				if (spCastFrom.offsetSp) spCastTo.offsetSp = spCastFrom.offsetSp;
-				if (spCastFrom.selectSpSB) spCastTo.selectSpSB = spCastFrom.selectSpSB;
-				if (spCastFrom.selectPrep) spCastTo.selectPrep = spCastFrom.selectPrep;
-				if (spCastFrom.blueTxt) spCastTo.blueTxt = newObj(spCastFrom.blueTxt);
-				if (spCastTo.bonus) {
-					for (var bKey in spCastTo.bonus) {
-						if (!spCastFrom.bonus[bKey]) continue; //doesn't exist in the sheet importing from
-						var spBonusFrom = spCastFrom.bonus[bKey];
-						var spBonusTo = spCastTo.bonus[bKey];
-						var spIsArrayFrom = isArray(spBonusFrom);
-						var spIsArrayTo = isArray(spBonusTo);
-						if (spIsArrayTo !== spIsArrayFrom) continue; //types don't match
-						var loop = spIsArrayTo && spIsArrayFrom;
-						var loopEnd = loop ? spBonusTo.length : 1;
-						for (var i = 0; i < loopEnd; i++) {
-							var spBonusiFrom = loop ? spBonusFrom[i] : spBonusFrom;
-							var spBonusiTo = loop ? spBonusTo[i] : spBonusTo;
-							if (spBonusiFrom.selection && !spBonusiTo.selection) spBonusiTo.selection = spBonusiFrom.selection;
-						}
-					}
-				};
-				if (spCastFrom.abilityBackup) {
-					spCastTo.abilityBackup = spCastFrom.abilityBackup;
-					spCastTo.ability = spCastFrom.ability;
-				};
 			};
-			if (global.docFrom.CurrentCasters.incl || global.docFrom.CurrentCasters.excl) {
-				CurrentCasters = newObj(global.docFrom.CurrentCasters);
-				for (var aCast in CurrentCasters) {
-					for (var i = 0; i < CurrentCasters.incl.length; i++) {
-						if (classesArray.indexOf(CurrentCasters.incl[i]) === -1) {
-							CurrentCasters.incl.splice(i, 1);
-							i -= 1;
+			// copy the "manualClick" entries from the imported CurrentProfs.skill
+			if (!fromBefore13 && CurrentProfsFrom && CurrentProfsFrom.skill) {
+				for (var anEntry in CurrentProfsFrom.skill) {
+					if (anEntry == "descrTxt") continue;
+					if (anEntry.indexOf("_Exp") !== -1) {
+						if (CurrentProfsFrom.skill[anEntry]["manualClick"]) {
+							if (!CurrentProfs.skill[anEntry]) CurrentProfs.skill[anEntry] = {};
+							CurrentProfs.skill[anEntry]["manualClick"] = "full";
 						}
-					}
-					for (var i = 0; i < CurrentCasters.excl.length; i++) {
-						if (classesArray.indexOf(CurrentCasters.excl[i]) === -1) {
-							CurrentCasters.excl.splice(i, 1);
-							i -= 1;
-						}
+					} else if (CurrentProfsFrom.skill[anEntry].indexOf("manualClick") !== -1) {
+						if (!CurrentProfs.skill[anEntry]) CurrentProfs.skill[anEntry] = [];
+						if (CurrentProfs.skill[anEntry].indexOf("manualClick") == -1) CurrentProfs.skill[anEntry].push("manualClick");
 					}
 				}
 			}
-			SetStringifieds();
 
-			//now do the spell rows, but only if the sheet type is the same or only the first page was visible
-			if (pagesLayout && pagesLayout.SSfrontExtras && (sameType || !pagesLayout.SSmoreExtras)) {
-				prefixA = [[pagesLayout.SSfrontExtraNmFrom], [pagesLayout.SSfrontExtraNmTo]];
-				if (pagesLayout.SSmoreExtras) {
-					prefixA[0] = prefixA[0].concat(pagesLayout.SSmoreExtraNmFrom);
-					prefixA[1] = prefixA[1].concat(pagesLayout.SSmoreExtraNmTo);
-				}
-				for (var i = 0; i < prefixA[0].length; i++) {
-					var prefixFrom = prefixA[0][i];
-					var prefixTo = prefixA[1][i];
-					nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.spells ? global.docFrom.FieldNumbers.spells : FieldNumbers.spells;
-					nmbrFlds = nmbrFlds[i < 1 ? 0 : 1];
-					if (i === 0) { //set the first class header on SSfront
-						var tClassFld = global.docFrom.getField(prefixFrom + "spellshead.class.0");
-						if (tClassFld && tClassFld.value && CurrentSpells[tClassFld.value]) SetSpellSheetElement(prefixTo + "spells.remember.0", "header", 0, tClassFld.value);
-						//hide the prepared section if not visible
-						var tPrepFldFrom = global.docFrom.getField(prefixFrom + "spellshead." + (fromSheetTypePF ? "Image" : "Text") + ".prepare.0");
-						var tPrepFldToNm = prefixTo + "spellshead." + (typePF ? "Image" : "Text") + ".prepare.0";
-						if (tPrepFldFrom && tPrepFldFrom.display === display.hidden) {
-							MakePreparedMenu_PreparedOptions(tPrepFldToNm);
+			//set the description fields
+			ImportField("PC Name"); ImportField("Player Name"); ImportField("Size Category", { notTooltip: true }); ImportField("Height", { notTooltip: true }); ImportField("Weight", { notTooltip: true }); ImportField("Sex"); ImportField("Hair colour", { notTooltip: true }); ImportField("Eyes colour", { notTooltip: true }); ImportField("Skin colour", { notTooltip: true }); ImportField("Age", { notTooltip: true }); ImportField("Alignment", { notTooltip: true }); ImportField("Faith/Deity", { notTooltip: true }); ImportField("Speed", { notTooltip: true }); ImportField("Speed encumbered", { notTooltip: true });
+
+			//add the content from the saving throw and vision field, but not if importing from an older version
+			if (FromVersion >= semVersToNmbr(12.998)) {
+			//First make sure the "Immune to" and "Adv on saves vs" match with the import
+				var importSaveTxt = function (type) {
+					var preTxt = type === "adv_vs" ? "Adv. on saves vs." : type === "immune" ? "Immune to" : false;
+					var fld = "Saving Throw advantages / disadvantages";
+					var svFld = global.docFrom.getField(fld).value;
+					if (!preTxt || !svFld) return;
+					var fromArr = [], toArr = [];
+					if (CurrentProfsFrom.savetxt[type]) {
+						for (var testAtt in CurrentProfsFrom.savetxt[type]) {
+							if (type === "immune" || !CurrentProfsFrom.savetxt.immune[testAtt]) {
+								fromArr.push(CurrentProfsFrom.savetxt[type][testAtt].name);
+							};
 						};
-					}
-					//set the spell remember fields
-					for (var a = 0; a <= nmbrFlds; a++) {
-						ImportField(prefixTo + "spells.remember." + a, { notTooltip: true, notSubmitName: true }, prefixFrom + "spells.remember." + a);
-					}
-					//set the headers and spell dividers
-					for (var a = 0; a <= 9; a++) {
-						if (a < 4) {
-							ImportField(prefixTo + "spellshead.Text.header." + a, { notTooltip: true, notSubmitName: true, cleanValue: true }, prefixFrom + "spellshead.Text.header." + a);
-							ImportField(prefixTo + "spellshead.ability." + a, { notTooltip: true, notSubmitName: true, cleanValue: true }, prefixFrom + "spellshead.ability." + a);
-						}
-						ImportField(prefixTo + "spellsdiv.Text." + a, { notTooltip: true, notSubmitName: true, cleanValue: true }, prefixFrom + "spellsdiv.Text." + a);
 					};
-					//set the headers spellcasting abilities
-					doChildren("spellshead.ability", prefixFrom, prefixTo);
-					//set the headers bluetext values
-					doChildren("BlueText.spellshead", prefixFrom, prefixTo);
-				}
+					if (CurrentProfs.savetxt[type]) {
+						for (var testAtt in CurrentProfs.savetxt[type]) {
+							if (type === "immune" || !CurrentProfs.savetxt.immune[testAtt]) {
+								toArr.push(CurrentProfs.savetxt[type][testAtt].name);
+							};
+						};
+					};
+					var newArr = [].concat(toArr);
+					var svMatch = svFld.match(RegExp(preTxt.RegEscape() + ".*?(; |$)", "i"));
+					if (!svMatch) return;
+					var svOpt = svMatch[0].replace(/; ?$/, "").replace(RegExp(preTxt.RegEscape() + " *?", "i"), "").split(/, and | and |, |; /);
+					for (var i = 0; i < svOpt.length; i++) {
+						var addObj = svOpt[i].replace(/^and |^ +/i, "");
+						if (addObj && !(RegExp("\\b" + addObj + "\\b", "i")).test(toArr)) newArr.push(addObj);
+					};
+					newArr.sort();
+					var toStr = formatLineList(preTxt, toArr);
+					var newStr = formatLineList(preTxt, newArr);
+					if (toStr !== newStr) {
+						ReplaceString(fld, newStr, "; ", toStr, false);
+						global.docFrom.getField(fld).value = global.docFrom.getField(fld).value.replace(svMatch[0], "");
+					};
+				};
+				importSaveTxt("adv_vs");
+				importSaveTxt("immune");
+				//Then get the entries in these fields and add them one by one
+				var addConsolidatedEntries = function (fName) {
+					var fFld = global.docFrom.getField(fName);
+					if (!fFld) return;
+					var fArrF = fFld.value.split(/; ?/);
+					var fArrT = global.docTo.getField(fName).value.split(/; ?/);
+					for (var fF = 0; fF < fArrT.length; fF++) fArrT[fF] = clean(fArrT[fF].toLowerCase(), " ");
+					for (var fF = 0; fF < fArrF.length; fF++) {
+						var fVal = clean(fArrF[fF], " ");
+						if (fArrT.indexOf(fVal.toLowerCase()) === -1) AddString(fName, fVal, "; ");
+					};
+				};
+				addConsolidatedEntries("Vision"); addConsolidatedEntries("Saving Throw advantages / disadvantages");
 			};
+
+			//add limited features that are not yet defined (all those without a tooltip)
+			for (var i = 1; i < FieldNumbers.limfea; i++) {
+				var limFeaFrom = global.docFrom.getField("Limited Feature " + i);
+				if (!limFeaFrom || !limFeaFrom.value || limFeaFrom.userName) continue;
+				var lFFusa = global.docFrom.getField("Limited Feature Max Usages " + i).value;
+				var lFFrec = global.docFrom.getField("Limited Feature Recovery " + i).value;
+				AddFeature(limFeaFrom.value, lFFusa, "", lFFrec);
+			};
+
+			//add the spell boxes
+			for (var i = 1; i <= 9; i++) ImportField("SpellSlots.CheckboxesSet.lvl" + i, { notTooltip: true });
+
+			//set the armour and weapon proficiencies
+			ImportField("Proficiency Armor Other Description", { notTooltip: true });
+			if (fromBefore13) {
+			// manually set proficiency checkboxes
+				var profFldsArray = [
+					"Proficiency Armor Light",
+					"Proficiency Armor Medium",
+					"Proficiency Armor Heavy",
+					"Proficiency Shields",
+					"Proficiency Weapon Simple",
+					"Proficiency Weapon Martial",
+				];
+				for (var i = 0; i < profFldsArray.length; i++) {
+					var profFromFld = global.docFrom.getField(profFldsArray[i]);
+					var profToFld = global.docTo.getField(profFldsArray[i]);
+					if (!profFromFld || !profToFld) continue;
+					var profFromChecked = profFromFld.isBoxChecked(0) === 1;
+					var profToChecked = profToFld.isBoxChecked(0) === 1;
+					if (profFromChecked !== profToChecked) {
+						profToFld.checkThisBox(0, profFromChecked);
+						setCheckboxProfsManual(profFldsArray[i]);
+					}
+				}
+				// manual weapon additions
+				var profsManualFromFnd = global.docFrom.CurrentWeapons.proficiencies["Manually added"];
+				var profsManualFromXtr = global.docFrom.CurrentWeapons.manualproficiencies;
+				var profsManualFrom = profsManualFromXtr ? profsManualFromXtr : [];
+				if (profsManualFromFnd) {
+					for (var i = 0; i < profsManualFromFnd.length; i++) {
+						var profManualWea = WeaponsList[profsManualFromFnd[i]];
+						if (profManualWea) profsManualFrom.push(profManualWea.name);
+					}
+				}
+				if (profsManualFrom.length) {
+					Value("Proficiency Weapon Other Description", [What("Proficiency Weapon Other Description")].concat(profsManualFrom).join(", "));
+					setOtherWeaponProfsManual();
+				}
+			} else {
+			// manually set proficiency checkboxes
+				var profFromVar = global.docFrom.CurrentProfs;
+				var profFldsArray = [
+					["armour", "light"],
+					["armour", "medium"],
+					["armour", "heavy"],
+					["armour", "shields"],
+					["weapon", "simple"],
+					["weapon", "martial"],
+				];
+				for (var i = 0; i < profFldsArray.length; i++) {
+					var profSort = profFldsArray[i][0];
+					var profType = profFldsArray[i][1];
+					var normalState = CurrentProfs[profSort][profType] ? true : false;
+					if (profFromVar[profSort][profType + "_manual" + (normalState ? "off" : "on")]) {
+						CurrentProfs[profSort][profType + "_manual" + (normalState ? "off" : "on")] = true;
+						SetProf(profSort, undefined, profType, undefined, true);
+					}
+				};
+				// manual weapon additions
+				if (profFromVar.weapon.otherWea && profFromVar.weapon.otherWea["Manually added"]) {
+					CurrentProfs.weapon.otherWea["Manually added"] = profFromVar.weapon.otherWea["Manually added"];
+					SetProf("weapon", undefined, "other");
+				}
+			}
+
+			//a function to add the 'new' languages, tools, resistances, actions
+			var addNotDefined = function (typeFlds, iterations) {
+				var fromOldVersion = FromVersion < semVersToNmbr(12.998);
+				var functionAdd = function (typeAdd, input, replaceThis) {
+					switch (typeAdd) {
+						case "Language " :
+						case "Tool " :
+							AddLangTool(typeAdd, input, false, false, replaceThis, fromOldVersion);
+							break;
+						case "Resistance Damage Type " :
+							AddResistance(input, false, replaceThis, fromOldVersion);
+							break;
+						case "Action " :
+						case "Bonus Action " :
+						case "Reaction " :
+							AddAction(typeAdd, input, false, replaceThis, fromOldVersion);
+							break;
+					};
+				};
+				for (var i = 1; i <= iterations; i++) {
+					var fromFld = global.docFrom.getField(typeFlds + i);
+					if (!fromFld || !fromFld.value || fromFld.value === fromFld.defaultValue) continue;
+					if (!fromOldVersion) {
+						if (fromFld.value !== fromFld.submitName) {
+							functionAdd(typeFlds, fromFld.value, fromFld.submitName);
+						};
+					} else { // can't use the submitName as it wasn't used before v12.998
+						var fromFldUNit = fromFld.userName && (/.*?\"(.*?)\".*/).test(fromFld.userName) ? fromFld.userName.replace(/.*?\"(.*?)\".*/, "$1") : (fromFld.userName ? fromFld.userName.replace(/.*?resistance to (.*?) was gained from.*/, "$1") : "");
+						if (!fromFld.userName || fromFldUNit.toLowerCase() !== fromFld.value.toLowerCase()) {
+							functionAdd(typeFlds, fromFld.value, fromFldUNit);
+						};
+					};
+				};
+			};
+
+			//languages and tools
+			var nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.langstools ? global.docFrom.FieldNumbers.langstools : FieldNumbers.langstools;
+			addNotDefined("Language ", nmbrFlds); addNotDefined("Tool ", nmbrFlds);
+			nmbrFlds = global.docFrom.FieldNumbers.actions ? global.docFrom.FieldNumbers.actions : FieldNumbers.actions;
+			addNotDefined("Reaction ", nmbrFlds); addNotDefined("Bonus Action ", nmbrFlds);
+			nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.trueactions ? global.docFrom.FieldNumbers.trueactions : FieldNumbers.trueactions;
+			addNotDefined("Action ", nmbrFlds);
+			addNotDefined("Resistance Damage Type ", 6);
+
+			//armor
+			ImportField("AC Armor Description", { notTooltip: true }); ImportField("AC Armor Bonus", { notTooltip: true }); ImportField("AC Armor Weight", { notTooltip: true }); ImportField("AC during Rest");
+			ImportField("AC Shield Bonus Description", { notTooltip: true }); ImportField("AC Shield Bonus", { notTooltip: true }); ImportField("AC Shield Weight", { notTooltip: true });
+			ImportField("Medium Armor", { notTooltip: true }); ImportField("Heavy Armor", { notTooltip: true });
+			if (ImportField("AC Stealth Disadvantage", { notTooltip: true })) ConditionSet();
+
+			//hit points, hit die
+			ImportField("HP Max", { notTooltip: true }); ImportField("HP Max Current", { notTooltip: true }); ImportField("HP Temp", { notTooltip: true }); ImportField("HP Current", { notTooltip: true });
+			ImportField("HD1 Level"); ImportField("HD1 Die"); ImportField("HD2 Level"); ImportField("HD2 Die"); ImportField("HD3 Level"); ImportField("HD3 Die"); SetHPTooltip(false, false);
+
+			//do the second page
+			ImportField("Personality Trait"); ImportField("Ideal"); ImportField("Bond"); ImportField("Flaw");
+			ImportField("Background Feature", { notTooltip: true, notSubmitName: true }); ImportField("Background Feature Description", { notTooltip: true, compareNoSpaces: true });
+			ImportField("Racial Traits", { notTooltip: true, compareNoSpaces: true });
+
+			//do the adventure gear sections
+			ImportField("Platinum Pieces"); ImportField("Gold Pieces"); ImportField("Electrum Pieces"); ImportField("Silver Pieces"); ImportField("Copper Pieces");
+			ImportField("Valuables1"); ImportField("Valuables2"); ImportField("Valuables3"); ImportField("Valuables4");
+			ImportField("Carrying Capacity Multiplier", { notTooltip: true });
+
+			nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.gear ? global.docFrom.FieldNumbers.gear : FieldNumbers.gear;
+			for (var i = 1; i <= nmbrFlds; i++) {
+				var fromFld = global.docFrom.getField("Adventuring Gear Row " + i);
+				if (i <= FieldNumbers.gear) {
+					ImportField("Adventuring Gear Row " + i); ImportField("Adventuring Gear Location.Row " + i); ImportField("Adventuring Gear Amount " + i); ImportField("Adventuring Gear Weight " + i);
+				} else if (fromFld && fromFld.value) {
+					AddToInv("gear", "ronly", fromFld.value, global.docFrom.getField("Adventuring Gear Amount " + i).value, global.docFrom.getField("Adventuring Gear Weight " + i).value, global.docFrom.getField("Adventuring Gear Location.Row " + i).value, false, false, false, true);
+				}
+			}
+
+			//the third page
+			// if from version < 13, do magic items after setting the rest of the fields so their automation is run afterwards
+			if (fromBefore13) importMagicItems();
+
+			ImportField("Extra.Other Holdings");
+
+			//extra equipment
+			nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.extragear ? global.docFrom.FieldNumbers.extragear : FieldNumbers.extragear;
+			for (var i = 1; i <= nmbrFlds; i++) {
+				var fromFld = global.docFrom.getField("Extra.Gear Row " + i);
+				if (i <= FieldNumbers.extragear) {
+					ImportField("Extra.Gear Row " + i); ImportField("Extra.Gear Location.Row " + i); ImportField("Extra.Gear Amount " + i); ImportField("Extra.Gear Weight " + i);
+				} else if (fromFld && fromFld.value) {
+					AddToInv("extra", "ronly", fromFld.value, global.docFrom.getField("Extra.Gear Amount " + i).value, global.docFrom.getField("Extra.Gear Weight " + i).value, global.docFrom.getField("Extra.Gear Location.Row " + i).value, false, false, false, true);
+				}
+			}
+
+
+			//the background page
+			//set the all the organisation/faction texts and other Adventure League fields
+			if (ImportField("Background_Faction.Text")) SetFactionSymbol("Background_Faction.Text", What("Background_Faction.Text"), true);
+			ImportField("Background_FactionRank.Text"); ImportField("Background_Renown.Text"); ImportField("DCI.Text");
+			//set the rest of the background page
+			ImportField("Background_History"); ImportField("Background_Appearance"); ImportField("Background_Enemies");
+			if (bothPF) {
+				ImportField("Background_Organisation.Left"); ImportField("Background_Organisation.Right");
+			} else if (bothCF) {
+				ImportField("Background_Organisation");
+			} else if (typePF && !fromSheetTypePF) {
+				ImportField("Background_Organisation.Left", false, "Background_Organisation");
+			} else if (!typePF && fromSheetTypePF) {
+				ImportField("Background_Organisation", false, "Background_Organisation.Left");
+			}
+			ImportField("Lifestyle", { cleanValue: true });
+
+			//some hidden fields that we should do now
+			ImportField("ChangesDialogSkip.Stringified"); ImportField("Print Remember"); ImportField("SubClass Remember"); ImportField("Wildshapes.Remember");
+
+
+			//>> make a function to do all children of a parent field
+			var doChildren = function (parentFld, fromPre, toPre, excludeRegEx, inclVisibility, actionsObj) {
+				var parentA = global.docTo.getField(toPre + parentFld);
+				if (!parentA) return;
+				if (actionsObj) {
+					actionsObj.notTooltip = true;
+					actionsObj.doVisiblity = inclVisibility
+				};
+				parentA = parentA.getArray();
+				for (var pA =  0; pA < parentA.length; pA++) {
+					var pAnameTo = parentA[pA].name;
+					if (excludeRegEx && excludeRegEx.test(pAnameTo)) continue;
+					var pAnameFrom = pAnameTo.replace(toPre, fromPre);
+					ImportField(pAnameTo, actionsObj ? actionsObj : { notTooltip: true, doVisiblity: inclVisibility }, pAnameFrom);
+				}
+			}
+
+			// do the companion pages
+			//run through each one in the array
+			var prefixA = pagesLayout && pagesLayout.AScompExtras ? [pagesLayout.AScompExtraNmFrom, pagesLayout.AScompExtraNmTo] : [[], []];
+			for (var i = 0; i < prefixA[0].length; i++) {
+				var prefixFrom = prefixA[0][i];
+				var prefixTo = prefixA[1][i];
+
+				//set the visibility of the different elements
+				if (ImportField(prefixTo + "Companion.Layers.Remember", { notTooltip: true, notSubmitName: true }, prefixFrom + "Companion.Layers.Remember")) ShowCompanionLayer(prefixTo);
+				doChildren("Whiteout.Cnote", prefixFrom, prefixTo, false, true);
+
+				//get and apply the race and companion type
+				var compRaceFldFrom = global.docFrom.getField(prefixFrom + "Comp.Race");
+				var compRaceFldTo = global.docFrom.getField(prefixFrom + "Comp.Race");
+				if (compRaceFldFrom.value) {
+					if (compRaceFldFrom.submitName) compRaceFldTo.submitName = compRaceFldFrom.submitName;
+					var compTypeFldFrom = global.docFrom.getField(prefixFrom + "Companion.Remember");
+					global.docTo.ApplyCompRace(compRaceFldFrom.value, prefixTo, compTypeFldFrom ? compTypeFldFrom.value : "");
+				}
+
+				//set companion ability scores and modifiers
+				for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
+					var abiS = AbilityScores.abbreviations[a];
+					ImportField(prefixTo + "Comp.Use.Ability." + abiS + ".Score", { notTooltip: true, notSubmitName: true }, prefixFrom + "Comp.Use.Ability." + abiS + ".Score");
+					Value(prefixTo + "Comp.Use.Ability." + abiS + ".Mod", Math.round((What(prefixTo + "Comp.Use.Ability." + abiS + ".Score") - 10.5) * 0.5));
+				}
+
+				//set some one-off fields
+				ImportField(prefixTo + "Comp.Type", { notTooltip: true, notSubmitName: true }, prefixFrom + "Comp.Type");
+
+				//do the description fields
+				doChildren("Comp.Desc", prefixFrom, prefixTo);
+
+				//do the bulk of the fields (but not HP Max, see below)
+				doChildren("Comp.Use", prefixFrom, prefixTo, /\.Score|\.Mod|Text|Calculated|Button|Init\.Dex|HD\.Con|HP\.Max$/i);
+
+				//do HP
+				// Because of a bug in v13.1.4 and older, we need to do something special for creatures that have an alt HP calculation
+				var keepCompRaceHPsetting = false;
+				if (fromBefore13_1_5 && global.docTo.CurrentEvals.Comp && global.docTo.CurrentEvals.Comp[prefixTo] && global.docTo.CurrentEvals.Comp[prefixTo].hp) {
+					var compRaceHPsetFrom = global.docFrom.getField(prefixFrom + "Comp.Use.HP.Max").submitName.split(",");
+					var compRaceHPsetTo = global.docTo.getField(prefixTo + "Comp.Use.HP.Max").submitName.split(",");
+					keepCompRaceHPsetting = compRaceHPsetFrom[3] !== compRaceHPsetTo[3] && compRaceHPsetTo[3].indexOf("alt") !== -1;
+					if (keepCompRaceHPsetting) {
+					// add text to the dialog
+						var sCompHpTitle = toUni("\nFixed special HP calculation for companions");
+						if (aTextExtra.indexOf(sCompHpTitle) === -1) aTextExtra.push(sCompHpTitle);
+						var sCompName = What(prefixTo + "Comp.Desc.Name");
+						if (!sCompName) sCompName = compRaceFldTo.value;
+						aTextExtra.push('  \u2022 For the companion "' + sCompName + '" on page ' + (compRaceFldFrom.page + 1));
+					}
+				}
+				ImportField(prefixTo + "Comp.Use.HP.Max", { notTooltip: true, notSubmitName: keepCompRaceHPsetting }, prefixFrom + "Comp.Use.HP.Max");
+
+				//do the BlueText fields
+				doChildren("BlueText.Comp.Use", prefixFrom, prefixTo);
+
+				//do the equipment fields
+				doChildren("Comp.eqp", prefixFrom, prefixTo, /Display|Image|Subtotal|Notes|Whiteout|Text/i);
+
+				//do the notes fields
+				doChildren("Cnote", prefixFrom, prefixTo);
+
+				//if importing from Colourful to Colourful, do skills (from Printer Friendly to Printer Friendly is already included above)
+				if (bothCF) {
+					doChildren("Text.Comp.Use.Skills", prefixFrom, prefixTo, /Name/i);
+				} else if (!fromSheetTypePF && typePF) {
+				//if importing from Colourful to Printer Friendly, do skills and the extra equipment rows
+					var skillsOrderFrom = SkillsList["abbreviations" + (Who("Text.SkillsNames") === "abilities" ? "ByAS" : "")].slice(0, -2);
+					var skillsOrderTo = SkillsList.abbreviations.slice(0, -2);
+					for (var sN = 0; sN < skillsOrderTo.length; sN++) {
+						var skillFrom = global.docFrom.getField(prefixFrom + "Text.Comp.Use.Skills." + skillsOrderFrom[sN] + ".Prof");
+						var skillToProf = prefixTo + "Comp.Use.Skills." + skillsOrderTo[sN] + ".Prof";
+						var skillToExp = prefixTo + "Comp.Use.Skills." + skillsOrderTo[sN] + ".Exp";
+						if (skillFrom && skillFrom.value) {
+							Checkbox(skillToProf, skillFrom.value === "proficient" || skillFrom.value === "expertise");
+							Checkbox(skillToExp, skillFrom.value === "expertise");
+						}
+					};
+
+					//companion equipment secion is bigger on the Colourful than on the Printer Friendly
+					nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.compgear ? global.docFrom.FieldNumbers.compgear : FieldNumbers.compgear;
+					for (var i = FieldNumbers.compgear + 1; i <= nmbrFlds; i++) {
+						var fromFld = global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Row " + i);
+						if (fromFld && fromFld.value) {
+							AddToInv(prefixFrom + "Comp.", "l", fromFld.value, global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Amount " + i).value, global.docFrom.getField(prefixFrom + "Comp.eqp.Gear Weight " + i).value, "", false, false, false, true);
+						}
+					}
+				} else if (fromSheetTypePF && !typePF) {
+				//if importing from Printer Friendly to Colourful, do skills
+					var skillsOrderFrom = SkillsList.abbreviations.slice(0, -2);
+					var skillsOrderTo = SkillsList["abbreviations" + (global.docFrom.getField("Text.SkillsNames") && global.docFrom.getField("Text.SkillsNames").userName === "abilities" ? "ByAS" : "")].slice(0, -2);
+					for (var sN = 0; sN < skillsOrderTo.length; sN++) {
+						var skillTo = prefixTo + "Text.Comp.Use.Skills." + skillsOrderFrom[sN] + ".Prof";
+						var skillFromProf = global.docFrom.getField(prefixFrom + "Comp.Use.Skills." + skillsOrderTo[sN] + ".Prof");
+						var skillFromExp = global.docFrom.getField(prefixFrom + "Comp.Use.Skills." + skillsOrderTo[sN] + ".Exp");
+						if (skillFromProf && skillFromExp) {
+							if (skillFromProf.isBoxChecked(0)) {
+								Value(skillTo, skillFromExp.isBoxChecked(0) ? "expertise" : "proficient");
+							} else {
+								Value(skillTo, "nothing");
+							}
+						}
+					};
+				}
+			}
+
+			//do the notes pages
+			prefixA = pagesLayout && pagesLayout.ASnotesExtras ? [pagesLayout.ASnotesExtraNmFrom, pagesLayout.ASnotesExtraNmTo] : [[], []];
+			for (var i = 0; i < prefixA[0].length; i++) {
+				var prefixFrom = prefixA[0][i];
+				var prefixTo = prefixA[1][i];
+				doChildren("Whiteout.Notes", prefixFrom, prefixTo, false, true);
+				doChildren("Notes", prefixFrom, prefixTo);
+			}
+
+			//do the wildshape pages
+			prefixA = pagesLayout && pagesLayout.WSfrontExtras ? [pagesLayout.WSfrontExtraNmFrom, pagesLayout.WSfrontExtraNmTo] : [[], []];
+			for (var i = 0; i < prefixA[0].length; i++) {
+				var prefixFrom = prefixA[0][i];
+				var prefixTo = prefixA[1][i];
+				doChildren("Wildshapes.Info", prefixFrom, prefixTo); //the info values
+				doChildren("Wildshape.Race", prefixFrom, prefixTo);
+			}
+
+			//do the adventure logsheet pages
+			prefixA = pagesLayout && pagesLayout.ALlogExtras ? [pagesLayout.ALlogExtraNmFrom, pagesLayout.ALlogExtraNmTo] : [[], []];
+			var advLogRegChl = FromVersion < semVersToNmbr(12.994) ? /^(?!.*\d)|(?=.*(start|total|date)).*$/i : /^(?!.*\d)|(?=.*(start|total)).*$/i;
+			for (var i = 0; i < prefixA[0].length; i++) {
+				var prefixFrom = prefixA[0][i];
+				var prefixTo = prefixA[1][i];
+				if (i === 0) doChildren("AdvLog.1", prefixFrom, prefixTo, /^(?!.*start).*$/i); //the starting values
+				if (FromVersion < semVersToNmbr(12.994)) {
+					for (var x = 1; x <= FieldNumbers.logs; x++) {
+						var dateFldFr = global.docFrom.getField(prefixFrom + "AdvLog." + x + ".date");
+						var dateFldTo = global.docTo.getField(prefixTo + "AdvLog." + x + ".date");
+						if (!dateFldTo || !dateFldFr) continue;
+						var theDateForm = global.docFrom.What("DateFormat_Remember") ? global.docFrom.What("DateFormat_Remember") : "d mmm yyyy";
+						var theDateVal = util.scand(theDateForm, dateFldFr.value);
+						if (theDateVal) dateFldTo.value = util.printd("yy-mm-dd", theDateVal);
+					};
+				};
+				doChildren("AdvLog", prefixFrom, prefixTo, advLogRegChl);
+			}
+
+			//do the spell sheet pages
+			//first update the CurrentSpells variable
+			if (global.docFrom.CurrentSpells) {
+				var classesArray = [];
+				for (var aCast in CurrentSpells) {
+					classesArray.push(aCast);
+					var aCastFrom = aCast;
+					if (!global.docFrom.CurrentSpells[aCastFrom]) {
+						aCastFrom = aCastFrom.replace(/.*_-_/, "");
+						if (!global.docFrom.CurrentSpells[aCastFrom]) continue; //doesn't exist in the sheet importing from
+					}
+					var spCastTo = CurrentSpells[aCast];
+					var spCastFrom = global.docFrom.CurrentSpells[aCastFrom];
+					if (spCastFrom.selectCa) spCastTo.selectCa = spCastFrom.selectCa;
+					if (spCastFrom.offsetCa) spCastTo.offsetCa = spCastFrom.offsetCa;
+					if (spCastFrom.selectBo) spCastTo.selectBo = spCastFrom.selectBo;
+					if (spCastFrom.offsetBo) spCastTo.offsetBo = spCastFrom.offsetBo;
+					if (spCastFrom.extraBo) spCastTo.extraBo = spCastFrom.extraBo;
+					if (spCastFrom.selectSp) spCastTo.selectSp = spCastFrom.selectSp;
+					if (spCastFrom.offsetSp) spCastTo.offsetSp = spCastFrom.offsetSp;
+					if (spCastFrom.selectSpSB) spCastTo.selectSpSB = spCastFrom.selectSpSB;
+					if (spCastFrom.selectPrep) spCastTo.selectPrep = spCastFrom.selectPrep;
+					if (spCastFrom.blueTxt) spCastTo.blueTxt = newObj(spCastFrom.blueTxt);
+					if (spCastTo.bonus) {
+						for (var bKey in spCastTo.bonus) {
+							if (!spCastFrom.bonus[bKey]) continue; //doesn't exist in the sheet importing from
+							var spBonusFrom = spCastFrom.bonus[bKey];
+							var spBonusTo = spCastTo.bonus[bKey];
+							var spIsArrayFrom = isArray(spBonusFrom);
+							var spIsArrayTo = isArray(spBonusTo);
+							if (spIsArrayTo !== spIsArrayFrom) continue; //types don't match
+							var loop = spIsArrayTo && spIsArrayFrom;
+							var loopEnd = loop ? spBonusTo.length : 1;
+							for (var i = 0; i < loopEnd; i++) {
+								var spBonusiFrom = loop ? spBonusFrom[i] : spBonusFrom;
+								var spBonusiTo = loop ? spBonusTo[i] : spBonusTo;
+								if (spBonusiFrom.selection && !spBonusiTo.selection) spBonusiTo.selection = spBonusiFrom.selection;
+							}
+						}
+					};
+					if (spCastFrom.abilityBackup) {
+						spCastTo.abilityBackup = spCastFrom.abilityBackup;
+						spCastTo.ability = spCastFrom.ability;
+					};
+				};
+				if (global.docFrom.CurrentCasters.incl || global.docFrom.CurrentCasters.excl) {
+					CurrentCasters = newObj(global.docFrom.CurrentCasters);
+					for (var aCast in CurrentCasters) {
+						for (var i = 0; i < CurrentCasters.incl.length; i++) {
+							if (classesArray.indexOf(CurrentCasters.incl[i]) === -1) {
+								CurrentCasters.incl.splice(i, 1);
+								i -= 1;
+							}
+						}
+						for (var i = 0; i < CurrentCasters.excl.length; i++) {
+							if (classesArray.indexOf(CurrentCasters.excl[i]) === -1) {
+								CurrentCasters.excl.splice(i, 1);
+								i -= 1;
+							}
+						}
+					}
+				}
+				SetStringifieds();
+
+				//now do the spell rows, but only if the sheet type is the same or only the first page was visible
+				if (pagesLayout && pagesLayout.SSfrontExtras && (sameType || !pagesLayout.SSmoreExtras)) {
+					prefixA = [[pagesLayout.SSfrontExtraNmFrom], [pagesLayout.SSfrontExtraNmTo]];
+					if (pagesLayout.SSmoreExtras) {
+						prefixA[0] = prefixA[0].concat(pagesLayout.SSmoreExtraNmFrom);
+						prefixA[1] = prefixA[1].concat(pagesLayout.SSmoreExtraNmTo);
+					}
+					for (var i = 0; i < prefixA[0].length; i++) {
+						var prefixFrom = prefixA[0][i];
+						var prefixTo = prefixA[1][i];
+						nmbrFlds = global.docFrom.FieldNumbers && global.docFrom.FieldNumbers.spells ? global.docFrom.FieldNumbers.spells : FieldNumbers.spells;
+						nmbrFlds = nmbrFlds[i < 1 ? 0 : 1];
+						if (i === 0) { //set the first class header on SSfront
+							var tClassFld = global.docFrom.getField(prefixFrom + "spellshead.class.0");
+							if (tClassFld && tClassFld.value && CurrentSpells[tClassFld.value]) SetSpellSheetElement(prefixTo + "spells.remember.0", "header", 0, tClassFld.value);
+							//hide the prepared section if not visible
+							var tPrepFldFrom = global.docFrom.getField(prefixFrom + "spellshead." + (fromSheetTypePF ? "Image" : "Text") + ".prepare.0");
+							var tPrepFldToNm = prefixTo + "spellshead." + (typePF ? "Image" : "Text") + ".prepare.0";
+							if (tPrepFldFrom && tPrepFldFrom.display === display.hidden) {
+								MakePreparedMenu_PreparedOptions(tPrepFldToNm);
+							};
+						}
+						//set the spell remember fields
+						for (var a = 0; a <= nmbrFlds; a++) {
+							ImportField(prefixTo + "spells.remember." + a, { notTooltip: true, notSubmitName: true }, prefixFrom + "spells.remember." + a);
+						}
+						//set the headers and spell dividers
+						for (var a = 0; a <= 9; a++) {
+							if (a < 4) {
+								ImportField(prefixTo + "spellshead.Text.header." + a, { notTooltip: true, notSubmitName: true, cleanValue: true }, prefixFrom + "spellshead.Text.header." + a);
+								ImportField(prefixTo + "spellshead.ability." + a, { notTooltip: true, notSubmitName: true, cleanValue: true }, prefixFrom + "spellshead.ability." + a);
+							}
+							ImportField(prefixTo + "spellsdiv.Text." + a, { notTooltip: true, notSubmitName: true, cleanValue: true }, prefixFrom + "spellsdiv.Text." + a);
+						};
+						//set the headers spellcasting abilities
+						doChildren("spellshead.ability", prefixFrom, prefixTo);
+						//set the headers bluetext values
+						doChildren("BlueText.spellshead", prefixFrom, prefixTo);
+					}
+				};
+			};
+			//Change calculations to manual
+			if (fromBefore13) {
+				SetToManual_Dialog.mAtt = global.docFrom.getField("Manual Attack Remember") ? global.docFrom.What("Manual Attack Remember") !== "No" : false;
+				SetToManual_Dialog.mBac = global.docFrom.getField("Manual Background Remember") ? global.docFrom.What("Manual Background Remember") !== "No" : false;
+				SetToManual_Dialog.mCla = global.docFrom.getField("Manual Class Remember") ? global.docFrom.What("Manual Class Remember") !== "No" : false;
+				SetToManual_Dialog.mFea = global.docFrom.getField("Manual Feat Remember") ? global.docFrom.What("Manual Feat Remember") !== "No" : false;
+				SetToManual_Dialog.mRac = global.docFrom.getField("Manual Race Remember") ? global.docFrom.What("Manual Race Remember") !== "No" : false;
+				SetToManual_Button(true);
+			} else {
+				SetToManual_Button(true, newObj(docFromManual));
+			}
+
+			//Recalculate the weapons, for things might have changed since importing them
+			ReCalcWeapons(false);
+
+			//now that all the attacks of the first page and companion pages have been imported, set the attack colors
+			if (bothCF) {
+				ApplyAttackColor("", "", "Default");
+				ApplyAttackColor("", "", "Comp.");
+			};
+
+			//import the icons
+			IIerror = ImportIcons(pagesLayout, app.viewerType !== "Reader" && importFromPath[2]);
+
+			// set the focus to the top of the first page
+			tDoc.getField("Player Name").setFocus();
+		} catch (error) {
+			if (error !== "user stop") displayError(error, "An error occurred during importing:");
 		};
-	//Change calculations to manual
-		if (fromBefore13) {
-			SetToManual_Dialog.mAtt = global.docFrom.getField("Manual Attack Remember") ? global.docFrom.What("Manual Attack Remember") !== "No" : false;
-			SetToManual_Dialog.mBac = global.docFrom.getField("Manual Background Remember") ? global.docFrom.What("Manual Background Remember") !== "No" : false;
-			SetToManual_Dialog.mCla = global.docFrom.getField("Manual Class Remember") ? global.docFrom.What("Manual Class Remember") !== "No" : false;
-			SetToManual_Dialog.mFea = global.docFrom.getField("Manual Feat Remember") ? global.docFrom.What("Manual Feat Remember") !== "No" : false;
-			SetToManual_Dialog.mRac = global.docFrom.getField("Manual Race Remember") ? global.docFrom.What("Manual Race Remember") !== "No" : false;
-			SetToManual_Button(true);
-		} else {
-			SetToManual_Button(true, newObj(docFromManual));
-		}
 
-	//Recalculate the weapons, for things might have changed since importing them
-		ReCalcWeapons(false);
+		// A pop-up to inform the user of the changes
+		if (!closeAlert) {
+			global.docTo.InitializeEverything(consoleTrigger, true);
+			global.docTo.dirty = true;
+			global.docTo.calcCont();
+			thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
+			thermoM(0.9);
 
-		//now that all the attacks of the first page and companion pages have been imported, set the attack colors
-		if (bothCF) {
-			ApplyAttackColor("", "", "Default");
-			ApplyAttackColor("", "", "Comp.");
+			var aText = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n";
+			if (app.viewerType !== "Reader" && importFromPath[2]) { // if icons were imported
+				aText += toUni("IMPORTANT: Custom Icons") + "\nBecause you imported custom icons, the sheet will not work correctly right away, but only after saving the sheet and opening again. That is why, AFTER YOU CLOSE THIS DIALOG, YOU WILL BE PROMPTED TO SAVE THIS PDF AND IT WILL AUTOMATICALLY CLOSE AFTER THAT.\n\n";
+			}
+			if (!sameType) {
+				aText += toUni("Sheet Types Differ");
+				aText += "\nYou seem to have imported from another type of sheet (i.e. not \'" + tDoc.info.SheetType + "\'). This will have the unfortunate side-effect that some things might not have been imported, because there aren't an equal amount of entries for all things on all of MPMB's sheet types. For example, there is room for 6 attacks on the 'Colorful-A4' sheet, but for only 5 on the other types.";
+				aText += "\n\n" + toUni("Any of the following sections might be truncated:");
+				aText += typeA4 ? "" : "\n  \u2022 1st page: attacks, actions" + (typePF ? ", languages, tools" : "");
+				aText += typePF ? "" : "\n  \u2022 2nd page: equipment" + (typeA4 ? "" : ", feats, languages, tools");
+				aText += typeA4 ? "" : "\n  \u2022 Additional sheet: magic items" + (typePF ? ", equipment, feats" : "");
+				aText += !typePF ? "" : "\n  \u2022 Companion sheet(s): equipment;";
+				aText += !typePF ? "" : "\n  \u2022 Adventure Logsheet(s): the last entry of each page is missing";
+				aText += typeA4 ? "" : "\n  \u2022 Spell Sheet(s): spells near the bottom of the page";
+				aText += "\n\n";
+			};
+			aText += toUni("Some manual additions might not have transferred over") + "\nSome things that you adjusted manually on your old sheet might not have transferred to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.\n"
+			aText += [
+				toUni("Be Aware"),
+				"The 'Class Features' text is now solely what the automation added.",
+				"The 'Notes' section on the 3rd page is now solely what the automation added.",
+				"Attack and Ammunition attributes are now solely what the automation set.",
+				"Magic and Misc AC bonuses are now solely what the automation set.",
+				"Feat and Magic Item descriptions are now solely what the automation set.",
+				"Companion pages have been copied exactly, not using any updates in automation.",
+				"Wild Shapes have been re-calculated, manual changes have been ignored.",
+				"Ability Score dialog has been duplicated from the old version, changes by newer automation have been ignored. Read that dialog's text carefully to see if you are missing anything.",
+				sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "No spell sheets have been generated.",
+			].join("\n  \u2022 ");
+			if (abiScoreDialogReset) {
+				var columNames = ["base", tDoc.use2024Rules ? "background" : "race", "levels"].map(function (type) {
+					var idx = CurrentStats.cols.findIndex(function (obj) { return obj.type === type; });
+					return idx === -1 ? type : CurrentStats.cols[idx].name;
+				}).concat(["Custom"]);
+				var beta1424_0_11 = (tDoc.use2024Rules ? 24 : 14) + ".0.11-beta";
+				aText += [
+					"\n\n" + toUni("Ability Score Dialog"),
+					"Because the imported sheet was " + (isEditionSwitch ? "made for a different edition of D&D" : "an older version (before v" + (tDoc.use2024Rules ? 24 : 14) + ".0.11-beta)") + ", the values in the ability score dialog are now solely what the automation set, except for the " + formatLineList("", columNames) + " columns.",
+					"The ability score fields have been updated to what they were in the imported sheets. Only the values in the dialog have been changed.",
+				].join("\n  \u2022 ");
+				delete CurrentStats.ignoreImportGlobal;
+			}
+			if (fromBefore13) {
+				aText += [
+					"\n\n" + toUni("Bonuses from Magic Items"),
+					"Be aware that v13 introduces automation for magic items which has immediately been applied on import.",
+					"If you added bonuses to modifier fields to account for magic items, those bonuses will have been imported, but the magic item automation will have applied those bonuses as well. It could well be that some things now have twice the bonus that they should have! Please check carefully if all the modifier fields still display the right numbers.",
+					"The modifier fields are hidden by default, but you can toggle their visiblity with the Functions >> Modifiers bookmark.",
+				].join("\n  \u2022 ");
+			} else if (fromBefore13_2 && (docFromManual.feats || docFromManual.items)) {
+				aText += [
+					"\n\n" + toUni("Manual Option for Feats / Magic Items"),
+					"From v13.2.0 onwards, importing feats or magic items that have been set to manual is fully supported.",
+					"As you are importing from an older version, features granted by feats/items before calculations were disabled (set to manual) have not been imported.",
+				].join("\n  \u2022 ");
+			}
+			if (FromVersion < semVersToNmbr(12.998)) {
+				aText += [
+					"\n\n" + toUni("Importing from older version, before v12.998"),
+					"Some proficiencies you adjusted manually, like languages and tools, might not have transferred over correctly. This is because the new version of the sheet uses a different way of setting proficiencies that offer a choice.",
+					"Things manually added/changed in the fields for Saving Throw Advantages/Disadvantages and Senses have not been copied.",
+				].join("\n  \u2022 ");
+			};
+			if (aTextExtra.length) aText += "\n" + aTextExtra.join("\n");
+			app.alert({
+				cMsg: aText,
+				nIcon: 3,
+				cTitle: "Things to consider about the import",
+			});
 		};
+		thermoStop(); // Stop progress bar, forcibly
 
-		//import the icons
-		IIerror = ImportIcons(pagesLayout, app.viewerType !== "Reader" && importFromPath[2]);
-
-		// set the focus to the top of the first page
-		tDoc.getField("Player Name").setFocus();
-	} catch (error) {
-		if (error !== "user stop") displayError(error, "An error occurred during importing:");
+		// signal the end of importing
+		IsNotImport = true;
+		ignorePrereqs = false;
+		if (IIerror && isNaN(IIerror)) app.alert(IIerror);
 	};
-
-	// A pop-up to inform the user of the changes
-	if (!closeAlert) {
-		global.docTo.InitializeEverything(consoleTrigger, true);
-		global.docTo.dirty = true;
-		global.docTo.calcCont();
-		thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
-		thermoM(0.9);
-
-		var aText = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n";
-		if (app.viewerType !== "Reader" && importFromPath[2]) { // if icons were imported
-			aText += toUni("IMPORTANT: Custom Icons") + "\nBecause you imported custom icons, the sheet will not work correctly right away, but only after saving the sheet and opening again. That is why, AFTER YOU CLOSE THIS DIALOG, YOU WILL BE PROMPTED TO SAVE THIS PDF AND IT WILL AUTOMATICALLY CLOSE AFTER THAT.\n\n";
-		}
-		if (!sameType) {
-			aText += toUni("Sheet Types Differ");
-			aText += "\nYou seem to have imported from another type of sheet (i.e. not \'" + tDoc.info.SheetType + "\'). This will have the unfortunate side-effect that some things might not have been imported, because there aren't an equal amount of entries for all things on all of MPMB's sheet types. For example, there is room for 6 attacks on the 'Colorful-A4' sheet, but for only 5 on the other types.";
-			aText += "\n\n" + toUni("Any of the following sections might be truncated:");
-			aText += typeA4 ? "" : "\n  \u2022 1st page: attacks, actions" + (typePF ? ", languages, tools" : "");
-			aText += typePF ? "" : "\n  \u2022 2nd page: equipment" + (typeA4 ? "" : ", feats, languages, tools");
-			aText += typeA4 ? "" : "\n  \u2022 Additional sheet: magic items" + (typePF ? ", equipment, feats" : "");
-			aText += !typePF ? "" : "\n  \u2022 Companion sheet(s): equipment;";
-			aText += !typePF ? "" : "\n  \u2022 Adventure Logsheet(s): the last entry of each page is missing";
-			aText += typeA4 ? "" : "\n  \u2022 Spell Sheet(s): spells near the bottom of the page";
-			aText += "\n\n";
-		};
-		aText += toUni("Some manual additions might not have transferred over") + "\nSome things that you adjusted manually on your old sheet might not have transferred to the new sheet. This is done intentionally because that way the automation can take advantage of any changes made in the new version.\n"
-		aText += [
-			toUni("Be Aware"),
-			"The 'Class Features' text is now solely what the automation added.",
-			"The 'Notes' section on the 3rd page is now solely what the automation added.",
-			"Attack and Ammunition attributes are now solely what the automation set.",
-			"Magic and Misc AC bonuses are now solely what the automation set.",
-			"Feat and Magic Item descriptions are now solely what the automation set.",
-			"Companion pages have been copied exactly, not using any updates in automation.",
-			"Wild Shapes have been re-calculated, manual changes have been ignored.",
-			"Ability Score dialog has been duplicated from the old version, changes by newer automation have been ignored. Read that dialog's text carefully to see if you are missing anything.",
-			sameType || (pagesLayout && !pagesLayout.SSmoreExtras) ? "Only spells recognized by the automation have been set, unrecognized spells are now an empty row." : "No spell sheets have been generated.",
-		].join("\n  \u2022 ");
-		if (abiScoreDialogReset) {
-			var columNames = ["base", tDoc.use2024Rules ? "background" : "race", "levels"].map(function (type) {
-				var idx = CurrentStats.cols.findIndex(function (obj) { return obj.type === type; });
-				return idx === -1 ? type : CurrentStats.cols[idx].name;
-			}).concat(["Custom"]);
-			var beta1424_0_11 = (tDoc.use2024Rules ? 24 : 14) + ".0.11-beta";
-			aText += [
-				"\n\n" + toUni("Ability Score Dialog"),
-				"Because the imported sheet was " + (isEditionSwitch ? "made for a different edition of D&D" : "an older version (before v" + (tDoc.use2024Rules ? 24 : 14) + ".0.11-beta)") + ", the values in the ability score dialog are now solely what the automation set, except for the " + formatLineList("", columNames) + " columns.",
-				"The ability score fields have been updated to what they were in the imported sheets. Only the values in the dialog have been changed.",
-			].join("\n  \u2022 ");
-			delete CurrentStats.ignoreImportGlobal;
-		}
-		if (fromBefore13) {
-			aText += [
-				"\n\n" + toUni("Bonuses from Magic Items"),
-				"Be aware that v13 introduces automation for magic items which has immediately been applied on import.",
-				"If you added bonuses to modifier fields to account for magic items, those bonuses will have been imported, but the magic item automation will have applied those bonuses as well. It could well be that some things now have twice the bonus that they should have! Please check carefully if all the modifier fields still display the right numbers.",
-				"The modifier fields are hidden by default, but you can toggle their visiblity with the Functions >> Modifiers bookmark.",
-			].join("\n  \u2022 ");
-		} else if (fromBefore13_2 && (docFromManual.feats || docFromManual.items)) {
-			aText += [
-				"\n\n" + toUni("Manual Option for Feats / Magic Items"),
-				"From v13.2.0 onwards, importing feats or magic items that have been set to manual is fully supported.",
-				"As you are importing from an older version, features granted by feats/items before calculations were disabled (set to manual) have not been imported.",
-			].join("\n  \u2022 ");
-		}
-		if (FromVersion < semVersToNmbr(12.998)) {
-			aText += [
-				"\n\n" + toUni("Importing from older version, before v12.998"),
-				"Some proficiencies you adjusted manually, like languages and tools, might not have transferred over correctly. This is because the new version of the sheet uses a different way of setting proficiencies that offer a choice.",
-				"Things manually added/changed in the fields for Saving Throw Advantages/Disadvantages and Senses have not been copied.",
-			].join("\n  \u2022 ");
-		};
-		if (aTextExtra.length) aText += "\n" + aTextExtra.join("\n");
-		app.alert({
-			cMsg: aText,
-			nIcon: 3,
-			cTitle: "Things to consider about the import",
-		});
-	};
-	thermoStop(); // Stop progress bar, forcibly
-
-	// signal the end of importing
-	IsNotImport = true;
-	ignorePrereqs = false;
-	if (IIerror && isNaN(IIerror)) app.alert(IIerror);
-  };
 
 	// close the document that was opened to import from (if any)
 	if (global.docFrom && global.docFrom.toString() === "[object Doc]") {
@@ -1913,27 +1913,27 @@ function ImportIcons(pagesLayout, viaSaving) {
 
 		//now save this document and import this newly made page into the new document, as the last page
 		if (madeFlds) {
-		try {
+			try {
 			// First delete all the document-level scripts from the old sheet, otherwise we import them along
-			var oldDocLvl = ["Functions", "ListsClassesUA", "ListsClassesUAArtificer", "ListsClassesUAMystic", "ListsFeatsUA", "ListsRacesUA", "ListsSpellsUA"];
-			for (var d = 0; d < oldDocLvl.length; d++) {
-				global.docFrom.removeScript(oldDocLvl[d]);
-			}
-			//import the page as the last page
-			if (!MPMBImportPage(global.docTo, global.docFrom.path, usePage)) throw "Unable to import the user-defined icons-page.";
+				var oldDocLvl = ["Functions", "ListsClassesUA", "ListsClassesUAArtificer", "ListsClassesUAMystic", "ListsFeatsUA", "ListsRacesUA", "ListsSpellsUA"];
+				for (var d = 0; d < oldDocLvl.length; d++) {
+					global.docFrom.removeScript(oldDocLvl[d]);
+				}
+				//import the page as the last page
+				if (!MPMBImportPage(global.docTo, global.docFrom.path, usePage)) throw "Unable to import the user-defined icons-page.";
 
-			//now continue with the newly added page
-			var newFields = global.docTo.getField("tempIconImports").getArray();
-			for (var nF = 0; nF < newFields.length; nF++) {
-				var setFld = global.docTo.getField(newFields[nF].userName)
-				setFld.buttonSetIcon(newFields[nF].buttonGetIcon());
-				setFld.display = display.visible;
-			}
+				//now continue with the newly added page
+				var newFields = global.docTo.getField("tempIconImports").getArray();
+				for (var nF = 0; nF < newFields.length; nF++) {
+					var setFld = global.docTo.getField(newFields[nF].userName)
+					setFld.buttonSetIcon(newFields[nF].buttonGetIcon());
+					setFld.display = display.visible;
+				}
 
-			global.docTo.deletePages(global.docTo.numPages - 1); //remove the newly added page again
-		} catch (e) {
-			goodImport = "An error occured during importing the user-defined icons.";
-		}
+				global.docTo.deletePages(global.docTo.numPages - 1); //remove the newly added page again
+			} catch (e) {
+				goodImport = "An error occured during importing the user-defined icons.";
+			}
 		}
 	} else if (viaSaving && !MPMBImportFunctionsInstalled) {goodImport = "JavaScript file not installed";};
 
@@ -1954,7 +1954,7 @@ function ImportExtraChoices() {
 			var propFea = Temps.features[prop];
 			if (propFea.minlevel > classlevel) continue;
 			if (propFea.extrachoices && propFea.extraname) {
-				propFea.extrachoices.forEach( function(opt) {
+				propFea.extrachoices.forEach( function (opt) {
 					opt = opt.toLowerCase();
 					var propOpt = propFea[opt];
 					if (toTestE.indexOf(propOpt.name + " (" + propFea.extraname) !== -1) {
@@ -1963,7 +1963,7 @@ function ImportExtraChoices() {
 				});
 			}
 			if (propFea.choices) {
-				propFea.choices.forEach( function(opt) {
+				propFea.choices.forEach( function (opt) {
 					opt = opt.toLowerCase();
 					var propStr = [aClass, prop, opt].toString();
 					if (toTest.indexOf(propStr) !== -1) {
@@ -1996,12 +1996,12 @@ function AddExtraOtherChoices() {
 			// add the feature
 			ClassFeatureOptions([
 				oBonus.class,
-oBonus.feature,
-aChoices[c],
-"extra",
+				oBonus.feature,
+				aChoices[c],
+				"extra",
 				"add",
-true,
-oBonus.subclass,
+				true,
+				oBonus.subclass,
 			], "add");
 		}
 		// remove the temporary addition to classes.known
@@ -2311,7 +2311,7 @@ function MakeXFDFExport(partial) {
 
 		var DisplayExport_dialog = {
 
-			initialize: function(dialog) {
+			initialize: function (dialog) {
 				dialog.load({
 					"expo": toExport,
 				});
@@ -2395,7 +2395,7 @@ function AddUserScript(retResDia) {
 		}
 	} while (tries < 5);
 
-	var getDialog = function() {
+	var getDialog = function () {
 		var diaMax = Math.max(theUserScripts.length, diaIteration);
 		var moreDialogues = diaMax > diaIteration;
 		var AddUserScript_dialog = {
@@ -2404,7 +2404,7 @@ function AddUserScript(retResDia) {
 			diaMax: diaMax,
 			script: theUserScripts.length >= diaIteration ? theUserScripts[diaIteration - 1] : "",
 
-			initialize: function(dialog) {
+			initialize: function (dialog) {
 				dialog.load({
 					"img1": allIcons.import,
 					"jscr": this.script,
@@ -2416,30 +2416,30 @@ function AddUserScript(retResDia) {
 				dialog.setForeColorRed("txtB");
 				dialog.setForeColorRed("txtF");
 			},
-			commit: function(dialog) { // called when OK pressed
+			commit: function (dialog) { // called when OK pressed
 				var results = dialog.store();
 				this.script = results["jscr"];
 			},
-			other: function(dialog) { // called when OTHER pressed
+			other: function (dialog) { // called when OTHER pressed
 				var results = dialog.store();
 				this.script = results["jscr"];
 				dialog.end("next");
 			},
-			bFAQ: function(dialog) {
+			bFAQ: function (dialog) {
 				if (getFAQ(false, true)) {
 					dialog.end("bfaq");
 					var results = dialog.store();
 					this.script = results["jscr"];
 				}
 			},
-			bPre: function(dialog) {
+			bPre: function (dialog) {
 				var results = dialog.store();
 				this.script = results["jscr"];
 				dialog.end("bpre");
 			},
-			bWhy: function(dialog) { contactMPMB("how to add content"); },
-			bCoC: function(dialog) { contactMPMB("community content"); },
-			bCon: function(dialog) {
+			bWhy: function (dialog) { contactMPMB("how to add content"); },
+			bCoC: function (dialog) { contactMPMB("community content"); },
+			bCon: function (dialog) {
 				var results = dialog.store();
 				this.script = results["jscr"];
 				dialog.end("bcon");
@@ -2488,7 +2488,7 @@ function AddUserScript(retResDia) {
 							char_height: -1,
 							width: 750,
 							name: diaIteration !== 1 ? "" : defaultTxt2,
- 						}, {
+						}, {
 							type: "cluster",
 							width: 750,
 							font: "heading",
@@ -2595,7 +2595,7 @@ function AddUserScript(retResDia) {
 				}],
 			},
 		};
- 		if (moreDialogues) {
+		if (moreDialogues) {
 			setDialogName(AddUserScript_dialog, "OKbt", "type", "ok_cancel");
 			setDialogName(AddUserScript_dialog, "OKbt", "ok_name", "Go to Next Dialog >>");
 		};
@@ -2644,13 +2644,13 @@ function RunUserScript(atStartup, manualUserScripts) {
 	if (atStartup) tDoc.noDeprecatedWarnings = []; // make this globally accessible
 	var ScriptsAtEnd = [], ScriptAtEnd = [];
 	var minSheetVersion = [0, ""], maxSheetVersion = [999999, ""];
-	var RunFunctionAtEnd = function(inFunction) {
+	var RunFunctionAtEnd = function (inFunction) {
 		if (inFunction && typeof inFunction === "function") ScriptAtEnd.push(inFunction);
 	};
-	var runIt = function(aScript, scriptName, isManual) {
-		var RequiredSheetVersion = function(minNumber, maxNumber) {
+	var runIt = function (aScript, scriptName, isManual) {
+		var RequiredSheetVersion = function (minNumber, maxNumber) {
 			if (atStartup) return;
-			var getVersString = function(input) {
+			var getVersString = function (input) {
 				var inputStr = input.toString();
 				return /-|beta|\+/i.test(inputStr) ? inputStr.replace(/^\D+/, "").replace(/([^\-])\.?beta/i, "$1-beta") : getSemVers(input);
 			}
@@ -2825,7 +2825,7 @@ function fixClassReferences(bDontKickSubclasses) {
 
 // Define some custom import script functions as document-level functions so custom scripts including these can still be run from console
 function RequiredSheetVersion(minNumber, maxNumber) {
-	var getVersString = function(input) {
+	var getVersString = function (input) {
 		var inputStr = input.toString();
 		return /-|beta|\+/i.test(inputStr) ? inputStr.replace(/^\D+/, "").replace(/([^\-])\.?beta/i, "$1-beta") : getSemVers(input);
 	}
@@ -2857,7 +2857,7 @@ function RunFunctionAtEnd(inFunc) {
 	});
 	try {
 		inFunc();
-	} catch(e) {
+	} catch (e) {
 		app.alert({
 			cMsg: "The function entered in 'RunFunctionAtEnd()', that starts with:\n\t\"" + funcstart + "...\"\nproduces the following error, which might be because it was executed from the console:\n\n" + e,
 			nIcon: 0,
@@ -3039,7 +3039,7 @@ function CreateClassFeatureVariant(clName, clFea, varName, varObj) {
 			aFea[clFea].autoSelectExtrachoices = origFea.autoSelectExtrachoices;
 			FixAutoSelForceChoices(aFea[clFea], origFea.extraname, origFea);
 		}
-		if (origFea.extrachoices) {	
+		if (origFea.extrachoices) {
 			// add the extrachoices offered in the choice to the parent object
 			for (var i = 0; i < origFea.extrachoices.length; i++) {
 				var xtrStr = origFea.extrachoices[i].toLowerCase();
@@ -3170,7 +3170,7 @@ function ImportScriptFileDialog(retResDia) {
 	};
 
 	var AddScriptFiles_dialog = {
-		initialize: function(dialog) {
+		initialize: function (dialog) {
 			dialog.load({
 				img1: allIcons.import,
 				scrF: dialogObj,
@@ -3182,22 +3182,22 @@ function ImportScriptFileDialog(retResDia) {
 				bSee: false,
 			});
 		},
-		commit: function(dialog) {},
-		bFAQ: function(dialog) {
+		commit: function (dialog) {},
+		bFAQ: function (dialog) {
 			if (getFAQ(false, true)) {
 				dialog.end("bfaq");
 				var results = dialog.store();
 				this.script = results["jscr"];
 			}
 		},
-		bWhy: function(dialog) { contactMPMB("how to add content"); },
-		bCoC: function(dialog) { contactMPMB("community content"); },
-		bCon: function(dialog) {
+		bWhy: function (dialog) { contactMPMB("how to add content"); },
+		bCoC: function (dialog) { contactMPMB("community content"); },
+		bCon: function (dialog) {
 			var results = dialog.store();
 			this.script = results["jscr"];
 			dialog.end("bcon");
 		},
-		scrF: function(dialog) {
+		scrF: function (dialog) {
 			var allElem = dialog.store()["scrF"];
 			var remElem = GetPositiveElement(allElem);
 			if (remElem) {
@@ -3212,7 +3212,7 @@ function ImportScriptFileDialog(retResDia) {
 				});
 			};
 		},
-		bAdd: function(dialog) {
+		bAdd: function (dialog) {
 			ImportUserScriptFile();
 			var dialogObj = {};
 			for (var scriptFile in CurrentScriptFiles) {
@@ -3228,7 +3228,7 @@ function ImportScriptFileDialog(retResDia) {
 				bSee: false,
 			});
 		},
-		removeOrSee: function(dialog, deleteIt) {
+		removeOrSee: function (dialog, deleteIt) {
 			var allElem = dialog.store()["scrF"];
 			var fndElem = GetPositiveElement(allElem);
 			if (!fndElem) return;
@@ -3248,8 +3248,8 @@ function ImportScriptFileDialog(retResDia) {
 				dialog.load({ scrF: allElem });
 			}
 		},
-		bRem: function(dialog) { this.removeOrSee(dialog, true); },
-		bSee: function(dialog) { this.removeOrSee(dialog, false); },
+		bRem: function (dialog) { this.removeOrSee(dialog, true); },
+		bSee: function (dialog) { this.removeOrSee(dialog, false); },
 		description: {
 			name: "IMPORT CUSTOM SCRIPT DIALOG",
 			first_tab: "OKbt",

@@ -99,7 +99,7 @@ MagicItemsList["staff of purple"] = {
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
 	name: "Staff of Purple",
-/*	name // REQUIRED //
+	/*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the magic item as it will be used by the sheet
 
@@ -107,7 +107,7 @@ MagicItemsList["staff of purple"] = {
 	If you want more options for the magic item to be recognized as, see 'nameAlt' and 'nameTest' below.
 */
 	sortname: "Staff, Purple",
-/*	name // OPTIONAL //
+	/*	name // OPTIONAL //
 	TYPE:	string
 	USE:	name of the magic item as it will be shown in the menu for selecting magic items
 	ADDED:	v13.0.8
@@ -116,7 +116,7 @@ MagicItemsList["staff of purple"] = {
 	This attribute is not used to recognize the item or fill the field on the sheet.
 */
 	nameAlt: "Staff of Colour Magic",
-/*	nameAlt // OPTIONAL //
+	/*	nameAlt // OPTIONAL //
 	TYPE:	string
 	USE:	alternative setting-independent name with which the sheet can recognize the magic item
 
@@ -130,7 +130,7 @@ MagicItemsList["staff of purple"] = {
 */
 	nameTest: "Purple Staff",
 	nameTest: /^(?=.*staff)(?=.*magic)(?=.*(green|red|blue|orange|yellow|pink)).*$/i,
-/*	nameTest // OPTIONAL //
+	/*	nameTest // OPTIONAL //
 	TYPE:	string or regular expression
 	USE:	alternative name with which the sheet can recognize the magic item
 
@@ -139,7 +139,7 @@ MagicItemsList["staff of purple"] = {
 */
 	source: ["SRD", 204],
 	source: [["E", 7], ["S", 115]],
-/*	source // REQUIRED //
+	/*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the magic item is found
 
@@ -163,7 +163,7 @@ MagicItemsList["staff of purple"] = {
 	"HB" refers to the 'homebrew' source.
 */
 	defaultExcluded: true,
-/*	defaultExcluded // OPTIONAL //
+	/*	defaultExcluded // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this magic item should be excluded by default (true) or included by default (false)
 
@@ -177,7 +177,7 @@ MagicItemsList["staff of purple"] = {
 	Setting this attribute to false is the same as not including this attribute.
 */
 	type: "wondrous item",
-/*	type // REQUIRED //
+	/*	type // REQUIRED //
 	TYPE:	string
 	USE:	define what type the magic item is, to be used in the tooltip and to sort the item
 
@@ -194,7 +194,7 @@ MagicItemsList["staff of purple"] = {
 		"scroll"
 */
 	rarity: "rare",
-/*	rarity // REQUIRED //
+	/*	rarity // REQUIRED //
 	TYPE:	string
 	USE:	define what rarity the magic item is, to be used in the tooltip and to sort the item
 
@@ -207,7 +207,7 @@ MagicItemsList["staff of purple"] = {
 		"artifact"
 */
 	notLegalAL: true,
-/*	notLegalAL // OPTIONAL //
+	/*	notLegalAL // OPTIONAL //
 	TYPE:	boolean
 	USE:	set this to true if it the item is not legal in Adventurers League play
 
@@ -219,7 +219,7 @@ MagicItemsList["staff of purple"] = {
 */
 	magicItemTable: "H",
 	magicItemTable: ["B", "E"],
-/*	magicItemTable // OPTIONAL //
+	/*	magicItemTable // OPTIONAL //
 	TYPE:	string or array of strings (variable length)
 	USE:	define what table(s) in the DMG that the magic item appears on (or as listed in the AL Content Catalog)
 
@@ -236,7 +236,7 @@ MagicItemsList["staff of purple"] = {
 	the magic item will be treated as one that can be used in AL, but can't be traded.
 */
 	storyItemAL: true,
-/*	storyItemAL // OPTIONAL //
+	/*	storyItemAL // OPTIONAL //
 	TYPE:	boolean
 	USE:	set this to true if it is a 'Story Item' in Adventurers League play
 
@@ -247,7 +247,7 @@ MagicItemsList["staff of purple"] = {
 	the magic item will be treated as one that can be used in AL, but can't be traded.
 */
 	extraTooltip: "AL: can always be bought for 75 gp",
-/*	extraTooltip // OPTIONAL //
+	/*	extraTooltip // OPTIONAL //
 	TYPE:	string
 	USE:	text to add to the bullet points in the tooltip for the magic item
 
@@ -255,7 +255,7 @@ MagicItemsList["staff of purple"] = {
 	For example, a Potion of Climbing can always be bought for 75 gp in AL play and doesn't need to be unlocked.
 */
 	attunement: true,
-/*	attunement // OPTIONAL //
+	/*	attunement // OPTIONAL //
 	TYPE:	boolean
 	USE:	set to true if the magic item requires attunement
 
@@ -263,7 +263,7 @@ MagicItemsList["staff of purple"] = {
 	Setting this to false is the same as not including this attribute.
 */
 	weight: 12,
-/*	weight // OPTIONAL //
+	/*	weight // OPTIONAL //
 	TYPE:	number
 	USE:	the weight of the magic item in lb
 
@@ -271,18 +271,18 @@ MagicItemsList["staff of purple"] = {
 	Setting this to 0 is the same as not including this attribute.
 */
 	prerequisite: "Requires attunement by a dwarf",
-/*	prerequisite // OPTIONAL //
+	/*	prerequisite // OPTIONAL //
 	TYPE:	string
 	USE:	textual explanation of a prerequisite the item has
 
 	If the magic item doesn't have a prerequisite, you can just leave this attribute out.
 	Setting this to "" is the same as not including this attribute.
 */
-	prereqeval: function(v) {
+	prereqeval: function (v) {
 		return v.isSpellcaster && CurrentRace.known.indexOf("dwarf") !== -1;
 	},
 	prereqeval: "CurrentSpells.toSource() !== '({})' && CurrentRace.known.indexOf('dwarf') !== -1",
-/*	prereqeval // OPTIONAL //
+	/*	prereqeval // OPTIONAL //
 	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 	USE:	this should return 'true' if the prerequisite is met or 'false' otherwise
 
@@ -325,7 +325,7 @@ MagicItemsList["staff of purple"] = {
 		"return What('Dex') >= 13;" // Test if character has a Dexterity score of 13 or more
 */
 	allowDuplicates: true,
-/*	allowDuplicates // OPTIONAL //
+	/*	allowDuplicates // OPTIONAL //
 	TYPE:	boolean
 	USE:	set to true if multiples can exist of this magic item (e.g. a potion or using 'choices' attribute)
 
@@ -339,7 +339,7 @@ MagicItemsList["staff of purple"] = {
 	regardless if another instance has another form (choices) selected.
 */
 	description: "As an action, command the jug to produce liquid; or an action to uncorked it and pour 2 gal/min. After producing, it only makes the same up to its max, until next dawn. Oil (1 qt), acid (8 fl oz), basic poison (1/2 fl oz), beer (4 gal), honey/wine (1 gal), fresh water (8 gal), mayonnaise/vinegar (2 gal), salt water (12 gal).",
-/*	description // REQUIRED //
+	/*	description // REQUIRED //
 	TYPE:	string
 	USE:	the text to be filled in the description field of the magic item
 	CHANGE: v14.0.0 (formatting characters)
@@ -395,7 +395,7 @@ MagicItemsList["staff of purple"] = {
 	If this attribute is an array, the sheet will join it with a carriage return "\r".
 */
 	descriptionLong: "A heavy ceramic jug. As an action, the jug can be commanded to hold a chosen liquid. With another action, I can uncork the jug and pour the liquid out at 2 gallons per minute. Once commanded to produce a liquid, it can't produce a different one or more than the maximum of one, until the next dawn.\nLiquids (with maximum): acid (8 fl. oz.), basic poison (1/2 fl. oz.), beer (4 gallons), honey (1 gallon), mayonnaise (2 gallons), oil (1 quart), vinegar (2 gallons), fresh water (8 gallons), salt water (12 gallons), wine (1 gallon).",
-/*	descriptionLong // OPTIONAL //
+	/*	descriptionLong // OPTIONAL //
 	TYPE:	string
 	USE:	the text to be filled in the description field of the magic item, but only on the overflow page
 	CHANGE: v14.0.0 (formatting characters)
@@ -432,7 +432,7 @@ MagicItemsList["staff of purple"] = {
 		],
 		"***Header Paragraph***. This paragraph will be preceded by a line break and three spaces. The text 'Header Paragraph' will be rendered with unicode as being bold and italic because of the three asterisks around it.",
 	],
-/*	descriptionFull // OPTIONAL //
+	/*	descriptionFull // OPTIONAL //
 	TYPE:	array or string
 	USE:	description of the magic item as it appears in its source
 	CHANGE: v14.0.0 (array option & formatting tags)
@@ -478,7 +478,7 @@ MagicItemsList["staff of purple"] = {
 	`useFullDescription: true`, for example.
 */
 	calculate: "event.value = 'I can spend 10 minutes inspiring up to 6 friendly creatures within 30 feet who can see or hear and can understand me. Each gains lvl (' + What('Character Level') + ') + Cha mod (' + What('Cha Mod') + \") temporary hit points. One can't gain temporary hit points from this item again until after a short rest.\";",
-/*	calculate // OPTIONAL //
+	/*	calculate // OPTIONAL //
 	TYPE:	string
 	USE:	this string is set as the field calculation method for the description field of the magic item
 	CHANGE: v14.0.0 (formatting characters)
@@ -497,7 +497,7 @@ MagicItemsList["staff of purple"] = {
 	See the `description` attribute above for an explanation of how they work.
 */
 	scoresStackable: true,
-/*	scoresStackable // OPTIONAL //
+	/*	scoresStackable // OPTIONAL //
 	TYPE:	boolean
 	USE:	allow the `scores` and `scoresMaxLimited` of the magic item to stack with themselves
 	ADDED:	v14.0.12
@@ -515,7 +515,7 @@ MagicItemsList["staff of purple"] = {
 	Setting this attribute to `false` is the same as not including this attribute.
 */
 	chooseGear: {
-/*	chooseGear // OPTIONAL //
+		/*	chooseGear // OPTIONAL //
 	TYPE:	object
 	USE:	ask the player what type of gear (weapon, armor, ammunition) the item should be
 
@@ -533,7 +533,7 @@ MagicItemsList["staff of purple"] = {
 	Each attribute is described separately below.
 */
 		type: "armor",
-	/*	type // REQUIRED //
+		/*	type // REQUIRED //
 		TYPE:	string
 		USE:	the type of gear (weapon, armor, ammunition) this concerns
 
@@ -545,7 +545,7 @@ MagicItemsList["staff of purple"] = {
 		excludeCheck: function (inObjKey, inObj) {
 			return inObjKey == "hide";
 		},
-	/*	excludeCheck // OPTIONAL //
+		/*	excludeCheck // OPTIONAL //
 		TYPE:	function
 		USE:	filter things from the list of weapon, armor, or ammunition from the options
 		CHANGE:	v14.0.13 (added third variable: `v`)
@@ -583,7 +583,7 @@ MagicItemsList["staff of purple"] = {
 	*/
 		prefixOrSuffix: "suffix",
 		prefixOrSuffix: ["between", "Efreeti", "Armor"],
-	/*	prefixOrSuffix // OPTIONAL //
+		/*	prefixOrSuffix // OPTIONAL //
 		TYPE:	string
 		USE:	determine how the name of the selected gear is added to the name of the magic item
 		CHANGE: v13.2.3 (added "between" option)
@@ -626,7 +626,7 @@ MagicItemsList["staff of purple"] = {
 		is also used to populate the 1st page.
 	*/
 		descriptionChange: ["prefix", "armor"],
-	/*	descriptionChange // OPTIONAL //
+		/*	descriptionChange // OPTIONAL //
 		TYPE:	array
 		USE:	what part of the magic item's description to add the name of the selected gear to
 
@@ -649,7 +649,7 @@ MagicItemsList["staff of purple"] = {
 	*/
 		itemName1stPage: ["prefix", "of Purple"],
 		itemName1stPage: ["between", "Purple", "of Sparkles"],
-	/*	itemName1stPage // OPTIONAL //
+		/*	itemName1stPage // OPTIONAL //
 		TYPE:	array
 		USE:	how the name added to the 1st page should look like
 		CHANGE: v13.0.9 (added "between" option)
@@ -669,11 +669,11 @@ MagicItemsList["staff of purple"] = {
 			Use something that makes clear what magic item this concerns.
 		3. The third string is the string that will be used if the first entry is set to "between".
 			The result will then be "[2nd entry] [weapon name] [3rd entry]".
-		
+
 		The automation will add the spaces between the text.
 	*/
 		ammoAmount: 20,
-	/*	ammoAmount // OPTIONAL //
+		/*	ammoAmount // OPTIONAL //
 		TYPE:	number
 		USE:	set the amount of ammunition to add to the first page (if `type` = "ammo")
 		ADDED:	v13.0.9
@@ -684,7 +684,7 @@ MagicItemsList["staff of purple"] = {
 		ammunition in the ammunition section.
 	*/
 		noStealthDis: /mithral/i,
-	/*	noStealthDis // OPTIONAL //
+		/*	noStealthDis // OPTIONAL //
 		TYPE:	regular expression
 		USE:	armours matching this never impose disadvantage on stealth checks
 		ADDED:	v13.2.2
@@ -700,7 +700,7 @@ MagicItemsList["staff of purple"] = {
 		but the variation added by the feature doesn't.
 	*/
 		forceStealthDis: /oversized/i,
-	/*	forceStealthDis // OPTIONAL //
+		/*	forceStealthDis // OPTIONAL //
 		TYPE:	regular expression
 		USE:	armours matching this always impose disadvantage on stealth checks
 		ADDED:	v13.2.2
@@ -733,7 +733,7 @@ MagicItemsList["staff of purple"] = {
 		Setting this attribute to `false` is the same as not including this attribute.
 	*/
 	},
-/*
+	/*
 	>>>>>>>>>>>>>>>>>>>>>>>>>
 	>>> Common Attributes >>>
 	>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -746,7 +746,7 @@ MagicItemsList["staff of purple"] = {
 */
 
 
-/*
+	/*
 	>>>>>>>>>>>>>>>>>>>>>>>
 	>>> Composite Items >>>
 	>>>>>>>>>>>>>>>>>>>>>>>
@@ -759,7 +759,7 @@ MagicItemsList["staff of purple"] = {
 	The object name has to be exactly the same as the string in the 'choices' array, but need to be all lowercase.
 */
 	choices: ["Fire", "Ice"],
-/*	choices // OPTIONAL //
+	/*	choices // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	options for the magic item
 
@@ -774,7 +774,7 @@ MagicItemsList["staff of purple"] = {
 	selfChoosing: function () {
 		return classes.known.cleric ? "fire" : "";
 	},
-/*	selfChoosing // OPTIONAL //
+	/*	selfChoosing // OPTIONAL //
 	TYPE:	function
 	USE:	select the 'choice' automatically when the item is added
 
@@ -791,7 +791,7 @@ MagicItemsList["staff of purple"] = {
 	Even with this attribute present, the player can always change the 'choice' using the button on the sheet.
 */
 	choicesNotInMenu: true,
-/*	choicesNotInMenu // OPTIONAL //
+	/*	choicesNotInMenu // OPTIONAL //
 	TYPE:	boolean
 	USE:	omit the choices from the item menu (i.e. only list the main item's name)
 	ADDED:	v13.0.9
@@ -823,7 +823,7 @@ MagicItemsList["staff of purple"] = {
 	*/
 
 		name: "Staff of Purple Flame",
-	/*	name (inside choice) // OPTIONAL //
+		/*	name (inside choice) // OPTIONAL //
 		TYPE:	string
 		USE:	name of the magic item option as it will be used by the sheet
 
@@ -839,7 +839,7 @@ MagicItemsList["staff of purple"] = {
 	*/
 
 		description: "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\rThe potion's yellow fluid is streaked with black and swirls on its own.",
-	/*
+		/*
 		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		>>> MagicItemsList Attributes (inside choice) >>>
 		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

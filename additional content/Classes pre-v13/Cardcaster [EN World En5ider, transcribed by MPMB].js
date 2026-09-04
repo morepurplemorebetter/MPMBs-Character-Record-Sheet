@@ -41,114 +41,114 @@ SourceList["EN5:106"] = {
 [
 	// 0 - The fool
 	"detect poison and disease",
-"expeditious retreat",
-"tasha's hideous laughter",
-"mage armor",
+	"expeditious retreat",
+	"tasha's hideous laughter",
+	"mage armor",
 	// I - The Magician
 	"burning hands",
-"create or destroy water",
-"detect magic",
-"tenser's floating disk",
-"unseen servant",
-"silent image",
+	"create or destroy water",
+	"detect magic",
+	"tenser's floating disk",
+	"unseen servant",
+	"silent image",
 	// II - The High Priestess
 	"charm person",
-"fog cloud",
-"identify",
-"sleep",
+	"fog cloud",
+	"identify",
+	"sleep",
 	// II - The Empress
 	"animal friendship",
-"entangle",
-"goodberry",
-"speak with animals",
+	"entangle",
+	"goodberry",
+	"speak with animals",
 	// IV - The Emperor
 	"detect evil and good",
-"hold person",
-"command",
-"protection from evil and good",
+	"hold person",
+	"command",
+	"protection from evil and good",
 	// V - The Hierophant
 	"bane",
-"bless",
-"sanctuary",
-"shield of faith",
+	"bless",
+	"sanctuary",
+	"shield of faith",
 	// VI - The Lovers
 	"detect thoughts",
-"mirror image",
-"suggestion",
-"zone of truth",
+	"mirror image",
+	"suggestion",
+	"zone of truth",
 	// VII - The Chariot
 	"blur",
-"enlarge/reduce",
-"magic weapon",
-"spiritual weapon",
+	"enlarge/reduce",
+	"magic weapon",
+	"spiritual weapon",
 	// VIII - Justice
 	"bestow curse",
-"clairvoyance",
-"lightning bolt",
-"protection from energy",
+	"clairvoyance",
+	"lightning bolt",
+	"protection from energy",
 	// IX - The Hermit
 	"counterspell",
-"dispel magic",
-"remove curse",
-"leomund's tiny hut",
+	"dispel magic",
+	"remove curse",
+	"leomund's tiny hut",
 	// X - Wheel of Fortune
 	"confusion",
-"death ward",
-"divination",
-"freedom of movement",
+	"death ward",
+	"divination",
+	"freedom of movement",
 	// XI - Strength
 	"otiluke's resilient sphere",
-"stone shape",
-"stoneskin",
+	"stone shape",
+	"stoneskin",
 	// XII - The Hanged Man
 	"dominate beast",
-"dominate person",
-"geas",
-"planar binding",
+	"dominate person",
+	"geas",
+	"planar binding",
 	// XIII - Death
 	"animate dead",
-"cloudkill",
-"contagion",
-"insect plague",
+	"cloudkill",
+	"contagion",
+	"insect plague",
 	// XIV - Temperance
 	"contingency",
-"globe of invulnerability",
-"true seeing",
+	"globe of invulnerability",
+	"true seeing",
 	// XV - The Devil
 	"eyebite",
-"forcecage",
-"mass suggestion",
+	"forcecage",
+	"mass suggestion",
 	// XVI - The Tower
 	"disintegrate",
-"divine word",
-"mordenkainen's magnificent mansion",
-"reverse gravity",
+	"divine word",
+	"mordenkainen's magnificent mansion",
+	"reverse gravity",
 	// XVII - The Star
 	"conjure celestial",
-"plane shift",
-"prismatic spray",
-"regenerate",
+	"plane shift",
+	"prismatic spray",
+	"regenerate",
 	// XVIII - The Moon
 	"antipathy/sympathy",
-"feeblemind",
-"maze",
-"mind blank",
+	"feeblemind",
+	"maze",
+	"mind blank",
 	// XIX - The Sun
 	"demiplane",
-"holy aura",
-"incendiary cloud",
-"sunburst",
+	"holy aura",
+	"incendiary cloud",
+	"sunburst",
 	// XX - Judgement
 	"foresight",
-"imprisonment",
-"mass heal",
-"meteor swarm",
-"power word kill",
+	"imprisonment",
+	"mass heal",
+	"meteor swarm",
+	"power word kill",
 	// XXI - The World
 	"time stop",
-"true polymorph",
-"true resurrection",
-"wish",
+	"true polymorph",
+	"true resurrection",
+	"wish",
 ].forEach( function (s) {
 	if(SpellsList[s] && SpellsList[s].classes && SpellsList[s].classes.indexOf("cardcaster") === -1) SpellsList[s].classes.push("cardcaster");
 });
@@ -202,11 +202,11 @@ ClassList["cardcaster"] = {
 		"\r\rXIX - The Sun" + desc(["\u2022 Demiplane\t\t\u2022 Holy Aura", "\u2022 Incendiary Cloud\t\t\u2022 Sunburst", "If I play the Moon or the Sun, I can't use either again until I finish a long rest"]) +
 		"\r\rXX - Judgement" + desc(["\u2022 Foresight\t\t\u2022 Imprisonment\t\u2022 Mass Heal", "\u2022 Meteor Swarm\t\t\u2022 Power Word Kill", "If I play Judgement or the World, I can't use either again until I finish a long rest"]) +
 		"\r\rXXI - The World" + desc(["\u2022 Time Stop\t\t\u2022 True Polymorph", "\u2022 True Resurrection\t\t\u2022 Wish", "If I play Judgement or the World, I can't use either again until I finish a long rest"]),
-	addMajorArcana: function() {
+	addMajorArcana: function () {
 		AddToNotes(ClassList.cardcaster.majorArcana1, "Major Arcana cards 0-XI of the Cardcaster class");
 		AddToNotes(ClassList.cardcaster.majorArcana2, "Major Arcana cards XII-XXI of the Cardcaster class");
 	},
-	removeMajorArcana: function() {
+	removeMajorArcana: function () {
 		AddToNotes("", "", ClassList.cardcaster.majorArcana1);
 		AddToNotes("", "", ClassList.cardcaster.majorArcana2);
 	},
@@ -219,7 +219,7 @@ ClassList["cardcaster"] = {
 				"I can cast spells with my deck of tarot cards, using Intelligence as my spellcasting ability",
 				"I can use an arcane focus, holy symbol, or tarot card as spellcasting focus",
 			]),
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				var majorArcana = n < 3 ? "V" : n < 5 ? "VII" : n < 7 ? "IX" : n < 9 ? "XI" : n < 11 ? "XIII" : n < 13 ? "XV" : n < 15 ? "XVII" : n < 17 ? "XIX" : "XXI";
 				var handSize = n < 3 ? 2 : n < 6 ? 3 : n < 11 ? 4 : n < 15 ? 5 : n < 19 ? 6 : 7;
 				return "deck: cards 0-" + majorArcana + "; full hand: " + handSize + " cards";
@@ -266,7 +266,7 @@ ClassList["cardcaster"] = {
 			description: desc([
 				"I can play a card from my hand only a limited number of times per long rest",
 			]),
-			usages: levels.map(function(n) {
+			usages: levels.map(function (n) {
 				return n < 2 ? 2 : n < 3 ? 3 : n < 4 ? 4 : n < 6 ? 5 : n < 7 ? 6 : n < 10 ? 7 : 8;
 			}),
 			recovery: "long rest",
@@ -287,7 +287,7 @@ ClassList["cardcaster"] = {
 			description: desc([
 				"Spells I cast through tarot cards count as being cast with a higher level spell slot",
 			]),
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				return n < 3 ? "" : (n < 5 ? "2nd" : n < 7 ? "3rd" : n < 9 ? "4th" : "5th") + "-level spell slot";
 			}),
 		},
@@ -427,7 +427,7 @@ AddSubClass("cardcaster", "knight of swords", {
 			]),
 			usages: 1,
 			recovery: "long rest",
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				return n < 14 ? "" : "+" + n + " damage";
 			}),
 			calcChanges: {

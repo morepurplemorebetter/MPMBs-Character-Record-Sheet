@@ -463,7 +463,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use earth fury spells of my furycrafter level minus 6",
 					"I can also have my (improved) fury-enhanced strikes deal force damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "earth";
 				},
 				spellcastingBonus: [{
@@ -481,7 +481,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use fire fury spells of my furycrafter level minus 6",
 					"I can also have my (improved) fury-enhanced strikes deal fire damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "fire";
 				},
 				spellcastingBonus: [{
@@ -499,7 +499,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use metal fury spells of my furycrafter level minus 6",
 					"I can also have my (improved) fury-enhanced strikes deal the weapon's damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "metal";
 				},
 				spellcastingBonus: [{
@@ -517,7 +517,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use water fury spells of my furycrafter level minus 6",
 					"I can also have my (improved) fury-enhanced strikes deal cold damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "water";
 				},
 				spellcastingBonus: [{
@@ -535,7 +535,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use wind fury spells of my furycrafter level minus 6",
 					"I can also have my (improved) fury-enhanced strikes deal thunder damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "wind";
 				},
 				spellcastingBonus: [{
@@ -553,7 +553,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use wood fury spells of my furycrafter level minus 6",
 					"I can also have my (improved) fury-enhanced strikes deal piercing damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "wood";
 				},
 				spellcastingBonus: [{
@@ -578,7 +578,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use earth fury spells of my furycrafter level minus 10",
 					"I can also have my (improved) fury-enhanced strikes deal force damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "earth" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "earth";
 				},
 				spellcastingBonus: [{
@@ -593,7 +593,7 @@ AddSubClass("furycrafter", "innate force", {
 			"earth evolved (prereq: alternate earth craft)": {
 				name: "Alternate Earth Craft Evolved",
 				description: desc("I can use earth fury spells of my full furycrafter level"),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "earth";
 				},
 				spellcastingBonus: [{
@@ -618,7 +618,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use fire fury spells of my furycrafter level minus 10",
 					"I can also have my (improved) fury-enhanced strikes deal fire damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "fire" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "fire";
 				},
 				spellcastingBonus: [{
@@ -633,7 +633,7 @@ AddSubClass("furycrafter", "innate force", {
 			"fire evolved (prereq: alternate fire craft)": {
 				name: "Alternate Fire Craft Evolved",
 				description: desc("I can use fire fury spells of my full furycrafter level"),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "fire";
 				},
 				spellcastingBonus: [{
@@ -658,7 +658,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use metal fury spells of my furycrafter level minus 10",
 					"I can also have my (improved) fury-enhanced strikes deal the weapon's damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "metal" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "metal";
 				},
 				spellcastingBonus: [{
@@ -673,7 +673,7 @@ AddSubClass("furycrafter", "innate force", {
 			"metal evolved (prereq: alternate metal craft)": {
 				name: "Alternate Metal Craft Evolved",
 				description: desc("I can use metal fury spells of my full furycrafter level"),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "metal";
 				},
 				spellcastingBonus: [{
@@ -698,7 +698,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use water fury spells of my furycrafter level minus 10",
 					"I can also have my (improved) fury-enhanced strikes deal cold damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "water" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "water";
 				},
 				spellcastingBonus: [{
@@ -713,7 +713,7 @@ AddSubClass("furycrafter", "innate force", {
 			"water evolved (prereq: alternate water craft)": {
 				name: "Alternate Water Craft Evolved",
 				description: desc("I can use water fury spells of my full furycrafter level"),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "water";
 				},
 				spellcastingBonus: [{
@@ -738,7 +738,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use wind fury spells of my furycrafter level minus 10",
 					"I can also have my (improved) fury-enhanced strikes deal thunder damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "wind" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "wind";
 				},
 				spellcastingBonus: [{
@@ -753,7 +753,7 @@ AddSubClass("furycrafter", "innate force", {
 			"wind evolved (prereq: alternate wind craft)": {
 				name: "Alternate Wind Craft Evolved",
 				description: desc("I can use wind fury spells of my full furycrafter level"),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "wind";
 				},
 				spellcastingBonus: [{
@@ -779,7 +779,7 @@ AddSubClass("furycrafter", "innate force", {
 					"I can use wood fury spells of my furycrafter level minus 10",
 					"I can also have my (improved) fury-enhanced strikes deal piercing damage instead",
 				]),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "furycraft", false) !== "wood" && GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) != "wood";
 				},
 				spellcastingBonus: [{
@@ -794,7 +794,7 @@ AddSubClass("furycrafter", "innate force", {
 			"wood evolved (prereq: alternate wood craft)": {
 				name: "Alternate Wood Craft Evolved",
 				description: desc("I can use wood fury spells of my full furycrafter level"),
-				prereqeval: function() {
+				prereqeval: function () {
 					return GetFeatureChoice("class", "furycrafter", "subclassfeature11", false) == "wood";
 				},
 				spellcastingBonus: [{

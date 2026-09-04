@@ -83,7 +83,7 @@ AddSubClass("fighter", "gunslinger-v1.3", {
 				"The save DC for trick shots, if any, is 8 + my Proficiency Bonus + my Dexterity modifier",
 				"Each time I learn a new trick shot, I can also replace one I know with a new one",
 			]),
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				if (n < 3) return "";
 				return (n < 7 ? 2 : n < 10 ? 3 : n < 15 ? 4 : n < 18 ? 5 : 6) + " known";
 			}),

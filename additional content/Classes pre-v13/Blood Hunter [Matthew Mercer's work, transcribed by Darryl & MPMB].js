@@ -919,7 +919,7 @@ WeaponsList["predatory strike"] = {
 };
 
 //a function to update the notes page with the Hybrid form
-UpdateHybridForm = function() {
+UpdateHybridForm = function () {
 	var NotesPrefix = isTemplVis("ASnotes", true);
 	if (!NotesPrefix) {
 		NotesPrefix = DoTemplate("ASnotes", "Add");
@@ -932,7 +932,7 @@ UpdateHybridForm = function() {
 	if (BHlevelOld <= 2 && BHlevelNew <= 2) return;
 
 	//a funtion to create the full text for the hybrid feature
-	var makeHybridText = function(lvl) {
+	var makeHybridText = function (lvl) {
 		if (lvl < 3) return "";
 		var PSdie = lvl >= 18 ? "d10" : (lvl >= 11 ? "d8" : "d6");
 		var theText = "Blood Hunter (Order of the Lycan) Hybrid form, at level " + lvl + ":\n   " + "As a" + (lvl < 11 ? "n " : " bonus ") + "action, I can transform into a Hybrid lycanthropy form" + "\n   " + "This form lasts for " + (lvl < 11 ? "10" : "30") + " minutes or until I transform back as an action" + "\n   " + "I can speak, use equipment, and wear armor in this form" + "\n   " + "I revert back to my normal form if I fall unconscious, drop to 0 HP, or die" + "\n   " + "While I am in this Hybrid form, I gain the following features:";

@@ -138,14 +138,14 @@ if (ClassSubList[theCoD] && sheetVersion < 13) {
 		attacksAction: 0,
 		attacks: [],
 		traits: [{
-				name: "False Appearance",
-				description: "While the shrieker remains motionless, it is indistinguishable from an ordinary fungus.",
-			},
+			name: "False Appearance",
+			description: "While the shrieker remains motionless, it is indistinguishable from an ordinary fungus.",
+		},
 		],
 		actions: [{
-				name: "Shriek",
-				description: "As a reaction when bright light or a creature is within 30 feet of the shrieker, it emits a shriek audible within 300 feet of it. The shrieker continues to shriek until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward.",
-			},
+			name: "Shriek",
+			description: "As a reaction when bright light or a creature is within 30 feet of the shrieker, it emits a shriek audible within 300 feet of it. The shrieker continues to shriek until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward.",
+		},
 		],
 		wildshapeString: "\u25C6 Senses: blindsight 30 ft (blind beyond this radius).\n\u25C6 Condition Immunities: blinded, deafened, frightened.\n\u25C6 Shriek: As a reaction when bright light or a creature is within 30 ft of the shrieker, emits a shriek audible out to 300 ft. This continues until the disturbance moves out of range and for 1d4 of the shrieker's turns afterward.\n\u25C6 False Appearance: While motionless, the shrieker is indistinguishable from an ordinary fungus.",
 	};
@@ -170,17 +170,17 @@ if (ClassSubList[theCoD] && sheetVersion < 13) {
 		proficiencyBonus: 2,
 		attacksAction: "1",
 		attacks: [{
-				name: "Rotting Touch",
-				ability: 3,
-				damage: [1, 8, "necrotic"], //[#, die, type] "" for die is allowed
-				range: "Melee (10 ft)",
-				description: "1d4 rotting touch attacks as an Attack action",
-			},
+			name: "Rotting Touch",
+			ability: 3,
+			damage: [1, 8, "necrotic"], //[#, die, type] "" for die is allowed
+			range: "Melee (10 ft)",
+			description: "1d4 rotting touch attacks as an Attack action",
+		},
 		],
 		traits: [{
-				name: "False Appearance",
-				description: "While the violet fungus remains motionless, it is indistinguishable from an ordinary fungus.",
-			},
+			name: "False Appearance",
+			description: "While the violet fungus remains motionless, it is indistinguishable from an ordinary fungus.",
+		},
 		],
 	};
 };
@@ -215,18 +215,18 @@ if (!CreatureList["needle blight"] || !CreatureList["twig blight"] || !CreatureL
 			proficiencyBonus: 2,
 			attacksAction: 1,
 			attacks: [{
-					name: "Claws",
-					ability: 2,
-					damage: [2, 4, "piercing"], //[#, die, type] "" for die is allowed
-					range: "Melee (5 ft)",
-					description: "",
-				}, {
-					name: "Needles",
-					ability: 2,
-					damage: [2, 6, "piercing"], //[#, die, type] "" for die is allowed
-					range: "30/60 ft",
-					description: "",
-				},
+				name: "Claws",
+				ability: 2,
+				damage: [2, 4, "piercing"], //[#, die, type] "" for die is allowed
+				range: "Melee (5 ft)",
+				description: "",
+			}, {
+				name: "Needles",
+				ability: 2,
+				damage: [2, 6, "piercing"], //[#, die, type] "" for die is allowed
+				range: "30/60 ft",
+				description: "",
+			},
 			],
 		};
 	};
@@ -253,17 +253,17 @@ if (!CreatureList["needle blight"] || !CreatureList["twig blight"] || !CreatureL
 			proficiencyBonus: 2,
 			attacksAction: 1,
 			attacks: [{
-					name: "Claws",
-					ability: 2,
-					damage: [1, 4, "piercing"], //[#, die, type] "" for die is allowed
-					range: "Melee (5 ft)",
-					description: "",
-				},
+				name: "Claws",
+				ability: 2,
+				damage: [1, 4, "piercing"], //[#, die, type] "" for die is allowed
+				range: "Melee (5 ft)",
+				description: "",
+			},
 			],
 			traits: [{
-					name: "False Appearance",
-					description: "While the blight remains motionless, it is indistinguishable from a dead shrub.",
-				},
+				name: "False Appearance",
+				description: "While the blight remains motionless, it is indistinguishable from a dead shrub.",
+			},
 			],
 		};
 	};
@@ -292,22 +292,22 @@ if (!CreatureList["needle blight"] || !CreatureList["twig blight"] || !CreatureL
 			proficiencyBonus: 2,
 			attacksAction: 1,
 			attacks: [{
-					name: "Constrict",
-					ability: 1,
-					damage: [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
-					range: "Melee (10 ft)",
-					description: "Large or smaller target is grappled and restrained (escape DC 12); Can't use constrict again until grapple ends",
-				},
+				name: "Constrict",
+				ability: 1,
+				damage: [2, 6, "bludgeoning"], //[#, die, type] "" for die is allowed
+				range: "Melee (10 ft)",
+				description: "Large or smaller target is grappled and restrained (escape DC 12); Can't use constrict again until grapple ends",
+			},
 			],
 			traits: [{
-					name: "False Appearance",
-					description: "While the blight remains motionless, it is indistinguishable from a tangle of vines.",
-				},
+				name: "False Appearance",
+				description: "While the blight remains motionless, it is indistinguishable from a tangle of vines.",
+			},
 			],
 			actions: [{
-					name: "Entangling Plants (Recharge 5-6)",
-					description: "As an action, grasping roots and vines sprout in a 15-foot radius centered on the blight, withering away after 1 minute. For the duration, that area is difficult terrain for nonplant creatures. In addition, each creature of the blight's choice in that area when the plants appear must succeed on a DC 12 Strength saving throw or become restrained. A creature can use its action to make a DC 12 Strength check, freeing it self or another entangled creature within reach on a success.",
-				},
+				name: "Entangling Plants (Recharge 5-6)",
+				description: "As an action, grasping roots and vines sprout in a 15-foot radius centered on the blight, withering away after 1 minute. For the duration, that area is difficult terrain for nonplant creatures. In addition, each creature of the blight's choice in that area when the plants appear must succeed on a DC 12 Strength saving throw or become restrained. A creature can use its action to make a DC 12 Strength check, freeing it self or another entangled creature within reach on a success.",
+			},
 			],
 			wildshapeString: "Blindsight 60 ft (blind beyond)| Immune to blinded, deafened| Entangling Plants (Recharge 5-6): As an action, 15-ft radius is difficult terrain for nonplant creatures, for 1 minute. Chosen creatures in it must make a DC 12 Str save or become restrained. A creature can use its action to make a DC 12 Str check to free itself or another within reach| False Appearance: While motionless, it's indistinguishable from a tangle of vines.",
 		};
@@ -334,21 +334,21 @@ if (!CreatureList["needle blight"] || !CreatureList["twig blight"] || !CreatureL
 			proficiencyBonus: 2,
 			attacksAction: 1,
 			attacks: [{
-					name: "Touch",
-					ability: 1,
-					damage: [1, "", "poison"], //[#, die, type] "" for die is allowed
-					range: "Melee (5 ft)",
-					description: "DC 10 Con save or infected with Death Burst disease, see traits",
-					modifiers: [1, "", false], //[to hit, to damage, add ability to damage] "" means ignore
-				},
+				name: "Touch",
+				ability: 1,
+				damage: [1, "", "poison"], //[#, die, type] "" for die is allowed
+				range: "Melee (5 ft)",
+				description: "DC 10 Con save or infected with Death Burst disease, see traits",
+				modifiers: [1, "", false], //[to hit, to damage, add ability to damage] "" means ignore
+			},
 			],
 			traits: [{
-					name: "Death Burst",
-					description: "The gas spore explodes when it drops to 0 hit points. Each creature within 20 feet of it must succeed on a DC 15 Constitution saving throw or take 10 (3d6) poison damage and become infected with a disease on a failed save. Creatures immune to the poisoned condition are immune to this disease.\n   Spores invade an infected creature's system, killing the creature in a number of hours equal to 1d12+the creature's Constitution score, unless the disease is removed. In half that time, the creature becomes poisoned for the rest of the duration. After the creature dies, it sprouts 2d4 Tiny gas spores that grow to full size in 7 days.",
-				}, {
-					name: "Eerie Resemblance",
-					description: "The gas spore resembles a beholder. A creature that can see the gas spore can discern its true nature with a successful DC 15 Intelligence (Nature) check.",
-				},
+				name: "Death Burst",
+				description: "The gas spore explodes when it drops to 0 hit points. Each creature within 20 feet of it must succeed on a DC 15 Constitution saving throw or take 10 (3d6) poison damage and become infected with a disease on a failed save. Creatures immune to the poisoned condition are immune to this disease.\n   Spores invade an infected creature's system, killing the creature in a number of hours equal to 1d12+the creature's Constitution score, unless the disease is removed. In half that time, the creature becomes poisoned for the rest of the duration. After the creature dies, it sprouts 2d4 Tiny gas spores that grow to full size in 7 days.",
+			}, {
+				name: "Eerie Resemblance",
+				description: "The gas spore resembles a beholder. A creature that can see the gas spore can discern its true nature with a successful DC 15 Intelligence (Nature) check.",
+			},
 			],
 			wildshapeString: "Blindsight 30 ft (blind beyond)| Immune to: blinded, deafened, frightened| Distinguishable form a beholder only with a DC 15 Int (Nature) check| When at 0 HP, explodes: all within 20 ft DC 15 Con save or 3d6 poison damage and infected with disease| The disease kills a creature in 1d12+it's Con score of hours. In half that, it becomes poisoned for the remainder. When dies, sprouts 2d4 Tiny gas spores that grow to full size in 7 days.",
 		};

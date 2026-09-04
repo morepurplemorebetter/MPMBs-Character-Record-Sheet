@@ -343,8 +343,8 @@ var Base_ClassList = {
 				source: [["SRD", 12], ["P", 54]],
 				minlevel: 2,
 				description: desc("I can add half my Proficiency Bonus to any ability check that doesn't already include it"),
-				eval: function() { Checkbox("Jack of All Trades", true); },
-				removeeval: function() { Checkbox("Jack of All Trades", false); },
+				eval: function () { Checkbox("Jack of All Trades", true); },
+				removeeval: function () { Checkbox("Jack of All Trades", false); },
 			},
 			"song of rest": {
 				name: "Song of Rest",
@@ -359,7 +359,7 @@ var Base_ClassList = {
 				minlevel: 3,
 				description: desc('Choose a College that reflects your personality and put it in the "Class" field '),
 			},
-			"expertise": function() {
+			"expertise": function () {
 				var a = {
 					name: "Expertise",
 					source: [["SRD", 13], ["P", 54]],
@@ -380,7 +380,7 @@ var Base_ClassList = {
 						description: "",
 						source: a.source,
 						skills: [[a.extrachoices[i], "only"]],
-						prereqeval: function(v) {
+						prereqeval: function (v) {
 							return v.skillProfsLC.indexOf(v.choice) === -1 ? false : v.skillExpertiseLC.indexOf(v.choice) === -1 ? true : "markButDisable";
 						},
 					}
@@ -804,11 +804,11 @@ var Base_ClassList = {
 					return "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
 				}),
 				action: [["bonus action", "Unarmed Strike (with Attack action)"]],
-				eval: function() {
+				eval: function () {
 					AddString("Extra.Notes", "Monk features:\n\u25C6 If I wear armor/shield, I lose Unarmored Defense, Martial Arts, and Unarmored Movement");
 					show3rdPageNotes();
 				},
-				removeeval: function() {
+				removeeval: function () {
 					RemoveString("Extra.Notes", "Monk features:\n\u25C6 If I wear armor/shield, I lose Unarmored Defense, Martial Arts, and Unarmored Movement");
 				},
 				calcChanges: {
@@ -1497,7 +1497,7 @@ var Base_ClassList = {
 		subclasses: ["Roguish Archetype", ["rogue-thief"]],
 		subclassGainedLevel: 3,
 		features: {
-			"expertise": function() {
+			"expertise": function () {
 				var a = {
 					name: "Expertise",
 					source: [["SRD", 39], ["P", 96]],
@@ -1513,7 +1513,7 @@ var Base_ClassList = {
 					"thieves' tools": {
 						name: "Thieves' Tools Expertise", description: "",
 						source: [["SRD", 39], ["P", 96]],
-						prereqeval: function(v) {
+						prereqeval: function (v) {
 							if (/thieve.?s.*tools/i.test(What("Too Text")) && tDoc.getField("Too Prof").isBoxChecked(0)) {
 								return tDoc.getField("Too Exp").isBoxChecked(0) ? "markButDisable" : true;
 							} else {
@@ -1540,7 +1540,7 @@ var Base_ClassList = {
 						description: "",
 						source: a.source,
 						skills: [[a.extrachoices[i], "only"]],
-						prereqeval: function(v) {
+						prereqeval: function (v) {
 							return v.skillProfsLC.indexOf(v.choice) === -1 ? false : v.skillExpertiseLC.indexOf(v.choice) === -1 ? true : "markButDisable";
 						},
 					}
@@ -1874,7 +1874,7 @@ var Base_ClassList = {
 					description: desc("I can add my Charisma modifier to every hit with my Eldritch Blast cantrip"),
 					source: [["SRD", 48], ["P", 110]],
 					submenu: "[improves Eldritch Blast]",
-					prereqeval: function(v) { return v.hasEldritchBlast; },
+					prereqeval: function (v) { return v.hasEldritchBlast; },
 					calcChanges: {
 						atkCalc: [
 							function (fields, v, output) {
@@ -1924,7 +1924,7 @@ var Base_ClassList = {
 						selection: ["levitate"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 9; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 9; },
 					spellChanges: {
 						"levitate": {
 							range: "Self",
@@ -1965,7 +1965,7 @@ var Base_ClassList = {
 						selection: ["compulsion"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 7; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 7; },
 				},
 				"book of ancient secrets (prereq: pact of the tome)": {
 					name: "Book of Ancient Secrets",
@@ -1977,7 +1977,7 @@ var Base_ClassList = {
 					]),
 					source: [["SRD", 48], ["P", 110]],
 					submenu: "[improves Pact of the Tome]",
-					eval: function() {
+					eval: function () {
 						CurrentSpells["warlock-book of ancient secrets"] = {
 							name: "Book of Ancient Secrets",
 							ability: "warlock",
@@ -1994,11 +1994,11 @@ var Base_ClassList = {
 						}
 						SetStringifieds("spells"); CurrentUpdates.types.push("spells");
 					},
-					removeeval: function() {
+					removeeval: function () {
 						delete CurrentSpells["warlock-book of ancient secrets"];
 						SetStringifieds("spells"); CurrentUpdates.types.push("spells");
 					},
-					prereqeval: function(v) { return classes.known.warlock.level >= 3 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the tome"; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 3 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the tome"; },
 					calcChanges: {
 						spellAdd: [
 							function (spellKey, spellObj, spName) {
@@ -2030,7 +2030,7 @@ var Base_ClassList = {
 						selection: ["hold monster"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 15 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the chain"; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 15 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the chain"; },
 					spellChanges: {
 						"hold monster": {
 							components: "V,S",
@@ -2059,7 +2059,7 @@ var Base_ClassList = {
 						selection: ["confusion"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 7; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 7; },
 				},
 				"eldritch sight": {
 					name: "Eldritch Sight",
@@ -2077,7 +2077,7 @@ var Base_ClassList = {
 					description: desc("My Eldritch Blast cantrip has a range of 300 ft"),
 					source: [["SRD", 49], ["P", 111]],
 					submenu: "[improves Eldritch Blast]",
-					prereqeval: function(v) { return v.hasEldritchBlast; },
+					prereqeval: function (v) { return v.hasEldritchBlast; },
 					calcChanges: {
 						atkAdd: [
 							function (fields, v) {
@@ -2149,7 +2149,7 @@ var Base_ClassList = {
 							}, "",
 						],
 					},
-					prereqeval: function(v) { return classes.known.warlock.level >= 12 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the blade"; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 12 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the blade"; },
 				},
 				"mask of many faces": {
 					name: "Mask of Many Faces",
@@ -2173,7 +2173,7 @@ var Base_ClassList = {
 						selection: ["alter self"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 15; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 15; },
 				},
 				"minions of chaos (prereq: level 9 warlock)": {
 					name: "Minions of Chaos",
@@ -2188,7 +2188,7 @@ var Base_ClassList = {
 						selection: ["conjure elemental"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 9; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 9; },
 				},
 				"mire the mind (prereq: level 5 warlock)": {
 					name: "Mire the Mind",
@@ -2203,7 +2203,7 @@ var Base_ClassList = {
 						selection: ["slow"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 5; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 5; },
 				},
 				"misty visions": {
 					name: "Misty Visions",
@@ -2232,7 +2232,7 @@ var Base_ClassList = {
 					source: [["SRD", 49], ["P", 111]],
 					submenu: "[warlock level  5+]",
 					action: [["action", ""]],
-					prereqeval: function(v) { return classes.known.warlock.level >= 5; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 5; },
 				},
 				"otherworldly leap (prereq: level 9 warlock)": {
 					name: "Otherworldly Leap",
@@ -2245,7 +2245,7 @@ var Base_ClassList = {
 						selection: ["jump"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 9; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 9; },
 					spellChanges: {
 						"jump": {
 							range: "Self",
@@ -2261,7 +2261,7 @@ var Base_ClassList = {
 					description: desc("I can have creatures hit by my Eldritch Blast cantrip be pushed 10 ft away from me"),
 					source: [["SRD", 49], ["P", 111]],
 					submenu: "[improves Eldritch Blast]",
-					prereqeval: function(v) { return v.hasEldritchBlast; },
+					prereqeval: function (v) { return v.hasEldritchBlast; },
 					calcChanges: {
 						atkAdd: [
 							function (fields, v) {
@@ -2296,7 +2296,7 @@ var Base_ClassList = {
 						selection: ["polymorph"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 7; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 7; },
 				},
 				"sign of ill omen (prereq: level 5 warlock)": {
 					name: "Sign of Ill Omen",
@@ -2311,7 +2311,7 @@ var Base_ClassList = {
 						selection: ["bestow curse"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 5; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 5; },
 				},
 				"thief of five fates": {
 					name: "Thief of Five Fates",
@@ -2332,7 +2332,7 @@ var Base_ClassList = {
 					source: [["SRD", 50], ["P", 111]],
 					submenu: "[improves Pact of the Blade]",
 					action: ["action", "Pact Weapon (2 attacks per action)"],
-					prereqeval: function(v) { return classes.known.warlock.level >= 5 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the blade"; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 5 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the blade"; },
 				},
 				"visions of distant realms (prereq: level 15 warlock)": {
 					name: "Visions of Distant Realms",
@@ -2345,7 +2345,7 @@ var Base_ClassList = {
 						selection: ["arcane eye"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 15; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 15; },
 				},
 				"voice of the chain master (prereq: pact of the chain)": {
 					name: "Voice of the Chain Master",
@@ -2355,7 +2355,7 @@ var Base_ClassList = {
 					]),
 					source: [["SRD", 50], ["P", 111]],
 					submenu: "[improves Pact of the Chain]",
-					prereqeval: function(v) { return classes.known.warlock.level >= 3 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the chain"; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 3 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the chain"; },
 				},
 				"whispers of the grave (prereq: level 9 warlock)": {
 					name: "Whispers of the Grave",
@@ -2368,7 +2368,7 @@ var Base_ClassList = {
 						selection: ["speak with dead"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function(v) { return classes.known.warlock.level >= 9; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 9; },
 				},
 				"witch sight (prereq: level 15 warlock)": {
 					name: "Witch Sight",
@@ -2376,7 +2376,7 @@ var Base_ClassList = {
 					source: [["SRD", 50], ["P", 111]],
 					submenu: "[warlock level 15+]",
 					vision: [["Witch sight", 30]],
-					prereqeval: function(v) { return classes.known.warlock.level >= 15; },
+					prereqeval: function (v) { return classes.known.warlock.level >= 15; },
 				},
 			},
 			"pact boon": {
@@ -2403,7 +2403,7 @@ var Base_ClassList = {
 									v.pactWeapon = true;
 								}
 							},
-"",
+							"",
 							90,
 						],
 						atkAdd: [
@@ -2980,8 +2980,8 @@ var Base_ClassSubList = {
 					"I add half my Proficiency Bonus to Str/Dex/Con checks if I would otherwise add none",
 					"When making running long jumps, I add my Strength modifier to the distance in feet",
 				]),
-				eval: function() { Checkbox("Remarkable Athlete", true); },
-				removeeval: function() { Checkbox("Remarkable Athlete", false); },
+				eval: function () { Checkbox("Remarkable Athlete", true); },
+				removeeval: function () { Checkbox("Remarkable Athlete", false); },
 			},
 			"subclassfeature10": function () {
 				var FSfea = newObj(Base_ClassList.fighter.features["fighting style"]);

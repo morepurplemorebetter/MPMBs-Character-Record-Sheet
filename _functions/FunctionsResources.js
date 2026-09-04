@@ -217,7 +217,7 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 			newGlobalKnown.push(src);
 			var aSrc = SourceList[src];
 			if (CurrentSources.globalExcl.indexOf(src) === -1 && (
-				(exclAllUA && /unearthed arcana/i.test(aSrc.group)) || 
+				(exclAllUA && /unearthed arcana/i.test(aSrc.group)) ||
 				(SourceList[src].defaultExcluded && CurrentSources.globalKnown.indexOf(src) === -1)
 			)) {
 				CurrentSources.globalExcl.push(src);
@@ -296,7 +296,7 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 	}
 	var theExclusions = {}, returnObj = { str: [], new: [], all: [], found: false };
 	var newTxt = toUni("NEW ");
-	var addNewExcl = function(type, typeNm, obj, objID, objNm) {
+	var addNewExcl = function (type, typeNm, obj, objID, objNm) {
 		if (!obj.defaultExcluded) return;
 		if (!CurrentSources[type]) CurrentSources[type] = [];
 		if (!CurrentSources[type + "Default"]) CurrentSources[type + "Default"] = [];
@@ -347,9 +347,9 @@ function resourceExclusionSetting(spellSources, noChanges, oldResults) {
 					var subID = subKey;
 					var subName = mainObjName + ": " + (
 						opt.subListObjName && subObj[opt.subListObjName] ? subObj[opt.subListObjName] :
-						subObj.name ? subObj.name :
-						opt.exclObj == "racesExcl" ? subObjs[c].capitalize() + " " + mainObjName :
-						subObjs[c]);
+							subObj.name ? subObj.name :
+								opt.exclObj == "racesExcl" ? subObjs[c].capitalize() + " " + mainObjName :
+									subObjs[c]);
 					if (featOrMI) {
 						subID = key + "-" + subID;
 						subName = subObj.name ? subObj.name : mainObjName + " [" + subObjs[c] + "]";
@@ -375,7 +375,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	var isFirstTime = atReset ? atReset : CurrentSources.firstTime;
 	var spellSources = [];
 	if (tDoc.info.SpellsOnly) {
-		var fAddToSpellSources = function(aRawSource) {
+		var fAddToSpellSources = function (aRawSource) {
 			var aSources = parseSource(aRawSource);
 			if (!aSources) return;
 			for (var i = 0; i < aSources.length; i++) {
@@ -981,7 +981,7 @@ function resourceSelectionDialog(type) {
 	};
 
 	//a way to add the source abbreviation to the string
-	var amendSource = function(uString, uObj, altObj) {
+	var amendSource = function (uString, uObj, altObj) {
 		var theSrc = uObj.source ? uObj.source : (altObj && altObj.source ? altObj.source : false);
 		theSrc = parseSource(theSrc);
 		var aSrcAbbr = [];
@@ -1004,294 +1004,294 @@ function resourceSelectionDialog(type) {
 	};
 
 	switch (type) {
-	 case "class" :
-		var theName = "Classes or Archetypes";
-		inclInArr = "all";
-		var CSatt = "classExcl";
-		for (var u in ClassList) {
-			var uGroup = amendSource(ClassList[u].name, ClassList[u]);
-			refObj[uGroup] = u;
-			var uTest = testSource(u, ClassList[u], CSatt, true);
-			if (uTest === "source") continue;
-			if (!exclObj[uGroup]) exclObj[uGroup] = {};
-			if (!inclObj[uGroup]) inclObj[uGroup] = {};
-			for (var z = 0; z < ClassList[u].subclasses[1].length; z++) {
-				var uSub = ClassList[u].subclasses[1][z];
-				if (!ClassSubList[uSub]) continue;
-				uSubTest = testSource(uSub, ClassSubList[uSub], CSatt, true);
-				if (uSubTest === "source") continue;
-				var uName = amendSource(ClassSubList[uSub].subname, ClassSubList[uSub], ClassList[u]);
-				refObj[uName] = uSub;
-				if (uTest || uSubTest) {
+		case "class" :
+			var theName = "Classes or Archetypes";
+			inclInArr = "all";
+			var CSatt = "classExcl";
+			for (var u in ClassList) {
+				var uGroup = amendSource(ClassList[u].name, ClassList[u]);
+				refObj[uGroup] = u;
+				var uTest = testSource(u, ClassList[u], CSatt, true);
+				if (uTest === "source") continue;
+				if (!exclObj[uGroup]) exclObj[uGroup] = {};
+				if (!inclObj[uGroup]) inclObj[uGroup] = {};
+				for (var z = 0; z < ClassList[u].subclasses[1].length; z++) {
+					var uSub = ClassList[u].subclasses[1][z];
+					if (!ClassSubList[uSub]) continue;
+					uSubTest = testSource(uSub, ClassSubList[uSub], CSatt, true);
+					if (uSubTest === "source") continue;
+					var uName = amendSource(ClassSubList[uSub].subname, ClassSubList[uSub], ClassList[u]);
+					refObj[uName] = uSub;
+					if (uTest || uSubTest) {
+						exclObj[uGroup][uName] = -1;
+					} else {
+						inclObj[uGroup][uName] = -1;
+					}
+				}
+				// but what if a class doesn't have any subclasses defined (like a prestige class)
+				if (!ClassList[u].subclasses[1].length && uTest != "source") {
+					if (uTest) {
+						exclObj[uGroup] = -1;
+					} else {
+						inclObj[uGroup] = -1;
+					}
+				}
+			};
+			break;
+		case "race" :
+			var theName = "Player Races";
+			theExtra = ["\nRaces with variants will have all variants listed. The 'basic' version of the race is only listed so that you can exclude all variants except the basic version. Excluding the 'basic' version while still including any variant will have no effect.", 3];
+			inclInArr = "all";
+			var CSatt = "racesExcl";
+			for (var u in RaceList) {
+				var useName = RaceList[u].sortname ? RaceList[u].sortname : RaceList[u].name;
+				var uGroup = amendSource(useName, RaceList[u]);
+				var uTest = testSource(u, RaceList[u], CSatt, true);
+				if (uTest === "source") continue;
+				var doAny = false;
+				if (RaceList[u].variants) {
+					if (!exclObj[uGroup]) exclObj[uGroup] = {};
+					if (!inclObj[uGroup]) inclObj[uGroup] = {};
+					var rLen = RaceList[u].variants.length;
+					for (var z = 0; z < rLen + 1; z++) {
+						var uSub = z === rLen ? u : u + "-" + RaceList[u].variants[z];
+						var uRaceVar = z === rLen ? RaceList[u] : RaceSubList[uSub];
+						if (!uRaceVar) continue;
+						var uSubTest = testSource(uSub, uRaceVar, CSatt, true);
+						if (uSubTest === "source") continue;
+						doAny = z !== rLen ? true : doAny;
+						if (z === rLen && !doAny) continue;
+						var uName = z === rLen ? " basic " + useName : (uRaceVar && uRaceVar.name ? uRaceVar.name : RaceList[u].variants[z].capitalize() + " " + useName);
+						uName = amendSource(uName, uRaceVar, RaceList[u]);
+						refObj[uName] = uSub;
+						if (uSubTest) {
+							exclObj[uGroup][uName] = -1;
+						} else {
+							inclObj[uGroup][uName] = -1;
+						}
+					}
+				}
+				if (!doAny) {
+					if (uTest) {
+						exclObj[uGroup] = -1;
+					} else {
+						inclObj[uGroup] = -1;
+					}
+				}
+				refObj[uGroup] = u;
+			};
+			break;
+		case "feat" :
+			var theName = "Feats";
+			var CSatt = "featsExcl";
+			var parObj = FeatsList;
+		case "magic item" :
+			if (type === "magic item") {
+				var theName = "Magic Items";
+				var CSatt = "magicitemExcl";
+				var parObj = MagicItemsList;
+			}
+			for (var u in parObj) {
+				var uGroup = amendSource(parObj[u].name, parObj[u]);
+				var uTest = testSource(u, parObj[u], CSatt, true);
+				if (uTest === "source") continue;
+				if (parObj[u].choices) {
+					if (!exclObj[uGroup]) exclObj[uGroup] = {};
+					if (!inclObj[uGroup]) inclObj[uGroup] = {};
+					var rLen = parObj[u].choices.length;
+					for (var z = 0; z < rLen; z++) {
+						var uSub = parObj[u].choices[z];
+						var uSubL = uSub.toLowerCase();
+						var uSubRef = u + "-" + uSubL;
+						var uSubVar = parObj[u][uSubL];
+						if (!uSubVar) continue;
+						var uSubTest = testSource(uSubRef, uSubVar.source ? uSubVar : parObj[u], CSatt, true);
+						if (uSubTest === "source") continue;
+						var uName = amendSource(uSubVar.name ? uSubVar.name : uSub, uSubVar, parObj[u]);
+						if (uSubTest) {
+							exclObj[uGroup][uName] = -1;
+						} else {
+							inclObj[uGroup][uName] = -1;
+						}
+						refObj[uName] = uSubRef;
+					}
+				} else {
+					if (uTest) {
+						exclObj[uGroup] = -1;
+					} else {
+						inclObj[uGroup] = -1;
+					}
+				}
+				refObj[uGroup] = u;
+			};
+			break;
+		case "spell" :
+			var theName = "Spells";
+			var CSatt = "spellsExcl";
+			for (var u in SpellsList) {
+				var uName = amendSource(SpellsList[u].name, SpellsList[u]);
+				var uTest = testSource(u, SpellsList[u], CSatt, true);
+				if (uTest === "source" || !SpellsList[u] || !SpellsList[u].classes) continue;
+				if (spellSchoolList[SpellsList[u].school]) {
+					var uGroup = (/avatar|awakened|immortal|nomad|wu jen/i.test(spellSchoolList[SpellsList[u].school]) ? "Order of " : "School of ") + spellSchoolList[SpellsList[u].school].capitalize();
+				} else {
+					var uGroup = SpellsList[u].level == 0 && SpellsList[u].classes[0] === "mystic" ? "Psionic Talents" : "Other";
+				};
+				refObj[uName] = u;
+				if (!exclObj[uGroup]) exclObj[uGroup] = {};
+				if (!inclObj[uGroup]) inclObj[uGroup] = {};
+				if (uTest) {
 					exclObj[uGroup][uName] = -1;
 				} else {
 					inclObj[uGroup][uName] = -1;
 				}
-			}
-			// but what if a class doesn't have any subclasses defined (like a prestige class)
-			if (!ClassList[u].subclasses[1].length && uTest != "source") {
-				if (uTest) {
-					exclObj[uGroup] = -1;
-				} else {
-					inclObj[uGroup] = -1;
-				}
-			}
-		};
-		break;
-	 case "race" :
-		var theName = "Player Races";
-		theExtra = ["\nRaces with variants will have all variants listed. The 'basic' version of the race is only listed so that you can exclude all variants except the basic version. Excluding the 'basic' version while still including any variant will have no effect.", 3];
-		inclInArr = "all";
-		var CSatt = "racesExcl";
-		for (var u in RaceList) {
-			var useName = RaceList[u].sortname ? RaceList[u].sortname : RaceList[u].name;
-			var uGroup = amendSource(useName, RaceList[u]);
-			var uTest = testSource(u, RaceList[u], CSatt, true);
-			if (uTest === "source") continue;
-			var doAny = false;
-			if (RaceList[u].variants) {
-				if (!exclObj[uGroup]) exclObj[uGroup] = {};
-				if (!inclObj[uGroup]) inclObj[uGroup] = {};
-				var rLen = RaceList[u].variants.length;
-				for (var z = 0; z < rLen + 1; z++) {
-					var uSub = z === rLen ? u : u + "-" + RaceList[u].variants[z];
-					var uRaceVar = z === rLen ? RaceList[u] : RaceSubList[uSub];
-					if (!uRaceVar) continue;
-					var uSubTest = testSource(uSub, uRaceVar, CSatt, true);
-					if (uSubTest === "source") continue;
-					doAny = z !== rLen ? true : doAny;
-					if (z === rLen && !doAny) continue;
-					var uName = z === rLen ? " basic " + useName : (uRaceVar && uRaceVar.name ? uRaceVar.name : RaceList[u].variants[z].capitalize() + " " + useName);
-					uName = amendSource(uName, uRaceVar, RaceList[u]);
-					refObj[uName] = uSub;
-					if (uSubTest) {
-						exclObj[uGroup][uName] = -1;
-					} else {
-						inclObj[uGroup][uName] = -1;
-					}
-				}
-			}
-			if (!doAny) {
-				if (uTest) {
-					exclObj[uGroup] = -1;
-				} else {
-					inclObj[uGroup] = -1;
-				}
-			}
-			refObj[uGroup] = u;
-		};
-		break;
-	 case "feat" :
-		var theName = "Feats";
-		var CSatt = "featsExcl";
-		var parObj = FeatsList;
-	 case "magic item" :
-		if (type === "magic item") {
-			var theName = "Magic Items";
-			var CSatt = "magicitemExcl";
-			var parObj = MagicItemsList;
-		}
-		for (var u in parObj) {
-			var uGroup = amendSource(parObj[u].name, parObj[u]);
-			var uTest = testSource(u, parObj[u], CSatt, true);
-			if (uTest === "source") continue;
-			if (parObj[u].choices) {
-				if (!exclObj[uGroup]) exclObj[uGroup] = {};
-				if (!inclObj[uGroup]) inclObj[uGroup] = {};
-				var rLen = parObj[u].choices.length;
-				for (var z = 0; z < rLen; z++) {
-					var uSub = parObj[u].choices[z];
-					var uSubL = uSub.toLowerCase();
-					var uSubRef = u + "-" + uSubL;
-					var uSubVar = parObj[u][uSubL];
-					if (!uSubVar) continue;
-					var uSubTest = testSource(uSubRef, uSubVar.source ? uSubVar : parObj[u], CSatt, true);
-					if (uSubTest === "source") continue;
-					var uName = amendSource(uSubVar.name ? uSubVar.name : uSub, uSubVar, parObj[u]);
-					if (uSubTest) {
-						exclObj[uGroup][uName] = -1;
-					} else {
-						inclObj[uGroup][uName] = -1;
-					}
-					refObj[uName] = uSubRef;
-				}
-			} else {
-				if (uTest) {
-					exclObj[uGroup] = -1;
-				} else {
-					inclObj[uGroup] = -1;
-				}
-			}
-			refObj[uGroup] = u;
-		};
-		break;
-	 case "spell" :
-		var theName = "Spells";
-		var CSatt = "spellsExcl";
-		for (var u in SpellsList) {
-			var uName = amendSource(SpellsList[u].name, SpellsList[u]);
-			var uTest = testSource(u, SpellsList[u], CSatt, true);
-			if (uTest === "source" || !SpellsList[u] || !SpellsList[u].classes) continue;
-			if (spellSchoolList[SpellsList[u].school]) {
-				var uGroup = (/avatar|awakened|immortal|nomad|wu jen/i.test(spellSchoolList[SpellsList[u].school]) ? "Order of " : "School of ") + spellSchoolList[SpellsList[u].school].capitalize();
-			} else {
-				var uGroup = SpellsList[u].level == 0 && SpellsList[u].classes[0] === "mystic" ? "Psionic Talents" : "Other";
 			};
-			refObj[uName] = u;
-			if (!exclObj[uGroup]) exclObj[uGroup] = {};
-			if (!inclObj[uGroup]) inclObj[uGroup] = {};
-			if (uTest) {
-				exclObj[uGroup][uName] = -1;
-			} else {
-				inclObj[uGroup][uName] = -1;
-			}
-		};
-		break;
-	 case "background" :
-		var theName = "Backgrounds";
-		var CSatt = "backgrExcl";
-		for (var u in BackgroundList) {
-			var uName = amendSource(BackgroundList[u].name, BackgroundList[u]);
-			refObj[uName] = u;
-			if (BackgroundList[u].variant) {
-				for (var z = 0; z < BackgroundList[u].variant.length; z++) {
-					var uSub = BackgroundList[u].variant[z];
-					var uSubVar = BackgroundSubList[uSub];
-					if (!uSubVar) continue;
-					var uSubTest = testSource(uSub, uSubVar, CSatt, true);
-					if (uSubTest === "source") continue;
-					var uSubName = amendSource(uSubVar.name, uSubVar, BackgroundList[u]);
-					refObj[uSubName] = uSub;
-					if (uSubTest) {
-						exclObj[uSubName] = -1;
-					} else {
-						inclObj[uSubName] = -1;
+			break;
+		case "background" :
+			var theName = "Backgrounds";
+			var CSatt = "backgrExcl";
+			for (var u in BackgroundList) {
+				var uName = amendSource(BackgroundList[u].name, BackgroundList[u]);
+				refObj[uName] = u;
+				if (BackgroundList[u].variant) {
+					for (var z = 0; z < BackgroundList[u].variant.length; z++) {
+						var uSub = BackgroundList[u].variant[z];
+						var uSubVar = BackgroundSubList[uSub];
+						if (!uSubVar) continue;
+						var uSubTest = testSource(uSub, uSubVar, CSatt, true);
+						if (uSubTest === "source") continue;
+						var uSubName = amendSource(uSubVar.name, uSubVar, BackgroundList[u]);
+						refObj[uSubName] = uSub;
+						if (uSubTest) {
+							exclObj[uSubName] = -1;
+						} else {
+							inclObj[uSubName] = -1;
+						}
 					}
 				}
-			}
-			var uTest = testSource(u, BackgroundList[u], CSatt, true);
-			if (uTest === "source") continue;
-			if (uTest) {
-				exclObj[uName] = -1;
-			} else {
-				inclObj[uName] = -1;
-			}
-		};
-		break;
-	 case "background feature" :
-		var theName = "Background Features";
-		var CSatt = "backFeaExcl";
-		for (var u in BackgroundFeatureList) {
-			var uName = amendSource(u.capitalize(), BackgroundFeatureList[u]);
-			var uTest = testSource(u, BackgroundFeatureList[u], CSatt, true);
-			if (uTest === "source") continue;
-			refObj[uName] = u;
-			if (uTest) {
-				exclObj[uName] = -1;
-			} else {
-				inclObj[uName] = -1;
-			}
-		};
-		break;
-	 case "creature" :
-		var theName = "Creatures";
-		var CSatt = "creaExcl";
-		for (var u in CreatureList) {
-			if (CurrentVars.extraCreatures && CurrentVars.extraCreatures[u]) continue;
-			var uName = CreatureList[u].name;
-			if (CreatureList[u].nameAlt) {
-				var nameArr = !isArray(CreatureList[u].nameAlt) ? [CreatureList[u].nameAlt] : CreatureList[u].nameAlt;
-				// the alt names are probably just the same as the main name, but with a different word order. We don't want those, so we'll only take the ones without a comma in them
-				for (var i = 0; i < nameArr.length; i++) {
-					if (nameArr[i].indexOf(",") === -1) uName += "; " + nameArr[i];
+				var uTest = testSource(u, BackgroundList[u], CSatt, true);
+				if (uTest === "source") continue;
+				if (uTest) {
+					exclObj[uName] = -1;
+				} else {
+					inclObj[uName] = -1;
 				}
-			}
-			uName = amendSource(uName, CreatureList[u]);
-			var uTest = testSource(u, CreatureList[u], CSatt, true);
-			if (uTest === "source") continue;
-			var uGroup = CreatureList[u].type;
-			refObj[uName] = u;
-			if (!exclObj[uGroup]) exclObj[uGroup] = {};
-			if (!inclObj[uGroup]) inclObj[uGroup] = {};
-			if (uTest) {
-				exclObj[uGroup][uName] = -1;
-			} else {
-				inclObj[uGroup][uName] = -1;
-			}
-		};
-		break;
-	 case "companion" :
-		var theName = "Special Companion Options";
-		var CSatt = "compExcl";
-		for (var u in CompanionList) {
-			var oEntry = CompanionList[u];
-			var uName = amendSource(oEntry.nameMenu ? oEntry.nameMenu : oEntry.name, oEntry);
-			var uTest = testSource(u, oEntry, CSatt, true);
-			if (uTest === "source") continue;
-			refObj[uName] = u;
-			if (uTest) {
-				exclObj[uName] = -1;
-			} else {
-				inclObj[uName] = -1;
-			}
-		};
-		break;
-	 case "weapon" :
-		var theName = "Weapons/Attacks";
-		var CSatt = "weapExcl";
-		for (var u in WeaponsList) {
-			var uName = amendSource(WeaponsList[u].name, WeaponsList[u]);
-			var uTest = testSource(u, WeaponsList[u], CSatt, true);
-			if (uTest === "source" || WeaponsList[u].list == "startlist") continue;
-			var uGroup = !/martial|simple/i.test(WeaponsList[u].type) ? WeaponsList[u].type : WeaponsList[u].list ? WeaponsList[u].type + " - " + WeaponsList[u].list : WeaponsList[u].baseWeapon ? WeaponsList[u].baseWeapon + " - variants" : "Other";
-			refObj[uName] = u;
-			if (!exclObj[uGroup]) exclObj[uGroup] = {};
-			if (!inclObj[uGroup]) inclObj[uGroup] = {};
-			if (uTest) {
-				exclObj[uGroup][uName] = -1;
-			} else {
-				inclObj[uGroup][uName] = -1;
-			}
-		};
-		break;
-	 case "ammo" :
-		var theName = "Ammunition";
-		var CSatt = "ammoExcl";
-		for (var u in AmmoList) {
-			var uName = AmmoList[u].name;
-			var uTest = testSource(u, AmmoList[u], CSatt, true);
-			if (uTest === "source" || AmmoList[u].list == "startlist") continue;
+			};
+			break;
+		case "background feature" :
+			var theName = "Background Features";
+			var CSatt = "backFeaExcl";
+			for (var u in BackgroundFeatureList) {
+				var uName = amendSource(u.capitalize(), BackgroundFeatureList[u]);
+				var uTest = testSource(u, BackgroundFeatureList[u], CSatt, true);
+				if (uTest === "source") continue;
+				refObj[uName] = u;
+				if (uTest) {
+					exclObj[uName] = -1;
+				} else {
+					inclObj[uName] = -1;
+				}
+			};
+			break;
+		case "creature" :
+			var theName = "Creatures";
+			var CSatt = "creaExcl";
+			for (var u in CreatureList) {
+				if (CurrentVars.extraCreatures && CurrentVars.extraCreatures[u]) continue;
+				var uName = CreatureList[u].name;
+				if (CreatureList[u].nameAlt) {
+					var nameArr = !isArray(CreatureList[u].nameAlt) ? [CreatureList[u].nameAlt] : CreatureList[u].nameAlt;
+					// the alt names are probably just the same as the main name, but with a different word order. We don't want those, so we'll only take the ones without a comma in them
+					for (var i = 0; i < nameArr.length; i++) {
+						if (nameArr[i].indexOf(",") === -1) uName += "; " + nameArr[i];
+					}
+				}
+				uName = amendSource(uName, CreatureList[u]);
+				var uTest = testSource(u, CreatureList[u], CSatt, true);
+				if (uTest === "source") continue;
+				var uGroup = CreatureList[u].type;
+				refObj[uName] = u;
+				if (!exclObj[uGroup]) exclObj[uGroup] = {};
+				if (!inclObj[uGroup]) inclObj[uGroup] = {};
+				if (uTest) {
+					exclObj[uGroup][uName] = -1;
+				} else {
+					inclObj[uGroup][uName] = -1;
+				}
+			};
+			break;
+		case "companion" :
+			var theName = "Special Companion Options";
+			var CSatt = "compExcl";
+			for (var u in CompanionList) {
+				var oEntry = CompanionList[u];
+				var uName = amendSource(oEntry.nameMenu ? oEntry.nameMenu : oEntry.name, oEntry);
+				var uTest = testSource(u, oEntry, CSatt, true);
+				if (uTest === "source") continue;
+				refObj[uName] = u;
+				if (uTest) {
+					exclObj[uName] = -1;
+				} else {
+					inclObj[uName] = -1;
+				}
+			};
+			break;
+		case "weapon" :
+			var theName = "Weapons/Attacks";
+			var CSatt = "weapExcl";
+			for (var u in WeaponsList) {
+				var uName = amendSource(WeaponsList[u].name, WeaponsList[u]);
+				var uTest = testSource(u, WeaponsList[u], CSatt, true);
+				if (uTest === "source" || WeaponsList[u].list == "startlist") continue;
+				var uGroup = !/martial|simple/i.test(WeaponsList[u].type) ? WeaponsList[u].type : WeaponsList[u].list ? WeaponsList[u].type + " - " + WeaponsList[u].list : WeaponsList[u].baseWeapon ? WeaponsList[u].baseWeapon + " - variants" : "Other";
+				refObj[uName] = u;
+				if (!exclObj[uGroup]) exclObj[uGroup] = {};
+				if (!inclObj[uGroup]) inclObj[uGroup] = {};
+				if (uTest) {
+					exclObj[uGroup][uName] = -1;
+				} else {
+					inclObj[uGroup][uName] = -1;
+				}
+			};
+			break;
+		case "ammo" :
+			var theName = "Ammunition";
+			var CSatt = "ammoExcl";
+			for (var u in AmmoList) {
+				var uName = AmmoList[u].name;
+				var uTest = testSource(u, AmmoList[u], CSatt, true);
+				if (uTest === "source" || AmmoList[u].list == "startlist") continue;
 
-			var ammSource = parseSource(AmmoList[u].source);
-			var uGroup = ammSource ? SourceList[ammSource[0][0]].name : "Homebrew";
-			refObj[uName] = u;
-			if (!exclObj[uGroup]) exclObj[uGroup] = {};
-			if (!inclObj[uGroup]) inclObj[uGroup] = {};
-			if (uTest) {
-				exclObj[uGroup][uName] = -1;
-			} else {
-				inclObj[uGroup][uName] = -1;
-			}
-		};
-		break;
-	 case "armor" :
-		var theName = "Armors";
-		var CSatt = "armorExcl";
-		for (var u in ArmourList) {
-			var uName = amendSource(ArmourList[u].name, ArmourList[u]);
-			var uTest = testSource(u, ArmourList[u], CSatt, true);
-			if (uTest === "source" || ArmourList[u].list == "startlist") continue;
-			var uGroup = ArmourList[u].type ? ArmourList[u].type.capitalize() : "Other";
-			refObj[uName] = u;
-			if (!exclObj[uGroup]) exclObj[uGroup] = {};
-			if (!inclObj[uGroup]) inclObj[uGroup] = {};
-			if (uTest) {
-				exclObj[uGroup][uName] = -1;
-			} else {
-				inclObj[uGroup][uName] = -1;
-			}
-		};
-		break;
+				var ammSource = parseSource(AmmoList[u].source);
+				var uGroup = ammSource ? SourceList[ammSource[0][0]].name : "Homebrew";
+				refObj[uName] = u;
+				if (!exclObj[uGroup]) exclObj[uGroup] = {};
+				if (!inclObj[uGroup]) inclObj[uGroup] = {};
+				if (uTest) {
+					exclObj[uGroup][uName] = -1;
+				} else {
+					inclObj[uGroup][uName] = -1;
+				}
+			};
+			break;
+		case "armor" :
+			var theName = "Armors";
+			var CSatt = "armorExcl";
+			for (var u in ArmourList) {
+				var uName = amendSource(ArmourList[u].name, ArmourList[u]);
+				var uTest = testSource(u, ArmourList[u], CSatt, true);
+				if (uTest === "source" || ArmourList[u].list == "startlist") continue;
+				var uGroup = ArmourList[u].type ? ArmourList[u].type.capitalize() : "Other";
+				refObj[uName] = u;
+				if (!exclObj[uGroup]) exclObj[uGroup] = {};
+				if (!inclObj[uGroup]) inclObj[uGroup] = {};
+				if (uTest) {
+					exclObj[uGroup][uName] = -1;
+				} else {
+					inclObj[uGroup][uName] = -1;
+				}
+			};
+			break;
 	};
 
 	exclObj = CleanObject(exclObj); inclObj = CleanObject(inclObj);
@@ -1372,7 +1372,7 @@ function resourceSelectionDialog(type) {
 		BTLA: function (dialog) {
 			// move all items from IncL to ExcL and sort ExcL
 			var elements = dialog.store()
-				var exclNow = elements["ExcL"];
+			var exclNow = elements["ExcL"];
 			var inclNow = elements["IncL"];
 			dialog.load({
 				"ExcL": MergeRecursive(exclNow, inclNow),
@@ -1674,7 +1674,7 @@ function MakeSourceMenu_SourceOptions() {
 
 // A function to remove excluded objects that no longer exist
 function cleanExclSources() {
-	var getSubs = function(pObj, objEntry) {
+	var getSubs = function (pObj, objEntry) {
 		var anObj = pObj[objEntry];
 		if (!anObj.choices) return [];
 		var chArr = [];
@@ -1684,7 +1684,7 @@ function cleanExclSources() {
 		}
 		return chArr;
 	}
-	var getRelObject = function(attrNm) {
+	var getRelObject = function (attrNm) {
 		var reArr = [], entry;
 		switch (attrNm) {
 			case "globalExcl" :

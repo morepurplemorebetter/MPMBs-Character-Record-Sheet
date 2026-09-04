@@ -636,8 +636,7 @@ AddSubClass("battlemage", "psychic warrior", {
 				spellAdd: [
 					function (spellKey, spellObj, spName) {
 						if (/wizard|^battlemage$/i.test(spName)) {
-							if (/V|S/i.test(spellObj.components)) 
-							spellObj.components = spellObj.components.replace(/V,?|S,?/ig, "");
+							if (/V|S/i.test(spellObj.components)) spellObj.components = spellObj.components.replace(/V,?|S,?/ig, "");
 							return true;
 						};
 					},

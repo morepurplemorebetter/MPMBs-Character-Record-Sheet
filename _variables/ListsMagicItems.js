@@ -1853,7 +1853,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		description: "This magical warhammer adds a +3 bonus to attack and damage rolls made with it. It has the thrown property with a normal range of 20 ft and a long range of 60 ft. It deals an extra 1d8 damage (or 2d8 if the target is a giant) when thrown. Immediately after the attack, the weapon flies back to my hand.",
 		prerequisite: "Requires attunement by a dwarf",
-		prereqeval: function(v) { return CurrentRace.known.indexOf("dwarf") !== -1; },
+		prereqeval: function (v) { return CurrentRace.known.indexOf("dwarf") !== -1; },
 		weight: 2,
 		descriptionFull: "You gain a +3 bonus to attack and damage rolls made with this magic weapon. It has the thrown property with a normal range of 20 feet and a long range of 60 feet. When you hit with a ranged attack using this weapon, it deals an extra 1d8 damage or, if the target is a giant, 2d8 damage. Immediately after the attack, the weapon flies back to your hand.",
 		weaponOptions: [{
@@ -2379,7 +2379,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing these dark lenses, you have darkvision out to a range of 60 feet. If you already have darkvision. wearing the goggles increases its range by 60 feet.",
 		vision: [["Darkvision", "fixed 60"], ["Darkvision", "+60"]],
 	},
-	"hammer of thunderbolts": function() {
+	"hammer of thunderbolts": function () {
 		/** Ability score increases and magic items setting the ability scores
 		 * 2024 version of this item increases the override of the attuend item by 4 and
 		 * that is how this 5e version has been made to work from v14.0.13 onwards.
@@ -2413,7 +2413,7 @@ var Base_MagicItemsList = {
 				var hasGauntlets = CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1;
 				var hasBelt = CurrentMagicItems.known.indexOf("belt of giant strength") !== -1;
 				// If it doesn't have both, stop now
-				if (!hasGauntlets || !hasBelt) return returnValue.toLowerCase(); 
+				if (!hasGauntlets || !hasBelt) return returnValue.toLowerCase();
 				returnValue = "Wearing, but not attuned to, Belt of Giant Strength and Gauntlets of Ogre Power";
 				// Loop through all the magic items and see attuned to which belt
 				var strOverride = 0;
@@ -2800,7 +2800,7 @@ var Base_MagicItemsList = {
 		creatureOptions: [{
 			name: "Berserker",
 			source: [["SRD", 397], ["M", 344]],
-			eval: function(prefix) {
+			eval: function (prefix) {
 				Value(prefix + "Comp.Desc.Name", "Warrior Spirit");
 				Value(prefix + "Comp.Type", "Summon");
 				Value(prefix + "Comp.Use.Attack.1.Weapon Selection", "Greataxe");
@@ -4809,17 +4809,17 @@ var Base_MagicItemsList = {
 		"good": {
 			description: "While wearing this elegant robe made from exquisite white cloth adorned with silvery runes, I have advantage on saves against spells and magical effects and add +2 to both my spell save DC and spell attack rolls. Also, if I'm not wearing armor, it makes my base AC 15 + my Dexterity modifier.",
 			prerequisite: "Requires attunement by a good sorcerer, warlock, or wizard",
-			prereqeval: function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && /good/i.test(What("Alignment")); },
+			prereqeval: function (v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && /good/i.test(What("Alignment")); },
 		},
 		"neutral": {
 			description: "While wearing this elegant robe made from exquisite gray cloth adorned with silvery runes, I have advantage on saves against spells and magical effects and add +2 to both my spell save DC and spell attack rolls. Also, if I'm not wearing armor, it makes my base AC 15 + my Dexterity modifier.",
 			prerequisite: "Requires attunement by a neutral sorcerer, warlock, or wizard",
-			prereqeval: function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && !/good|evil/i.test(What("Alignment")); },
+			prereqeval: function (v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && !/good|evil/i.test(What("Alignment")); },
 		},
 		"evil": {
 			description: "While wearing this elegant robe made from exquisite black cloth adorned with silvery runes, I have advantage on saves against spells and magical effects and add +2 to both my spell save DC and spell attack rolls. Also, if I'm not wearing armor, it makes my base AC 15 + my Dexterity modifier.",
 			prerequisite: "Requires attunement by an evil sorcerer, warlock, or wizard",
-			prereqeval: function(v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && /evil/i.test(What("Alignment")); },
+			prereqeval: function (v) { return (classes.known.sorcerer || classes.known.warlock || classes.known.wizard) && /evil/i.test(What("Alignment")); },
 		},
 	},
 	"robe of useful items": {
@@ -5388,7 +5388,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a bard, cleric, druid, sorcerer, warlock, or wizard",
-		prereqeval: function(v) { return classes.known.bard || classes.known.cleric || classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
+		prereqeval: function (v) { return classes.known.bard || classes.known.cleric || classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
 		extraLimitedFeatures: [{
 			name: "Staff of Charming (pass enchantment save)",
 			usages: 1,
@@ -5419,7 +5419,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a druid, sorcerer, warlock, or wizard",
-		prereqeval: function(v) { return classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
+		prereqeval: function (v) { return classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
 		usages: 10,
 		recovery: "dawn",
 		additional: "regains 1d6+4",
@@ -5454,7 +5454,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a druid, sorcerer, warlock, or wizard",
-		prereqeval: function(v) { return classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
+		prereqeval: function (v) { return classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
 		usages: 10,
 		recovery: "dawn",
 		additional: "regains 1d6+4",
@@ -5490,7 +5490,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a bard, cleric, or druid",
-		prereqeval: function(v) { return classes.known.bard || classes.known.cleric || classes.known.druid ? true : false; },
+		prereqeval: function (v) { return classes.known.bard || classes.known.cleric || classes.known.druid ? true : false; },
 		usages: 10,
 		recovery: "dawn",
 		additional: "regains 1d6+4",
@@ -5532,7 +5532,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a sorcerer, warlock, or wizard",
-		prereqeval: function(v) { return classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
+		prereqeval: function (v) { return classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
 		usages: 20,
 		recovery: "dawn",
 		additional: "regains 2d8+4",
@@ -5634,7 +5634,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a bard, cleric, druid, sorcerer, warlock, or wizard",
-		prereqeval: function(v) { return classes.known.bard || classes.known.cleric || classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
+		prereqeval: function (v) { return classes.known.bard || classes.known.cleric || classes.known.druid || classes.known.sorcerer || classes.known.warlock || classes.known.wizard ? true : false; },
 		usages: 10,
 		recovery: "dawn",
 		additional: "regains 1d6+4",
@@ -5765,7 +5765,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a cleric, druid, or warlock",
-		prereqeval: function(v) { return classes.known.cleric || classes.known.druid || classes.known.warlock ? true : false; },
+		prereqeval: function (v) { return classes.known.cleric || classes.known.druid || classes.known.warlock ? true : false; },
 		action: [["action", " (animate)"], ["bonus action", " (end)"]],
 	},
 	"staff of the woodlands": {
@@ -5779,7 +5779,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a druid",
-		prereqeval: function(v) { return classes.known.druid ? true : false; },
+		prereqeval: function (v) { return classes.known.druid ? true : false; },
 		action: [["action", ""]],
 		usages: 10,
 		recovery: "dawn",
@@ -5906,7 +5906,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a cleric, druid, or warlock",
-		prereqeval: function(v) { return classes.known.cleric || classes.known.druid || classes.known.warlock ? true : false; },
+		prereqeval: function (v) { return classes.known.cleric || classes.known.druid || classes.known.warlock ? true : false; },
 		usages: 3,
 		recovery: "dawn",
 		additional: "regains 1d3",
@@ -6103,7 +6103,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a creature of good alignment",
-		prereqeval: function(v) { return /good/i.test(What("Alignment")); },
+		prereqeval: function (v) { return /good/i.test(What("Alignment")); },
 		usages: 7,
 		recovery: "Never",
 		action: [["action", ""]],
@@ -6139,7 +6139,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a creature of evil alignment",
-		prereqeval: function(v) { return /evil/i.test(What("Alignment")); },
+		prereqeval: function (v) { return /evil/i.test(What("Alignment")); },
 		usages: 6,
 		recovery: "Never",
 		action: [["action", ""]],
@@ -6314,7 +6314,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
-		prereqeval: function(v) { return v.isSpellcaster; },
+		prereqeval: function (v) { return v.isSpellcaster; },
 		action: [["reaction", " (adv. on save)"]],
 		usages: 7,
 		recovery: "dawn",
@@ -6388,7 +6388,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
-		prereqeval: function(v) { return v.isSpellcaster; },
+		prereqeval: function (v) { return v.isSpellcaster; },
 		usages: 7,
 		recovery: "dawn",
 		additional: "regains 1d6+1",
@@ -6418,7 +6418,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
-		prereqeval: function(v) { return v.isSpellcaster; },
+		prereqeval: function (v) { return v.isSpellcaster; },
 		usages: 7,
 		recovery: "dawn",
 		additional: "regains 1d6+1",
@@ -6494,7 +6494,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
-		prereqeval: function(v) { return v.isSpellcaster; },
+		prereqeval: function (v) { return v.isSpellcaster; },
 		action: [["action", ""]],
 		usages: 7,
 		recovery: "dawn",
@@ -6511,7 +6511,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
-		prereqeval: function(v) { return v.isSpellcaster; },
+		prereqeval: function (v) { return v.isSpellcaster; },
 		usages: 7,
 		recovery: "dawn",
 		additional: "regains 1d6+1",
@@ -6548,7 +6548,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
-		prereqeval: function(v) { return v.isSpellcaster; },
+		prereqeval: function (v) { return v.isSpellcaster; },
 		allowDuplicates: true,
 		choices: ["+1 to spell attacks (uncommon)", "+2 to spell attacks (rare)", "+3 to spell attacks (very rare)"],
 		"+1 to spell attacks (uncommon)": {
@@ -6608,7 +6608,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
-		prereqeval: function(v) { return v.isSpellcaster; },
+		prereqeval: function (v) { return v.isSpellcaster; },
 		usages: 7,
 		recovery: "dawn",
 		additional: "regains 1d6+1",
@@ -6659,7 +6659,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
-		prereqeval: function(v) { return v.isSpellcaster; },
+		prereqeval: function (v) { return v.isSpellcaster; },
 		usages: 7,
 		recovery: "dawn",
 		additional: "regains 1d6+1",

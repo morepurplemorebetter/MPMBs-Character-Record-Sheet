@@ -8,11 +8,11 @@ function copyField(fldFromName, fldToName, excl, swap) {
 	if (!excl) excl = {};
 
 	// a function to do the actual copying
-	var copy = function(fromObj, toObj, justObj) {
+	var copy = function (fromObj, toObj, justObj) {
 		if (fromObj.type == "checkbox") {
 			if (justObj) {
 				toObj.isBoxCheckVal = fromObj.isBoxChecked(0);
-				toObj.isBoxChecked = function() { return saveTo.isBoxCheckVal; };
+				toObj.isBoxChecked = function () { return saveTo.isBoxCheckVal; };
 				toObj.type = "checkbox";
 			} else {
 				toObj.checkThisBox(0, fromObj.isBoxChecked(0));
@@ -123,7 +123,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	var choiceLimFeaTooltip;
 
 	// the function to run an eval string/function
-	var runEval = function(evalThing, attributeName, ignoreUnits) {
+	var runEval = function (evalThing, attributeName, ignoreUnits) {
 		if (!evalThing) return;
 		try {
 			var convertUnits = false;
@@ -146,7 +146,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 
 	// the function to run all regular level-independent attributes
 	// addIt = true to add things and addIt = false to remove things
-	var useAttr = function(uObj, addIt, skipEval, objNm) {
+	var useAttr = function (uObj, addIt, skipEval, objNm) {
 		var uniqueObjNm = objNm == undefined ? fObjName : fObjName + objNm; // has to be unique
 		var tipNm = displName;
 		var useSpCasting = objNm && (type === "feat" || type === "magic item") && !CurrentSpells[aParent] ? aParent + "_-_" + objNm : aParent;
@@ -176,7 +176,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 
 		// we should add the options for weapons/armours/ammos before adding the item itself
 		// but we should be removing them only after removing the item itself
-		var addListOptions = function() {
+		var addListOptions = function () {
 			if (uObj.armorOptions) processArmorOptions(addIt, tipNm, uObj.armorOptions, type === "magic item");
 			if (uObj.ammoOptions) processAmmoOptions(addIt, tipNm, uObj.ammoOptions, type === "magic item");
 			if (uObj.weaponOptions) processWeaponOptions(addIt, tipNm, uObj.weaponOptions, type === "magic item");
@@ -313,7 +313,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			fObjName = fObjName[1];
 			var useClObj = forceNonCurrent && ClassList[forceNonCurrent] && ClassList[forceNonCurrent].features[fObjName] ? ClassList[forceNonCurrent] :
 				forceNonCurrent && ClassSubList[forceNonCurrent] && ClassSubList[forceNonCurrent].features[fObjName] ? ClassSubList[forceNonCurrent] :
-				CurrentClasses[aParent];
+					CurrentClasses[aParent];
 			var fObj = useClObj.features[fObjName];
 			var displName = fObjName.indexOf("subclassfeature") == -1 ? useClObj.name : useClObj.fullname ? useClObj.fullname : forceNonCurrent && useClObj.subname ? useClObj.subname : useClObj.name;
 
@@ -329,7 +329,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			aParent = fObjName[0];
 			fObjName = fObjName[1];
 			var fObj = aParent == fObjName && !CurrentRace.features[fObjName] ?
-					(forceNonCurrent ? RaceList[forceNonCurrent] : CurrentRace) :
+				(forceNonCurrent ? RaceList[forceNonCurrent] : CurrentRace) :
 				forceNonCurrent && RaceList[forceNonCurrent] && RaceList[forceNonCurrent].features[fObjName] ?
 					RaceList[forceNonCurrent].features[fObjName] : CurrentRace.features[fObjName];
 			var displName = CurrentRace.name;
@@ -381,7 +381,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	// --- backwards compatibility --- //
 	// First do the eval attribute of the main object, as it might change things for the choice
 	var skipMainEval = false;
- 	if (fObj.choices && !choiceA[2] && CheckLVL && AddFea && fObj.eval && (typeof fObj.eval == "string") && (/Fea(Old)?Choice/).test(fObj.eval)) {
+	if (fObj.choices && !choiceA[2] && CheckLVL && AddFea && fObj.eval && (typeof fObj.eval == "string") && (/Fea(Old)?Choice/).test(fObj.eval)) {
 		runEval(fObj.eval, "eval");
 		skipMainEval = true;
 		// redo the choice array, as the eval might have changed it
@@ -480,7 +480,7 @@ function ApplyClassBaseAttributes(AddRemove, aClass, primaryClass) {
 	var nAttr = primaryClass ? "primary" : "secondary";
 
 	// a way to see if we should process the attribute or not
-	var checkIfIn = function(nObj, inclObj, attrA, noN, exclObj) {
+	var checkIfIn = function (nObj, inclObj, attrA, noN, exclObj) {
 		if (!attrA[1]) attrA[1] = "nonExistentAttributeName";
 		if (!nObj[attrA[0]] && !nObj[attrA[1]]) {
 			// if the first object doesn't have either attribute, just stop
@@ -637,7 +637,7 @@ function processBonusClassExtraChoices(bAddRemove, sType, aItems) {
 			// Add, but not if it already exists and we're importing
 			try {
 				if (!IsNotImport && CurrentFeatureChoices.bonus[sClass][sSubclass][sFea]) continue;
-			} catch(e) {};
+			} catch (e) {};
 			if (!CurrentFeatureChoices.bonus) CurrentFeatureChoices.bonus = {};
 			if (!CurrentFeatureChoices.bonus[sClass]) CurrentFeatureChoices.bonus[sClass] = {};
 			if (!CurrentFeatureChoices.bonus[sClass][sSubclass]) CurrentFeatureChoices.bonus[sClass][sSubclass] = {};
@@ -779,7 +779,7 @@ function CreateCurrentSpellsEntry(type, fObjName, aChoice, forceNonCurrent) {
 	type = GetFeatureType(type);
 	var sTypeSingular = GetFeatureType(type, false, true);
 	var fObjP = false;
-	var setCSobj = function(oName) {
+	var setCSobj = function (oName) {
 		if (!CurrentSpells[oName]) {
 			CurrentSpells[oName] = { bonus: {} };
 			CurrentUpdates.types.push("spells");
@@ -1029,7 +1029,7 @@ function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrc
 	// First find which CurrentSpells object we should add this to
 	var sSpMain = oSpElse.addTo;
 	if (bAddRemove) {
-		// When adding the 
+		// When adding the
 		if (!CurrentSpells[sSpMain]) {
 			// Not a perfect match for an existing CurrentSpells entry name
 			var aMatches = [];
@@ -1062,8 +1062,8 @@ function processSpellcastingBonusElsewhere(bAddRemove, sType, sSrcNm, sUniqueSrc
 					"Which spellcasting to add " + sSrcNm + " spells to",
 					'The spells gained from "' + sSrcNm + '" are meant to be automatically added to a "'  + oSpElse.addTo + '" spellcasting entry. Several entries are a match, thus it is up to you to decide which of these to add the spells to.',
 					aCastNames,
-"radio",
-true,
+					"radio",
+					true,
 					"You can't change what you select here other than by removing " + sSrcNm + ", and then selecting it again.");
 				sSpMain = oRefCasts[sUserSelect];
 			}
@@ -1538,7 +1538,7 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 	if (!oldTxtA || !oldTxtA[0]) return false; // no oldTxt, so we can't do anything
 
 	// make some regex objects
-	var getRx = function(str) {
+	var getRx = function (str) {
 		var sEscaped = str.replace(/\n/g, "\r").replace(/^\r+/, "").RegEscape();
 		var sJustLine = RegExp(sEscaped + ".*", "i");
 		// Regex for everything until the first empty line or the first line that doesn't start with a "#" (the header format character)
@@ -2053,12 +2053,12 @@ function UpdateSheetDisplay() {
 				ShowCompareDialog(
 					["Things affecting spells, spell properties and/or spell list generation", "Some features might affect how spells are displayed on the spell sheet, by adding more range for example.\n\nOthers might affect how a spell list for a spellcasting class or feature is generated, by adding extra spells to choose from for example."],
 					this.spellStrChange ?
-					[
-						["Old spell list/attribute manipulations", this.oldSpellStr],
-						["New spell list/attribute manipulations", StringEvals("spellStr")],
-					] : [
-						["Spell list/attribute manipulations", StringEvals("spellStr")],
-					],
+						[
+							["Old spell list/attribute manipulations", this.oldSpellStr],
+							["New spell list/attribute manipulations", StringEvals("spellStr")],
+						] : [
+							["Spell list/attribute manipulations", StringEvals("spellStr")],
+						],
 					true
 				);
 			};
@@ -2669,7 +2669,7 @@ function ApplyMagicItem(input, FldNmbr) {
 	var oldMIvar = CurrentMagicItems.choices[ArrayNmbr];
 	var failedChoice = false;
 
-	var doNotCommit = function(toSetVal) {
+	var doNotCommit = function (toSetVal) {
 		if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
 		if (!IsNotImport) return;
 		event.rc = false;
@@ -3143,11 +3143,11 @@ function ParseMagicItemMenu() {
 		ref: {},
 	};
 	var spaceArr = new Array(38).join("\u2002");
-	var amendSrc = function(nameTxt, srcTxt) {
+	var amendSrc = function (nameTxt, srcTxt) {
 		if (!srcTxt) return nameTxt;
 		return nameTxt + spaceArr.slice(0, nameTxt.length < 35 ? 38 - nameTxt.length : 4) + srcTxt;
 	}
-	var sortItem = function(mainItem, subItem) {
+	var sortItem = function (mainItem, subItem) {
 		var iObj = MagicItemsList[mainItem];
 		var sObj = subItem ? iObj[subItem.toLowerCase()] : false;
 		var tObj = sObj ? {} : iObj;
@@ -3366,7 +3366,7 @@ function MakeMagicItemMenu_MagicItemOptions(MenuSelection, itemNmbr) {
 	var theMIchoice = CurrentMagicItems.choices[ArrayNmbr];
 	var aMI, fullMIname;
 
-	var getChoiceName = function(item, choice) {
+	var getChoiceName = function (item, choice) {
 		var aMI = MagicItemsList[item];
 		if (!choice || !aMI[choice]) return aMI.name;
 		if (aMI[choice].name) return aMI[choice].name;
@@ -3630,7 +3630,7 @@ function RemoveMagicItem(item) {
 				}
 			}
 		}
-	} 
+	}
 	// Not recognized, so try it the hard way
 	item = item.substring(0, 2) === "- " ? item.substring(2) : item;
 	var itemLower = item.toLowerCase();
@@ -3755,7 +3755,7 @@ function MagicItemClear(itemNmbr, doAutomation) {
 
 // Get the shortest of a magic item object's names
 function MagicItemGetShortestName(nameObj) {
-	return [nameObj.name].concat(nameObj.nameAlt ? [nameObj.nameAlt] : []).concat(nameObj.nameTest && typeof nameObj.nameTest == "string" ? [nameObj.nameTest] : []).reduce(function(a, b) { return a.length <= b.length ? a : b; });
+	return [nameObj.name].concat(nameObj.nameAlt ? [nameObj.nameAlt] : []).concat(nameObj.nameTest && typeof nameObj.nameTest == "string" ? [nameObj.nameTest] : []).reduce(function (a, b) { return a.length <= b.length ? a : b; });
 }
 
 // Change the magic item to include a selected weapon, armor, or ammunition
@@ -3797,7 +3797,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			return;
 	}
 
-	var createString = function(type, addition, fixed) {
+	var createString = function (type, addition, fixed) {
 		switch (type ? type.toLowerCase() : "") {
 			default:
 			case "between":
@@ -4004,7 +4004,7 @@ function gatherPrereqevalVars() {
 		if (isProf) gObj.skillProfs.push(skillNm);
 		if (isProf && tDoc.getField(skillAbbr + " Exp").isBoxChecked(0)) gObj.skillExpertise.push(skillNm);
 	}
-	var toLC = function(n) { return n.toLowerCase(); };
+	var toLC = function (n) { return n.toLowerCase(); };
 	["toolProfs", "languageProfs", "skillProfs", "skillExpertise"].forEach(function (attr) {
 		gObj[attr + "LC"] = gObj[attr].map(toLC);
 	});
@@ -4028,8 +4028,8 @@ function gatherWeaponVars(inputObjectKey, inputObject) {
 		get isSpellKey() {
 			return this.theWea.SpellsList ? this.theWea.SpellsList :
 				SpellsList[this.weaponKey] ? this.weaponKey :
-				this.baseWeaponKey && SpellsList[this.baseWeaponKey] ? this.baseWeaponKey :
-				ParseSpell(this.theWea.name);
+					this.baseWeaponKey && SpellsList[this.baseWeaponKey] ? this.baseWeaponKey :
+						ParseSpell(this.theWea.name);
 		},
 		get isSpell() {
 			return this.isSpellKey || /cantrip|spell/i.test(this.theWea.type) ? true : false;
@@ -4092,7 +4092,7 @@ function applyExtrachoicesOfChoice(sClass, sProp, aChoice, bOnlyObject) {
 	if (!aChoice && bOnlyObject) aChoice = [false, GetFeatureChoice("classes", sClass, sProp, false)];
 	var propChoiceOld = aChoice[0] && propFea[aChoice[0]] ? propFea[aChoice[0]] : false;
 	var propChoiceNew = aChoice[1] && propFea[aChoice[1]] ? propFea[aChoice[1]] : false;
-	var setProperty = function(objTo, objFrom, propNm) {
+	var setProperty = function (objTo, objFrom, propNm) {
 		objTo[propNm] = objFrom && objFrom[propNm] ? objFrom[propNm] : objTo[propNm + "Remember"] ? objTo[propNm + "Remember"] : undefined;
 	}
 	// Check if the autoSelectExtrachoices changes with the new selection

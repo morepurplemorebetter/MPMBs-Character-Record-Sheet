@@ -80,7 +80,7 @@ ClassList["warmage"] = {
 	subclasses: ["Warmage House", []],
 	attacks: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 	spellcastingKnown: {
-		cantrips: levels.map(function(n) { return 2 + Math.ceil(n / 2); }),
+		cantrips: levels.map(function (n) { return 2 + Math.ceil(n / 2); }),
 	},
 	features: {
 		"spellcasting": {
@@ -159,7 +159,7 @@ ClassList["warmage"] = {
 					};
 					SetStringifieds("spells"); CurrentUpdates.types.push("spells");
 				},
-				removeeval: function() {
+				removeeval: function () {
 					delete CurrentSpells["ritual spellbook"];
 					SetStringifieds("spells"); CurrentUpdates.types.push("spells");
 				},
@@ -261,7 +261,7 @@ ClassList["warmage"] = {
 					"When I cast Light on an object I'm holding, I can have a flare shoot out to a target in 10 ft",
 					"It must succeed on a Con save or be blinded until the start of my next turn",
 				]),
-				prereqeval: function(v) { return isSpellUsed("light", true); },
+				prereqeval: function (v) { return isSpellUsed("light", true); },
 			},
 			"charged blade (prereq: shillelagh cantrip)": {
 				name: "Charged Blade",
@@ -269,9 +269,9 @@ ClassList["warmage"] = {
 				description: desc([
 					"I can cast Shillelagh on any weapon and its duration increases to 24 hours",
 				]),
-				prereqeval: function(v) { return isSpellUsed("shillelagh", true); },
+				prereqeval: function (v) { return isSpellUsed("shillelagh", true); },
 			},
-/* 			"cloak of feathers (prereq: house of rooks)" : {
+			/* 			"cloak of feathers (prereq: house of rooks)" : {
 				name : "Cloak of Feathers",
 				source : ["MFoV:CW", 9],
 				description : desc([
@@ -353,7 +353,7 @@ ClassList["warmage"] = {
 				name: "Pawn Storm",
 				source: ["MFoV:CW", 9],
 				description: desc("I gain +10 ft speed and double my speed on the first round of combat"),
-				prereqeval: function(v) { return /pawns/i.test(classes.known.warmage.subclass); },
+				prereqeval: function (v) { return /pawns/i.test(classes.known.warmage.subclass); },
 				speed: { allModes: "+10" },
 			},
 			"rapid fortification (prereq: mending cantrip)": {
@@ -364,7 +364,7 @@ ClassList["warmage"] = {
 					" \u2022 Restore a single object up to 1 cu. ft to pristine condition, even if parts are missing",
 					" \u2022 Use present materials to make simple fortification up to 5 sq. ft (e.g. planks on window)",
 				]),
-				prereqeval: function(v) { return isSpellUsed("mending", true); },
+				prereqeval: function (v) { return isSpellUsed("mending", true); },
 			},
 			"blasting cantrip (prereq: level 5 warmage, force dart or mystical blade cantrip)": {
 				name: "Blasting Cantrip",
@@ -372,9 +372,9 @@ ClassList["warmage"] = {
 				description: desc([
 					"Creatures dealt force damage by my warmage cantrips are pushed 10 ft away from me",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 5 && (isSpellUsed("force dart", true) || isSpellUsed("mystical blade", true)); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 5 && (isSpellUsed("force dart", true) || isSpellUsed("mystical blade", true)); },
 			},
-/* 			"booming cantrip (prereq: level 5 warmage, thundering blade cantrip)" : {
+			/* 			"booming cantrip (prereq: level 5 warmage, thundering blade cantrip)" : {
 				name : "Booming Cantrip",
 				source : ["MFoV:CW", 10],
 				description : desc([
@@ -390,7 +390,7 @@ ClassList["warmage"] = {
 					"When a creature takes acid damage from my warmage cantrip, it must make a Dex save",
 					"If failed, it takes half damage again at the start of its next turn; Doesn't stack with itself",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 5 && (isSpellUsed("acid splash", true) || isSpellUsed("acidic blade", true)); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 5 && (isSpellUsed("acid splash", true) || isSpellUsed("acidic blade", true)); },
 			},
 			"electrified cantrip (prereq: level 5 warmage, shocking grasp or storming blade cantrip)": {
 				name: "Electrified Cantrip",
@@ -399,7 +399,7 @@ ClassList["warmage"] = {
 					"When a creature takes lightning damage from my warmage cantrip, I can have it save",
 					"If it fails a Constitution save it is stunned until the start of my next turn",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 5 && (isSpellUsed("shocking grasp", true) || isSpellUsed("storming blade", true)); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 5 && (isSpellUsed("shocking grasp", true) || isSpellUsed("storming blade", true)); },
 				usages: "Intelligence modifier per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
 				recovery: "long rest",
@@ -411,7 +411,7 @@ ClassList["warmage"] = {
 					"When a creature takes necrotic damage from my warmage cantrip, I can have it save",
 					"If it fails a Con save it suffers one level of exhaustion; This can't affect same creature twice",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 5 && isSpellUsed("chill touch", true); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 5 && isSpellUsed("chill touch", true); },
 			},
 			"explosive cantrip (prereq: level 5 warmage, fire bolt or molten blade cantrip)": {
 				name: "Explosive Cantrip",
@@ -421,7 +421,7 @@ ClassList["warmage"] = {
 					"All within 5 ft of the target, excluding myself and the target, must make a Dex save",
 					"If failed, they take half the initial damage; Can only affect the same creature once per turn",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 5 && (isSpellUsed("fire bolt", true) || isSpellUsed("molten blade", true)); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 5 && (isSpellUsed("fire bolt", true) || isSpellUsed("molten blade", true)); },
 			},
 			"frigid cantrip (prereq: level 5 warmage, glacial blade or ray of frost cantrip)": {
 				name: "Frigid Cantrip",
@@ -430,7 +430,7 @@ ClassList["warmage"] = {
 					"When a creature takes cold damage from my warmage cantrip, it must make a Con save",
 					"If failed, it can't make more than one attack until the start of my next turn",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 5 && (isSpellUsed("ray of frost", true) || isSpellUsed("glacial blade", true)); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 5 && (isSpellUsed("ray of frost", true) || isSpellUsed("glacial blade", true)); },
 			},
 			"improved martial training (prereq: level 5 warmage, house of kings or house of knights or house of pawns)": {
 				name: "Improved Martial Training",
@@ -438,7 +438,7 @@ ClassList["warmage"] = {
 				description: desc([
 					"I can attack twice, instead of once, as part of the Attack action",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 5 && /kings|knights|pawns/i.test(classes.known.warmage.subclass); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 5 && /kings|knights|pawns/i.test(classes.known.warmage.subclass); },
 			},
 			"promotion (prereq: level 5 warmage, house of pawns)": {
 				name: "Promotion",
@@ -446,9 +446,9 @@ ClassList["warmage"] = {
 				description: desc([
 					"I select a warmage house other than my own; I can now learn tricks requiring that house",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 5 && /pawns/i.test(classes.known.warmage.subclass); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 5 && /pawns/i.test(classes.known.warmage.subclass); },
 			},
-/* 			"rook's perch (prereq: level 5 warmage, house of rooks)" : {
+			/* 			"rook's perch (prereq: level 5 warmage, house of rooks)" : {
 				name : "Rook's Perch",
 				source : ["MFoV:CW", 11],
 				description: desc("I gain +10 ft speed and a climbing speed equal to my walking speed"),
@@ -465,7 +465,7 @@ ClassList["warmage"] = {
 					"When I cast a warmage cantrip that requires a spell attack, I can target multiple creatures",
 					"I can target a separate creature for each damage die of the spell, rolling to hit for each",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 5; },
+				prereqeval: function (v) { return classes.known.warmage.level >= 5; },
 			},
 			"skilled hand (prereq: level 5 warmage, mage hand cantrip)": {
 				name: "Skilled Hand",
@@ -477,7 +477,7 @@ ClassList["warmage"] = {
 					"When I take the Attack action, I can forgo one or more attack to allow the hand to attack",
 					"If I forgo all my attacks of the turn, I can have it make a bonus attack as a bonus action",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 5 && isSpellUsed("mage hand", true); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 5 && isSpellUsed("mage hand", true); },
 			},
 			"venomous cantrip (prereq: level 5 warmage, poison spray cantrip)": {
 				name: "Venomous Cantrip",
@@ -486,7 +486,7 @@ ClassList["warmage"] = {
 					"When a creature takes poison damage from my warmage cantrip, I can have it save",
 					"On a failed Constitution saving throw it is poisoned until the start of my next turn",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 5 && isSpellUsed("poison spray", true); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 5 && isSpellUsed("poison spray", true); },
 				usages: "Intelligence modifier per ",
 				usagescalc: "event.value = Math.max(1, What('Int Mod'));",
 				recovery: "long rest",
@@ -497,7 +497,7 @@ ClassList["warmage"] = {
 				description: desc([
 					"I can throw one extra weapon when I attack with weapons summoned by Magic Daggers",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 10 && isSpellUsed("magic daggers", true); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 10 && isSpellUsed("magic daggers", true); },
 			},
 			"pawn's sacrifice (prereq: level 10 warmage, house of pawns)": {
 				name: "Pawn's Sacrifice",
@@ -506,7 +506,7 @@ ClassList["warmage"] = {
 					"As a reaction when a creature within 30 ft is hit by an attack, I can move next to it",
 					"After I move, I become the target of that attack, potentially causing the attack to miss",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 10 && /pawns/i.test(classes.known.warmage.subclass); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 10 && /pawns/i.test(classes.known.warmage.subclass); },
 				action: [["reaction", ""]],
 				usages: 1,
 				recovery: "short rest",
@@ -519,7 +519,7 @@ ClassList["warmage"] = {
 					"I get advantage on my first attack on the target each round while concentrating",
 					"This way, I can only maintain concentration a number of rounds equal to my Int mod",
 				]),
-				prereqeval: function(v) { return classes.known.warmage.level >= 10 && isSpellUsed("true strike", true); },
+				prereqeval: function (v) { return classes.known.warmage.level >= 10 && isSpellUsed("true strike", true); },
 			},
 		},
 		"subclassfeature3": {

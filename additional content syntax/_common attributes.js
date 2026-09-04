@@ -53,15 +53,15 @@
 */
 var exampleFeatureName = { // you can ignore this, it is just here to make this file valid JavaScript
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Actions & Limited Features >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Actions & Limited Features >>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 
-action: [
-	["reaction", " (start)"],
-	["bonus action", "Shove"],
-],
-/*	action // OPTIONAL //
+	action: [
+		["reaction", " (start)"],
+		["bonus action", "Shove"],
+	],
+	/*	action // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add entry to the "Actions", "Bonus Actions", or "Reactions" section on the 1st page
 	CHANGE:	v13.2.3 (clarification of what will be amended and not)
@@ -89,10 +89,10 @@ action: [
 			will result in "Shove" in the actions section.
 */
 
-usages: 1,
-usages: "Charisma modifier per ",
-usages: [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2],
-/*	usages // OPTIONAL //
+	usages: 1,
+	usages: "Charisma modifier per ",
+	usages: [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2],
+	/*	usages // OPTIONAL //
 	TYPE:	number, string, or array with 20 entries
 	USE:	value to add in the "Usages" column in the "Limited Features" section
 
@@ -122,9 +122,9 @@ usages: [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2],
 		IMPORTANT! Set the value to 0 for levels that the feature is not present.
 */
 
-recovery: "short rest",
-recovery: ["", "", "long rest", "long rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest"],
-/*	recovery // OPTIONAL //
+	recovery: "short rest",
+	recovery: ["", "", "long rest", "long rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest"],
+	/*	recovery // OPTIONAL //
 	TYPE:	string, or array with 20 strings
 	USE:	value to add in the "Recovery" column in the "Limited Features" section
 
@@ -152,9 +152,9 @@ recovery: ["", "", "long rest", "long rest", "short rest", "short rest", "short 
 		"day"
 */
 
-altResource: "SS 5+",
-altResource: ["", "", "SS 2+", "SS 2+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+"],
-/*	altResource // OPTIONAL //
+	altResource: "SS 5+",
+	altResource: ["", "", "SS 2+", "SS 2+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+"],
+	/*	altResource // OPTIONAL //
 	TYPE:	string, or array with 20 strings
 	USE:	value to add in the "Recovery" column in the "Limited Features" section in addition to the 'recovery' attribute
 
@@ -186,9 +186,9 @@ altResource: ["", "", "SS 2+", "SS 2+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 
 		"5 SP"			// 3 sorcery points
 */
 
-usagescalc: "event.value = Math.max(1, What('Wis Mod'));",
-usagescalc: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 6;", "event.value = What('Wis Mod') + 6;", "event.value = What('Wis Mod') + 6;"],
-/*	usagescalc // OPTIONAL //
+	usagescalc: "event.value = Math.max(1, What('Wis Mod'));",
+	usagescalc: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 6;", "event.value = What('Wis Mod') + 6;", "event.value = What('Wis Mod') + 6;"],
+	/*	usagescalc // OPTIONAL //
 	TYPE:	string, or array with 20 strings
 	USE:	this string is set as the field calculation method for the "Usages" field in the "Limited Features" section
 
@@ -206,8 +206,8 @@ usagescalc: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "event.valu
 	This attribute will do nothing if not both the 'usages' and 'recovery' attributes are present in the same feature.
 */
 
-limfeaname: "Hellish Rebuke (3d10)",
-/*	limfeaname // OPTIONAL //
+	limfeaname: "Hellish Rebuke (3d10)",
+	/*	limfeaname // OPTIONAL //
 	TYPE:	string
 	USE:	value to add in the "Name" column in the "Limited Features" section instead of the feature's name
 
@@ -219,8 +219,8 @@ limfeaname: "Hellish Rebuke (3d10)",
 	are present in the same feature.
 */
 
-limfeaAddToExisting: true,
-/*	limfeaAddToExisting // OPTIONAL //
+	limfeaAddToExisting: true,
+	/*	limfeaAddToExisting // OPTIONAL //
 	TYPE:	boolean
 	USE:	set to `true` to have the number set for `usages` be added to an existing limited feature by the same name, instead of overwriting it
 	ADDED:	v13.0.6
@@ -236,9 +236,9 @@ limfeaAddToExisting: true,
 	Setting this attribute to false is the same as not including it.
 */
 
-additional: "10% chance",
-additional: ["", "d6", "d6", "d6", "d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12"],
-/*	additional // OPTIONAL //
+	additional: "10% chance",
+	additional: ["", "d6", "d6", "d6", "d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12"],
+	/*	additional // OPTIONAL //
 	TYPE:	string, or array with 20 strings
 	USE:	value to add in brackets to the name in the "Limited Features" section
 
@@ -265,16 +265,16 @@ additional: ["", "d6", "d6", "d6", "d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8
 		IMPORTANT! Set the value to "" for levels that the feature is not present.
 */
 
-extraLimitedFeatures: [{
-	name: "Another Limited Feature", // REQUIRED //
-	usages: 8, // REQUIRED //
-	recovery: "long rest", // REQUIRED //
-	usagescalc: "event.value = Math.max(1, What('Cha Mod'));", // OPTIONAL //
-	additional: "2d8", // OPTIONAL //
-	altResource: "SS 5+", // OPTIONAL //
-	addToExisting: true, // OPTIONAL // ADDED v13.0.6
-}],
-/*	extraLimitedFeatures // OPTIONAL //
+	extraLimitedFeatures: [{
+		name: "Another Limited Feature", // REQUIRED //
+		usages: 8, // REQUIRED //
+		recovery: "long rest", // REQUIRED //
+		usagescalc: "event.value = Math.max(1, What('Cha Mod'));", // OPTIONAL //
+		additional: "2d8", // OPTIONAL //
+		altResource: "SS 5+", // OPTIONAL //
+		addToExisting: true, // OPTIONAL // ADDED v13.0.6
+	}],
+	/*	extraLimitedFeatures // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	entries to add to the "Limited Features" section which are not level-dependent
 
@@ -297,16 +297,16 @@ extraLimitedFeatures: [{
 */
 
 
-// >>>>>>>>>>>>>>>>>>>>> //
-// >>> Proficiencies >>> //
-// >>>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>>> //
+	// >>> Proficiencies >>> //
+	// >>>>>>>>>>>>>>>>>>>>> //
 
-toolProfs: [
-	"Herbalism kit",
-	["Thieves' tools", "Dex"],
-	["Musical instrument", 3],
-],
-/*	toolProfs // OPTIONAL //
+	toolProfs: [
+		"Herbalism kit",
+		["Thieves' tools", "Dex"],
+		["Musical instrument", 3],
+	],
+	/*	toolProfs // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add tool proficiencies
 
@@ -321,12 +321,12 @@ toolProfs: [
 		3.2	The second entry is a number, representing how many times this type of tool proficiency is to be added.
 */
 
-languageProfs: [
-	"Common",
-	2,
-	["Elvish or Vedalken", 1],
-],
-/*	languageProfs // OPTIONAL //
+	languageProfs: [
+		"Common",
+		2,
+		["Elvish or Vedalken", 1],
+	],
+	/*	languageProfs // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add language proficiencies
 
@@ -338,8 +338,8 @@ languageProfs: [
 		3.2	The second entry is a number, representing how many this type of language proficiency is to be added.
 */
 
-saves: ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"],
-/*	saves // OPTIONAL //
+	saves: ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"],
+	/*	saves // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	set saving throw proficiencies on the 1st page
 
@@ -348,13 +348,13 @@ saves: ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"],
 	Only use the strings shown in the example, the 3-letter abbreviation with the first letter capitalized (or "HoS" for Honour/Sanity).
 */
 
-skills: [
-	"Acrobatics",
-	["Deception", "full"],
-	["History", "only"],
-	["Religion", "increment"],
-],
-/*	skills // OPTIONAL //
+	skills: [
+		"Acrobatics",
+		["Deception", "full"],
+		["History", "only"],
+		["Religion", "increment"],
+	],
+	/*	skills // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add skill proficiency and expertise on the 1st page
 
@@ -372,8 +372,8 @@ skills: [
 	but only if the attribute 'skillstxt' is not present in the same feature, see below.
 */
 
-skillstxt: "Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival",
-/*	skillstxt // OPTIONAL //
+	skillstxt: "Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival",
+	/*	skillstxt // OPTIONAL //
 	TYPE:	string
 	USE:	description of skill proficiencies and skill proficiency choices gained, to use in the tooltips of skills
 
@@ -382,8 +382,8 @@ skillstxt: "Choose two from Animal Handling, Athletics, Intimidation, Nature, Pe
 	You can have both this and the 'skills' attribute, they are not mutually exclusive.
 */
 
-armorProfs: [true, true, false, true],
-/*	armorProfs // OPTIONAL //
+	armorProfs: [true, true, false, true],
+	/*	armorProfs // OPTIONAL //
 	TYPE:	array with four entries
 	USE:	adds armour and shield proficiencies
 
@@ -395,14 +395,14 @@ armorProfs: [true, true, false, true],
 	If you set it to 'false' it will do nothing, the proficiency will not be removed.
 */
 
-weaponProfs: [
-/*	weaponProfs // OPTIONAL //
+	weaponProfs: [
+		/*	weaponProfs // OPTIONAL //
 	TYPE:	array with two or three entries
 	USE:	adds weapon proficiencies
 */
 
-	true,
-	/* weaponProfs 1st entry // REQUIRED //
+		true,
+		/* weaponProfs 1st entry // REQUIRED //
 		TYPE:	boolean
 		USE:	add simple weapon proficiency
 
@@ -411,8 +411,8 @@ weaponProfs: [
 		Note that the weaponProfs array requires this entry!
 	*/
 
-	false,
-	/* weaponProfs 2nd entry // REQUIRED //
+		false,
+		/* weaponProfs 2nd entry // REQUIRED //
 		TYPE:	boolean
 		USE:	add martial weapon proficiency
 
@@ -421,33 +421,33 @@ weaponProfs: [
 		Note that the weaponProfs array requires this entry!
 	*/
 
-	["dagger", "longsword", "firearm", "Improvised Weapons"],
+		["dagger", "longsword", "firearm", "Improvised Weapons"],
 	/* weaponProfs 3rd entry // OPTIONAL //
 		TYPE:	array (variable length)
 		USE:	add weapon proficiency with the weapons or weapon-types listed
 
 		Add the names of weapons as they appear in the WeaponsList object.
 		Alternatively, you can use a grouping of weapons, as their 'list' attribute says, for example 'firearm'.
-		Alternatively, you can use types of weapons, as their 'type' attribute says, for example 'Improvised Weapons'.		
+		Alternatively, you can use types of weapons, as their 'type' attribute says, for example 'Improvised Weapons'.
 
 		For example the High Elf weapon proficiency looks like this:
 		weaponProfs : [false, false, ["longsword", "shortsword", "longbow", "shortbow"]],
 
 		If you don't want to add individual weapon proficiencies, you can simply not set this weaponProfs 3rd entry, or set this to `false`, an empty string `""`, or `0`.
 	*/
-],
+	],
 
 
-// >>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Weapons & Armour >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Weapons & Armour >>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>> //
 
-weaponsAdd: ["Bite", "Longsword +2"], // legacy, before v13.1.14
-weaponsAdd: {
-	select: ["Bite", "Rusty Greataxe"],
-	options: ["Longsword +2", "Rusty Greataxe"],
-},
-/*	weaponsAdd // OPTIONAL //
+	weaponsAdd: ["Bite", "Longsword +2"], // legacy, before v13.1.14
+	weaponsAdd: {
+		select: ["Bite", "Rusty Greataxe"],
+		options: ["Longsword +2", "Rusty Greataxe"],
+	},
+	/*	weaponsAdd // OPTIONAL //
 	TYPE:	object
 	USE:	add attack(s) to and/or edit the available options in 1st page attack section
 	CHANGE:	v13.1.14 (changed from array to object)
@@ -493,14 +493,14 @@ weaponsAdd: {
 	`select` attribute, thus preserving the functionality from v13.1.13 and earlier.
 */
 
-armorAdd: "Natural Armor", // legacy, before v13.1.14
-armorAdd: {
-	select: "Breastplate +1",
-	options: ["Glamoured Studded Leather", "Unarmored Defense (Con)"],
-	noStealthDis: /mithral/i,
-	forceStealthDis: /oversized/i,
-},
-/*	armorAdd // OPTIONAL //
+	armorAdd: "Natural Armor", // legacy, before v13.1.14
+	armorAdd: {
+		select: "Breastplate +1",
+		options: ["Glamoured Studded Leather", "Unarmored Defense (Con)"],
+		noStealthDis: /mithral/i,
+		forceStealthDis: /oversized/i,
+	},
+	/*	armorAdd // OPTIONAL //
 	TYPE:	object
 	USE:	select armor as current and/or edit the available options in the drop-down
 	CHANGE:	v13.1.14 (changed from string to object)
@@ -572,9 +572,9 @@ armorAdd: {
 	`select` attribute, thus preserving the functionality from v13.1.13 and earlier.
 */
 
-shieldAdd: "Wooden Buckler",
-shieldAdd: ["Magical Buckler", 1, 2],
-/*	shieldAdd // OPTIONAL //
+	shieldAdd: "Wooden Buckler",
+	shieldAdd: ["Magical Buckler", 1, 2],
+	/*	shieldAdd // OPTIONAL //
 	TYPE:	string or array with three entries
 	USE:	set the shield on the 1st page as well as its bonus to AC and weight
 
@@ -600,8 +600,8 @@ shieldAdd: ["Magical Buckler", 1, 2],
 	If a feature with this attribute is removed, this shield will be removed as well.
 */
 
-ammoAdd: [["Green Arrows", 12], ["Smoke Bombs", 5]],
-/*	ammoAdd // OPTIONAL //
+	ammoAdd: [["Green Arrows", 12], ["Smoke Bombs", 5]],
+	/*	ammoAdd // OPTIONAL //
 	TYPE:	array (variable length) of arrays with 2 entries
 	USE:	adds each entry in the array to one of the ammunition drop-downs on the 1st page
 	ADDED:	v13.0.9
@@ -621,8 +621,8 @@ ammoAdd: [["Green Arrows", 12], ["Smoke Bombs", 5]],
 	If a feature with this attribute is removed, these ammunition entries will be removed as well.
 */
 
-ammoOptions: [{ /* AmmoList object, see "ammunition (AmmoList).js" syntax file  */ }],
-/*	ammoOptions // OPTIONAL //
+	ammoOptions: [{ /* AmmoList object, see "ammunition (AmmoList).js" syntax file  */ }],
+	/*	ammoOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the AmmoList variable
 
@@ -633,8 +633,8 @@ ammoOptions: [{ /* AmmoList object, see "ammunition (AmmoList).js" syntax file  
 	This will result in having the ammunition only available if the feature is present.
 */
 
-armorOptions: [{ /* ArmourList object, see "armor (ArmourList).js" syntax file */ }],
-/*	armorOptions // OPTIONAL //
+	armorOptions: [{ /* ArmourList object, see "armor (ArmourList).js" syntax file */ }],
+	/*	armorOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the ArmourList variable
 	CHANGE:	v13.1.14 (added `selectNow` attribute)
@@ -652,8 +652,8 @@ armorOptions: [{ /* ArmourList object, see "armor (ArmourList).js" syntax file *
 	This will result in having the armour only available if the feature is present.
 */
 
-weaponOptions: [{ /* WeaponsList object, see "weapon (WeaponsList).js" syntax file */ }],
-/*	weaponOptions // OPTIONAL //
+	weaponOptions: [{ /* WeaponsList object, see "weapon (WeaponsList).js" syntax file */ }],
+	/*	weaponOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the WeaponsList variable
 	CHANGE:	v13.1.14 (added `selectNow` attribute)
@@ -673,16 +673,16 @@ weaponOptions: [{ /* WeaponsList object, see "weapon (WeaponsList).js" syntax fi
 */
 
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Other Fields on the 1st or 2nd Page >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Other Fields on the 1st or 2nd Page >>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 
-dmgres: [
-	"Fire",
-	["Bludgeoning", "Bludgeon. (in rage)"],
-	["Slashing", "Slash. (nonmagical)"],
-],
-/*	dmgres // OPTIONAL //
+	dmgres: [
+		"Fire",
+		["Bludgeoning", "Bludgeon. (in rage)"],
+		["Slashing", "Slash. (nonmagical)"],
+	],
+	/*	dmgres // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add entry to the "Resistances" section on the 1st page
 
@@ -696,8 +696,8 @@ dmgres: [
 			only the version without a condition is shown.
 */
 
-savetxt: {
-/*	savetxt // OPTIONAL //
+	savetxt: {
+		/*	savetxt // OPTIONAL //
 	TYPE:	object (optional attributes)
 	USE:	add text to the 1st page "Saving Throws" section
 				("Saving Throws" section for Printer Friendly,
@@ -706,16 +706,16 @@ savetxt: {
 	The attributes of this object can be "text", "immune", and "adv_vs"
 */
 
-	text: ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg", "Magic can't put me to sleep"],
-	/*	text // OPTIONAL //
+		text: ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg", "Magic can't put me to sleep"],
+		/*	text // OPTIONAL //
 		TYPE:	array of strings
 		USE:	add a text to the 1st page
 
 		Each string in the array is added to the 1st page, exactly as given here.
 	*/
 
-	immune: ["poison", "disease", "paralyzed (by magic)"],
-	/*	immune // OPTIONAL //
+		immune: ["poison", "disease", "paralyzed (by magic)"],
+		/*	immune // OPTIONAL //
 		TYPE:	array of strings
 		USE:	add strings to the "Immune to" text on the 1st page
 		CHANGE:	v13.1.0 (conditional added)
@@ -734,7 +734,7 @@ savetxt: {
 		will be ignored.
 	*/
 
-	adv_vs: ["traps", "charmed", "sleep (by magic)"],
+		adv_vs: ["traps", "charmed", "sleep (by magic)"],
 	/*	adv_vs // OPTIONAL //
 		TYPE:	array of strings
 		USE:	add strings to the "Adv. on saves vs." text on the 1st page
@@ -751,15 +751,15 @@ savetxt: {
 		Thus, using the example above, if something else adds "sleep", the entry "sleep (by magic)"
 		will be ignored.
 	*/
-},
+	},
 
-vision: [
-	["Darkvision", 60],
-	["Sunlight Sensitivity", 0],
-	["Darkvision", "+30"],
-	["Darkvision", "fixed 60"],
-],
-/*	vision // OPTIONAL //
+	vision: [
+		["Darkvision", 60],
+		["Sunlight Sensitivity", 0],
+		["Darkvision", "+30"],
+		["Darkvision", "fixed 60"],
+	],
+	/*	vision // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add string to the "Senses" field on the 1st page
 
@@ -780,16 +780,16 @@ vision: [
 			This will add the vision with the specified range, but won't let it be modified (e.g. gained from a magic item).
 */
 
-speed: {
-/*	speed // OPTIONAL //
+	speed: {
+		/*	speed // OPTIONAL //
 	TYPE:	object (optional attributes)
 	USE:	add or edit speed mode(s) to the 1st page
 
 	The attributes of this object can be "walk", "burrow", "climb", "fly", "swim", and "allModes"
 */
-	walk: { spd: 30, enc: 20 },
-	burrow: { spd: 15, enc: 15 },
-	/*	walk, burrow, climb, fly, or swim // OPTIONAL //
+		walk: { spd: 30, enc: 20 },
+		burrow: { spd: 15, enc: 15 },
+		/*	walk, burrow, climb, fly, or swim // OPTIONAL //
 		TYPE:	object with two attributes, "spd" and "enc".
 		USE:	add movement mode of the object's name
 
@@ -809,23 +809,23 @@ speed: {
 				it will gain a speed of the number in feet, regardless of modifiers from other features.
 
 		>> IMPORTANT <<
-		If a feature grants a bonus to walking speed and another movement mode, you 
+		If a feature grants a bonus to walking speed and another movement mode, you
 		should use the `allModes` attribute to avoid the bonuses to stack when
 		another feature set the other movement mode equal to walking speed.
 		See the `allModes` attribute below.
 	*/
 
-	// example of using "walk":
-	fly: { spd: "walk", enc: 0 },
+		// example of using "walk":
+		fly: { spd: "walk", enc: 0 },
 
-	// example of using a modifier:
-	climb: { spd: "+50", enc: 0 },
+		// example of using a modifier:
+		climb: { spd: "+50", enc: 0 },
 
-	// example of using "fixed":
-	swim: { spd: "fixed 60", enc: "fixed 60" },
+		// example of using "fixed":
+		swim: { spd: "fixed 60", enc: "fixed 60" },
 
-	allModes: "+10", // string, deprecated
-	allModes: { bonus: "+10", exclude: ["fly"] },
+		allModes: "+10", // string, deprecated
+		allModes: { bonus: "+10", exclude: ["fly"] },
 	/*	allModes // OPTIONAL //
 		TYPE:	object with two attributes, "bonus" (required) and "exclude" (optional)
 				or, for backwards-compatibility, a string
@@ -835,7 +835,7 @@ speed: {
 		Use this `allModes` attribute if a feature gives bonuses to multiple movement
 		modes and one of them is the walking speed.
 
-		For example, lets say something gives +10 ft walking and climbing speed and 
+		For example, lets say something gives +10 ft walking and climbing speed and
 		another thing grants a climbing speed equal to the walking speed.
 		If just using the modifiers defined above, the sheet would first add the +10 to
 		walking, then setting climbing to that number, and add another +10 to climbing.
@@ -847,7 +847,7 @@ speed: {
 			REQUIRED
 			TYPE: string
 			USE: modifier to add to all movement modes, if present
-			
+
 			This can only be a modifier-string.
 			It has to be a logical operator ("+", "-", "*", or "/") followed by a number.
 			Every movement mode of the character, both normal and encumbered, will be subjected to the modifier in feet.
@@ -871,10 +871,10 @@ speed: {
 		set for its `bonus` attribute.
 		Thus, it will be added to all movement modes without exception.
 	*/
-},
+	},
 
-carryingCapacity: 2,
-/*	carryingCapacity // OPTIONAL //
+	carryingCapacity: 2,
+	/*	carryingCapacity // OPTIONAL //
 	TYPE:	whole number
 	USE:	multiply the carrying capacity (encumbrance) with this number
 
@@ -887,12 +887,12 @@ carryingCapacity: 2,
 	The carrying capacity multiplier will always be rounded to the closest multiple of 0.25.
 */
 
-advantages: [
-	["Initiative", true],
-	["Stealth", false],
-	["Wisdom", true],
-],
-/*	advantages // OPTIONAL //
+	advantages: [
+		["Initiative", true],
+		["Stealth", false],
+		["Wisdom", true],
+	],
+	/*	advantages // OPTIONAL //
 	TYPE:	array (variable length) with array (length 2)
 	USE:	set advantage on an ability check, saving throw, or attacks
 
@@ -919,12 +919,12 @@ advantages: [
 */
 
 
-// >>>>>>>>>>>>>>>>>>>>>> //
-// >>> Ability Scores >>> //
-// >>>>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Ability Scores >>> //
+	// >>>>>>>>>>>>>>>>>>>>>> //
 
-scores: [0, 1, 0, 0, 2, 0],
-/*	scores // OPTIONAL //
+	scores: [0, 1, 0, 0, 2, 0],
+	/*	scores // OPTIONAL //
 	TYPE:	array of six numbers
 	USE:	add ability score improvements to the Ability Scores dialog
 
@@ -953,8 +953,8 @@ scores: [0, 1, 0, 0, 2, 0],
 	use the `scoresOverride` attribute instead of this one.
 */
 
-scorestxt: "+2 Charisma and +1 to two other ability scores of my choice",
-/*	scorestxt // OPTIONAL //
+	scorestxt: "+2 Charisma and +1 to two other ability scores of my choice",
+	/*	scorestxt // OPTIONAL //
 	TYPE:	string
 	USE:	description of ability score improvements to use in the Ability Scores dialog and tooltips
 
@@ -963,8 +963,8 @@ scorestxt: "+2 Charisma and +1 to two other ability scores of my choice",
 	You can have both this and the 'scores' attribute, they are not mutually exclusive.
 */
 
-scoresOverride: [0, 0, 0, 19, 0, 0],
-/*	scoresOverride // OPTIONAL //
+	scoresOverride: [0, 0, 0, 19, 0, 0],
+	/*	scoresOverride // OPTIONAL //
 	TYPE:	array of six numbers
 	USE:	add ability score overrides to the Ability Scores dialog
 
@@ -978,8 +978,8 @@ scoresOverride: [0, 0, 0, 19, 0, 0],
 	dialogs and tooltips, but only if the feature doesn't have the `scorestxt` attribute.
 */
 
-scoresMaximum: [24, 0, 24, 0, "+2", 0],
-/*	scoresMaximum // OPTIONAL //
+	scoresMaximum: [24, 0, 24, 0, "+2", 0],
+	/*	scoresMaximum // OPTIONAL //
 	TYPE:	array of six numbers or strings
 	USE:	change ability score maximum in the Ability Scores dialog
 	CHANGE:	v13.0.8 (allow modifiers "+2" as well as fixed numbers)
@@ -1025,8 +1025,8 @@ scoresMaximum: [24, 0, 24, 0, "+2", 0],
 	dialogs and tooltips, but only if the feature doesn't have the `scorestxt` attribute.
 */
 
-scoresMaxLimited: [0, 0, 25, 0, 25, "-2"],
-/*	scoresMaxLimited // OPTIONAL //
+	scoresMaxLimited: [0, 0, 25, 0, 25, "-2"],
+	/*	scoresMaxLimited // OPTIONAL //
 	TYPE:	array of six numbers
 	USE:	only apply the `scores` values up to these maximums
 	ADDED:	v13.0.8
@@ -1101,12 +1101,12 @@ scoresMaxLimited: [0, 0, 25, 0, 25, "-2"],
 */
 
 
-// >>>>>>>>>>>>>>>>>>>> //
-// >>> Spellcasting >>> //
-// >>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>> //
+	// >>> Spellcasting >>> //
+	// >>>>>>>>>>>>>>>>>>>> //
 
-spellcastingBonus: [{
-/*	spellcastingBonus // OPTIONAL //
+	spellcastingBonus: [{
+		/*	spellcastingBonus // OPTIONAL //
 	TYPE:	array of objects (or just a single object)
 	USE:	adds entries to the "Bonus Spells" section of the spell selection dialog
 
@@ -1132,17 +1132,17 @@ spellcastingBonus: [{
 	take a look at the `spellcastingExtra` attribute below, as it takes the spell's level into account.
 */
 
-	// example of use of a 'common spell list object' attribute:
-	spells: ["light"],
+		// example of use of a 'common spell list object' attribute:
+		spells: ["light"],
 
-	name: "Arcane Initiate",
-	/*	name // REQUIRED //
+		name: "Arcane Initiate",
+		/*	name // REQUIRED //
 		TYPE:	string
 		USE:	the name as it appears in the "Bonus Spells" section of the spell selection dialog
 	*/
 
-	times: 2,
-	/*	name // OPTIONAL //
+		times: 2,
+		/*	name // OPTIONAL //
 		TYPE:	number or array of numbers with 20 entries
 		USE:	how many times this entry should appear in the "Bonus Spells" section of the spell selection dialog
 
@@ -1154,8 +1154,8 @@ spellcastingBonus: [{
 		This attribute can have two type of values:
 	*/
 
-	selection: ["light"],
-	/*	selection // OPTIONAL //
+		selection: ["light"],
+		/*	selection // OPTIONAL //
 		TYPE:	array (variable length)
 		USE:	select which of the spells from the drop-down to select
 
@@ -1168,8 +1168,8 @@ spellcastingBonus: [{
 		This is useful as the attribute 'spells' will make sure that only "Light" is an option in the drop-down, but won't actually select that option.
 	*/
 
-	firstCol: "8",
-	/*	name // OPTIONAL //
+		firstCol: "8",
+		/*	name // OPTIONAL //
 		TYPE:	string
 		USE:	set the first column of the spell line on the spell sheet
 		CHANGE:	v14.0.1 (onceXr+markedbox options)
@@ -1192,11 +1192,11 @@ spellcastingBonus: [{
 		the sheet will determine what is most logical.
 	*/
 
-	spellcastingAbility: 4,
-	fixedDC: 17,
-	fixedSpAttack: 9,
-	allowUpCasting: true, // Added v13.0.6
-	magicItemComponents: true, // Added v13.0.8
+		spellcastingAbility: 4,
+		fixedDC: 17,
+		fixedSpAttack: 9,
+		allowUpCasting: true, // Added v13.0.6
+		magicItemComponents: true, // Added v13.0.8
 	/*	spellcastingAbility & fixedDC & fixedSpAttack & allowUpCasting & magicItemComponents // OPTIONAL //
 		All of these are explained in detail below.
 
@@ -1207,11 +1207,11 @@ spellcastingBonus: [{
 		Only do this if the spellcastingBonus object is not part of the parent,
 		for example if the spellcastingBonus object is part of a (feat/item) choice or (class/race) feature.
 	*/
-}],
+	}],
 
-spellcastingAbility: 6,
-spellcastingAbility: [4, 5, 6],
-/*	spellcastingAbility // OPTIONAL //
+	spellcastingAbility: 6,
+	spellcastingAbility: [4, 5, 6],
+	/*	spellcastingAbility // OPTIONAL //
 	TYPE:	number corresponding to the ability score (1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
 			or "class" or "race"
 			or an array of any of the above
@@ -1258,8 +1258,8 @@ spellcastingAbility: [4, 5, 6],
 	the cleric will be casting spells using Strength from level 5 onwards.
 */
 
-fixedDC: 13,
-/*	fixedDC // OPTIONAL //
+	fixedDC: 13,
+	/*	fixedDC // OPTIONAL //
 	TYPE:	number
 	USE:	set the DC and spell attack to a fixed value, not dependent on ability score
 
@@ -1286,8 +1286,8 @@ fixedDC: 13,
 	the wizard will be casting spells using DC 12 regardless of its intelligence modifier.
 */
 
-fixedSpAttack: 5,
-/*	fixedSpAttack // OPTIONAL //
+	fixedSpAttack: 5,
+	/*	fixedSpAttack // OPTIONAL //
 	TYPE:	number
 	USE:	set the spell attack and DC to a fixed value, not dependent on ability score
 
@@ -1314,8 +1314,8 @@ fixedSpAttack: 5,
 	the wizard will be casting spells using a spell attack of +7 regardless of its intelligence modifier.
 */
 
-allowUpCasting: true,
-/*	allowUpCasting // OPTIONAL //
+	allowUpCasting: true,
+	/*	allowUpCasting // OPTIONAL //
 	TYPE:	boolean
 	USE:	do not limit spells to only be cast at their lowest level
 	ADDED:	v13.0.6
@@ -1336,8 +1336,8 @@ allowUpCasting: true,
 	those gained by the direct parent.
 */
 
-magicItemComponents: true,
-/*	magicItemComponents // OPTIONAL //
+	magicItemComponents: true,
+	/*	magicItemComponents // OPTIONAL //
 	TYPE:	boolean
 	USE:	change all spell components on the spell sheet to "Mƒ" (only a magic item)
 	ADDED:	v13.0.8
@@ -1360,8 +1360,8 @@ magicItemComponents: true,
 	Setting this attribute to false for anything other than magic items is the same as not including it.
 */
 
-spellcastingExtra: ["cure wounds", "guiding bolt", "flaming sphere", "lesser restoration", "daylight", "revivify", "guardian of faith", "wall of fire", "flame strike", "greater restoration"],
-/*	spellcastingExtra // OPTIONAL //
+	spellcastingExtra: ["cure wounds", "guiding bolt", "flaming sphere", "lesser restoration", "daylight", "revivify", "guardian of faith", "wall of fire", "flame strike", "greater restoration"],
+	/*	spellcastingExtra // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	adds the spells in the array to the list of spells to choose from
 
@@ -1412,8 +1412,8 @@ spellcastingExtra: ["cure wounds", "guiding bolt", "flaming sphere", "lesser res
 	be sure to include previously gained spells in the array of the later feature as well.
 */
 
-spellcastingExtraApplyNonconform: true,
-/*	spellcastingExtraApplyNonconform // OPTIONAL //
+	spellcastingExtraApplyNonconform: true,
+	/*	spellcastingExtraApplyNonconform // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether to use the default (false) or variant (true) way of adding the spells defined by `spellcastingExtra` (see above)
 
@@ -1435,8 +1435,8 @@ spellcastingExtraApplyNonconform: true,
 	And it means that you can change the behaviour of `spellcastingExtra` at a higher level.
 */
 
-spellFirstColTitle: "Ki",
-/*	spellFirstColTitle // OPTIONAL //
+	spellFirstColTitle: "Ki",
+	/*	spellFirstColTitle // OPTIONAL //
 	TYPE:	string
 	USE:	set the title of the first column of the header on the spell sheet page(s)
 	CHANGE:	v14.0.1 (support for special image options)
@@ -1462,15 +1462,15 @@ spellFirstColTitle: "Ki",
 	of the header.
 */
 
-spellChanges: {
-	"spare the dying": {
-		time: "1 bns",
-		range: "30 ft",
-		changes: "I can cast spare the dying as a bonus action instead of an action, and it has a range of 30 ft instead of touch.", // REQUIRED // string
-		affectsDuplicates: "all", // OPTIONAL // string // defaults to "firstOnly"
+	spellChanges: {
+		"spare the dying": {
+			time: "1 bns",
+			range: "30 ft",
+			changes: "I can cast spare the dying as a bonus action instead of an action, and it has a range of 30 ft instead of touch.", // REQUIRED // string
+			affectsDuplicates: "all", // OPTIONAL // string // defaults to "firstOnly"
+		},
 	},
-},
-/*	spellChanges // OPTIONAL //
+	/*	spellChanges // OPTIONAL //
 	TYPE:	object with objects
 	USE:	change aspects of spells when generating a spell sheet of the parent object
 	CHANGE:	v14.0.8 (added `affectsDuplicates` attribute)
@@ -1497,7 +1497,7 @@ spellChanges: {
 		"bonus"    		Only the spell from the Bonus column, if any.
 		"regular"  		Only the spell NOT gained from the Bonus column, if any.
 		"all"      		Both spells, regardless of how they are obtained.
-	
+
 	If you don't use any of the above values, it will be treated as "firstOnly".
 
 	// NOT ALL SpellsList ATTRIBUTES SUPPORTED //
@@ -1523,12 +1523,12 @@ spellChanges: {
 	This attribute will do nothing if the parent object does not grant spellcasting in one way or another.
 */
 
-spellcastingBonusElsewhere: {
-/*	spellcastingBonusElsewhere // OPTIONAL //
+	spellcastingBonusElsewhere: {
+		/*	spellcastingBonusElsewhere // OPTIONAL //
 	TYPE:	object with specific attributes (see below)
 	USE:	add spells to a spellcasting feature other than the parent object
 	ADDED:	v13.0.8
-	
+
 	Normally, the automation will only influence spells known for spellcasting gained from the parent object.
 	With this attribute, you can add known and/or bonus spells to another spellcasting source.
 	For example, you could have a magic item spellbook add spells to the spellbook of a wizard.
@@ -1543,8 +1543,8 @@ spellcastingBonusElsewhere: {
 	For example, don't use this for a subclass feature that adds a bonus spell for its class,
 	but instead use `spellcastingBonus`, see above.
 */
-	addTo: "wizard",
-	/*	addTo // REQUIRED //
+		addTo: "wizard",
+		/*	addTo // REQUIRED //
 		TYPE:	string
 		USE:	to what the bonus spells should be added
 
@@ -1557,12 +1557,12 @@ spellcastingBonusElsewhere: {
 			partial matches or `name` attribute matches.
 		2) a type of CurrentSpells entry
 			This can be either "class", "race", "feat", "magic item", or "background".
-			
+
 		If the above produces multiple matches, the sheet will prompt the player to select which to use.
 	*/
 
-	spellcastingBonus: [],
-	/*	spellcastingBonus // OPTIONAL //
+		spellcastingBonus: [],
+		/*	spellcastingBonus // OPTIONAL //
 		This entry works identical to the `spellcastingBonus` above. See there how this entry works.
 
 		Be aware that this spellcastingBonus will be added to the spellcasting defined in `addTo` above.
@@ -1572,8 +1572,8 @@ spellcastingBonusElsewhere: {
 		attribute nor the `addToKnown` attribute are present.
 	*/
 
-	addToKnown: [],
-	/*	spellcastingBonus // OPTIONAL //
+		addToKnown: [],
+		/*	spellcastingBonus // OPTIONAL //
 		TYPE:	array (variable length) of spell object names as used in the SpellsList object
 		USE:	which spells should be added to the spells known / spellbook
 
@@ -1586,7 +1586,7 @@ spellcastingBonusElsewhere: {
 		  * Spellcasting classes that always know all their spells (e.g. cleric, druid, paladin),
 			can't have spells added this way to their known spells (cantrips will still work).
 			For those kind of classes, use `calcChanges.spellList`.
-		  * The sheet only has space for 20 cantrips and 20 spells known. If the spellcaster 
+		  * The sheet only has space for 20 cantrips and 20 spells known. If the spellcaster
 			already has known spells and this list would increase the number above 20,
 			the access spells will be lost.
 			This limitation does not apply to classes that use a spellbook, as a spellbook can
@@ -1601,7 +1601,7 @@ spellcastingBonusElsewhere: {
 		attribute nor the `addToKnown` attribute are present.
 	*/
 
-	countsTowardsKnown: true,
+		countsTowardsKnown: true,
 	/*	spellcastingBonus // OPTIONAL //
 		TYPE:	boolean
 		USE:	whether to count the spells added by `addToKnown` towards the maximum number allowed (true)
@@ -1614,10 +1614,10 @@ spellcastingBonusElsewhere: {
 		Including this attribute is only useful if you also include the `addToKnown` attribute.
 		Setting this attribute to false is the same as not including this attribute.
 	*/
-},
+	},
 
-spellcastingPreparedCantrips: { "class": ["cleric", "druid"] },
-/*	spellcastingPreparedCantrips // OPTIONAL //
+	spellcastingPreparedCantrips: { "class": ["cleric", "druid"] },
+	/*	spellcastingPreparedCantrips // OPTIONAL //
 	TYPE:	object (common spell list object)
 	USE:	show all cantrips on the spell sheet, with checkboxes in the first column
 	ADDED:	v14.0.1
@@ -1640,12 +1640,12 @@ spellcastingPreparedCantrips: { "class": ["cleric", "druid"] },
 	own method of making cantrips display like spells that can be prepared.
 */
 
-// >>>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Companion Options >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Companion Options >>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>> //
 
-creatureOptions: [{ /* CreatureList object, see "companion, wild shape (CreatureList).js" syntax file  */ }],
-/*	creatureOptions // OPTIONAL //
+	creatureOptions: [{ /* CreatureList object, see "companion, wild shape (CreatureList).js" syntax file  */ }],
+	/*	creatureOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the CreatureList variable
 	ADDED:	v13.0.6
@@ -1664,18 +1664,18 @@ creatureOptions: [{ /* CreatureList object, see "companion, wild shape (Creature
 	will be removed from that companion page).
 */
 
-creaturesAdd: [
-	["Warhorse",
-true,
-		function (AddRemove, prefix) {
+	creaturesAdd: [
+		["Warhorse",
+			true,
+			function (AddRemove, prefix) {
 			// Make the warhorse small
-			if (AddRemove) PickDropdown(prefix + "Comp.Desc.Size", 4);
-		},
+				if (AddRemove) PickDropdown(prefix + "Comp.Desc.Size", 4);
+			},
+		],
+		["Purple Crawler"],
+		["Cat", false, false, "familiar"],
 	],
-	["Purple Crawler"],
-	["Cat", false, false, "familiar"],
-],
-/*	creatureOptions // OPTIONAL //
+	/*	creatureOptions // OPTIONAL //
 	TYPE:	array of arrays (variable length)
 	USE:	adds a creature to a companion page (adds companion page if none empty)
 	ADDED:	v13.0.6
@@ -1740,7 +1740,7 @@ true,
 		 -    "strixhaven_mascot"    Strixhaven Mascot familiar (Strixhaven Mascot feat)
 		 -    "companionrr"          Animal Companion (2016/09/12 Unearthed Arcana:
 			                                           Revised Ranger's Beast Conclave feature)
-		 -    "mechanicalserv"       Mechanical Servant (2017/01/09 Unearthed Arcana: 
+		 -    "mechanicalserv"       Mechanical Servant (2017/01/09 Unearthed Arcana:
 			                                             Artificer's Mechanical Servant feature)
 
 		If the string doesn't match a CompanionList object key, nothing will happen.
@@ -1751,12 +1751,12 @@ true,
 */
 
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Dynamic Automation Changes >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Dynamic Automation Changes >>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 
-calcChanges: {
-/*	calcChanges // OPTIONAL //
+	calcChanges: {
+		/*	calcChanges // OPTIONAL //
 	TYPE:	object (optional attributes)
 	USE:	change how certain automation works: attacks, hit points, and spell list
 			This will only affect attacks and hit points for the main character, not for its companions or wild shapes
@@ -1764,13 +1764,13 @@ calcChanges: {
 	This object can have several pre-defined attributes, which are explained below.
 */
 
-	hp: function (totalHD, HDobj, prefix) {
-		if (classes.known.sorcerer) {
-			return [classes.known.sorcerer.level, "Draconic Resilience (Sorcerer)"];
-		}
-	},
-	hp: "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += '\\n + ' + classes.known.sorcerer.level + ' from Draconic Resilience (Sorcerer)'; }; ",
-	/*	hp // OPTIONAL //
+		hp: function (totalHD, HDobj, prefix) {
+			if (classes.known.sorcerer) {
+				return [classes.known.sorcerer.level, "Draconic Resilience (Sorcerer)"];
+			}
+		},
+		hp: "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += '\\n + ' + classes.known.sorcerer.level + ' from Draconic Resilience (Sorcerer)'; }; ",
+		/*	hp // OPTIONAL //
 		TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 		USE:	change how Hit Points are calculated and what the Hit Points tooltip says
 
@@ -1836,8 +1836,8 @@ calcChanges: {
 		HDobj.altStr.push("I gain 10 hit points per level, regardless of hit dice or Constitution modifier.");
 	},
 	*/
-	hpForceRecalc: true,
-	/*	hpForceRecalc // OPTIONAL //
+		hpForceRecalc: true,
+		/*	hpForceRecalc // OPTIONAL //
 		TYPE:	boolean
 		USE:	recalculate the Max HP tooltip (and value, if set to automatic) whenever anything changes
 		ADDED:	v13.0.6
@@ -1856,17 +1856,17 @@ calcChanges: {
 		Setting this attribute to false is the same as not including it.
 	*/
 
-	atkAdd: [
-		function (fields, v) {
-			if (v.WeaponName == "eldritch blast") fields.Description += (fields.Description ? "; " : "") + "Target pushed back 10 ft";
-		},
-		"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me.",
-	],
-	atkAdd: [
-		"if (WeaponName == 'eldritch blast') fields.Description += '; Target pushed back 10 ft';",
-		"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me.",
-	],
-	/*	atkAdd // OPTIONAL //
+		atkAdd: [
+			function (fields, v) {
+				if (v.WeaponName == "eldritch blast") fields.Description += (fields.Description ? "; " : "") + "Target pushed back 10 ft";
+			},
+			"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me.",
+		],
+		atkAdd: [
+			"if (WeaponName == 'eldritch blast') fields.Description += '; Target pushed back 10 ft';",
+			"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me.",
+		],
+		/*	atkAdd // OPTIONAL //
 		TYPE:	array with three entries:
 				1st entry:	function or, for backwards-compatibility, string that is evaluated using eval()
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -1954,25 +1954,25 @@ calcChanges: {
 		17-20	When changing the critical range to something else (e.g. 18 is used for
 				Fighter (Champion)'s Superior Critical)
 		200< 	(199 or less) Something that is best changed before any script is run
-		700-899	When dependent on an attribute of the weapon that could be changed by 
+		700-899	When dependent on an attribute of the weapon that could be changed by
 				another feature (e.g. the Rogue's Sneak Attack, because something could
 				theoretically add the Finesse property)
 		900+ 	When using the damage die for something in the description (e.g. Half-orc's Savage Attacks)
 	*/
 
-	atkCalc: [
-		function (fields, v, output) {
-			if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && v.isSpell && /acid/i.test(fields.Damage_Type)) {
-				output.extraDmg += What("Cha Mod");
-			};
-		},
-		"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage.",
-	],
-	atkCalc: [
-		"if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && /acid/i.test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); };",
-		"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage.",
-	],
-	/*	atkCalc // OPTIONAL //
+		atkCalc: [
+			function (fields, v, output) {
+				if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && v.isSpell && /acid/i.test(fields.Damage_Type)) {
+					output.extraDmg += What("Cha Mod");
+				};
+			},
+			"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage.",
+		],
+		atkCalc: [
+			"if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && /acid/i.test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); };",
+			"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage.",
+		],
+		/*	atkCalc // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function or, for backwards-compatibility, string that is evaluated using eval()
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -2052,13 +2052,13 @@ calcChanges: {
 		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
 
-	spellCalc: [
-		function (type, spellcasters, ability, spell) {
-			if (type == "dc") return 1;
-		},
-		"I add +1 to all the saving throw DCs of my spells.",
-	],
-	/*	spellCalc // OPTIONAL //
+		spellCalc: [
+			function (type, spellcasters, ability, spell) {
+				if (type == "dc") return 1;
+			},
+			"I add +1 to all the saving throw DCs of my spells.",
+		],
+		/*	spellCalc // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -2071,7 +2071,7 @@ calcChanges: {
 		The 'Ability Save DC' will automatically mirror what's on the spell sheet page if there
 		are not multiple sources using the same ability to determine (spell) save DCs.
 
-		For the attacks section, this is run for cantrips/spells that are recognized, and 
+		For the attacks section, this is run for cantrips/spells that are recognized, and
 		manually added attacks that have "cantrip" or "spell" in their name or description.
 
 		// 1st array entry // REQUIRED //
@@ -2122,18 +2122,18 @@ calcChanges: {
 		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
 
-	spellList: [
-		function(spList, spName, spType) {
+		spellList: [
+			function (spList, spName, spType) {
 			// don't add if this is not a class or a list of spells is already given
-			if (!ClassList[spName] || spList.spells || spList.psionic) return;
-			// if this is an 'extra spell', also test if it uses the class' spell list or not
-			if (spType.indexOf("bonus") !== -1 && (spList.school || !spList["class"] || (spList["class"].indexOf(spName) === -1 && spName !== "fighter"))) return;
-			// now add the array of bonus spells to the list
-			spList.extraspells = spList.extraspells.concat(["acid splash", "druidcraft", "detect poison and disease", "expeditious retreat", "jump", "alter self", "enhance ability", "enlarge/reduce", "gaseous form", "water breathing", "wind wall", "freedom of movement", "polymorph", "creation"]);
-		},
-		"My background adds extra spells to the spell list(s) of my spellcasting class(es): Acid Splash, Druidcraft, Detect Poison and Disease, Expeditious Retreat, Jump, Alter Self, Enhance Ability, Enlarge/reduce, Gaseous Form, Water Breathing, Wind Wall, Freedom of Movement, Polymorph, and Creation.",
-	],
-	/*	spellList // OPTIONAL //
+				if (!ClassList[spName] || spList.spells || spList.psionic) return;
+				// if this is an 'extra spell', also test if it uses the class' spell list or not
+				if (spType.indexOf("bonus") !== -1 && (spList.school || !spList["class"] || (spList["class"].indexOf(spName) === -1 && spName !== "fighter"))) return;
+				// now add the array of bonus spells to the list
+				spList.extraspells = spList.extraspells.concat(["acid splash", "druidcraft", "detect poison and disease", "expeditious retreat", "jump", "alter self", "enhance ability", "enlarge/reduce", "gaseous form", "water breathing", "wind wall", "freedom of movement", "polymorph", "creation"]);
+			},
+			"My background adds extra spells to the spell list(s) of my spellcasting class(es): Acid Splash, Druidcraft, Detect Poison and Disease, Expeditious Retreat, Jump, Alter Self, Enhance Ability, Enlarge/reduce, Gaseous Form, Water Breathing, Wind Wall, Freedom of Movement, Polymorph, and Creation.",
+		],
+		/*	spellList // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -2189,20 +2189,20 @@ calcChanges: {
 		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
 
-	spellAdd: [
-		function (spellKey, spellObj, spName, isDuplicate, isBonusSpell) {
-			if ((/heals/).test(spellObj.description) && spellObj.range === "touch") {
+		spellAdd: [
+			function (spellKey, spellObj, spName, isDuplicate, isBonusSpell) {
+				if ((/heals/).test(spellObj.description) && spellObj.range === "touch") {
 				// healing spells have a range of 60 ft instead of touch
-				spellObj.range = What("Unit System") === "metric" ? ConvertToMetric("60 ft", 0.5) : "60 ft";
-				return true;
-			} else {
+					spellObj.range = What("Unit System") === "metric" ? ConvertToMetric("60 ft", 0.5) : "60 ft";
+					return true;
+				} else {
 				// add Charisma modifier to spells that deal poison damage
-				return genericSpellDmgEdit(spellKey, spellObj, "poison", "Cha");
-			}
-		},
-		"Healing spells that have a range of touch, have a range of 60 ft instead. Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage.",
-	],
-	/*	spellAdd // OPTIONAL //
+					return genericSpellDmgEdit(spellKey, spellObj, "poison", "Cha");
+				}
+			},
+			"Healing spells that have a range of touch, have a range of 60 ft instead. Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage.",
+		],
+		/*	spellAdd // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function
 				2nd entry:	string that is used to give an explanation of what the 1st entry does
@@ -2323,13 +2323,13 @@ calcChanges: {
 		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
 
-	creatureCallback: [function(prefix, oCrea, bAdd) {
-		if (!/undead/i.test(oCrea.type + What(prefix + "Comp.Desc.MonsterType"))) return;
-		var aFnc = bAdd ? AddString : RemoveString;
-		aFnc(prefix + "Comp.Use.HP.Temp", 30, true);
-	},
-	"Any undead I create, using magic or otherwise, gain 30 temporary hit points."],
-	/*	creatureCallback // OPTIONAL //
+		creatureCallback: [function (prefix, oCrea, bAdd) {
+			if (!/undead/i.test(oCrea.type + What(prefix + "Comp.Desc.MonsterType"))) return;
+			var aFnc = bAdd ? AddString : RemoveString;
+			aFnc(prefix + "Comp.Use.HP.Temp", 30, true);
+		},
+		"Any undead I create, using magic or otherwise, gain 30 temporary hit points."],
+		/*	creatureCallback // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -2376,14 +2376,14 @@ calcChanges: {
 		Functions with identical numbers are processed alphabetically.
 		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
-	companionCallback: [function(prefix, oCrea, bAdd, sCompType) {
-		if (sCompType !== "familiar") return;
-		var str = "\u25C6 Purple Power: The familiar's skin, hide, hair, or feathers turn purple and it gains resistance to acid damage.";
-		var aFnc = bAdd ? AddString : RemoveString;
-		aFnc(prefix + "Comp.Use.Features", str, true);
-	},
-	"The familiars I create using the Find Familiar spell turn purple and gain resistance to acid damage."],
-	/*	companionCallback // OPTIONAL //
+		companionCallback: [function (prefix, oCrea, bAdd, sCompType) {
+			if (sCompType !== "familiar") return;
+			var str = "\u25C6 Purple Power: The familiar's skin, hide, hair, or feathers turn purple and it gains resistance to acid damage.";
+			var aFnc = bAdd ? AddString : RemoveString;
+			aFnc(prefix + "Comp.Use.Features", str, true);
+		},
+		"The familiars I create using the Find Familiar spell turn purple and gain resistance to acid damage."],
+		/*	companionCallback // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -2428,7 +2428,7 @@ calcChanges: {
 			 -    "strixhaven_mascot"    Strixhaven Mascot familiar (Strixhaven Mascot feat)
 			 -    "companionrr"          Animal Companion (2016/09/12 Unearthed Arcana:
 														Revised Ranger's Beast Conclave feature)
-			 -    "mechanicalserv"       Mechanical Servant (2017/01/09 Unearthed Arcana: 
+			 -    "mechanicalserv"       Mechanical Servant (2017/01/09 Unearthed Arcana:
 															Artificer's Mechanical Servant feature)
 
 		When adding a special companion type, this function is processed last,
@@ -2447,13 +2447,13 @@ calcChanges: {
 		Functions with identical numbers are processed alphabetically.
 		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
-	wildshapeCallback: [function(prefix, fieldNo, oWildshape, sCrea) {
-		oWildshape.acOptions.push({
-			name: "Circle of the Moon: Circle Forms",
-			ac: "13+Wis",
-		});
-	},
-	""],
+		wildshapeCallback: [function (prefix, fieldNo, oWildshape, sCrea) {
+			oWildshape.acOptions.push({
+				name: "Circle of the Moon: Circle Forms",
+				ac: "13+Wis",
+			});
+		},
+		""],
 	/*	wildshapeCallback // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function
@@ -2521,7 +2521,7 @@ calcChanges: {
 				`oWildshape.ability.Str.value += 2` would add +2 to the Strength.
 				`oWildshape.ability.Dex.value = 12` would set the Dexterity to 12.
 				`oWildshape.ability.Con.mod` gives the Constitution modifier.
-				
+
 			`oWildshape.saves` doesn't exist, instead the saving throws are stored in:
 			`oWildshape.save` is an object that contains the saving throws.
 				It has an attribute for each ability, using its three-letter abbreviation, e.g.
@@ -2621,13 +2621,13 @@ calcChanges: {
 		Functions with identical numbers are processed alphabetically.
 		For more information, see the 3rd array entry in the `atkAdd` explanation above.
 	*/
-},
+	},
 
-addMod: [
-	{ type: "skill", field: "Init", mod: "Int", text: "I can add my Intelligence modifier to initiative rolls." },
-	{ type: "save", field: "all", mod: "max(Cha|1)", text: "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." },
-],
-/*	addMod // OPTIONAL //
+	addMod: [
+		{ type: "skill", field: "Init", mod: "Int", text: "I can add my Intelligence modifier to initiative rolls." },
+		{ type: "save", field: "all", mod: "max(Cha|1)", text: "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." },
+	],
+	/*	addMod // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	add value to a modifier field
 
@@ -2656,7 +2656,7 @@ addMod: [
 			common ones include:
 			"Proficiency Bonus Modifier"	// modifier field for proficiency bonus
 			"Age"							// age description field
-			"SpellSlots.CheckboxesSet.lvlX"	// amount of spellslot checkboxes to show, 
+			"SpellSlots.CheckboxesSet.lvlX"	// amount of spellslot checkboxes to show,
 									where X is replaced with the level (1-9).
 									N.B. These fields can only be a positive number,
 									you can't pre-emptively add "-1",
@@ -2686,7 +2686,7 @@ addMod: [
 		Additionally, you can use min(1|2) and max(1|2), which work like Math.min(1,2)
 		and Math.max(1,2).
 		Note that the pipe character is used instead of a comma.
-		
+
 		You can use brackets for complex calculations, but you can't use brackets within
 		the brackets of the min() and max() operators.
 		Everything seperated by a pipe symbol is calculated separately.
@@ -2723,8 +2723,8 @@ addMod: [
 	NOTE: for modifiers to spell save DCs, use calcChanges.spellCalc
 */
 
-extraAC: [{
-/*	extraAC // OPTIONAL //
+	extraAC: [{
+		/*	extraAC // OPTIONAL //
 	TYPE:	array of objects (variable length) or just a single object
 	USE:	add modifier and description to AC magic/misc fields
 
@@ -2732,8 +2732,8 @@ extraAC: [{
 	All other attributes are optional.
 	See below for an explanation of each attribute.
 */
-	mod: 2,
-	/*	mod // REQUIRED //
+		mod: 2,
+		/*	mod // REQUIRED //
 		TYPE:	string or number
 		USE:	the modifier to add to the AC
 
@@ -2746,32 +2746,32 @@ extraAC: [{
 
 		You can set this to `0`, so that just the name is added to the description fields.
 	*/
-	name: "Bracers of Defense",
-	/*	name // OPTIONAL //
+		name: "Bracers of Defense",
+		/*	name // OPTIONAL //
 		TYPE:	string
 		USE:	name how this modifier will be referred to
 
 		If you do not include this attribute, the name will be taken from the parent object.
 		If the parent object doesn't have a 'name' attribute, the name "Undefined" will be used.
 	*/
-	magic: true,
-	/*	magic // OPTIONAL //
+		magic: true,
+		/*	magic // OPTIONAL //
 		TYPE:	boolean
 		USE:	set this to true if this should be added to the Magic line in the AC/Defense section
 
 		Setting this attribute to false is the same as not including this attribute.
 	*/
-	text: "I gain a +2 bonus to AC while I'm not wearing any armor or using a shield.",
-	/*	text // OPTIONAL //
+		text: "I gain a +2 bonus to AC while I'm not wearing any armor or using a shield.",
+		/*	text // OPTIONAL //
 		TYPE:	string
 		USE:	the explanation of what is added to the AC and its criteria (if any)
 
 		If you do not include this attribute, there will be no explanation visible for this
 		entry in the modifiers dialog that appears when clicking on the modifier field.
 	*/
-	stopeval: function (v) {
-		return v.wearingArmor;
-	},
+		stopeval: function (v) {
+			return v.wearingArmor;
+		},
 	/*	stopeval // OPTIONAL //
 		TYPE:	function
 		USE:	return 'true' if the modifier is NOT to be added
@@ -2796,10 +2796,10 @@ extraAC: [{
 		The above example returns true when the character is wearing armour,
 		and if so the sheet will not add the modifier to the total AC.
 	*/
-}],
+	}],
 
-bonusClassExtrachoices: [{
-/*	bonusClassExtrachoices // OPTIONAL //
+	bonusClassExtrachoices: [{
+		/*	bonusClassExtrachoices // OPTIONAL //
 	TYPE:	array of objects (variable length) or just a single object
 	USE:	increase allowed number of extrachoices for another class feature
 	ADDED:	v13.0.6
@@ -2817,8 +2817,8 @@ bonusClassExtrachoices: [{
 	The `class`, `feature`, and `bonus` attributes have to be present in each object, the rest is optional.
 	See below for an explanation of each attribute.
 */
-	"class": "warlock",
-	/*	class // REQUIRED //
+		"class": "warlock",
+		/*	class // REQUIRED //
 		TYPE:	string
 		USE:	the ClassList object name of the class the feature belong to
 		ADDED:	v13.0.6
@@ -2826,11 +2826,11 @@ bonusClassExtrachoices: [{
 		For the published classes, their object name is the same as their name, but all lowercase.
 		I.e. "artificer", "barbarian", "bard", "cleric", "druid", "fighter", "monk", "paladin",
 		"ranger", "sorcerer", "warlock", and "wizard".
-		
+
 		If the feature belongs to a subclass, make sure this is the class the subclass belongs to.
 	*/
-	subclass: "warlock-the fiend",
-	/*	subclass // OPTIONAL //
+		subclass: "warlock-the fiend",
+		/*	subclass // OPTIONAL //
 		TYPE:	string
 		USE:	the ClassSubList object name of the subclass the feature belong to
 		ADDED:	v13.0.6
@@ -2843,11 +2843,11 @@ bonusClassExtrachoices: [{
 		E.g. `AddSubClass("druid", "circle of purple", {});` will result in
 		the object name "druid-circle of purple".
 		Note that these object names are always lowercase.
-		
+
 		Setting this attribute to an empty string ("") is the same as not including it.
 	*/
-	feature: "eldritch invocations",
-	/*	feature // REQUIRED //
+		feature: "eldritch invocations",
+		/*	feature // REQUIRED //
 		TYPE:	string
 		USE:	the object name listed in the `features` attribute of the ClaasList or ClassSubList object
 		ADDED:	v13.0.6
@@ -2859,7 +2859,7 @@ bonusClassExtrachoices: [{
 		If the feature you list here doesn't have the `extrachoices` attribute, this whole object
 		will be ignored.
 	*/
-	bonus: 2,
+		bonus: 2,
 	/*	bonus // REQUIRED //
 		TYPE:	number
 		USE:	positive number (minimum of 1) with the amount of extrachoices to add
@@ -2869,15 +2869,15 @@ bonusClassExtrachoices: [{
 
 		Setting this to zero or a negative number will result in the whole object being ignored.
 	*/
-}],
+	}],
 
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Fields on Other Pages >>> //
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Fields on Other Pages >>> //
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 
-toNotesPage: [{
-/*	toNotesPage // OPTIONAL //
+	toNotesPage: [{
+		/*	toNotesPage // OPTIONAL //
 	TYPE:	array of objects (or just a single object)
 	USE:	adds entries to the Notes section on either the 3rd page or a separate Notes page
 
@@ -2890,8 +2890,8 @@ toNotesPage: [{
 	add a new empty Notes page if no empty fields were found.
 	Alternatively, you can have this entry be added to the 3rd page's Notes section using the 'page3notes' attribute, see below.
 */
-	name: "Wild Magic Surge Table",
-	/*	name // REQUIRED //
+		name: "Wild Magic Surge Table",
+		/*	name // REQUIRED //
 		TYPE:	string
 		USE:	the name of the feature to add to the notes section
 
@@ -2903,20 +2903,20 @@ toNotesPage: [{
 		so that it will read, in this example:
 			Wild Magic Surge Table from "Wild Mage"
 	*/
-	note: "\nVarious strange things can happen whenever I cast a spell.",
-	note: [
-		"Introduction text of the note. This will be preceded by a line break, but not three spaces as this is the first paragraph.",
-		"Second paragraph, which will be preceded by a line break and three spaces.",
-		" \u2022 Bullet point entry. This will be preceded by a line break, but not with three spaces, as this entry starts with a space.",
-		" \u2022 Another bullet point entry.",
-		[ // This will render as a table (i.e. a tab between each column)
-			["Column 1 header", "Column 2 header", "Column 3 header"], // The first row, which will be made bold
-			["Column 1 entry", "Column 2 entry", "Column 3 entry"], // The rest of the rows won't be changed
-			["Column 1 entry II", "Column 2 entry II", "Column 3 entry II"], // Table row 2
+		note: "\nVarious strange things can happen whenever I cast a spell.",
+		note: [
+			"Introduction text of the note. This will be preceded by a line break, but not three spaces as this is the first paragraph.",
+			"Second paragraph, which will be preceded by a line break and three spaces.",
+			" \u2022 Bullet point entry. This will be preceded by a line break, but not with three spaces, as this entry starts with a space.",
+			" \u2022 Another bullet point entry.",
+			[ // This will render as a table (i.e. a tab between each column)
+				["Column 1 header", "Column 2 header", "Column 3 header"], // The first row, which will be made bold
+				["Column 1 entry", "Column 2 entry", "Column 3 entry"], // The rest of the rows won't be changed
+				["Column 1 entry II", "Column 2 entry II", "Column 3 entry II"], // Table row 2
+			],
+			"***Header Paragraph***. This paragraph will be preceded by a line break and three spaces. The text 'Header Paragraph' will be made bold and italic because of the three asterisks around it.",
 		],
-		"***Header Paragraph***. This paragraph will be preceded by a line break and three spaces. The text 'Header Paragraph' will be made bold and italic because of the three asterisks around it.",
-	],
-	/*	note // REQUIRED //
+		/*	note // REQUIRED //
 		TYPE:	string or array
 		USE:	the text of the feature to add to the notes section
 		CHANGE: v14.0.0 (arrays now formatted using `formatDescriptionFull`)
@@ -2939,7 +2939,7 @@ toNotesPage: [{
 			   (N.B. `\u2022` is unicode for a bullet point).
 			2. Array of arrays, which contain only strings
 			   If the entry is in itself an array, it is treated as a table.
-			   Each entry in that array is a row in the table, with the first row being 
+			   Each entry in that array is a row in the table, with the first row being
 			   considered headers that will be made bold.
 			   Making it bold is done using the `**` formatting character, see below.
 			   Each subarray is rendered with a tab between each column (i.e. `Array.join("\t")`).
@@ -2984,14 +2984,14 @@ toNotesPage: [{
 		Be aware that the default font on the Colourful sheets is already italic,
 		so making something only italic won't be visible on the Colourful sheets.
 	*/
-	useDescriptionFull: true,
-	useDescriptionFull: function(str) { return str.replace("if I was I", "if I were you"); },
-	/*	useDescriptionFull // OPTIONAL //
+		useDescriptionFull: true,
+		useDescriptionFull: function (str) { return str.replace("if I was I", "if I were you"); },
+		/*	useDescriptionFull // OPTIONAL //
 		TYPE:	boolean or function
 		USE:	whether to use the parent feature's `descriptionFull` as the note
 		ADDED:	v14.0.5
 
-		If this is set to true for a feature that has the `descriptionFull` attribute, 
+		If this is set to true for a feature that has the `descriptionFull` attribute,
 		the `note` attribute will be ignored and the `descriptionFull` will be used instead.
 		The sheet will automatically transform the `descriptionFull` from second to first
 		person before adding it to a notes section.
@@ -3005,8 +3005,8 @@ toNotesPage: [{
 
 		Setting this to 0 or false is the same as not including this attribute.
 	*/
-	page3notes: true,
-	/*	page3notes // OPTIONAL //
+		page3notes: true,
+		/*	page3notes // OPTIONAL //
 		TYPE:	boolean
 		USE:	whether to add this to the 3rd page's Notes section (true) or on a Notes page (false)
 
@@ -3014,16 +3014,16 @@ toNotesPage: [{
 
 		Setting this to 0 or false is the same as not including this attribute.
 	*/
-	popupName: "Wild Mage's Wild Magic Surge Table, part 1",
-	/*	popupName // OPTIONAL //
+		popupName: "Wild Mage's Wild Magic Surge Table, part 1",
+		/*	popupName // OPTIONAL //
 		TYPE:	string
 		USE:	the text used in the informational "changes" pop-up dialog to show the player what and on what page the text was added
 
 		If this attribute is not present, the 'name' attribute plus the name of the parent
 		will also be used for the informational "changes" pop-up dialog.
 	*/
-	source: ["P", 104],
-	/*	source // OPTIONAL //
+		source: ["P", 104],
+		/*	source // OPTIONAL //
 		TYPE:	array with two entries (or array of these arrays)
 		USE:	define where the feature is found
 
@@ -3047,16 +3047,16 @@ toNotesPage: [{
 			source : ["HB", 0],
 		"HB" refers to the 'homebrew' source.
 	*/
-	additional: "results 01-50",
-	/*	additional // OPTIONAL //
+		additional: "results 01-50",
+		/*	additional // OPTIONAL //
 		TYPE:	string
 		USE:	this string is amended to the first line of the feature text
 
 		This will be added, in square brackets, to the first line of text.
 		In this example the first line would be: "Wild Magic Surge Table (Wild Magic 1, PHB 104) [results 01-50]"
 	*/
-	amendTo: "Wild Magic Surge Table",
-	/*	amendTo // OPTIONAL //
+		amendTo: "Wild Magic Surge Table",
+		/*	amendTo // OPTIONAL //
 		TYPE:	string
 		USE:	if this string is found on any Notes page, than this note is added to the found note section
 
@@ -3070,7 +3070,7 @@ toNotesPage: [{
 
 		This attribute is useless if the `page3notes` attribute is also present and set to `true`.
 	*/
-	origin: "Sorcerer",
+		origin: "Sorcerer",
 	/*	origin // OPTIONAL //
 		TYPE:	string
 		USE:	the string to use instead of the name (and minlevel) of the parent object
@@ -3092,11 +3092,11 @@ toNotesPage: [{
 		This attribute can be an empty string. If so, no origin is given for the note.
 		Setting this attribute to `false` will result in the origin being written as "false".
 	*/
-}],
+	}],
 
 
-magicitemsAdd: [ "Hat of Disguise", ["Staff of Power", true] ],
-/*	magicitemsAdd // OPTIONAL //
+	magicitemsAdd: [ "Hat of Disguise", ["Staff of Power", true] ],
+	/*	magicitemsAdd // OPTIONAL //
 	TYPE:	array (variable length) of strings or arrays (with a string and a boolean)
 	USE:	adds each entry in the array to one of the magic item drop-downs
 	ADDED:	v13.0.6
@@ -3120,19 +3120,19 @@ magicitemsAdd: [ "Hat of Disguise", ["Staff of Power", true] ],
 	If a feature with this attribute is removed, these magic items will be removed as well.
 */
 
-featsAdd: [
-	"Grappler",
-	{ key: "lucky" },
-	{ key: "magic initiate", choice: "wizard" },
-	{ type: "origin" },
-	{ options: [
+	featsAdd: [
+		"Grappler",
+		{ key: "lucky" },
+		{ key: "magic initiate", choice: "wizard" },
+		{ type: "origin" },
+		{ options: [
 			"Tough",
 			{ key: "shield master" },
 			{ key: "magic initiate", choice: "cleric" },
 		],
-	},
-],
-/*	featsAdd // OPTIONAL //
+		},
+	],
+	/*	featsAdd // OPTIONAL //
 	TYPE:	array (variable length) of strings or objects
 	USE:	adds each entry in the array to one of the feat drop-downs
 	ADDED:	v14.0.0
@@ -3197,15 +3197,15 @@ featsAdd: [
 	the sheet will then try to remove the originally selected feat.
 */
 
-// >>>>>>>>>>>>>>>>>>>>>>> //
-// >>> Run Custom Code >>> //
-// >>>>>>>>>>>>>>>>>>>>>>> //
+	// >>>>>>>>>>>>>>>>>>>>>>> //
+	// >>> Run Custom Code >>> //
+	// >>>>>>>>>>>>>>>>>>>>>>> //
 
-eval: "Checkbox('Jack of All Trades', true);", // string, deprecated
-eval: function(lvl, chc) {
-	AddString("Extra.Notes", "Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields", true);
-},
-/*	eval // OPTIONAL //
+	eval: "Checkbox('Jack of All Trades', true);", // string, deprecated
+	eval: function (lvl, chc) {
+		AddString("Extra.Notes", "Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields", true);
+	},
+	/*	eval // OPTIONAL //
 	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 	USE:	runs a piece of code when the feature is added
 
@@ -3238,11 +3238,11 @@ eval: function(lvl, chc) {
 	This attribute is processed first, before all other attributes are processed.
 */
 
-removeeval: "Checkbox('Jack of All Trades', false);", // string, deprecated
-removeeval: function(lvl, chc) {
-	RemoveString("Extra.Notes", "Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields", true);
-},
-/*	removeeval // OPTIONAL //
+	removeeval: "Checkbox('Jack of All Trades', false);", // string, deprecated
+	removeeval: function (lvl, chc) {
+		RemoveString("Extra.Notes", "Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields", true);
+	},
+	/*	removeeval // OPTIONAL //
 	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 	USE:	runs a piece of code when the feature is removed
 
@@ -3275,12 +3275,12 @@ removeeval: function(lvl, chc) {
 	This attribute is processed first, before all other attributes are processed.
 */
 
-changeeval: "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level); SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, displName);", // string, deprecated
-changeeval: function(lvl, chc) {
-	var monkSpd = "+" + (lvl[1] < 2 ? 0 : lvl[1] < 6 ? 10 : lvl[1] < 10 ? 15 : lvl[1] < 14 ? 20 : lvl[1] < 18 ? 25 : 30);
-	SetProf("speed", monkSpd !== "+0", { allModes: monkSpd }, "Monk: Unarmored Movement");
-},
-/*	changeeval // OPTIONAL //
+	changeeval: "var monkSpd = function(n) {return '+' + (n < 2 ? 0 : n < 6 ? 10 : n < 10 ? 15 : n < 14 ? 20 : n < 18 ? 25 : 30);}(classes.known.monk.level); SetProf('speed', monkSpd !== '+0', {allModes : monkSpd}, displName);", // string, deprecated
+	changeeval: function (lvl, chc) {
+		var monkSpd = "+" + (lvl[1] < 2 ? 0 : lvl[1] < 6 ? 10 : lvl[1] < 10 ? 15 : lvl[1] < 14 ? 20 : lvl[1] < 18 ? 25 : 30);
+		SetProf("speed", monkSpd !== "+0", { allModes: monkSpd }, "Monk: Unarmored Movement");
+	},
+	/*	changeeval // OPTIONAL //
 	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 	USE:	runs a piece of code every time the character's level changes
 

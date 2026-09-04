@@ -1069,19 +1069,19 @@ function MakeAdventureLeagueMenu() {
 	].concat(typePF ?
 		[["Show Renown on the Background page", "renown", isDisplay("Background_Renown.Text") === display.visible]] : // 2
 		[["Remove DMG actions from 1st page (not legal in AL play)", "actions", true]]) // 2
-	.concat([
-		[typePF ? "Show space for Faction Rank on the Background page" : "Show space for Faction, Faction Rank, and Renown on the Background page", "factionrank", isDisplay("Background_FactionRank.Text") === display.visible], // 3
-	]).concat(typePF ?
-		[["Mark actions on the Player Reference page that are not legal in AL play", "asterisks", isDisplay("Text.PRsheet.AL.asterisk") === display.visible]] : //4
-		[])
-	.concat([
-		["Use the fixed carrying capacity rules", "encumbrance", tDoc.getField("Weight Carrying Capacity.Field").display === display.visible], // 5
-		["-", "-", false], // 6
-		["Show Adventure Logsheet(s)", "allog", isTemplVis("ALlog")], // 7
-		["-", "-", false], // 8
-		["Prepare the sheet for Adventurers League play (i.e. do all of the above)", "all#1", false], // 9
-		["Undo all of those marked above", "all#0", false], // 10
-	]);
+		.concat([
+			[typePF ? "Show space for Faction Rank on the Background page" : "Show space for Faction, Faction Rank, and Renown on the Background page", "factionrank", isDisplay("Background_FactionRank.Text") === display.visible], // 3
+		]).concat(typePF ?
+			[["Mark actions on the Player Reference page that are not legal in AL play", "asterisks", isDisplay("Text.PRsheet.AL.asterisk") === display.visible]] : //4
+			[])
+		.concat([
+			["Use the fixed carrying capacity rules", "encumbrance", tDoc.getField("Weight Carrying Capacity.Field").display === display.visible], // 5
+			["-", "-", false], // 6
+			["Show Adventure Logsheet(s)", "allog", isTemplVis("ALlog")], // 7
+			["-", "-", false], // 8
+			["Prepare the sheet for Adventurers League play (i.e. do all of the above)", "all#1", false], // 9
+			["Undo all of those marked above", "all#0", false], // 10
+		]);
 
 	if (!typePF) {
 		for (var i = 1; i <= FieldNumbers.trueactions; i++) {
@@ -1103,7 +1103,7 @@ function MakeAdventureLeagueMenu() {
 
 	Menus.adventureLeague = AdvLeagueMenu;
 
-	tDoc.getField("League Remember").submitName = submenuItems.slice(0,4).every(function(theN) { return theN[2]; }) ? 1 : 0;
+	tDoc.getField("League Remember").submitName = submenuItems.slice(0,4).every(function (theN) { return theN[2]; }) ? 1 : 0;
 };
 
 //call the adventure league menu (or use the input) and do something with the results
@@ -2009,7 +2009,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 			var casterType = !isNaN(Temps.spellcastingFactor) ? "default" : Temps.spellcastingFactor.replace(/\d/g, "");
 			var casterFactor = !isNaN(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor) : /\d/g.test(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
 			// now only continue if the class level is the factor or higher
-			var isCasterAtLvl = function(lvl, factor, table, roundUp) {
+			var isCasterAtLvl = function (lvl, factor, table, roundUp) {
 				var theRe = 0 < Math[roundUp ? "ceil" : "floor"](lvl / factor);
 				// or if the class has its own spell slot progression, check against that
 				if (!theRe && table && table[lvl]) {
@@ -2070,7 +2070,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		// don't go on if this is not a spellcasting class with spell slot progression
 		if (!cSpells || !cSpells.factor) continue;
 		// don't go on if this spellcasting class is not at a level with access to spells
-		var casterLevel = cSpells.level; 
+		var casterLevel = cSpells.level;
 		var casterFactor = cSpells.factor[0];
 		var casterType = cSpells.factor[1];
 		var customSlotTable = cSpells.spellsTable;
@@ -2292,7 +2292,7 @@ function levelFieldVal() {
 function getCurrentLevelByXP(level, exp) {
 	level = Number(level);
 	exp = Number(exp.replace(",", "."));
-	var LVLbyXP = ExperiencePointsList.reduce(function(acc, val) { return acc += exp >= Number(val) ? 1 : 0; }, 0);
+	var LVLbyXP = ExperiencePointsList.reduce(function (acc, val) { return acc += exp >= Number(val) ? 1 : 0; }, 0);
 	var XPforLVL = !level || isNaN(level) || level < 2 ? 0 : ExperiencePointsList[Math.min(ExperiencePointsList.length - 1, level - 1)];
 	return [LVLbyXP, XPforLVL];
 }
@@ -2555,7 +2555,7 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 						if (!CurrentRace.features[feature]) {
 							// This feature is not valid, possibly because it is set to `null` to deliberately invalidate a feature from the parent RaceList. Thus, delete this entry from the CurrentRace.features
 							delete CurrentRace.features[feature];
-						} 
+						}
 					}
 				}
 			}
@@ -2737,7 +2737,7 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 		if (oInstr.gainTraits) {
 			bMergeEverything = oInstr.gainTraits.find(/^(all|everything|complete|full)$/i) !== -1;
 			// Define a function to handle the merging
-			var mergeAttr = function(aProp, oFrom, oTo) {
+			var mergeAttr = function (aProp, oFrom, oTo) {
 				var oBaseRef = oFrom;
 				var oCurRef = oTo;
 				var oCurRefCreated;
@@ -3034,7 +3034,7 @@ function SetWeaponsdropdown(forceTooltips, aCompPrefixes) {
 		spell: [],
 	};
 
-	var processWea = function(oWeaList, bIsComp) {
+	var processWea = function (oWeaList, bIsComp) {
 		var sListStart = bIsComp ? "startListComp" : "startlist";
 		var sListAltSp = bIsComp ? "altListComp" : "altListExtra";
 		if (bIsComp) {
@@ -3047,7 +3047,7 @@ function SetWeaponsdropdown(forceTooltips, aCompPrefixes) {
 			var aWeaList = oWeaList;
 			oWeaList = {};
 			var callbackFunction = typeof aWeaList[0] === "string" ?
-				function(n, idx) { oWeaList[idx] = { name: n }; } :
+				function (n, idx) { oWeaList[idx] = { name: n }; } :
 				function (n, idx) { oWeaList[idx] = n; };
 			aWeaList.forEach(callbackFunction);
 		}
@@ -3636,7 +3636,7 @@ function MakeInventoryMenu() {
 	var backgroundKn = CurrentBackground.name ? CurrentBackground.name : "Background";
 
 	//first make the top three entries (Pack, Gear, Tool)
-	var itemMenu = function(menu, name, array, object) {
+	var itemMenu = function (menu, name, array, object) {
 		var temp = {
 			cName: name,
 			oSubMenu: [],
@@ -3675,7 +3675,7 @@ function MakeInventoryMenu() {
 		for (i = 0; i < array.length; i++) {
 			var isMarked = array[i][1] === "attuned" ? What("Adventuring Gear Remember") == false :
 				array[i][1] === "location2" ? What("Gear Location Remember").split(",")[0] == "true" :
-				array[i][1] === "location3" ? What("Gear Location Remember").split(",")[1] == "true" : false;
+					array[i][1] === "location3" ? What("Gear Location Remember").split(",")[1] == "true" : false;
 			var isEnabled = array[i][1] === "location3" ? isTemplVis("ASfront") : array[i][1].indexOf("background") !== -1 ? backgroundKn !== "Background" : true;
 			item.push({
 				cName: array[i][0],
@@ -3864,7 +3864,7 @@ function AddInvWeaponsAmmo() {
 	};
 
 	//then do the ammo
-	var addAmmo = function(aNm, aNr, aWght) {
+	var addAmmo = function (aNm, aNr, aWght) {
 		var theAmmo = ParseAmmo(aNm);
 		var magicBonus = 0;
 		var magicRegex = /(?:^|\s|\(|\[)([\+-]\d+)/;
@@ -3909,7 +3909,7 @@ function AddInvWeaponsAmmo() {
 function MakeInventoryLineMenu() {
 	var type = event.target.name.indexOf("Adventuring") !== -1 ? "Adventuring " :
 		event.target.name.indexOf("Extra.") !== -1 ? "Extra." :
-		event.target.name.substring(0, event.target.name.indexOf("Comp.") + 8) + ".";
+			event.target.name.substring(0, event.target.name.indexOf("Comp.") + 8) + ".";
 	var lineNmbr = Number(event.target.name.slice(-2));
 	var theField = What(type + "Gear Row " + lineNmbr);
 	var hasMagic = type === "Adventuring " && What("Adventuring Gear Remember") === false;
@@ -3923,7 +3923,7 @@ function MakeInventoryLineMenu() {
 	var moveCol = curCol > 1 ? "left" : numColumns === 3 ? "middle" : "right";
 	var moveCol2 = numColumns !== 3 ? false : curCol === 3 ? "middle" : "right";
 
-	var amendMenu = function(inputArray) {
+	var amendMenu = function (inputArray) {
 		var array = newObj(inputArray);
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].oSubMenu) {
@@ -3962,7 +3962,7 @@ function MakeInventoryLineMenu() {
 		};
 	};
 
-	var AddCompOptions = function(menu) {
+	var AddCompOptions = function (menu) {
 		var AScompA = What("Template.extras.AScomp").split(",").splice(1);
 		var prefix = type.substring(0, type.indexOf("Comp."));
 		if (type.indexOf("Comp.") !== -1) AScompA.splice(AScompA.indexOf(prefix), 1);
@@ -4050,65 +4050,65 @@ function InventoryLineOptions() {
 	];
 
 	switch (MenuSelection[2]) {
-	 case "up" :
-	 case "down" :
-		thermoTxt = thermoM("Moving the gear " + MenuSelection[2] + "...", false); //change the progress dialog text
-		var A = MenuSelection[2] === "up" ? -1 : 1;
-		var FieldsNext = [
-			type + "Gear Row " + (lineNmbr + A),
-			type + "Gear Amount " + (lineNmbr + A),
-			type + "Gear Weight " + (lineNmbr + A),
-			type + "Gear Location.Row " + (lineNmbr + A),
-		];
-		var FieldsNextValue = [
-			What(FieldsNext[0]),
-			What(FieldsNext[1]),
-			What(FieldsNext[2]),
-			What(FieldsNext[3]),
-		];
-		for (var H = 0; H < Fields.length; H++) {
-			Value(FieldsNext[H], FieldsValue[H]);
-			Value(Fields[H], FieldsNextValue[H]);
-			thermoM(H / Fields.length); //increment the progress dialog's progress
-		};
-		break;
-	 case "movecol" :
-		var toCol = MenuSelection[3];
-		thermoTxt = thermoM("Moving the gear to the " + (toCol.indexOf("r") !== -1 ? "right" : toCol.indexOf("m") !== -1 ? "middle" : "left") + " column...", false); //change the progress dialog text
-		InvDelete(type, lineNmbr);
-		AddToInv(type, MenuSelection[3], FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3], false, false, false, true);
-		break;
-	 case "movepage" :
-		thermoTxt = thermoM("Moving the gear to another page...", false); //change the progress dialog text
-		InvDelete(type, lineNmbr);
-		var toPageType = toRightCase(MenuSelection[3]);
-		AddToInv(toPageType, "l", FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3], false, false, false, true);
-		break;
-	 case "copy" :
-		thermoTxt = thermoM("Copying the gear to magic items on page 3...", false); //change the progress dialog text
-		AddMagicItem(FieldsValue[0], true, "", FieldsValue[2]);
-		break;
-	case "insert":
-		thermoTxt = thermoM("Inserting empty gear line...", false); //change the progress dialog text
-		InvInsert(type, lineNmbr);
-		break;
-	case "delete":
-		thermoTxt = thermoM("Deleting gear line...", false); //change the progress dialog text
-		InvDelete(type, lineNmbr);
-		break;
-	case "clear":
-		thermoTxt = thermoM("Clearing gear line...", false); //change the progress dialog text
-		tDoc.resetForm(Fields);
-		break;
-	case "gear":
-	case "tool":
-		var theGear = MenuSelection[2] === "gear" ? GearList[MenuSelection[3]] : ToolsList[MenuSelection[3]];
-		thermoTxt = thermoM("Adding '" + theGear.name + "' to the line...", false); //change the progress dialog text
-		var theNm = (lineNmbr > 1 && /^.{0,2}-|backpack|\bbag\b|^(?=.*saddle)(?=.*bag).*$|\bsack\b|\bchest\b|, with|, contain/i.test(What(type + "Gear Row " + (lineNmbr - 1))) ? "- " : "") + theGear.name;
-		Value(Fields[0], theNm);
-		Value(Fields[1], theGear.amount);
-		Value(Fields[2], What("Unit System") === "metric" ? RoundTo(theGear.weight * UnitsList.metric.mass, 0.001, true) : theGear.weight);
-		break;
+		case "up" :
+		case "down" :
+			thermoTxt = thermoM("Moving the gear " + MenuSelection[2] + "...", false); //change the progress dialog text
+			var A = MenuSelection[2] === "up" ? -1 : 1;
+			var FieldsNext = [
+				type + "Gear Row " + (lineNmbr + A),
+				type + "Gear Amount " + (lineNmbr + A),
+				type + "Gear Weight " + (lineNmbr + A),
+				type + "Gear Location.Row " + (lineNmbr + A),
+			];
+			var FieldsNextValue = [
+				What(FieldsNext[0]),
+				What(FieldsNext[1]),
+				What(FieldsNext[2]),
+				What(FieldsNext[3]),
+			];
+			for (var H = 0; H < Fields.length; H++) {
+				Value(FieldsNext[H], FieldsValue[H]);
+				Value(Fields[H], FieldsNextValue[H]);
+				thermoM(H / Fields.length); //increment the progress dialog's progress
+			};
+			break;
+		case "movecol" :
+			var toCol = MenuSelection[3];
+			thermoTxt = thermoM("Moving the gear to the " + (toCol.indexOf("r") !== -1 ? "right" : toCol.indexOf("m") !== -1 ? "middle" : "left") + " column...", false); //change the progress dialog text
+			InvDelete(type, lineNmbr);
+			AddToInv(type, MenuSelection[3], FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3], false, false, false, true);
+			break;
+		case "movepage" :
+			thermoTxt = thermoM("Moving the gear to another page...", false); //change the progress dialog text
+			InvDelete(type, lineNmbr);
+			var toPageType = toRightCase(MenuSelection[3]);
+			AddToInv(toPageType, "l", FieldsValue[0], FieldsValue[1], FieldsValue[2], FieldsValue[3], false, false, false, true);
+			break;
+		case "copy" :
+			thermoTxt = thermoM("Copying the gear to magic items on page 3...", false); //change the progress dialog text
+			AddMagicItem(FieldsValue[0], true, "", FieldsValue[2]);
+			break;
+		case "insert":
+			thermoTxt = thermoM("Inserting empty gear line...", false); //change the progress dialog text
+			InvInsert(type, lineNmbr);
+			break;
+		case "delete":
+			thermoTxt = thermoM("Deleting gear line...", false); //change the progress dialog text
+			InvDelete(type, lineNmbr);
+			break;
+		case "clear":
+			thermoTxt = thermoM("Clearing gear line...", false); //change the progress dialog text
+			tDoc.resetForm(Fields);
+			break;
+		case "gear":
+		case "tool":
+			var theGear = MenuSelection[2] === "gear" ? GearList[MenuSelection[3]] : ToolsList[MenuSelection[3]];
+			thermoTxt = thermoM("Adding '" + theGear.name + "' to the line...", false); //change the progress dialog text
+			var theNm = (lineNmbr > 1 && /^.{0,2}-|backpack|\bbag\b|^(?=.*saddle)(?=.*bag).*$|\bsack\b|\bchest\b|, with|, contain/i.test(What(type + "Gear Row " + (lineNmbr - 1))) ? "- " : "") + theGear.name;
+			Value(Fields[0], theNm);
+			Value(Fields[1], theGear.amount);
+			Value(Fields[2], What("Unit System") === "metric" ? RoundTo(theGear.weight * UnitsList.metric.mass, 0.001, true) : theGear.weight);
+			break;
 	};
 
 	thermoM(thermoTxt, true); // Stop progress bar
@@ -4684,7 +4684,7 @@ function ValidateBonus(goEmpty, allowDC) {
 		var notComp = getTemplPre(event.target.name, "AScomp");
 		test = event.value;
 		if (!allowDC) test = test.replace(/dc/ig, "");
-		["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS", "Prof"].forEach( function(AbiS) {
+		["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS", "Prof"].forEach( function (AbiS) {
 			test = test.replace(RegExp("(\\b|\\d)" + AbiS[0] + AbiS[1] + "?" + AbiS[2] + "?" + "(\\b|\\d)", "ig"), "$1" + AbiS + "$2");
 		});
 		var calc = EvalBonus(test, notComp, "test");
@@ -5090,7 +5090,7 @@ function ApplyFeat(input, FldNmbr) {
 	var oldFeatVar = CurrentFeats.choices[ArrayNmbr];
 	var failedChoice = false;
 
-	var doNotCommit = function(toSetVal) {
+	var doNotCommit = function (toSetVal) {
 		if (thermoTxt) thermoM(thermoTxt, true); // Stop progress bar
 		if (!IsNotImport) return;
 		event.rc = false;
@@ -5634,7 +5634,7 @@ function processAddFeats(bAddRemove, featsAdd, srcType, srcName, srcNameUnique) 
 	srcType = GetFeatureType(srcType);
 
 	var gatherVars = gatherPrereqevalVars();
-	var skipFeat = function(key, choice) {
+	var skipFeat = function (key, choice) {
 		var oFeat = FeatsList[key];
 		var oChoice = oFeat[choice];
 		var knownIndex = CurrentFeats.known.indexOf(key);
@@ -5660,7 +5660,7 @@ function processAddFeats(bAddRemove, featsAdd, srcType, srcName, srcNameUnique) 
 		return false;
 	}
 
-	var getFeatArrayFromType = function(sFeatType) {
+	var getFeatArrayFromType = function (sFeatType) {
 		var returnObj = {
 			options: [],
 			optionsRef: [],
@@ -5687,7 +5687,7 @@ function processAddFeats(bAddRemove, featsAdd, srcType, srcName, srcNameUnique) 
 		return returnObj;
 	}
 
-	var getFeatArrayFromOptions = function(aFeatOptions, noCheck) {
+	var getFeatArrayFromOptions = function (aFeatOptions, noCheck) {
 		if (!isArray(aFeatOptions)) return { options: [] };
 		var returnObj = {
 			title: "Select " + srcName.capitalize() + " Bonus Feat",
@@ -5695,7 +5695,7 @@ function processAddFeats(bAddRemove, featsAdd, srcType, srcName, srcNameUnique) 
 			options: [],
 			optionsRef: {},
 		};
-		aFeatOptions.forEach(function(entry) {
+		aFeatOptions.forEach(function (entry) {
 			var sFeatName = false;
 			var oFeatSource = false;
 			if (typeof entry === "string") {
@@ -5731,7 +5731,7 @@ function processAddFeats(bAddRemove, featsAdd, srcType, srcName, srcNameUnique) 
 		return returnObj;
 	}
 
-	var askUserFeat = function(dialogParts) {
+	var askUserFeat = function (dialogParts) {
 		if (dialogParts.options.length === 1) {
 			return dialogParts.optionsRef[dialogParts.options[0]];
 		} else if (dialogParts.options.length) {
@@ -5835,7 +5835,7 @@ function resetLimFeaUsed(rxType) {
 		if (SSfrontA) aFldsToReset.push(SSfrontA + "SpellSlots.Checkboxes");
 		if (!typePF) aFldsToReset.push("SpellSlots.Checkboxes");
 		if (!typePF && SSfrontA) aFldsToReset.push(SSfrontA + "SpellSlots2.Checkboxes");
-		
+
 	}
 	if (aFldsToReset.length || oFldsRecoverX.length) {
 		calcStop();
@@ -6057,7 +6057,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 		for (var a = 1; a < AScompA.length; a++) {
 			var prefix = AScompA[a];
 			var aComp = CurrentCompRace[AScompA[a]];
-	
+
 			//increment the progress dialog's progress
 			thermoM(a / AScompA.length);
 
@@ -6274,10 +6274,10 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 						// see what type of change we have to do
 						var textAction = (!Fea.AddFea && Fea.CheckLVL) || (Fea.AddFea && !Fea.Display) ? "remove" : // level dropped below minlevel or new description is undefined
 							Fea.CheckLVL && Fea.AddFea && (!forceProp || !isClassProp) ? "insert" : // level rose above minlevel and there is nothing to replace
-							Fea.AddFea && Fea.Display && !Fea.DisplayOld ? "insert" : // description at previous level was undefined, but now there is something to insert
-							forceProp || (Fea.AddFea && Fea.changed && Fea.Descr !== Fea.DescrOld) ? "replace" : // forcing the new version or update the whole text after a description change
-							Fea.AddFea && Fea.changed && Fea.Descr === Fea.DescrOld ? "first" : // update just header after a usages/recovery/additional change
-							false;
+								Fea.AddFea && Fea.Display && !Fea.DisplayOld ? "insert" : // description at previous level was undefined, but now there is something to insert
+									forceProp || (Fea.AddFea && Fea.changed && Fea.Descr !== Fea.DescrOld) ? "replace" : // forcing the new version or update the whole text after a description change
+										Fea.AddFea && Fea.changed && Fea.Descr === Fea.DescrOld ? "first" : // update just header after a usages/recovery/additional change
+											false;
 						// do the text change, if any
 						if (textAction) {
 							if (textAction === "insert" && loweredLvl) textAction = "insertbefore";
@@ -6332,10 +6332,10 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 							// see what type of change we have to do
 							var xtrTextAction = Fea.CheckLVL && !Fea.AddFea ? "remove" : // level dropped below minlevel
 								xtrFea.AddFea && !xtrFea.Display ? "remove" : // new description is undefined
-								xtrFea.AddFea && xtrFea.Display && !xtrFea.DisplayOld ? "insert" : // description at previous level was undefined, but now there is something to insert
-								xtrFea.AddFea && xtrFea.changed && xtrFea.Descr !== xtrFea.DescrOld ? "replace" : // update the whole text after a description change
-								xtrFea.AddFea && xtrFea.changed && xtrFea.Descr === xtrFea.DescrOld ? "first" : // update just header after a usages/recovery/additional change
-								false;
+									xtrFea.AddFea && xtrFea.Display && !xtrFea.DisplayOld ? "insert" : // description at previous level was undefined, but now there is something to insert
+										xtrFea.AddFea && xtrFea.changed && xtrFea.Descr !== xtrFea.DescrOld ? "replace" : // update the whole text after a description change
+											xtrFea.AddFea && xtrFea.changed && xtrFea.Descr === xtrFea.DescrOld ? "first" : // update just header after a usages/recovery/additional change
+												false;
 							// do the text change, if any
 							if (IsNotImport && xtrTextAction) {
 								applyClassFeatureText(xtrTextAction, ["Extra.Notes", "Class Features"], xtrFeaOldString, xtrFeaNewString, false);
@@ -6358,7 +6358,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 // Make menu for 'choose class feature' button and parse it to Menus.classfeatures
 function MakeClassMenu() {
 	var gatherVars, hasEldritchBlast, isFS = false, selFS = GetFightingStyleSelection();
-	var testPrereqs = function(toEval, objNm, feaNm, curSel) {
+	var testPrereqs = function (toEval, objNm, feaNm, curSel) {
 		if (!gatherVars) {
 			gatherVars = gatherPrereqevalVars();
 			hasEldritchBlast = gatherVars.hasEldritchBlast;
@@ -6378,10 +6378,10 @@ function MakeClassMenu() {
 		return theRe;
 	}
 
-	var nrFoundInExtraChoices = function(testArray, choicesArray) {
+	var nrFoundInExtraChoices = function (testArray, choicesArray) {
 		var cnt = 0;
 		if (testArray.length) {
-			var arr = choicesArray.map(function(n) { return n.toLowerCase(); });
+			var arr = choicesArray.map(function (n) { return n.toLowerCase(); });
 			for (var i = 0; i < testArray.length; i++) {
 				if (arr.indexOf(testArray[i]) !== -1) cnt++;
 			}
@@ -6407,7 +6407,7 @@ function MakeClassMenu() {
 			// now see if we should disable this because of prerequisites
 			var isEnabled = isActive || ignorePrereqs ? true :
 				feaObjA.minlevel && feaObjA.minlevel > classes.known[classNm].level ? false :
-				!feaObjA.prereqeval || testPrereqs(feaObjA.prereqeval, feaObjNm, featureNm, curSel);
+					!feaObjA.prereqeval || testPrereqs(feaObjA.prereqeval, feaObjNm, featureNm, curSel);
 			if (isEnabled === "skip") continue; // special failsafe for choices that return "skip" on their prepreqeval
 			if (isEnabled && !isActive && isFS && selFS[feaObjNm]) {
 				isEnabled = false;
@@ -6448,7 +6448,7 @@ function MakeClassMenu() {
 		};
 		// if there are any entries in toSub, we must sort the temp array and add the submenu arrays
 		if (ObjLength(toSub)) {
-			temp.sort(function(a, b) {
+			temp.sort(function (a, b) {
 				return a.cName.localeCompare(b.cName);
 			});
 			for (var t = 0; t < temp.length; t++) {
@@ -6789,24 +6789,24 @@ function PrintButton() {
 
 	var Proceed = false;
 	switch (theDialog) {
-	 case "ok":
-		Proceed = true;
-	 case "save":
-		var ResultsArray = [0];
-		for (var p = 0; p < thePageOptions.length; p++) {
-			if (SetPrintPages_Dialog["b" + thePageOptions[p]]) {
-				ResultsArray.push(thePageOptions[p]);
+		case "ok":
+			Proceed = true;
+		case "save":
+			var ResultsArray = [0];
+			for (var p = 0; p < thePageOptions.length; p++) {
+				if (SetPrintPages_Dialog["b" + thePageOptions[p]]) {
+					ResultsArray.push(thePageOptions[p]);
+				}
 			}
-		}
-		Value("Print Remember", SetPrintPages_Dialog["bDupl"] + "!#TheListSeparator#!" + ResultsArray.toString());
-		if (Proceed) {
-			PrintTheSheet();
-		};
-	 case "cancel":
-		if (SetPrintPages_Dialog.bHide) {
-			HideShowEverything(false);
-			SetPrintPages_Dialog.bHide = false;
-		}
+			Value("Print Remember", SetPrintPages_Dialog["bDupl"] + "!#TheListSeparator#!" + ResultsArray.toString());
+			if (Proceed) {
+				PrintTheSheet();
+			};
+		case "cancel":
+			if (SetPrintPages_Dialog.bHide) {
+				HideShowEverything(false);
+				SetPrintPages_Dialog.bHide = false;
+			}
 	}
 };
 
@@ -7005,7 +7005,7 @@ function SetToManual_Button(bSkipDialog, oDialogResults) {
 	var RaceFld = !!CurrentVars.manual.race;
 	// store state of overflow page, because it might be shown when undoing manual
 	var overFlowVis = isTemplVis("ASoverflow");
-	
+
 
 	if (!oDialogResults) oDialogResults = {};
 
@@ -7207,7 +7207,7 @@ function SetToManual_Button(bSkipDialog, oDialogResults) {
 	}
 
 	SetStringifieds("vars");
-	
+
 	// correct overflow page visibility, because it might've been made visible unnecessarily
 	if (overFlowVis !== isTemplVis("ASoverflow")) DoTemplate("ASoverflow");
 }
@@ -7262,7 +7262,7 @@ function CalcAbilityDC() {
 	// Empty the modifier field and set to read-only if using the ones on the spell sheet page
 	tDoc.getField(sFldBonus).readonly = useSSDC;
 	AddTooltip(sFldMod, !useSSDCname ? "" : "The value shown is linked to the spell save DC on the spell sheets for the " + useSSDCname + "." + (useSSDCothers ? " There are other spell save DCs on the spell sheets that use Intelligence, but those have bonuses that don't apply to all, hence the number shown here is the lowest for this ability score." : "") + "\n\nBecause the value is linked to the spell sheet, you can't currently change or set a modifier here, only on the spell sheet page.");
-	// Show or hide the modifier if they are supposed to 
+	// Show or hide the modifier if they are supposed to
 	if (CurrentVars.bluetxt) {
 		if (useSSDC) {
 			Hide(sFldBonus);
@@ -7302,7 +7302,7 @@ function createSmallCaps(input, fontSize, extraObj) {
 	var nBig = "";
 	var nSmall = "";
 	var sp = "";
-	var updateTxts = function(toBig, tChar) {
+	var updateTxts = function (toBig, tChar) {
 		if (toBig && nSmall) {
 			var spObj = {
 				text: nSmall.toUpperCase(),
@@ -8441,7 +8441,7 @@ function ApplyColorScheme(aColour) {
 	}
 	// See if any of the Ability Save DC's or the HP Dragons have the color connected to this
 	if (What("Color.DC").indexOf("headers") != -1) ApplyDCColorScheme();
-	
+
 
 	// Refresh field that use headers
 	redoFieldFormatIfColored();
@@ -8981,94 +8981,94 @@ function ConvertToMetric(inputString, rounded, exact) {
 		amount = Number(amount);
 		var total, unit, isRounded;
 		units = units.replace(/f(oo|ee)t/i, "ft").replace(/fl(uid|\.)|liquid/i, "fl")
-					 .replace("cubic", "cu").replace("square", "sq")
-					 .replace(/(lb|pound|gallon|qt|quart|pt|pint|ounce|degree|mile)s/i, "$1");
+			.replace("cubic", "cu").replace("square", "sq")
+			.replace(/(lb|pound|gallon|qt|quart|pt|pint|ounce|degree|mile)s/i, "$1");
 		switch (units){
-		 case "in": case "inch": case "inches": case '"':
-			total = amount * UnitsList[ratio].lengthInch;
-			unit = "cm";
-			break;
-		 case "ft": case "'":
-			total = amount * UnitsList[ratio].length;
-			unit = "m";
-			if (total < 1) {
-				// for small lengths, we are going to use cm
-				total *= 100;
+			case "in": case "inch": case "inches": case '"':
+				total = amount * UnitsList[ratio].lengthInch;
 				unit = "cm";
-			}
-			break;
-		 case "mile":
-			total = amount * UnitsList[ratio].distance;
-			unit = "km";
-			break;
-
-		 case "cu ft": case "ft3": case "ft\u00B3":
-			total = amount * UnitsList[ratio].volume;
-			unit = "m\u00B3"; // m³
-			if (total < 0.25) {
-				// for very small volumes, we are going to use dm3
-				total *= 1000;
-				unit = "dm\u00B3"; // dm³
-			} else if (total < 1 && rounding > 0.03) {
-				// for relatively small volumes, we are going to round to 0.03 accuracy
-				total = RoundTo(total, 0.03, false, true);
-				isRounded = true;
-			} else if (rounding > 0.3) {
-				// for higer volumes we are going to round to 0.3 accuracy, to avoid issues when converting them back to cubic feet
-				total = RoundTo(total, 0.3, false, true);
-				isRounded = true;
-			}
-			break;
-
-		 case "sq ft": case "ft2": case "ft\u00B2":
-			total = amount * UnitsList[ratio].surface;
-			unit = "m\u00B2"; // m²
-			if (total < 0.25) {
-				// for very small volumes, we are going to use dm2
-				total *= 100;
-				unit = "dm\u00B2"; // dm²
-			}
-			break;
-
-		 case "lb": case "pound":
-			total = amount * UnitsList[ratio].mass;
-			unit = "kg";
-			if (total < 0.5) {
-				total *= 1000;
-				unit = "g";
-			}
-			// As 1/2 lb is common, round this to higher accuracy so that 1/2 lb doesn't come out as 0.5 kg
-			if (rounded > 0.25 && rounded <= 1) {
-				total = RoundTo(total, 0.25, false, true);
-				isRounded = true;
-			}
-			break;
-		 case "gal": case "gallon":
-			total = amount * UnitsList[ratio].liquid;
-			unit = "L";
-			break;
-		 case "qt": case "quart":
-			total = amount * UnitsList[ratio].liquidQuart;
-			unit = "L";
-			break;
-		 case "pt": case "pint":
-			total = amount * UnitsList[ratio].liquidPint;
-			unit = "L";
-			break;
-		 case "fl oz": case "fl ounce": case "oz": case "ounce":
-			if (amount < 1) {
-				total = amount * UnitsList[ratio].liquidOunce * 10;
-				unit = "ml";
 				break;
-			}
-			total = amount * UnitsList[ratio].liquidOunce;
-			unit = "cl";
-			break;
-		 case "\u00B0 f": case "\u00B0f": case "degree fahrenheit": case "fahrenheit":
-			total = RoundTo((amount - 32) * 5 / 9, exact ? 0.01 : 1, false, true);
-			unit = "\u00B0C"; //°C
-			isRounded = true;
-			break;
+			case "ft": case "'":
+				total = amount * UnitsList[ratio].length;
+				unit = "m";
+				if (total < 1) {
+				// for small lengths, we are going to use cm
+					total *= 100;
+					unit = "cm";
+				}
+				break;
+			case "mile":
+				total = amount * UnitsList[ratio].distance;
+				unit = "km";
+				break;
+
+			case "cu ft": case "ft3": case "ft\u00B3":
+				total = amount * UnitsList[ratio].volume;
+				unit = "m\u00B3"; // m³
+				if (total < 0.25) {
+				// for very small volumes, we are going to use dm3
+					total *= 1000;
+					unit = "dm\u00B3"; // dm³
+				} else if (total < 1 && rounding > 0.03) {
+				// for relatively small volumes, we are going to round to 0.03 accuracy
+					total = RoundTo(total, 0.03, false, true);
+					isRounded = true;
+				} else if (rounding > 0.3) {
+				// for higer volumes we are going to round to 0.3 accuracy, to avoid issues when converting them back to cubic feet
+					total = RoundTo(total, 0.3, false, true);
+					isRounded = true;
+				}
+				break;
+
+			case "sq ft": case "ft2": case "ft\u00B2":
+				total = amount * UnitsList[ratio].surface;
+				unit = "m\u00B2"; // m²
+				if (total < 0.25) {
+				// for very small volumes, we are going to use dm2
+					total *= 100;
+					unit = "dm\u00B2"; // dm²
+				}
+				break;
+
+			case "lb": case "pound":
+				total = amount * UnitsList[ratio].mass;
+				unit = "kg";
+				if (total < 0.5) {
+					total *= 1000;
+					unit = "g";
+				}
+				// As 1/2 lb is common, round this to higher accuracy so that 1/2 lb doesn't come out as 0.5 kg
+				if (rounded > 0.25 && rounded <= 1) {
+					total = RoundTo(total, 0.25, false, true);
+					isRounded = true;
+				}
+				break;
+			case "gal": case "gallon":
+				total = amount * UnitsList[ratio].liquid;
+				unit = "L";
+				break;
+			case "qt": case "quart":
+				total = amount * UnitsList[ratio].liquidQuart;
+				unit = "L";
+				break;
+			case "pt": case "pint":
+				total = amount * UnitsList[ratio].liquidPint;
+				unit = "L";
+				break;
+			case "fl oz": case "fl ounce": case "oz": case "ounce":
+				if (amount < 1) {
+					total = amount * UnitsList[ratio].liquidOunce * 10;
+					unit = "ml";
+					break;
+				}
+				total = amount * UnitsList[ratio].liquidOunce;
+				unit = "cl";
+				break;
+			case "\u00B0 f": case "\u00B0f": case "degree fahrenheit": case "fahrenheit":
+				total = RoundTo((amount - 32) * 5 / 9, exact ? 0.01 : 1, false, true);
+				unit = "\u00B0C"; //°C
+				isRounded = true;
+				break;
 		}
 		return [total, unit, isRounded];
 	}
@@ -9130,7 +9130,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 					var resulted = theConvert(parseFloat(org), orgUnit);
 				}
 			}
-	
+
 			var delimiter = /.*\d+([\s- ]*?)\w/.test(measurements[i]) ? measurements[i].match(/.*\d+([\s- ]*?)\w/)[1] : " ";
 
 			if (isArray(resulted[0])) {
@@ -9153,85 +9153,85 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 		amount = Number(amount);
 		var total, unit, isRounded;
 		units = units.replace(/(gram|kilo|degree)s/i, "$1")
-					 .replace(/(lit|met)res?/i, "$1er")
-					 .replace("cubic", "cu").replace("square", "sq");
+			.replace(/(lit|met)res?/i, "$1er")
+			.replace("cubic", "cu").replace("square", "sq");
 		switch (units){
-		 case "cm": case "centimeter":
-			if (amount < 30) {
-				total = amount / UnitsList[ratio].lengthInch;
-				unit = "inch";
+			case "cm": case "centimeter":
+				if (amount < 30) {
+					total = amount / UnitsList[ratio].lengthInch;
+					unit = "inch";
+					break;
+				}
+				amount /= 10;
+			case "dm": case "decimeter":
+				if (amount < 3) {
+					total = amount * 10 / UnitsList[ratio].lengthInch;
+					unit = "inch";
+					break;
+				}
+				amount /= 10;
+			case "m": case "meter":
+				total = amount / UnitsList[ratio].length;
+				unit = "ft";
 				break;
-			}
-			amount /= 10;
-		 case "dm": case "decimeter":
-			if (amount < 3) {
-				total = amount * 10 / UnitsList[ratio].lengthInch;
-				unit = "inch";
+			case "km": case "kilometer":
+				total = amount / UnitsList[ratio].distance;
+				unit = total === 1 ? "mile" : "miles";
 				break;
-			}
-			amount /= 10;
-		 case "m": case "meter":
-			total = amount / UnitsList[ratio].length;
-			unit = "ft";
-			break;
-		 case "km": case "kilometer":
-			total = amount / UnitsList[ratio].distance;
-			unit = total === 1 ? "mile" : "miles";
-			break;
 
-		 case "cm3": case "cm\u00B3": case "cu centimeter":
-			amount /= 1000;
-		 case "dm3": case "dm\u00B3": case "cu decimeter":
-			amount /= 1000;
-		 case "m3": case "m\u00B3": case "cu meter":
-			total = amount / UnitsList[ratio].volume;
-			unit = "cu ft";
-			if (total > 41 && rounding < 2) {
+			case "cm3": case "cm\u00B3": case "cu centimeter":
+				amount /= 1000;
+			case "dm3": case "dm\u00B3": case "cu decimeter":
+				amount /= 1000;
+			case "m3": case "m\u00B3": case "cu meter":
+				total = amount / UnitsList[ratio].volume;
+				unit = "cu ft";
+				if (total > 41 && rounding < 2) {
 				// make it a nice whole number of cubic feet
-				rounding = 10;
-			}
-			break;
-
-		 case "cm2": case "cm\u00B2": case "sq centimeter":
-			amount /= 100;
-		 case "dm2": case "dm\u00B2": case "sq decimeter":
-			amount /= 100;
-		 case "m2": case "m\u00B2": case "sq meter":
-			total = amount / UnitsList[ratio].surface;
-			unit = "sq ft";
-			break;
-
-		 case "g": case "gram":
-			amount = amount / 1000;
-		 case "kg": case "kilogram": case "kilo":
-			total = amount / UnitsList[ratio].mass;
-			unit = "lb";
-			break;
-
-		 case "ml": case "milliliter":
-			amount = amount / 10;
-		 case "cl": case "centiliter":
-			total = amount / UnitsList[ratio].liquidOunce;
-			unit = "fl oz";
-			break;
-		 case "l": case "liter":
-			if (amount <= 0.5) {
-				total = amount / UnitsList[ratio].liquidPint;
-				unit = "pint";
+					rounding = 10;
+				}
 				break;
-			} else if (amount <= 3) {
-				total = amount / UnitsList[ratio].liquidQuart;
-				unit = "qt";
+
+			case "cm2": case "cm\u00B2": case "sq centimeter":
+				amount /= 100;
+			case "dm2": case "dm\u00B2": case "sq decimeter":
+				amount /= 100;
+			case "m2": case "m\u00B2": case "sq meter":
+				total = amount / UnitsList[ratio].surface;
+				unit = "sq ft";
 				break;
-			}
-			total = amount / UnitsList[ratio].liquid;
-			unit = "gal";
-			break;
-		 case "\u00B0 c": case "\u00B0c": case "degree celsius": case "celsius":
-			total = RoundTo((amount * 9 / 5) + 32, exact ? 0.01 : 1, false, true);
-			unit = "\u00B0F"; // °F
-			isRounded = true;
-			break;
+
+			case "g": case "gram":
+				amount = amount / 1000;
+			case "kg": case "kilogram": case "kilo":
+				total = amount / UnitsList[ratio].mass;
+				unit = "lb";
+				break;
+
+			case "ml": case "milliliter":
+				amount = amount / 10;
+			case "cl": case "centiliter":
+				total = amount / UnitsList[ratio].liquidOunce;
+				unit = "fl oz";
+				break;
+			case "l": case "liter":
+				if (amount <= 0.5) {
+					total = amount / UnitsList[ratio].liquidPint;
+					unit = "pint";
+					break;
+				} else if (amount <= 3) {
+					total = amount / UnitsList[ratio].liquidQuart;
+					unit = "qt";
+					break;
+				}
+				total = amount / UnitsList[ratio].liquid;
+				unit = "gal";
+				break;
+			case "\u00B0 c": case "\u00B0c": case "degree celsius": case "celsius":
+				total = RoundTo((amount * 9 / 5) + 32, exact ? 0.01 : 1, false, true);
+				unit = "\u00B0F"; // °F
+				isRounded = true;
+				break;
 		}
 		return [total, unit, isRounded];
 	}
@@ -9739,7 +9739,7 @@ function MakeAttackLineMenu_AttackLineOptions(MenuSelection, itemNmbr, prefix) {
 	var theWea = QI ? CurrentWeapons.known[itemNmbr - 1] : CurrentWeapons.compKnown[prefix][itemNmbr - 1];
 	var weaWeight = theWea[0] && WeaponsList[theWea[0]] ? WeaponsList[theWea[0]].weight :
 		theWea[0] && QI && CurrentCompRace[prefix] && CurrentCompRace[prefix].attacks ? CurrentCompRace[prefix].attacks[theWea[0]].weight :
-		What(Fields[7]);
+			What(Fields[7]);
 	var noUp = itemNmbr === 1;
 	var noDown = itemNmbr === maxItems;
 
@@ -9749,7 +9749,7 @@ function MakeAttackLineMenu_AttackLineOptions(MenuSelection, itemNmbr, prefix) {
 				attackMenu.push({
 					cName: array[i][0],
 					cReturn: "attack#" + array[i][1],
-					bEnabled: array[i][2] !== undefined ? array[i][2] : true, 
+					bEnabled: array[i][2] !== undefined ? array[i][2] : true,
 				});
 			}
 		};
@@ -10053,7 +10053,7 @@ function SetTheAbilitySaveDCs() {
 	CurrentAbilitySaveDCs = { bonus: CurrentVars.AbilitySaveDcBonus ? CurrentVars.AbilitySaveDcBonus : {}, found: {}, priority: {}, order: [] };
 
 	// The main thing to do as a function to be called later
-	var processAbility = function(sType, sName, obj) {
+	var processAbility = function (sType, sName, obj) {
 		var sSave = obj.abilitySave;
 		if (obj.abilitySaveAlt) {
 			// Get the highest of the two
@@ -10230,24 +10230,24 @@ function SetSpellSlotsCheckboxes(SpellLVL, theSlots, onlyDisplay) {
 			var theIcon = tDoc.getField("SaveIMG.SpellSlots." + Slots).buttonGetIcon();
 			tDoc.getField(prefix + "Image.SpellSlots" + suffix + ".Checkboxes." + SpellLVL).buttonSetIcon(theIcon);
 			switch (Slots) {
-			 case 1:
-				 Show(BoxesFld[0]);
-				 break;
-			 case 2:
-				 Show(BoxesFld[1]);
-				 Show(BoxesFld[4]);
-				 break;
-			 case 3:
-				 Show(BoxesFld[2]);
-				 Show(BoxesFld[3]);
-				 Show(BoxesFld[4]);
-				 break;
-			 case 4:
-				 Show(BoxesFld[2]);
-				 Show(BoxesFld[3]);
-				 Show(BoxesFld[5]);
-				 Show(BoxesFld[6]);
-				 break;
+				case 1:
+					Show(BoxesFld[0]);
+					break;
+				case 2:
+					Show(BoxesFld[1]);
+					Show(BoxesFld[4]);
+					break;
+				case 3:
+					Show(BoxesFld[2]);
+					Show(BoxesFld[3]);
+					Show(BoxesFld[4]);
+					break;
+				case 4:
+					Show(BoxesFld[2]);
+					Show(BoxesFld[3]);
+					Show(BoxesFld[5]);
+					Show(BoxesFld[6]);
+					break;
 			}
 		}
 	}
@@ -10267,7 +10267,7 @@ function SetSpellSlotsVisibility() {
 	var toShow = eval_ish(What("SpellSlotsRemember"));
 
 	//define a function to show (showOrHide = true) or hide (showOrHide = false) all the spellslots; suffix is "" or "2"
-	var doSpellSlots = function(showOrHide, suffix, prefix) {
+	var doSpellSlots = function (showOrHide, suffix, prefix) {
 		var HiddenVisible = showOrHide ? "Hide" : "Show";
 		var VisibleHidden = showOrHide ? "Show" : "Hide";
 		var NoPrintHidden = showOrHide && CurrentVars.bluetxt ? "DontPrint" : "Hide";

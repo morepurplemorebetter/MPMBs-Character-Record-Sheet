@@ -150,54 +150,54 @@ var Menus = {
 	"faqextended": "",
 	"faq": "",
 	"importscripts": [{
-			cName: "Import a file with additional material",
-			cReturn: "go#script#file",
-		}, {
-			cName: "Add material manually (copy-paste)",
-			cReturn: "go#script#manual",
-		}, {
-			cName: "-",
-		}, {
-			cName: "Don't know how this works? Click here to learn more!",
-			cReturn: "go#script#onlinehelp",
-		}, {
-			cName: "Find more content online...",
-			cReturn: "go#script#content",
-		}],
+		cName: "Import a file with additional material",
+		cReturn: "go#script#file",
+	}, {
+		cName: "Add material manually (copy-paste)",
+		cReturn: "go#script#manual",
+	}, {
+		cName: "-",
+	}, {
+		cName: "Don't know how this works? Click here to learn more!",
+		cReturn: "go#script#onlinehelp",
+	}, {
+		cName: "Find more content online...",
+		cReturn: "go#script#content",
+	}],
 	"importexport": [{
-			cName: "Add homebrew material (custom script)",
-			oSubMenu: [],
+		cName: "Add homebrew material (custom script)",
+		oSubMenu: [],
+	}, {
+		cName: "-",
+	}, {
+		cName: "Import a character directly from another MPMB's Character Sheet PDF",
+		cReturn: "go#direct",
+	}, {
+		cName: "-",
+	}, {
+		cName: "Import/Export using files (depreciated, no longer support)",
+		oSubMenu: [{
+			cName: "Import .xfdf file",
+			cReturn: "go#import#xfdf",
 		}, {
-			cName: "-",
-		}, {
-			cName: "Import a character directly from another MPMB's Character Sheet PDF",
-			cReturn: "go#direct",
-		}, {
-			cName: "-",
-		}, {
-			cName: "Import/Export using files (depreciated, no longer support)",
+			cName: "Export .xfdf file",
 			oSubMenu: [{
-				cName: "Import .xfdf file",
-				cReturn: "go#import#xfdf",
+				cName: "Export .xfdf file of non-calculated fields",
+				cReturn: "go#export#partial",
 			}, {
-				cName: "Export .xfdf file",
-				oSubMenu: [{
-					cName: "Export .xfdf file of non-calculated fields",
-					cReturn: "go#export#partial",
-				}, {
-					cName: "Export .xfdf file of equipment fields only",
-					cReturn: "go#export#equipment",
-				}, {
-					cName: "Export .xfdf file of description fields only",
-					cReturn: "go#export#description",
-				}, {
-					cName: "-",
-				}, {
-					cName: "Export .xfdf file of all fields",
-					cReturn: "go#export#all",
-				}],
+				cName: "Export .xfdf file of equipment fields only",
+				cReturn: "go#export#equipment",
+			}, {
+				cName: "Export .xfdf file of description fields only",
+				cReturn: "go#export#description",
+			}, {
+				cName: "-",
+			}, {
+				cName: "Export .xfdf file of all fields",
+				cReturn: "go#export#all",
 			}],
 		}],
+	}],
 	"contact": [{
 		cName: "MPMB's website",
 		cReturn: "contact#website",
@@ -2317,14 +2317,14 @@ var licenseGPLV3 = [
  \u0192     ƒ         Costly material component that is not consumed
  >> CLASSES <<
  \u2605     ★        Monk footnote
- \u2726     ✦        
- \u2731     ✱        
+ \u2726     ✦
+ \u2731     ✱
  \u2736     ✶        Sorcerer footnote
  \u2738     ✸        Wizard footnote
- \u274B     ❋        
+ \u274B     ❋
  \u273D     ✽        Ranger footnote
- \u2665     ♥        
- \u2666     ♦        
+ \u2665     ♥
+ \u2666     ♦
  \u266A     ♪        Bard footnote
  >> MAGIC ITEMS <<
  \u180B    [invis]    Ammunition      (mongolian free variation selector one)

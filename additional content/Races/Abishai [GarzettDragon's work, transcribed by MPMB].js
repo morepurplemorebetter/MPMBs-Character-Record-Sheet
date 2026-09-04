@@ -60,7 +60,7 @@ RaceList["abishai"] = {
 	["Red", "Fire"],
 	["White", "Radiant"],
 	["Yellow", "Lightning"],
-].forEach(function(n) {
+].forEach(function (n) {
 	AddRacialVariant("abishai", n[0].toLowerCase(), {
 		regExpSearch: RegExp(n[0], "i"),
 		name: n[0] + " Abishai",

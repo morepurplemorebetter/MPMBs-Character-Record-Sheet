@@ -82,7 +82,7 @@ ClassList["shadowcaster"] = {
 				"I can cast known fundamentals/mysteries, using Intelligence as my spellcasting ability",
 				"When I gain a level in this class, I can swap a known mystery for one of the same tier",
 			]),
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				var fundam = (n < 4 ? 2 : n < 8 ? 3 : n < 13 ? 4 : 5) + (n < 13 ? " fundamentals" : " fundam.");
 				var appren = "; " + (n < 3 ? 2 : n < 5 ? 3 : n < 7 ? 8 : n < 9 ? 5 : 6) + " apprentice" + (n < 7 ? " mysteries" : "");
 				var initia = n < 7 ? "" : "; " + (n < 10 ? 2 : n < 13 ? 3 : 4) + " initiate";
@@ -115,7 +115,7 @@ ClassList["shadowcaster"] = {
 				"A favored mystery can be invoked two times per long rest",
 				"In addition, when I finish a short rest, I regain one expended use of a favored mystery",
 			]),
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				return (n < 10 ? 1 : 2) + " favored apprentice myster" + (n < 10 ? "y" : "ies");
 			}),
 		},
@@ -136,7 +136,7 @@ ClassList["shadowcaster"] = {
 				"I gain 30 ft darkvision, or add 30 ft to darkvision if I already had it because of my race",
 				"From level 11, I can also see in magical darkness out to 30 ft as if in bright light",
 			]),
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				return n < 2 ? "" : n < 11 ? "Darkvision 30 ft" : "Devil's Sight 30 ft";
 			}),
 			vision: [["Darkvision", "fixed 30"], ["Darkvision", "+30"]],
@@ -147,7 +147,7 @@ ClassList["shadowcaster"] = {
 			source: ["L:SM", 4],
 			minlevel: 3,
 			description: "",
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				return n < 3 ? "" : "Adv. on Dex (Stealth) checks in " + (n < 7 ? "darkness" : "dim light");
 			}),
 		},
@@ -175,7 +175,7 @@ ClassList["shadowcaster"] = {
 				"My connection to the plane of shadow reduces the amount of food and sleep I require",
 				"In addition, from level 15 onwards, I become immune to disease",
 			]),
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				return n < 11 ? "" : n < 17 ? "1 meal per week" + (n < 13 ? "" : ", 1 hour sleep per day") : "don't need to eat, sleep, or breathe";
 			}),
 			changeeval: "if (ClassLevelUp.shadowcaster[2] >= 15 && ClassLevelUp.shadowcaster[1] < 15) { SetProf('savetxt', newClassLvl.shadowcaster >= 15, { immune : ['disease'] }, 'Shadowcaster: Sustaining Shadow'); }; ",
@@ -375,7 +375,7 @@ AddSubClass("shadowcaster", "shadowsmith", {
 			source: ["L:SM", 6],
 			minlevel: 10,
 			description: " ",
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				return n < 10 ? "" : "shadowcraft weap. +" + (n < 14 ? 1 : 2) + " to hit, +" + (n < 18 ? 1 : 2) + "d6 cold dmg";
 			}),
 			calcChanges: {
@@ -535,7 +535,7 @@ AddSubClass("shadowcaster", "skiamancer", {
 
 // Functions for the Shadowmasters' companion
 shadowmasters_companion_functions = {
-	add: function(slvl) {
+	add: function (slvl) {
 		if (slvl < 2) return;
 		var AScompA = isTemplVis("AScomp") ? What("Template.extras.AScomp").split(",") : false;
 		var prefix = false;
@@ -586,7 +586,7 @@ shadowmasters_companion_functions = {
 			})
 		}
 	},
-	remove: function() {
+	remove: function () {
 		var AScompA = isTemplVis("AScomp") ? What("Template.extras.AScomp").split(",") : false;
 		if (AScompA) {
 			for (var a = 1; a < AScompA.length; a++) {
@@ -597,7 +597,7 @@ shadowmasters_companion_functions = {
 			}
 		}
 	},
-	update: function(oldLvl, newLvl) {
+	update: function (oldLvl, newLvl) {
 		if (newLvl < 2) return;
 		// Get the prefix
 		var AScompA = isTemplVis("AScomp") ? What("Template.extras.AScomp").split(",") : false;

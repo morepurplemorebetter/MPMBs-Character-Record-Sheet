@@ -47,49 +47,49 @@ SourceList["OAP:OJ"] = {
 [
 	//level 1
 	"absorb elements",
-"alarm",
-"command",
-"comprehend languages",
-"detect magic",
-"identify",
-"mage armor",
-"magic missile",
-"protection from evil and good",
-"tenser's floating disk",
-"thunderwave",
+	"alarm",
+	"command",
+	"comprehend languages",
+	"detect magic",
+	"identify",
+	"mage armor",
+	"magic missile",
+	"protection from evil and good",
+	"tenser's floating disk",
+	"thunderwave",
 	//level 2
 	"arcane lock",
-"blindness/deafness",
-"darkvision",
-"find traps",
-"magic weapon",
-"mind spike",
-"moonbeam",
-"see invisibility",
-"silence",
-"zone of truth",
+	"blindness/deafness",
+	"darkvision",
+	"find traps",
+	"magic weapon",
+	"mind spike",
+	"moonbeam",
+	"see invisibility",
+	"silence",
+	"zone of truth",
 	//level 3
 	"counterspell",
-"dispel magic",
-"elemental weapon",
-"glyph of warding",
-"magic circle",
-"nondetection",
-"protection from energy",
-"sending",
-"remove curse",
+	"dispel magic",
+	"elemental weapon",
+	"glyph of warding",
+	"magic circle",
+	"nondetection",
+	"protection from energy",
+	"sending",
+	"remove curse",
 	//level 4
 	"banishment",
-"freedom of movement",
-"mordenkainen's private sanctum",
-"otiluke's resilient sphere",
-"stoneskin",
+	"freedom of movement",
+	"mordenkainen's private sanctum",
+	"otiluke's resilient sphere",
+	"stoneskin",
 	//level 5
 	"dispel evil and good",
-"geas",
-"legend lore",
-"telekinesis",
-"teleportation circle",
+	"geas",
+	"legend lore",
+	"telekinesis",
+	"teleportation circle",
 ].forEach( function (s) {
 	if(SpellsList[s] && SpellsList[s].classes && SpellsList[s].classes.indexOf("justiciar") === -1) SpellsList[s].classes.push("justiciar");
 });
@@ -163,7 +163,7 @@ ClassList["justiciar"] = {
 				"While attuned, I know the laws, norms and customs of the society",
 				"If I lose my tome, I can create a new one in 3 days for 25 gp or buy a new one (100 gp)",
 			]),
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				return n < 17 ? "counts toward attuned magic item limit" : "doesn't count to attuned magic item limit";
 			}),
 		},
@@ -173,11 +173,11 @@ ClassList["justiciar"] = {
 			minlevel: 1,
 			description: desc("I can create a magical cell that traps creatures; See the third page's Notes section"),
 			action: [["action", " (create)"]],
-			usages: levels.map(function(n) {
+			usages: levels.map(function (n) {
 				return n < 3 ? 2 : n < 6 ? 3 : n < 12 ? 4 : n < 17 ? 5 : n < 20 ? 6 : "\u221E\u00D7 per ";
 			}),
 			recovery: "long rest",
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				return n < 11 ? "5-ft radius, 10-ft high" : "10-ft radius, 20-ft high";
 			}),
 			extraNotesTxt: [[
@@ -208,7 +208,7 @@ ClassList["justiciar"] = {
 					"That target automatically fails all its saves to pass through the binding cell I just created",
 				]),
 			]],
-			fillExtraNotes: function() {
+			fillExtraNotes: function () {
 				var jLvl = classes.known.justiciar ? classes.known.justiciar.level : 0;
 				var jLvlOld = classes.old.justiciar ? classes.old.justiciar.classlevel : 0;
 				if (jLvl == jLvlOld) return;
@@ -222,7 +222,7 @@ ClassList["justiciar"] = {
 					}
 					if (notesArr.length) {
 						// sort this array by the first entry of each subarray
-						notesArr.sort(function(a, b) { return a[0] - b[0] });
+						notesArr.sort(function (a, b) { return a[0] - b[0] });
 						// loop through this array and add things
 						for (var j = 0; j < notesArr.length; j++) {
 							if (notesArr[j][0] <= input) toReturn += notesArr[j][1];
@@ -267,7 +267,7 @@ ClassList["justiciar"] = {
 				"I can cast justiciar spells that I know, using Intelligence as my spellcasting ability",
 				"I regain the justiciar spell slots (1st to 3rd level) on a short rest",
 			]),
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				return n < 2 ? "" : justiciarSpellsKnownArray[n] + " spells known";
 			}),
 		},
@@ -302,10 +302,10 @@ ClassList["justiciar"] = {
 				"After a long rest, I can use 10 min to swap either out to another from the justiciar list",
 				"Alternatively, I can expend an arcanum as a spell slot of its level to cast a spell I know",
 			]),
-			addtional: levels.map(function(n) {
+			addtional: levels.map(function (n) {
 				return n < 13 ? "" : n < 17 ? "4th level spell" : "4th and 5th level spell";
 			}),
-			spellcastingBonusForLevel: function(lvl) {
+			spellcastingBonusForLevel: function (lvl) {
 				var reArr = [];
 				var jSpells = CreateSpellList({ "class": "justiciar", level: [lvl,lvl] });
 				if (CurrentClasses.justiciar.spellcastingExtra) jSpells = jSpells.concat(CurrentClasses.justiciar.spellcastingExtra);
@@ -600,7 +600,7 @@ AddSubClass("justiciar", "division of archives", {
 				"If I take the Attack or Cast a Spell action while the hand persists, I can attack with it",
 				"I move the hand up to 30 ft and make a spell attack against a creature within 5 ft of it",
 			]),
-			additonal: levels.map(function(n) {
+			additonal: levels.map(function (n) {
 				return n < 5 ? "" : (n < 18 ? 1 : 2) + "d6 force damage + Int mod";
 			}),
 		},

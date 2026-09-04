@@ -272,7 +272,7 @@ function GetSpellObject(theSpl, theCast, firstCol, isDuplicate, tooltipOnly) {
 		if (ttSpellObj.descriptionFull) spTooltip += "\n\n" + formatDescriptionFull(ttSpellObj.descriptionFull);
 
 		if (tooltipOnly) spTooltip += "\n\n__________\n\n" + toUni("Short Description") + "  (how it will appear on the sheet)\n  " + aSpell.description;
-		
+
 		if (ObjLength(aSpell.changesObj)) {
 			var txt = [];
 			for (var str in aSpell.changesObj) txt.push(toUni(str) + aSpell.changesObj[str]);
@@ -353,7 +353,7 @@ function ApplySpell(FldValue, rememberFldName) {
 	var spFlds = ReturnSpellFieldsArray(undefined, undefined, base);
 
 	// Set the icon of the first field
-	var setCheck = function() {
+	var setCheck = function () {
 		var okChecks = ["atwill", "checkbox", "checkedbox", "markedbox", "oncelr", "oncelr_used", "oncelr+markedbox", "oncelr+markedbox_used", "oncesr", "oncesr_used", "oncesr+markedbox", "oncesr+markedbox_used"];
 		var currentCheck = What(spFlds[0]).toLowerCase();
 		var input1 = input[1] ? input[1].toLowerCase() : "";
@@ -375,7 +375,7 @@ function ApplySpell(FldValue, rememberFldName) {
 	}
 
 	// Function to create rich text span
-	var createSpan = function(inTxt) {
+	var createSpan = function (inTxt) {
 		var spans = [];
 		if (/^d\d+/i.test(inTxt)) { // is a die "dX", would look ugly with the "D" bigger than the number
 			spans.push({ text: inTxt, textSize: 5.75 });
@@ -637,25 +637,25 @@ function SetSpellSheetElement(target, type, suffix, caster, hidePrepared, forceT
 	];
 
 	switch(type) {
-	 case "header" :
-		var moveArray = headerArray;
-		var maxFld = 3;
-		break;
-	 case "divider" :
-		var moveArray = dividerArray;
-		var maxFld = 1;
-		break;
-	 case "glossary" :
-		var moveArray = glossaryArray;
-		var maxFld = 11;
-		break;
+		case "header" :
+			var moveArray = headerArray;
+			var maxFld = 3;
+			break;
+		case "divider" :
+			var moveArray = dividerArray;
+			var maxFld = 1;
+			break;
+		case "glossary" :
+			var moveArray = glossaryArray;
+			var maxFld = 11;
+			break;
 	}
 
 	//define functions for returning and setting the coordinates of a field
-	var isRect = function(Fld) {
+	var isRect = function (Fld) {
 		return tDoc.getField(Fld).rect;
 	}
-	var setRect = function(Fld, Rct) {
+	var setRect = function (Fld, Rct) {
 		tDoc.getField(Fld).rect = Rct;
 	}
 
@@ -803,7 +803,7 @@ function CalcSpellScores() {
 		prepare: 0,
 	};
 
-	var setResults = function(showTheResult) {
+	var setResults = function (showTheResult) {
 		if (cSpells) cSpells.calcSpellScores = showTheResult ? {} : undefined;
 		for (var aType in theResult) {
 			var theR = showTheResult ? theResult[aType] : "";
@@ -814,15 +814,15 @@ function CalcSpellScores() {
 				if (cSpells) cSpells.calcSpellScores[aType] = theR;
 				// modify for display
 				switch (aType) {
-				  case "dc":
-					if (modIpvDC) {
-						theR -= 8;
-					} else {
-						if (typePF) theR = "DC " + theR;
-						break;
-					}
-				  case "attack":
-					if (theR >= 0) theR = "+" + theR;
+					case "dc":
+						if (modIpvDC) {
+							theR -= 8;
+						} else {
+							if (typePF) theR = "DC " + theR;
+							break;
+						}
+					case "attack":
+						if (theR >= 0) theR = "+" + theR;
 				}
 			}
 			// show in the field
@@ -1086,7 +1086,7 @@ function CreateSpellList(inputObject, toDisplay, extraArray, returnOrdered, objN
 	var spByLvl = { sp0: [], sp1: [], sp2: [], sp3: [], sp4: [], sp5: [], sp6: [], sp7: [], sp8: [], sp9: [], ps0: [], ps1: [] };
 	var refspObj = {}, refDisplObj = {};
 
-	var removeSp = function(inSp) {
+	var removeSp = function (inSp) {
 		var rSpell = SpellsList[inSp];
 		var rSpLevel = (!rSpell.psionic ? "sp" : "ps") + rSpell.level;
 		var rSpName = getSpNm(inSp);
@@ -1258,7 +1258,7 @@ function manualInputToSpellObj(dialog, id) {
 	var emptyBox = "\u200B\u2002";
 	var acroDumb = "\n\nThink this pop-up is unnecessary? MPMB agrees with you, but Acrobat requires it, funny stuff...";
 
-	var displaySpName = function(sObj) {
+	var displaySpName = function (sObj) {
 		var name = getSpNm(false, false, sObj) + (sObj.ritual ? " " + SpellRitualTagNonUnicode : "");
 		if (sObj.level !== undefined && spellLevelList[sObj.level]) {
 			name += " [" + (sObj.psionic ? "psionic " : "") +
@@ -1327,7 +1327,7 @@ function showSpellDescriptionDialog(fSpell, aClass, fullDescr, sourceStr) {
 		var fullDescr = aSpell.tooltip;
 		var sourceStr = aSpell.tooltipSource;
 	}
-	if (sourceStr) { 
+	if (sourceStr) {
 		sourceStr = "\n\n__________\n\n" + toUni("Source(s) of the Spell") + "\n \u2022 " + sourceStr.replace(/\n/g, "\n \u2022 ");
 		if (/>>  CHANGES BY FEATURES/i.test(fullDescr)) {
 			fullDescr = fullDescr.replace(/\n*(>>  CHANGES BY FEATURES)/i, sourceStr + "\n\n__________\n\n$1");
@@ -1401,7 +1401,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 	formHeight = !isNaN(formHeight) ? formHeight : isWindows ? 16 : 20;
 
 	// Function to set the right object to positive
-	spDias.fnSetSpell = function(inObj, aSpell) {
+	spDias.fnSetSpell = function (inObj, aSpell) {
 		var aObj = newObj(inObj[0]);
 		var inObjNm = inObj[2][aSpell];
 		if (inObjNm && aObj[inObjNm]) aObj[inObjNm] *= -1;
@@ -1409,7 +1409,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 	};
 
 	// Function to return the right one in the list
-	spDias.fnFindSpell = function(aStr, refObj) {
+	spDias.fnFindSpell = function (aStr, refObj) {
 		if (refObj[0][aStr] !== undefined && refObj[1][aStr]) return refObj[1][aStr];
 		return ""; //if nothing was found
 	}
@@ -1800,7 +1800,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 					alignment: "align_left",
 					font: "heading",
 				}],
-			}].concat(Array.apply(null, Array(20)).map(function(n, i) {
+			}].concat(Array.apply(null, Array(20)).map(function (n, i) {
 				var nr = ("0" + (i + 1)).slice(-2);
 				return {
 					type: "view",
@@ -1852,7 +1852,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 					height: 22,
 					SpinEdit: true,
 				}],
-			}].concat(Array.apply(null, Array(20)).map(function(n, i) {
+			}].concat(Array.apply(null, Array(20)).map(function (n, i) {
 				return {
 					type: "view",
 					char_width: 11,
@@ -1896,7 +1896,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 					height: 22,
 					SpinEdit: true,
 				}],
-			}].concat(Array.apply(null, Array(20)).map(function(n, i) {
+			}].concat(Array.apply(null, Array(20)).map(function (n, i) {
 				return {
 					type: "view",
 					char_width: 13,
@@ -1941,7 +1941,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 						bold: true,
 						name: "[extra options for spells known]",
 					}],
-				}].concat(Array.apply(null, Array(22)).map(function(n, i) {
+				}].concat(Array.apply(null, Array(22)).map(function (n, i) {
 					return {
 						type: "view",
 						margin_height: -2,
@@ -1958,7 +1958,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 	spDias.spellSelect = {
 		search: manualInputToSpellObj,
 		listAl: [{}, {}, {}],
-		listBo: Array.apply(null, Array(20)).map(function() {return [{}, {}, {}]}), //array of 20 arrays, each with 3 objects
+		listBo: Array.apply(null, Array(20)).map(function () {return [{}, {}, {}]}), //array of 20 arrays, each with 3 objects
 		namesBo: Array(20), //always 20 long!
 		keysBo: Array(20), //always 20 long!
 		listCa: [{}, {}, {}],
@@ -2194,7 +2194,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			});
 		},
 
-		bLoS: function(dialog) {
+		bLoS: function (dialog) {
 			// Show a dialog with the spell's full description
 			var oResult = dialog.store();
 			var fSpell = spDias.fnFindSpell(oResult["AlLo"], this.listAl);
@@ -2213,8 +2213,8 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			buttonAddSpellToDialog(dialog, this, fSpell, types);
 		},
 
-		// Toggle the treat cantrips as prepared spells 
-		toggleCaPr: function(dialog, enable) {
+		// Toggle the treat cantrips as prepared spells
+		toggleCaPr: function (dialog, enable) {
 			if (this.showCaPr) {
 				dialog.enable({ "CaPr": enable });
 			}
@@ -2433,7 +2433,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			});
 		},
 
-		bLoS: function(dialog) {
+		bLoS: function (dialog) {
 			// Show a dialog with the spell's full description
 			var oResult = dialog.store();
 			var fSpell = spDias.fnFindSpell(oResult["SpLo"], this.listSp);
@@ -2514,7 +2514,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 								name: "Add to selection",
 							}],
 						}],
-					}].concat(Array.apply(null, Array(4)).map(function(n, idx) {
+					}].concat(Array.apply(null, Array(4)).map(function (n, idx) {
 						var colObj = {
 							type: "view",
 							align_children: "align_left",
@@ -2692,7 +2692,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 			});
 		},
 
-		bLoS: function(dialog) {
+		bLoS: function (dialog) {
 			// Show a dialog with the spell's full description
 			var oResult = dialog.store();
 			var fSpell = spDias.fnFindSpell(oResult["SpLo"], this.listSp);
@@ -2839,7 +2839,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 								name: "Add to selection",
 							}],
 						}],
-					}].concat(Array.apply(null, Array(3)).map(function(n, idx) {
+					}].concat(Array.apply(null, Array(3)).map(function (n, idx) {
 						var colObj = {
 							type: "view",
 							align_children: "align_left",
@@ -2897,8 +2897,8 @@ function DefineSpellSheetDialogs(force, formHeight) {
 					// Doesn't support ES5, so do this with eval()
 					eval("spDias[" + diaName + "][" + boxID + "] = function (dialog) { this.search(dialog, '" + boxID + "'); };");
 				} else {
-					var doThisInFunction = function(thisID) {
-						spDias[diaName][thisID] = function(dialog) {
+					var doThisInFunction = function (thisID) {
+						spDias[diaName][thisID] = function (dialog) {
 							this.search(dialog, id = thisID);
 						}
 					}(boxID);
@@ -2975,12 +2975,12 @@ function AskUserSpellSheet() {
 			if (spCast.typeSp === undefined) {
 				spCast.typeSp = !spCast.known.spells || isArray(spCast.known.spells) || !isNaN(spCast.known.spells) ? "known" : spCast.known.spells;
 			}
-		  // see what spell section to activate
+			// see what spell section to activate
 			dia.typeSp = spCast.typeSp; //set the type of spells (book, list, known)
 			dia.nmbrSp = spCast.typeSp == "book" ? 20 :
 				!spCast.known.spells ? 0 :
-				isArray(spCast.known.spells) ? spCast.known.spells[Math.min(spCast.known.spells.length, spCast.level) - 1] :
-				isNaN(spCast.known.spells) ? 0 : Number(spCast.known.spells); //set the amount of spells
+					isArray(spCast.known.spells) ? spCast.known.spells[Math.min(spCast.known.spells.length, spCast.level) - 1] :
+						isNaN(spCast.known.spells) ? 0 : Number(spCast.known.spells); //set the amount of spells
 			if (isNaN(dia.nmbrSp)) dia.nmbrSp = 20; //if spells known is not a number, set the dialog to the max of 20
 			dia.showSp = dia.nmbrSp !== 0; //show the spells section
 			dia.offsetSp = spCast.offsetSp ? spCast.offsetSp : 0; //set the manually added spells
@@ -3183,17 +3183,17 @@ function AskUserSpellSheet() {
 			dia.selectAd = OrderSpells(spCast.extra, "single");
 			dia.nameAd = dia.typeSp === "list" ? ( spCast.extraSpecial ? "[added to available spells]" : "[always prepared]" ) :
 				dia.typeSp === "book" ? ( spCast.extraSpecial ? "[added to known/spellbook]" : "[extra options for spellbook]" ) :
-				spCast.extraSpecial ? "[added to spells known]" : "[extra options for spells known]";
+					spCast.extraSpecial ? "[added to spells known]" : "[extra options for spells known]";
 		}
 
 		if (!GoAhead) continue; //not a single spellcasting attribute was found, so skip over this entry in the CurrentSpells variable
 
 		// Set the parts of the dialog
-			// First the ok / cancel buttons
-			setDialogName(dia, "OKbt", "type", dia.typeSp !== "book" ? "ok_cancel" : "ok_cancel_other");
-			// Then the dynamic parts
-			setDialogName(spDias.spellSelect, "col1", "elements", diaDynCol1); // add to the 1st column
-			setDialogName(spDias.spellSelect, "colE", "elements", diaDynCols); // the rest of the dialog
+		// First the ok / cancel buttons
+		setDialogName(dia, "OKbt", "type", dia.typeSp !== "book" ? "ok_cancel" : "ok_cancel_other");
+		// Then the dynamic parts
+		setDialogName(spDias.spellSelect, "col1", "elements", diaDynCol1); // add to the 1st column
+		setDialogName(spDias.spellSelect, "colE", "elements", diaDynCols); // the rest of the dialog
 
 		thermoTxt = thermoM("Opening the " + spCast.name + " dialog...", false); //change the progress dialog text
 		thermoM(0.8);
@@ -3521,7 +3521,7 @@ function GenerateSpellSheet(GoOn) {
 
 	//define a function for adding a new page
 	var SpellPages = 1;
-	var AddPage = function() {
+	var AddPage = function () {
 		//add one more page and set the corresponding prefix to the variable
 		prefixCurrent = DoTemplate("SSmore", "Add");
 		SpellPages += 1;
@@ -3575,7 +3575,7 @@ function GenerateSpellSheet(GoOn) {
 						// List casters should get the extra spells added to the generated spell sheet when `extraSpecial == true`
 						// If cantrips are prepared, add everything, but only add the non-cantrip spells if cantrips aren't prepared
 						addExtra.toDisplayList = preparingCantrips ? spCast.extra :
-							spCast.extra.filter(function(spell) {
+							spCast.extra.filter(function (spell) {
 								return SpellsList[spell] && SpellsList[spell].level > 0;
 							});
 					}
@@ -3851,9 +3851,9 @@ function MakeSpellMenu() {
 		var isMarked = false;
 		for (var i = 0; i < array.length; i++) {
 			switch (name[1]) {
-			 case "slots" :
-				isMarked = array[i][1] === RememberSlots;
-				break;
+				case "slots" :
+					isMarked = array[i][1] === RememberSlots;
+					break;
 			}
 			temp.oSubMenu.push({
 				cName: array[i][0],
@@ -3988,87 +3988,87 @@ function MakeSpellMenu_SpellOptions(MenuSelection) {
 	var SSvisible = What("Template.extras.SSfront") !== "" || What("Template.extras.SSmore") !== "";
 	var SSmultiple = What("Template.extras.SSmore").split(",").length > 2 || (What("Template.extras.SSfront") !== "" && What("Template.extras.SSmore") !== "");
 	switch (MenuSelection[1]) {
-	 case "generate" :
-		GenerateSpellSheet();
-		break;
-	 case "makeempty" :
-		if (SSvisible) {
-			var asking = {
-				cMsg: 'Unfortunately it is not possible to hide the Spell Sheet. They can only be deleted.\n\nDo you want to remove all the Spell Sheets except the first one and remove the content of the first one?\nYou can then manually fill out the Spell Sheet and add/remove more pages using the "Layout" and "Spells" buttons in the "JavaScript Window" or in the bookmarks.\n\nRemoving the Spell Sheets cannot be undone!',
-				cTitle: "Delete all the Spell Sheets",
-				nIcon: 2, //question
-				nType: 2, //Yes-No
-			}
-			var goThrough = app.alert(asking);
-		} else {
-			var goThrough = 4;
-		}
-
-		if (goThrough === 4) {
-			if (SSvisible) RemoveSpellSheets();
-			var thePrefix = DoTemplate("SSfront", "Add");
-			if (MenuSelection[2] === "lines") {
-				AddSpellSheetTextLines(thePrefix, MenuSelection[3] === "boxes", FieldNumbers.spells[0]);
-			}
-		}
-		break;
-	 case "addempty" :
-		var thePrefix = DoTemplate("SSmore", "Add");
-		if (MenuSelection[2] === "lines") {
-			AddSpellSheetTextLines(thePrefix, MenuSelection[3] === "boxes");
-		}
-		break;
-	 case "delete" :
-		RemoveSpellSheets();
-		break;
-	 case "deleteone" :
-		DoTemplate("SSmore", "Remove");
-		break;
-	 case "source" :
-		resourceDecisionDialog();
-		break;
-	 case "slots" :
-		if (MenuSelection[3] != "true") { //it wasn't marked, so something is about the change
-			Value("SpellSlotsRemember", MenuSelection[2]);
-			SetSpellSlotsVisibility();
-			if (MenuSelection[2] === "[false,false]") {
-				SpellPointsLimFea("Add");
-				Show("Image.SpellPoints");
-				Show("SpellSlots.Checkboxes.SpellPoints");
-				var SSfrontA = What("Template.extras.SSfront").split(",")[1];
-				if (SSfrontA) {
-					Show(SSfrontA + "Image.SpellPoints");
-					Show(SSfrontA + "SpellSlots.Checkboxes.SpellPoints");
-				};
-				ShowSpellPointInfo();
+		case "generate" :
+			GenerateSpellSheet();
+			break;
+		case "makeempty" :
+			if (SSvisible) {
+				var asking = {
+					cMsg: 'Unfortunately it is not possible to hide the Spell Sheet. They can only be deleted.\n\nDo you want to remove all the Spell Sheets except the first one and remove the content of the first one?\nYou can then manually fill out the Spell Sheet and add/remove more pages using the "Layout" and "Spells" buttons in the "JavaScript Window" or in the bookmarks.\n\nRemoving the Spell Sheets cannot be undone!',
+					cTitle: "Delete all the Spell Sheets",
+					nIcon: 2, //question
+					nType: 2, //Yes-No
+				}
+				var goThrough = app.alert(asking);
 			} else {
-				SpellPointsLimFea("Remove");
-				Hide("Image.SpellPoints");
-				Hide("SpellSlots.Checkboxes.SpellPoints");
-				var SSfrontA = What("Template.extras.SSfront").split(",")[1];
-				if (SSfrontA) {
-					Hide(SSfrontA + "Image.SpellPoints");
-					Hide(SSfrontA + "SpellSlots.Checkboxes.SpellPoints");
+				var goThrough = 4;
+			}
+
+			if (goThrough === 4) {
+				if (SSvisible) RemoveSpellSheets();
+				var thePrefix = DoTemplate("SSfront", "Add");
+				if (MenuSelection[2] === "lines") {
+					AddSpellSheetTextLines(thePrefix, MenuSelection[3] === "boxes", FieldNumbers.spells[0]);
+				}
+			}
+			break;
+		case "addempty" :
+			var thePrefix = DoTemplate("SSmore", "Add");
+			if (MenuSelection[2] === "lines") {
+				AddSpellSheetTextLines(thePrefix, MenuSelection[3] === "boxes");
+			}
+			break;
+		case "delete" :
+			RemoveSpellSheets();
+			break;
+		case "deleteone" :
+			DoTemplate("SSmore", "Remove");
+			break;
+		case "source" :
+			resourceDecisionDialog();
+			break;
+		case "slots" :
+			if (MenuSelection[3] != "true") { //it wasn't marked, so something is about the change
+				Value("SpellSlotsRemember", MenuSelection[2]);
+				SetSpellSlotsVisibility();
+				if (MenuSelection[2] === "[false,false]") {
+					SpellPointsLimFea("Add");
+					Show("Image.SpellPoints");
+					Show("SpellSlots.Checkboxes.SpellPoints");
+					var SSfrontA = What("Template.extras.SSfront").split(",")[1];
+					if (SSfrontA) {
+						Show(SSfrontA + "Image.SpellPoints");
+						Show(SSfrontA + "SpellSlots.Checkboxes.SpellPoints");
+					};
+					ShowSpellPointInfo();
+				} else {
+					SpellPointsLimFea("Remove");
+					Hide("Image.SpellPoints");
+					Hide("SpellSlots.Checkboxes.SpellPoints");
+					var SSfrontA = What("Template.extras.SSfront").split(",")[1];
+					if (SSfrontA) {
+						Hide(SSfrontA + "Image.SpellPoints");
+						Hide(SSfrontA + "SpellSlots.Checkboxes.SpellPoints");
+					};
 				};
 			};
-		};
-		break;
-	 case "complete" :
-		GenerateCompleteSpellSheet(MenuSelection[2]);
-		break;
-	 case "toggleslots" :
-		var hiddenNoPrint = isDisplay("P0.SSfront.SpellSlots.CheckboxesSet.lvl1") > 1 ? "Hide" : "DontPrint";
-		for (var ss = 1; ss <= 9; ss++) {
-			tDoc[hiddenNoPrint]("P0.SSfront.SpellSlots.CheckboxesSet.lvl" + ss);
-		}
-		break;
-	 case "spellpoints" :
-		ToggleSpellPoints();
-		break;
-	 case "showcalcs" :
-		var sSpellEvals = StringEvals(["spellStr", "spellAtkStr"]);
-		if (sSpellEvals) ShowDialog("Things Affecting the Spell Automation", sSpellEvals);
-		break;
+			break;
+		case "complete" :
+			GenerateCompleteSpellSheet(MenuSelection[2]);
+			break;
+		case "toggleslots" :
+			var hiddenNoPrint = isDisplay("P0.SSfront.SpellSlots.CheckboxesSet.lvl1") > 1 ? "Hide" : "DontPrint";
+			for (var ss = 1; ss <= 9; ss++) {
+				tDoc[hiddenNoPrint]("P0.SSfront.SpellSlots.CheckboxesSet.lvl" + ss);
+			}
+			break;
+		case "spellpoints" :
+			ToggleSpellPoints();
+			break;
+		case "showcalcs" :
+			var sSpellEvals = StringEvals(["spellStr", "spellAtkStr"]);
+			if (sSpellEvals) ShowDialog("Things Affecting the Spell Automation", sSpellEvals);
+			break;
 	};
 };
 
@@ -4078,7 +4078,7 @@ function OrderSpells(inputArray, outputFormat, sepPsionics, bonusSpells, maxLvl,
 	var ignoreMaxLvl = !bonusSpells ? [] : isArray(bonusSpells) ? bonusSpells : [bonusSpells];
 	var duplCount = {};
 	if (allowedDuplicateSpells && isArray(allowedDuplicateSpells)) {
-		allowedDuplicateSpells.forEach(function(spl) {
+		allowedDuplicateSpells.forEach(function (spl) {
 			duplCount[spl] = !duplCount[spl] ? 1 : duplCount[spl] + 1;
 		});
 	}
@@ -4119,13 +4119,13 @@ function OrderSpells(inputArray, outputFormat, sepPsionics, bonusSpells, maxLvl,
 
 	var returnArray = [];
 	switch (outputFormat) {
-	 case "single" :
-		for (var i = 0; i < orderedSpellList.length; i++) returnArray = returnArray.concat(orderedSpellList[i]);
-		break;
-	 default :
-	 case "multi" :
-		returnArray = orderedSpellList;
-		break;
+		case "single" :
+			for (var i = 0; i < orderedSpellList.length; i++) returnArray = returnArray.concat(orderedSpellList[i]);
+			break;
+		default :
+		case "multi" :
+			returnArray = orderedSpellList;
+			break;
 	};
 
 	return returnArray;
@@ -4143,7 +4143,7 @@ function CalcSpellsheetNumber() {
 //make a menu of all the spells, sorted by caster
 function ParseSpellMenu() {
 	//define a function for creating the full set of spells-by-level menu for a class
-	var createMenu = function(menu, className, fullArray) {
+	var createMenu = function (menu, className, fullArray) {
 		var nameArray = ["All spells"].concat(spellLevelList);
 		var classTemp = { cName: className, oSubMenu: [] };
 		for (var y = 0; y < fullArray.length; y++) {
@@ -4165,7 +4165,7 @@ function ParseSpellMenu() {
 		menu.oSubMenu.push(classTemp);
 	}
 
-	var amendMenu = function(theMenu, nameChange, extraReturn) {
+	var amendMenu = function (theMenu, nameChange, extraReturn) {
 		theMenu.cName = nameChange;
 		for (var a = 0; a < theMenu.oSubMenu.length; a++) {
 			if (theMenu.oSubMenu[a].cName === "-") continue;
@@ -4271,7 +4271,7 @@ function ParseSpellMenu() {
 //make a menu of all the psionics, sorted by caster
 function ParsePsionicsMenu() {
 	//define a function for creating the full set of spells-by-level menu for a class
-	var createMenu = function(className, fullArray) {
+	var createMenu = function (className, fullArray) {
 		var nameArray = [
 			"All psionics",
 			"Psionic talents",
@@ -4369,7 +4369,7 @@ function findNextHeaderDivider(prefix, type) {
 
 //make a menu for each spell line and do something with the results
 function MakeSpellLineMenu_SpellLineOptions() {
-	var SSmaxLine = function(inputPrefix) {
+	var SSmaxLine = function (inputPrefix) {
 		return inputPrefix.indexOf(".SSfront.") !== -1 ? FieldNumbers.spells[0] : FieldNumbers.spells[1];
 	}
 	var base = event.target.name;
@@ -4393,20 +4393,20 @@ function MakeSpellLineMenu_SpellLineOptions() {
 			var isEnabled = true;
 			var extraName = "";
 			switch (array[i][1]) {
-			 case "move up" :
-				var toSearch = RemLineUp ? What(RemLineUp).toLowerCase() : "";
-				isEnabled = RemLineUp && toSearch.indexOf("hidethisline") === -1;
-				break;
-			 case "move down" :
-				var toSearch = RemLineDown ? What(RemLineDown).toLowerCase() : "";
-				isEnabled = RemLineDown && toSearch.indexOf("hidethisline") === -1 && toSearch.indexOf("setdivider") === -1 && toSearch.indexOf("setheader") === -1;
-				break;
-			 case "setglossary" :
-				var isDisplayed = tDoc.getField(prefix + "spellsgloss.Image").display === display.hidden;
-				var isDistance = (lineNmbr + 11) <= maxLine;
-				isEnabled = isDisplayed && isDistance;
-				extraName = isEnabled ? " [takes up 12 rows]" : (isDistance ? " [max 1 on a page]" : " [too close to bottom of page]");
-				break;
+				case "move up" :
+					var toSearch = RemLineUp ? What(RemLineUp).toLowerCase() : "";
+					isEnabled = RemLineUp && toSearch.indexOf("hidethisline") === -1;
+					break;
+				case "move down" :
+					var toSearch = RemLineDown ? What(RemLineDown).toLowerCase() : "";
+					isEnabled = RemLineDown && toSearch.indexOf("hidethisline") === -1 && toSearch.indexOf("setdivider") === -1 && toSearch.indexOf("setheader") === -1;
+					break;
+				case "setglossary" :
+					var isDisplayed = tDoc.getField(prefix + "spellsgloss.Image").display === display.hidden;
+					var isDistance = (lineNmbr + 11) <= maxLine;
+					isEnabled = isDisplayed && isDistance;
+					extraName = isEnabled ? " [takes up 12 rows]" : (isDistance ? " [max 1 on a page]" : " [too close to bottom of page]");
+					break;
 			}
 			menu.push({
 				cName: array[i][0] + extraName,
@@ -4422,16 +4422,16 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		var extraReturn = "";
 		var extraName = "";
 		switch (name[1]) {
-		 case "setheader" :
-			isEnabled = suffixHeader !== false && (lineNmbr + 7) <= maxLine;
-			extraReturn = suffixHeader;
-			extraName = suffixHeader === false ? " [max 4 on a page]" : ((lineNmbr + 7) >= maxLine ? " [too close to bottom of page]" : " [takes up 4 rows]");
-			break;
-		 case "setdivider" :
-			isEnabled = suffixDivider !== false && (lineNmbr + 3) <= maxLine;
-			extraReturn = suffixDivider;
-			extraName = suffixDivider === false ? " [max 10 on a page]" : ((lineNmbr + 3) >= maxLine ? " [too close to bottom of page]" : " [takes up 2 rows]");
-			break;
+			case "setheader" :
+				isEnabled = suffixHeader !== false && (lineNmbr + 7) <= maxLine;
+				extraReturn = suffixHeader;
+				extraName = suffixHeader === false ? " [max 4 on a page]" : ((lineNmbr + 7) >= maxLine ? " [too close to bottom of page]" : " [takes up 4 rows]");
+				break;
+			case "setdivider" :
+				isEnabled = suffixDivider !== false && (lineNmbr + 3) <= maxLine;
+				extraReturn = suffixDivider;
+				extraName = suffixDivider === false ? " [max 10 on a page]" : ((lineNmbr + 3) >= maxLine ? " [too close to bottom of page]" : " [takes up 2 rows]");
+				break;
 		}
 		var temp = {
 			cName: name[0] + extraName,
@@ -4509,7 +4509,7 @@ function MakeSpellLineMenu_SpellLineOptions() {
 
 	//an option to only change the first column
 	menuLVL2(spellsLineMenu, ["Change the first column", "firstcolumn"], lineTypesTo);
-	
+
 	spellsLineMenu.push({ cName: "-" }); //add a divider
 
 	//add the options to adding a header
@@ -4564,79 +4564,79 @@ function MakeSpellLineMenu_SpellLineOptions() {
 	calcStop();
 
 	switch (MenuSelection[0]) {
-	 case "popup" :
-		var sourceStr = Who(base.replace("checkbox", "book"));
-		showSpellDescriptionDialog(false, false, fullDescr, sourceStr);
-		break;
-	 case "move up" :
-		thermoTxt = thermoM("Moving the spell up one row...", false);
-		var upValue = What(RemLineUp);
-		Value(RemLineUp, What(RemLine));
-		Value(RemLine, upValue);
-		break;
-	 case "move down" :
-		thermoTxt = thermoM("Moving the spell down one row...", false);
-		var downValue = What(RemLineDown);
-		Value(RemLineDown, What(RemLine));
-		Value(RemLine, downValue);
-		break;
-	 case "spell" :
-		thermoTxt = thermoM("Applying the spell...", false);
-		if (MenuSelection[2] === "askuserinput") {
-			MenuSelection[2] = AskUserTwoLetters(false);
-		};
-		Value(RemLine, MenuSelection[1] + "##" + MenuSelection[2]);
-		if (CurrentCasters.useDependencies !== false && SpellsList[MenuSelection[1]] && SpellsList[MenuSelection[1]].dependencies) {
-			theDeps = SpellsList[MenuSelection[1]].dependencies;
-			var theNextLineValue = What(RemLine.replace("." + lineNmbr, "." + (lineNmbr + 1)));
-			insertSpellRow(prefix, lineNmbr + 1, theDeps.length - (theNextLineValue ? 0 : 1));
-			for (var sD = 0; sD < theDeps.length; sD++) {
-				Value(RemLine.replace("." + lineNmbr, "." + (lineNmbr + sD + 1)), theDeps[sD]);
+		case "popup" :
+			var sourceStr = Who(base.replace("checkbox", "book"));
+			showSpellDescriptionDialog(false, false, fullDescr, sourceStr);
+			break;
+		case "move up" :
+			thermoTxt = thermoM("Moving the spell up one row...", false);
+			var upValue = What(RemLineUp);
+			Value(RemLineUp, What(RemLine));
+			Value(RemLine, upValue);
+			break;
+		case "move down" :
+			thermoTxt = thermoM("Moving the spell down one row...", false);
+			var downValue = What(RemLineDown);
+			Value(RemLineDown, What(RemLine));
+			Value(RemLine, downValue);
+			break;
+		case "spell" :
+			thermoTxt = thermoM("Applying the spell...", false);
+			if (MenuSelection[2] === "askuserinput") {
+				MenuSelection[2] = AskUserTwoLetters(false);
 			};
-		};
-		break;
-	 case "setcaptions" :
-	 case "___" :
-	 case "setdivider" :
-		if (MenuSelection[1] === "askuserinput") {
-			MenuSelection[1] = AskUserTwoLetters(MenuSelection[0] !== "___");
-		} else if (/psionic/i.test(MenuSelection[1])) {
-			MenuSelection[0] = "psionic" + MenuSelection[0];
-			MenuSelection[1] = MenuSelection[1].replace(/psionic/i, "");
-		}
-	 case "setheader" :
-	 case "setglossary" :
-		if (/set(header|divider|glossary)/i.test(MenuSelection[0])) {
-			tDoc.resetForm([RemLine]);
-			insertSpellRow(prefix, lineNmbr, MenuSelection[0] === "setheader" ? 3 : MenuSelection[0] === "setdivider" ? 1 : 11, true);
-		};
-		Value(RemLine, MenuSelection.join("##"));
-		break;
-	 case "clear" :
-		thermoTxt = thermoM("Removing the spell...", false);
-		tDoc.resetForm(ReturnSpellFieldsArray(prefix, lineNmbr).reverse());
-		break;
-	 case "delete" :
-		thermoTxt = thermoM("Deleting the row and moving the rest up...", false);
-		deleteSpellRow(prefix, lineNmbr);
-		break;
-	 case "insert" :
-		if (MenuSelection[1] === "askuserinput") {
-			MenuSelection[1] = AskUserNumber();
-		}
-		thermoTxt = thermoM("Inserting " + MenuSelection[1] + " spell row(s) ...", false);
-		if (MenuSelection[1] > 0) {
-			insertSpellRow(prefix, lineNmbr, MenuSelection[1]);
-		}
-		break;
-	 case "firstcolumn" :
-		if (MenuSelection[1] === "askuserinput") {
-			MenuSelection[1] = AskUserTwoLetters(/setcaptions/i.test(What(RemLine)));
-		}
-		thermoTxt = thermoM("Setting " + MenuSelection[1] + " as the spell row first column...", false);
-		currentValue[1] = MenuSelection[1];
-		Value(RemLine, currentValue.join("##"));
-		break;
+			Value(RemLine, MenuSelection[1] + "##" + MenuSelection[2]);
+			if (CurrentCasters.useDependencies !== false && SpellsList[MenuSelection[1]] && SpellsList[MenuSelection[1]].dependencies) {
+				theDeps = SpellsList[MenuSelection[1]].dependencies;
+				var theNextLineValue = What(RemLine.replace("." + lineNmbr, "." + (lineNmbr + 1)));
+				insertSpellRow(prefix, lineNmbr + 1, theDeps.length - (theNextLineValue ? 0 : 1));
+				for (var sD = 0; sD < theDeps.length; sD++) {
+					Value(RemLine.replace("." + lineNmbr, "." + (lineNmbr + sD + 1)), theDeps[sD]);
+				};
+			};
+			break;
+		case "setcaptions" :
+		case "___" :
+		case "setdivider" :
+			if (MenuSelection[1] === "askuserinput") {
+				MenuSelection[1] = AskUserTwoLetters(MenuSelection[0] !== "___");
+			} else if (/psionic/i.test(MenuSelection[1])) {
+				MenuSelection[0] = "psionic" + MenuSelection[0];
+				MenuSelection[1] = MenuSelection[1].replace(/psionic/i, "");
+			}
+		case "setheader" :
+		case "setglossary" :
+			if (/set(header|divider|glossary)/i.test(MenuSelection[0])) {
+				tDoc.resetForm([RemLine]);
+				insertSpellRow(prefix, lineNmbr, MenuSelection[0] === "setheader" ? 3 : MenuSelection[0] === "setdivider" ? 1 : 11, true);
+			};
+			Value(RemLine, MenuSelection.join("##"));
+			break;
+		case "clear" :
+			thermoTxt = thermoM("Removing the spell...", false);
+			tDoc.resetForm(ReturnSpellFieldsArray(prefix, lineNmbr).reverse());
+			break;
+		case "delete" :
+			thermoTxt = thermoM("Deleting the row and moving the rest up...", false);
+			deleteSpellRow(prefix, lineNmbr);
+			break;
+		case "insert" :
+			if (MenuSelection[1] === "askuserinput") {
+				MenuSelection[1] = AskUserNumber();
+			}
+			thermoTxt = thermoM("Inserting " + MenuSelection[1] + " spell row(s) ...", false);
+			if (MenuSelection[1] > 0) {
+				insertSpellRow(prefix, lineNmbr, MenuSelection[1]);
+			}
+			break;
+		case "firstcolumn" :
+			if (MenuSelection[1] === "askuserinput") {
+				MenuSelection[1] = AskUserTwoLetters(/setcaptions/i.test(What(RemLine)));
+			}
+			thermoTxt = thermoM("Setting " + MenuSelection[1] + " as the spell row first column...", false);
+			currentValue[1] = MenuSelection[1];
+			Value(RemLine, currentValue.join("##"));
+			break;
 	}
 	thermoM(thermoTxt, true); // Stop progress bar
 };
@@ -4745,7 +4745,7 @@ function AskUserNumber(caption) {
 // Delete a row on the spell list (and move all the rows below it up one)
 function deleteSpellRow(prefix, lineNmbr) {
 	// Function
-	var returnClearance = function(prefix, offsetNmbr) {
+	var returnClearance = function (prefix, offsetNmbr) {
 		var fldVal = What(prefix + "spells.remember." + offsetNmbr);
 		if (!/set(header|divider|glossary)/i.test(fldVal)) {
 			return 0;
@@ -4783,7 +4783,7 @@ function deleteSpellRow(prefix, lineNmbr) {
 		for (var L = startRow; L <= endRow; L++) {
 			// What is the next row (next page & offset)
 			var nextRow = offset + L + 1 <= endRow ?
-					[SSmoreA[SS], offset + L + 1] :
+				[SSmoreA[SS], offset + L + 1] :
 				SSmoreA[SS + 1] && lookAhead !== "stop" ?
 					[SSmoreA[SS + 1], L - endRow + offset] : false;
 			var thisLineFlds = ReturnSpellFieldsArray(SSmoreA[SS], L).reverse();
@@ -4859,7 +4859,7 @@ function insertSpellRow(prefix, lineNmbr, toMove, ignoreEmptyTop) {
 	lineNmbr = Number(lineNmbr);
 	toMove = Number(toMove);
 	// Function
-	var removeEmpties = function(array) {
+	var removeEmpties = function (array) {
 		if (array.length && array[array.length - 1].join("") === "") {
 			array.pop();
 			removeEmpties(array);
@@ -5083,18 +5083,18 @@ function HideSpellSheetElement(theTarget) {
 		var endLine = startLine;
 
 		switch(type) {
-		 case "header" :
-			var hideArray = headerArray;
-			endLine += 3;
-			break;
-		 case "divider" :
-			var hideArray = dividerArray;
-			endLine += 1;
-			break;
-		 case "glossary" :
-			var hideArray = glossaryArray;
-			endLine += 11;
-			break;
+			case "header" :
+				var hideArray = headerArray;
+				endLine += 3;
+				break;
+			case "divider" :
+				var hideArray = dividerArray;
+				endLine += 1;
+				break;
+			case "glossary" :
+				var hideArray = glossaryArray;
+				endLine += 11;
+				break;
 		}
 		for (var m = 0; m < hideArray.length; m++) {
 			Hide(hideArray[m]);
@@ -5259,7 +5259,7 @@ function GenerateCompleteSpellSheet(thisClass, skipdoGoOn) {
 
 	//define a function for adding a new page
 	var SpellPages = 1;
-	var AddPage = function() {
+	var AddPage = function () {
 		//add one more page and set the corresponding prefix to the variable
 		prefixCurrent = DoTemplate("SSmore", "Add");
 		SpellPages += 1;
@@ -5540,26 +5540,26 @@ function ToggleSpellPoints() {
 function SpellPointsLimFea(AddRemove) {
 	if (minVer) return; //only do this function for the full versions
 	switch (AddRemove.toLowerCase()) {
-	 case "add" :
-		var SPexists = false;
-		//first see if the limited feature not already exists
-		for (var i = 1; i <= FieldNumbers.limfea; i++) {
-			if (/spell.?points?/i.test(What("Limited Feature " + i))) {
-				SPexists = true;
-				break;
+		case "add" :
+			var SPexists = false;
+			//first see if the limited feature not already exists
+			for (var i = 1; i <= FieldNumbers.limfea; i++) {
+				if (/spell.?points?/i.test(What("Limited Feature " + i))) {
+					SPexists = true;
+					break;
+				}
 			}
-		}
-		var SpellPointsAmount = SpellPointsTable[Math.min(SpellPointsTable.length - 1, classes.spellcastlvl.spellpoints)];
-		if (!SPexists && What("Limited Feature 1") !== "" && SpellPointsAmount) LimFeaInsert(1);
-		if (SpellPointsAmount) {
-			AddFeature("Spell Points", SpellPointsAmount, "", "long rest", "Spell Point variant rules, Dungeon Master Guide page 288");
-		} else if (SPexists) {
+			var SpellPointsAmount = SpellPointsTable[Math.min(SpellPointsTable.length - 1, classes.spellcastlvl.spellpoints)];
+			if (!SPexists && What("Limited Feature 1") !== "" && SpellPointsAmount) LimFeaInsert(1);
+			if (SpellPointsAmount) {
+				AddFeature("Spell Points", SpellPointsAmount, "", "long rest", "Spell Point variant rules, Dungeon Master Guide page 288");
+			} else if (SPexists) {
+				RemoveFeature("Spell Points");
+			};
+			break;
+		case "remove" :
 			RemoveFeature("Spell Points");
-		};
-		break;
-	 case "remove" :
-		RemoveFeature("Spell Points");
-		break;
+			break;
 	}
 }
 
@@ -5576,7 +5576,7 @@ function ShowSpellPointInfo() {
 // a way to test is a certain spell is set as known/on a list in the CurrentCasters variable, returning an array of CurrentCaster object names in which it exists
 function isSpellUsed(spll, returnBoolean) {
 	var rtrnA = [];
-	var addAllSpClasses = function(spClass) {
+	var addAllSpClasses = function (spClass) {
 		if (returnBoolean) return;
 		var spClassObj = CurrentSpells[spClass];
 		if (spClassObj.ability == "class") {
@@ -5703,7 +5703,7 @@ function GenerateSpellSheetWithAll(alphabetical, skipdoGoOn) {
 
 	//define a function for adding a new page
 	var SpellPages = 1;
-	var AddPage = function() {
+	var AddPage = function () {
 		//add one more page and set the corresponding prefix to the variable
 		prefixCurrent = DoTemplate("SSmore", "Add");
 		SpellPages += 1;
@@ -5868,7 +5868,7 @@ function getSpellcastingAbility(theCast) {
  * @param {string[]|string} aCasters CurrentSpells object key(s)
  * @param {number} [fallbackAbi] ability to beat (1=Str, 2=Dex, 3=Con, 4=Int, 5=Wis, 6=Cha)
  * @param {boolean} [isDC] [optional] set to `true` if this is concerning a dc and not an attack bonus (default)
- * 
+ *
  * @returns {object} {ability[number], bonus[number], caster[string]}
  */
 function getHighestSpellcastingAbility(aCasters, fallbackAbi, isDC) {
@@ -5907,7 +5907,7 @@ function getHighestSpellcastingAbility(aCasters, fallbackAbi, isDC) {
  */
 function existsInCurrentSpells(aCasters) {
 	if (!isArray(aCasters)) aCasters = [aCasters];
-	return aCasters.some(function(n) { return CurrentSpells[n] });
+	return aCasters.some(function (n) { return CurrentSpells[n] });
 }
 
 // A generic function to call from a calcChanges.spellAdd object to add a certain ability score
@@ -5930,7 +5930,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 	if (onlyRolls && spellObj.genericSpellDmgEdit && spellObj.genericSpellDmgEditMaximizedDice) onlyRolls = false;
 
 	// The function to maximize all dice in a string
-	var maximizeDice = function(strDice) {
+	var maximizeDice = function (strDice) {
 		var dMatch = strDice.match(/\d+d\d+/ig);
 		if (!dMatch) return; // no dice to maximize
 		var strReplace = strDice;
@@ -5974,7 +5974,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 		useSpellDescr = useSpellDescr.replace(strDice, strReplace);
 	}
 	// The function to fix a string of multiple X/SL+Y/SL to (X+Y)/SL
-	var fixMultiPerSL = function(strSl) {
+	var fixMultiPerSL = function (strSl) {
 		var slMatch = strSl.match(/(\+?)(\d+d?\d*)(\/\d*SL|\/PP|\/extra \w+)\+(\d+d?\d*|\(.*?\))(\3)/i);
 		if (!slMatch) return strSl;
 		var aVals = [slMatch[2], slMatch[4]]; // Make an array of just the numerical/dice parts
@@ -6009,7 +6009,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 		return strSl.replace(slMatch[0], slMatch[1] + strSlRe + slMatch[3]);
 	}
 	// The function to fix a string of multiple constants not being added together
-	var fixMultiConstants = function(strSl) {
+	var fixMultiConstants = function (strSl) {
 		var qRx = /([\+\-]?\b\d+\b)(?![)/])(?: \((?:Str|Dex|Con|Int|Wis|Cha)\))?/ig;
 		var qMatch = strSl.match(qRx);
 		if (qMatch && qMatch.length > 1) {
@@ -6030,7 +6030,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 		return strSl;
 	}
 	// The function to update the actual damage part with the new addition
-	var updateDescr = function(useMatch, onceExists, offsetMatch) {
+	var updateDescr = function (useMatch, onceExists, offsetMatch) {
 		if (!useMatch || !ability) return useMatch[0];
 		// If the first matched group is not the dice (+static modifiers), then go look for which group has this information
 		var rxDie = /^(\+?\d+d?\d*)+$/i;
@@ -6266,12 +6266,12 @@ function testSpellAdd(spellAddArray, useClass, spellKeysArray, bAlsoDuplicateAsO
 		decimalSeparator: What("Decimal Separator"),
 	};
 	// Define some functions
-	var setUnits = function(type) {
+	var setUnits = function (type) {
 		var isMetric = type === "metric";
 		Value("Unit System", isMetric ? "metric" : "imperial");
 		Value("Decimal Separator", isMetric ? "comma" : "dot");
 	}
-	var nextI = function(force) {
+	var nextI = function (force) {
 		if (!force) {
 			var spellFld = prefix + "spells.description." + i;
 			var spellDescr = What(spellFld);
@@ -6289,7 +6289,7 @@ function testSpellAdd(spellAddArray, useClass, spellKeysArray, bAlsoDuplicateAsO
 			totI = FieldNumbers.spells[1];
 		};
 	}
-	var addSpell = function(aSp, bSetMetric) {
+	var addSpell = function (aSp, bSetMetric) {
 		setUnits(bSetMetric ? "metric" : "imperial");
 		var oSpell = SpellsList[aSp];
 		// Do not change stat or level-dependent stuff

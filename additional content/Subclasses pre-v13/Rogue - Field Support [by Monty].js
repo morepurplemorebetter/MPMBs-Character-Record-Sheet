@@ -28,7 +28,7 @@ AddSubClass("rogue", "field support", {
 			minlevel: 3,
 			description: desc("As a bonus action, I can use a healer's kit, get one up from prone, or do the Help action"),
 			action: [["bonus action", ""]],
-			},
+		},
 		"subclassfeature3.1": {
 			name: "Feel the heat",
 			source: ["HB", 0],

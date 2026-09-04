@@ -37,7 +37,7 @@ SourceList["MM:BH"] = {
 };
 
 // Add a persistent function, as a local variable it won't be usable after re-opening the sheet
-MMBH_BhHemocraftDie = function(n) {
+MMBH_BhHemocraftDie = function (n) {
 	return "1d" + (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);
 };
 
@@ -68,7 +68,7 @@ ClassList["blood hunter"] = {
 	},
 	equipment: "Blood Hunter starting equipment:\n \u2022 Scale mail -or- studded leather armor;\n \u2022 A martial weapon -or- two simple weapons;\n \u2022 A light crossbow and 20 bolts -or- a hand crossbow and 20 bolts;\n \u2022 An explorer's pack.\n\nAlternatively, choose 4d4 \xD7 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.",
 	subclasses: ["Blood Hunter Orders", []],
-	attacks: levels.map(function(n){return n < 5 ? 1 : 2}),
+	attacks: levels.map(function (n){return n < 5 ? 1 : 2}),
 	abilitySave: 4,
 	features: {
 		"blood maledict": {
@@ -233,19 +233,19 @@ ClassList["blood hunter"] = {
 				source: [["MM:BH", 4]],
 				name: "Rite of the Dead",
 				description: " [necrotic damage]",
-				prereqeval: function() { return classes.known["blood hunter"].level >= 14 },
+				prereqeval: function () { return classes.known["blood hunter"].level >= 14 },
 			},
 			"esoteric rite of the oracle": {
 				source: [["MM:BH", 4]],
 				name: "Rite of the Oracle",
 				description: " [psychic damage]",
-				prereqeval: function() { return classes.known["blood hunter"].level >= 14 },
+				prereqeval: function () { return classes.known["blood hunter"].level >= 14 },
 			},
 			"esoteric rite of the roar": {
 				source: [["MM:BH", 4]],
 				name: "Rite of the Roar",
 				description: " [thunder damage]",
-				prereqeval: function() { return classes.known["blood hunter"].level >= 14 },
+				prereqeval: function () { return classes.known["blood hunter"].level >= 14 },
 			},
 			calcChanges: {
 				atkAdd: [
@@ -347,10 +347,10 @@ ClassList["blood hunter"] = {
 			]),
 		},
 	},
-	updateHybridForm: function(BHlevelOld, BHlevelNew) {
+	updateHybridForm: function (BHlevelOld, BHlevelNew) {
 		if (BHlevelOld <= 2 && BHlevelNew <= 2) return;
 		//a function to create the full text for the hybrid feature
-		var makeHybridText = function(lvl) {
+		var makeHybridText = function (lvl) {
 			if (lvl < 3) return "";
 			var PSdie = lvl < 11 ? "d6" : "d8";
 			var atkBonus = lvl < 11 ? 1 : lvl < 18 ? 2 : 3;
@@ -821,7 +821,7 @@ AddSubClass("blood hunter", "mutant", {
 					"I gain 20 ft flying speed for 1 hour",
 					"\u2022 Side effect: I gain disadvantage on Strength and Dexterity ability checks for 1 hour",
 				]),
-				prereqeval: function() { return classes.known["blood hunter"].level >= 11 },
+				prereqeval: function () { return classes.known["blood hunter"].level >= 11 },
 			},
 			"alluring": {
 				name: "Alluring",
@@ -858,7 +858,7 @@ AddSubClass("blood hunter", "mutant", {
 					"\u2022 Side effect: I gain disadvantage on Intelligence, Wisdom, and Charisma saving throws",
 				]),
 				action: [["bonus action", "Cruelty Mutagen (after Attack action)"]],
-				prereqeval: function() { return classes.known["blood hunter"].level >= 11 },
+				prereqeval: function () { return classes.known["blood hunter"].level >= 11 },
 			},
 			"deftness": {
 				name: "Deftness",
@@ -937,7 +937,7 @@ AddSubClass("blood hunter", "mutant", {
 					"My weapon attacks score critical hits on attack rolls of 19 and 20",
 					"\u2022 Side effect: I gian disadvantage on Strength saving throws",
 				]),
-				prereqeval: function() { return classes.known["blood hunter"].level >= 11 },
+				prereqeval: function () { return classes.known["blood hunter"].level >= 11 },
 			},
 			"rapidity": {
 				name: "Rapidity",
@@ -958,7 +958,7 @@ AddSubClass("blood hunter", "mutant", {
 					"This only occurs if I have at least 1 hit point and am below half my hit point maximum",
 					"\u2022 Side effect: My speed decreases by 10 ft for an hour",
 				]),
-				prereqeval: function() { return classes.known["blood hunter"].level >= 7 },
+				prereqeval: function () { return classes.known["blood hunter"].level >= 7 },
 			},
 			"sagacity": {
 				name: "Sagacity",
@@ -1069,7 +1069,7 @@ AddSubClass("blood hunter", "lycan", {
 				"As a bonus action, I can transform into a hybrid lycanthropy form",
 				'See the "Notes" page for the full rules of this hybrid form at my current level',
 			]),
-			usages: levels.map(function(n) { return n < 3 ? "" : n < 11 ? 1 : n < 18 ? 2 : "\u221E\u00D7 per "; }),
+			usages: levels.map(function (n) { return n < 3 ? "" : n < 11 ? 1 : n < 18 ? 2 : "\u221E\u00D7 per "; }),
 			recovery: "short rest",
 			action: [["bonus action", " (start/end)"], ["bonus action", "Predatory Strike (with Attack action)"]],
 			savetxt: { text: ["Adv. on Str saves in hybrid form"] },
@@ -1085,7 +1085,7 @@ AddSubClass("blood hunter", "lycan", {
 			}],
 			calcChanges: {
 				atkCalc: [
-					function(fields, v, output) {
+					function (fields, v, output) {
 						if (v.isMeleeWeapon && classes.known["blood hunter"] && classes.known["blood hunter"].level && (/\b(lycan|hybrid)\b/i.test(v.WeaponTextName) || v.theWea.isPredatoryStrikes)) {
 							var lvl = classes.known["blood hunter"].level;
 							output.extraDmg += lvl < 3 ? 0 : lvl < 11 ? 1 : lvl < 18 ? 2 : 3;
@@ -1094,7 +1094,7 @@ AddSubClass("blood hunter", "lycan", {
 					"If I include the word 'Lycan' or 'Hybrid' in a melee weapon's name, the calculation will add +1 to damage rolls. This bonus increases to +2 at 11th level and +3 at 18th level in the blood hunter class",
 				],
 			},
-			changeeval: function(v) {
+			changeeval: function (v) {
 				ClassList["blood hunter"].updateHybridForm(v[0], v[1]);
 			},
 		},
@@ -1109,7 +1109,7 @@ AddSubClass("blood hunter", "lycan", {
 			speed: { allModes: "+10" },
 			calcChanges: {
 				atkCalc: [
-					function(fields, v, output) {
+					function (fields, v, output) {
 						if (v.theWea.isPredatoryStrikes && classes.known["blood hunter"] && classes.known["blood hunter"].level) {
 							var lvl = classes.known["blood hunter"].level;
 							output.extraHit += lvl < 7 ? 0 : lvl < 11 ? 1 : lvl < 18 ? 2 : 3;
@@ -1118,7 +1118,7 @@ AddSubClass("blood hunter", "lycan", {
 					"I get +1 to attack rolls for my predatory strikes at level 7. This bonus increases to +2 at 11th level and +3 at 18th level in the blood hunter class",
 				],
 				atkAdd: [
-					function(fields, v) {
+					function (fields, v) {
 						if (v.theWea.isPredatoryStrikes && classes.known["blood hunter"] && classes.known["blood hunter"].level && classes.known["blood hunter"].level >= 7) {
 							fields.Description += (fields.Description ? "; " : "") + "Counts as magical if a rite is active";
 						}
@@ -1134,7 +1134,7 @@ AddSubClass("blood hunter", "lycan", {
 			description: desc('In my hybrid form, I gain the Lycan Regeneration feature, see "Notes" page'),
 			calcChanges: {
 				atkCalc: [
-					function(fields, v, output) {
+					function (fields, v, output) {
 						if (v.theWea.isPredatoryStrikes && classes.known["blood hunter"] && classes.known["blood hunter"].level && classes.known["blood hunter"].level >= 11) {
 							try {
 								var curDie = eval_ish(fields.Damage_Die.replace("d", "*"));

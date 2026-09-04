@@ -9,7 +9,7 @@ var Base_FeatsList = {
 			" \u2022 You can use your action to try to pin a creature grappled by you. To do so, make another grapple check. If you succeed, you and the creature are both restrained until the grapple ends.",
 		],
 		prerequisite: "Strength 13 or higher",
-		prereqeval: function(v) { return What("Str") >= 13; },
+		prereqeval: function (v) { return What("Str") >= 13; },
 		action: [["action", "Pin Grappled"]],
 	},
 };

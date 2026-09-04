@@ -63,7 +63,7 @@ var Base_CompanionList = {
 				description: "If dropped to 0 HP, the familiar disappears, leaving behind no physical form. The familiar must obey all commands of its master.",
 			}],
 		},
-		attributesChange: function(sCrea, objCrea) {
+		attributesChange: function (sCrea, objCrea) {
 			// can't do any attacks
 			objCrea.attacks = [];
 			if (objCrea.type.toLowerCase() === "beast") {
@@ -78,7 +78,7 @@ var Base_CompanionList = {
 		nameOrigin: "variant of the Find Familiar 1st-level conjuration [ritual] spell",
 		nameMenu: "Pact of the Chain familiar (Warlock feature)",
 		source: [["SRD", 47], ["P", 107]],
-		includeCheck: function(sCrea, objCrea, iCreaCR, bIsAL) {
+		includeCheck: function (sCrea, objCrea, iCreaCR, bIsAL) {
 			// return true if to be included, or a string to add a note to the menu option
 			return !objCrea.companion ? false : objCrea.companion.indexOf("familiar") !== -1 ? true : !bIsAL && objCrea.companion.indexOf("familiar_not_al") !== -1 ? " (if DM approves)" : false;
 		},
@@ -93,7 +93,7 @@ var Base_CompanionList = {
 				description: "If dropped to 0 HP, the familiar disappears, leaving behind no physical form. The familiar must obey all commands of its master.",
 			}],
 		},
-		attributesChange: function(sCrea, objCrea) {
+		attributesChange: function (sCrea, objCrea) {
 			if (objCrea.type.toLowerCase() === "beast") {
 				objCrea.type = ["Celestial", "Fey", "Fiend"];
 				objCrea.subtype = "";
@@ -153,7 +153,7 @@ var Base_CompanionList = {
 			}],
 			languages: "understands one language its master speaks (master's choice)",
 		},
-		attributesChange: function(sCrea, objCrea) {
+		attributesChange: function (sCrea, objCrea) {
 			if (objCrea.scores[3] < 6) objCrea.scores[3] = 6;
 		},
 	},
@@ -163,7 +163,7 @@ var Base_CompanionList = {
 		nameOrigin: "Beast Master 3",
 		nameMenu: "Ranger's Companion (Beast Master feature)",
 		source: [["P", 93]],
-		includeCheck: function(sCrea, objCrea, iCreaCR) {
+		includeCheck: function (sCrea, objCrea, iCreaCR) {
 			return objCrea.type.toLowerCase() === "beast" && objCrea.size >= 3 && iCreaCR <= 1 / 4 ? true : false;
 		},
 		action: [["action", "Ranger's Companion (command)"]],
@@ -212,7 +212,7 @@ var Base_CompanionList = {
 			].join("\n   "),
 			joinString: "\n   ",
 			minlevel: 7,
-			eval: function(prefix, lvl) {
+			eval: function (prefix, lvl) {
 				for (var i = 1; i <= 3; i++) {
 					if (!What(prefix + "Comp.Use.Attack." + i + ".Weapon Selection")) continue;
 					var sDescrFld = prefix + "Comp.Use.Attack." + i + ".Description";
@@ -222,7 +222,7 @@ var Base_CompanionList = {
 				}
 				processActions(true, "Beast Master: Ranger's Companion", [["bonus action", "Exceptional Training (Dash/Disengage/Help)"]], "Ranger's Companion");
 			},
-			removeeval: function(prefix, lvl) {
+			removeeval: function (prefix, lvl) {
 				for (var i = 1; i <= 3; i++) {
 					var sDescrFld = prefix + "Comp.Use.Attack." + i + ".Description";
 					var sDescr = What(sDescrFld);
@@ -236,10 +236,10 @@ var Base_CompanionList = {
 			description: "The beast can make two attacks (or multiattack) when I command it to take an Attack action",
 			joinString: "\n   ",
 			minlevel: 11,
-			eval: function(prefix, lvl) {
+			eval: function (prefix, lvl) {
 				Value(prefix + "Comp.Use.Attack.perAction", 2);
 			},
-			removeeval: function(prefix, lvl) {
+			removeeval: function (prefix, lvl) {
 				Value(prefix + "Comp.Use.Attack.perAction", 1);
 			},
 		}, {
@@ -253,7 +253,7 @@ var Base_CompanionList = {
 			minlevelLinked: ["ranger", "rangerua", "spell-less ranger"],
 			attacksAction: 1,
 		},
-		attributesChange: function(sCrea, objCrea) {
+		attributesChange: function (sCrea, objCrea) {
 			// Add oProf to attacks to hit and damage
 			for (var i = 0; i < objCrea.attacks.length; i++) {
 				var oAtk = objCrea.attacks[i];
@@ -287,7 +287,7 @@ var Base_CompanionList = {
 				AddToModFld(sACfld, "oProf", false, sNameEntity, sExplanation);
 			}
 			// Add oProf to proficient Saving Throws / Skills and remove where no longer proficient
-			var processFld = function(sType, sFld, sModFld) {
+			var processFld = function (sType, sFld, sModFld) {
 				var bIsProf = sType === "skill" && !typePF ? What(sFld) !== "nothing" : tDoc.getField(sFld).isBoxChecked(0);
 				var boProfMod = What(sModFld).indexOf("oProf") !== -1;
 				if ((!bIsProf && boProfMod) || (bIsProf && !boProfMod)) {
@@ -341,7 +341,7 @@ var Base_CompanionList = {
 		},
 	},
 };
-Base_CompanionList.pact_of_the_chain.notes = function() {
+Base_CompanionList.pact_of_the_chain.notes = function () {
 	var a = newObj(Base_CompanionList.familiar.notes);
 	a[0].description = a[0].description.replace("or weasel.", "weasel,\n   or one of the special forms: imp, pseudodragon, quasit, or sprite.");
 	a[1].description = a[1].description.replace("but it can't attack", "but it can't attack on its turn");

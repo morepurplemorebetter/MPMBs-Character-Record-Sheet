@@ -62,7 +62,7 @@ AddSubClass("rogue", "shadowdancer", {
 			source: ["IH:SD", 1],
 			minlevel: 3,
 			description: desc("As a bonus action, I can teleport from and into dim light or darkness within range"),
-			additional: levels.map( function(n) { return n < 3 ? "" : "teleport " + (n < 6 ? "30 ft" : "60 ft"); }),
+			additional: levels.map( function (n) { return n < 3 ? "" : "teleport " + (n < 6 ? "30 ft" : "60 ft"); }),
 			action: [["bonus action", ""]],
 		},
 		"subclassfeature9": {

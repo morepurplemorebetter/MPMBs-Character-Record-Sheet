@@ -30,7 +30,7 @@
 var iFileName = "Monk - Way of the Four Elements, Remastered [SpiketailDrake's work, transcribed by AKA_Sketch & MPMB].js";
 RequiredSheetVersion(12.999);
 
-var WotFEremastered = function() {
+var WotFEremastered = function () {
 
 	if (!ClassSubList["monk-way of the four elements"]) return;
 

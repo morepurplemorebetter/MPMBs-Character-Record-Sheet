@@ -42,7 +42,7 @@ AddSubClass("barbarian", "path of the brawler", {
 			description: desc("My unarmed strikes deal 1d6 damage (1d8 in rage) instead of their usual amount"),
 			calcChanges: {
 				atkAdd: [
-					function (fields, v) { 
+					function (fields, v) {
 						if (v.baseWeaponName == "unarmed strike") {
 							try {
 								var curDie = eval_ish(fields.Damage_Die.replace("d", "*"));
@@ -73,7 +73,7 @@ AddSubClass("barbarian", "path of the brawler", {
 				"My unarmed strikes count as magical for overcoming resistances and immunities",
 				"When I enter rage, I gain a number of temporary hit points equal to my barbarian level",
 			]),
-			additional: levels.map(function(n) {
+			additional: levels.map(function (n) {
 				return n < 6 ? "" : n + " temp HP";
 			}),
 		},

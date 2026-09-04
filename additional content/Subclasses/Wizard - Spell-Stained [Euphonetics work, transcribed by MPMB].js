@@ -73,7 +73,7 @@ AddSubClass("wizard", "spell-stained", {
 				"If I set a condition for the glyph's trigger, it will always use my reaction to trigger",
 				"Another trigger option is by gesture/command, which requires my bonus action",
 			]),
-			additional: levels.map( function(n) { return n < 2 ? "" : "max " + (n < 14 ? 1 : 2) + " active skin glyph" + (n < 14 ? "" : "s"); }),
+			additional: levels.map( function (n) { return n < 2 ? "" : "max " + (n < 14 ? 1 : 2) + " active skin glyph" + (n < 14 ? "" : "s"); }),
 			action: [
 				["raction", " (trigger by condition)"],
 				["bonus action", " (trigger by gesture/command)"],
@@ -91,7 +91,7 @@ AddSubClass("wizard", "spell-stained", {
 				"If an object is destroyed, the corresponding marking disappears from my skin",
 			]),
 			action: [["bonus action", ""]],
-			additional: levels.map( function(n) { return n < 6 ? "" : "max " + (n < 14 ? 2 : 4) + " objects bound"; }),
+			additional: levels.map( function (n) { return n < 6 ? "" : "max " + (n < 14 ? 2 : 4) + " objects bound"; }),
 		},
 		"subclassfeature10": {
 			name: "Rune Cocoon",

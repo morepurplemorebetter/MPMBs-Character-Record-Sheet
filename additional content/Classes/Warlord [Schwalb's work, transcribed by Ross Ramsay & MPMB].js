@@ -496,7 +496,7 @@ AddSubClass("warlord", "supreme tactician", {
 				"A die increases from a d4 to a d6, to a d8, to a d10, and finally to a d12",
 				"Any ally within 60 ft that can hear me can expend a die and add it to one attack roll",
 			]),
-			additional: levels.map( function(n) {
+			additional: levels.map( function (n) {
 				return n < 3 ? "" : n < 15 ? "max 1 die" : "max 2 dice";
 			}),
 		},

@@ -96,12 +96,12 @@ GearList["purple bullets"] = {
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
 	infoname: "Bullets, Purple (10) [5 sp]",
-/*	infoname // REQUIRED //
+	/*	infoname // REQUIRED //
 	TYPE:	string
 	USE:	name of the gear as it will be displayed in the equipment menu
 */
 	name: "Purple Bullets",
-/*	name // REQUIRED //
+	/*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the gear as it will be added in the equipment fields
 
@@ -109,7 +109,7 @@ GearList["purple bullets"] = {
 	Once you select a piece of gear from the equipment menu, it is this attribute that will be used to fill the field.
 */
 	amount: 10,
-/*	amount // REQUIRED //
+	/*	amount // REQUIRED //
 	TYPE:	number or empty string ("")
 	USE:	number of the gear as it will be added in the equipment fields, "#" column
 
@@ -123,14 +123,14 @@ GearList["purple bullets"] = {
 	If the equipment doesn't normally come in multiples, you can just let this attribute be an empty string ("").
 */
 	weight: 0.05,
-/*	weight // REQUIRED //
+	/*	weight // REQUIRED //
 	TYPE:	number or empty string ("")
 	USE:	the weight of the gear in lb
 
 	If the equipment doesn't have a listed weight, you can just let this attribute be an empty string ("").
 */
 	type: "ammunition",
-/*	type // OPTIONAL //
+	/*	type // OPTIONAL //
 	TYPE:	string
 	USE:	the grouping of this gear
 

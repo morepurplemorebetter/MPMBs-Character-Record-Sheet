@@ -64,8 +64,8 @@ RaceList["nimblewright"] = {
 			"\u2022 Keen Ears: With this component installed, I have advantage on Wisdom (Perception) checks that rely on hearing.",
 			"\u2022 Power Lifter: With this component installed, I count as one size larger when determining my carrying capacity and the weight I can push, drag, or lift.",
 			"\u2022 Voice Box: With this component installed, I can speak any language I understand. Without this component installed, I can't speak any language, only understand, read, or write them.",
-			 "\nThe installed component can be changed with the \"Racial Options\" button on the second page.",
-			 "Note that when you change the component using the \"Racial Options\" button, the text in this field will be removed and re-added. Do not make any changes to this text or add any text to this field if you want to use the button to change components, as that will cause trouble with the automation. Instead, note down the three components that can be accessed someplace else.",
+			"\nThe installed component can be changed with the \"Racial Options\" button on the second page.",
+			"Note that when you change the component using the \"Racial Options\" button, the text in this field will be removed and re-added. Do not make any changes to this text or add any text to this field if you want to use the button to change components, as that will cause trouble with the automation. Instead, note down the three components that can be accessed someplace else.",
 		],
 	}],
 };

@@ -101,7 +101,7 @@ ClassList["elementalist"] = {
 			}),
 			calcChanges: {
 				spellList: [
-					function(spList, spName, spType) {
+					function (spList, spName, spType) {
 						// Schedule a function call for after the spell sheet has been generated
 						if (!CurrentSpells.elementalist.timeout) {
 							CurrentSpells.elementalist.timeout = app.setTimeOut("ClassList.elementalist.changeSpellHeaders();", 10000);
@@ -207,7 +207,7 @@ ClassList["elementalist"] = {
 			]),
 		},
 	},
-	changeSpellHeaders: function() {
+	changeSpellHeaders: function () {
 		// This function will change the headers on the spell sheet for the Elementalist to the right tier of shapes.
 		if ( isTemplVis("SSfront") ) {
 			var shapeTier = {
@@ -944,7 +944,7 @@ AugmentES = "\n   " + toUni("Augment") + ": ";
 						"To create a shape, you must be conscious and be able gesture both
 						forcefully and intricately, requiring at least one free hand."
 
-	`duration`		Always has a (D) added, because all shapes can be dismissed as an 
+	`duration`		Always has a (D) added, because all shapes can be dismissed as an
 					action.
 
 	`dependencies`	Is auto-filled with the current elemental affinity if any SpellsList
@@ -1661,7 +1661,7 @@ SpellsList["stone block-es"] = {
 	level: 4,
 	school: "Earth",
 	time: "1 bns",
-	range: "5 ft", 
+	range: "5 ft",
 	components: "S",
 	duration: "1 h (D)",
 	save: "Dex",
