@@ -8979,7 +8979,7 @@ function ConvertToMetric(inputString, rounded, exact) {
 
 	var theConvert = function (amount, units) {
 		amount = Number(amount);
-		var total, unit, isRounded;
+		var total, unit, isRounded = false;
 		units = units.replace(/f(oo|ee)t/i, "ft").replace(/fl(uid|\.)|liquid/i, "fl")
 			.replace("cubic", "cu").replace("square", "sq")
 			.replace(/(lb|pound|gallon|qt|quart|pt|pint|ounce|degree|mile)s/i, "$1");
@@ -9002,13 +9002,13 @@ function ConvertToMetric(inputString, rounded, exact) {
 				unit = "km";
 				break;
 
-			case "cu ft": case "ft3": case "ft\u00B3":
+			case "cu ft": case "ft3": case "ft\xB3":
 				total = amount * UnitsList[ratio].volume;
-				unit = "m\u00B3"; // m³
+				unit = "m\xB3"; // m³
 				if (total < 0.25) {
 				// for very small volumes, we are going to use dm3
 					total *= 1000;
-					unit = "dm\u00B3"; // dm³
+					unit = "dm\xB3"; // dm³
 				} else if (total < 1 && rounding > 0.03) {
 				// for relatively small volumes, we are going to round to 0.03 accuracy
 					total = RoundTo(total, 0.03, false, true);
@@ -9020,13 +9020,13 @@ function ConvertToMetric(inputString, rounded, exact) {
 				}
 				break;
 
-			case "sq ft": case "ft2": case "ft\u00B2":
+			case "sq ft": case "ft2": case "ft\xB2":
 				total = amount * UnitsList[ratio].surface;
-				unit = "m\u00B2"; // m²
+				unit = "m\xB2"; // m²
 				if (total < 0.25) {
 				// for very small volumes, we are going to use dm2
 					total *= 100;
-					unit = "dm\u00B2"; // dm²
+					unit = "dm\xB2"; // dm²
 				}
 				break;
 
@@ -9064,20 +9064,20 @@ function ConvertToMetric(inputString, rounded, exact) {
 				total = amount * UnitsList[ratio].liquidOunce;
 				unit = "cl";
 				break;
-			case "\u00B0 f": case "\u00B0f": case "degree fahrenheit": case "fahrenheit":
+			case "\xB0 f": case "\xB0f": case "degree fahrenheit": case "fahrenheit":
 				total = RoundTo((amount - 32) * 5 / 9, exact ? 0.01 : 1, false, true);
-				unit = "\u00B0C"; //°C
+				unit = "\xB0C"; //°C
 				isRounded = true;
 				break;
 		}
-		return [total, unit, isRounded];
+		return { total: total, unit: unit, isRounded: isRounded };
 	}
 
 	var unicodeFractionToNumber = function (string) {
 		var unicodes = {
-			"\u00BC": 0.25, // ¼
-			"\u00BD": 0.5,  // ½
-			"\u00BE": 0.75, // ¾
+			"\xBC": 0.25, // ¼
+			"\xBD": 0.5,  // ½
+			"\xBE": 0.75, // ¾
 			"\u2153": 0.33, // ⅓
 			"\u2154": 0.66, // ⅔
 		}
@@ -9088,22 +9088,31 @@ function ConvertToMetric(inputString, rounded, exact) {
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/((\b|-)\d+[,./]?\d*\/?|-?[\u00BC-\u00BE\u2153-\u2154])(-?\d+?[,./]?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|f(oo|ee)?t[23\u00B2\u00B3]|(in|inch|inches|miles?|(cubic|cu|square|sq)? ?f(oo|ee)?t?|lbs?|pounds?|gal(lons?)?|q(uar)?ts?|p(in)?ts?|(fluid )?ounces?|(fl\.? )?oz|\u00B0 ?f|(degrees? )?fahrenheit)\b)/ig);
+	var measurements = inputString.match(/((\b|-)\d+[,./]?\d*\/?|-?[\xBC-\xBE\u2153-\u2154])(-?\d+?[,./]?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|f(oo|ee)?t[23\xB2\xB3]|(in|inch|inches|miles?|(cubic|cu|square|sq)? ?f(oo|ee)?t?|lbs?|pounds?|gal(lons?)?|q(uar)?ts?|p(in)?ts?|(fluid )?ounces?|(fl\.? )?oz|\xB0 ?f|(degrees? )?fahrenheit)\b)/ig);
 	var outputString = inputString;
 
 	if (measurements) {
+		var placeholder = ["Pl4c3h0ld3r", 0], toPlaceBack = [];
 		for (var i = 0; i < measurements.length; i++) {
 			// skip if part of a calculation
-			var location = inputString.indexOf(measurements[i]);
+			var location = outputString.indexOf(measurements[i]);
 			var offset = measurements[i][0] === "-" ? 1 : 2;
-			if (/^\d/.test(inputString.substring(location - offset, location))) continue;
+			if (/^\d/.test(outputString.substring(location - offset, location))) {
+				// replace it with a placeholder for now, so it won't match future checks if there happen to be multiple identical measurements in the string
+				placeholder[1]++;
+				var tempPlaceholder = placeholder.join("-");
+				toPlaceBack.push({ placeholder: tempPlaceholder, original: measurements[i] });
+				outputString = outputString.replace(measurements[i], tempPlaceholder);
+				continue;
+			}
+
 			// if this is a x'y" type of measurement
 			if (/'.+"/.test(measurements[i])) {
 				if (/'.+"\W/.test(measurements[i])) {
 					measurements[i] = measurements[i].substr(0, measurements[i].length - 1);
 				}
 				var org = measurements[i].replace(/,/g, ".");
-				if (/[\u00BC-\u00BE\u2153-\u2154]/.test(org)) {
+				if (/[\xBC-\xBE\u2153-\u2154]/.test(org)) {
 					org = unicodeFractionToNumber(org);
 				}
 				var orgFT = parseFloat( org.substring(0, org.indexOf("'")) );
@@ -9114,10 +9123,10 @@ function ConvertToMetric(inputString, rounded, exact) {
 					measurements[i] = measurements[i].substr(0, measurements[i].length - 1);
 				}
 				var org = measurements[i].replace(/,/g, ".");
-				if (/[\u00BC-\u00BE\u2153-\u2154]/.test(org)) {
+				if (/[\xBC-\xBE\u2153-\u2154]/.test(org)) {
 					org = unicodeFractionToNumber(org);
 				}
-				var orgUnit = org.match(/[-\s]*([\u00B0 A-z'"]+[\u00B22\u00B33]?)$/)[1].toLowerCase();
+				var orgUnit = org.match(/[-\s]*([\xB0 A-z'"]+[\xB22\xB33]?)$/)[1].toLowerCase();
 				var fraction = org.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/);
 
 				if (fraction && fraction[1] > 0 && fraction[1] < 3 && fraction[2] > 1 && fraction[2] < 5) {
@@ -9125,20 +9134,37 @@ function ConvertToMetric(inputString, rounded, exact) {
 					fraction = false;
 				}
 				if (fraction) {
+					var resulted = {
+						numerator: theConvert(fraction[1], orgUnit),
+						denominator: theConvert(fraction[2], orgUnit),
+					};
 					var resulted = [theConvert(fraction[1], orgUnit), theConvert(fraction[2], orgUnit)];
 				} else {
 					var resulted = theConvert(parseFloat(org), orgUnit);
 				}
 			}
 
-			var delimiter = /.*\d+([\s- ]*?)\w/.test(measurements[i]) ? measurements[i].match(/.*\d+([\s- ]*?)\w/)[1] : " ";
+			var delimiterMatch = measurements[i].match(/.*\d+([\s- ]*?)[\xB0\w]/);
+			var delimiter = delimiterMatch ? delimiterMatch[1] : " ";
 
-			if (isArray(resulted[0])) {
-				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
+			if (fraction) {
+				var numerator = resulted.numerator.total;
+				if (!resulted.numerator.isRounded) numerator = RoundTo(numerator, rounding, false, true);
+				var denominator = resulted.denominator.total;
+				if (!resulted.denominator.isRounded) denominator = RoundTo(denominator, rounding, false, true);
+				var theResult = numerator + "/" + denominator + delimiter + resulted.denominator.unit;
 			} else {
-				var theResult = (resulted[2] ? resulted[0] : RoundTo(resulted[0], rounding, false, true)) + delimiter + resulted[1];
+				var theValue = resulted.total;
+				if (!resulted.isRounded) theValue = RoundTo(theValue, rounding, false, true);
+				var theResult = theValue + delimiter + resulted.unit;
 			}
 			outputString = outputString.replace(measurements[i], theResult);
+		}
+		if (toPlaceBack.length) {
+			for (var i = 0; i < toPlaceBack.length; i++) {
+				var placeBack = toPlaceBack[i];
+				outputString = outputString.replace(placeBack.placeholder, placeBack.original);
+			}
 		}
 	}
 	return outputString;
@@ -9151,7 +9177,7 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 
 	var theConvert = function (amount, units) {
 		amount = Number(amount);
-		var total, unit, isRounded;
+		var total, unit, isRounded = false;
 		units = units.replace(/(gram|kilo|degree)s/i, "$1")
 			.replace(/(lit|met)res?/i, "$1er")
 			.replace("cubic", "cu").replace("square", "sq");
@@ -9179,24 +9205,25 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 				unit = total === 1 ? "mile" : "miles";
 				break;
 
-			case "cm3": case "cm\u00B3": case "cu centimeter":
+			case "cm3": case "cm\xB3": case "cu centimeter":
 				amount /= 1000;
-			case "dm3": case "dm\u00B3": case "cu decimeter":
+			case "dm3": case "dm\xB3": case "cu decimeter":
 				amount /= 1000;
-			case "m3": case "m\u00B3": case "cu meter":
+			case "m3": case "m\xB3": case "cu meter":
 				total = amount / UnitsList[ratio].volume;
 				unit = "cu ft";
 				if (total > 41 && rounding < 2) {
-				// make it a nice whole number of cubic feet
-					rounding = 10;
+					// make it a nice whole number of cubic feet
+					total = RoundTo(total, 10, false, true);
+					isRounded = true;
 				}
 				break;
 
-			case "cm2": case "cm\u00B2": case "sq centimeter":
+			case "cm2": case "cm\xB2": case "sq centimeter":
 				amount /= 100;
-			case "dm2": case "dm\u00B2": case "sq decimeter":
+			case "dm2": case "dm\xB2": case "sq decimeter":
 				amount /= 100;
-			case "m2": case "m\u00B2": case "sq meter":
+			case "m2": case "m\xB2": case "sq meter":
 				total = amount / UnitsList[ratio].surface;
 				unit = "sq ft";
 				break;
@@ -9227,20 +9254,20 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 				total = amount / UnitsList[ratio].liquid;
 				unit = "gal";
 				break;
-			case "\u00B0 c": case "\u00B0c": case "degree celsius": case "celsius":
+			case "\xB0 c": case "\xB0c": case "degree celsius": case "celsius":
 				total = RoundTo((amount * 9 / 5) + 32, exact ? 0.01 : 1, false, true);
-				unit = "\u00B0F"; // °F
+				unit = "\xB0F"; // °F
 				isRounded = true;
 				break;
 		}
-		return [total, unit, isRounded];
+		return { total: total, unit: unit, isRounded: isRounded };
 	}
 
 	var unicodeFractionToNumber = function (string) {
 		var unicodes = {
-			"\u00BC": 0.25, // ¼
-			"\u00BD": 0.5,  // ½
-			"\u00BE": 0.75, // ¾
+			"\xBC": 0.25, // ¼
+			"\xBD": 0.5,  // ½
+			"\xBE": 0.75, // ¾
 			"\u2153": 0.33, // ⅓
 			"\u2154": 0.66, // ⅔
 		}
@@ -9251,21 +9278,29 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 	}
 
 	// find all labeled measurements in string
-	var measurements = inputString.match(/((\b|-)\d+[,./]?\d*\/?|-?[\u00BC-\u00BE\u2153-\u2154])(-?\d+?[,./]?\d*)?\s?-?([dck]?m[\u00B2\u00B3]|([dck]?m[23]?|(cu |cubic |sq |square )?(milli|centi|deci|kilo)?met(re|er)s?|[mc]?l|(milli|centi)?lit(er|re)s?|k?g|grams?|kilo(gram)?s?|\u00B0 ?c|(degrees? )?celsius)\b)/ig);
+	var measurements = inputString.match(/((\b|-)\d+[,./]?\d*\/?|-?[\xBC-\xBE\u2153-\u2154])(-?\d+?[,./]?\d*)?\s?-?([dck]?m[\xB2\xB3]|([dck]?m[23]?|(cu |cubic |sq |square )?(milli|centi|deci|kilo)?met(re|er)s?|[mc]?l|(milli|centi)?lit(er|re)s?|k?g|grams?|kilo(gram)?s?|\xB0 ?c|(degrees? )?celsius)\b)/ig);
 	var outputString = inputString;
 
 	if (measurements) {
+		var placeholder = ["Pl4c3h0ld3r", 0], toPlaceBack = [];
 		for (var i = 0; i < measurements.length; i++) {
 			// skip if part of a calculation
-			var location = inputString.indexOf(measurements[i]);
+			var location = outputString.indexOf(measurements[i]);
 			var offset = measurements[i][0] === "-" ? 1 : 2;
-			if (/^\d/.test(inputString.substring(location - offset, location))) continue;
+			if (/^\d/.test(outputString.substring(location - offset, location))) {
+				// replace it with a placeholder for now, so it won't match future checks if there happen to be multiple identical measurements in the string
+				placeholder[1]++;
+				var tempPlaceholder = placeholder.join("-");
+				toPlaceBack.push({ placeholder: tempPlaceholder, original: measurements[i] });
+				outputString = outputString.replace(measurements[i], tempPlaceholder);
+				continue;
+			}
 
 			var org = measurements[i].replace(/,/g, ".");
-			if (/[\u00BC-\u00BE\u2153-\u2154]/.test(org)) {
+			if (/[\xBC-\xBE\u2153-\u2154]/.test(org)) {
 				org = unicodeFractionToNumber(org);
 			}
-			var orgUnit = org.match(/[-\s]*([\u00B0 A-z']+[\u00B22\u00B33]?)$/)[1].toLowerCase();
+			var orgUnit = org.match(/[-\s]*([\xB0 A-z']+[\xB22\xB33]?)$/)[1].toLowerCase();
 			var fraction = org.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/);
 
 			if (fraction && fraction[1] > 0 && fraction[1] < 3 && fraction[2] > 1 && fraction[2] < 5) {
@@ -9273,23 +9308,39 @@ function ConvertToImperial(inputString, rounded, exact, toshorthand) {
 				fraction = false;
 			}
 			if (fraction) {
-				var resulted = [theConvert(fraction[1], orgUnit), theConvert(fraction[2], orgUnit)];
+				var resulted = {
+					numerator: theConvert(fraction[1], orgUnit),
+					denominator: theConvert(fraction[2], orgUnit),
+				};
 			} else {
 				var resulted = theConvert(parseFloat(org), orgUnit);
 			}
 
-			var delimiter = /.*\d+([\s- ]*?)\w/.test(measurements[i]) ? measurements[i].match(/.*\d+([\s- ]*?)\w/)[1] : " ";
+			var delimiterMatch = measurements[i].match(/.*\d+([\s- ]*?)[\xB0\w]/);
+			var delimiter = delimiterMatch ? delimiterMatch[1] : " ";
 
-			if (isArray(resulted[0])) {
-				var theResult = RoundTo(resulted[0][0], rounding, false, true) + "/" + RoundTo(resulted[1][0], rounding, false, true) + delimiter + resulted[1][1];
-			} else if (toshorthand && resulted[1] === "ft" && resulted[0] % 1 != 0) {
-				var theFT = Math.floor(resulted[0]);
-				var theINCH = Math.round(resulted[0] % 1 / (1 / 12));
+			if (fraction) {
+				var numerator = resulted.numerator.total;
+				if (!resulted.numerator.isRounded) numerator = RoundTo(numerator, rounding, false, true);
+				var denominator = resulted.denominator.total;
+				if (!resulted.denominator.isRounded) denominator = RoundTo(denominator, rounding, false, true);
+				var theResult = numerator + "/" + denominator + delimiter + resulted.denominator.unit;
+			} else if (toshorthand && resulted.unit === "ft" && resulted.total % 1 != 0) {
+				var theFT = Math.floor(resulted.total);
+				var theINCH = Math.round(resulted.total % 1 / (1 / 12));
 				var theResult = theFT + "'" + theINCH + "\"";
 			} else {
-				var theResult = (resulted[2] ? resulted[0] : RoundTo(resulted[0], rounding, false, true)) + delimiter + resulted[1];
+				var theValue = resulted.total;
+				if (!resulted.isRounded) theValue = RoundTo(theValue, rounding, false, true);
+				var theResult = theValue + delimiter + resulted.unit;
 			}
 			outputString = outputString.replace(measurements[i], theResult);
+		}
+		if (toPlaceBack.length) {
+			for (var i = 0; i < toPlaceBack.length; i++) {
+				var placeBack = toPlaceBack[i];
+				outputString = outputString.replace(placeBack.placeholder, placeBack.original);
+			}
 		}
 	}
 	return outputString;
