@@ -39,7 +39,7 @@
 				You will also need the syntax for adding a source if you want the magic item
 				to have a source that doesn't yet exist in the sheet.
 
-	Sheet:		v14.0.13 and above
+	Sheet:		v14.0.15 and above
 
 */
 
@@ -192,6 +192,11 @@ MagicItemsList["staff of purple"] = {
 		"wand"
 		"potion"
 		"scroll"
+
+	If this is set to "potion" and there is no `action` attribute, the sheet will
+	automatically add `action: [["action", "Drink/Administer Potion"]]`.
+	That way, if at least one potion is on the sheet, the action will be present, and it
+	will be removed once the last potion is removed from the sheet.
 */
 	rarity: "rare",
 	/*	rarity // REQUIRED //

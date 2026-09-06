@@ -49,7 +49,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v14.0.13 and above
+	Sheet:		v14.0.15 and above
 */
 var exampleFeatureName = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -1173,6 +1173,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		TYPE:	string
 		USE:	set the first column of the spell line on the spell sheet
 		CHANGE:	v14.0.1 (onceXr+markedbox options)
+		CHANGE:	v14.0.15 (onceday and onceday+markedbox options added)
 
 		This can be a string of one or two characters, or one character enclosed in brackets.
 		Anything more than that will be cut off, as it won't fit in the field.
@@ -1184,8 +1185,10 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		"atwill"			// the 'At will' graphic
 		"oncesr"			// a checkbox with 'SR' inside (once per short rest usage)
 		"oncelr"			// a checkbox with 'LR' inside (once per short long usage)
+		"onceday"			// a checkbox with 'DAY' inside (once per day/dawn/dusk usage)
 		"oncesr+markedbox"	// two checkboxes, one with 'SR' inside and one with a star inside
 		"oncelr+markedbox"	// two checkboxes, one with 'LR' inside and one with a star inside
+		"onceday+markedbox"	// two checkboxes, one with 'DAY' inside and one with a star inside
 
 		If you don't set anything for the first column the sheet will determine what is most logical.
 		From v14.0.5 onwards, setting "atwill" is ignored when set for a cantrip, instead

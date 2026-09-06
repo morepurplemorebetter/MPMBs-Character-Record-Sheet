@@ -354,7 +354,7 @@ function ApplySpell(FldValue, rememberFldName) {
 
 	// Set the icon of the first field
 	var setCheck = function () {
-		var okChecks = ["atwill", "checkbox", "checkedbox", "markedbox", "oncelr", "oncelr_used", "oncelr+markedbox", "oncelr+markedbox_used", "oncesr", "oncesr_used", "oncesr+markedbox", "oncesr+markedbox_used"];
+		var okChecks = ["atwill", "checkbox", "checkedbox", "markedbox", "oncelr", "oncelr_used", "oncelr+markedbox", "oncelr+markedbox_used", "oncesr", "oncesr_used", "oncesr+markedbox", "oncesr+markedbox_used", "onceday", "onceday_used", "onceday+markedbox", "onceday+markedbox_used"];
 		var currentCheck = What(spFlds[0]).toLowerCase();
 		var input1 = input[1] ? input[1].toLowerCase() : "";
 		if (currentCheck === input1) return;
@@ -1024,7 +1024,7 @@ function SetSpellCheckbox() {
 			if (/^check(ed)?box$/.test(checkValue)) {
 				// Default checkbox
 				newValue = checkValue === "checkbox" ? "checkedbox" : "checkbox";
-			} else if (/^once[sl]r/.test(checkValue) && tDoc.getField("SaveIMG.FirstCol." + checkValue)) {
+			} else if (/^once(sr|lr|day)/.test(checkValue) && tDoc.getField("SaveIMG.FirstCol." + checkValue)) {
 				newValue = /_used$/.test(checkValue) ? checkValue.replace("_used", "") : checkValue + "_used";
 			}
 			if (newValue && tDoc.getField("SaveIMG.FirstCol." + newValue)) {
@@ -3141,10 +3141,11 @@ function AskUserSpellSheet() {
 					if (!firstCol && spBonusi.atwill) firstCol = "atwill";
 					if (!firstCol && spBonusi.oncesr) firstCol = "oncesr";
 					if (!firstCol && spBonusi.oncelr) firstCol = "oncelr";
+					if (!firstCol && spBonusi.onceday) firstCol = "onceday";
 					if (spBonusi.prepared) {
 						if (!firstCol) {
 							firstCol = "markedbox";
-						} else if (/^once[sl]r$/.test(firstCol)) {
+						} else if (/^once(sr|lr|day)$/.test(firstCol)) {
 							firstCol += "+markedbox";
 						}
 					}
@@ -3660,7 +3661,7 @@ function GenerateSpellSheet(GoOn) {
 
 		// Get a list of all the bonus spells that have a special first column other than always prepared or at will, because only those spells are allowed to exist multiple times on the spell sheet
 		var allowedDuplicateSpells = spCast.selectBo.filter(function (aSpell) {
-			return firstCols[aSpell] && !/^(atwill|(once[sl]r\+)?markedbox(_used)?)$/i.test(firstCols[aSpell]);
+			return firstCols[aSpell] && !/^(atwill|(once(sr|lr|day)\+)?markedbox(_used)?)$/i.test(firstCols[aSpell]);
 		});
 		// Get an array of 12 arrays, one for each spell level, and 2 final ones for the psionic talents/disciplines
 		var orderedSpellList = OrderSpells(fullSpellList, "multi", true, spCast.selectBo, maxLvl, allowedDuplicateSpells);
@@ -4251,10 +4252,12 @@ function ParseSpellMenu() {
 		["with a Checkbox", "checkbox"],
 		["with an 'Always Prepared' Checkbox", "markedbox"],
 		["with 'At Will'", "atwill"],
-		["with a 'Long Rest' Checkbox", "oncelr"],
 		["with a 'Short Rest' Checkbox", "oncesr"],
-		["with 'Long Rest' \x26\x26 'Always Prepared' Checkboxes", "oncelr+markedbox"],
+		["with a 'Long Rest' Checkbox", "oncelr"],
+		["with a 'Day' Checkbox", "onceday"],
 		["with 'Short Rest' \x26\x26 'Always Prepared' Checkboxes", "oncesr+markedbox"],
+		["with 'Long Rest' \x26\x26 'Always Prepared' Checkboxes", "oncelr+markedbox"],
+		["with 'Day' \x26\x26 'Always Prepared' Checkboxes", "onceday+markedbox"],
 		["Ask me for the first column's text", "askuserinput"],
 	]
 	//add a menu with a changed name
@@ -4456,10 +4459,12 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		["with a Checkbox", "checkbox"],
 		["with an 'Always Prepared' Checkbox", "markedbox"],
 		["with 'At Will'", "atwill"],
-		["with a 'Long Rest' Checkbox", "oncelr"],
 		["with a 'Short Rest' Checkbox", "oncesr"],
-		["with 'Long Rest' \x26\x26 'Always Prepared' Checkboxes", "oncelr+markedbox"],
+		["with a 'Long Rest' Checkbox", "oncelr"],
+		["with a 'Day' Checkbox", "onceday"],
 		["with 'Short Rest' \x26\x26 'Always Prepared' Checkboxes", "oncesr+markedbox"],
+		["with 'Long Rest' \x26\x26 'Always Prepared' Checkboxes", "oncelr+markedbox"],
+		["with 'Day' \x26\x26 'Always Prepared' Checkboxes", "onceday+markedbox"],
 		["Ask me for the first column's text", "askuserinput"],
 	];
 	//make an array of the default options for first column
@@ -4468,10 +4473,12 @@ function MakeSpellLineMenu_SpellLineOptions() {
 		["to a Checkbox", "checkbox"],
 		["to an 'Always Prepared' Checkbox", "markedbox"],
 		["to 'At Will'", "atwill"],
-		["to a 'Long Rest' Checkbox", "oncelr"],
 		["to a 'Short Rest' Checkbox", "oncesr"],
-		["to 'Long Rest' \x26\x26 'Always Prepared' Checkboxes", "oncelr+markedbox"],
+		["to a 'Long Rest' Checkbox", "oncelr"],
+		["to a 'Day' Checkbox", "onceday"],
 		["to 'Short Rest' \x26\x26 'Always Prepared' Checkboxes", "oncesr+markedbox"],
+		["to 'Long Rest' \x26\x26 'Always Prepared' Checkboxes", "oncelr+markedbox"],
+		["to 'Day' \x26\x26 'Always Prepared' Checkboxes", "onceday+markedbox"],
 		["Ask me for the first column's text", "askuserinput"],
 	];
 

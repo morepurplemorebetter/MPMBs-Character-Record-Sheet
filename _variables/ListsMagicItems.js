@@ -687,7 +687,7 @@ var Base_MagicItemsList = {
 			name: "Water Elemental only",
 			spells: ["conjure elemental"],
 			selection: ["conjure elemental"],
-			firstCol: "oncelr",
+			firstCol: "onceday",
 		}],
 		usages: 1,
 		recovery: "dawn",
@@ -751,7 +751,7 @@ var Base_MagicItemsList = {
 			name: "Fire Elemental only",
 			spells: ["conjure elemental"],
 			selection: ["conjure elemental"],
-			firstCol: "oncelr",
+			firstCol: "onceday",
 		}],
 		usages: 1,
 		recovery: "dawn",
@@ -852,7 +852,7 @@ var Base_MagicItemsList = {
 			name: "Cape of the Mountebank",
 			spells: ["dimension door"],
 			selection: ["dimension door"],
-			firstCol: "oncelr",
+			firstCol: "onceday",
 		}],
 	},
 	"carpet of flying": {
@@ -900,7 +900,7 @@ var Base_MagicItemsList = {
 			name: "Air Elemental only",
 			spells: ["conjure elemental"],
 			selection: ["conjure elemental"],
-			firstCol: "oncelr",
+			firstCol: "onceday",
 		}],
 		usages: 1,
 		recovery: "dawn",
@@ -942,7 +942,7 @@ var Base_MagicItemsList = {
 			name: "Once per dawn",
 			spells: ["scorching ray"],
 			selection: ["scorching ray"],
-			firstCol: "oncelr",
+			firstCol: "onceday",
 		}],
 	},
 	"cloak of arachnida": {
@@ -964,13 +964,15 @@ var Base_MagicItemsList = {
 			name: "Once per dawn",
 			spells: ["web"],
 			selection: ["web"],
-			firstCol: "oncelr",
+			firstCol: "onceday",
 		}],
 		spellChanges: {
 			"web": {
 				description: "2\xD7 20-ft cubes, anchored, all save or restrained; dif. ter.; lightly obscures; Str check vs. DC 13 to free",
+				changes: "The web created by the Cloak of Arachnida fills twice its normal area. Once used, the cloak can't be used to cast Web again until the next dawn.",
 			},
 		},
+		savetxt: { immune: ["webs"] },
 	},
 	"cloak of displacement": { // contributed by Smashman
 		name: "Cloak of Displacement",
@@ -1030,7 +1032,7 @@ var Base_MagicItemsList = {
 			name: "Only self into bat",
 			spells: ["polymorph"],
 			selection: ["polymorph"],
-			firstCol: "oncelr",
+			firstCol: "onceday",
 		}],
 		spellChanges: {
 			"polymorph": {
@@ -1107,10 +1109,10 @@ var Base_MagicItemsList = {
 				selection: ["scrying"],
 				firstCol: "atwill",
 			}, {
-				name: "1\xD7 per long rest, DC 17",
+				name: "1\xD7 per dawn, DC 17",
 				spells: ["suggestion"],
 				selection: ["suggestion"],
-				firstCol: "oncelr",
+				firstCol: "onceday",
 			}],
 			limfeaname: "Suggestion through Crystal Ball",
 			usages: 1,
@@ -2667,7 +2669,7 @@ var Base_MagicItemsList = {
 			name: "Once per dawn",
 			spells: ["suggestion"],
 			selection: ["suggestion"],
-			firstCol: "oncelr",
+			firstCol: "onceday",
 		}],
 	},
 	"helm of teleportation": {
@@ -3684,7 +3686,7 @@ var Base_MagicItemsList = {
 			name: "once per dawn",
 			spells: ["etherealness"],
 			selection: ["etherealness"],
-			firstCol: "oncelr",
+			firstCol: "onceday",
 		}],
 		spellChanges: {
 			"etherealness": {
@@ -5949,7 +5951,7 @@ var Base_MagicItemsList = {
 			name: "Earth Elemental only",
 			spells: ["conjure elemental"],
 			selection: ["conjure elemental"],
-			firstCol: "oncelr",
+			firstCol: "onceday",
 		}],
 		usages: 1,
 		recovery: "dawn",
@@ -6791,7 +6793,7 @@ var Base_MagicItemsList = {
 			name: "Once per dawn",
 			spells: ["gust of wind"],
 			selection: ["gust of wind"],
-			firstCol: "oncelr",
+			firstCol: "onceday",
 		}],
 	},
 	"winged boots": {
