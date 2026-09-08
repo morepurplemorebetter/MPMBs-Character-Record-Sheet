@@ -9091,7 +9091,5 @@ function setUnicodeUse(enable, force) {
 		setSkillTooltips(true);
 		MakeSkillsMenu_SkillsOptions(true, true);
 		SetHPTooltip();
-		AtHigherLevels = "\n   " + toUni("At Higher Levels") + ": ";
-		PsychicFocus = "\n   " + toUni("Psychic Focus") + ": "
 	}
 }

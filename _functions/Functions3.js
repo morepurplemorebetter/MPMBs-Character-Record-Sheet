@@ -372,8 +372,8 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 	// Add (true) or remove (false) the feature's attributes?
 	var AddFea = fObj.minlevel ? fObj.minlevel <= lvlA[1] : 0 < lvlA[1];
 
-	// Get the choice, if any choices exist, it was selected in the past, and not entered into this function
-	if (!choiceA[1] && !choiceA[2] && fObj.choices) {
+	// Get the choice of a class feature, if any choices exist, it was selected in the past, and not entered into this function
+	if (type === "class" && !choiceA[1] && !choiceA[2] && fObj.choices) {
 		choiceA[1] = GetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", false);
 		if (choiceA[1] && !choiceA[0]) choiceA[0] = choiceA[1];
 	}
@@ -441,13 +441,17 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		// if we are are changing the choice or removing the feature, now remove the old choice
 		//if (cJustChange || (!AddFea && cOldObj)) {
 		if (cOldObj && (cJustChange || !AddFea)) {
-			SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", false, cOnly ? choiceA[0] : "");
+			if (type === "class") {
+				SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", false, cOnly ? choiceA[0] : "");
+			}
 			useAttr(cOldObj, false, false, choiceA[0]);
 		}
 		// if we are changing the choice or adding the feature, now add the new choice
 		//if (cJustChange || cOnly || (AddFea && cNewObj)) {
 		if (cNewObj && AddFea) {
-			SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", AddFea ? choiceA[1] : "", cOnly ? choiceA[1] : "");
+			if (type === "class") {
+				SetFeatureChoice(type, aParent, aParent !== fObjName ? fObjName : "", AddFea ? choiceA[1] : "", cOnly ? choiceA[1] : "");
+			}
 			useAttr(cNewObj, true, false, choiceA[1]);
 		}
 	}

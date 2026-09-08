@@ -1,3 +1,3 @@
-var PsychicFocus = "\n   " + toUni("Psychic Focus") + ": ";
+var PsychicFocus = "\n   ***Psychic Focus***. ";
 var AllPsionicsArray, AddPsionicsMenu, AllPsionicClasses;
 var Base_PsionicsList = {};
