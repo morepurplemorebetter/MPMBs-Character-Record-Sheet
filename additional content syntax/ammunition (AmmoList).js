@@ -99,7 +99,7 @@ AmmoList["purple bullets"] = {
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
 	name: "Purple Bullets",
-	/*	name // REQUIRED //
+/*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the ammunition as it will be used by the sheet
 
@@ -109,7 +109,7 @@ AmmoList["purple bullets"] = {
 */
 	source: ["SRD", 204],
 	source: [["E", 7], ["S", 115]],
-	/*	source // REQUIRED //
+/*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the ammunition is found
 
@@ -133,7 +133,7 @@ AmmoList["purple bullets"] = {
 	"HB" refers to the 'homebrew' source.
 */
 	defaultExcluded: true,
-	/*	defaultExcluded // OPTIONAL //
+/*	defaultExcluded // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this ammunition should be excluded by default (true) or included by default (false)
 
@@ -147,7 +147,7 @@ AmmoList["purple bullets"] = {
 	Setting this attribute to false is the same as not including this attribute.
 */
 	icon: "Bullets",
-	/*	icon // REQUIRED //
+/*	icon // REQUIRED //
 	TYPE:	string
 	USE:	icon to use for the ammunition
 
@@ -165,7 +165,7 @@ AmmoList["purple bullets"] = {
 	If this is not one of the options listed above, the "Arrows" icons will be used.
 */
 	weight: 24,
-	/*	weight // OPTIONAL //
+/*	weight // OPTIONAL //
 	TYPE:	number
 	USE:	the weight of a single piece of the ammunition in lb
 
@@ -173,7 +173,7 @@ AmmoList["purple bullets"] = {
 	Setting this to 0 is the same as not including this attribute.
 */
 	isMagicAmmo: true,
-	/*	isMagicAmmo // OPTIONAL //
+/*	isMagicAmmo // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether (true) or not (false) this ammunition is magical ammunition
 
@@ -185,7 +185,7 @@ AmmoList["purple bullets"] = {
 	Setting this to false is the same as not including this attribute.
 */
 	invName: "Bullets, Purple",
-	/*	invName // OPTIONAL //
+/*	invName // OPTIONAL //
 	TYPE:	string
 	USE:	the name used when adding the ammunition from the Ammo section to the Equipment section
 

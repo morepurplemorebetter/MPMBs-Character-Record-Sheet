@@ -68,7 +68,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 
 	spellcastingList: {
 		extraspells: ["fire bolt", "hold person"],
-		/*	extraspells // OPTIONAL //
+	/*	extraspells // OPTIONAL //
 		TYPE:	array (variable length) of spell object names as used in the SpellsList object
 		USE:	add spells to final list regardless if they meet the other requirements
 
@@ -77,7 +77,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		spells: ["cure wounds", "fear"],
-		/*	spells // OPTIONAL //
+	/*	spells // OPTIONAL //
 		TYPE:	array (variable length) of spell object names as used in the SpellsList object
 		USE:	spells to use for the final list
 
@@ -88,7 +88,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		notspells: ["acid splash", "fireball"],
-		/*	notspells // OPTIONAL //
+	/*	notspells // OPTIONAL //
 		TYPE:	array (variable length) of spell object names as used in the SpellsList object
 		USE:	spells to remove from the final list
 
@@ -97,7 +97,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		"class": ["cleric", "wizard"],
-		/*	class // OPTIONAL //
+	/*	class // OPTIONAL //
 		TYPE:	array (variable length) of class names as used in the SpellsList object's classes attribute
 		USE:	spells not on one of the listed class spell lists will be excluded from the final list
 
@@ -107,13 +107,13 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		level: [1, 5],
-		/*	level // OPTIONAL //
+	/*	level // OPTIONAL //
 		TYPE:	array with two number entries: lower and upper limit of level of spells
 		USE:	spells not within this level range will be excluded from the final list
 	*/
 
 		school: ["Evoc", "Abjur"],
-		/*	school // OPTIONAL //
+	/*	school // OPTIONAL //
 		TYPE:	array (variable length) of spell school names as used in the spellSchoolList object
 		USE:	spells not in one of the schools listed will be excluded from the final list
 
@@ -121,7 +121,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		attackOnly: true,
-		/*	attackOnly // OPTIONAL //
+	/*	attackOnly // OPTIONAL //
 		TYPE:	boolean
 		USE:	include/exclude spells based on if they use a spell attack
 
@@ -134,7 +134,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		ritual: true,
-		/*	ritual // OPTIONAL //
+	/*	ritual // OPTIONAL //
 		TYPE:	boolean
 		USE:	include/exclude spells based on if they are ritual spells or not
 

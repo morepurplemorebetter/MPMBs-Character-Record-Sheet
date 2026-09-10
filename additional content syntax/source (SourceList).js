@@ -104,7 +104,7 @@ SourceList["BoP"] = {
 	Also note the absence of the word "var" and the use of brackets [].
 */
 	name: "Book of Purple",
-	/*	name // REQUIRED //
+/*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the source as it will be used by the sheet
 
@@ -112,7 +112,7 @@ SourceList["BoP"] = {
 	The full name will only be used in tooltips and dialogs, so make it as long as you want.
 */
 	abbreviation: "BoP",
-	/*	abbreviation // REQUIRED //
+/*	abbreviation // REQUIRED //
 	TYPE:	string
 	USE:	abbreviation of the source as it will be used by the sheet
 
@@ -122,7 +122,7 @@ SourceList["BoP"] = {
 	The abbreviation will be used extensively throughout the sheets, so be sure to make it easily recognizable.
 */
 	abbreviationSpellsheet: "P",
-	/*	abbreviationSpellsheet // OPTIONAL //
+/*	abbreviationSpellsheet // OPTIONAL //
 	TYPE:	string
 	USE:	abbreviation of the source as it will be used on the spell sheet pages in the "B" column
 	ADDED:	v13.0.1
@@ -140,7 +140,7 @@ SourceList["BoP"] = {
 	For example, for the above `SourceList["BoP"]`, the sheet will put a "B" on the spell sheet page.
 */
 	date: "2019/02/26",
-	/*	date // OPTIONAL //
+/*	date // OPTIONAL //
 	TYPE:	string
 	USE:	date of the source
 
@@ -154,7 +154,7 @@ SourceList["BoP"] = {
 	A SourceList entry without this attribute will always considered to be newer than one with it.
 */
 	group: "BoP",
-	/*	group // OPTIONAL //
+/*	group // OPTIONAL //
 	TYPE:	string
 	USE:	group to list the source under in the Source Materials dialog
 
@@ -177,7 +177,7 @@ SourceList["BoP"] = {
 	 "D&D Beyond"               // Homebrew found on the D&D Beyond website
 */
 	campaignSetting: "Forgotten Realms",
-	/*	campaignSetting // OPTIONAL //
+/*	campaignSetting // OPTIONAL //
 	TYPE:	string
 	USE:	the setting for which this source is written, if any
 
@@ -185,7 +185,7 @@ SourceList["BoP"] = {
 	thus making it easier to include or exclude everything from a specific setting.
 */
 	url: "https://nonexisting-website.com/Book_of_Purple.pdf",
-	/*	url // OPTIONAL //
+/*	url // OPTIONAL //
 	TYPE:	string
 	USE:	link to the source online
 

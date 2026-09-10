@@ -2991,7 +2991,9 @@ function correctMIdescriptionLong(FldNmbr) {
 	Value("Extra.Magic Item Description " + FldNmbr, theDesc);
 	// Apply the chooseGear item again to the description
 	var hasChooseGear = aMIvar && aMIvar.chooseGear ? aMIvar.chooseGear : aMI.chooseGear;
-	if (hasChooseGear) selectMagicItemGearType(true, FldNmbr, hasChooseGear, false, true);
+	if (hasChooseGear && hasChooseGear.descriptionChange !== false) {
+		selectMagicItemGearType(true, FldNmbr, hasChooseGear, false, true);
+	}
 }
 
 function ApplyAttunementMI(FldNmbr) {
@@ -3866,7 +3868,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 			// some type-dependent filters
 			if (typeNm == "armor" && (!kObj.type || kObj.isMagicArmor)) {
 				continue;
-			} else if (typeNm == "weapon" && (kObj.isMagicWeapon) || /natural|spell|cantrip|improvised/i.test(kObj.type + kObj.list)) {
+			} else if (typeNm == "weapon" && (kObj.isMagicWeapon) || /natural|spell|cantrip|improvised|gear/i.test(kObj.type + kObj.list)) {
 				continue;
 			} else if (typeNm == "ammunition" && (kObj.isMagicAmmo || WeaponsList[key])) {
 				continue;
@@ -3942,7 +3944,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 				break;
 		}
 	}
-	if (AddRemove && (isApplyFld || correctingDescrLong)) {
+	if (AddRemove && (isApplyFld || correctingDescrLong) && typeObj.descriptionChange !== false) {
 		// Update the description of the magic item to reflect the choice
 		var descrWrd = typeObj.descriptionChange ? typeObj.descriptionChange[1] : typeNm;
 		var desrcStr = What(MIflds[2]).replace(

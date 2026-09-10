@@ -102,7 +102,7 @@ CreatureList["purple crawler"] = {
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
 	name: "Purple Crawler",
-	/*	name // REQUIRED //
+/*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the creature as it will be used by the sheet
 
@@ -110,7 +110,7 @@ CreatureList["purple crawler"] = {
 	the companion and wild shape pages.
 */
 	nameAlt: ["Purple Creeper"],
-	/*	nameAlt // OPTIONAL //
+/*	nameAlt // OPTIONAL //
 	TYPE:	array of strings (variable size)
 	USE:	alternative names for the creature
 	ADDED:	v13.0.6
@@ -126,7 +126,7 @@ CreatureList["purple crawler"] = {
 	then these alternative names will also be shown in the menu options.
 */
 	nameThis: "crawler",
-	/*	nameThis // OPTIONAL //
+/*	nameThis // OPTIONAL //
 	TYPE:	string
 	USE:	name to use for "[THIS]"
 	ADDED:	v14.0.1
@@ -153,7 +153,7 @@ CreatureList["purple crawler"] = {
 		["E", 7],
 		["S", 115],
 	],
-	/*	source // REQUIRED //
+/*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the creature is found
 
@@ -177,7 +177,7 @@ CreatureList["purple crawler"] = {
 	"HB" refers to the 'homebrew' source.
 */
 	defaultExcluded: true,
-	/*	defaultExcluded // OPTIONAL //
+/*	defaultExcluded // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether this creature should be excluded by default (true) or included by default (false)
 
@@ -192,7 +192,7 @@ CreatureList["purple crawler"] = {
 */
 	size: 3,
 	size: [4, 3],
-	/*	size // REQUIRED //
+/*	size // REQUIRED //
 	TYPE:	number or array (since v13.0.6)
 	USE:	set the size category drop-down box
 
@@ -218,7 +218,7 @@ CreatureList["purple crawler"] = {
 */
 	type: "Fiend",
 	type: ["Celestial", "Fey", "Fiend"],
-	/*	type // REQUIRED //
+/*	type // REQUIRED //
 	TYPE:	string or array (since v13.1.0)
 	USE:	set the type drop-down box
 
@@ -250,7 +250,7 @@ CreatureList["purple crawler"] = {
 */
 	subtype: "devil",
 	subtype: ["demon", "devil"],
-	/*	subtype // OPTIONAL //
+/*	subtype // OPTIONAL //
 	TYPE:	string or array (since v13.1.0)
 	USE:	add the subtype in the type drop-down box
 
@@ -270,7 +270,7 @@ CreatureList["purple crawler"] = {
 */
 	companion: "familiar",
 	companion: ["familiar_not_al", "mount"],
-	/*	companion // OPTIONAL //
+/*	companion // OPTIONAL //
 	TYPE:	array of strings (or string, for backwards compatibility)
 	USE:	list this creature as an option for a special type of companion
 	CHANGE:	v13.1.0
@@ -312,7 +312,7 @@ CreatureList["purple crawler"] = {
 	will not be listed in the menu for that companion type.
 */
 	companionApply: "companion",
-	/*	companionApply // OPTIONAL //
+/*	companionApply // OPTIONAL //
 	TYPE:	string
 	USE:	always set this creature to be this special type of companion
 
@@ -343,7 +343,7 @@ CreatureList["purple crawler"] = {
 	Be aware that this list is slightly different than the one for the `companion` attribute!
 */
 	alignment: "Unaligned",
-	/*	alignment // REQUIRED //
+/*	alignment // REQUIRED //
 	TYPE:	string
 	USE:	set the alignment drop-down box
 
@@ -351,7 +351,7 @@ CreatureList["purple crawler"] = {
 	thus it is recommended to capitalize it for consistency.
 */
 	ac: 11,
-	/*	ac // REQUIRED //
+/*	ac // REQUIRED //
 	TYPE:	number
 	USE:	set the armour class
 
@@ -359,7 +359,7 @@ CreatureList["purple crawler"] = {
 	or anything like that.
 */
 	hp: 10,
-	/*	hp // REQUIRED //
+/*	hp // REQUIRED //
 	TYPE:	number
 	USE:	set the maximum amount of hit points
 
@@ -369,7 +369,7 @@ CreatureList["purple crawler"] = {
 	but by default only the hp value set here will be displayed and it will not automatically update.
 */
 	hd: [3, 4],
-	/*	hd // REQUIRED //
+/*	hd // REQUIRED //
 	TYPE:	array with two number entries
 	USE:	set the hit dice
 
@@ -389,7 +389,7 @@ CreatureList["purple crawler"] = {
 	hdLinked: function (prefix) {
 		return classes.known.ranger ? classes.known.ranger.level - 3 : 0;
 	},
-	/*	hdLinked // OPTIONAL //
+/*	hdLinked // OPTIONAL //
 	TYPE:	array with ClassList object names (variable length) or function
 	USE:	dynamically set the number of HD to a class level (array) or anything you want (function)
 	ADDED:	v13.0.6
@@ -412,7 +412,7 @@ CreatureList["purple crawler"] = {
 		the first entry in the `hd` attribute, see above.
 */
 	speed: "20 ft, climb 30 ft",
-	/*	speed // REQUIRED //
+/*	speed // REQUIRED //
 	TYPE:	string
 	USE:	set the movement speed
 
@@ -421,7 +421,7 @@ CreatureList["purple crawler"] = {
 	a comma followed by a line break.
 */
 	proficiencyBonus: 2,
-	/*	proficiencyBonus // REQUIRED //
+/*	proficiencyBonus // REQUIRED //
 	TYPE:	number
 	USE:	set the proficiency bonus
 
@@ -429,7 +429,7 @@ CreatureList["purple crawler"] = {
 	It is also used for determining the creature's proficiency with skills and saving throws (see below).
 */
 	proficiencyBonusLinked: true,
-	/*	proficiencyBonusLinked // OPTIONAL //
+/*	proficiencyBonusLinked // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether the proficiency bonus is the same (true) as the main character or not (false)
 	ADDED:	v13.0.6
@@ -445,7 +445,7 @@ CreatureList["purple crawler"] = {
 	Setting this attribute to false is the same as not including this attribute.
 */
 	challengeRating: "1/2",
-	/*	challengeRating // REQUIRED //
+/*	challengeRating // REQUIRED //
 	TYPE:	string
 	USE:	set the challenge rating
 
@@ -453,7 +453,7 @@ CreatureList["purple crawler"] = {
 	This value is used on the wild shape page to show the creature in the right submenu.
 */
 	scores: [15, 13, 12, 2, 13, 8],
-	/*	scores // REQUIRED //
+/*	scores // REQUIRED //
 	TYPE:	array of six numbers
 	USE:	set the ability scores
 
@@ -471,7 +471,7 @@ CreatureList["purple crawler"] = {
 	[Str, Dex, Con, Int, Wis, Cha]
 */
 	saves: ["", 3, "", "", "", ""],
-	/*	saves // OPTIONAL //
+/*	saves // OPTIONAL //
 	TYPE:	array of six numbers
 	USE:	set the saving throw proficiencies
 
@@ -486,7 +486,7 @@ CreatureList["purple crawler"] = {
 	Then it will check the proficiency box and/or fill the modifier field, as appropriate.
 */
 	savesLinked: true,
-	/*	savesLinked // OPTIONAL //
+/*	savesLinked // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether the total save bonus is the same (true) as the main character or not (false)
 	ADDED:	v13.0.6
@@ -505,7 +505,7 @@ CreatureList["purple crawler"] = {
 	Setting this attribute to false is the same as not including this attribute.
 */
 	senses: "Darkvision 60 ft",
-	/*	senses	// OPTIONAL //
+/*	senses	// OPTIONAL //
 	TYPE:	string
 	USE:	add text to the Senses section on the Companion page
 	CHANGE:	v14.0.5 (made optional)
@@ -524,7 +524,7 @@ CreatureList["purple crawler"] = {
 	If they don't fit (well), consider using the `wildshapeString` attribute, see below.
 */
 	passivePerception: 10,
-	/*	passivePerception	// OPTIONAL //
+/*	passivePerception	// OPTIONAL //
 	TYPE:	number
 	USE:	the Passive Perception value to be used to create
 	CHANGE:	v14.0.14 (also apples to companion page)
@@ -537,7 +537,7 @@ CreatureList["purple crawler"] = {
 	10 + Perception bonus, but there is no harm in adding it anyway.
 */
 	attacksAction: 2,
-	/*	attacksAction // REQUIRED //
+/*	attacksAction // REQUIRED //
 	TYPE:	number
 	USE:	set the number of attacks per action
 
@@ -552,7 +552,7 @@ CreatureList["purple crawler"] = {
 		range: "Melee (5 ft)",
 		description: "Two claws attacks as an Attack action",
 	}],
-	/*	attacks // REQUIRED //
+/*	attacks // REQUIRED //
 	TYPE:	array (variable length) of WeaponsList objects
 	USE:	set the attack entries
 
@@ -575,7 +575,7 @@ CreatureList["purple crawler"] = {
 		"athletics": 4,
 		"perception": 5,
 	},
-	/*	skills // OPTIONAL //
+/*	skills // OPTIONAL //
 	TYPE:	object with skill names as attribute names
 	USE:	set the proficiency, expertise, and extra bonus for skills
 
@@ -599,7 +599,7 @@ CreatureList["purple crawler"] = {
 	damage_immunities: "poison",
 	condition_immunities: "exhaustion, grappled, paralyzed, petrified, poisoned, prone, restrained, unconscious",
 	languages: "Terran",
-	/*	damage_vulnerabilities	// OPTIONAL //
+/*	damage_vulnerabilities	// OPTIONAL //
 	damage_resistances	  	// OPTIONAL //
 	damage_immunities     	// OPTIONAL //
 	condition_immunities  	// OPTIONAL //
@@ -677,7 +677,7 @@ CreatureList["purple crawler"] = {
 		wildshapeShow: ". Once per long rest, cast Hypnotic Pattern without components.",
 		bulletString: "\u2736",
 	}],
-	/*	features // OPTIONAL //
+/*	features // OPTIONAL //
 	actions  // OPTIONAL //
 	traits   // OPTIONAL //
 	notes    // OPTIONAL // since v13.1.11
@@ -792,12 +792,12 @@ CreatureList["purple crawler"] = {
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>> //
 	// >>> Companion Page Only >>> //
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>> //
-	/*
+/*
 	The below attributes won't affect anything when the creature is select as a wild shape,
 	but they will work on a Companion page.
 */
 
-	/*	minlevel // OPTIONAL //
+/*	minlevel // OPTIONAL //
 	(Part of `features`, `traits`, `actions`, or `notes` object, see above)
 	TYPE:	number
 	USE:	the level at which to add the feature, trait, or action
@@ -813,7 +813,7 @@ CreatureList["purple crawler"] = {
 	Setting this attribute to 1 is the same as not including it.
 */
 
-	/*	eval & removeeval & addMod // OPTIONAL //
+/*	eval & removeeval & addMod // OPTIONAL //
 	(Part of `features`, `traits`, `actions`, or `notes` object, see above)
 	TYPE:	variable, see the entries for `eval`, `removeeval`, or `addMod`
 	USE:	variable, see the entries for `eval`, `removeeval`, or `addMod`
@@ -828,7 +828,7 @@ CreatureList["purple crawler"] = {
 
 	wildshapeShow: false,
 	wildshapeShow: "Shorter text for on the Wild Shape page.",
-	/*	wildshapeShow // OPTIONAL //
+/*	wildshapeShow // OPTIONAL //
 	(Part of `features`, `traits`, or `actions` object, see above)
 	TYPE:	boolean or string
 	USE:	change or stop text on the wild shape page
@@ -853,7 +853,7 @@ CreatureList["purple crawler"] = {
 	minlevelLinked: function (prefix) {
 		return classes.known.warlock ? classes.known.warlock.level + 1 : 0;
 	},
-	/*	minlevelLinked // OPTIONAL //
+/*	minlevelLinked // OPTIONAL //
 	TYPE:	array with ClassList object names (variable length) or function
 	USE:	dynamically select which level to use for level-dependent features
 
@@ -880,7 +880,7 @@ CreatureList["purple crawler"] = {
 */
 
 	header: "Summon",
-	/*	header // OPTIONAL //
+/*	header // OPTIONAL //
 	TYPE:	string
 	USE:	set the single-word header at the top left of the companion page
 			This will only affect hit points on the companion page, not wild shapes
@@ -910,7 +910,7 @@ CreatureList["purple crawler"] = {
 		text: "The purple crawler adds its master's Charisma modifier (min 1) to all its saving throws.",
 	},
 	],
-	/*	addMod // OPTIONAL //
+/*	addMod // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	add value to a modifier field
 	ADDED:	v13.0.6
@@ -920,7 +920,7 @@ CreatureList["purple crawler"] = {
 	Please look there for a complete explanation.
 */
 	calcChanges: {
-		/*	calcChanges // OPTIONAL //
+/*	calcChanges // OPTIONAL //
 	TYPE:	object (optional attributes)
 	USE:	change how the hit points automation works
 			This will only affect hit points on the companion page, not wild shapes
@@ -940,7 +940,7 @@ CreatureList["purple crawler"] = {
 			HDobj.alt.push(Math.max(creaHP, rngrCompHp));
 			HDobj.altStr.push(" = the highest of either\n \u2022 " + creaHp + " from " + creaName + "'s normal maximum HP, or\n \u2022 4 \xD7 " + rngrLvl + " from four times my ranger level (" + rngrCompHp + ")");
 		},
-		/*	hp // OPTIONAL //
+	/*	hp // OPTIONAL //
 		TYPE:	function
 		USE:	change how Hit Points are calculated and what the Hit Points tooltip says
 
@@ -966,7 +966,7 @@ CreatureList["purple crawler"] = {
 		if (What("Unit System") === "metric") newSpeed = ConvertToMetric(newSpeed, 0.5);
 		Value(fldName, newSpeed);
 	},
-	/*	eval // OPTIONAL //
+/*	eval // OPTIONAL //
 	TYPE:	function
 	USE:	runs a piece of code when the creature is selected on the Companion page
 
@@ -993,7 +993,7 @@ CreatureList["purple crawler"] = {
 		if (What("Unit System") === "metric") newSpeed = ConvertToMetric(newSpeed, 0.5);
 		Value(fldName, newSpeed);
 	},
-	/*	removeeval // OPTIONAL //
+/*	removeeval // OPTIONAL //
 	TYPE:	function
 	USE:	runs a piece of code when the creature is removed from the Companion page
 
@@ -1013,7 +1013,7 @@ CreatureList["purple crawler"] = {
 	changeeval: function (prefix, lvl) {
 		Value(prefix + "Comp.Use.HD.Die", lvl[1] < 15 ? 8 : 10);
 	},
-	/*	changeeval // OPTIONAL //
+/*	changeeval // OPTIONAL //
 	TYPE:	function
 	USE:	runs a piece of code every time the main character's level changes
 	ADDED:	v13.0.6
@@ -1044,13 +1044,13 @@ CreatureList["purple crawler"] = {
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 	// >>> Wild Shape Page Only >>> //
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>> //
-	/*
+/*
 	The below attributes won't affect anything when the creature is selected on a
 	Companion page, but they will work on a Wild Shape page.
 */
 
 	wildshapeString: "Darkvision 60 ft; Tremorsense 60 ft| Knows Terran| Vulnerable to: thunder| Resistant to: bludgeoning, piercing, and slashing from nonmagical weapons| Immune to: poison, exhaustion, paralyzed, petrified, poisoned, unconscious| Earth Glide: can burrow through nonmagical, unworked earth and stone without disturbing the material| Siege Monster: does double damage to objects and structures",
-	/*	wildshapeString // OPTIONAL //
+/*	wildshapeString // OPTIONAL //
 	TYPE:	string
 	USE:	add text to the Traits & Features section on the Wild Shape page
 

@@ -98,13 +98,13 @@ PacksList["purplepack"] = {
 	Note the use of only lower case! Also note the absence of the word "var" and the use of brackets [].
 */
 	name: "Purple pack (10 gp)",
-	/*	name // REQUIRED //
+/*	name // REQUIRED //
 	TYPE:	string
 	USE:	name of the adventuring pack as it will be displayed in the equipment menu
 */
 	source: ["SRD", 204],
 	source: [["E", 7], ["S", 115]],
-	/*	source // REQUIRED //
+/*	source // REQUIRED //
 	TYPE:	array with two entries (or array of these arrays)
 	USE:	define where the adventuring pack is found
 

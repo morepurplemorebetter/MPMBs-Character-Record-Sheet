@@ -61,7 +61,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		["reaction", " (start)"],
 		["bonus action", "Shove"],
 	],
-	/*	action // OPTIONAL //
+/*	action // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add entry to the "Actions", "Bonus Actions", or "Reactions" section on the 1st page
 	CHANGE:	v13.2.3 (clarification of what will be amended and not)
@@ -92,7 +92,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	usages: 1,
 	usages: "Charisma modifier per ",
 	usages: [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2],
-	/*	usages // OPTIONAL //
+/*	usages // OPTIONAL //
 	TYPE:	number, string, or array with 20 entries
 	USE:	value to add in the "Usages" column in the "Limited Features" section
 
@@ -124,7 +124,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 
 	recovery: "short rest",
 	recovery: ["", "", "long rest", "long rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest"],
-	/*	recovery // OPTIONAL //
+/*	recovery // OPTIONAL //
 	TYPE:	string, or array with 20 strings
 	USE:	value to add in the "Recovery" column in the "Limited Features" section
 
@@ -154,7 +154,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 
 	altResource: "SS 5+",
 	altResource: ["", "", "SS 2+", "SS 2+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+", "SS 1+"],
-	/*	altResource // OPTIONAL //
+/*	altResource // OPTIONAL //
 	TYPE:	string, or array with 20 strings
 	USE:	value to add in the "Recovery" column in the "Limited Features" section in addition to the 'recovery' attribute
 
@@ -188,7 +188,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 
 	usagescalc: "event.value = Math.max(1, What('Wis Mod'));",
 	usagescalc: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 5;", "event.value = What('Wis Mod') + 6;", "event.value = What('Wis Mod') + 6;", "event.value = What('Wis Mod') + 6;"],
-	/*	usagescalc // OPTIONAL //
+/*	usagescalc // OPTIONAL //
 	TYPE:	string, or array with 20 strings
 	USE:	this string is set as the field calculation method for the "Usages" field in the "Limited Features" section
 
@@ -207,7 +207,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	limfeaname: "Hellish Rebuke (3d10)",
-	/*	limfeaname // OPTIONAL //
+/*	limfeaname // OPTIONAL //
 	TYPE:	string
 	USE:	value to add in the "Name" column in the "Limited Features" section instead of the feature's name
 
@@ -220,7 +220,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	limfeaAddToExisting: true,
-	/*	limfeaAddToExisting // OPTIONAL //
+/*	limfeaAddToExisting // OPTIONAL //
 	TYPE:	boolean
 	USE:	set to `true` to have the number set for `usages` be added to an existing limited feature by the same name, instead of overwriting it
 	ADDED:	v13.0.6
@@ -238,7 +238,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 
 	additional: "10% chance",
 	additional: ["", "d6", "d6", "d6", "d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12"],
-	/*	additional // OPTIONAL //
+/*	additional // OPTIONAL //
 	TYPE:	string, or array with 20 strings
 	USE:	value to add in brackets to the name in the "Limited Features" section
 
@@ -274,7 +274,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		altResource: "SS 5+", // OPTIONAL //
 		addToExisting: true, // OPTIONAL // ADDED v13.0.6
 	}],
-	/*	extraLimitedFeatures // OPTIONAL //
+/*	extraLimitedFeatures // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	entries to add to the "Limited Features" section which are not level-dependent
 
@@ -306,7 +306,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		["Thieves' tools", "Dex"],
 		["Musical instrument", 3],
 	],
-	/*	toolProfs // OPTIONAL //
+/*	toolProfs // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add tool proficiencies
 
@@ -326,7 +326,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		2,
 		["Elvish or Vedalken", 1],
 	],
-	/*	languageProfs // OPTIONAL //
+/*	languageProfs // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add language proficiencies
 
@@ -339,7 +339,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	saves: ["Str", "Dex", "Con", "Int", "Wis", "Cha", "HoS"],
-	/*	saves // OPTIONAL //
+/*	saves // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	set saving throw proficiencies on the 1st page
 
@@ -354,7 +354,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		["History", "only"],
 		["Religion", "increment"],
 	],
-	/*	skills // OPTIONAL //
+/*	skills // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add skill proficiency and expertise on the 1st page
 
@@ -373,7 +373,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	skillstxt: "Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival",
-	/*	skillstxt // OPTIONAL //
+/*	skillstxt // OPTIONAL //
 	TYPE:	string
 	USE:	description of skill proficiencies and skill proficiency choices gained, to use in the tooltips of skills
 
@@ -383,7 +383,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	armorProfs: [true, true, false, true],
-	/*	armorProfs // OPTIONAL //
+/*	armorProfs // OPTIONAL //
 	TYPE:	array with four entries
 	USE:	adds armour and shield proficiencies
 
@@ -396,13 +396,13 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	weaponProfs: [
-		/*	weaponProfs // OPTIONAL //
+	/*	weaponProfs // OPTIONAL //
 	TYPE:	array with two or three entries
 	USE:	adds weapon proficiencies
 */
 
 		true,
-		/* weaponProfs 1st entry // REQUIRED //
+	/* weaponProfs 1st entry // REQUIRED //
 		TYPE:	boolean
 		USE:	add simple weapon proficiency
 
@@ -412,7 +412,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		false,
-		/* weaponProfs 2nd entry // REQUIRED //
+	/* weaponProfs 2nd entry // REQUIRED //
 		TYPE:	boolean
 		USE:	add martial weapon proficiency
 
@@ -422,7 +422,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		["dagger", "longsword", "firearm", "Improvised Weapons"],
-	/* weaponProfs 3rd entry // OPTIONAL //
+/* weaponProfs 3rd entry // OPTIONAL //
 		TYPE:	array (variable length)
 		USE:	add weapon proficiency with the weapons or weapon-types listed
 
@@ -447,7 +447,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		select: ["Bite", "Rusty Greataxe"],
 		options: ["Longsword +2", "Rusty Greataxe"],
 	},
-	/*	weaponsAdd // OPTIONAL //
+/*	weaponsAdd // OPTIONAL //
 	TYPE:	object
 	USE:	add attack(s) to and/or edit the available options in 1st page attack section
 	CHANGE:	v13.1.14 (changed from array to object)
@@ -500,7 +500,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		noStealthDis: /mithral/i,
 		forceStealthDis: /oversized/i,
 	},
-	/*	armorAdd // OPTIONAL //
+/*	armorAdd // OPTIONAL //
 	TYPE:	object
 	USE:	select armor as current and/or edit the available options in the drop-down
 	CHANGE:	v13.1.14 (changed from string to object)
@@ -574,7 +574,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 
 	shieldAdd: "Wooden Buckler",
 	shieldAdd: ["Magical Buckler", 1, 2],
-	/*	shieldAdd // OPTIONAL //
+/*	shieldAdd // OPTIONAL //
 	TYPE:	string or array with three entries
 	USE:	set the shield on the 1st page as well as its bonus to AC and weight
 
@@ -601,7 +601,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	ammoAdd: [["Green Arrows", 12], ["Smoke Bombs", 5]],
-	/*	ammoAdd // OPTIONAL //
+/*	ammoAdd // OPTIONAL //
 	TYPE:	array (variable length) of arrays with 2 entries
 	USE:	adds each entry in the array to one of the ammunition drop-downs on the 1st page
 	ADDED:	v13.0.9
@@ -622,7 +622,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	ammoOptions: [{ /* AmmoList object, see "ammunition (AmmoList).js" syntax file  */ }],
-	/*	ammoOptions // OPTIONAL //
+/*	ammoOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the AmmoList variable
 
@@ -634,7 +634,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	armorOptions: [{ /* ArmourList object, see "armor (ArmourList).js" syntax file */ }],
-	/*	armorOptions // OPTIONAL //
+/*	armorOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the ArmourList variable
 	CHANGE:	v13.1.14 (added `selectNow` attribute)
@@ -653,7 +653,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	weaponOptions: [{ /* WeaponsList object, see "weapon (WeaponsList).js" syntax file */ }],
-	/*	weaponOptions // OPTIONAL //
+/*	weaponOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the WeaponsList variable
 	CHANGE:	v13.1.14 (added `selectNow` attribute)
@@ -682,7 +682,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		["Bludgeoning", "Bludgeon. (in rage)"],
 		["Slashing", "Slash. (nonmagical)"],
 	],
-	/*	dmgres // OPTIONAL //
+/*	dmgres // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add entry to the "Resistances" section on the 1st page
 
@@ -697,7 +697,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	savetxt: {
-		/*	savetxt // OPTIONAL //
+/*	savetxt // OPTIONAL //
 	TYPE:	object (optional attributes)
 	USE:	add text to the 1st page "Saving Throws" section
 				("Saving Throws" section for Printer Friendly,
@@ -707,7 +707,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 		text: ["Dex save vs. area effects: fail \u2015 half dmg, success \u2015 no dmg", "Magic can't put me to sleep"],
-		/*	text // OPTIONAL //
+	/*	text // OPTIONAL //
 		TYPE:	array of strings
 		USE:	add a text to the 1st page
 
@@ -715,7 +715,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		immune: ["poison", "disease", "paralyzed (by magic)"],
-		/*	immune // OPTIONAL //
+	/*	immune // OPTIONAL //
 		TYPE:	array of strings
 		USE:	add strings to the "Immune to" text on the 1st page
 		CHANGE:	v13.1.0 (conditional added)
@@ -735,7 +735,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		adv_vs: ["traps", "charmed", "sleep (by magic)"],
-	/*	adv_vs // OPTIONAL //
+/*	adv_vs // OPTIONAL //
 		TYPE:	array of strings
 		USE:	add strings to the "Adv. on saves vs." text on the 1st page
 		CHANGE:	v13.1.0 (conditional added)
@@ -759,7 +759,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		["Darkvision", "+30"],
 		["Darkvision", "fixed 60"],
 	],
-	/*	vision // OPTIONAL //
+/*	vision // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	add string to the "Senses" field on the 1st page
 
@@ -781,7 +781,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	speed: {
-		/*	speed // OPTIONAL //
+/*	speed // OPTIONAL //
 	TYPE:	object (optional attributes)
 	USE:	add or edit speed mode(s) to the 1st page
 
@@ -789,7 +789,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 		walk: { spd: 30, enc: 20 },
 		burrow: { spd: 15, enc: 15 },
-		/*	walk, burrow, climb, fly, or swim // OPTIONAL //
+	/*	walk, burrow, climb, fly, or swim // OPTIONAL //
 		TYPE:	object with two attributes, "spd" and "enc".
 		USE:	add movement mode of the object's name
 
@@ -874,7 +874,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	},
 
 	carryingCapacity: 2,
-	/*	carryingCapacity // OPTIONAL //
+/*	carryingCapacity // OPTIONAL //
 	TYPE:	whole number
 	USE:	multiply the carrying capacity (encumbrance) with this number
 
@@ -892,7 +892,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		["Stealth", false],
 		["Wisdom", true],
 	],
-	/*	advantages // OPTIONAL //
+/*	advantages // OPTIONAL //
 	TYPE:	array (variable length) with array (length 2)
 	USE:	set advantage on an ability check, saving throw, or attacks
 
@@ -924,7 +924,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	// >>>>>>>>>>>>>>>>>>>>>> //
 
 	scores: [0, 1, 0, 0, 2, 0],
-	/*	scores // OPTIONAL //
+/*	scores // OPTIONAL //
 	TYPE:	array of six numbers
 	USE:	add ability score improvements to the Ability Scores dialog
 
@@ -954,7 +954,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	scorestxt: "+2 Charisma and +1 to two other ability scores of my choice",
-	/*	scorestxt // OPTIONAL //
+/*	scorestxt // OPTIONAL //
 	TYPE:	string
 	USE:	description of ability score improvements to use in the Ability Scores dialog and tooltips
 
@@ -964,7 +964,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	scoresOverride: [0, 0, 0, 19, 0, 0],
-	/*	scoresOverride // OPTIONAL //
+/*	scoresOverride // OPTIONAL //
 	TYPE:	array of six numbers
 	USE:	add ability score overrides to the Ability Scores dialog
 
@@ -979,7 +979,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	scoresMaximum: [24, 0, 24, 0, "+2", 0],
-	/*	scoresMaximum // OPTIONAL //
+/*	scoresMaximum // OPTIONAL //
 	TYPE:	array of six numbers or strings
 	USE:	change ability score maximum in the Ability Scores dialog
 	CHANGE:	v13.0.8 (allow modifiers "+2" as well as fixed numbers)
@@ -1026,7 +1026,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	scoresMaxLimited: [0, 0, 25, 0, 25, "-2"],
-	/*	scoresMaxLimited // OPTIONAL //
+/*	scoresMaxLimited // OPTIONAL //
 	TYPE:	array of six numbers
 	USE:	only apply the `scores` values up to these maximums
 	ADDED:	v13.0.8
@@ -1106,7 +1106,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	// >>>>>>>>>>>>>>>>>>>> //
 
 	spellcastingBonus: [{
-		/*	spellcastingBonus // OPTIONAL //
+	/*	spellcastingBonus // OPTIONAL //
 	TYPE:	array of objects (or just a single object)
 	USE:	adds entries to the "Bonus Spells" section of the spell selection dialog
 
@@ -1136,13 +1136,13 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		spells: ["light"],
 
 		name: "Arcane Initiate",
-		/*	name // REQUIRED //
+	/*	name // REQUIRED //
 		TYPE:	string
 		USE:	the name as it appears in the "Bonus Spells" section of the spell selection dialog
 	*/
 
 		times: 2,
-		/*	name // OPTIONAL //
+	/*	name // OPTIONAL //
 		TYPE:	number or array of numbers with 20 entries
 		USE:	how many times this entry should appear in the "Bonus Spells" section of the spell selection dialog
 
@@ -1155,7 +1155,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		selection: ["light"],
-		/*	selection // OPTIONAL //
+	/*	selection // OPTIONAL //
 		TYPE:	array (variable length)
 		USE:	select which of the spells from the drop-down to select
 
@@ -1169,7 +1169,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		firstCol: "8",
-		/*	name // OPTIONAL //
+	/*	name // OPTIONAL //
 		TYPE:	string
 		USE:	set the first column of the spell line on the spell sheet
 		CHANGE:	v14.0.1 (onceXr+markedbox options)
@@ -1200,7 +1200,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		fixedSpAttack: 9,
 		allowUpCasting: true, // Added v13.0.6
 		magicItemComponents: true, // Added v13.0.8
-	/*	spellcastingAbility & fixedDC & fixedSpAttack & allowUpCasting & magicItemComponents // OPTIONAL //
+/*	spellcastingAbility & fixedDC & fixedSpAttack & allowUpCasting & magicItemComponents // OPTIONAL //
 		All of these are explained in detail below.
 
 		You can include each in a spellcastingBonus object to do the exact same thing as explained below.
@@ -1214,7 +1214,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 
 	spellcastingAbility: 6,
 	spellcastingAbility: [4, 5, 6],
-	/*	spellcastingAbility // OPTIONAL //
+/*	spellcastingAbility // OPTIONAL //
 	TYPE:	number corresponding to the ability score (1 = Str, 2 = Dex, 3 = Con, 4 = Int, 5 = Wis, 6 = Cha)
 			or "class" or "race"
 			or an array of any of the above
@@ -1262,7 +1262,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	fixedDC: 13,
-	/*	fixedDC // OPTIONAL //
+/*	fixedDC // OPTIONAL //
 	TYPE:	number
 	USE:	set the DC and spell attack to a fixed value, not dependent on ability score
 
@@ -1290,7 +1290,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	fixedSpAttack: 5,
-	/*	fixedSpAttack // OPTIONAL //
+/*	fixedSpAttack // OPTIONAL //
 	TYPE:	number
 	USE:	set the spell attack and DC to a fixed value, not dependent on ability score
 
@@ -1318,7 +1318,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	allowUpCasting: true,
-	/*	allowUpCasting // OPTIONAL //
+/*	allowUpCasting // OPTIONAL //
 	TYPE:	boolean
 	USE:	do not limit spells to only be cast at their lowest level
 	ADDED:	v13.0.6
@@ -1340,7 +1340,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	magicItemComponents: true,
-	/*	magicItemComponents // OPTIONAL //
+/*	magicItemComponents // OPTIONAL //
 	TYPE:	boolean
 	USE:	change all spell components on the spell sheet to "Mƒ" (only a magic item)
 	ADDED:	v13.0.8
@@ -1364,7 +1364,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	spellcastingExtra: ["cure wounds", "guiding bolt", "flaming sphere", "lesser restoration", "daylight", "revivify", "guardian of faith", "wall of fire", "flame strike", "greater restoration"],
-	/*	spellcastingExtra // OPTIONAL //
+/*	spellcastingExtra // OPTIONAL //
 	TYPE:	array (variable length)
 	USE:	adds the spells in the array to the list of spells to choose from
 
@@ -1416,7 +1416,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	spellcastingExtraApplyNonconform: true,
-	/*	spellcastingExtraApplyNonconform // OPTIONAL //
+/*	spellcastingExtraApplyNonconform // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether to use the default (false) or variant (true) way of adding the spells defined by `spellcastingExtra` (see above)
 
@@ -1439,7 +1439,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	spellFirstColTitle: "Ki",
-	/*	spellFirstColTitle // OPTIONAL //
+/*	spellFirstColTitle // OPTIONAL //
 	TYPE:	string
 	USE:	set the title of the first column of the header on the spell sheet page(s)
 	CHANGE:	v14.0.1 (support for special image options)
@@ -1473,7 +1473,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			affectsDuplicates: "all", // OPTIONAL // string // defaults to "firstOnly"
 		},
 	},
-	/*	spellChanges // OPTIONAL //
+/*	spellChanges // OPTIONAL //
 	TYPE:	object with objects
 	USE:	change aspects of spells when generating a spell sheet of the parent object
 	CHANGE:	v14.0.8 (added `affectsDuplicates` attribute)
@@ -1527,7 +1527,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	spellcastingBonusElsewhere: {
-		/*	spellcastingBonusElsewhere // OPTIONAL //
+/*	spellcastingBonusElsewhere // OPTIONAL //
 	TYPE:	object with specific attributes (see below)
 	USE:	add spells to a spellcasting feature other than the parent object
 	ADDED:	v13.0.8
@@ -1547,7 +1547,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	but instead use `spellcastingBonus`, see above.
 */
 		addTo: "wizard",
-		/*	addTo // REQUIRED //
+	/*	addTo // REQUIRED //
 		TYPE:	string
 		USE:	to what the bonus spells should be added
 
@@ -1565,7 +1565,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		spellcastingBonus: [],
-		/*	spellcastingBonus // OPTIONAL //
+	/*	spellcastingBonus // OPTIONAL //
 		This entry works identical to the `spellcastingBonus` above. See there how this entry works.
 
 		Be aware that this spellcastingBonus will be added to the spellcasting defined in `addTo` above.
@@ -1576,7 +1576,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 
 		addToKnown: [],
-		/*	spellcastingBonus // OPTIONAL //
+	/*	spellcastingBonus // OPTIONAL //
 		TYPE:	array (variable length) of spell object names as used in the SpellsList object
 		USE:	which spells should be added to the spells known / spellbook
 
@@ -1620,7 +1620,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	},
 
 	spellcastingPreparedCantrips: { "class": ["cleric", "druid"] },
-	/*	spellcastingPreparedCantrips // OPTIONAL //
+/*	spellcastingPreparedCantrips // OPTIONAL //
 	TYPE:	object (common spell list object)
 	USE:	show all cantrips on the spell sheet, with checkboxes in the first column
 	ADDED:	v14.0.1
@@ -1648,7 +1648,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	// >>>>>>>>>>>>>>>>>>>>>>>>> //
 
 	creatureOptions: [{ /* CreatureList object, see "companion, wild shape (CreatureList).js" syntax file  */ }],
-	/*	creatureOptions // OPTIONAL //
+/*	creatureOptions // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	adds each object in the array to the CreatureList variable
 	ADDED:	v13.0.6
@@ -1678,7 +1678,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		["Purple Crawler"],
 		["Cat", false, false, "familiar"],
 	],
-	/*	creatureOptions // OPTIONAL //
+/*	creatureOptions // OPTIONAL //
 	TYPE:	array of arrays (variable length)
 	USE:	adds a creature to a companion page (adds companion page if none empty)
 	ADDED:	v13.0.6
@@ -1759,7 +1759,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 
 	calcChanges: {
-		/*	calcChanges // OPTIONAL //
+/*	calcChanges // OPTIONAL //
 	TYPE:	object (optional attributes)
 	USE:	change how certain automation works: attacks, hit points, and spell list
 			This will only affect attacks and hit points for the main character, not for its companions or wild shapes
@@ -1773,7 +1773,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			}
 		},
 		hp: "if (classes.known.sorcerer) {extrahp += classes.known.sorcerer.level; extrastring += '\\n + ' + classes.known.sorcerer.level + ' from Draconic Resilience (Sorcerer)'; }; ",
-		/*	hp // OPTIONAL //
+	/*	hp // OPTIONAL //
 		TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 		USE:	change how Hit Points are calculated and what the Hit Points tooltip says
 
@@ -1840,7 +1840,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	},
 	*/
 		hpForceRecalc: true,
-		/*	hpForceRecalc // OPTIONAL //
+	/*	hpForceRecalc // OPTIONAL //
 		TYPE:	boolean
 		USE:	recalculate the Max HP tooltip (and value, if set to automatic) whenever anything changes
 		ADDED:	v13.0.6
@@ -1869,7 +1869,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			"if (WeaponName == 'eldritch blast') fields.Description += '; Target pushed back 10 ft';",
 			"When I hit a creature with my Eldritch Blast cantrip, it is pushed 10 ft away from me.",
 		],
-		/*	atkAdd // OPTIONAL //
+	/*	atkAdd // OPTIONAL //
 		TYPE:	array with three entries:
 				1st entry:	function or, for backwards-compatibility, string that is evaluated using eval()
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -1975,7 +1975,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			"if (classes.known.sorcerer && classes.known.sorcerer.level > 5 && isSpell && /acid/i.test(fields.Damage_Type)) { output.extraDmg += What('Cha Mod'); };",
 			"Cantrips and spell that deal acid damage get my Charisma modifier added to their Damage.",
 		],
-		/*	atkCalc // OPTIONAL //
+	/*	atkCalc // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function or, for backwards-compatibility, string that is evaluated using eval()
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -2061,7 +2061,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			},
 			"I add +1 to all the saving throw DCs of my spells.",
 		],
-		/*	spellCalc // OPTIONAL //
+	/*	spellCalc // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -2136,7 +2136,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			},
 			"My background adds extra spells to the spell list(s) of my spellcasting class(es): Acid Splash, Druidcraft, Detect Poison and Disease, Expeditious Retreat, Jump, Alter Self, Enhance Ability, Enlarge/reduce, Gaseous Form, Water Breathing, Wind Wall, Freedom of Movement, Polymorph, and Creation.",
 		],
-		/*	spellList // OPTIONAL //
+	/*	spellList // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -2205,7 +2205,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			},
 			"Healing spells that have a range of touch, have a range of 60 ft instead. Cantrips and spell that deal poison damage get my Charisma modifier added to their Damage.",
 		],
-		/*	spellAdd // OPTIONAL //
+	/*	spellAdd // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function
 				2nd entry:	string that is used to give an explanation of what the 1st entry does
@@ -2332,7 +2332,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			aFnc(prefix + "Comp.Use.HP.Temp", 30, true);
 		},
 		"Any undead I create, using magic or otherwise, gain 30 temporary hit points."],
-		/*	creatureCallback // OPTIONAL //
+	/*	creatureCallback // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -2386,7 +2386,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			aFnc(prefix + "Comp.Use.Features", str, true);
 		},
 		"The familiars I create using the Find Familiar spell turn purple and gain resistance to acid damage."],
-		/*	companionCallback // OPTIONAL //
+	/*	companionCallback // OPTIONAL //
 		TYPE:	array with three entries
 				1st entry:	function
 				2nd entry:	optional string that is used to give an explanation of what the 1st entry does
@@ -2630,7 +2630,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		{ type: "skill", field: "Init", mod: "Int", text: "I can add my Intelligence modifier to initiative rolls." },
 		{ type: "save", field: "all", mod: "max(Cha|1)", text: "While I'm conscious I can add my Charisma modifier (min 1) to all my saving throws." },
 	],
-	/*	addMod // OPTIONAL //
+/*	addMod // OPTIONAL //
 	TYPE:	array of objects (variable length)
 	USE:	add value to a modifier field
 
@@ -2727,7 +2727,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 */
 
 	extraAC: [{
-		/*	extraAC // OPTIONAL //
+	/*	extraAC // OPTIONAL //
 	TYPE:	array of objects (variable length) or just a single object
 	USE:	add modifier and description to AC magic/misc fields
 
@@ -2736,7 +2736,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	See below for an explanation of each attribute.
 */
 		mod: 2,
-		/*	mod // REQUIRED //
+	/*	mod // REQUIRED //
 		TYPE:	string or number
 		USE:	the modifier to add to the AC
 
@@ -2750,7 +2750,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		You can set this to `0`, so that just the name is added to the description fields.
 	*/
 		name: "Bracers of Defense",
-		/*	name // OPTIONAL //
+	/*	name // OPTIONAL //
 		TYPE:	string
 		USE:	name how this modifier will be referred to
 
@@ -2758,14 +2758,14 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		If the parent object doesn't have a 'name' attribute, the name "Undefined" will be used.
 	*/
 		magic: true,
-		/*	magic // OPTIONAL //
+	/*	magic // OPTIONAL //
 		TYPE:	boolean
 		USE:	set this to true if this should be added to the Magic line in the AC/Defense section
 
 		Setting this attribute to false is the same as not including this attribute.
 	*/
 		text: "I gain a +2 bonus to AC while I'm not wearing any armor or using a shield.",
-		/*	text // OPTIONAL //
+	/*	text // OPTIONAL //
 		TYPE:	string
 		USE:	the explanation of what is added to the AC and its criteria (if any)
 
@@ -2775,7 +2775,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		stopeval: function (v) {
 			return v.wearingArmor;
 		},
-	/*	stopeval // OPTIONAL //
+/*	stopeval // OPTIONAL //
 		TYPE:	function
 		USE:	return 'true' if the modifier is NOT to be added
 
@@ -2802,7 +2802,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	}],
 
 	bonusClassExtrachoices: [{
-		/*	bonusClassExtrachoices // OPTIONAL //
+	/*	bonusClassExtrachoices // OPTIONAL //
 	TYPE:	array of objects (variable length) or just a single object
 	USE:	increase allowed number of extrachoices for another class feature
 	ADDED:	v13.0.6
@@ -2821,7 +2821,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	See below for an explanation of each attribute.
 */
 		"class": "warlock",
-		/*	class // REQUIRED //
+	/*	class // REQUIRED //
 		TYPE:	string
 		USE:	the ClassList object name of the class the feature belong to
 		ADDED:	v13.0.6
@@ -2833,7 +2833,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		If the feature belongs to a subclass, make sure this is the class the subclass belongs to.
 	*/
 		subclass: "warlock-the fiend",
-		/*	subclass // OPTIONAL //
+	/*	subclass // OPTIONAL //
 		TYPE:	string
 		USE:	the ClassSubList object name of the subclass the feature belong to
 		ADDED:	v13.0.6
@@ -2850,7 +2850,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		Setting this attribute to an empty string ("") is the same as not including it.
 	*/
 		feature: "eldritch invocations",
-		/*	feature // REQUIRED //
+	/*	feature // REQUIRED //
 		TYPE:	string
 		USE:	the object name listed in the `features` attribute of the ClaasList or ClassSubList object
 		ADDED:	v13.0.6
@@ -2863,7 +2863,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		will be ignored.
 	*/
 		bonus: 2,
-	/*	bonus // REQUIRED //
+/*	bonus // REQUIRED //
 		TYPE:	number
 		USE:	positive number (minimum of 1) with the amount of extrachoices to add
 		ADDED:	v13.0.6
@@ -2880,7 +2880,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 
 	toNotesPage: [{
-		/*	toNotesPage // OPTIONAL //
+	/*	toNotesPage // OPTIONAL //
 	TYPE:	array of objects (or just a single object)
 	USE:	adds entries to the Notes section on either the 3rd page or a separate Notes page
 
@@ -2894,7 +2894,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	Alternatively, you can have this entry be added to the 3rd page's Notes section using the 'page3notes' attribute, see below.
 */
 		name: "Wild Magic Surge Table",
-		/*	name // REQUIRED //
+	/*	name // REQUIRED //
 		TYPE:	string
 		USE:	the name of the feature to add to the notes section
 
@@ -2919,7 +2919,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			],
 			"***Header Paragraph***. This paragraph will be preceded by a line break and three spaces. The text 'Header Paragraph' will be made bold and italic because of the three asterisks around it.",
 		],
-		/*	note // REQUIRED //
+	/*	note // REQUIRED //
 		TYPE:	string or array
 		USE:	the text of the feature to add to the notes section
 		CHANGE: v14.0.0 (arrays now formatted using `formatDescriptionFull`)
@@ -2989,7 +2989,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	*/
 		useDescriptionFull: true,
 		useDescriptionFull: function (str) { return str.replace("if I was I", "if I were you"); },
-		/*	useDescriptionFull // OPTIONAL //
+	/*	useDescriptionFull // OPTIONAL //
 		TYPE:	boolean or function
 		USE:	whether to use the parent feature's `descriptionFull` as the note
 		ADDED:	v14.0.5
@@ -3009,7 +3009,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		Setting this to 0 or false is the same as not including this attribute.
 	*/
 		page3notes: true,
-		/*	page3notes // OPTIONAL //
+	/*	page3notes // OPTIONAL //
 		TYPE:	boolean
 		USE:	whether to add this to the 3rd page's Notes section (true) or on a Notes page (false)
 
@@ -3018,7 +3018,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		Setting this to 0 or false is the same as not including this attribute.
 	*/
 		popupName: "Wild Mage's Wild Magic Surge Table, part 1",
-		/*	popupName // OPTIONAL //
+	/*	popupName // OPTIONAL //
 		TYPE:	string
 		USE:	the text used in the informational "changes" pop-up dialog to show the player what and on what page the text was added
 
@@ -3026,7 +3026,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		will also be used for the informational "changes" pop-up dialog.
 	*/
 		source: ["P", 104],
-		/*	source // OPTIONAL //
+	/*	source // OPTIONAL //
 		TYPE:	array with two entries (or array of these arrays)
 		USE:	define where the feature is found
 
@@ -3051,7 +3051,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		"HB" refers to the 'homebrew' source.
 	*/
 		additional: "results 01-50",
-		/*	additional // OPTIONAL //
+	/*	additional // OPTIONAL //
 		TYPE:	string
 		USE:	this string is amended to the first line of the feature text
 
@@ -3059,7 +3059,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		In this example the first line would be: "Wild Magic Surge Table (Wild Magic 1, PHB 104) [results 01-50]"
 	*/
 		amendTo: "Wild Magic Surge Table",
-		/*	amendTo // OPTIONAL //
+	/*	amendTo // OPTIONAL //
 		TYPE:	string
 		USE:	if this string is found on any Notes page, than this note is added to the found note section
 
@@ -3074,7 +3074,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		This attribute is useless if the `page3notes` attribute is also present and set to `true`.
 	*/
 		origin: "Sorcerer",
-	/*	origin // OPTIONAL //
+/*	origin // OPTIONAL //
 		TYPE:	string
 		USE:	the string to use instead of the name (and minlevel) of the parent object
 		ADDED:	v14.0.5
@@ -3099,7 +3099,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 
 
 	magicitemsAdd: [ "Hat of Disguise", ["Staff of Power", true] ],
-	/*	magicitemsAdd // OPTIONAL //
+/*	magicitemsAdd // OPTIONAL //
 	TYPE:	array (variable length) of strings or arrays (with a string and a boolean)
 	USE:	adds each entry in the array to one of the magic item drop-downs
 	ADDED:	v13.0.6
@@ -3135,7 +3135,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		],
 		},
 	],
-	/*	featsAdd // OPTIONAL //
+/*	featsAdd // OPTIONAL //
 	TYPE:	array (variable length) of strings or objects
 	USE:	adds each entry in the array to one of the feat drop-downs
 	ADDED:	v14.0.0
@@ -3208,7 +3208,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	eval: function (lvl, chc) {
 		AddString("Extra.Notes", "Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields", true);
 	},
-	/*	eval // OPTIONAL //
+/*	eval // OPTIONAL //
 	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 	USE:	runs a piece of code when the feature is added
 
@@ -3245,7 +3245,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	removeeval: function (lvl, chc) {
 		RemoveString("Extra.Notes", "Monk features:\n\u25C6 Lose Unarmored Defense, Martial Arts, and Unarmored Movement with armor/shields", true);
 	},
-	/*	removeeval // OPTIONAL //
+/*	removeeval // OPTIONAL //
 	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 	USE:	runs a piece of code when the feature is removed
 
@@ -3283,7 +3283,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		var monkSpd = "+" + (lvl[1] < 2 ? 0 : lvl[1] < 6 ? 10 : lvl[1] < 10 ? 15 : lvl[1] < 14 ? 20 : lvl[1] < 18 ? 25 : 30);
 		SetProf("speed", monkSpd !== "+0", { allModes: monkSpd }, "Monk: Unarmored Movement");
 	},
-	/*	changeeval // OPTIONAL //
+/*	changeeval // OPTIONAL //
 	TYPE:	function or, for backwards-compatibility, string that is evaluated using eval()
 	USE:	runs a piece of code every time the character's level changes
 
