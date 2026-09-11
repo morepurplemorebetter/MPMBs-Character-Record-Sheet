@@ -1560,7 +1560,7 @@ function formatDescriptionFull(sDescFull, bReturnRichTextStyled) {
 	var bIgnoreUnicode = !What("UseUnicode");
 	var sReturn = sDescFull;
 	if (isArray(sDescFull)) {
-		sReturn = sDescFull.reduce( function (renderDescription, n) {
+		sReturn = sDescFull.reduce( function (renderDescription, n, idx, arr) {
 			var lineBreak = renderDescription ? "\n" : "";
 			if (isArray(n)) {
 				// Table, every entry in the array is a row, with the first one being the headers
@@ -1579,7 +1579,9 @@ function formatDescriptionFull(sDescFull, bReturnRichTextStyled) {
 					var lineBreakT = finalStr ? "\n" : "";
 					return finalStr + lineBreakT + tableRow;
 				}, "");
-				return renderDescription + lineBreak + lineBreak + renderTable + "\n";
+				// Add a line break between a table and a following paragraph, if any
+				var lineBreakEnd = idx !== arr.length - 1 ? "\n" : "";
+				return renderDescription + lineBreak + lineBreak + renderTable + lineBreakEnd;
 			} else {
 				// Only add three starting spaces if the first character is not a space
 				if (n[0] !== " " && lineBreak) lineBreak += "   ";

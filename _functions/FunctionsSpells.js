@@ -3153,8 +3153,8 @@ function AskUserSpellSheet() {
 					// Add the spell selection
 					if (spBonusi.selection && spBonusi.selection[y - 1] && SpellsList[spBonusi.selection[y - 1]]) {
 						dia.selectBo.push(spBonusi.selection[y - 1]);
-						// For Cantrips atwill is the default, so let the sheet decide instead of forcing atwill
-						if (SpellsList[spBonusi.selection[y - 1]].level === 0 && firstCol === "atwill") {
+						// For Cantrips atwill is the default, but for level-dependent caster we should let the sheet decide instead of forcing atwill
+						if (spCast.factor && SpellsList[spBonusi.selection[y - 1]].level === 0 && firstCol === "atwill") {
 							firstCol = undefined;
 						}
 					} else {

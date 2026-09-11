@@ -9138,7 +9138,6 @@ function ConvertToMetric(inputString, rounded, exact) {
 						numerator: theConvert(fraction[1], orgUnit),
 						denominator: theConvert(fraction[2], orgUnit),
 					};
-					var resulted = [theConvert(fraction[1], orgUnit), theConvert(fraction[2], orgUnit)];
 				} else {
 					var resulted = theConvert(parseFloat(org), orgUnit);
 				}
@@ -9359,7 +9358,8 @@ function ConvertToFirstPerson(inputString, convertFunction, origin) {
 		.replace(/(w)ere(n['\u2019]t)? you\b/ig, "$1as$2 I")
 		.replace(/\byou\b/ig, "I")
 		.replace(/(\d+.?(square |cubic )?)f(oo|ee)t\b/ig, "$1ft")
-		.replace(/\b(m|ft) of myself/ig, "$1 of me");
+		.replace(/\b(m|ft) of myself/ig, "$1 of me")
+		.replace(/(d\d+) (\+|-) (\d+)/ig, "$1$2$3");
 	// Now correct prepositions where "I" should be "me"
 	firstPerson = firstPerson.replace(/\b(at|to|of|for|on|in|with|by|under|over|above|below|into|towards?|through|around|past|as|about|near|granting|against|from) I\b/ig, "$1 me");
 	// If provided with a convertFunction, run it
@@ -9495,6 +9495,13 @@ function SetUnitDecimals_Button() {
 			}
 			if (i <= FieldNumbers.extragear) FldsWeight.push("Extra.Gear Weight " + i);
 			if (i <= FieldNumbers.gear) FldsWeight.push("Adventuring Gear Weight " + i);
+		}
+		var ASnotesA = What("Template.extras.ASnotes").split(",").slice(1);
+		for (var N = 0; N < ASnotesA.length; N++) {
+			var prefix = ASnotesA[N];
+			[prefix + "Notes.Left", prefix + "Notes.Right"].forEach(function (fld) {
+				if (/#\u25C6/.test(What(fld))) FldsGameMech.push(fld);
+			});
 		}
 	}
 	if (!tDoc.info.AdvLogOnly) {
