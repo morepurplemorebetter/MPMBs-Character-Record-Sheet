@@ -2745,8 +2745,9 @@ function RunUserScript(atStartup, manualUserScripts) {
 
 	// secondly, run the manually added code
 	var manualScript = manualUserScripts ? manualUserScripts : What("User Script");
+	var manualScriptResult = true;
 	if (manualScript) {
-		var manualScriptResult = runIt(manualScript, "manually entered using using the text dialog", manualUserScripts);
+		manualScriptResult = runIt(manualScript, "manually entered using using the text dialog", manualUserScripts);
 		if (!manualScriptResult) {
 			if (manualUserScripts) return false;
 			tDoc.resetForm(["User Script"]);

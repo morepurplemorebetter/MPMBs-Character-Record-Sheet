@@ -3156,7 +3156,9 @@ function SetWeaponsdropdown(forceTooltips, aCompPrefixes) {
 	// Add weapons added by `weaponsAdd.options` to the startlist
 	if (CurrentVars.extraWeaponsDisplay) {
 		for (var sOption in CurrentVars.extraWeaponsDisplay) {
-			oWeaponLists.startlist.push(CurrentVars.extraWeaponsDisplay[sOption]);
+			var extraArray = CurrentVars.extraWeaponsDisplay[sOption];
+			if (!isArray(extraArray)) extraArray = [extraArray];
+			oWeaponLists.startlist = oWeaponLists.startlist.concat(extraArray);
 		}
 	}
 	// Add the startlist weapons to the final array
