@@ -13,7 +13,6 @@ function InitializeEverything(noButtons, noVars) {
 
 	if (!minVer) {
 		SetGearVariables();
-		setListsUnitSystem(false, true);
 		getDynamicFindVariables();
 		UpdateTooSkill();
 		SetRichTextFields();

@@ -291,11 +291,13 @@ function GetSpellObject(theSpl, theCast, firstCol, isDuplicate, tooltipOnly) {
 function fixSpellRangeOverflow(rangeStr) {
 	rangeStr = rangeStr.trim();
 	if (What("Unit System") === "metric") {
-		var testRx = typePF ? /S:\d+[,.]\d+[- /]?m (cone|cube)/i : /S:\d+[,.]?\d+[- /]?m (cone|cube|line)|S:\d+[,.]\d+[- /]?m rad/i;
-		if (testRx.test(rangeStr)) rangeStr = rangeStr.replace(/[- /]?m ((con|cub)e|(line))/i, "m $2").replace(/[- /]?m rad/i, "m rad");
+		if (typePF) {
+			rangeStr = rangeStr.replace(/(S:\d+[,.]?\d+)[- /]?m (cone|cube|line|rad)/i, "$1m $2").replace(/(S:\d+[,.]\d+m (con|cub))e/i, "$1");
+		} else {
+			rangeStr = rangeStr.replace(/(S:\d+[,.]?\d+)[- /]?m (con|cub|line)e?/i, "$1m $2").replace(/(S:\d+[,.]\d+)[- /]?m rad/i, "$1m rad");
+		}
 	} else if (!typePF) {
-		var testRx = /S:\d+[,.]?\d+[- /]?ft (cone|cube|line)|S:\d+[- /]?miles? rad/i;
-		if (testRx.test(rangeStr)) rangeStr = rangeStr.replace(/[- /]?ft (cone|cube|line)/i, "ft $1").replace(/[- /]?miles? rad/i, "mile rad");
+		rangeStr = rangeStr.replace(/(S:\d+[,.]?\d+)[- /]?ft (cone|cube|line)/i, "$1ft $2").replace(/(S:\d+)[- /]?miles? rad/i, "$1mile rad");
 	}
 	return rangeStr;
 }

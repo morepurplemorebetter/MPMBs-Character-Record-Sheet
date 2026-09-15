@@ -5416,14 +5416,6 @@ function GetLevelFeatures(aFea, level, choice, oldlevel, oldchoice, ForceChoice)
 	return tRe;
 };
 
-// set some variables to their metric functionality
-function setListsUnitSystem(isMetric, onStart) {
-	var wasMetric = What("Unit System") === "metric";
-	isMetric = isMetric ? isMetric === "metric" : What("Unit System") === "metric";
-	if (onStart && !isMetric) return; //nothing to do on startup and the unit system is not metric
-	var conStr = !onStart && wasMetric === isMetric ? "UpdateDecimals" : (isMetric ? "ConvertToMetric" : "ConvertToImperial");
-}
-
 // automatically add a new entry on the Adventurers Logsheet with the sheets current values
 function addALlogEntry() {
 	//first find the next empty logsheet entry
