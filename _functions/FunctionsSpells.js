@@ -186,7 +186,7 @@ function GetSpellObject(theSpl, theCast, firstCol, isDuplicate, tooltipOnly) {
 			var rxCanDie = /`CD([\-+*]*\d*\.?\d*)`/;
 			var execCanDie = rxCanDie.exec(newCantripDieDescr);
 			while (execCanDie !== null) {
-				var aDie = execCanDie[1].indexOf("*") !== -1 ? cDie * Number(execCanDie[1].replace("*","")) : cDie + Number(execCanDie[1]);
+				var aDie = execCanDie[1].indexOf("*") !== -1 ? cDie * Number(execCanDie[1].replace("*", "")) : cDie + Number(execCanDie[1]);
 				newCantripDieDescr = newCantripDieDescr.replace(execCanDie[0], Math.round(aDie));
 				execCanDie = rxCanDie.exec(newCantripDieDescr);
 			}

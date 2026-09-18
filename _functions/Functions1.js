@@ -2289,7 +2289,7 @@ function levelFieldVal() {
 
 function getCurrentLevelByXP(level, exp) {
 	level = Number(level);
-	exp = Number(exp.replace(",", "."));
+	exp = stringToNumber(exp, ",");
 	var LVLbyXP = ExperiencePointsList.reduce(function (acc, val) { return acc += exp >= Number(val) ? 1 : 0; }, 0);
 	var XPforLVL = !level || isNaN(level) || level < 2 ? 0 : ExperiencePointsList[Math.min(ExperiencePointsList.length - 1, level - 1)];
 	return [LVLbyXP, XPforLVL];
@@ -5906,7 +5906,6 @@ function CalcEncumbrance() {
 	var Size = What("Size Category");
 	Size = Size ? Size : 1;
 	var CarMult = Math.max(What("Carrying Capacity Multiplier"), 0);
-	var decSep = What("Decimal Separator");
 	var FldName = event.target.name;
 	var Mult1 = FldName.indexOf("Push") !== -1 || FldName.indexOf("Carrying Capacity") !== -1 ? 15 : FldName.indexOf("Heavily") !== -1 ? 10 : 5;
 	var Mult2 = FldName.indexOf("Push") !== -1 ? 30 : FldName.indexOf("Heavily") !== -1 ? 15 : 10;
@@ -5924,20 +5923,21 @@ function CalcEncumbrance() {
 	var BasicMult = Number(Size) * Number(CarMult);
 	var TotalMult = Number(Str) * Number(Size) * Number(CarMult);
 	if (CarMult === 0 || (!Str && FldName.indexOf("Text") === -1)) {
-		result = "";
+		// Nothing to display
 	} else if (FldName.indexOf("Text") !== -1 && FldName.indexOf("Push") !== -1) {
-		result = RoundTo((BasicMult * Mult1 * UnitMult), 0.1) + pushSep + RoundTo((BasicMult * Mult2 * UnitMult), 0.1);
+		result = [
+			RoundTo(BasicMult * Mult1 * UnitMult, 0.1, false, true),
+			RoundTo(BasicMult * Mult2 * UnitMult, 0.1, false, true),
+		].join(pushSep);
 	} else if (FldName.indexOf("Text") !== -1) {
-		result = RoundTo((BasicMult * Mult1 * UnitMult), 0.1);
+		result = RoundTo(BasicMult * Mult1 * UnitMult, 0.1, false, true);
 	} else if (FldName.indexOf("Carrying Capacity") !== -1) {
-		result = Math.floor(TotalMult * Mult1 * UnitMult) + Unit;
+		result = RoundTo(Math.floor(TotalMult * Mult1 * UnitMult), false, false, true) + Unit;
 	} else {
-		result = Math.floor(1 + TotalMult * Mult1 * UnitMult) + " - " + (!typePF ? "\n" : "") + Math.floor(TotalMult * Mult2 * UnitMult) + Unit;
-	}
-	if (decSep === "comma" && result) {
-		result = "." + result;
-		result = result.replace(/\./g, ",");
-		result = result.substring(1);
+		result = [
+			RoundTo(Math.floor(1 + TotalMult * Mult1 * UnitMult), false, false, true),
+			RoundTo(Math.floor(TotalMult * Mult2 * UnitMult), false, false, true),
+		].join(" - " + (!typePF ? "\n" : "")) + Unit;
 	}
 	event.value = result;
 }
@@ -8972,377 +8972,347 @@ function RaceFeatureOptions() {
 	}
 }
 
-function ConvertToMetric(inputString, rounded, exact) {
-	if (typeof inputString != "string" || inputString === "") return "";
-	var rounding = rounded ? rounded : 1;
-	var ratio = exact ? "metricExact" : "metric";
-
-	var theConvert = function (amount, units) {
-		amount = Number(amount);
-		var total, unit, isRounded = false;
-		units = units.replace(/f(oo|ee)t/i, "ft").replace(/fl(uid|\.)|liquid/i, "fl")
-			.replace("cubic", "cu").replace("square", "sq")
-			.replace(/(lb|pound|gallon|qt|quart|pt|pint|ounce|degree|mile)s/i, "$1");
-		switch (units){
-			case "in": case "inch": case "inches": case '"':
-				total = amount * UnitsList[ratio].lengthInch;
+function imperialUnitToMetric(amount, unit, exact, rounding) {
+	var oRatio = exact ? UnitsList.metricExact : UnitsList.metric;
+	amount = Number(amount);
+	var total = amount, isRounded = false;
+	unit = unit.replace(/f(oo|ee)t/i, "ft").replace(/fl(uid|\.)|liquid/i, "fl")
+		.replace("cubic", "cu").replace("square", "sq")
+		.replace(/(lb|pound|gallon|qt|quart|pt|pint|ounce|degree|mile)s/i, "$1");
+	switch (unit) {
+		case "in": case "inch": case "inches": case '"':
+			total = amount * oRatio.lengthInch;
+			unit = "cm";
+			break;
+		case "ft": case "'":
+			total = amount * oRatio.length;
+			unit = "m";
+			if (total < 1) {
+			// for small lengths, we are going to use cm
+				total *= 100;
 				unit = "cm";
-				break;
-			case "ft": case "'":
-				total = amount * UnitsList[ratio].length;
-				unit = "m";
-				if (total < 1) {
-				// for small lengths, we are going to use cm
-					total *= 100;
-					unit = "cm";
-				}
-				break;
-			case "mile":
-				total = amount * UnitsList[ratio].distance;
-				unit = "km";
-				break;
-
-			case "cu ft": case "ft3": case "ft\xB3":
-				total = amount * UnitsList[ratio].volume;
-				unit = "m\xB3"; // m³
-				if (total < 0.25) {
-				// for very small volumes, we are going to use dm3
-					total *= 1000;
-					unit = "dm\xB3"; // dm³
-				} else if (total < 1 && rounding > 0.03) {
-				// for relatively small volumes, we are going to round to 0.03 accuracy
-					total = RoundTo(total, 0.03, false, true);
-					isRounded = true;
-				} else if (rounding > 0.3) {
-				// for higer volumes we are going to round to 0.3 accuracy, to avoid issues when converting them back to cubic feet
-					total = RoundTo(total, 0.3, false, true);
-					isRounded = true;
-				}
-				break;
-
-			case "sq ft": case "ft2": case "ft\xB2":
-				total = amount * UnitsList[ratio].surface;
-				unit = "m\xB2"; // m²
-				if (total < 0.25) {
-				// for very small volumes, we are going to use dm2
-					total *= 100;
-					unit = "dm\xB2"; // dm²
-				}
-				break;
-
-			case "lb": case "pound":
-				total = amount * UnitsList[ratio].mass;
-				unit = "kg";
-				if (total < 0.5) {
-					total *= 1000;
-					unit = "g";
-				}
-				// As 1/2 lb is common, round this to higher accuracy so that 1/2 lb doesn't come out as 0.5 kg
-				if (rounded > 0.25 && rounded <= 1) {
-					total = RoundTo(total, 0.25, false, true);
-					isRounded = true;
-				}
-				break;
-			case "gal": case "gallon":
-				total = amount * UnitsList[ratio].liquid;
-				unit = "L";
-				break;
-			case "qt": case "quart":
-				total = amount * UnitsList[ratio].liquidQuart;
-				unit = "L";
-				break;
-			case "pt": case "pint":
-				total = amount * UnitsList[ratio].liquidPint;
-				unit = "L";
-				break;
-			case "fl oz": case "fl ounce": case "oz": case "ounce":
-				if (amount < 1) {
-					total = amount * UnitsList[ratio].liquidOunce * 10;
-					unit = "ml";
-					break;
-				}
-				total = amount * UnitsList[ratio].liquidOunce;
-				unit = "cl";
-				break;
-			case "\xB0 f": case "\xB0f": case "degree fahrenheit": case "fahrenheit":
-				total = RoundTo((amount - 32) * 5 / 9, exact ? 0.01 : 1, false, true);
-				unit = "\xB0C"; //°C
-				isRounded = true;
-				break;
-		}
-		return { total: total, unit: unit, isRounded: isRounded };
-	}
-
-	var unicodeFractionToNumber = function (string) {
-		var unicodes = {
-			"\xBC": 0.25, // ¼
-			"\xBD": 0.5,  // ½
-			"\xBE": 0.75, // ¾
-			"\u2153": 0.33, // ⅓
-			"\u2154": 0.66, // ⅔
-		}
-		for (var key in unicodes) {
-			string = string.replace(RegExp(key, "g"), unicodes[key]);
-		}
-		return string;
-	}
-
-	// find all labeled measurements in string
-	var measurements = inputString.match(/((\b|-)\d+[,./]?\d*\/?|-?[\xBC-\xBE\u2153-\u2154])(-?\d+?[,./]?\d*)?\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|f(oo|ee)?t[23\xB2\xB3]|(in|inch|inches|miles?|(cubic|cu|square|sq)? ?f(oo|ee)?t?|lbs?|pounds?|gal(lons?)?|q(uar)?ts?|p(in)?ts?|(fluid )?ounces?|(fl\.? )?oz|\xB0 ?f|(degrees? )?fahrenheit)\b)/ig);
-	var outputString = inputString;
-
-	if (measurements) {
-		var placeholder = ["Pl4c3h0ld3r", 0], toPlaceBack = [];
-		for (var i = 0; i < measurements.length; i++) {
-			// skip if part of a calculation
-			var location = outputString.indexOf(measurements[i]);
-			var offset = measurements[i][0] === "-" ? 1 : 2;
-			if (/^\d/.test(outputString.substring(location - offset, location))) {
-				// replace it with a placeholder for now, so it won't match future checks if there happen to be multiple identical measurements in the string
-				placeholder[1]++;
-				var tempPlaceholder = placeholder.join("-");
-				toPlaceBack.push({ placeholder: tempPlaceholder, original: measurements[i] });
-				outputString = outputString.replace(measurements[i], tempPlaceholder);
-				continue;
 			}
+			break;
+		case "mile":
+			total = amount * oRatio.distance;
+			unit = "km";
+			break;
 
-			// if this is a x'y" type of measurement
-			if (/'.+"/.test(measurements[i])) {
-				if (/'.+"\W/.test(measurements[i])) {
-					measurements[i] = measurements[i].substr(0, measurements[i].length - 1);
-				}
-				var org = measurements[i].replace(/,/g, ".");
-				if (/[\xBC-\xBE\u2153-\u2154]/.test(org)) {
-					org = unicodeFractionToNumber(org);
-				}
-				var orgFT = parseFloat( org.substring(0, org.indexOf("'")) );
-				var orgIN = parseFloat( org.substring(org.indexOf("'") + 1, org.indexOf('"')));
-				var resulted = theConvert(parseFloat(orgIN / 12) + parseFloat(orgFT), "ft");
-			} else {
-				if (/\d+('|")\W/.test(measurements[i])) {
-					measurements[i] = measurements[i].substr(0, measurements[i].length - 1);
-				}
-				var org = measurements[i].replace(/,/g, ".");
-				if (/[\xBC-\xBE\u2153-\u2154]/.test(org)) {
-					org = unicodeFractionToNumber(org);
-				}
-				var orgUnit = org.match(/[-\s]*([\xB0 A-z'"]+[\xB22\xB33]?)$/)[1].toLowerCase();
-				var fraction = org.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/);
+		case "cu ft": case "ft3": case "ft\xB3":
+			total = amount * oRatio.volume;
+			unit = "m\xB3"; // m³
+			if (total < 0.25) {
+			// for very small volumes, we are going to use dm3
+				total *= 1000;
+				unit = "dm\xB3"; // dm³
+			} else if (total < 1 && rounding > 0.03) {
+			// for relatively small volumes, we are going to round to 0.03 accuracy
+				total = RoundTo(total, 0.03, false, true);
+				isRounded = true;
+			} else if (rounding > 0.3) {
+			// for higer volumes we are going to round to 0.3 accuracy, to avoid issues when converting them back to cubic feet
+				total = RoundTo(total, 0.3, false, true);
+				isRounded = true;
+			}
+			break;
 
-				if (fraction && fraction[1] > 0 && fraction[1] < 3 && fraction[2] > 1 && fraction[2] < 5) {
-					org = fraction[1] / fraction[2];
+		case "sq ft": case "ft2": case "ft\xB2":
+			total = amount * oRatio.surface;
+			unit = "m\xB2"; // m²
+			if (total < 0.25) {
+			// for very small volumes, we are going to use dm2
+				total *= 100;
+				unit = "dm\xB2"; // dm²
+			}
+			break;
+
+		case "lb": case "pound":
+			total = amount * oRatio.mass;
+			unit = "kg";
+			if (total < 0.5) {
+				total *= 1000;
+				unit = "g";
+			}
+			// As 1/2 lb is common, round this to higher accuracy so that 1/2 lb doesn't come out as 0.5 kg
+			if (rounding > 0.25 && rounding <= 1) {
+				total = RoundTo(total, 0.25, false, true);
+				isRounded = true;
+			}
+			break;
+		case "gal": case "gallon":
+			total = amount * oRatio.liquid;
+			unit = "L";
+			break;
+		case "qt": case "quart":
+			total = amount * oRatio.liquidQuart;
+			unit = "L";
+			break;
+		case "pt": case "pint":
+			total = amount * oRatio.liquidPint;
+			unit = "L";
+			break;
+		case "fl oz": case "fl ounce": case "oz": case "ounce":
+			if (amount < 1) {
+				total = amount * oRatio.liquidOunce * 10;
+				unit = "ml";
+				break;
+			}
+			total = amount * oRatio.liquidOunce;
+			unit = "cl";
+			break;
+		case "\xB0 f": case "\xB0f": case "degree fahrenheit": case "fahrenheit":
+			total = RoundTo((amount - 32) * 5 / 9, exact ? 0.01 : 1, false, true);
+			unit = "\xB0C"; //°C
+			isRounded = true;
+			break;
+		default:
+			// No recognized unit, so only update the decimal/thousand separator of the number
+			total = RoundTo(total, false, false, true);
+			isRounded = true;
+	}
+	return { total: total, unit: unit, isRounded: isRounded };
+}
+
+function metricUnitToImperial(amount, unit, exact, rounding) {
+	var oRatio = exact ? UnitsList.metricExact : UnitsList.metric;
+	amount = Number(amount);
+	var total = amount, isRounded = false;
+	unit = unit.replace(/(gram|kilo|degree)s/i, "$1")
+		.replace(/(lit|met)res?/i, "$1er")
+		.replace("cubic", "cu").replace("square", "sq");
+	switch (unit){
+		case "cm": case "centimeter":
+			if (amount < 30) {
+				total = amount / oRatio.lengthInch;
+				unit = "inch";
+				break;
+			}
+			amount /= 10;
+		case "dm": case "decimeter":
+			if (amount < 3) {
+				total = amount * 10 / oRatio.lengthInch;
+				unit = "inch";
+				break;
+			}
+			amount /= 10;
+		case "m": case "meter":
+			total = amount / oRatio.length;
+			unit = "ft";
+			break;
+		case "km": case "kilometer":
+			total = amount / oRatio.distance;
+			unit = total === 1 ? "mile" : "miles";
+			break;
+
+		case "cm3": case "cm\xB3": case "cu centimeter":
+			amount /= 1000;
+		case "dm3": case "dm\xB3": case "cu decimeter":
+			amount /= 1000;
+		case "m3": case "m\xB3": case "cu meter":
+			total = amount / oRatio.volume;
+			unit = "cu ft";
+			if (total > 41 && rounding < 2) {
+				// make it a nice whole number of cubic feet
+				total = RoundTo(total, 10, false, true);
+				isRounded = true;
+			}
+			break;
+
+		case "cm2": case "cm\xB2": case "sq centimeter":
+			amount /= 100;
+		case "dm2": case "dm\xB2": case "sq decimeter":
+			amount /= 100;
+		case "m2": case "m\xB2": case "sq meter":
+			total = amount / oRatio.surface;
+			unit = "sq ft";
+			break;
+
+		case "g": case "gram":
+			amount = amount / 1000;
+		case "kg": case "kilogram": case "kilo":
+			total = amount / oRatio.mass;
+			unit = "lb";
+			break;
+
+		case "ml": case "milliliter":
+			amount = amount / 10;
+		case "cl": case "centiliter":
+			total = amount / oRatio.liquidOunce;
+			unit = "fl oz";
+			break;
+		case "l": case "liter":
+			if (amount <= 0.5) {
+				total = amount / oRatio.liquidPint;
+				unit = "pint";
+				break;
+			} else if (amount <= 3) {
+				total = amount / oRatio.liquidQuart;
+				unit = "qt";
+				break;
+			}
+			total = amount / oRatio.liquid;
+			unit = "gal";
+			break;
+		case "\xB0 c": case "\xB0c": case "degree celsius": case "celsius":
+			total = RoundTo((amount * 9 / 5) + 32, exact ? 0.01 : 1, false, true);
+			unit = "\xB0F"; // °F
+			isRounded = true;
+			break;
+		default:
+			// No recognized unit, so only update the decimal/thousand separator of the number
+			total = RoundTo(total, false, false, true);
+			isRounded = true;
+	}
+	return { total: total, unit: unit, isRounded: isRounded };
+}
+
+function convertUnitSystem(inputObject) {
+	var toSystem = "metric";
+	if (/^(imperial|metric|decimals?)$/i.test(inputObject.toSystem)) {
+		toSystem = inputObject.toSystem;
+	}
+	var inputString = inputObject.string;
+	if (!inputString) return "";
+	var rounding = !isNaN(inputObject.rounding) ? Number(inputObject.rounding) : 1;
+	var exact = !!inputObject.exact;
+	var toShorthand = !!inputObject.toShorthand;
+
+	switch (toSystem.toLowerCase()) {
+		case "decimals":
+		case "decimal":
+			return UpdateDecimals(inputString);
+		case "metric":
+			var theConvert = imperialUnitToMetric;
+			var matchRx = /((\b|-)\d+([.,]\d{3})*([,.]\d+)?(\/-?\d+([.,]\d{3})*([,.]\d+)?)?|-?[\xBC-\xBE\u2153-\u2154])\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|f(oo|ee)?t[23\xB2\xB3]|(in|inch|inches|miles?|(cubic|cu|square|sq)? ?f(oo|ee)?t?|lbs?|pounds?|gal(lons?)?|q(uar)?ts?|p(in)?ts?|(fluid )?ounces?|(fl\.? )?oz|\xB0 ?f|(degrees? )?fahrenheit)\b|\b ?)/ig;
+			break;
+		case "imperial":
+			var theConvert = metricUnitToImperial;
+			var matchRx = /((\b|-)\d+([.,]\d{3})*([,.]\d+)?(\/-?\d+([.,]\d{3})*([,.]\d+)?)?|-?[\xBC-\xBE\u2153-\u2154])\s?-?([dck]?m[\xB2\xB3]|([dck]?m[23]?|(cu |cubic |sq |square )?(milli|centi|deci|kilo)?met(re|er)s?|[mc]?l|(milli|centi)?lit(er|re)s?|k?g|grams?|kilo(gram)?s?|\xB0 ?c|(degrees? )?celsius)\b|\b ?)/ig;
+			break;
+	}
+
+	// Find all labeled measurements in string, or stop here if none were found
+	var measurements = inputString.toString().match(matchRx);
+	if (!measurements) return inputString;
+
+	// The decimal separator to use is "." by default, because that's how numbers are stored in the Lists. The only exception is when fields are being converted on the fly, then use the given decimal separator (by passing `false` to stringToNumber).
+	var decimalSeparator = !inputObject.useSetDecimalSeparator ? "." :
+		What("Decimal Separator") === "comma" ? "," : ".";
+	var forceDecimalSeparator = !inputObject.useSetDecimalSeparator ? "." : false;
+
+	// Replace all found measurements in the outputString
+	var outputString = inputString.toString();
+	var placeholder = ["Pl4c3h0ld3r", 0], toPlaceBack = [];
+	for (var i = 0; i < measurements.length; i++) {
+		// Skip if part of a calculation
+		var location = outputString.indexOf(measurements[i]);
+		var offset = measurements[i][0] === "-" ? 1 : 2;
+		var preceedingChars = outputString.substring(location - offset, location + 1);
+		if (/^\d[-+]/.test(preceedingChars)) {
+			// Replace it with a placeholder for now, so it won't match future checks if there happen to be multiple identical measurements in the string
+			placeholder[1]++;
+			var tempPlaceholder = placeholder.join("-");
+			var org = UpdateDecimals(measurements[i], forceDecimalSeparator);
+			toPlaceBack.push({ placeholder: tempPlaceholder, original: org });
+			outputString = outputString.replace(measurements[i], tempPlaceholder);
+			continue;
+		}
+
+		// Convert the found measurement to the other unit system
+		if (/'.+"/.test(measurements[i])) { // x'y" type of measurement
+			if (/'.+"\W/.test(measurements[i])) {
+				measurements[i] = measurements[i].substr(0, measurements[i].length - 1);
+			}
+			var org = unicodeFractionsToNumber(measurements[i]);
+			var orgFT = stringToNumber(org.substring(0, org.indexOf("'")), decimalSeparator);
+			var orgIN = stringToNumber(org.substring(org.indexOf("'") + 1, org.indexOf('"')), decimalSeparator);
+			var resulted = theConvert(parseFloat(orgIN / 12) + parseFloat(orgFT), "ft", exact, rounding);
+			var delimiterMatch = org.match(/\d([-\s]+)"/);
+			var delimiter = delimiterMatch ? delimiterMatch[1] : " ";
+		} else { // Regular measurement
+			// Remove the last matched character if this is a ' or " being used for ft or inch
+			if (/\d['"]\W/.test(measurements[i])) {
+				measurements[i] = measurements[i].substring(0, measurements[i].length - 1);
+			}
+			// Replace unicode fractions with their number equivalents
+			var org = unicodeFractionsToNumber(measurements[i]);
+			// Extract the amount and the unit
+			var orgMatch = org.match(/(.*?)([-\s]*)([\xB0 A-z'"]+[\xB22\xB33]?)?$/);
+			var orgAmount = orgMatch && orgMatch[1] ? orgMatch[1] : org.replace(/.*([\d.,-\/]).*/, "$1");
+			var delimiter = !orgMatch ? " " : orgMatch[2] ? orgMatch[2] : "";
+			var orgUnit = orgMatch && orgMatch[3] ? orgMatch[3].toLowerCase() : "";
+
+			// If this is just a number without a decimal or thousands separator, skip it
+			if (!orgUnit && !/\.|,/.test(orgAmount)) continue;
+
+			// Check if this isn't written as a fraction using a forward slash
+			var fraction = orgAmount.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/);
+			if (fraction) {
+				// Test if this is a common fraction, otherwise assume its two numbers separated with a slash
+				var numerator = stringToNumber(fraction[1], decimalSeparator);
+				var denominator = stringToNumber(fraction[2], decimalSeparator);
+				if (numerator > 0 && numerator < 4 && denominator > 1 && denominator < 5) {
+					// Common fraction, so calculate its value
+					orgAmount = numerator / denominator;
 					fraction = false;
 				}
-				if (fraction) {
-					var resulted = {
-						numerator: theConvert(fraction[1], orgUnit),
-						denominator: theConvert(fraction[2], orgUnit),
-					};
-				} else {
-					var resulted = theConvert(parseFloat(org), orgUnit);
-				}
 			}
-
-			var delimiterMatch = measurements[i].match(/.*\d+([\s- ]*?)[\xB0\w]/);
-			var delimiter = delimiterMatch ? delimiterMatch[1] : " ";
-
 			if (fraction) {
-				var numerator = resulted.numerator.total;
-				if (!resulted.numerator.isRounded) numerator = RoundTo(numerator, rounding, false, true);
-				var denominator = resulted.denominator.total;
-				if (!resulted.denominator.isRounded) denominator = RoundTo(denominator, rounding, false, true);
-				var theResult = numerator + "/" + denominator + delimiter + resulted.denominator.unit;
+				// Two numbers separated with a slash
+				var resulted = {
+					numerator: theConvert(numerator, orgUnit, exact, rounding),
+					denominator: theConvert(denominator, orgUnit, exact, rounding),
+				};
 			} else {
-				var theValue = resulted.total;
-				if (!resulted.isRounded) theValue = RoundTo(theValue, rounding, false, true);
-				var theResult = theValue + delimiter + resulted.unit;
+				orgAmount = stringToNumber(orgAmount, decimalSeparator);
+				var resulted = theConvert(orgAmount, orgUnit, exact, rounding);
 			}
-			outputString = outputString.replace(measurements[i], theResult);
 		}
-		if (toPlaceBack.length) {
-			for (var i = 0; i < toPlaceBack.length; i++) {
-				var placeBack = toPlaceBack[i];
-				outputString = outputString.replace(placeBack.placeholder, placeBack.original);
-			}
+
+		// Round the result and create a string with the new unit
+		if (fraction) {
+			var numValue = resulted.numerator.isRounded ? resulted.numerator.total
+				: RoundTo(resulted.numerator.total, rounding, false, true);
+			var denomValue = resulted.denominator.isRounded ? resulted.denominator.total
+				: RoundTo(resulted.denominator.total, rounding, false, true);
+			var theResult = numValue + "/" + denomValue + delimiter + resulted.denominator.unit;
+		} else if (toShorthand && resulted.unit === "ft" && resulted.total % 1 != 0) {
+			var theFT = Math.floor(resulted.total);
+			var theINCH = Math.round(resulted.total % 1 / (1 / 12));
+			var theResult = theFT + "'" + theINCH + '"';
+		} else {
+			var theValue = resulted.isRounded ? resulted.total
+				: RoundTo(resulted.total, rounding, false, true);
+			var theResult = theValue + delimiter + resulted.unit;
+		}
+		outputString = outputString.replace(measurements[i], theResult);
+	}
+	if (toPlaceBack.length) {
+		for (var i = 0; i < toPlaceBack.length; i++) {
+			var placeBack = toPlaceBack[i];
+			outputString = outputString.replace(placeBack.placeholder, placeBack.original);
 		}
 	}
 	return outputString;
 }
 
-function ConvertToImperial(inputString, rounded, exact, toshorthand) {
-	if (typeof inputString != "string" || inputString === "") return "";
-	var ratio = exact ? "metricExact" : "metric";
-	var rounding = rounded ? rounded : 1;
+function ConvertToMetric(inputString, rounded, exact) {
+	return convertUnitSystem({
+		toSystem: "metric",
+		string: inputString,
+		rounding: rounded,
+		exact: exact,
+	});
+}
 
-	var theConvert = function (amount, units) {
-		amount = Number(amount);
-		var total, unit, isRounded = false;
-		units = units.replace(/(gram|kilo|degree)s/i, "$1")
-			.replace(/(lit|met)res?/i, "$1er")
-			.replace("cubic", "cu").replace("square", "sq");
-		switch (units){
-			case "cm": case "centimeter":
-				if (amount < 30) {
-					total = amount / UnitsList[ratio].lengthInch;
-					unit = "inch";
-					break;
-				}
-				amount /= 10;
-			case "dm": case "decimeter":
-				if (amount < 3) {
-					total = amount * 10 / UnitsList[ratio].lengthInch;
-					unit = "inch";
-					break;
-				}
-				amount /= 10;
-			case "m": case "meter":
-				total = amount / UnitsList[ratio].length;
-				unit = "ft";
-				break;
-			case "km": case "kilometer":
-				total = amount / UnitsList[ratio].distance;
-				unit = total === 1 ? "mile" : "miles";
-				break;
-
-			case "cm3": case "cm\xB3": case "cu centimeter":
-				amount /= 1000;
-			case "dm3": case "dm\xB3": case "cu decimeter":
-				amount /= 1000;
-			case "m3": case "m\xB3": case "cu meter":
-				total = amount / UnitsList[ratio].volume;
-				unit = "cu ft";
-				if (total > 41 && rounding < 2) {
-					// make it a nice whole number of cubic feet
-					total = RoundTo(total, 10, false, true);
-					isRounded = true;
-				}
-				break;
-
-			case "cm2": case "cm\xB2": case "sq centimeter":
-				amount /= 100;
-			case "dm2": case "dm\xB2": case "sq decimeter":
-				amount /= 100;
-			case "m2": case "m\xB2": case "sq meter":
-				total = amount / UnitsList[ratio].surface;
-				unit = "sq ft";
-				break;
-
-			case "g": case "gram":
-				amount = amount / 1000;
-			case "kg": case "kilogram": case "kilo":
-				total = amount / UnitsList[ratio].mass;
-				unit = "lb";
-				break;
-
-			case "ml": case "milliliter":
-				amount = amount / 10;
-			case "cl": case "centiliter":
-				total = amount / UnitsList[ratio].liquidOunce;
-				unit = "fl oz";
-				break;
-			case "l": case "liter":
-				if (amount <= 0.5) {
-					total = amount / UnitsList[ratio].liquidPint;
-					unit = "pint";
-					break;
-				} else if (amount <= 3) {
-					total = amount / UnitsList[ratio].liquidQuart;
-					unit = "qt";
-					break;
-				}
-				total = amount / UnitsList[ratio].liquid;
-				unit = "gal";
-				break;
-			case "\xB0 c": case "\xB0c": case "degree celsius": case "celsius":
-				total = RoundTo((amount * 9 / 5) + 32, exact ? 0.01 : 1, false, true);
-				unit = "\xB0F"; // °F
-				isRounded = true;
-				break;
-		}
-		return { total: total, unit: unit, isRounded: isRounded };
-	}
-
-	var unicodeFractionToNumber = function (string) {
-		var unicodes = {
-			"\xBC": 0.25, // ¼
-			"\xBD": 0.5,  // ½
-			"\xBE": 0.75, // ¾
-			"\u2153": 0.33, // ⅓
-			"\u2154": 0.66, // ⅔
-		}
-		for (var key in unicodes) {
-			string = string.replace(RegExp(key, "g"), unicodes[key]);
-		}
-		return string;
-	}
-
-	// find all labeled measurements in string
-	var measurements = inputString.match(/((\b|-)\d+[,./]?\d*\/?|-?[\xBC-\xBE\u2153-\u2154])(-?\d+?[,./]?\d*)?\s?-?([dck]?m[\xB2\xB3]|([dck]?m[23]?|(cu |cubic |sq |square )?(milli|centi|deci|kilo)?met(re|er)s?|[mc]?l|(milli|centi)?lit(er|re)s?|k?g|grams?|kilo(gram)?s?|\xB0 ?c|(degrees? )?celsius)\b)/ig);
-	var outputString = inputString;
-
-	if (measurements) {
-		var placeholder = ["Pl4c3h0ld3r", 0], toPlaceBack = [];
-		for (var i = 0; i < measurements.length; i++) {
-			// skip if part of a calculation
-			var location = outputString.indexOf(measurements[i]);
-			var offset = measurements[i][0] === "-" ? 1 : 2;
-			if (/^\d/.test(outputString.substring(location - offset, location))) {
-				// replace it with a placeholder for now, so it won't match future checks if there happen to be multiple identical measurements in the string
-				placeholder[1]++;
-				var tempPlaceholder = placeholder.join("-");
-				toPlaceBack.push({ placeholder: tempPlaceholder, original: measurements[i] });
-				outputString = outputString.replace(measurements[i], tempPlaceholder);
-				continue;
-			}
-
-			var org = measurements[i].replace(/,/g, ".");
-			if (/[\xBC-\xBE\u2153-\u2154]/.test(org)) {
-				org = unicodeFractionToNumber(org);
-			}
-			var orgUnit = org.match(/[-\s]*([\xB0 A-z']+[\xB22\xB33]?)$/)[1].toLowerCase();
-			var fraction = org.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/);
-
-			if (fraction && fraction[1] > 0 && fraction[1] < 3 && fraction[2] > 1 && fraction[2] < 5) {
-				org = fraction[1] / fraction[2];
-				fraction = false;
-			}
-			if (fraction) {
-				var resulted = {
-					numerator: theConvert(fraction[1], orgUnit),
-					denominator: theConvert(fraction[2], orgUnit),
-				};
-			} else {
-				var resulted = theConvert(parseFloat(org), orgUnit);
-			}
-
-			var delimiterMatch = measurements[i].match(/.*\d+([\s- ]*?)[\xB0\w]/);
-			var delimiter = delimiterMatch ? delimiterMatch[1] : " ";
-
-			if (fraction) {
-				var numerator = resulted.numerator.total;
-				if (!resulted.numerator.isRounded) numerator = RoundTo(numerator, rounding, false, true);
-				var denominator = resulted.denominator.total;
-				if (!resulted.denominator.isRounded) denominator = RoundTo(denominator, rounding, false, true);
-				var theResult = numerator + "/" + denominator + delimiter + resulted.denominator.unit;
-			} else if (toshorthand && resulted.unit === "ft" && resulted.total % 1 != 0) {
-				var theFT = Math.floor(resulted.total);
-				var theINCH = Math.round(resulted.total % 1 / (1 / 12));
-				var theResult = theFT + "'" + theINCH + "\"";
-			} else {
-				var theValue = resulted.total;
-				if (!resulted.isRounded) theValue = RoundTo(theValue, rounding, false, true);
-				var theResult = theValue + delimiter + resulted.unit;
-			}
-			outputString = outputString.replace(measurements[i], theResult);
-		}
-		if (toPlaceBack.length) {
-			for (var i = 0; i < toPlaceBack.length; i++) {
-				var placeBack = toPlaceBack[i];
-				outputString = outputString.replace(placeBack.placeholder, placeBack.original);
-			}
-		}
-	}
-	return outputString;
+function ConvertToImperial(inputString, rounded, exact, toShorthand) {
+	return convertUnitSystem({
+		toSystem: "imperial",
+		string: inputString,
+		rounding: rounded,
+		exact: exact,
+		toShorthand: toShorthand,
+	});
 }
 
 // Change an English string form second to first person
@@ -9374,30 +9344,41 @@ function ConvertToFirstPerson(inputString, convertFunction, origin) {
 	return firstPerson;
 }
 
-//update all the decimals in a string or number to reflect the new decimal chosen.
-function UpdateDecimals(inputString) {
-	var theDec = What("Decimal Separator");
-	var theInput = inputString.toString();
-
-	if (theDec === "dot") {
-		var measurements = theInput.match(/\b\d+,\d+/g);
-		if (measurements) {
-			for (var i = 0; i < measurements.length; i++) {
-				var theResult = measurements[i].replace(",", ".");
-				theInput = theInput.replace(measurements[i], theResult);
-			}
-		}
-	} else if (theDec === "comma") {
-		var measurements = theInput.match(/\b\d+\.\d+/g);
-		if (measurements) {
-			for (var i = 0; i < measurements.length; i++) {
-				var theResult = measurements[i].replace(".", ",");
-				theInput = theInput.replace(measurements[i], theResult);
-			}
-		}
+// Update all the decimals in a string or number to reflect the new decimal chosen.
+function UpdateDecimals(input, decimalSeparator) {
+	// Make sure a decimal separator is defined
+	if (!decimalSeparator || (decimalSeparator !== "." && decimalSeparator !== ",")) {
+		decimalSeparator = What("Decimal Separator") === "comma" ? "," : ".";
 	}
-	theInput = isNaN(theInput) ? theInput : Number(theInput);
-	return theInput;
+	// If the input is a number, the output is straightforward
+	if (typeof input === "number") return RoundTo(input, false, false, true);
+
+	// Othwerise, search the string for any numbers separated with a dot or comma
+	var matches = input.toString().match(/\d+([.,]\d{3})*[.,]?\d+/g);
+	if (!matches) return input;
+
+	var outputString = input;
+
+	var addedReplacements = "";
+	for (var i = 0; i < matches.length; i++) {
+		var toReplace = matches[i];
+		var matchNo = stringToNumber(toReplace, decimalSeparator);
+		var newStr = RoundTo(matchNo, false, false, true);
+		if (addedReplacements.indexOf(toReplace) !== -1) {
+			// One of the previously processed numbers is identical to what is about to be replaced, so we need to make sure the right one is replaced
+			var spliceIndex = addedReplacements.split(toReplace).length - 1;
+			var splitOutput = outputString.split(toReplace);
+			var newPart = splitOutput[spliceIndex] + newStr + splitOutput[spliceIndex + 1];
+			splitOutput.splice(spliceIndex, 2, newPart);
+			outputString = splitOutput.join(toReplace);
+		} else {
+			// Just replace the first match
+			outputString = outputString.replace(toReplace, newStr);
+		}
+		addedReplacements += newStr + " ";
+	}
+
+	return outputString;
 }
 
 function SetUnitDecimals_Button() {
@@ -9411,122 +9392,241 @@ function SetUnitDecimals_Button() {
 	//call the dialog and do something if ok is pressed
 	if (app.execDialog(SetUnitDecimals_Dialog) != "ok") return;
 
+	var unitSystemChange = SetUnitDecimals_Dialog.bSys !== unitSys;
+	var decimalSeparatorChange = SetUnitDecimals_Dialog.bDec !== decSep;
+
+	if (
+		(tDoc.info.AdvLogOnly || !unitSystemChange) &&
+		(tDoc.info.SpellsOnly || !decimalSeparatorChange)
+	) {
+		return; // Nothing changed
+	}
+
 	// Start progress bar and stop calculations
 	var thermoTxt = thermoM("Set units and decimals...");
 	calcStop();
 
-	if (!minVer) {
-		//fields to update the string from
-		var FldsGameMech = [
-			"Vision",
-			"Saving Throw advantages / disadvantages",
-			"Racial Traits",
-			"Class Features",
-			"Speed",
-			"Speed encumbered",
-			"Background Feature Description",
-			"Extra.Notes",
-			"MoreProficiencies",
-		];
-		//Weight fields (that don't include a unit) to update with 4 decimals
-		var FldsWeight = [
-			"AC Armor Weight",
-			"AC Shield Weight",
-			"AmmoLeftDisplay.Weight",
-			"AmmoRightDisplay.Weight",
-		];
-		//field calculations to update
-		var FldsCalc = [], MIfldsCalc = [];
-		var AScompA = What("Template.extras.AScomp").split(",").slice(1);
-		var WSfrontA = What("Template.extras.WSfront").split(",").slice(1);
-		for (var C = 0; C < AScompA.length; C++) {
-			var prefix = AScompA[C];
-			FldsGameMech.push(prefix + "Comp.Use.Speed");
-			FldsGameMech.push(prefix + "Comp.Use.Features");
-			FldsGameMech.push(prefix + "Comp.Use.Senses");
-			FldsGameMech.push(prefix + "Comp.Use.Traits");
-			FldsGameMech.push(prefix + "Cnote.Left");
-			FldsGameMech.push(prefix + "Cnote.Right");
-			for (var a = 1; a <= FieldNumbers.compgear; a++) {
-				FldsWeight.push(prefix + "Comp.eqp.Gear Weight " + a);
-			}
-		}
-		for (var i = 1; i <= 77; i++) {
-			if (i <= FieldNumbers.magicitems) FldsGameMech.push("Extra.Magic Item Description " + i);
-			if (i <= FieldNumbers.limfea) FldsGameMech.push("Limited Feature " + i);
-			if (i <= FieldNumbers.feats) {
-				FldsGameMech.push("Feat Description " + i);
-				FldsCalc.push("Feat Description " + i);
-			}
-			if (i <= FieldNumbers.magicitems) {
-				FldsGameMech.push("Extra.Magic Item Description " + i);
-				MIfldsCalc.push("Extra.Magic Item Description " + i);
-				FldsWeight.push("Extra.Magic Item Weight " + i);
-			}
-			if (i <= FieldNumbers.actions) {
-				FldsGameMech.push("Bonus Action " + i);
-				FldsGameMech.push("Reaction " + i);
-			}
-			if (i <= FieldNumbers.trueactions) {
-				FldsGameMech.push("Action " + i);
-			}
-			if (i <= FieldNumbers.attacks) {
-				FldsGameMech.push("Attack." + i + ".Range");
-				FldsGameMech.push("Attack." + i + ".Description");
-				FldsWeight.push("BlueText.Attack." + i + ".Weight");
-			}
-			if (i <= 4) {
-				for (var W = 0; W < WSfrontA.length; W++) {
-					prefix = WSfrontA[W];
-					FldsGameMech.push(prefix + "Wildshape." + i + ".Attack.1.Range");
-					FldsGameMech.push(prefix + "Wildshape." + i + ".Attack.1.Description");
-					FldsGameMech.push(prefix + "Wildshape." + i + ".Attack.2.Range");
-					FldsGameMech.push(prefix + "Wildshape." + i + ".Attack.2.Description");
-					FldsGameMech.push(prefix + "Wildshape." + i + ".Speed");
-					FldsGameMech.push(prefix + "Wildshape." + i + ".Traits");
-				}
-			}
-			if (i <= 3) {
-				for (var C = 0; C < AScompA.length; C++) {
-					prefix = AScompA[C];
-					FldsGameMech.push(prefix + "Comp.Use.Attack." + i + ".Range");
-					FldsGameMech.push(prefix + "Comp.Use.Attack." + i + ".Description");
-				}
-			}
-			if (i <= FieldNumbers.extragear) FldsWeight.push("Extra.Gear Weight " + i);
-			if (i <= FieldNumbers.gear) FldsWeight.push("Adventuring Gear Weight " + i);
-		}
-		var ASnotesA = What("Template.extras.ASnotes").split(",").slice(1);
-		for (var N = 0; N < ASnotesA.length; N++) {
-			var prefix = ASnotesA[N];
-			[prefix + "Notes.Left", prefix + "Notes.Right"].forEach(function (fld) {
-				if (/#\u25C6/.test(What(fld))) FldsGameMech.push(fld);
-			});
-		}
-	}
-	if (!tDoc.info.AdvLogOnly) {
-		var spellsArray = []; // an array of all the spell fields
+	// Save the new values to the sheet
+	Value("Unit System", SetUnitDecimals_Dialog.bSys);
+	Value("Decimal Separator", SetUnitDecimals_Dialog.bDec);
+
+	// All the Spell Sheet fields (unit change only)
+	if (!tDoc.info.AdvLogOnly && unitSystemChange) {
+		var spellsArray = [];
 		var SSmoreA = What("Template.extras.SSmore").split(",");
 		SSmoreA[0] = What("Template.extras.SSfront").split(",")[1];
 		if (!SSmoreA[0]) SSmoreA.shift();
 		var SkipArray = ["hidethisline", "setcaptions", "setheader", "setdivider", "setglossary"];
 		if (SSmoreA[0]) {
+			thermoTxt = thermoM("Converting spells to " + SetUnitDecimals_Dialog.bSys + "...", false); //change the progress dialog text
 			for (var SS = 0; SS < SSmoreA.length; SS++) {
 				var fldsNmbrs = FieldNumbers.spells[SS === 0 ? 0 : 1];
 				for (var q = 0; q <= fldsNmbrs; q++) {
 					var SSrem = SSmoreA[SS] + "spells.remember." + q;
 					var SSremV = What(SSrem);
 					if (SSremV && SkipArray.indexOf(SSremV.split("##")[0]) === -1) {
-						spellsArray.push([SSremV, SSrem]);
+						spellsArray.push({ name: SSrem, value: SSremV })
 					}
 				}
 			}
 		}
+		spellsArray.forEach(function (fld, idx) {
+			ApplySpell(fld.value, fld.name);
+			thermoI((idx + 1) / spellsArray.length); // Increment progress bar
+		})
+		// If only a spell sheet, we are done now
+		if (tDoc.info.SpellsOnly) {
+			thermoM(thermoTxt, true); // Stop progress bar
+			return;
+		}
 	}
-	if (!minVer && SetUnitDecimals_Dialog.bSys !== unitSys) { //do something if the unit system was changed
+
+	// Adventure Logsheet fields (decimal change only)
+	if (!tDoc.info.SpellsOnly && decimalSeparatorChange) {
+		var advLogsArray = [];
+		var ALlogsA = What("Template.extras.ALlog").split(",").slice(1);
+		if (ALlogsA.length) {
+			thermoTxt = thermoM("Adventure Logsheet decimal/thousands separator...", false); //change the progress dialog text
+			var alTypes = [".xp", ".gold", ".downtime", ".renown", ".magicItems"];
+			for (var i = 0; i < ALlogsA.length; i++) {
+				var prefix = ALlogsA[i];
+				for (var f = 1; f <= FieldNumbers.logs; f++) {
+					for (var t = 0; t <= alTypes.length; t++) {
+						var baseName = prefix + "AdvLog." + f + alTypes[t];
+						var startFld = tDoc.getField(baseName + ".start");
+						if (startFld && startFld.value && startFld.display === display.visible) {
+							advLogsArray.push(baseName + ".start");
+						}
+						if (What(baseName + ".gain")) {
+							advLogsArray.push(baseName + ".gain");
+						}
+					}
+				}
+			}
+		}
+		advLogsArray.forEach(function (fld, idx) {
+			tDoc.getField(fld).password = false;
+			thermoM((idx + 1) / advLogsArray.length); // Increment progress bar
+		});
+		// If only an Adventure Logsheet, we are done now
+		if (tDoc.info.AdvLogOnly) {
+			thermoM(thermoTxt, true); // Stop progress bar
+			return;
+		}
+	}
+
+	// Gather all the other fields to update
+	// Fields to update the string from
+	var FldsGameMech = [
+		"Vision",
+		"Saving Throw advantages / disadvantages",
+		"Racial Traits",
+		"Class Features",
+		"Speed",
+		"Speed encumbered",
+		"Background Feature Description",
+		"Extra.Notes",
+		"MoreProficiencies",
+	];
+
+	// Fields that should be updated with exact conversions
+	var FldsExact = [
+		"Height",
+		"Weight",
+	];
+
+	// Weight fields (that don't include a unit) to update with 3 decimals accuracy
+	var FldsWeight = [
+		"AC Armor Weight",
+		"AC Shield Weight",
+		"AmmoLeftDisplay.Weight",
+		"AmmoRightDisplay.Weight",
+	];
+
+	// Fields without units, but are formatted using thousands/decimal separators
+	var FldsDecimals = [
+		"Total Experience",
+		"Add Experience",
+		"Platinum Pieces",
+		"Gold Pieces",
+		"Electrum Pieces",
+		"Silver Pieces",
+		"Copper Pieces",
+	];
+
+	// Fields that are calculated, with their calculate string stored in its submitName
+	var FldsCalc = [], MIfldsCalc = [];
+
+	// Add to the above arrays with fields that have multiple occurances and/or on template pages
+	var AScompA = What("Template.extras.AScomp").split(",").slice(1);
+	var WSfrontA = What("Template.extras.WSfront").split(",").slice(1);
+	for (var C = 0; C < AScompA.length; C++) {
+		var prefix = AScompA[C];
+		FldsExact.push(
+			prefix + "Comp.Desc.Height",
+			prefix + "Comp.Desc.Weight"
+		);
+		FldsGameMech.push(
+			prefix + "Comp.Use.Speed",
+			prefix + "Comp.Use.Features",
+			prefix + "Comp.Use.Senses",
+			prefix + "Comp.Use.Traits",
+			prefix + "Cnote.Left",
+			prefix + "Cnote.Right"
+		);
+		for (var i = 1; i <= FieldNumbers.compgear; i++) {
+			FldsWeight.push(prefix + "Comp.eqp.Gear Weight " + i);
+		}
+		for (var i = 1; i <= 3; i++) {
+			FldsGameMech.push(
+				prefix + "Comp.Use.Attack." + i + ".Range",
+				prefix + "Comp.Use.Attack." + i + ".Description"
+			);
+		}
+	}
+	for (var i = 1; i <= 77; i++) {
+		if (i <= FieldNumbers.magicitems) FldsGameMech.push("Extra.Magic Item Description " + i);
+		if (i <= FieldNumbers.limfea) FldsGameMech.push("Limited Feature " + i);
+		if (i <= FieldNumbers.feats) {
+			FldsGameMech.push("Feat Description " + i);
+			FldsCalc.push("Feat Description " + i);
+		}
+		if (i <= FieldNumbers.magicitems) {
+			FldsGameMech.push("Extra.Magic Item Description " + i);
+			MIfldsCalc.push("Extra.Magic Item Description " + i);
+			FldsWeight.push("Extra.Magic Item Weight " + i);
+		}
+		if (i <= FieldNumbers.actions) {
+			FldsGameMech.push("Bonus Action " + i, "Reaction " + i);
+		}
+		if (i <= FieldNumbers.trueactions) {
+			FldsGameMech.push("Action " + i);
+		}
+		if (i <= FieldNumbers.attacks) {
+			FldsGameMech.push(
+				"Attack." + i + ".Range",
+				"Attack." + i + ".Description"
+			);
+			FldsWeight.push("BlueText.Attack." + i + ".Weight");
+		}
+		if (i <= 4) {
+			for (var W = 0; W < WSfrontA.length; W++) {
+				prefix = WSfrontA[W];
+				FldsGameMech.push(prefix + "Wildshape." + i + ".Attack.1.Range");
+				FldsGameMech.push(prefix + "Wildshape." + i + ".Attack.1.Description");
+				FldsGameMech.push(prefix + "Wildshape." + i + ".Attack.2.Range");
+				FldsGameMech.push(prefix + "Wildshape." + i + ".Attack.2.Description");
+				FldsGameMech.push(prefix + "Wildshape." + i + ".Speed");
+				FldsGameMech.push(prefix + "Wildshape." + i + ".Senses");
+				FldsGameMech.push(prefix + "Wildshape." + i + ".Traits");
+			}
+		}
+		if (i <= FieldNumbers.extragear) FldsWeight.push("Extra.Gear Weight " + i);
+		if (i <= FieldNumbers.gear) FldsWeight.push("Adventuring Gear Weight " + i);
+	}
+	var ASnotesA = What("Template.extras.ASnotes").split(",").slice(1);
+	for (var N = 0; N < ASnotesA.length; N++) {
+		var prefix = ASnotesA[N];
+		[prefix + "Notes.Left", prefix + "Notes.Right"].forEach(function (fld) {
+			if (/#\u25C6/.test(What(fld))) FldsGameMech.push(fld);
+		});
+	}
+
+	// For the progress bar incrementation
+	var totalInc = FldsGameMech.length + FldsExact.length + FldsWeight.length + 2;
+	if (unitSystemChange) totalInc += FldsCalc.length + MIfldsCalc.length;
+	if (decimalSeparatorChange) totalInc += FldsDecimals.length;
+	var currentInc = 0;
+
+	// Function to convert weight fields, as that happens a lot
+	var weightConv = function (amount) {
+		var useAmount = stringToNumber(amount, decSep);
+		var massRatio = toSystem === "imperial" ? 1 / UnitsList.metric.mass : UnitsList.metric.mass;
+		return RoundTo(useAmount * massRatio, 0.001);
+	}
+
+	// Basic variables
+	var decSep = SetUnitDecimals_Dialog.bDec === "dot" ? "." : ",";
+	var toSystem = unitSystemChange ? SetUnitDecimals_Dialog.bSys : "decimal";
+	var inputObject = {
+		toSystem: toSystem,
+		string: "",
+		rounding: 0.5,
+		exact: false,
+		toShorthand: false,
+		useSetDecimalSeparator: true,
+	};
+	var inputObjectExact = Object.assign({}, inputObject, {
+		rounding: 0.01,
+		exact: true,
+		toShorthand: true,
+	});
+
+	// Stuff to do when the unit system changes
+	if (unitSystemChange) {
 		thermoTxt = thermoM("Converting to " + SetUnitDecimals_Dialog.bSys + "...", false); //change the progress dialog text
-		Value("Unit System", SetUnitDecimals_Dialog.bSys);
-		Value("Decimal Separator", SetUnitDecimals_Dialog.bDec);
+
+		// Column headers
 		if (typePF) {
 			var LbKg = What("Unit System") === "imperial" ? "LB" : "KG";
 			Value("Display.Weighttxt.LbKg", LbKg);
@@ -9536,58 +9636,17 @@ function SetUnitDecimals_Button() {
 			SetRichTextFields();
 		}
 
-		if (SetUnitDecimals_Dialog.bSys === "imperial") {
-			var conStr = "ConvertToImperial";
-			var weightConv = function (amount) {
-				return RoundTo(amount / UnitsList.metric.mass, 0.001);
-			}
-			var raceHeight = "height";
-			var raceWeight = "weight";
-		} else {
-			var conStr = "ConvertToMetric";
-			var weightConv = function (amount) {
-				return RoundTo(amount * UnitsList.metric.mass, 0.001);
-			}
-			var raceHeight = "heightMetric";
-			var raceWeight = "weightMetric";
-		}
+		// Speed tooltips
+		inputObject.string = Who("Speed");
+		if (inputObject.string) {
+			var speedTooltip = convertUnitSystem(inputObject);
+			AddTooltip("Speed", speedTooltip);
+			AddTooltip("Speed encumbered", speedTooltip);
+		};
 
-		var totalInc = FldsGameMech.length + FldsWeight.length + FldsCalc.length + MIfldsCalc.length + 2;
-
-		for (var C = 0; C < FldsGameMech.length; C++) {
-			var theValue = What(FldsGameMech[C]);
-			if (theValue) {
-				Value(FldsGameMech[C], tDoc[conStr](theValue, 0.5));
-			}
-			thermoM(C / totalInc); //increment the progress dialog's progress
-		}
-		for (C = 0; C < FldsWeight.length; C++) {
-			var theValue = What(FldsWeight[C]);
-			if (theValue) {
-				Value(FldsWeight[C], weightConv(theValue));
-			}
-			thermoM((FldsGameMech.length + C) / totalInc); //increment the progress dialog's progress
-		}
-		for (C = 0; C < FldsCalc.length; C++) {
-			if (CurrentFeats.known[C] && FeatsList[CurrentFeats.known[C]].calculate) {
-				var theCalc = FeatsList[CurrentFeats.known[C]].calculate;
-				tDoc.getField(FldsCalc[C]).setAction("Calculate", tDoc[conStr](theCalc, 0.5));
-				thermoM((FldsGameMech.length + FldsWeight.length + C) / totalInc); //increment the progress dialog's progress
-			}
-		}
-		for (C = 0; C < MIfldsCalc.length; C++) {
-			if (CurrentMagicItems.known[C] && MagicItemsList[CurrentMagicItems.known[C]].calculate) {
-				var theCalc = MagicItemsList[CurrentMagicItems.known[C]].calculate;
-				tDoc.getField(MIfldsCalc[C]).setAction("Calculate", tDoc[conStr](theCalc, 0.5));
-				thermoM((FldsGameMech.length + FldsWeight.length + FldsCalc.length + C) / totalInc); //increment the progress dialog's progress
-			}
-		}
-		if (What("Height")) {
-			Value("Height", tDoc[conStr](What("Height"), 0.01, true, true));
-		}
-		if (What("Weight")) {
-			Value("Weight", tDoc[conStr](What("Weight"), 0.01, true));
-		}
+		// Height and Weight tooltips, also on the companion pages
+		var raceHeight = toSystem === "imperial" ? "height" : "heightMetric";
+		var raceWeight = toSystem === "imperial" ? "weight" : "weightMetric";
 		if (CurrentRace.known) {
 			if (CurrentRace[raceHeight]) {
 				AddTooltip("Height", CurrentRace.plural + CurrentRace[raceHeight]);
@@ -9595,83 +9654,89 @@ function SetUnitDecimals_Button() {
 			if (CurrentRace[raceWeight]) {
 				AddTooltip("Weight", CurrentRace.plural + CurrentRace[raceWeight]);
 			}
-			if (CurrentRace.speed[0]) {
-				var tempString = tDoc[conStr](tDoc.getField("Speed").userName, 0.5);
-				AddTooltip("Speed", tempString);
-				AddTooltip("Speed encumbered", tempString);
-			}
 		}
-		thermoM((totalInc - 1) / totalInc); //increment the progress dialog's progress
-
 		for (var p = 0; p < AScompA.length; p++) {
 			prefix = AScompA[p];
-			if (What(prefix + "Comp.Desc.Height")) {
-				Value(prefix + "Comp.Desc.Height", tDoc[conStr](What(prefix + "Comp.Desc.Height"), 0.01, true, true));
-			}
-			if (What(prefix + "Comp.Desc.Weight")) {
-				Value(prefix + "Comp.Desc.Weight", tDoc[conStr](What(prefix + "Comp.Desc.Height"), 0.01, true));
-			}
 			if (CurrentCompRace[prefix] && CurrentCompRace[prefix].known && CurrentCompRace[prefix].typeFound === "race") {
+				var plural = CurrentCompRace[prefix].plural;
 				if (CurrentCompRace[prefix][raceHeight]) {
-					AddTooltip("Height", CurrentCompRace[prefix].plural + CurrentCompRace[prefix][raceHeight]);
+					AddTooltip("Height", plural + CurrentCompRace[prefix][raceHeight]);
 				}
 				if (CurrentCompRace[prefix][raceWeight]) {
-					AddTooltip("Weight", CurrentCompRace[prefix].plural + CurrentCompRace[prefix][raceWeight]);
+					AddTooltip("Weight", plural + CurrentCompRace[prefix][raceWeight]);
 				}
 			}
 		}
 
-		//run through all the spells fields with a description and re-do the description
-		for (var Sa = 0; Sa < spellsArray.length; Sa++) {
-			ApplySpell(spellsArray[Sa][0], spellsArray[Sa][1]);
-		}
+		thermoM((currentInc + 1) / totalInc); // Increment the progress bar
+		currentInc += 1;
 
-	} else if (!minVer && SetUnitDecimals_Dialog.bDec !== decSep) { //or if only the decimal separator has been changed
-		thermoTxt = thermoM("Converting to " + SetUnitDecimals_Dialog.bDec + " decimal separator...", false); //change the progress dialog text
-		Value("Decimal Separator", SetUnitDecimals_Dialog.bDec);
-
-		FldsWeight.push("Total Experience");
-		FldsWeight.push("Add Experience");
-		FldsWeight.push("Platinum Pieces");
-		FldsWeight.push("Gold Pieces");
-		FldsWeight.push("Electrum Pieces");
-		FldsWeight.push("Silver Pieces");
-		FldsWeight.push("Copper Pieces");
-		FldsGameMech.push("Height");
-		FldsGameMech.push("Weight");
-
-		for (var p = 0; p < AScompA.length; p++) {
-			prefix = AScompA[p];
-			FldsGameMech.push(prefix + "Comp.Desc.Height");
-			FldsGameMech.push(prefix + "Comp.Desc.Weight");
-		}
-
-		var totalInc = FldsGameMech.length + FldsWeight.length;
-
-		for (var D = 0; D < FldsGameMech.length; D++) {
-			var theValue = What(FldsGameMech[D]);
-			if (theValue) {
-				Value(FldsGameMech[D], UpdateDecimals(theValue));
+		// Convert calculated fields to new unit system
+		for (var C = 0; C < FldsCalc.length; C++) {
+			if (CurrentFeats.known[C] && FeatsList[CurrentFeats.known[C]].calculate) {
+				inputObject.string = FeatsList[CurrentFeats.known[C]].calculate;
+				tDoc.getField(FldsCalc[C]).setAction("Calculate", convertUnitSystem(inputObject));
+				thermoM((currentInc + C) / totalInc); // Increment the progress bar
 			}
-			thermoM(D / totalInc); //increment the progress dialog's progress
 		}
-
-		for (D = 0; D < FldsWeight.length; D++) {
-			Value(FldsWeight[D], What(FldsWeight[D]));
-			thermoM((FldsGameMech.length + D) / totalInc); //increment the progress dialog's progress
+		currentInc += FldsCalc.length;
+		for (C = 0; C < MIfldsCalc.length; C++) {
+			if (CurrentMagicItems.known[C] && MagicItemsList[CurrentMagicItems.known[C]].calculate) {
+				inputObject.string = MagicItemsList[CurrentMagicItems.known[C]].calculate;
+				tDoc.getField(MIfldsCalc[C]).setAction("Calculate", convertUnitSystem(inputObject));
+				thermoM((currentInc + C) / totalInc); // Increment the progress bar
+			}
 		}
-	} else if (tDoc.info.SpellsOnly && (SetUnitDecimals_Dialog.bSys !== unitSys || SetUnitDecimals_Dialog.bDec !== decSep)) { //do something if it was changed
-		thermoTxt = thermoM("Converting to " + SetUnitDecimals_Dialog.bSys + "...", false); //change the progress dialog text
-		Value("Unit System", SetUnitDecimals_Dialog.bSys);
-		Value("Decimal Separator", SetUnitDecimals_Dialog.bDec);
-		//run through all the spells fields with a description and re-do them
-		for (var Sa = 0; Sa < spellsArray.length; Sa++) {
-			ApplySpell(spellsArray[Sa][0], spellsArray[Sa][1]);
-		}
-	} else if (tDoc.info.AdvLogOnly) {
-		Value("Unit System", SetUnitDecimals_Dialog.bSys);
-		Value("Decimal Separator", SetUnitDecimals_Dialog.bDec);
+		currentInc += MIfldsCalc.length;
 	}
+
+	// Update number fields without units, but only when decimal separator changes
+	if (decimalSeparatorChange) {
+		thermoTxt = thermoM("Applying " + SetUnitDecimals_Dialog.bDec + " decimal separator...", false); //change the progress dialog text
+		for (var C = 0; C < FldsDecimals.length; C++) {
+			var theValue = What(FldsDecimals[C]);
+			if (theValue) {
+				Value(FldsDecimals[C], theValue);
+			}
+			thermoM((currentInc + C) / totalInc); // Increment the progress bar
+		}
+		currentInc += MIfldsCalc.length;
+	}
+
+	// The rest of the conversion, needed if either the unit system or the decimal separator changes
+	thermoTxt = thermoM("Applying changed unit system / decimal separator...", false); //change the progress dialog text
+	// Convert game mechanic strings
+	for (var C = 0; C < FldsGameMech.length; C++) {
+		inputObject.string = What(FldsGameMech[C]);
+		if (inputObject.string) {
+			Value(FldsGameMech[C], convertUnitSystem(inputObject));
+		}
+		thermoM((currentInc + C) / totalInc); // Increment the progress bar
+	}
+	currentInc += FldsCalc.length;
+	// Convert exact strings
+	for (C = 0; C < FldsExact.length; C++) {
+		inputObjectExact.string = What(FldsExact[C]);
+		if (inputObjectExact.string) {
+			Value(FldsExact[C], convertUnitSystem(inputObjectExact));
+		}
+		thermoM((currentInc + C) / totalInc); // Increment the progress bar
+	}
+	currentInc += FldsExact.length;
+	// Convert weights (numbers), but simply re-apply their value if only changing the decimal separator
+	for (C = 0; C < FldsWeight.length; C++) {
+		var theValue = What(FldsWeight[C]);
+		if (theValue) {
+			if (unitSystemChange) {
+				Value(FldsWeight[C], weightConv(theValue));
+			} else {
+				tDoc.getField(FldsWeight[C]).password = false;
+			}
+		}
+		thermoM((currentInc + C) / totalInc); // Increment the progress bar
+	}
+	currentInc += FldsWeight.length;
+
 	thermoM(thermoTxt, true); // Stop progress bar
 }
 
@@ -10443,14 +10508,8 @@ function CalcCarriedLocation() {
 		for (var i = 1; i <= total; i++) {
 			var theLoc = clean(What(type + "Location.Row " + i), " ").RegEscape();
 			if ((RegExp("\\b" + toSearch + "\\b", "i")).test(theLoc)) {
-				var amount = What(type + "Amount " + i);
-				var weight = What(type + "Weight " + i);
-				if (amount && isNaN(amount) && amount.indexOf(",") !== -1) {
-					amount = parseFloat(amount.replace(",", "."));
-				}
-				if (weight && isNaN(weight) && weight.indexOf(",") !== -1) {
-					weight = parseFloat(weight.replace(",", "."));
-				}
+				var amount = stringToNumber(What(type + "Amount " + i), ",");
+				var weight = stringToNumber(What(type + "Weight " + i), ",");
 
 				if (weight) {
 					if (amount === "" || isNaN(amount)) {

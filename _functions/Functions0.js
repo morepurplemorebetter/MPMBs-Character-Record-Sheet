@@ -410,35 +410,27 @@ function sign(x) {
 };
 
 function format1(extraDec, fixedDec, unit) {
+	// First calculate the number of decimals to show
 	var plusDec = extraDec && !isNaN(extraDec) ? Number(extraDec) : 0;
-	var decShow = 0;
 	AFNumber_Format(2 + plusDec, 1, 0, 0, "", false);
-	var decLoc = event.value.indexOf(".");
-	var decSep = What("Decimal Separator");
-
-	decShow = (3 + plusDec) - decLoc;
-	decShow = decShow < 0 ? 0 : decShow;
-
+	var decShow = 0;
 	if (fixedDec !== undefined && !isNaN(fixedDec) && fixedDec !== "") {
 		decShow = fixedDec;
+	} else {
+		var decLoc = event.value.indexOf(".");
+		decShow = (3 + plusDec) - decLoc;
+		decShow = decShow < 0 ? 0 : decShow;
 	}
 
-	if (decSep === "dot") {
-		AFNumber_Format(decShow, 0, 0, 0, "", false);
-		if (decShow) {
-			// Replace any trailing zeroes with nothing
-			event.value = event.value.replace(/[0]+$/, "");
-			// Replace a trailing decimal with nothing
-			event.value = event.value.replace(/\.$/, "");
-		}
-	} else if (decSep === "comma") {
-		AFNumber_Format(decShow, 2, 0, 0, "", false);
-		if (decShow) {
-			// Replace any trailing zeroes with nothing
-			event.value = event.value.replace(/[0]+$/, "");
-			// Replace a trailing decimal with nothing
-			event.value = event.value.replace(/,$/, "");
-		}
+	// Format using the right decimal and thousands separators
+	var decSep = What("Decimal Separator") === "dot" ? "." : ",";
+	var decSepStyle = decSep === "." ? 0 : 2;
+	AFNumber_Format(decShow, decSepStyle, 0, 0, "", false);
+
+	// Remove any trailing zeroes and dangling decimal separator
+	if (decShow && event.value) {
+		var trailingDecRx = RegExp("\\" + decSep + "0+$");
+		event.value = event.value.replace(trailingDecRx, "");
 	}
 
 	if (event.value !== "" && unit && unit === "mass") {
@@ -449,12 +441,6 @@ function format1(extraDec, fixedDec, unit) {
 			event.value += " kg";
 		}
 	}
-}
-
-//replace all commas and dots with the set decimal separator
-function format2() {
-	var theDec = What("Decimal Separator") === "dot" ? "." : ",";
-	if (event.value) event.value = event.value.replace(/(\.|,)/, theDec);
 }
 
 function keystroke1(allowDec, allowNegative) {
@@ -470,8 +456,25 @@ function keystroke1(allowDec, allowNegative) {
 		}
 		event.rc = tests;
 	} else {
-		event.rc = !isNaN(event.value.replace(/,/, "."));
+		event.rc = !isNaN(event.value.replace(",", "."));
 	}
+}
+
+// Show the calculated total of the input
+// Only used on Adventure Log page, and Carrying Capacity Modifier, all also use keystroke2()
+function format2() {
+	if (!event.value) return;
+	var newValue = event.value.replace(/,/g, ".");
+	if (isNaN(newValue)) {
+		try {
+			newValue = Number(eval_ish(newValue));
+		} catch (e) {}
+		if (isNaN(newValue)) return;
+	}
+	var decSepStyle = What("Decimal Separator") === "dot" ? 0 : 2;
+	var decimals = newValue.toString().split(".")[1];
+	var numberOfDecimals = decimals ? Math.min(decimals.length, 3) : 0;
+	event.value = util.printf("%," + decSepStyle + "." + numberOfDecimals + "f", newValue);
 }
 
 function keystroke2() {
@@ -481,8 +484,13 @@ function keystroke2() {
 		tests = !isNaN(event.change) || allowedA.indexOf(event.change) !== -1;
 	} else if (event.value !== "") {
 		tests = false;
-		var toUse = event.value.replace(/(\.)+(\,)+/g, ",").replace(/(\.|\,)+/g, "$1");
-		toUse = toUse.replace(/(\-)+(\+)+/g, "-").replace(/(\+|\-)+/g, "$1").replace(/(\*|\/|\+|\-)+/g, "$1").replace(/^(\*|\/)/, "");
+		var toUse = event.value.replace(/([.,])+/g, "$1") // Remove duplicate dots/commas
+			.replace(/-\+|\+-/g, "-").replace("--", "+") // Resolve consecutive +- signs
+			.replace(/([*/+-]-?)+/g, "$1").replace(/^[*/+]+/, "") // Remove duplicate and wrongly placed symbols
+			.replace(/\b\d{1,3}[.,](000|\d{3}[.,]\d+)(?=[+*/-]|$)/g, function (capture) {
+				// Resolve numbers with multiple dots/commas
+				return stringToNumber(capture);
+			});
 		var toTest = toUse.replace(/,/g, ".");
 		try {
 			var tests = !isNaN(eval_ish(toTest));
@@ -539,7 +547,8 @@ function addWhitespace() {
 };
 
 function RoundTo(inputNmbr, roundNmbr, emptyAtZero, applyDec) {
-	var input = isNaN(inputNmbr) ? Number(inputNmbr.replace(/,/g,".")) : inputNmbr, result = inputNmbr;
+	var input = isNaN(inputNmbr) ? stringToNumber(inputNmbr) : inputNmbr;
+	var result = inputNmbr;
 
 	if (roundNmbr && !isNaN(roundNmbr)) {
 		if (roundNmbr >= 1) {
@@ -553,10 +562,60 @@ function RoundTo(inputNmbr, roundNmbr, emptyAtZero, applyDec) {
 	}
 	if (emptyAtZero && result === 0) {
 		result = "";
-	} else if (applyDec && result % 1 != 0 && What("Decimal Separator") === "comma") {
-		result = result.replace(".", ",");
+	} else if (applyDec) {
+		var decimalSeparator = What("Decimal Separator") === "comma" ? "," : ".";
+		var thousandsSeparator = decimalSeparator === "," ? "." : ",";
+		var numberSplit = Number(result).toString().split(".");
+		numberSplit[0] = numberSplit[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparator);
+		result = numberSplit.join(decimalSeparator);
 	}
 	return result;
+}
+
+// Convert a string with a given (or current) decimal separator (and opposite thousands separator) to a number, e.g. "4.000,25" to 4000.25
+function stringToNumber(inputString, decimalSeparator) {
+	if (typeof inputString === "number") return inputString;
+	inputString = inputString.toString().trim();
+	// Assume the setting is the decimal separator
+	if (!decimalSeparator || (decimalSeparator !== "." && decimalSeparator !== ",")) {
+		decimalSeparator = What("Decimal Separator") === "comma" ? "," : ".";
+	}
+	// But double check if the string doesn't use something else
+	// First with a generic check with a separator followed by 1, 2, or 4+ numbers
+	var decimalSeparatorFound = inputString.match(/\d+([,.])(\d{1,2}|\d{4,})$/);
+	var thousandsSeparatorFound = inputString.match(/^\d{1,3}([.,])(\d{3}\1\d{3}|000$)/);
+	if (decimalSeparatorFound && decimalSeparator !== decimalSeparatorFound[1]) {
+		// We found a decimal separator, so set it to that
+		decimalSeparator = decimalSeparatorFound[1];
+	} else if (thousandsSeparatorFound && decimalSeparator === thousandsSeparatorFound[1]) {
+		// We found a decimal separator, so set it to that
+		decimalSeparator = thousandsSeparatorFound[1] === "," ? "." : ",";
+	} else if (!decimalSeparatorFound && !thousandsSeparatorFound) {
+		// If it wasn't found, then check if there are two separators that are the inverse of the expected
+		var thousandsSeparatorInverseRX = decimalSeparator === "," ? /\d,\d{3}\./ : /\d\.\d{3},/;
+		if (thousandsSeparatorInverseRX.test(inputString)) {
+			decimalSeparator = decimalSeparator === "," ? "." : ",";
+		}
+	}
+	// Knowing the decimal separator, we can now determine the thousands separator
+	var thousandsSeparatorRx = decimalSeparator === "," ? /\./g : /,/g;
+	inputString = inputString.replace(thousandsSeparatorRx, "").replace(decimalSeparator, ".");
+	return parseFloat(inputString);
+}
+
+function unicodeFractionsToNumber(string) {
+	if (typeof string === "string" && /[\xBC-\xBE\u2153-\u2154]/.test(string)) {
+		[
+			{ rx: /\xBC/g, value: 0.25 }, // ¼
+			{ rx: /\xBD/g, value: 0.5 },  // ½
+			{ rx: /\xBE/g, value: 0.75 }, // ¾
+			{ rx: /\u2153/g, value: 0.33 }, // ⅓
+			{ rx: /\u2154/g, value: 0.66 }, // ⅔
+		].forEach(function (fraction) {
+			string = string.replace(fraction.rx, fraction.value);
+		});
+	}
+	return string;
 }
 
 //adding a way to see the number of keys in an object (i.e. length)

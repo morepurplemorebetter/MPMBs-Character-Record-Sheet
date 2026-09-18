@@ -3916,6 +3916,10 @@ function CalcLogsheetValue() {
 		event.target.display = theGain === "" ? display.hidden : tDoc.getField(theStart).display;
 		var theStartNmr = Number(What(theStart).replace(/,/g, "."));
 		event.value = theGain === "" ? theStartNmr : theStartNmr + eval_ish(theGain);
+		if (/\d\.\d{6,}/.test(event.value.toString())) {
+			// Fix floating point error by not allowing more than 5 decimal precision
+			event.value = Number(event.value.toString().replace(/(\.\d{5})\d+/, "$1"));
+		}
 	} else {
 		var FldNmbr = Number(fNm.replace(/.*AdvLog\.(\d+?)\..+/, "$1"));
 		if (prefix === What("Template.extras.ALlog").split(",")[1] && FldNmbr === 1) {
@@ -5459,14 +5463,25 @@ function addALlogEntry() {
 	var baseFld = emptyLog[0] + "AdvLog." + emptyLog[1] + ".";
 	// experience
 	var start = baseFld === "AdvLog.1." ? 0 : What(baseFld + "xp.start");
-	var total = What("Total Experience") - start;
-	Value(baseFld + "xp.gain", (total >= 0 ? "+" : "") + total);
+	var totalXP = What("Total Experience") - start;
+	Value(baseFld + "xp.gain", (totalXP >= 0 ? "+" : "") + totalXP);
 	thermoM(1 / 5);
 
 	// gold
 	start = baseFld === "AdvLog.1." ? 0 : What(baseFld + "gold.start");
-	total = Math.round(((Number(What("Platinum Pieces").replace(",", ".")) * 10) + Number(What("Gold Pieces").replace(",", ".")) + (Number(What("Electrum Pieces").replace(",", ".")) / 2) + (Number(What("Silver Pieces").replace(",", ".")) / 10) + (Number(What("Copper Pieces").replace(",", ".")) / 100)) * 100) / 100 - start;
-	Value(baseFld + "gold.gain", (total >= 0 ? "+" : "") + total);
+	var totalGP = [
+		{ name: "Platinum", pergp: 0.1 },
+		{ name: "Gold", pergp: 1 },
+		{ name: "Electrum", pergp: 2 },
+		{ name: "Silver", pergp: 10 },
+		{ name: "Copper", pergp: 100 },
+	].reduce(function (total, coin) {
+		var amount = What(coin.name + " Pieces");
+		if (amount) total += stringToNumber(amount, ",") / coin.pergp;
+		return total;
+	}, 0)
+	var totalGained = Math.round(totalGP * 100) / 100 - start;
+	Value(baseFld + "gold.gain", (totalGained >= 0 ? "+" : "") + totalGained);
 	thermoM(2 / 5);
 
 	// downtime (can't really be calculated, so just add a zero)
@@ -7904,9 +7919,9 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 		}; break;
 		case "speed" : {
 			var fldSpd = "Speed";
-			var fldSpdW = What(fldSpd).replace(/\n|\r/g, "").replace(/,/g, ".");
+			var fldSpdW = What(fldSpd).replace(/\n|\r/g, "").replace(/(\d),(\d)/g, "$1.$2");
 			var fldEnc = "Speed encumbered";
-			var fldEncdW = What(fldEnc).replace(/\n|\r/g, "").replace(/,/g, ".");
+			var fldEncdW = What(fldEnc).replace(/\n|\r/g, "").replace(/(\d),(\d)/g, "$1.$2");
 			var spdTypes = ["walk", "burrow", "climb", "fly", "swim"];
 			// Backwards compatibility, when `speed` was still an array
 			if (isArray(ProfObj)) ProfObj = { walk: { spd: parseFloat(ProfObj[0]), enc: parseFloat(ProfObj[1]) } };
@@ -8034,7 +8049,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 					}
 					if (metric) theVal = ConvertToMetric(theVal, 0.5);
 					// Round to two decimal places
-					theVal = theVal.replace(/\d+[.,]\d+/, function (match) {
+					theVal = theVal.replace(/\d+([.,]\d{3})*([,.]\d+)?/, function (match) {
 						return RoundTo(match, 0.01, false, true);
 					});
 					modArray.push(spMod + " [" + theVal + "]");
@@ -8056,7 +8071,7 @@ function SetProf(ProfType, AddRemove, ProfObj, ProfSrc, Extra) {
 						};
 						if (metric) theVal = ConvertToMetric(theVal, 0.5);
 						// Round to two decimal places
-						theVal = theVal.replace(/\d+[.,]\d+/, function (match) {
+						theVal = theVal.replace(/\d+([.,]\d{3})*([,.]\d+)?/, function (match) {
 							return RoundTo(match, 0.01, false, true);
 						});
 						arrs[sV].push(aSpeed + " [" + theVal + "]");
