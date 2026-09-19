@@ -3708,8 +3708,8 @@ function MagicItemDelete(itemNmbr) {
 	calcStop();
 
 	var maxItem = FieldNumbers.magicitems;
-	// Stop at the end of the first page if last one on first page is empty
-	if (itemNmbr <= FieldNumbers.magicitemsD && !What("Extra.Magic Item " + FieldNumbers.magicitemsD)) maxItem = FieldNumbers.magicitemsD;
+	// Do not move items from the overflow page to the page with smaller space
+	if (itemNmbr <= FieldNumbers.magicitemsD) maxItem = FieldNumbers.magicitemsD;
 
 	// First clear the current item so that it's automation is run
 	MagicItemClear(itemNmbr, true);
