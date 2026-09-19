@@ -3217,7 +3217,7 @@ function ParseMagicItemMenu() {
 				iMenus.special["Spellcasting improvement"].push(itemName);
 			}
 		}
-		if (tObj.speed || /(flying|climbing|burrowing|swimming|walking) speed/i.test(tObj.descriptionFull) || /of (flying|climbing|burrowing|swimming)/i.test(tObj.name)) {
+		if (tObj.speed || /(fly|climb|burrow|swimm?|walk)(ing)? speed/i.test(tObj.descriptionFull) || /of (flying|climbing|burrowing|swimming)/i.test(tObj.name)) {
 			iMenus.special.Movement.push(itemName);
 		}
 		if (tObj.dmgres || (tObj.savetxt && tObj.savetxt.immune)) {

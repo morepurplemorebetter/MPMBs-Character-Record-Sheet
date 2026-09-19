@@ -472,8 +472,7 @@ function format2() {
 		if (isNaN(newValue)) return;
 	}
 	var decSepStyle = What("Decimal Separator") === "dot" ? 0 : 2;
-	var decimals = newValue.toString().split(".")[1];
-	var numberOfDecimals = decimals ? Math.min(decimals.length, 3) : 0;
+	var numberOfDecimals = Math.min(newValue.countDecimals(), 3);
 	event.value = util.printf("%," + decSepStyle + "." + numberOfDecimals + "f", newValue);
 }
 

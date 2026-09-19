@@ -9101,7 +9101,7 @@ function metricUnitToImperial(amount, unit, exact, rounding) {
 			break;
 		case "km": case "kilometer":
 			total = amount / oRatio.distance;
-			unit = total === 1 ? "mile" : "miles";
+			unit = RoundTo(total, rounding, false, false) == 1 ? "mile" : "miles"; // RoundTo can produce a string
 			break;
 
 		case "cm3": case "cm\xB3": case "cu centimeter":
@@ -9176,11 +9176,12 @@ function convertUnitSystem(inputObject) {
 	var rounding = !isNaN(inputObject.rounding) ? Number(inputObject.rounding) : 1;
 	var exact = !!inputObject.exact;
 	var toShorthand = !!inputObject.toShorthand;
+	var forceDecimalSeparator = !inputObject.useSetDecimalSeparator ? "." : false;
 
 	switch (toSystem.toLowerCase()) {
 		case "decimals":
 		case "decimal":
-			return UpdateDecimals(inputString);
+			return UpdateDecimals(inputString, forceDecimalSeparator);
 		case "metric":
 			var theConvert = imperialUnitToMetric;
 			var matchRx = /((\b|-)\d+([.,]\d{3})*([,.]\d+)?(\/-?\d+([.,]\d{3})*([,.]\d+)?)?|-?[\xBC-\xBE\u2153-\u2154])\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|f(oo|ee)?t[23\xB2\xB3]|(in|inch|inches|miles?|(cubic|cu|square|sq)? ?f(oo|ee)?t?|lbs?|pounds?|gal(lons?)?|q(uar)?ts?|p(in)?ts?|(fluid )?ounces?|(fl\.? )?oz|\xB0 ?f|(degrees? )?fahrenheit)\b|\b ?)/ig;
@@ -9198,7 +9199,7 @@ function convertUnitSystem(inputObject) {
 	// The decimal separator to use is "." by default, because that's how numbers are stored in the Lists. The only exception is when fields are being converted on the fly, then use the given decimal separator (by passing `false` to stringToNumber).
 	var decimalSeparator = !inputObject.useSetDecimalSeparator ? "." :
 		What("Decimal Separator") === "comma" ? "," : ".";
-	var forceDecimalSeparator = !inputObject.useSetDecimalSeparator ? "." : false;
+	var oldDecimalSeparator = /^[.,]$/.test(inputObject.oldDecimalSeparator) ? inputObject.oldDecimalSeparator : decimalSeparator;
 
 	// Replace all found measurements in the outputString
 	var outputString = inputString.toString();
@@ -9212,7 +9213,7 @@ function convertUnitSystem(inputObject) {
 			// Replace it with a placeholder for now, so it won't match future checks if there happen to be multiple identical measurements in the string
 			placeholder[1]++;
 			var tempPlaceholder = placeholder.join("-");
-			var org = UpdateDecimals(measurements[i], forceDecimalSeparator);
+			var org = UpdateDecimals(measurements[i], oldDecimalSeparator);
 			toPlaceBack.push({ placeholder: tempPlaceholder, original: org });
 			outputString = outputString.replace(measurements[i], tempPlaceholder);
 			continue;
@@ -9224,8 +9225,8 @@ function convertUnitSystem(inputObject) {
 				measurements[i] = measurements[i].substr(0, measurements[i].length - 1);
 			}
 			var org = unicodeFractionsToNumber(measurements[i]);
-			var orgFT = stringToNumber(org.substring(0, org.indexOf("'")), decimalSeparator);
-			var orgIN = stringToNumber(org.substring(org.indexOf("'") + 1, org.indexOf('"')), decimalSeparator);
+			var orgFT = stringToNumber(org.substring(0, org.indexOf("'")), oldDecimalSeparator);
+			var orgIN = stringToNumber(org.substring(org.indexOf("'") + 1, org.indexOf('"')), oldDecimalSeparator);
 			var resulted = theConvert(parseFloat(orgIN / 12) + parseFloat(orgFT), "ft", exact, rounding);
 			var delimiterMatch = org.match(/\d([-\s]+)"/);
 			var delimiter = delimiterMatch ? delimiterMatch[1] : " ";
@@ -9249,8 +9250,8 @@ function convertUnitSystem(inputObject) {
 			var fraction = orgAmount.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/);
 			if (fraction) {
 				// Test if this is a common fraction, otherwise assume its two numbers separated with a slash
-				var numerator = stringToNumber(fraction[1], decimalSeparator);
-				var denominator = stringToNumber(fraction[2], decimalSeparator);
+				var numerator = stringToNumber(fraction[1], oldDecimalSeparator);
+				var denominator = stringToNumber(fraction[2], oldDecimalSeparator);
 				if (numerator > 0 && numerator < 4 && denominator > 1 && denominator < 5) {
 					// Common fraction, so calculate its value
 					orgAmount = numerator / denominator;
@@ -9264,7 +9265,7 @@ function convertUnitSystem(inputObject) {
 					denominator: theConvert(denominator, orgUnit, exact, rounding),
 				};
 			} else {
-				orgAmount = stringToNumber(orgAmount, decimalSeparator);
+				orgAmount = stringToNumber(orgAmount, oldDecimalSeparator);
 				var resulted = theConvert(orgAmount, orgUnit, exact, rounding);
 			}
 		}
@@ -9276,7 +9277,7 @@ function convertUnitSystem(inputObject) {
 			var denomValue = resulted.denominator.isRounded ? resulted.denominator.total
 				: RoundTo(resulted.denominator.total, rounding, false, true);
 			var theResult = numValue + "/" + denomValue + delimiter + resulted.denominator.unit;
-		} else if (toShorthand && resulted.unit === "ft" && resulted.total % 1 != 0) {
+		} else if (toShorthand && !resulted.isRounded && resulted.unit === "ft" && resulted.total % 1 != 0) {
 			var theFT = Math.floor(resulted.total);
 			var theINCH = Math.round(resulted.total % 1 / (1 / 12));
 			var theResult = theFT + "'" + theINCH + '"';
@@ -9345,13 +9346,16 @@ function ConvertToFirstPerson(inputString, convertFunction, origin) {
 }
 
 // Update all the decimals in a string or number to reflect the new decimal chosen.
-function UpdateDecimals(input, decimalSeparator) {
-	// Make sure a decimal separator is defined
-	if (!decimalSeparator || (decimalSeparator !== "." && decimalSeparator !== ",")) {
-		decimalSeparator = What("Decimal Separator") === "comma" ? "," : ".";
-	}
+function UpdateDecimals(input, oldDecimalSeparator) {
 	// If the input is a number, the output is straightforward
 	if (typeof input === "number") return RoundTo(input, false, false, true);
+
+	// Make sure a decimal separator is defined
+	var currentDecimalSeparator = What("Decimal Separator") === "comma" ? "," : ".";
+	if (!oldDecimalSeparator || (oldDecimalSeparator !== "." && oldDecimalSeparator !== ",")) {
+		oldDecimalSeparator = currentDecimalSeparator === "," ? "." : ",";
+	}
+	if (oldDecimalSeparator === currentDecimalSeparator) return;
 
 	// Othwerise, search the string for any numbers separated with a dot or comma
 	var matches = input.toString().match(/\d+([.,]\d{3})*[.,]?\d+/g);
@@ -9362,7 +9366,7 @@ function UpdateDecimals(input, decimalSeparator) {
 	var addedReplacements = "";
 	for (var i = 0; i < matches.length; i++) {
 		var toReplace = matches[i];
-		var matchNo = stringToNumber(toReplace, decimalSeparator);
+		var matchNo = stringToNumber(toReplace, oldDecimalSeparator);
 		var newStr = RoundTo(matchNo, false, false, true);
 		if (addedReplacements.indexOf(toReplace) !== -1) {
 			// One of the previously processed numbers is identical to what is about to be replaced, so we need to make sure the right one is replaced
@@ -9388,6 +9392,7 @@ function SetUnitDecimals_Button() {
 	//set the dialog to represent current settings
 	SetUnitDecimals_Dialog.bSys = unitSys;
 	SetUnitDecimals_Dialog.bDec = decSep;
+	var oldDecimalSeparator = decSep === "dot" ? "." : ",";
 
 	//call the dialog and do something if ok is pressed
 	if (app.execDialog(SetUnitDecimals_Dialog) != "ok") return;
@@ -9432,7 +9437,7 @@ function SetUnitDecimals_Button() {
 		}
 		spellsArray.forEach(function (fld, idx) {
 			ApplySpell(fld.value, fld.name);
-			thermoI((idx + 1) / spellsArray.length); // Increment progress bar
+			thermoM((idx + 1) / spellsArray.length); // Increment progress bar
 		})
 		// If only a spell sheet, we are done now
 		if (tDoc.info.SpellsOnly) {
@@ -9545,7 +9550,6 @@ function SetUnitDecimals_Button() {
 		}
 	}
 	for (var i = 1; i <= 77; i++) {
-		if (i <= FieldNumbers.magicitems) FldsGameMech.push("Extra.Magic Item Description " + i);
 		if (i <= FieldNumbers.limfea) FldsGameMech.push("Limited Feature " + i);
 		if (i <= FieldNumbers.feats) {
 			FldsGameMech.push("Feat Description " + i);
@@ -9600,7 +9604,7 @@ function SetUnitDecimals_Button() {
 
 	// Function to convert weight fields, as that happens a lot
 	var weightConv = function (amount) {
-		var useAmount = stringToNumber(amount, decSep);
+		var useAmount = stringToNumber(amount, oldDecimalSeparator);
 		var massRatio = toSystem === "imperial" ? 1 / UnitsList.metric.mass : UnitsList.metric.mass;
 		return RoundTo(useAmount * massRatio, 0.001);
 	}
@@ -9615,6 +9619,7 @@ function SetUnitDecimals_Button() {
 		exact: false,
 		toShorthand: false,
 		useSetDecimalSeparator: true,
+		oldDecimalSeparator: oldDecimalSeparator,
 	};
 	var inputObjectExact = Object.assign({}, inputObject, {
 		rounding: 0.01,

@@ -94,28 +94,28 @@ setGlobalVars();
 
 var UnitsList = {
 	metric: {
-		mass: 0.5,
-		"length": 0.3,
-		lengthInch: 2.5,
-		volume: 0.03,
-		surface: 0.1,
-		distance: 1.6,
-		liquid: 4,
-		liquidQuart: 1,
-		liquidPint: 0.5,
-		liquidOunce: 3,
+		mass: 0.5, // kg = 1 lb
+		"length": 0.3, // m = 1 ft
+		lengthInch: 2.5, // cm = 1 inch
+		volume: 0.03, // m3 = 1 cu ft
+		surface: 0.1, // m2 = 1 sq ft
+		distance: 1.6, // km = 1 mile
+		liquid: 4, // l = 1 gallon
+		liquidQuart: 1, // l = 1 quart
+		liquidPint: 0.5, // l = 1 pint
+		liquidOunce: 3, // cl = 1 fluid ounce
 	},
 	metricExact: {
-		mass: 0.45359237,
-		"length": 0.3048,
-		lengthInch: 2.54,
-		volume: 0.028316846592,
-		surface: 0.09290304,
-		distance: 1.609344,
-		liquid: 3.785411784,
-		liquidQuart: 0.94635295,
-		liquidPint: 0.473176473,
-		liquidOunce: 2.95735296,
+		mass: 0.45359237, // kg = 1 lb
+		"length": 0.3048, // m = 1 ft
+		lengthInch: 2.54, // cm = 1 inch
+		volume: 0.028316846592, // m3 = 1 cu ft
+		surface: 0.09290304, // m2 = 1 sq ft
+		distance: 1.609344, // km = 1 mile
+		liquid: 3.785411784, // l = 1 gallon
+		liquidQuart: 0.94635295, // l = 1 quart
+		liquidPint: 0.473176473, // l = 1 pint
+		liquidOunce: 2.95735296, // cl = 1 fluid ounce
 	},
 };
 
@@ -1174,9 +1174,15 @@ var SetUnitDecimals_Dialog = {
 			"img1": allIcons.unitsystem,
 			"SyIm": isImp,
 			"SyMe": !isImp,
-			"DeDo": isDot,
-			"DeCo": !isDot,
+			"DeDo": isImp || isDot,
+			"DeCo": !isImp || !isDot,
 		});
+		var toUse = {
+			"DeDo": !isImp,
+			"DeCo": !isImp,
+		};
+		dialog.enable(toUse);
+		// dialog.visible(toUse);
 	},
 
 	//when pressing the ok button
@@ -1186,8 +1192,32 @@ var SetUnitDecimals_Dialog = {
 		this.bDec = oResult["DeDo"] ? "dot" : "comma";
 	},
 
+	SyIm: function (dialog) {
+		// Imperial system always has a dot as the decimal separator
+		dialog.load({
+			"DeDo": true,
+			"DeCo": false,
+		});
+		var toUse = {
+			"DeDo": false,
+			"DeCo": false,
+		};
+		dialog.enable(toUse);
+		// dialog.visible(toUse);
+	},
+
+	SyMe: function (dialog) {
+		// Metric system gets to choose its decimal separator
+		var toUse = {
+			"DeDo": true,
+			"DeCo": true,
+		};
+		dialog.enable(toUse);
+		// dialog.visible(toUse);
+	},
+
 	description: {
-		name: "Choose the unit system and decimal separator",
+		name: "SET UNIT SYSTEM AND DECIMAL SEPARATOR",
 		elements: [{
 			type: "view",
 			elements: [{
@@ -1208,7 +1238,7 @@ var SetUnitDecimals_Dialog = {
 						bold: true,
 						wrap_name: true,
 						width: 480,
-						name: "Choose the unit system and decimal separator",
+						name: "Set Unit System and Decimal Separator",
 					}],
 				}, {
 					type: "static_text",
@@ -1217,21 +1247,54 @@ var SetUnitDecimals_Dialog = {
 					font: "dialog",
 					wrap_name: true,
 					width: 480,
-					name: "Any changes you make will be applied immediately to all fields that would logically be impacted by them.\nThe conversion is not completely accurate, as some accuracy is sacrificed for numbers that are easier to use during play.",
+					name: [
+						"All fields will be updated immediately if you apply another unit system or decimal separator.",
+						"The conversion is not exact. Some accuracy is sacrificed so that the resulting numbers are easier to use during play. Conversions are done with the following in mind.",
+					].join("\n"),
+				}, {
+					type: "view",
+					alignment: "align_left",
+					align_children: "align_row",
+					elements: [{
+						type: "static_text",
+						item_id: "lst1",
+						alignment: "align_left",
+						font: "dialog",
+						wrap_name: true,
+						width: 240,
+						name: " \u2022 " + [
+							"1 inch = 2.5 cm",
+							"1 ft = 30 cm",
+							"1 mile = 1.6 km",
+							"1 cu ft = 30 dm\xB3",
+						].join("\n \u2022 "),
+					}, {
+						type: "static_text",
+						item_id: "lst2",
+						alignment: "align_left",
+						font: "dialog",
+						wrap_name: true,
+						width: 240,
+						name: " \u2022 " + [
+							"1 lb = 0.5 kg",
+							"1 pint = 0.5 liters",
+							"1 gallon = 4 liters",
+							"1 sq ft = 10 dm\xB2",
+						].join("\n \u2022 "),
+					}],
 				}, {
 					type: "static_text",
-					item_id: "txt1",
-					alignment: "align_fill",
+					item_id: "lst3",
+					alignment: "align_left",
 					font: "dialog",
 					wrap_name: true,
 					width: 480,
-					name: " \u2022 Distances in game mechanics are converted as if 1 ft is 30 cm" +
-					"\n \u2022 Weights in game mechanics are converted as if 2 lb is 1 kg" +
-					"\n \u2022 Liquid volumes in game mechanics are converted as if 1 gallon is 4 liters" +
-					"\n \u2022 Converted units in game mechanics are rounded to the nearest half" +
-					"\n \u2022 Equipment weight is calculated to three decimals accuracy" +
-					"\n \u2022 The Character's Height and Weight fields are converted with more accuracy" +
-					"\n \u2022 Units you added manually might not be converted as not all unit conversions are supported",
+					name: " \u2022 " + [
+						"Converted amounts are rounded to their nearest half.",
+						"Weight fields are calculated to three decimals accuracy.",
+						"The character and companion height and weight are converted with higher accuracy.",
+						"Manually added units might not be converted, because not all are supported (e.g. no furlongs).",
+					].join("\n \u2022 "),
 				}, {
 					type: "static_text",
 					item_id: "txt2",
@@ -1239,7 +1302,7 @@ var SetUnitDecimals_Dialog = {
 					font: "dialog",
 					wrap_name: true,
 					width: 480,
-					name: "Any features that auto-fill will recognize these settings and use them to update the sheet, so you only have to set this once.\nThe Spell Sheet can't be flawlessly changed from one unit system to another on the fly. Changing unit systems is best done before generating a Spell Sheet.\nFields that are never auto-filled by sheet automation, such as the character history or notes, will not be changed.",
+					name: "Fields that are never auto-filled by sheet automation will not be changed. Fields such as Appearance, Character History, or Adventure Logsheet descriptions.",
 				}, {
 					type: "view",
 					align_children: "align_row",
