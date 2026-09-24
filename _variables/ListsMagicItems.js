@@ -2040,6 +2040,7 @@ var Base_MagicItemsList = {
 		description: "As an action, I can speak the command word and throw one or more statuettes to an unoccupied space within 60 ft where it becomes a specific creature for a certain amount of time. It is friendly, understands my languages, and obeys my commands.",
 		descriptionFull: "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.",
 		action: [["action", ""]],
+		allowDuplicates: true,
 		choices: ["Bronze Griffon", "Ebony Fly", "Golden Lions", "Ivory Goats", "Marble Elephant", "Obsidian Steed", "Onyx Dog", "Serpentine Owl", "Silver Raven"],
 		"bronze griffon": {
 			rarity: "rare",
@@ -2047,6 +2048,7 @@ var Base_MagicItemsList = {
 			description: "As an action, I can speak the command word and throw this bronze statuette to an unoccupied space within 60 ft, where it becomes a griffon for up to 6 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, and obeys my commands.",
 			descriptionLong: "As an action, I can speak the command word and throw this bronze statuette of a griffon rampant to an unoccupied space within 60 ft, where it becomes a griffon for up to 6 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 5 days have passed.",
 			descriptionFull: "This figurine of wondrous power is a bronze statuette of a griffon rampant, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living griffon. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 6 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 5 days have passed.",
+			limfeaname: "Figurine of WP (Bronze Griffon)",
 			usages: 1,
 			recovery: "5 days",
 		},
@@ -2056,6 +2058,7 @@ var Base_MagicItemsList = {
 			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a giant fly for up to 12 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, obeys my commands, and can be ridden as a mount.",
 			descriptionLong: "As an action, I can speak the command word and throw this ebony statuette of a horsefly to an unoccupied space within 60 ft, where it becomes a giant fly for up to 12 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, obeys my spoken commands, and can be ridden as a mount. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
 			descriptionFull: "This figurine of wondrous power is an ebony statuette carved in the likeness of a horsefly, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living giant fly and can be ridden as a mount. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 12 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.",
+			limfeaname: "Figurine of WP (Ebony Fly)",
 			usages: 1,
 			recovery: "2 days",
 		},
@@ -2065,6 +2068,7 @@ var Base_MagicItemsList = {
 			description: "As an action, I can speak the command word and throw one or both of these gold statuettes to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use the command word again, or it reaches 0 HP. They are friendly, understand my languages, and obey my commands.",
 			descriptionLong: "As an action, I can speak the command word and throw one or both of these gold statuettes of a lion to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use an action to repeat the command word, or it reaches 0 HP. They are friendly to me and my allies, understand my languages, and obey my spoken commands. If I issue no commands, they defend themselves but takes no other actions. When a lion reverts back to a figurine, that figurine can't be used again until 7 days have passed.",
 			descriptionFull: "This figurine of wondrous power is a pair of gold statuettes of lions, small enough to fit in a pocket. If you use an action to speak the command word and throw one or both of the figurines to a point on the ground within 60 feet of you, each figurine becomes a living lion. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 1 hour. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
+			limfeaname: "Figurine of WP (Golden Lions)",
 			usages: 2,
 			recovery: "7 days",
 		},
@@ -2078,15 +2082,15 @@ var Base_MagicItemsList = {
 			"\n \u2022 The goat of travail becomes a giant goat for up to 3 hours. Once it has been used, it can't be used again until 30 days have passed." +
 			"\n \u2022 The goat of terror becomes a giant goat for up to 3 hours. The goat can't attack, but you can remove its horns and use them as weapons. One horn becomes a +1 lance, and the other becomes a +2 longsword. Removing a horn requires an action, and the weapons disappear and the horns return when the goat reverts to figurine form. In addition, the goat radiates a 30-foot-radius aura of terror while you are riding it. Any creature hostile to you that starts its turn in the aura must succeed on a DC 15 Wisdom saving throw or be frightened of the goat for 1 minute, or until the goat reverts to figurine form. The frightened creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. Once it successfully saves against the effect, a creature is immune to the goat's aura for the next 24 hours. Once the figurine has been used, it can't be used again until 15 days have passed.",
 			extraLimitedFeatures: [{
-				name: "Figurine of Wondrous Power [Ivory Goat of Traveling]",
+				name: "Figurine of WP [Ivory Goat of Traveling]",
 				usages: 24,
 				recovery: "7 days",
 			}, {
-				name: "Figurine of Wondrous Power [Ivory Goat of Travail]",
+				name: "Figurine of WP [Ivory Goat of Travail]",
 				usages: 1,
 				recovery: "30 days",
 			}, {
-				name: "Figurine of Wondrous Power [Ivory Goat of Terror]",
+				name: "Figurine of WP [Ivory Goat of Terror]",
 				usages: 1,
 				recovery: "15 days",
 			}],
@@ -2118,6 +2122,7 @@ var Base_MagicItemsList = {
 			description: "As an action, I can speak the command word and throw this marble statuette to an unoccupied space within 60 ft, where it becomes a elephant for up to 24 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, and obeys my commands.",
 			descriptionLong: "As an action, I can speak the command word and throw this marble statuette of about 4 inches high and long to an unoccupied space within 60 ft, where it becomes a elephant for up to 24 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
 			descriptionFull: "This figurine of wondrous power is a marble statuette of about 4 inches high and long, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living elephant. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 24 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
+			limfeaname: "Figurine of WP (Marble Elephant)",
 			usages: 1,
 			recovery: "7 days",
 		},
@@ -2128,6 +2133,7 @@ var Base_MagicItemsList = {
 			descriptionLong: "As an action, I can speak the command word and throw this polished obsidian statuette of an horse to an unoccupied space within 60 ft, where it becomes a nightmare for up to 24 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. It only fights to defend itself. When it reverts back to a figurine, it can't be used again until 5 days have passed. See Notes page for more details.",
 			descriptionFull: "This figurine of wondrous power is a polished obsidian statuette of a horse, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living nightmare. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 24 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 5 days have passed." +
 			"\n   The nightmare fights only to defend itself.\n   If you have a good alignment, the figurine has a 10% chance each time you use it to ignore your orders, including a command to revert to figurine form. If you mount the nightmare while it is ignoring your orders, you and the nightmare are instantly transported to a random location on the plane of Hades, where the nightmare reverts to figurine form.",
+			limfeaname: "Figurine of WP (Obsidian Steed)",
 			usages: 1,
 			recovery: "5 days",
 			toNotesPage: [{
@@ -2141,6 +2147,7 @@ var Base_MagicItemsList = {
 			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a mastiff for up to 6 hours, until I use the command word again, or it reaches 0 HP. It has 60 ft darkvision, see invisible out to 60 ft, is friendly, understands me, and obeys my commands.",
 			descriptionLong: "As an action, I can speak the command word and throw this onyx statuette to an unoccupied space within 60 ft, where it becomes a mastiff for up to 6 hours, until I use an action to repeat the command word, or it reaches 0 HP. It has Intelligence 8, speaks common, darkvision out to 60 ft and can see invisible creatures and objects out to that same range. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
 			descriptionFull: "This figurine of wondrous power is an onyx statuette of a dog, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living mastiff. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The mastiff has an Intelligence of 8 and can speak Common. It also has darkvision out to a range of 60 feet and can see invisible creatures and objects within that range. It is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 6 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
+			limfeaname: "Figurine of WP (Onyx Dog)",
 			usages: 1,
 			recovery: "7 days",
 		},
@@ -2150,6 +2157,7 @@ var Base_MagicItemsList = {
 			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a giant owl for up to 8 hours, until I use the command word again, or it reaches 0 HP. It is friendly, can convers telepathically with me, understands my languages, and obeys my commands.",
 			descriptionLong: "As an action, I can speak the command word and throw this serpentine statuette to an unoccupied space within 60 ft, where it becomes a giant owl for up to 8 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. As long as it is on the same plane of existence, it can communicate telepathically with me. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
 			descriptionFull: "This figurine of wondrous power is a serpentine statuette of an owl, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living giant owl. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. It can telepathically communicate with you at any range if you and it are on the same plane of existence. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 8 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.",
+			limfeaname: "Figurine of WP (Serpentine Owl)",
 			usages: 1,
 			recovery: "2 days",
 		},
@@ -2159,6 +2167,7 @@ var Base_MagicItemsList = {
 			description: "As an action, I can speak the command word and throw this silver statuette to an unoccupied space within 60 ft, where it becomes a raven for up to 12 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, and obeys my commands.",
 			descriptionLong: "As an action, I can speak the command word and throw this silver statuette to an unoccupied space within 60 ft, where it becomes a raven for up to 12 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. While in raven form, the figurine allows me to cast Animal Messenger on it at will. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
 			descriptionFull: "This figurine of wondrous power is as sliver statuette of a raven, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living raven. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 12 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.\n   While in raven form, the figurine allows you to cast the Animal Messenger spell on it at will.",
+			limfeaname: "Figurine of WP (Silver Raven)",
 			usages: 1,
 			recovery: "2 days",
 			spellcastingBonus: [{
@@ -3500,6 +3509,7 @@ var Base_MagicItemsList = {
 		descriptionLong: "This cloudy gray oil can be used once to cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of the Etherealness spell for 1 hour. It step into the border regions of the Ethereal Plane, in the area where it overlaps with my current plane, remaining there until it uses an action to dismiss the spell. I can still see the plane I came from, but can move anywhere, up, down, and even through solid objects and creatures.",
 		descriptionFull: "Beads of this cloudy gray oil form on the outside of its container and quickly evaporate. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of the Etherealness spell for 1 hour.",
 		weight: 0.5,
+		action: false, // To keep the default potion action from being added
 	},
 	"oil of sharpness": { // contributed by AelarTheElfRogue
 		name: "Oil of Sharpness",
@@ -3510,6 +3520,7 @@ var Base_MagicItemsList = {
 		description: "This clear, gelatinous oil sparkles with tiny, ultrathin silver shards. It can be used once to coat one slashing or piercing weapon or up to 5 pieces of slashing or piercing ammunition. Applying the oil takes 1 minute. For 1 hour, the coated item is magical and has a +3 bonus to attack and damage rolls.",
 		descriptionFull: "This clear, gelatinous oil sparkles with tiny, ultrathin silver shards. The oil can coat one slashing or piercing weapon or up to 5 pieces of slashing or piercing ammunition. Applying the oil takes 1 minute. For 1 hour, the coated item is magical and has a +3 bonus to attack and damage rolls.",
 		weight: 0.5,
+		action: false, // To keep the default potion action from being added
 	},
 	"oil of slipperiness": { // contains contributions by AelarTheElfRogue
 		name: "Oil of Slipperiness",
@@ -3521,6 +3532,7 @@ var Base_MagicItemsList = {
 		descriptionLong: "This sticky black unguent can be used once to cover a Medium or smaller creature and its equipment, granting it the effects of Freedom of Movement for 8 hours. Applying it takes 10 minutes. The creature's movement is unaffected by difficult terrain, being underwater, and spells and other magical effects can't reduce it's speed or cause it to be paralyzed or restrained. Alternatively, it can be poured out as an action, duplicating the effects of the Grease spell in a 10-ft square for 8 hours. The area is difficult terrain and any in it when it appears, entering it, or ending their turn in it must make a DC 10 Dex save or fall prone.",
 		descriptionFull: "This sticky black unguent is thick and heavy in the container, but it flows quickly when poured. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of a Freedom of Movement spell for 8 hours.\n   Alternatively, the oil can be poured on the ground as an action, where it covers a 10-foot square, duplicating the effect of the Grease spell in that area for 8 hours.",
 		weight: 0.5,
+		action: false, // To keep the default potion action from being added
 	},
 	"pearl of power": { // contains contributions by AelarTheElfRogue
 		name: "Pearl of Power",
@@ -3578,6 +3590,7 @@ var Base_MagicItemsList = {
 		description: "Once as an action, I can drink this rose-hued liquid or administer it to another. The consumer is charmed for 1 hour by the first creature it sees within 10 minutes of drinking it. If that creature is of a species and gender the consumer is normally attracted to, it regards the creature as its true love while it is charmed.",
 		descriptionFull: "The next time you see a creature within 10 minutes after drinking this philter, you become charmed by that creature for 1 hour. If the creature is of a species and gender you are normally attracted to, you regard it as your true love while you are charmed. This potion's rose-hued, effervescent liquid contains one easy-to-miss bubble shaped like a heart.",
 		weight: 0.5,
+		action: false, // To keep the default potion action from being added
 	},
 	"pipes of haunting": { // contains contributions by Soilentbrad
 		name: "Pipes of Haunting",
@@ -3685,7 +3698,7 @@ var Base_MagicItemsList = {
 			selectNow: true,
 		}],
 		spellcastingBonus: [{
-			name: "once per dawn",
+			name: "Once per dawn",
 			spells: ["etherealness"],
 			selection: ["etherealness"],
 			firstCol: "onceday",
@@ -5155,33 +5168,41 @@ var Base_MagicItemsList = {
 		source: [["SRD", 242], ["D", 200]],
 		type: "scroll",
 		description: "If the spell on this scroll is on my class' spell list(s), I can cast it with its normal casting time, but have the scroll crumble to dust. If the spell is of a higher level than I can cast, I need to make an ability check using my spellcasting ability. The DC for this, the spell save, and its attack modifier depend on its level.",
-		descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10 + the spell's level. On a failed check, the spell disappears from the scroll with no other effect.\n   The level of the spell on the scroll determines the spell's saving throw DC and attack bonus, as well as the scroll's rarity, as shown below.\n\n" + toUni("Level\tRarity\t\tDC\tTo hit") + [
-			"\nCantrip\tCommon  \t13\t+5",
-			"1st  \tCommon  \t13\t+5",
-			"2nd  \tUncommon\t13\t+5",
-			"3rd  \tUncommon\t15\t+7",
-			"4th  \tRare\t\t15\t+7",
-			"5th  \tRare\t\t17\t+9",
-			"6th  \tVery rare    \t17\t+9",
-			"7th  \tVery rare    \t18\t+10",
-			"8th  \tVery rare    \t18\t+10",
-			"9th  \tLegendary  \t19\t+11",
-		].join("\n") + "\n\nA wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on an Intelligence (Arcana) check with a DC equal to 10 + the spell's level. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+		descriptionFull: [
+			"A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.",
+			"If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10 + the spell's level. On a failed check, the spell disappears from the scroll with no other effect.",
+			"The level of the spell on the scroll determines the spell's saving throw DC and attack bonus, as well as the scroll's rarity, as shown below.",
+			[
+				["Spell",     "",           "", "Save",   "Attack"],
+				["**Level**", "**Rarity**", "", "**DC**", "**Bonus**"],
+				["Cantrip",   "Common",     "", "13",      " +5"],
+				["1st    ",   "Common",     "", "13",      " +5"],
+				["2nd    ",   "Uncommon  ",     "13",      " +5"],
+				["3rd    ",   "Uncommon  ",     "15",      " +7"],
+				["4th    ",   "Rare",       "", "15",      " +7"],
+				["5th    ",   "Rare",       "", "17",      " +9"],
+				["6th    ",   "Very rare     ", "17",      " +9"],
+				["7th    ",   "Very rare     ", "18",      "+10"],
+				["8th    ",   "Very rare     ", "18",      "+10"],
+				["9th    ",   "Legendary     ", "19",      "+11"],
+			],
+			"A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on an Intelligence (Arcana) check with a DC equal to 10 + the spell's level. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+		],
 		allowDuplicates: true,
 		calcChanges: {
 			spellAdd: [
 				function (spellKey, spellObj, spName) {
-					if (/^spell scroll/i.test(spName)) {
-						if (!spellObj.components) spellObj.components = "";
-						spellObj.components = (spellObj.components.replace(/,?[RM][\u0192\u2020]?/ig, "") + ",M\u0192").replace(/^,+/, "");
-						spellObj.compMaterial = "Spells cast from a spell scroll don't require any material components other than the spell scroll itself.";
+					if (/^spell scroll/i.test(spName) && !spellObj.spellScrollChanges) {
+						var originalComponents = SpellsList[spellKey].components;
+						if (originalComponents) {
+							spellObj.components = (originalComponents.replace(/,?[RM][\u0192\u2020]?/ig, "") + ",M\u0192").replace(/^,+/, "");
+						}
+						spellObj.compMaterial = "Spells cast from a Spell Scroll do not require any Material components other than the spell scroll itself, but do require other components as normal.";
+						if (spellObj.changesObj["Magic Item"]) delete spellObj.changesObj["Magic Item"];
 						spellObj.ritual = false;
-						["description", "descriptionMetric", "descriptionShorter", "descriptionShorterMetric"].forEach (function (attr) {
-							if (!spellObj[attr]) return;
-							spellObj[attr] = spellObj[attr].replace(/ \(\d+k? ?gp( cons\.?)?\)/i, "");
-						});
+						spellObj.spellScrollChanges = true;
 						return true;
-					}
+					};
 				},
 				"When casting a spell using a Spell Scroll, no material components are needed other than the spell scroll itself. They also can't be cast as a ritual.",
 			],
@@ -5197,12 +5218,12 @@ var Base_MagicItemsList = {
 			extraTooltip: "AL: can always be bought for 25 gp",
 			fixedDC: 13,
 			spellFirstColTitle: "Us", // used
+			allowUpCasting: true,
 			spellcastingBonus: [{
 				level: [0,0],
 				psionic: false,
 				times: 20,
 				firstCol: "checkbox",
-				magicItemComponents: false,
 			}],
 		},
 		"1st-level": {
@@ -5218,7 +5239,6 @@ var Base_MagicItemsList = {
 				psionic: false,
 				times: 20,
 				firstCol: "checkbox",
-				magicItemComponents: false,
 			}],
 		},
 		"2nd-level": {
@@ -5234,7 +5254,6 @@ var Base_MagicItemsList = {
 				psionic: false,
 				times: 20,
 				firstCol: "checkbox",
-				magicItemComponents: false,
 			}],
 		},
 		"3rd-level": {
@@ -5250,7 +5269,6 @@ var Base_MagicItemsList = {
 				psionic: false,
 				times: 20,
 				firstCol: "checkbox",
-				magicItemComponents: false,
 			}],
 		},
 		"4th-level": {
@@ -5266,7 +5284,6 @@ var Base_MagicItemsList = {
 				psionic: false,
 				times: 20,
 				firstCol: "checkbox",
-				magicItemComponents: false,
 			}],
 		},
 		"5th-level": {
@@ -5282,7 +5299,6 @@ var Base_MagicItemsList = {
 				psionic: false,
 				times: 20,
 				firstCol: "checkbox",
-				magicItemComponents: false,
 			}],
 		},
 		"6th-level": {
@@ -5297,7 +5313,6 @@ var Base_MagicItemsList = {
 				psionic: false,
 				times: 20,
 				firstCol: "checkbox",
-				magicItemComponents: false,
 			}],
 		},
 		"7th-level": {
@@ -5312,7 +5327,6 @@ var Base_MagicItemsList = {
 				psionic: false,
 				times: 20,
 				firstCol: "checkbox",
-				magicItemComponents: false,
 			}],
 		},
 		"8th-level": {
@@ -5327,7 +5341,6 @@ var Base_MagicItemsList = {
 				psionic: false,
 				times: 20,
 				firstCol: "checkbox",
-				magicItemComponents: false,
 			}],
 		},
 		"9th-level": {
@@ -5342,7 +5355,6 @@ var Base_MagicItemsList = {
 				psionic: false,
 				times: 20,
 				firstCol: "checkbox",
-				magicItemComponents: false,
 			}],
 		},
 		"mixed levels": {
@@ -5352,13 +5364,13 @@ var Base_MagicItemsList = {
 				level: [0,9],
 				psionic: false,
 				times: 20,
-				magicItemComponents: false,
 			}],
 			calcChanges: {
 				spellAdd: [
 					function (spellKey, spellObj, spName) {
 						if ((/mixed levels/).test(spName)) {
 							spellObj.firstCol = spellObj.level < 3 ? 13 : spellObj.level < 5 ? 15 : spellObj.level < 7 ? 17 : spellObj.level < 9 ? 18 : 19;
+							if (spellObj.level === 0) spellObj.allowUpCasting = true;
 							return true;
 						}
 					}, "",
@@ -5521,10 +5533,10 @@ var Base_MagicItemsList = {
 		spellcastingAbility: "class",
 		spellFirstColTitle: "Ch",
 		spellcastingBonus: [{
-			name: "1+ charges",
+			name: "1-4 charges",
 			spells: ["cure wounds"],
 			selection: ["cure wounds"],
-			firstCol: "1+",
+			firstCol: "1-4",
 		}, {
 			name: "2 charges",
 			spells: ["lesser restoration"],
@@ -5540,7 +5552,7 @@ var Base_MagicItemsList = {
 			"cure wounds": {
 				allowUpCasting: true,
 				description: "1 living creature heals 1d8+1d8/SL+spell mod HP; +1 SL/extra charge",
-				changes: "The spell level Cure Wounds is cast at depends on the amount of charges spend, 1 charge per spell slot level.",
+				changes: "The spell level that Cure Wounds is cast at depends on the amount of charges spend, 1 charge per spell slot level up to maximum level 4.",
 			},
 		},
 	},

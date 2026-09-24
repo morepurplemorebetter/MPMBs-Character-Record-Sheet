@@ -166,7 +166,8 @@ function GetSpellObject(theSpl, theCast, firstCol, isDuplicate, tooltipOnly) {
 	}
 	// If this spell is gained from an item, feat, or race, remove scaling effects
 	if (aCast && !aCast.allowUpCasting && !aSpell.allowUpCasting && (aCast.allowUpCasting === false || aSpell.allowUpCasting === false || /^(item|feat|race)$/i.test(aCast.typeSp) || (aCast.refType && /^(item|feat|race)$/i.test(aCast.refType))) && (aSpell.level || aCast.typeSp == "item" || (aCast.refType && aCast.refType == "item"))) {
-		if (removeSpellUpcasting(aSpell) && aSpell.allowUpCasting === undefined) {
+		var isRemoved = removeSpellUpcasting(aSpell);
+		if (isRemoved && aSpell.allowUpCasting === undefined && aCast.allowUpCasting === undefined) {
 			aSpell.changesObj["Innate Spellcasting"] = "\n \u2022 Spell cast by magic items, from feats, or from racial traits can only be cast at the spell's level, not with higher level spell slots.";
 		}
 	}
@@ -2914,10 +2915,7 @@ function DefineSpellSheetDialogs(force, formHeight) {
 function AskUserSpellSheet() {
 	DefineSpellSheetDialogs();
 	var dia = spDias.spellSelect;
-	var classesArray = [];
-	for (var aC in CurrentSpells) {
-		classesArray.push(aC);
-	};
+	var classesArray = Object.keys(CurrentSpells);
 
 	// go through all the entries in CurrentSpells and ask the user for input that we then store back in that same variable
 	for (var theI = 0; theI < classesArray.length; theI++) {
@@ -5927,7 +5925,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 	var isDieType = /^\d*d\d+$/i.test(ability), addDieType;
 	var abiMod = isDieType ? ability.replace(/^1d(\d+)$/i, "d$1") : !isNaN(ability) ? ability : tDoc.getField(ability + " Mod") ? Number(What(ability + " Mod")) : ability;
 	var abiIsStr = !isDieType && isNaN(abiMod);
-	var abiIfUpcasting = abiIsStr && /\/(\d*SL|PP|extra \w+)/i.test(abiMod);
+	var abiIfUpcasting = abiIsStr && /\/(\d*SL|PP|extra \w+|ch(rg|arge)?s?)/i.test(abiMod);
 
 	// Stop now if there is nothing (positive) to add or nothing to maximize
 	if (!maximizeRolls && ((isNaN(ability) && abiMod < 1) || abiMod === 0 || (abiIfUpcasting && spellObj.allowUpCasting === false))) return;
@@ -5957,10 +5955,10 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 			strReplace = strReplace.replace(bMatch, bTotal);
 		}
 		// Add consecutive bonuses (per group 'X/SL' and not 'X/SL')
-		var qRx = /(([\+\-]?\d+)(\/\d*SL|\/PP|\/extra \w+)?)+( \((Str|Dex|Con|Int|Wis|Cha)\))?/i;
+		var qRx = /(([\+\-]?\d+)(\/\d*SL|\/PP|\/extra \w+|\/ch(rg|arge)?s?)?)+( \((Str|Dex|Con|Int|Wis|Cha)\))?/i;
 		if (qRx.test(strReplace)) {
 			var qMatch = strReplace.match(qRx)[0];
-			var qParts = qMatch.match(/[\+\-]?\d+(\/\d*SL|\/PP|\/extra \w+)?/ig);
+			var qParts = qMatch.match(/[\+\-]?\d+(\/\d*SL|\/PP|\/extra \w+|\/ch(rg|arge)?s?)?/ig);
 			var qObj = { nr: 0 };
 			for (var q = 0; q < qParts.length; q++) {
 				if (!isNaN(qParts[q])) {
@@ -5984,10 +5982,10 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 	}
 	// The function to fix a string of multiple X/SL+Y/SL to (X+Y)/SL
 	var fixMultiPerSL = function (strSl) {
-		var slMatch = strSl.match(/(\+?)(\d+d?\d*)(\/\d*SL|\/PP|\/extra \w+)\+(\d+d?\d*|\(.*?\))(\3)/i);
+		var slMatch = strSl.match(/(\+?)(\d+d?\d*)(\/\d*SL|\/PP|\/extra \w+|\/ch(rg|arge)?s?)\+(\d+d?\d*|\(.*?\))(\3)/i);
 		if (!slMatch) return strSl;
 		var aVals = [slMatch[2], slMatch[4]]; // Make an array of just the numerical/dice parts
-		if ((/\(.*?\)/).test(aVals[1])) {
+		if (/\(.*?\)/.test(aVals[1])) {
 			// The second group is already a joined group, untangle it to just its numerical/dice parts
 			var justNums = aVals[1].match(/\d+d?\d*/ig);;
 			if (justNums) aVals = [slMatch[2]].concat(justNums);
@@ -6076,8 +6074,13 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 	}
 
 	// Create the matching regex with non-capturing inner groups
-	var isHealing = /heal|\bhp\b|restore/.test(dmgType);
-	var sRegex = (isHealing ? "(heals? |to life with )" : "") + "((?:\\+?\\d+d?\\d*)+)((?:\\+(?:\\((?:\\+?\\d+d?\\d*)+\\)|\\d+d?\\d*)\\/(?:\\d*SL|PP|extra \\w+))*(?:\\+ ?spell mod|(?:\\+|-)\\d+ \\(.{3}\\))? (?:" + (isHealing ? "" : dmgType) + ") ?(?:" + (isHealing ? "hp|hit points?" : "dmg|damage") + ")(?: per \\w+| each|/rnd|/turn)?)";
+	var isHealing = false;
+	if (/heal|\bhp\b|restore/.test(dmgType)) {
+		isHealing = true;
+	} else if (/\bany\b/i.test(dmgType)) {
+		dmgType = "\\w+\\.?";
+	}
+	var sRegex = (isHealing ? "(heals? |to life with )" : "") + "((?:\\+?\\d+d?\\d*)+)((?:\\+(?:\\((?:\\+?\\d+d?\\d*)+\\)|\\d+d?\\d*)\\/(?:\\d*SL|PP|extra \\w+|ch(rg|arge)?s?))*(?: ?\\+ ?spell mod|(?: ?\\+|-)\\d+ \\(.{3}\\))? (?:" + (isHealing ? "" : dmgType) + ") ?(?:" + (isHealing ? "hp|hit points?" : "dmg|damage") + ")(?: per \\w+| each|/rnd|/turn)?)";
 
 	// If the spell has multiple damage types, we need to check if any or all of them match the dmgType we are looking for
 	var onlySomeDmgTypes = false;
@@ -6140,7 +6143,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 			spellObj.description = useSpellDescr;
 			return true; // We are done
 		}
-		// If a spell has a longer duration than instantaneous or 1 round and is not just on the next weapon hit, we should only add the addition once, not to all damage rolls
+		// If a spell has a longer duration than instantaneous or 1 round and is not just together with or on the next weapon hit, we should only add the addition once, not to all damage rolls
 		// There are some spells for which this is true and should be done as normal (falsePositives) or spells for which this is not true, but should be done anyway (falseNegatives)
 		var isFalsePositive, isFalseNegative;
 		if (spellObj.dynamicDamageBonus && spellObj.dynamicDamageBonus.multipleDmgMoments !== undefined) {
@@ -6150,7 +6153,7 @@ function genericSpellDmgEdit(spellKey, spellObj, dmgType, ability, notMultiple, 
 				isFalsePositive = true;
 			}
 		}
-		var hasMultipleDmgInstances = isFalseNegative || (!isFalsePositive && !/instant|1 r(ou)?nd/i.test(spellObj.duration) && !/next (melee |ranged|rngd )?wea(pon)? (atk|hit) \+?\d+/i.test(useSpellDescr));
+		var hasMultipleDmgInstances = isFalseNegative || (!isFalsePositive && !/instant|1 r(ou)?nd/i.test(spellObj.duration) && !/next (melee |ranged|rngd )?wea(pon)? (atk|hit) \+?\d+|cast on (melee |ranged )?wea(pon)? hit/i.test(useSpellDescr));
 		if (onlySomeDmgTypes || hasMultipleDmgInstances) {
 			var sOnceBonus = (notMultiple && hasMultipleDmgInstances ? " (1\xD7 +" : " (+") + abiMod + (onlySomeDmgTypes ? " if.." : "") + ")";
 			// Add the " (1× +X)" after the "dmg/damage" part, unless there are multiple damage types

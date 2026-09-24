@@ -222,7 +222,7 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 		// spellcasting
 		var logChangedSpells = false;
 		if (uObj.spellcastingBonus) processSpBonus(addIt, uniqueObjNm, uObj.spellcastingBonus, type, aParent, objNm, forceNonCurrent ? true : false);
-		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle !== undefined || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform !== undefined || uObj.spellcastingPreparedCantrips)) {
+		if (CurrentSpells[useSpCasting] && (uObj.spellFirstColTitle !== undefined || uObj.spellcastingExtra || uObj.spellChanges || uObj.spellcastingExtraApplyNonconform !== undefined || uObj.spellcastingPreparedCantrips || uObj.spellcastingName)) {
 			var aCast = CurrentSpells[useSpCasting];
 
 			if (uObj.spellFirstColTitle != undefined) {
@@ -243,6 +243,10 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			if (uObj.spellChanges) {
 				processSpChanges(addIt, tipNmF, uObj.spellChanges, useSpCasting);
 				logChangedSpells = false;
+			}
+			if (uObj.spellcastingName) {
+				CurrentSpells[useSpCasting].name = uObj.spellcastingName;
+				logChangedSpells = true;
 			}
 		}
 		if (!uObj.spellcastingBonus && addIt && CurrentSpells[useSpCasting] && type !== "classes" && type !== "race" && (uObj.spellcastingAbility !== undefined || uObj.fixedDC || uObj.fixedSpAttack || uObj.allowUpCasting !== undefined || uObj.magicItemComponents !== undefined)) {
@@ -888,7 +892,7 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, force
 		if (!isArray(spBon)) spBon = [spBon];
 		sObj.bonus[srcNm] = newObj(spBon);
 		// see if this wants to change the spellcasting ability
-		var spFeatItemLvl, spAbility, spFixedDC, spFixedSpAttack, spAllowUpCasting, spMagicItemComponents;
+		var spFeatItemLvl, spAbility, spFixedDC, spFixedSpAttack, spAllowUpCasting, spMagicItemComponents, spUseName;
 		for (var i = 0; i < spBon.length; i++) {
 			if (!spFeatItemLvl && spBon[i].times && isArray(spBon[i].times)) spFeatItemLvl = true;
 			if (spBon[i].spellcastingAbility) spAbility = spBon[i].spellcastingAbility;
@@ -896,6 +900,7 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, force
 			if (spBon[i].fixedSpAttack) spFixedSpAttack = spBon[i].fixedSpAttack;
 			if (spBon[i].allowUpCasting !== undefined) spAllowUpCasting = spBon[i].allowUpCasting;
 			if (spBon[i].magicItemComponents !== undefined) spMagicItemComponents = spBon[i].magicItemComponents;
+			if (spBon[i].spellcastingName) spUseName = spBon[i].spellcastingName;
 		}
 		if (spAbility) {
 			sObj.ability = ReturnSpellcastingAbility(useSpName, spAbility);
@@ -905,6 +910,7 @@ function processSpBonus(AddRemove, srcNm, spBon, type, parentName, choice, force
 		if (spFixedSpAttack) sObj.fixedSpAttack = spFixedSpAttack;
 		if (spAllowUpCasting !== undefined) sObj.allowUpCasting = spAllowUpCasting;
 		if (spMagicItemComponents !== undefined) sObj.magicItemComponents = spMagicItemComponents;
+		if (spUseName) sObj.name = spUseName;
 		// if concerning a feat or item, set the level only if the spellcastingBonus needs it
 		if (/feat|item/i.test(sObj.typeSp) && spFeatItemLvl) sObj.level = Math.max(Number(What("Character Level")), 1);
 	}
@@ -2701,7 +2707,7 @@ function ApplyMagicItem(input, FldNmbr) {
 				if (!selectMIvar) selectMIvar = AskUserOptions("Select " + aMI.name + " Type", "The '" + aMI.name + "' magic item exists in several forms. Select which form you want to add to the sheet at this time.\n\nYou can change the selected form with the little square button in the magic item line that this item is in.", parseResult[2], "radio", true);
 				newMIvar = selectMIvar.toLowerCase();
 				aMIvar = aMI[newMIvar];
-				event.target.setValPrepared = aMIvar.name ? aMIvar.name : aMI.name + " [" + selectMIvar + "]";
+				event.target.setValPrepared = aMIvar.name ? aMIvar.name : aMI.name + " (" + selectMIvar + ")";
 			}
 		} else if (!IsNotImport) {
 			failedChoice = true;
@@ -2827,8 +2833,8 @@ function ApplyMagicItem(input, FldNmbr) {
 				if (anOldMI.chooseGear || (oldMIvar && anOldMI[oldMIvar].chooseGear)) {
 					selectMagicItemGearType(false, FldNmbr, oldMIvar && anOldMI[oldMIvar].chooseGear ? anOldMI[oldMIvar].chooseGear : anOldMI.chooseGear);
 				}
-				// Add the potion action if applicable
-				addPotionAction(MagicItemsList[oldMI]);
+				// Add default attributes for certain magic item types
+				addMagicItemDefaultAttributes(MagicItemsList[oldMI]);
 				// Remove its attributes
 				var Fea = ApplyFeatureAttributes(
 					"item", // type
@@ -2867,7 +2873,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		if (theMI.attunement) tooltipStr += tooltipStr ? " (requires attunement)" : "requires attunement";
 		tooltipStr = toUni(theMI.name, "bold") + (tooltipStr ? "\n" + tooltipStr[0].toUpperCase() + tooltipStr.substr(1) : "");
 
-		if (theMI.notLegalAL) {
+		if (theMI.notLegalAL && !tDoc.use2024Rules) {
 			tooltipStr += "\n \u2022 Illegal in Adventurers League play";
 		} else if (theMI.magicItemTable) {
 			if (isArray(theMI.magicItemTable)) {
@@ -2883,17 +2889,15 @@ function ApplyMagicItem(input, FldNmbr) {
 				tooltipStr += " (Tier " + aTC.tier + "+; " + aTC.points + " Treasure Checkpoints)";
 			}
 			tooltipStr += ".";
-		} else if (theMI.rarity && theMI.rarity == "common") {
+		} else if (theMI.rarity && theMI.rarity == "common" && !tDoc.use2024Rules) {
 			tooltipStr += "\n \u2022 AL: Tier 1+; 2 Treasure Checkpoints";
 		} else if (theMI.storyItemAL) {
 			tooltipStr += "\n \u2022 Story Item (AL: only use in adventure it's found in)";
-		} else if (!theMI.extraTooltip) {
+		} else if (!theMI.extraTooltip && !tDoc.use2024Rules) {
 			tooltipStr += "\n \u2022 Can't be traded in Adventurers League play";
 		}
-		if (theMI.extraTooltip) {
-			tooltipStr += "\n \u2022 " + theMI.extraTooltip;
-		}
-		if (theMI.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theMI.prerequisite;
+		if (theMI.extraTooltip) tooltipStr += "\n \u2022 " + theMI.extraTooltip;
+		if (theMI.prerequisite) tooltipStr += "\n \u2022 " + theMI.prerequisite;
 		tooltipStr += stringSource(theMI, "full,page", "\n \u2022 Source: ", ".");
 
 		if (theMI.descriptionFull) tooltipStr += "\n\n" + formatDescriptionFull(theMI.descriptionFull);
@@ -2920,8 +2924,8 @@ function ApplyMagicItem(input, FldNmbr) {
 
 		// Apply the rest of its attributes
 		if (oldMI !== newMI || oldMIvar !== newMIvar) {
-			// Add the potion action if applicable
-			addPotionAction(MagicItemsList[newMI]);
+			// Add default attributes for certain magic item types
+			addMagicItemDefaultAttributes(MagicItemsList[newMI]);
 			// Set the attunement
 			Checkbox(MIflds[4], theMI.attunement ? true : false, undefined, theMI.attunement ? "" : "hide");
 			var justChange = oldMI == newMI && oldMIvar !== newMIvar;
@@ -2952,12 +2956,21 @@ function ApplyMagicItem(input, FldNmbr) {
 	thermoM(thermoTxt, true); // Stop progress bar
 };
 
-function addPotionAction(objMI) {
-	if (!objMI || !/potion/i.test(objMI.type) || objMI.action !== undefined) return;
-	objMI.action = [[
-		tDoc.use2024Rules ? "bonus action" : "action",
-		"Drink/Administer Potion",
-	]];
+// Some magic item types have default attributes
+function addMagicItemDefaultAttributes(objMI) {
+	if (!objMI) return;
+	if (/\bpotion\b/i.test(objMI.type) && objMI.action === undefined) {
+		objMI.action = [[
+			tDoc.use2024Rules ? "bonus action" : "action",
+			"Drink/Administer Potion",
+		]];
+	} else if (/\bstaff\b/i.test(objMI.type) && objMI.weaponsAdd === undefined && objMI.weaponOptions === undefined) {
+		var weaponName = objMI.name;
+		if (!/staff/i.test(weaponName)) {
+			weaponName = "Staff of " + objMI.name.replace(/.*?of /i, "");
+		}
+		objMI.weaponsAdd = { options: [weaponName] };
+	}
 }
 
 function correctMIdescriptionLong(FldNmbr) {
@@ -3163,11 +3176,11 @@ function ParseMagicItemMenu() {
 		}
 		var iSrc = tObj.source ? stringSource(tObj, "first,abbr", "(", ")") : false;
 		var sMainItemName = iObj.sortname ? iObj.sortname : iObj.name;
-		var itemName = amendSrc(RemoveZeroWidths(!sObj ? sMainItemName : sObj.sortname ? sObj.sortname : sObj.name ? sObj.name : sMainItemName + " [" + subItem + "]"), iSrc);
+		var itemName = amendSrc(RemoveZeroWidths(!sObj ? sMainItemName : sObj.sortname ? sObj.sortname : sObj.name ? sObj.name : sMainItemName + " (" + subItem + ")"), iSrc);
 		var firstLetter = itemName[0].toUpperCase();
 		// If this is a subitem and it has the exact same name as a previously added subitem, we have to make sure it is unique
 		if (sObj && sObj.name && iMenus.ref[itemName]) {
-			itemName = amendSrc(RemoveZeroWidths(sMainItemName + " [" + subItem + "]"), iSrc);
+			itemName = amendSrc(RemoveZeroWidths(sMainItemName + " (" + subItem + ")"), iSrc);
 			firstLetter = itemName[0].toUpperCase();
 		}
 		iMenus.ref[itemName] = subItem ? mainItem + "#" + subItem : mainItem;

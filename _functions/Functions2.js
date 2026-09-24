@@ -152,9 +152,13 @@ function setCurrentCompRace(prefix, type, found, inputCreaTxt) {
 			}
 		}
 	}
-	// set the nameThis
-	var creaTxt = inputCreaTxt ? inputCreaTxt : clean(What(prefix + "Comp.Race")).toLowerCase();
-	if (!CurrentCompRace[prefix].nameThis || creaTxt.indexOf(CurrentCompRace[prefix].nameThis.toLowerCase()) === -1) {
+	// set the nameThis. Do not use the defined nameThis if it doesn't match the entered creature and the entered creature doesn't match the defined name
+	var creaTxt = inputCreaTxt ? inputCreaTxt : clean(What(prefix + "Comp.Race"));
+	var creaTxtLC = creaTxt.toLowerCase();
+	if (!CurrentCompRace[prefix].nameThis || (
+		creaTxtLC.indexOf(CurrentCompRace[prefix].nameThis.toLowerCase()) === -1 &&
+		creaTxtLC.indexOf(CurrentCompRace[prefix].name.toLowerCase()) === -1
+	)) {
 		CurrentCompRace[prefix].nameThis = clean(creaTxt.replace(/,? ?(giant|dire)/ig, "").replace(/ +/g, " "));
 	}
 }
@@ -1446,8 +1450,12 @@ function ApplyWildshape() {
 	// Create an object from the CreatureList entry where all info is going to be stored
 	var oWS = newObj(CreatureList[newCrea]);
 
-	// Update the nameThis if not matching the creature entered
-	if (!oWS.nameThis || newForm.toLowerCase().indexOf(oWS.nameThis) !== -1) {
+	// Update the nameThis if not matching the creature entered and the entered creature is not the name of the creature
+	var newFormLC = newForm.toLowerCase();
+	if (!oWS.nameThis || (
+		newFormLC.indexOf(oWS.nameThis.toLowerCase()) !== -1 &&
+		newFormLC.indexOf(oWS.name.toLowerCase()) !== -1
+	)) {
 		oWS.nameThis = clean(newForm.replace(/,? ?(giant|dire)/ig, "").replace(/ +/g, " "));
 	}
 

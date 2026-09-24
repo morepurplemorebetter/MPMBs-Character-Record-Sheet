@@ -49,7 +49,7 @@
 				Magic Item main attributes
 				Magic Item choices
 
-	Sheet:		v14.0.15 and above
+	Sheet:		v14.0.18 and above
 */
 var exampleFeatureName = { // you can ignore this, it is just here to make this file valid JavaScript
 
@@ -1200,7 +1200,8 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		fixedSpAttack: 9,
 		allowUpCasting: true, // Added v13.0.6
 		magicItemComponents: true, // Added v13.0.8
-/*	spellcastingAbility & fixedDC & fixedSpAttack & allowUpCasting & magicItemComponents // OPTIONAL //
+		spellcastingName: "Purplemancer", // Added v14.0.18
+/*	spellcastingAbility & fixedDC & fixedSpAttack & allowUpCasting & magicItemComponents & spellcastingName // OPTIONAL //
 		All of these are explained in detail below.
 
 		You can include each in a spellcastingBonus object to do the exact same thing as explained below.
@@ -1361,6 +1362,24 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 
 	Setting this attribute to true for magic items is the same as not including it.
 	Setting this attribute to false for anything other than magic items is the same as not including it.
+*/
+
+	spellcastingName: "Purplemancer",
+/*	spellcastingName // OPTIONAL //
+	TYPE:	string
+	USE:	set the name on the spell sheet page
+	ADDED:	v14.0.18
+
+	Use this attribute to set a different name in the header on the spell sheet page.
+	Otherwise, the sheet uses the name of the feature to determine the name
+	that will appear on the spell sheet page.
+
+	IMPORTANT!
+	Any instance of this attribute will overwrite previous instances in the same parent.
+	E.g. if you use this in a subclass and in a subclass' feature, the latter will
+	overwrite the former, and only the latter will be used.
+
+	Setting this attribute to an empty string or false is the same as not including it.
 */
 
 	spellcastingExtra: ["cure wounds", "guiding bolt", "flaming sphere", "lesser restoration", "daylight", "revivify", "guardian of faith", "wall of fire", "flame strike", "greater restoration"],
