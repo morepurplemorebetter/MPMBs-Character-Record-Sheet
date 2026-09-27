@@ -5267,6 +5267,11 @@ function ApplyFeat(input, FldNmbr) {
 
 		// Create the tooltip
 		var tooltipStr = toUni(theFeat.name, "bold");
+		if (theFeat.type) {
+			var typeString = theFeat.type.capitalize();
+			if (!/gift|charm|blessing/i.test(theFeat.type)) typeString += " Feat";
+			tooltipStr += "\n \u2022 Type: " + typeString;
+		}
 		if (theFeat.prerequisite) tooltipStr += "\n \u2022 Prerequisite: " + theFeat.prerequisite;
 		tooltipStr += stringSource(theFeat, "full,page", "\n \u2022 Source: ", ".");
 		if (theFeat.descriptionFull) tooltipStr += "\n\n" + formatDescriptionFull(theFeat.descriptionFull);

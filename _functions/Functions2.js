@@ -6538,6 +6538,8 @@ function ShowDialog(hdr, strng) {
 				strng += "\n\u2022 " + (SourceList[theSrc].abbreviation + "            ").substr(0,12) + "\t" + SourceList[theSrc].name;
 			};
 		};
+	} else {
+		strng = formatDescriptionFull(strng);
 	}
 	var ShowString_dialog = {
 		initialize: function (dialog) {

@@ -3184,6 +3184,10 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		The player will be presented with a pop-up dialog to choose a feat with
 		a matching `type`. This type can be a string or a regular expression.
 
+		If a string, a feat's `type` will match if any part of that matches the string set for
+		this attribute. For example, setting `type: "supernatural gift",` will match all feats
+		with `type: "supernatural gift (charm)"` and `type: "supernatural gift (blessing)"`.
+
 		FeatsList objects without the `type` attribute will be treates as type "general".
 		Feat types have been introduced in the 5.5e (2024) rules and are normally not
 		given for 5e (2014) feats.
@@ -3194,12 +3198,18 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			"fighting style"
 			"epic boon"
 			"supernatural gift"
+			"supernatural gift (charm)"
+			"supernatural gift (blessing)"
 
 		You can define more types of feats by making a feat with something else set for their
 		`type` attribute. See the "feat (FeatsList).js" file for more details.
 
 		Already known feats, those excluded with the Source Selection dialog, and those with
 		prerequisites that have not been met won't be provided as options.
+
+		If you want to present all feats as options, set this attribute to a regex that
+		matches everything, e.g:
+			type: /./,
 
 	[TYPE 5] Object with `options` attribute
 		The player will be presented with a pop-up dialog to choose a feat from the given

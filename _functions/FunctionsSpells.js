@@ -277,7 +277,7 @@ function GetSpellObject(theSpl, theCast, firstCol, isDuplicate, tooltipOnly) {
 		if (ObjLength(aSpell.changesObj)) {
 			var txt = [];
 			for (var str in aSpell.changesObj) txt.push(toUni(str) + aSpell.changesObj[str]);
-			spTooltip += "\n\n>>  CHANGES BY FEATURES  <<\nThe above original ";
+			spTooltip += "\n\n> > CHANGES BY FEATURES < <\nThe above original ";
 			spTooltip += tooltipOnly ? "will be modified when added to the sheet as follows (the short description includes the changes):\n\n" : "has been changed as follows:\n\n";
 			spTooltip += txt.join("\n\n");
 		}

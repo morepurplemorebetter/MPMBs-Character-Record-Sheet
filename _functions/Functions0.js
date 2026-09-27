@@ -28,7 +28,7 @@ function Uneditable(field) {
 function Value(field, FldValue, tooltip, submitNm) {
 	if (!tDoc.getField(field)) return false;
 	tDoc.getField(field).value = FldValue;
-	if (tooltip !== undefined) tDoc.getField(field).userName = tooltip;
+	if (tooltip !== undefined) tDoc.getField(field).userName = formatDescriptionFull(tooltip);
 	if (submitNm !== undefined) tDoc.getField(field).submitName = submitNm;
 };
 
@@ -50,7 +50,7 @@ function Clear(field) {
 
 function AddTooltip(field, tooltip, submitNm) {
 	if (!tDoc.getField(field)) return false;
-	if (tooltip !== undefined) tDoc.getField(field).userName = tooltip;
+	if (tooltip !== undefined) tDoc.getField(field).userName = formatDescriptionFull(tooltip);
 	if (submitNm !== undefined) tDoc.getField(field).submitName = submitNm;
 };
 

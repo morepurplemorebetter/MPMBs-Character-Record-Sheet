@@ -146,15 +146,18 @@ FeatsList["purple power"] = {
 	If the provided `type` in the `featsAdd` attribute is (case-insensitive) included in this
 	`type` attribute string, then the feat will be shown in the options.
 
-	Common feat types are:
+	In the 5.5e (2024) rules, common feat types are:
 		"origin"
 		"general"
 		"fighting style"
 		"epic boon"
 		"supernatural gift"
+		"supernatural gift (charm)"
+		"supernatural gift (blessing)"
 
 	You can also define a custom type, or even a subtype.
-	For example, "origin (dwarf)" would have the feat appear both when `featsAdd.type` is
+	The subtype is the part of the string in brackets.
+	For example, "origin (dwarf)" would have the feat appear both when `featsAdd` is
 	set to `type: "origin"` and `type: "origin (dwarf)"`.
 */
 	defaultExcluded: true,
