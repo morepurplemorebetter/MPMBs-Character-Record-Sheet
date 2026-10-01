@@ -666,7 +666,7 @@ var Base_ClassList = {
 	},
 
 	"fighter": {
-		regExpSearch: /^(?!.*(feral|tribal|dark|green|fey|horned|totem|spiritual|exalted|sacred|holy|divine|nature|odin|thor|nature|natural|green|beast|animal|))(?=.*(fighter|warrior|militant|warlord|phalanx|gladiator|trooper))(?!.*(barbarian|monk|paladin|ranger)).*$/i,
+		regExpSearch: /^(?!.*(feral|tribal|dark|green|fey|horned|totem|spiritual|exalted|sacred|holy|divine|nature|odin|thor|nature|natural|green|beast|animal))(?=.*(fighter|warrior|militant|warlord|phalanx|gladiator|trooper))(?!.*(barbarian|monk|paladin|ranger)).*$/i,
 		name: "Fighter",
 		source: [["SRD", 24], ["P", 70]],
 		primaryAbility: "Strength or Dexterity",
