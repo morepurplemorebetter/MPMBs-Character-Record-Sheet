@@ -559,9 +559,12 @@ function DirectImport(consoleTrigger) {
 
 			if (filesScriptFrom) {
 			// add the old to the new, preferring the new if both have the same entries
-				var filesScriptToNms = [], equalScrNmRx = /\d+\/\d+\/\d+ - |[._\- ]min(ified)?\b/ig;
-				for (var toScr in filesScriptTo) filesScriptToNms.push(toScr.replace(equalScrNmRx, ""));
-				var hasAllPubUA = filesScriptToNms.indexOf("all_WotC_pub+UA.js") !== -1, rxAllPubUA = /all_WotC_(published|unearthed_arcana)/i
+				var equalScrNmRx = /\d+\/\d+\/\d+ - |[._\- ]min(ified)?\b/ig;
+				var filesScriptToNms = Object.keys(filesScriptTo).map(function (key) {
+					return key.replace(equalScrNmRx, "");
+				});
+				var hasAllPubUA = filesScriptToNms.find(/all_WotC(_5e)?_pub\+UA/i) !== -1;
+				var rxAllPubUA = /all_WotC(_5e)?_(published|unearthed_arcana)/i;
 				for (var fromScr in filesScriptFrom) {
 					if (filesScriptToNms.indexOf(fromScr.replace(equalScrNmRx, "")) !== -1 || (hasAllPubUA && rxAllPubUA.test(fromScr))) continue;
 					filesScriptTo[fromScr] = filesScriptFrom[fromScr];
@@ -2653,7 +2656,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 	};
 	var runIt = function (aScript, scriptName, isManual) {
 		var RequiredSheetVersion = function (minNumber, maxNumber) {
-			if (atStartup) return;
+			if (atStartup && IsNotImport) return;
 			var getVersString = function (input) {
 				var inputStr = input.toString();
 				return /-|beta|\+/i.test(inputStr) ? inputStr.replace(/^\D+/, "").replace(/([^\-])\.?beta/i, "$1-beta") : getSemVers(input);
@@ -2697,7 +2700,9 @@ function RunUserScript(atStartup, manualUserScripts) {
 					nType: 2,
 				};
 			}
-			if (failedTestMsg && app.alert(failedTestMsg) !== 4) return false;
+			if (failedTestMsg && (!IsNotImport || app.alert(failedTestMsg) !== 4)) {
+				return false;
+			}
 			return true;
 		} catch (error) {
 			if (/out of memory/i.test(error.toSource())) return "outOfMemory";

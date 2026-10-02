@@ -676,7 +676,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 							wrap_name: true,
 							font: "palette",
 							width: 815,
-							name: Text00 + (isFirstTime ? "\n\n" + Text01 : ""),
+							name: isFirstTime ? Text01 : Text00,
 						}, {
 							type: "cluster",
 							name: "The Sourcebooks",
