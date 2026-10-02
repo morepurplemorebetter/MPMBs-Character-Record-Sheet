@@ -32,7 +32,7 @@ SourceList["FRA2"] = {
 };
 
 AddSubClass("paladin", "paladin-weave", {
-	regExpSearch: /^(?=.*weave)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
+	regExpSearch: /^(?=.*weave)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|warrior|warlord|trooper))))).*$/i,
 	subname: "Oath of the Weave",
 	source: ["FRA2", 21],
 	spellcastingExtra: ["detect magic", "shield", "misty step", "warding bond", "counterspell", "dispel magic", "death ward", "ice storm", "flame strike", "teleportation circle"],

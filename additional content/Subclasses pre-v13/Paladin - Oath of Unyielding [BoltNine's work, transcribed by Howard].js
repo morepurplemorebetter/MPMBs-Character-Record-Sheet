@@ -27,7 +27,7 @@ SourceList["IB:OotU"] = {
 };
 
 AddSubClass("paladin", "unyielding", {
-	regExpSearch: /^(?=.*unyielding)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
+	regExpSearch: /^(?=.*unyielding)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|warrior|warlord|trooper))))).*$/i,
 	subname: "Oath of the Unyielding",
 	source: ["IB:OotU", 1],
 	spellcastingExtra: ["false life", "shield", "enhance ability", "phantasmal force", "protection from energy", "revivify", "guardian of faith", "freedom of movement", "wall of force", "mass cure wounds"],

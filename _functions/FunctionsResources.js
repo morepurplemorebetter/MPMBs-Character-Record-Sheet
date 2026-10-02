@@ -918,7 +918,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 						name: Text02,
 					}, {
 						item_id: "appl",
-						type: "ok_cancel",
+						type: isFirstTime ? "ok" : "ok_cancel",
 						alignment: "align_right",
 						ok_name: "Apply",
 					}],

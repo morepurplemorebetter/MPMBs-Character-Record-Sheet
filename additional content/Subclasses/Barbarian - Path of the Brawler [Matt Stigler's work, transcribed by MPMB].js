@@ -31,7 +31,7 @@ SourceList["FBC:PotB"] = {
 };
 
 AddSubClass("barbarian", "path of the brawler", {
-	regExpSearch: /^(?=.*brawler)(?=.*(warrior|fighter|marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n)).*$/i,
+	regExpSearch: /^(?=.*brawler)(?=.*(warrior|marauder|barbarian|viking|(norse|tribes?|clans?)(wo)?m(a|e)n)).*$/i,
 	subname: "Path of the Brawler",
 	source: [["FBC:PotB", 0]],
 	features: {

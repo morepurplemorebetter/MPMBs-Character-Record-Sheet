@@ -2834,7 +2834,7 @@ function ApplyMagicItem(input, FldNmbr) {
 					selectMagicItemGearType(false, FldNmbr, oldMIvar && anOldMI[oldMIvar].chooseGear ? anOldMI[oldMIvar].chooseGear : anOldMI.chooseGear);
 				}
 				// Add default attributes for certain magic item types
-				addMagicItemDefaultAttributes(MagicItemsList[oldMI]);
+				addMagicItemDefaultAttributes(MagicItemsList[oldMI], oldMIvar);
 				// Remove its attributes
 				var Fea = ApplyFeatureAttributes(
 					"item", // type
@@ -2925,7 +2925,7 @@ function ApplyMagicItem(input, FldNmbr) {
 		// Apply the rest of its attributes
 		if (oldMI !== newMI || oldMIvar !== newMIvar) {
 			// Add default attributes for certain magic item types
-			addMagicItemDefaultAttributes(MagicItemsList[newMI]);
+			addMagicItemDefaultAttributes(MagicItemsList[newMI], newMIvar);
 			// Set the attunement
 			Checkbox(MIflds[4], theMI.attunement ? true : false, undefined, theMI.attunement ? "" : "hide");
 			var justChange = oldMI == newMI && oldMIvar !== newMIvar;
@@ -2957,19 +2957,35 @@ function ApplyMagicItem(input, FldNmbr) {
 };
 
 // Some magic item types have default attributes
-function addMagicItemDefaultAttributes(objMI) {
+function addMagicItemDefaultAttributes(objMI, choice) {
 	if (!objMI) return;
-	if (/\bpotion\b/i.test(objMI.type) && objMI.action === undefined) {
-		objMI.action = [[
-			tDoc.use2024Rules ? "bonus action" : "action",
-			"Drink/Administer Potion",
-		]];
-	} else if (/\bstaff\b/i.test(objMI.type) && objMI.weaponsAdd === undefined && objMI.weaponOptions === undefined) {
-		var weaponName = objMI.name;
-		if (!/staff/i.test(weaponName)) {
-			weaponName = "Staff of " + objMI.name.replace(/.*?of /i, "");
+	var objChoice = choice && objMI[choice] ? objMI[choice] : false;
+	var hasAttribute = function (attributes, objMain, objOptional) {
+		for (var i = 0; i < attributes.length; i++) {
+			var attribute = attributes[i];
+			if (objMain[attribute] || (objOptional && objOptional[attribute])) {
+				return false;
+			}
 		}
-		objMI.weaponsAdd = { options: [weaponName] };
+		return objOptional ? objOptional : objMain;
+	}
+	if (/\bpotion\b/i.test(objMI.type)) {
+		var objToAlter = hasAttribute(["action"], objMI, objChoice);
+		if (objToAlter) {
+			objToAlter.action = [[
+				tDoc.use2024Rules ? "bonus action" : "action",
+				"Drink/Administer Potion",
+			]];
+		}
+	} else if (/\bstaff\b/i.test(objMI.type)) {
+		var objToAlter = hasAttribute(["weaponsAdd", "weaponOptions"], objMI, objChoice);
+		if (objToAlter) {
+			var weaponName = objToAlter.name ? objToAlter.name : objMI.name;
+			if (!/staff/i.test(weaponName)) {
+				weaponName = "Staff of " + objMI.name.replace(/.*?of /i, "");
+			}
+			objToAlter.weaponsAdd = { options: [weaponName] };
+		}
 	}
 }
 

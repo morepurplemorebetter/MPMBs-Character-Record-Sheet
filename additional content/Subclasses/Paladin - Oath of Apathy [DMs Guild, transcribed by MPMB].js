@@ -37,7 +37,7 @@ SourceList["DDAL00-09"] = {
 };
 
 AddSubClass("paladin", "apathy", {
-	regExpSearch: /^(?=.*apathy)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
+	regExpSearch: /^(?=.*apathy)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|warrior|warlord|trooper))))).*$/i,
 	subname: "Oath of Apathy",
 	source: ["DDAL00-09", 14],
 	spellcastingExtra: ["sanctuary", "sleep", "calm emotions", "suggestion", "hypnotic pattern", "slow", "confusion", "mordenkainen's private sanctum", "dream", "mislead"],

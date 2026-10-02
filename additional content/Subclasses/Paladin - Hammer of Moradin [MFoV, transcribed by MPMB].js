@@ -28,7 +28,7 @@ SourceList["MFoV:HM"] = {
 };
 
 AddSubClass("paladin", "hammer", {
-	regExpSearch: /^(?=.*hammer)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|fighter|warrior|warlord|trooper))))).*$/i,
+	regExpSearch: /^(?=.*hammer)(((?=.*paladin)|((?=.*(exalted|sacred|holy|divine))(?=.*(knight|warrior|warlord|trooper))))).*$/i,
 	subname: "Oath of the Hammer",
 	source: [["MFoV:HM", 0]],
 	spellcastingExtra: ["bane", "shield of faith", "spiritual weapon", "warding bond", "meld into stone", "protection from energy", "stone shape", "stoneskin", "passwall", "wall of stone"],

@@ -2599,7 +2599,7 @@ var Base_ClassList = {
 
 var Base_ClassSubList = {
 	"barbarian-berserker": {
-		regExpSearch: /^((?=.*\b(berserker|berserk|berserkr|ulfheoinn|ulfheonar)s?\b)|((?=.*(warrior|fighter))(?=.*(odin|thor)))).*$/i,
+		regExpSearch: /^((?=.*\b(berserker|berserk|berserkr|ulfheoinn|ulfheonar)s?\b)|((?=.*warrior)(?=.*(odin|thor)))).*$/i,
 		subname: "Path of the Berserker",
 		fullname: "Berserker",
 		source: [["SRD", 9], ["P", 49]],
