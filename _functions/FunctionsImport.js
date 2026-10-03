@@ -252,7 +252,7 @@ function AddFolderJavaScript(justConsole) {
 	var theDialog = app.execDialog(AddJS_dialog);
 
 	if (theDialog === "cons") {
-		displayError(false, "Select the line below that says `StartDirectImport();`\"` and press Ctrl+Enter.\n\nStartDirectImport();", false, true);
+		displayError(false, "Select the line below that says `StartDirectImport();` and press Ctrl+Enter.\n\nStartDirectImport();", false, true);
 	}
 
 	return theDialog === "ok";
@@ -560,17 +560,28 @@ function DirectImport(consoleTrigger) {
 			if (filesScriptFrom) {
 			// add the old to the new, preferring the new if both have the same entries
 				var equalScrNmRx = /\d+\/\d+\/\d+ - |[._\- ]min(ified)?\b/ig;
+				var toAllWotCScripts = {};
+				Object.keys(filesScriptTo).forEach(function (keyTo) {
+					getWotCParts(keyTo).forEach(function (part) {
+						toAllWotCScripts[part] = true;
+					});
+				});
 				var filesScriptToNms = Object.keys(filesScriptTo).map(function (key) {
 					return key.replace(equalScrNmRx, "");
 				});
-				var hasAllPubUA = filesScriptToNms.find(/all_WotC(_5e)?_pub\+UA/i) !== -1;
-				var rxAllPubUA = /all_WotC(_5e)?_(published|unearthed_arcana)/i;
-				for (var fromScr in filesScriptFrom) {
-					if (filesScriptToNms.indexOf(fromScr.replace(equalScrNmRx, "")) !== -1 || (hasAllPubUA && rxAllPubUA.test(fromScr))) continue;
-					filesScriptTo[fromScr] = filesScriptFrom[fromScr];
+				var fromScriptsNotInTo = Object.keys(filesScriptFrom).filter(function (keyFrom) {
+					if (filesScriptToNms.indexOf(keyFrom.replace(equalScrNmRx, "")) !== -1) {
+						return false;
+					}
+					return !getWotCParts(keyFrom).every(function (part) {
+						return toAllWotCScripts[part];
+					});
+				});
+				if (fromScriptsNotInTo.length) {
 					newFilesScriptFrom = true;
-				};
-				if (newFilesScriptFrom) {
+					fromScriptsNotInTo.forEach(function (keyFrom) {
+						filesScriptTo[keyFrom] = filesScriptFrom[keyFrom];
+					});
 					CurrentScriptFiles = filesScriptTo;
 					SetStringifieds("scriptfiles");
 				}
@@ -757,7 +768,7 @@ function DirectImport(consoleTrigger) {
 					var onlySpawnsFromT = onlySpawnsFrom || templ.substring(0, 2) === "SS";
 					//see if the template exists in the docFrom
 					var dFfldT = onlySpawnsFrom ? global.docFrom.isTemplVis(templ) : global.docFrom.BookMarkList[templ] ? global.docFrom.getField(global.docFrom.BookMarkList[templ]) : false;
-					if (dFfldT) pagesLayout[templ] = onlySpawnsFrom ? true : dFfldT.page !== -1;
+					pagesLayout[templ] = !dFfldT ? false : onlySpawnsFrom ? true : dFfldT.page !== -1;
 					var dFfldTE = global.docFrom.getField("Template.extras." + templ); //see if any extra versions have been added
 					if (dFfldTE) {
 						pagesLayout[templ + "Extras"] = dFfldTE.value.split(",").length - (onlySpawnsFromT || !pagesLayout[templ] ? 1 : 0);
@@ -886,7 +897,7 @@ function DirectImport(consoleTrigger) {
 							}
 					}
 					if (iColNewIdx === -1) return;
-					var oColNew = CurrentStats.cols[oColNewIdx];
+					var oColNew = CurrentStats.cols[iColNewIdx];
 					oColNew.scores = oCol.scores;
 				});
 				SetStringifieds("stats");
@@ -3463,3 +3474,16 @@ function ImportScriptOptions(input) {
 			break;
 	};
 };
+
+// Return the content parts of an all_WotC_* file name, e.g. "all_WotC_5e_pub+ua.min.js" -> ["pub", "ua"]
+// The file name can be preceded by a date, e.g. "20250101_all_WotC_5e_pub+ua.min.js" or "2025-01-01 all_WotC_5e_pub+ua.min.js"
+function getWotCParts(fileName) {
+	var aliases = { pub: "pub", published: "pub", ua: "ua", unearthed_arcana: "ua", legacy: "legacy" };
+	var match = fileName.toLowerCase().match(/^[\d\s._\/-]*all_wotc_(?:[^_]+_)?(.+?)(?:\.min)?\.js$/);
+	if (!match) return [];
+	return match[1].split("+").map(function (part) {
+		return aliases[part];
+	}).filter(function (part) {
+		return part;
+	});
+}
