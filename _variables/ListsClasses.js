@@ -1777,7 +1777,7 @@ var Base_ClassList = {
 				"twinned spell": {
 					name: "Twinned Spell",
 					source: [["SRD", 44], ["P", 102]],
-					additional: "1 sorcery point per spell level, minimum 1",
+					additional: "1 sorcery point per spell level, " + (typePF ? "min 1" : "minimum 1"),
 					description: desc("If spell/cantrip has a target of one and not self, I can aim it at second target within range"),
 				},
 			},
@@ -2847,7 +2847,7 @@ var Base_ClassSubList = {
 				description: desc("After a short rest, I can recover a number of 5th-level or lower spell slots"),
 				additional: ["1 level spell slots", "1 level spell slots", "2 levels spell slots", "2 levels spell slots", "3 levels spell slots", "3 levels spell slots", "4 levels spell slots", "4 levels spell slots", "5 levels spell slots", "5 levels spell slots", "6 levels spell slots", "6 levels spell slots", "7 levels spell slots", "7 levels spell slots", "8 levels spell slots", "8 levels spell slots", "9 levels spell slots", "9 levels spell slots", "10 levels spell slots", "10 levels spell slots"],
 				usages: 1,
-				recovery: "long rest",
+				recovery: typePF ? "LR" : "long rest",
 			},
 			"subclassfeature3": {
 				name: "Circle Spells",

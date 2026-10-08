@@ -143,7 +143,7 @@ ClassList["improved artificer"] = {
 			usages: levels.map(function (n) {
 				return n * 2 + (n < 5 ? 0 : n < 10 ? 2 : n < 15 ? 6 : n < 20 ? 12 : 22);
 			}),
-			recovery: "Never",
+			recovery: "\u2013",
 		},
 		"inventions: alchemy": {
 			name: "Inventions: Alchemy",

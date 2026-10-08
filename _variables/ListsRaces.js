@@ -29,7 +29,11 @@ var Base_RaceList = {
 		heightMetric: " stand well over 1,8 metres tall (170 + 5d8 cm)",
 		weightMetric: " weigh around 110 kg (80 + 5d8 \xD7 4d6 / 10 kg)",
 		scores: [2, 0, 0, 0, 0, 1],
-		trait: "Dragonborn (+2 Strength, +1 Charisma)\nDraconic Ancestry: Choose one type of dragon using the \"Racial Options\" button. I gain a breath weapon and damage resistance as determined by the dragon type chosen.\nBreath Weapon: Exhale destructive energy as an action with a size, shape, saving throw type, and damage type as found in the table. All in the area must make a saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 (+1d6 at level 6, 11, 16) damage, half as much damage on a successful save. I can use it again after a short rest.",
+		trait: [
+			"**Dragonborn** (+2 Strength, +1 Charisma)",
+			'##\u25C6 Draconic Ancestry##. Choose one type of dragon using the "Racial Options" button. I gain a breath weapon and damage resistance as determined by the dragon type chosen.',
+			"##\u25C6 Breath Weapon##. Exhale destructive energy as an action with a size, shape, saving throw type, and damage type as found in the table. All in the area must make a saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 (+1d6 at level 6, 11, 16) damage, half as much damage on a successful save. I can use it again after a short rest.",
+		],
 		features: {
 			"draconic ancestry": {
 				name: "Draconic Ancestry",
@@ -83,7 +87,11 @@ var Base_RaceList = {
 		heightMetric: " stand between 1,2 and 1,5 metres tall (110 + 5d4 cm)",
 		weightMetric: " weigh around 70 kg (55 + 5d4 \xD7 4d6 / 10 kg)",
 		scores: [0, 0, 2, 0, 1, 0],
-		trait: "Hill Dwarf (+2 Constitution, +1 Wisdom)\n\nStonecunning: Whenever I make an Intelligence (History) check related to the origin of stonework, I am considered proficient in the History skill and add double my proficiency bonus to the check, instead of my normal proficiency bonus.\n\nDwarven Toughness: My hit point maximum increases by 1 for every level I have.",
+		trait: [
+			"**Hill Dwarf** (+2 Constitution, +1 Wisdom)",
+			"##\u25C6 Stonecunning##. Whenever I make an Intelligence (History) check related to the origin of stonework, I am considered proficient in the History skill and add double my proficiency bonus to the check, instead of my normal proficiency bonus.",
+			"##\u25C6 Dwarven Toughness##. My hit point maximum increases by 1 for every level I have.",
+		],
 		calcChanges: {
 			hp: function (totalHD) { return [totalHD, "Dwarven Toughness"]; },
 		},
@@ -112,7 +120,11 @@ var Base_RaceList = {
 		heightMetric: " range from under 1,5 to over 1,8 metres tall (140 + 5d10 cm)",
 		weightMetric: " weigh around 55 kg (40 + 5d10 \xD7 2d4 / 10 kg)",
 		scores: [0, 2, 0, 1, 0, 0],
-		trait: "High Elf (+2 Dexterity, +1 Intelligence)\nTrance: Elves don't need to sleep, but meditate semiconsciously, for 4 hours a day. While meditating, I can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, I gain the same benefit that a human does from 8 hours of sleep, thus needing only 4 hours for a long rest.\nCantrip: I know one cantrip of my choice from the wizard spell list. Intelligence is my spellcasting ability for it.",
+		trait: [
+			"**High Elf** (+2 Dexterity, +1 Intelligence)",
+			"##\u25C6 Trance##. Elves don't need to sleep, but meditate semiconsciously for 4 hours a day. While meditating, I can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, I gain the same benefit that a human does from 8 hours of sleep, thus needing only 4 hours for a long rest.",
+			"##\u25C6 Cantrip##. I know one cantrip of my choice from the wizard spell list. Intelligence is my spellcasting ability for it.",
+		],
 		spellcastingAbility: 4,
 		spellcastingBonus: [{
 			name: "High Elf Cantrip",
@@ -140,7 +152,14 @@ var Base_RaceList = {
 		heightMetric: " are 90 to 120 cm tall (2'11\" + 5d4)",
 		weightMetric: " weigh around 18 kg (16 + 5d4 / 10 kg)",
 		scores: [0, 0, 1, 2, 0, 0],
-		trait: "Rock Gnome (+1 Constitution, +2 Intelligence)" + (typePF ? "\n" : " ") + "Artificer's Lore: Add twice my proficiency bonus to Intelligence (History) checks with magic, alchemical, and technological items.\nTinker: Construct a Tiny clockwork device (AC 5, 1 HP) using tinker's tools, 1 hour, and 10 gp of material components, that functions for 24 hours. I can have up to 3 active." + (typePF ? "\n - " : " -") + "Clockwork Toy: animal, monster, or person that can move 5 ft per turn in a random direction, making appropriate noises;" + (typePF ? "\n - " : " -") + "Fire Starter: 1 action to produce miniature flame to light things;" + (typePF ? "\n - " : " -") + "Music Box: plays single song at a moderate volume.",
+		trait: [
+			"**Rock Gnome** (+1 Constitution, +2 Intelligence)",
+			(typePF ? "\n" : " ") + "##\u25C6 Artificer's Lore##. Add twice my Proficiency Bonus to Intelligence (History) checks with magic, alchemical, and technological items.",
+			"\n##\u25C6 Tinker##. Construct a Tiny clockwork device (AC 5, 1 HP) using tinker's tools, 1 hour, and 10 gp of material components, that functions for 24 hours. I can have up to 3 active.",
+			"\n \u2022 **Clockwork Toy**. Animal, monster, or person that can move 5 ft per turn in a random direction, making appropriate noises.",
+			(typePF ? "\n" : "") + " \u2022 **Fire Starter**. Action to produce miniature flame to light things.",
+			(typePF ? "\n" : "") + " \u2022 **Music Box**. Plays single song at a moderate volume.",
+		].join(""),
 	},
 	"lightfoot halfling": {
 		regExpSearch: /^((?=.*(hairfoot|tallfellow))|((?=.*\b(halflings?|hobbits?)\b)(?=.*lightfoot))).*$/i,
@@ -160,7 +179,12 @@ var Base_RaceList = {
 		heightMetric: " average about 90 cm tall (80 + 5d4)",
 		weightMetric: " weigh around 18 kg (16 + 5d4 / 10 kg)",
 		scores: [0, 2, 0, 0, 0, 1],
-		trait: "Lightfoot Halfling (+2 Dexterity, +1 Charisma)" + (typePF ? "\n" : "") + "\nLucky: When I roll a 1 on an attack roll, ability check, or saving throw, I can reroll the die and must use the new roll." + (typePF ? "\n" : "") + "\nHalfling Nimbleness: I can move through the space of any creature that is of a size larger than me." + (typePF ? "\n" : "") + "\nNaturally Stealthy: I can attempt to hide even when I am obscured only by a creature that is at least one size larger than me.",
+		trait: [
+			"**Lightfoot Halfling** (+2 Dexterity, +1 Charisma)",
+			"##\u25C6 Lucky##. When I roll a 1 on an attack roll, ability check, or saving throw, I can reroll the die and must use the new roll.",
+			"##\u25C6 Halfling Nimbleness##. I can move through the space of any creature that is of a size larger than me.",
+			"##\u25C6 Naturally Stealthy##. I can attempt to hide even when I am obscured only by a creature that is at least one size larger than me.",
+		],
 	},
 	"half-elf": {
 		regExpSearch: /^(?=.*half)(?=.*(elf|elv|drow|silvanesti|qualinesti|grugach|kagonesti)).*$/i,
@@ -185,7 +209,10 @@ var Base_RaceList = {
 		weightMetric: " weigh around 70 kg (50 + 5d8 \xD7 4d4 / 10 kg)",
 		scorestxt: "+2 Charisma and +1 to two other ability scores of my choice",
 		scores: [0, 0, 0, 0, 0, 2],
-		trait: "Half-Elf (+2 Charisma and +1 to two other ability scores of my choice)\n\nSkill Versatility: I gain proficiency in two skills of my choice.",
+		trait: [
+			"**Half-Elf** (+2 Charisma and +1 to two other ability scores of my choice)",
+			"##\u25C6 Skill Versatility##. I gain proficiency in two skills of my choice.",
+		],
 	},
 	"half-orc": {
 		regExpSearch: /^(?=.*half)(?=.*\bor(c|k)).*$/i,
@@ -235,7 +262,11 @@ var Base_RaceList = {
 				},
 			},
 		},
-		trait: "Half-Orc (+2 Strength, +1 Constitution)" + (typePF ? "\n" : " ") + "\nRelentless Endurance: When I am reduced to 0 hit points but not killed outright, I can drop to 1 hit point instead. I can't use this feature again until I finish a long rest.\n\nSavage Attacks: When I score a critical hit with a melee weapon attack, I can roll one of the weapon's damage dice one additional time and add it to the extra damage of the critical hit.",
+		trait: [
+			"**Half-Orc** (+2 Strength, +1 Constitution)",
+			"##\u25C6 Relentless Endurance##. When I am reduced to 0 hit points but not killed outright, I can drop to 1 hit point instead. I can't use this feature again until I finish a long rest.",
+			"##\u25C6 Savage Attacks##. When I score a critical hit with a melee weapon attack, I can roll one of the weapon's damage dice one additional time and add it to the extra damage of the critical hit.",
+		],
 	},
 	"human": {
 		regExpSearch: /human/i,
@@ -254,7 +285,7 @@ var Base_RaceList = {
 		weightMetric: " weigh around 75 kg (50 + 5d10 \xD7 4d4 / 10 kg)",
 		scorestxt: "+1 to all ability scores",
 		scores: [1, 1, 1, 1, 1, 1, 1],
-		trait: "Human (+1 to all ability scores)",
+		trait: "**Human** (+1 to all ability scores)",
 	},
 	"tiefling": {
 		regExpSearch: /^((?=.*tiefling)|(?=.*planetouched)(?=.*(hell|abyss|fiend|devil|asmodeus))).*$/i,
@@ -274,7 +305,13 @@ var Base_RaceList = {
 		heightMetric: " range from 1,5 to over 1,8 metres tall (145 + 5d8 cm)",
 		weightMetric: " weigh around 70 kg (50 + 5d8 \xD7 4d4 / 10 kg)",
 		scores: [0, 0, 0, 1, 0, 2],
-		trait: "Tiefling (+1 Intelligence, +2 Charisma)\n\nInfernal Legacy:\n   I know the Thaumaturgy cantrip.\n   At 3rd level, I can cast Hellish Rebuke once per long rest as a 2nd-level spell.\n   At 5th level, I can also cast Darkness once per long rest.\n   Charisma is my spellcasting ability for these spells.",
+		trait: [
+			"**Tiefling** (+1 Intelligence, +2 Charisma)",
+			"##\u25C6 Infernal Legacy##. I know the *Thaumaturgy* cantrip.",
+			"At 3rd level, I can cast *Hellish Rebuke* once per long rest as a 2nd-level spell.",
+			"At 5th level, I can also cast *Darkness* once per long rest.",
+			"Charisma is my spellcasting ability for these spells.",
+		],
 		spellcastingAbility: 6,
 		spellcastingBonus: [{
 			name: "Infernal Legacy (level 1)",
@@ -294,7 +331,7 @@ var Base_RaceList = {
 				spellChanges: {
 					"hellish rebuke": {
 						description: "Cast when taking damage, creature that dealt damage takes 3d10 Fire damage; save halves",
-						changes: "Using Infernal Legacy, I cast Hellish Rebuke as if I'm using a 2nd-level spell slot, doing 3d10 damage.",
+						changes: "Using Infernal Legacy, I cast *Hellish Rebuke* as if I'm using a 2nd-level spell slot, doing 3d10 damage.",
 					},
 				},
 			},
@@ -316,121 +353,91 @@ var Base_RaceSubList = {
 	"dragonborn-black": {
 		regExpSearch: /black/i,
 		name: "Black dragonborn",
-		trait: "Black Dragonborn (+2 Strength, +1 Charisma)"
-		+ "\n" + "Acid Breath Weapon:"
-		+ "\n   " + "As an action, I exhale destructive energy in a 5-ft by 30-ft line."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
-		+ "\n   " + "It does 2d6 acid damage, half as much damage on a successful save."
-		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
-		+ "\n   " + "I can't use this feature again until I finish a short rest.",
+		trait: [
+			"**Black Dragonborn** (+2 Strength, +1 Charisma)",
+			"##\u25C6 Acid Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 acid damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+		],
 		dmgres: ["Acid"],
 	},
 	"dragonborn-blue": {
 		regExpSearch: /blue/i,
 		name: "Blue dragonborn",
-		trait: "Blue Dragonborn (+2 Strength, +1 Charisma)"
-		+ "\n" + "Lightning Breath Weapon:"
-		+ "\n   " + "As an action, I exhale destructive energy in a 5-ft by 30-ft line."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
-		+ "\n   " + "It does 2d6 lightning damage, half as much damage on a successful save."
-		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
-		+ "\n   " + "I can't use this feature again until I finish a short rest.",
+		trait: [
+			"**Blue Dragonborn** (+2 Strength, +1 Charisma)",
+			"##\u25C6 Lightning Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 lightning damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+		],
 		dmgres: ["Lightning"],
 	},
 	"dragonborn-brass": {
 		regExpSearch: /brass/i,
 		name: "Brass dragonborn",
-		trait: "Brass Dragonborn (+2 Strength, +1 Charisma)"
-		+ "\n" + "Fire Breath Weapon:"
-		+ "\n   " + "As an action, I exhale destructive energy in a 5-ft by 30-ft line."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
-		+ "\n   " + "It does 2d6 fire damage, half as much damage on a successful save."
-		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
-		+ "\n   " + "I can't use this feature again until I finish a short rest.",
+		trait: [
+			"**Brass Dragonborn** (+2 Strength, +1 Charisma)",
+			"##\u25C6 Fire Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 fire damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+		],
 		dmgres: ["Fire"],
 	},
 	"dragonborn-bronze": {
 		regExpSearch: /bronze/i,
 		name: "Bronze dragonborn",
-		trait: "Bronze Dragonborn (+2 Strength, +1 Charisma)"
-		+ "\n" + "Lightning Breath Weapon:"
-		+ "\n   " + "As an action, I exhale destructive energy in a 5-ft by 30-ft line."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
-		+ "\n   " + "It does 2d6 lightning damage, half as much damage on a successful save."
-		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
-		+ "\n   " + "I can't use this feature again until I finish a short rest.",
+		trait: [
+			"**Bronze Dragonborn** (+2 Strength, +1 Charisma)",
+			"##\u25C6 Lightning Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 lightning damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+		],
 		dmgres: ["Lightning"],
 	},
 	"dragonborn-copper": {
 		regExpSearch: /copper/i,
 		name: "Copper dragonborn",
-		trait: "Copper Dragonborn (+2 Strength, +1 Charisma)"
-		+ "\n" + "Acid Breath Weapon:"
-		+ "\n   " + "As an action, I exhale destructive energy in a 5-ft by 30-ft line."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
-		+ "\n   " + "It does 2d6 acid damage, half as much damage on a successful save."
-		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
-		+ "\n   " + "I can't use this feature again until I finish a short rest.",
+		trait: [
+			"**Copper Dragonborn** (+2 Strength, +1 Charisma)",
+			"##\u25C6 Acid Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 acid damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+		],
 		dmgres: ["Acid"],
 	},
 	"dragonborn-gold": {
 		regExpSearch: /gold/i,
 		name: "Gold dragonborn",
-		trait: "Gold Dragonborn (+2 Strength, +1 Charisma)"
-		+ "\n" + "Fire Breath Weapon:"
-		+ "\n   " + "As an action, I exhale destructive energy in a 15-ft cone."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
-		+ "\n   " + "It does 2d6 fire damage, half as much damage on a successful save."
-		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
-		+ "\n   " + "I can't use this feature again until I finish a short rest.",
+		trait: [
+			"**Gold Dragonborn** (+2 Strength, +1 Charisma)",
+			"##\u25C6 Fire Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 fire damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+		],
 		dmgres: ["Fire"],
 	},
 	"dragonborn-green": {
 		regExpSearch: /green/i,
 		name: "Green dragonborn",
-		trait: "Green Dragonborn (+2 Strength, +1 Charisma)"
-		+ "\n" + "Poison Breath Weapon:"
-		+ "\n   " + "As an action, I exhale destructive energy in a 15-ft cone."
-		+ "\n   " + "All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus."
-		+ "\n   " + "It does 2d6 poison damage, half as much damage on a successful save."
-		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
-		+ "\n   " + "I can't use this feature again until I finish a short rest.",
+		trait: [
+			"**Green Dragonborn** (+2 Strength, +1 Charisma)",
+			"##\u25C6 Poison Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 poison damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+		],
 		dmgres: ["Poison"],
 	},
 	"dragonborn-red": {
 		regExpSearch: /red/i,
 		name: "Red dragonborn",
-		trait: "Red Dragonborn (+2 Strength, +1 Charisma)"
-		+ "\n" + "Fire Breath Weapon:"
-		+ "\n   " + "As an action, I exhale destructive energy in a 15-ft cone."
-		+ "\n   " + "All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus."
-		+ "\n   " + "It does 2d6 fire damage, half as much damage on a successful save."
-		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
-		+ "\n   " + "I can't use this feature again until I finish a short rest.",
+		trait: [
+			"**Red Dragonborn** (+2 Strength, +1 Charisma)",
+			"##\u25C6 Fire Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 fire damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+		],
 		dmgres: ["Fire"],
 	},
 	"dragonborn-silver": {
 		regExpSearch: /silver/i,
 		name: "Silver dragonborn",
-		trait: "Silver Dragonborn (+2 Strength, +1 Charisma)"
-		+ "\n" + "Cold Breath Weapon:"
-		+ "\n   " + "As an action, I exhale destructive energy in a 15-ft cone."
-		+ "\n   " + "All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus."
-		+ "\n   " + "It does 2d6 cold damage, half as much damage on a successful save."
-		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
-		+ "\n   " + "I can't use this feature again until I finish a short rest.",
+		trait: [
+			"**Silver Dragonborn** (+2 Strength, +1 Charisma)",
+			"##\u25C6 Cold Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 cold damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+		],
 		dmgres: ["Cold"],
 	},
 	"dragonborn-white": {
 		regExpSearch: /white/i,
 		name: "White dragonborn",
-		trait: "White Dragonborn (+2 Strength, +1 Charisma)"
-		+ "\n" + "Cold Breath Weapon:"
-		+ "\n   " + "As an action, I exhale destructive energy in a 15-ft cone."
-		+ "\n   " + "All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus."
-		+ "\n   " + "It does 2d6 cold damage, half as much damage on a successful save."
-		+ "\n   " + "The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16."
-		+ "\n   " + "I can't use this feature again until I finish a short rest.",
+		trait: [
+			"**White Dragonborn** (+2 Strength, +1 Charisma)",
+			"##\u25C6 Cold Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 cold damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+		],
 		dmgres: ["Cold"],
 	},
 };

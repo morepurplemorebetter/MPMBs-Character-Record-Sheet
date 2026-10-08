@@ -2597,6 +2597,10 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 				SetStringifieds("vars");
 			}
 		}
+		// convert an array trait to a string joined with line breaks
+		if (isArray(CurrentRace.trait)) {
+			CurrentRace.trait = CurrentRace.trait.join("\r");
+		}
 	}
 
 	// set the current race level when loading the sheet
@@ -4403,7 +4407,7 @@ function BackgroundOptions() {
 		AddString("Personality Trait", CurrentBackground.trait[MenuSelection[1]], " ");
 	} else if (MenuSelection[0] === "ideal") {
 		var bckgrndIdeal = CurrentBackground.ideal[MenuSelection[1]];
-		var idealRichText = bckgrndIdeal[1].replace(bckgrndIdeal[0], "**" + bckgrndIdeal[0] + "**");
+		var idealRichText = isArray(bckgrndIdeal) ? bckgrndIdeal[1].replace(bckgrndIdeal[0], "**" + bckgrndIdeal[0] + "**") : bckgrndIdeal;
 		Value("Ideal", idealRichText);
 	} else if (MenuSelection[0] === "bond") {
 		Value("Bond", CurrentBackground.bond[MenuSelection[1]]);
@@ -8982,14 +8986,14 @@ function imperialUnitToMetric(amount, unit, exact, rounding) {
 		.replace("cubic", "cu").replace("square", "sq")
 		.replace(/(lb|pound|gallon|qt|quart|pt|pint|ounce|degree|mile)s/i, "$1");
 	switch (unit) {
-		case "in": case "inch": case "inches": case '"':
+		case "inch": case "inches": case '"':
 			total = amount * oRatio.lengthInch;
 			unit = "cm";
 			break;
 		case "ft": case "'":
 			total = amount * oRatio.length;
 			unit = "m";
-			if (total < 1) {
+			if (Math.abs(total) < 1) {
 			// for small lengths, we are going to use cm
 				total *= 100;
 				unit = "cm";
@@ -9003,11 +9007,11 @@ function imperialUnitToMetric(amount, unit, exact, rounding) {
 		case "cu ft": case "ft3": case "ft\xB3":
 			total = amount * oRatio.volume;
 			unit = "m\xB3"; // m³
-			if (total < 0.25) {
+			if (Math.abs(total) < 0.25) {
 			// for very small volumes, we are going to use dm3
 				total *= 1000;
 				unit = "dm\xB3"; // dm³
-			} else if (total < 1 && rounding > 0.03) {
+			} else if (Math.abs(total) < 1 && rounding > 0.03) {
 			// for relatively small volumes, we are going to round to 0.03 accuracy
 				total = RoundTo(total, 0.03, false, true);
 				isRounded = true;
@@ -9021,7 +9025,7 @@ function imperialUnitToMetric(amount, unit, exact, rounding) {
 		case "sq ft": case "ft2": case "ft\xB2":
 			total = amount * oRatio.surface;
 			unit = "m\xB2"; // m²
-			if (total < 0.25) {
+			if (Math.abs(total) < 0.25) {
 			// for very small volumes, we are going to use dm2
 				total *= 100;
 				unit = "dm\xB2"; // dm²
@@ -9031,7 +9035,7 @@ function imperialUnitToMetric(amount, unit, exact, rounding) {
 		case "lb": case "pound":
 			total = amount * oRatio.mass;
 			unit = "kg";
-			if (total < 0.5) {
+			if (Math.abs(total) < 0.5) {
 				total *= 1000;
 				unit = "g";
 			}
@@ -9054,7 +9058,7 @@ function imperialUnitToMetric(amount, unit, exact, rounding) {
 			unit = "L";
 			break;
 		case "fl oz": case "fl ounce": case "oz": case "ounce":
-			if (amount < 1) {
+			if (Math.abs(amount) < 1) {
 				total = amount * oRatio.liquidOunce * 10;
 				unit = "ml";
 				break;
@@ -9084,14 +9088,14 @@ function metricUnitToImperial(amount, unit, exact, rounding) {
 		.replace("cubic", "cu").replace("square", "sq");
 	switch (unit){
 		case "cm": case "centimeter":
-			if (amount < 30) {
+			if (Math.abs(amount) < 30) {
 				total = amount / oRatio.lengthInch;
 				unit = "inch";
 				break;
 			}
 			amount /= 10;
 		case "dm": case "decimeter":
-			if (amount < 3) {
+			if (Math.abs(amount) < 3) {
 				total = amount * 10 / oRatio.lengthInch;
 				unit = "inch";
 				break;
@@ -9113,7 +9117,7 @@ function metricUnitToImperial(amount, unit, exact, rounding) {
 		case "m3": case "m\xB3": case "cu meter":
 			total = amount / oRatio.volume;
 			unit = "cu ft";
-			if (total > 41 && rounding < 2) {
+			if (Math.abs(total) > 41 && rounding < 2) {
 				// make it a nice whole number of cubic feet
 				total = RoundTo(total, 10, false, true);
 				isRounded = true;
@@ -9143,11 +9147,11 @@ function metricUnitToImperial(amount, unit, exact, rounding) {
 			unit = "fl oz";
 			break;
 		case "l": case "liter":
-			if (amount <= 0.5) {
+			if (Math.abs(amount) <= 0.5) {
 				total = amount / oRatio.liquidPint;
 				unit = "pint";
 				break;
-			} else if (amount <= 3) {
+			} else if (Math.abs(amount) <= 3) {
 				total = amount / oRatio.liquidQuart;
 				unit = "qt";
 				break;
@@ -9186,7 +9190,7 @@ function convertUnitSystem(inputObject) {
 			return UpdateDecimals(inputString, forceDecimalSeparator);
 		case "metric":
 			var theConvert = imperialUnitToMetric;
-			var matchRx = /((\b|-)\d+([.,]\d{3})*([,.]\d+)?(\/-?\d+([.,]\d{3})*([,.]\d+)?)?|-?[\xBC-\xBE\u2153-\u2154])\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|f(oo|ee)?t[23\xB2\xB3]|(in|inch|inches|miles?|(cubic|cu|square|sq)? ?f(oo|ee)?t?|lbs?|pounds?|gal(lons?)?|q(uar)?ts?|p(in)?ts?|(fluid )?ounces?|(fl\.? )?oz|\xB0 ?f|(degrees? )?fahrenheit)\b|\b ?)/ig;
+			var matchRx = /((\b|-)\d+([.,]\d{3})*([,.]\d+)?(\/-?\d+([.,]\d{3})*([,.]\d+)?)?|-?[\xBC-\xBE\u2153-\u2154])\s?-?('\d+\w?"($|\W)|'($|\W)|"($|\W)|f(oo|ee)?t[23\xB2\xB3]|(inch|inches|miles?|(cubic|cu|square|sq)? ?f(oo|ee)?t?|lbs?|pounds?|gal(lons?)?|q(uar)?ts?|p(in)?ts?|(fluid )?ounces?|(fl\.? )?oz|\xB0 ?f|(degrees? )?fahrenheit)\b|\b ?)/ig;
 			break;
 		case "imperial":
 			var theConvert = metricUnitToImperial;
@@ -9245,8 +9249,8 @@ function convertUnitSystem(inputObject) {
 			var delimiter = !orgMatch ? " " : orgMatch[2] ? orgMatch[2] : "";
 			var orgUnit = orgMatch && orgMatch[3] ? orgMatch[3].toLowerCase() : "";
 
-			// If this is just a number without a decimal or thousands separator, skip it
-			if (!orgUnit && !/\.|,/.test(orgAmount)) continue;
+			// If this doesn't have a unit and is an integer (no decimals) without a thousands separator or a unicode fraction, skip it
+			if (!orgUnit && (!/\.|,/.test(orgAmount) || /^[\xBC-\xBE\u2153-\u2154] $/.test(measurements[i]))) continue;
 
 			// Check if this isn't written as a fraction using a forward slash
 			var fraction = orgAmount.match(/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/);
@@ -9334,7 +9338,8 @@ function ConvertToFirstPerson(inputString, convertFunction, origin) {
 		.replace(/\b(m|ft) of myself/ig, "$1 of me")
 		.replace(/(d\d+) (\+|-) (\d+)/ig, "$1$2$3");
 	// Now correct prepositions where "I" should be "me"
-	firstPerson = firstPerson.replace(/\b(at|to|of|for|on|in|with|by|under|over|above|below|into|towards?|through|around|past|as|about|near|granting|against|from) I\b/ig, "$1 me");
+	firstPerson = firstPerson.replace(/\b(at|to|of|for|on|in|with|by|under|over|above|below|into|beneath|between|towards?|through|around|past|as|about|near|granting|against|from) I\b/ig, "$1 me")
+		.replace(/(t)oward me/ig, "$1owards me").replace(/\bI (?=to\b)/g, "me ");
 	// If provided with a convertFunction, run it
 	if (/function|=>/.test(convertFunction)) {
 		try {

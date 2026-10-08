@@ -8756,7 +8756,9 @@ function processToNotesPage(AddRemove, items, type, mainObj, parentObj, namesArr
 				fallback.noteOrig
 			);
 		} else {
-			noteDesc = isArray(noteObj.note) ? "\r" + formatDescriptionFull(noteObj.note, true) : noteObj.note;
+			noteDesc = !isArray(noteObj.note) ? noteObj.note :
+				noteObj.page3notes ? desc(noteObj.note) :
+					"\r" + formatDescriptionFull(noteObj.note, true);
 		}
 		noteDesc = noteDesc.replace(/\n/g, "\r");
 		var noteAdditional = noteObj.additional ? " #[" + noteObj.additional + "]#" : "";

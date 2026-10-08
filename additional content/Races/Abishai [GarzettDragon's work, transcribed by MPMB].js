@@ -46,7 +46,7 @@ RaceList["abishai"] = {
 		"Abishai (+2 Constitution, +1 Charisma)",
 		"Devil: my creature type is fiend (devil), rather than humanoid.",
 		"Natural Armor: I have an AC of 10 + Constitution modifier + Charisma modifier + shield.",
-		"Fearful Presence: Each creature of my choice that I can see that starts its turn within 10 ft of me, must succeed on a Wisdom save (DC 8 + Prof B. + Cha mod) or become frightened of me until the end of their next turn. If they roll a 1 on the save, they become paralyzed instead. Once they succeed a save, they can't be affected again by this for 24 hours.",
+		"Fearful Presence: Each creature of my choice that I can see that starts its turn within 10 ft of me, must succeed on a Wisdom save (DC 8 + Prof B + Cha mod) or become frightened of me until the end of their next turn. If they roll a 1 on the save, they become paralyzed instead. Once they succeed a save, they can't be affected again by this for 24 hours.",
 	].join("\n\u2022 "),
 	variants: [],
 };

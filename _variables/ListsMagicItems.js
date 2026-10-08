@@ -11,19 +11,24 @@ var TreasureCheckpointsTable = {
 };
 
 var AddMagicItemsMenu;
-
-var sentientItemConflictTxt = "\u25C6 Sentient Item Conflict (SRD 252, DMG 216)" + desc([
-	"A sentient item has a will of its own, shaped by its personality and alignment. If its wielder acts in a manner opposed to the item's alignment or purpose, conflict can arise. When such a conflict occurs, the item makes a Charisma check contested by the wielder's Charisma check. If the item wins the contest, it makes one or more of the following demands:",
-	" \u2022 It insists on being carried or worn at all times.",
-	" \u2022 It demands that its wielder dispose of anything it finds repugnant.",
-	" \u2022 It demands that its wielder pursue its goals to the exclusion of all other goals.",
-	" \u2022 It demands to be given to someone else.",
-	"If its wielder refuses to comply with its wishes, it can do any or all of the following:",
-	" \u2022 Make it impossible for its wielder to attune to it.",
-	" \u2022 Suppress one or more of its activated properties.",
-	" \u2022 Attempt to take control of its wielder.",
-	"Once per dawn, a sentient item attempts to take control of its wielder, which must make a Charisma save, with a DC equal to 12 + the item's Charisma modifier. If failed, the wielder is charmed by the item for 1d12 hours. While charmed, the wielder must try to follow the item's commands. If the wielder takes damage, it can repeat the save, ending the effect on a success.",
-]);
+var sentientItemConflictNote = {
+	name: "Sentient Item Conflict",
+	source: [["SRD", 252], ["DMG", 226]],
+	origin: "",
+	note: [
+		"A sentient item has a will of its own, shaped by its personality and alignment. If its wielder acts in a manner opposed to the item's alignment or purpose, conflict can arise. When such a conflict occurs, the item makes a Charisma check contested by the wielder's Charisma check. If the item wins the contest, it makes one or more of the following demands:",
+		" \u2022 It insists on being carried or worn at all times.",
+		" \u2022 It demands that its wielder dispose of anything it finds repugnant.",
+		" \u2022 It demands that its wielder pursue its goals to the exclusion of all other goals.",
+		" \u2022 It demands to be given to someone else.",
+		"If its wielder refuses to comply with its wishes, it can do any or all of the following:",
+		" \u2022 Make it impossible for its wielder to attune to it.",
+		" \u2022 Suppress one or more of its activated properties.",
+		" \u2022 Attempt to take control of its wielder.",
+		"Once per dawn, a sentient item attempts to take control of its wielder, which must make a Charisma save, with a DC equal to 12 + the item's Charisma modifier. If failed, the wielder is charmed by the item for 1d12 hours. While charmed, the wielder must try to follow the item's commands. If the wielder takes damage, it can repeat the save, ending the effect on a success.",
+	],
+};
+var sentientItemConflictTxt = "#\u25C6 Sentient Item Conflict# (SRD 252, DMG 216)" + desc(sentientItemConflictNote.note);
 
 var Base_MagicItemsList = {
 	"adamantine armor": {
@@ -33,7 +38,7 @@ var Base_MagicItemsList = {
 		type: "armor (medium or heavy)",
 		rarity: "uncommon",
 		description: "This armor is reinforced with adamantine, one of the hardest substances in existence. While I'm wearing it, any critical hit against me becomes a normal hit.",
-		descriptionFull: "This suit of armor is reinforced with adamantine, one of the hardest substances in existence. While you're wearing it, any critical hit against you becomes a normal hit.\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and not all types are listed. See below for the table:\n\n" + toUni("Armor Type\tTable") + "\nChain Mail\t  F\nChain Shirt\t  F\nScale Mail  \t  F\nBreastplate\t  G\nSplint Armor\t  G\nHalf Plate Armor\t  H\nPlate Armor\t  H",
+		descriptionFull: "This suit of armor is reinforced with adamantine, one of the hardest substances in existence. While you're wearing it, any critical hit against you becomes a normal hit.\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and not all types are listed. See below for the table:\n\n**Armor Type**\t**Table**\nChain Mail\t  F\nChain Shirt\t  F\nScale Mail  \t  F\nBreastplate\t  G\nSplint Armor\t  G\nHalf Plate Armor\t  H\nPlate Armor\t  H",
 		allowDuplicates: true,
 		chooseGear: {
 			type: "armor",
@@ -115,8 +120,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "very rare",
 		magicItemTable: "H",
-		description: "As an action, I name a location that I am familiar with on another plane of existence and make a DC 15 Int check. On a success, I cast Plane Shift. On a failure, all creatures/objects within 15 ft of me and myself travel to (d100): [1-60] a random location on the named plane, or [61-100] a randomly determined plane.",
-		descriptionFull: "While wearing this amulet, you can use an action to name a location that you are familiar with on another plane of existence. Then make a DC 15 Intelligence check. On a successful check, you cast the Plane Shift spell. On a failure, you and each creature and object within 15 feet of you travel to a random destination. Roll a d100. On a 1-60, you travel to a random location on the plane you named. On a 61-100, you travel to a randomly determined plane of existence.",
+		description: "As an action, I name a location that I am familiar with on another plane of existence and make a DC 15 Int check. On a success, I cast *Plane Shift*. On a failure, all creatures/objects within 15 ft of me and myself travel to (d100): [1-60] a random location on the named plane, or [61-100] a randomly determined plane.",
+		descriptionFull: "While wearing this amulet, you can use an action to name a location that you are familiar with on another plane of existence. Then make a DC 15 Intelligence check. On a successful check, you cast the *Plane Shift* spell. On a failure, you and each creature and object within 15 feet of you travel to a random destination. Roll a d100. On a 1-60, you travel to a random location on the plane you named. On a 61-100, you travel to a randomly determined plane of existence.",
 		attunement: true,
 		weight: 1,
 		spellcastingAbility: "class",
@@ -156,10 +161,10 @@ var Base_MagicItemsList = {
 		magicItemTable: "I",
 		description: "A Large 500 lb iron barrel. DC 20 Intelligence (Investigation) check finds a hidden hatch at one end, allowing two Medium creatures inside. Transforms to resemble a giant lobster, which is air-tight (10 hours of breathable air), floats, and can submerge to 900 ft deep. See Notes page for its statistics and operation.",
 		descriptionLong: "A Large sealed iron barrel weighing 500 lb. A successful DC 20 Intelligence (Investigation) check finds a hidden catch unlocking a hatch at one end of the barrel, allowing two Medium or smaller creatures to crawl inside. Ten levers are set in a row at the far end, each in a neutral position, able to move either up or down. Certain levers transform the barrel to resemble a giant lobster, which is air-tight (10 hours of breathable air), floats, and submerges to a depth of 900 ft. See Notes page for its statistics and operation.",
-		descriptionFull: "This item first appears to be a Large sealed iron barrel weighing 500 pounds. The barrel has a hidden catch, which can be found with a successful DC 20 Intelligence (Investigation) check. Releasing the catch unlocks a hatch at one end of the barrel, allowing two Medium or smaller creatures to crawl inside. Ten levers are set in a row at the far end, each in a neutral position, able to move either up or down. When certain levers are used, the apparatus transforms to resemble a giant lobster.\n   The apparatus of Kwalish is a Large object with the following statistics:\n   Armor Class: 20\n   Hit Points: 200\n   Speed: 30 ft., swim 30 ft. (or 0 ft. for both if the legs and tail aren't extended)\n   Damage Immunities: poison, psychic\n   To be used as a vehicle, the apparatus requires one pilot. While the apparatus's hatch is closed, the compartment is airtight and watertight. The compartment holds enough air for 10 hours of breathing, divided by the number of breathing creatures inside.\n   The apparatus floats on water. It can also go underwater to a depth of 900 feet. Below that, the vehicle takes 2d6 bludgeoning damage per minute from pressure.\n   A creature in the compartment can use an action to move as many as two of the apparatus's levers up or down. After each use, a lever goes back to its neutral position. Each lever, from left to right, functions as shown in the Apparatus of Kwalish Levers table.\n\n" + toUni("Lever\tUp\tDown") + "\n1\tLegs and tail extend, allowing the apparatus to walk and swim.\tLegs and tail retract, reducing the apparatus's speed to 0 and making it unable to benefit from bonuses to speed.\n2\tForward window shutter opens.\tForward window shutter closes.\n3\tSide window shutters open (two per side).\tSide window shutters close (two per side).\n4\tTwo claws extend from the front sides of the apparatus.\tThe claws retract.\n5\tEach extended claw makes the following melee weapon attack: +8 to hit, reach 5 ft., one target. Hit: 7 (2d6) bludgeoning damage.\tEach extended claw makes the following melee weapon attack: +8 to hit, reach 5 ft., one target. Hit: The target is grappled (escape DC 15).\n6\tThe apparatus walks or swims forward.\tThe apparatus walks or swims backward.\n7\tThe apparatus turns 90 degrees left.\tThe apparatus turns 90 degrees right.\n8\tEyelike fixtures emit bright light in a 30-foot radius and dim light for an additional 30 feet.\tThe light turns off.\n9\tThe apparatus sinks as much as 20 feet in liquid.\tThe apparatus rises up to 20 feet in liquid.\n10\tThe rear hatch unseals and opens.\tThe rear hatch closes and seals.",
+		descriptionFull: "This item first appears to be a Large sealed iron barrel weighing 500 pounds. The barrel has a hidden catch, which can be found with a successful DC 20 Intelligence (Investigation) check. Releasing the catch unlocks a hatch at one end of the barrel, allowing two Medium or smaller creatures to crawl inside. Ten levers are set in a row at the far end, each in a neutral position, able to move either up or down. When certain levers are used, the apparatus transforms to resemble a giant lobster.\n   The *apparatus of Kwalish* is a Large object with the following statistics:\n   Armor Class: 20\n   Hit Points: 200\n   Speed: 30 ft., swim 30 ft. (or 0 ft. for both if the legs and tail aren't extended)\n   Damage Immunities: poison, psychic\n   To be used as a vehicle, the apparatus requires one pilot. While the apparatus's hatch is closed, the compartment is airtight and watertight. The compartment holds enough air for 10 hours of breathing, divided by the number of breathing creatures inside.\n   The apparatus floats on water. It can also go underwater to a depth of 900 feet. Below that, the vehicle takes 2d6 bludgeoning damage per minute from pressure.\n   A creature in the compartment can use an action to move as many as two of the apparatus's levers up or down. After each use, a lever goes back to its neutral position. Each lever, from left to right, functions as shown in the Apparatus of Kwalish Levers table.\n\n**Lever**\t**Up**\t**Down**\n1\tLegs and tail extend, allowing the apparatus to walk and swim.\tLegs and tail retract, reducing the apparatus's speed to 0 and making it unable to benefit from bonuses to speed.\n2\tForward window shutter opens.\tForward window shutter closes.\n3\tSide window shutters open (two per side).\tSide window shutters close (two per side).\n4\tTwo claws extend from the front sides of the apparatus.\tThe claws retract.\n5\tEach extended claw makes the following melee weapon attack: +8 to hit, reach 5 ft., one target. Hit: 7 (2d6) bludgeoning damage.\tEach extended claw makes the following melee weapon attack: +8 to hit, reach 5 ft., one target. Hit: The target is grappled (escape DC 15).\n6\tThe apparatus walks or swims forward.\tThe apparatus walks or swims backward.\n7\tThe apparatus turns 90 degrees left.\tThe apparatus turns 90 degrees right.\n8\tEyelike fixtures emit bright light in a 30-foot radius and dim light for an additional 30 feet.\tThe light turns off.\n9\tThe apparatus sinks as much as 20 feet in liquid.\tThe apparatus rises up to 20 feet in liquid.\n10\tThe rear hatch unseals and opens.\tThe rear hatch closes and seals.",
 		weight: 500,
 		toNotesPage: [{
-			name: "Statistics \u0026 Lever Operation Details",
+			name: "Statistics \x26 Lever Operation Details",
 			note: [
 				"This item first appears to be a Large sealed iron barrel weighing 500 pounds. The barrel has a hidden catch, which can be found with a successful DC 20 Intelligence (Investigation) check. Releasing the catch unlocks a hatch at one end of the barrel, allowing two Medium or smaller creatures to crawl inside. Ten levers are set in a row at the far end, each in a neutral position, able to move either up or down. When certain levers are used, the apparatus transforms to resemble a giant lobster.",
 				"The apparatus of Kwalish is a Large object with the following statistics:",
@@ -188,7 +193,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 208], ["D", 152]],
 		type: "armor (light, medium, or heavy)",
 		description: "I have a bonus to AC while wearing this armor. The bonus is determined by the rarity of the magic item: rare (+1), very rare (+2), or legendary (+3). Select the bonus using the little square button in this magic item line.",
-		descriptionFull: "You have a bonus to AC while wearing this armor. The bonus is determined by its rarity: rare (+1), very rare (+2), or legendary (+3).\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and magic bonus, with not all types of combinations listed. See below for the table per type of armor and bonus:\n\n" + toUni("Table\tBonus\tArmor Types") +
+		descriptionFull: "You have a bonus to AC while wearing this armor. The bonus is determined by its rarity: rare (+1), very rare (+2), or legendary (+3).\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor and magic bonus, with not all types of combinations listed. See below for the table per type of armor and bonus:\n\n**Table**\t**Bonus**\t**Armor Types**" +
 		"\n  G\t  +1\tChain Mail, Chain Shirt, Leather" +
 		"\n  G\t  +1\tScale Mail, Spiked Armor" +
 		"\n  H\t  +1\tBreastplate, Splint, Studded Leather" +
@@ -261,7 +266,7 @@ var Base_MagicItemsList = {
 		type: "armor (light, medium, or heavy)",
 		rarity: "rare",
 		description: "Select the damage type that this armor gives resistance to using the square button in this line. While I'm wearing this armor and attuned to it, I gain resistance to one type of damage.",
-		descriptionFull: "You have resistance to one type of damage while you wear this armor. The DM chooses the type or determines it randomly from the options below:\n\n" + toUni("d10\tType\t\td10\tType") + "\n 1\tAcid\t\t 6\tNecrotic\n 2\tCold\t\t 7\tPoison\n 3\tFire\t\t 8\tPsychic\n 4\tForce\t\t 9\tRadiant\n 5\tLightning   \t 10\tThunder\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor, and not all types of armor are listed. See below for the table per type of armor or resistance:\n\n" + toUni("Table\tArmor") + "\n G\tChain Mail\n G\tChain Shirt\n G\tLeather\n G\tScale Mail\n H\tBreastplate\n H\tHide\n H\tSplint\n H\tStudded Leather\n I\tHalf Plate\n I\tPlate", // Hide armor added by AL content catalogue v8.08
+		descriptionFull: "You have resistance to one type of damage while you wear this armor. The DM chooses the type or determines it randomly from the options below:\n\n**d10**\t**Type**\t\t**d10**\tType**\n 1\tAcid\t\t 6\tNecrotic\n 2\tCold\t\t 7\tPoison\n 3\tFire\t\t 8\tPsychic\n 4\tForce\t\t 9\tRadiant\n 5\tLightning   \t 10\tThunder\n\nThere are several magic item tables in the Dungeon Masters Guide where this item appears on. It varies per type of armor, and not all types of armor are listed. See below for the table per type of armor or resistance:\n\n**Table**\t**Armor**\n G\tChain Mail\n G\tChain Shirt\n G\tLeather\n G\tScale Mail\n H\tBreastplate\n H\tHide\n H\tSplint\n H\tStudded Leather\n I\tHalf Plate\n I\tPlate", // Hide armor added by AL content catalogue v8.08
 		attunement: true,
 		allowDuplicates: true,
 		chooseGear: {
@@ -327,8 +332,8 @@ var Base_MagicItemsList = {
 		type: "armor (plate)",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "While wearing this plate armor, I have resistance to one of the following damage types: bludgeoning, piercing, or slashing; although, unfortunately, I have vulnerability to the other two until I am targeted by a Remove Curse spell.",
-		descriptionFull: "While wearing this armor, you have resistance to one of the following damage types: bludgeoning, piercing, or slashing. The DM chooses the type or determines it randomly.\n   " + toUni("Curse") + ". This armor is cursed, a fact that is revealed only when an Identify spell is cast on the armor or you attune to it. Attuning to the armor curses you until you are targeted by the Remove Curse spell or similar magic; removing the armor fails to end the curse. While cursed, you have vulnerability to two of the three damage types associated with the armor (not the one to which it grants resistance).",
+		description: "While wearing this plate armor, I have resistance to one of the following damage types: bludgeoning, piercing, or slashing; although, unfortunately, I have vulnerability to the other two until I am targeted by a *Remove Curse* spell.",
+		descriptionFull: "While wearing this armor, you have resistance to one of the following damage types: bludgeoning, piercing, or slashing. The DM chooses the type or determines it randomly.\n   ***Curse***. This armor is cursed, a fact that is revealed only when an *Identify* spell is cast on the armor or you attune to it. Attuning to the armor curses you until you are targeted by the *Remove Curse* spell or similar magic; removing the armor fails to end the curse. While cursed, you have vulnerability to two of the three damage types associated with the armor (not the one to which it grants resistance).",
 		attunement: true,
 		allowDuplicates: true,
 		weight: 65,
@@ -347,22 +352,22 @@ var Base_MagicItemsList = {
 		choices: ["Bludgeoning", "Piercing", "Slashing"],
 		choicesNotInMenu: true,
 		"bludgeoning": {
-			description: "While wearing this armor, I have resistance to bludgeoning damage. Additionally, I have vulnerability to piercing and slashing damage until I am targeted by a Remove Curse spell.",
+			description: "While wearing this armor, I have resistance to bludgeoning damage. Additionally, I have vulnerability to piercing and slashing damage until I am targeted by a *Remove Curse* spell.",
 			dmgres: ["Bludgeoning"],
-			savetxt: { text: ["Vulnerable to piercing \u0026 slashing damage"] },
-			descriptionFull: "While wearing this armor, I have resistance to bludgeoning damage.\n   " + toUni("Curse") + ". This armor is cursed, a fact that is revealed only when an Identify spell is cast on the armor or I attune to it. Attuning to the armor curses me until I am targeted by the Remove Curse spell or similar magic; removing the armor fails to end the curse. While cursed, I have vulnerability to piercing and slashing damage.",
+			savetxt: { text: ["Vulnerable to piercing \x26 slashing damage"] },
+			descriptionFull: "While wearing this armor, I have resistance to bludgeoning damage.\n   ***Curse***. This armor is cursed, a fact that is revealed only when an *Identify* spell is cast on the armor or I attune to it. Attuning to the armor curses me until I am targeted by the *Remove Curse* spell or similar magic; removing the armor fails to end the curse. While cursed, I have vulnerability to piercing and slashing damage.",
 		},
 		"piercing": {
-			description: "While wearing this armor, I have resistance to piercing damage. Additionally, I have vulnerability to bludgeoning and slashing damage until I am targeted by a Remove Curse spell.",
+			description: "While wearing this armor, I have resistance to piercing damage. Additionally, I have vulnerability to bludgeoning and slashing damage until I am targeted by a *Remove Curse* spell.",
 			dmgres: ["Piercing"],
-			savetxt: { text: ["Vulnerable to bludgeoning \u0026 slashing damage"] },
-			descriptionFull: "While wearing this armor, I have resistance to piercing damage.\n   " + toUni("Curse") + ". This armor is cursed, a fact that is revealed only when an Identify spell is cast on the armor or I attune to it. Attuning to the armor curses me until I am targeted by the Remove Curse spell or similar magic; removing the armor fails to end the curse. While cursed, I have vulnerability to bludgeoning and slashing damage.",
+			savetxt: { text: ["Vulnerable to bludgeoning \x26 slashing damage"] },
+			descriptionFull: "While wearing this armor, I have resistance to piercing damage.\n   ***Curse***. This armor is cursed, a fact that is revealed only when an *Identify* spell is cast on the armor or I attune to it. Attuning to the armor curses me until I am targeted by the *Remove Curse* spell or similar magic; removing the armor fails to end the curse. While cursed, I have vulnerability to bludgeoning and slashing damage.",
 		},
 		"slashing": {
-			description: "While wearing this armor, I have resistance to slashing damage. Additionally, I have vulnerability to bludgeoning and piercing damage until I am targeted by a Remove Curse spell.",
+			description: "While wearing this armor, I have resistance to slashing damage. Additionally, I have vulnerability to bludgeoning and piercing damage until I am targeted by a *Remove Curse* spell.",
 			dmgres: ["Slashing"],
-			savetxt: { text: ["Vulnerable to bludgeoning \u0026 piercing damage"] },
-			descriptionFull: "While wearing this armor, I have resistance to slashing damage.\n   " + toUni("Curse") + ". This armor is cursed, a fact that is revealed only when an Identify spell is cast on the armor or I attune to it. Attuning to the armor curses me until I am targeted by the Remove Curse spell or similar magic; removing the armor fails to end the curse. While cursed, I have vulnerability to bludgeoning and piercing damage.",
+			savetxt: { text: ["Vulnerable to bludgeoning \x26 piercing damage"] },
+			descriptionFull: "While wearing this armor, I have resistance to slashing damage.\n   ***Curse***. This armor is cursed, a fact that is revealed only when an *Identify* spell is cast on the armor or I attune to it. Attuning to the armor curses me until I am targeted by the *Remove Curse* spell or similar magic; removing the armor fails to end the curse. While cursed, I have vulnerability to bludgeoning and piercing damage.",
 		},
 	},
 	"arrow-catching shield": { // contains contributions by Larry Hoy
@@ -386,7 +391,7 @@ var Base_MagicItemsList = {
 		rarity: "very rare",
 		magicItemTable: "E",
 		description: "This magic ammunition is meant to hurt a particular race, type, or group of creatures. Its specificity varies. If an associated target is hit by this ammunition, it takes +6d10 piercing damage. It can then make a DC 17 Con save to half this extra damage. After dealing its extra damage, the ammunition becomes nonmagical.",
-		descriptionFull: "An arrow of slaying is a magic weapon meant to slay a particular kind of creature. Some are more focused than others; for example, there are both arrows of dragon slaying and arrows of blue dragon slaying. If a creature belonging to the type, race, or group associated with an arrow of slaying takes damage from the arrow, the creature must make a DC 17 Constitution saving throw, taking an extra 6d10 piercing damage on a failed save, or half as much extra damage on a successful one.\n   Once an arrow of slaying deals its extra damage to a creature, it becomes a nonmagical arrow.\n   Other types of magic ammunition of this kind exist, such as bolts of slaying meant for a crossbow, though arrows are most common.",
+		descriptionFull: "An *arrow of slaying* is a magic weapon meant to slay a particular kind of creature. Some are more focused than others; for example, there are both arrows of dragon slaying and arrows of blue dragon slaying. If a creature belonging to the type, race, or group associated with an *arrow of slaying* takes damage from the arrow, the creature must make a DC 17 Constitution saving throw, taking an extra 6d10 piercing damage on a failed save, or half as much extra damage on a successful one.\n   Once an *arrow of slaying* deals its extra damage to a creature, it becomes a nonmagical arrow.\n   Other types of magic ammunition of this kind exist, such as bolts of slaying meant for a crossbow, though arrows are most common.",
 		allowDuplicates: true,
 		chooseGear: {
 			type: "ammo",
@@ -404,10 +409,10 @@ var Base_MagicItemsList = {
 		rarity: "rare",
 		magicItemTable: "C",
 		description: "This heavy cloth bag contains 3d4 dry beans. I can dump all on the ground, causing a 10-ft explosion that deals 5d4 fire damage to all in the area, DC 15 Dex save to half, and ignites unattended flammable objects. I can plant and water a bean to get an effect 1 minute later, chosen by the DM, see notes page.",
-		descriptionFull: "Inside this heavy cloth bag are 3d4 dry beans. The bag weighs \xBD pound plus \xBC pound for each bean it contains.\n   If you dump the bag's contents out on the ground, they explode in a 10-foot radius, extending from the beans. Each creature in the area, including you, must make a DC 15 Dexterity saving throw, taking 5d4 fire damage on a failed save, or half as much damage on a successful one. The fire ignites flammable objects in the area that aren't being worn or carried.\n   If you remove a bean from the bag, plant it in dirt or sand, and then water it, the bean produces an effect 1 minute later from the ground where it was planted. The DM can choose an effect from the following table, determine it randomly, or create an effect.\n\n" + toUni("d100\tEffect") + "\n01\t5d4 toadstools sprout. If a creature eats a toadstool, roll any die. On an odd roll, the eater must succeed on a DC 15 Constitution saving throw or take 5d6 poison damage and become poisoned for 1 hour. On an even roll, the eater gains 5d6 temporary hit points for 1 hour.\n02-10\tA geyser erupts and spouts water, beer, berry juice, tea, vinegar, wine, or oil (DM's choice) 30 feet into the air for 1d12 rounds.\n11-20\tA treant sprouts. There's a 50% chance that the treant is chaotic evil and attacks.\n21-30\tAn animate, immobile stone statue in your likeness rises. It makes verbal threats against you. If you leave it and others come near, it describes you as the most heinous of villains and directs the newcomers to find and attack you. If you are on the same plane of existence as the statue, it knows where you are. The statue becomes inanimate after 24 hours.\n31-40\tA campfire with blue flames springs forth and burns for 24 hours (or until it is extinguished).\n41-50\t1d6+6 shriekers sprout.\n51-60\t1d4+8 bright pink toads crawl forth. Whenever a toad is touched, it transforms into a Large or smaller monster of the DM's choice. The monster remains for 1 minute, then disappears in a puff of bright pink smoke.\n61-70\tA hungry bulette burrows up and attacks.\n71-80\tA fruit tree grows. It has 1d10+20 fruit, 1d8 of which act as randomly determined magic potions, while one acts as an ingested poison of the DM's choice. The tree vanishes after 1 hour. Picked fruit remains, retaining any magic for 30 days.\n81-90\tA nest of 1d4+3 eggs springs up. Any creature that eats an egg must make a DC 20 Constitution saving throw. On a successful save, a creature permanently increases its lowest ability score by 1, randomly choosing among equally low scores. On a failed save, the creature takes 10d6 force damage from an internal magical explosion.\n91-99\tA pyramid with a 60-foot-square base bursts upward. Inside is a sarcophagus containing a mummy lord. The pyramid is treated as the mummy lord's lair, and its sarcophagus contains treasure of the DM's choice.\n100\tA giant beanstalk sprouts, growing to a height of the DM's choice. The top leads where the DM chooses, such as to a great view, a cloud giant's castle, or a different plane of existence.",
+		descriptionFull: "Inside this heavy cloth bag are 3d4 dry beans. The bag weighs \xBD pound plus \xBC pound for each bean it contains.\n   If you dump the bag's contents out on the ground, they explode in a 10-foot radius, extending from the beans. Each creature in the area, including you, must make a DC 15 Dexterity saving throw, taking 5d4 fire damage on a failed save, or half as much damage on a successful one. The fire ignites flammable objects in the area that aren't being worn or carried.\n   If you remove a bean from the bag, plant it in dirt or sand, and then water it, the bean produces an effect 1 minute later from the ground where it was planted. The DM can choose an effect from the following table, determine it randomly, or create an effect.\n\n**d100**\t**Effect**\n01\t5d4 toadstools sprout. If a creature eats a toadstool, roll any die. On an odd roll, the eater must succeed on a DC 15 Constitution saving throw or take 5d6 poison damage and become poisoned for 1 hour. On an even roll, the eater gains 5d6 temporary hit points for 1 hour.\n02-10\tA geyser erupts and spouts water, beer, berry juice, tea, vinegar, wine, or oil (DM's choice) 30 feet into the air for 1d12 rounds.\n11-20\tA treant sprouts. There's a 50% chance that the treant is chaotic evil and attacks.\n21-30\tAn animate, immobile stone statue in your likeness rises. It makes verbal threats against you. If you leave it and others come near, it describes you as the most heinous of villains and directs the newcomers to find and attack you. If you are on the same plane of existence as the statue, it knows where you are. The statue becomes inanimate after 24 hours.\n31-40\tA campfire with blue flames springs forth and burns for 24 hours (or until it is extinguished).\n41-50\t1d6+6 shriekers sprout.\n51-60\t1d4+8 bright pink toads crawl forth. Whenever a toad is touched, it transforms into a Large or smaller monster of the DM's choice. The monster remains for 1 minute, then disappears in a puff of bright pink smoke.\n61-70\tA hungry bulette burrows up and attacks.\n71-80\tA fruit tree grows. It has 1d10+20 fruit, 1d8 of which act as randomly determined magic potions, while one acts as an ingested poison of the DM's choice. The tree vanishes after 1 hour. Picked fruit remains, retaining any magic for 30 days.\n81-90\tA nest of 1d4+3 eggs springs up. Any creature that eats an egg must make a DC 20 Constitution saving throw. On a successful save, a creature permanently increases its lowest ability score by 1, randomly choosing among equally low scores. On a failed save, the creature takes 10d6 force damage from an internal magical explosion.\n91-99\tA pyramid with a 60-foot-square base bursts upward. Inside is a sarcophagus containing a mummy lord. The pyramid is treated as the mummy lord's lair, and its sarcophagus contains treasure of the DM's choice.\n100\tA giant beanstalk sprouts, growing to a height of the DM's choice. The top leads where the DM chooses, such as to a great view, a cloud giant's castle, or a different plane of existence.",
 		weight: 0.5,
 		usages: "3d4",
-		recovery: "Never",
+		recovery: "\u2013",
 		toNotesPage: [{
 			name: "Planted bean effects",
 			note: "\nd100\tEFFECT\n01\t5d4 toadstools sprout. If a creature eats a toadstool, roll any die. On\n\tan odd roll, the eater must succeed on a DC 15 Constitution saving\n\tthrow or take 5d6 poison damage and become poisoned for 1 hour.\n\tOn an even roll, the eater gains 5d6 temporary hit points for 1 hour.\n02-10\tA geyser erupts and spouts water, beer, berry juice, tea, vinegar, wine,\n\tor oil (DM's choice) 30 feet into the air for 1d12 rounds.\n11-20\tA treant sprouts. There's a 50% chance that the treant is chaotic evil\n\tand attacks.\n21-30\tAn animate, immobile stone statue in your likeness rises. It makes" + (typePF ? "\n\t" : " ") + "verbal threats" + (!typePF ? "\n\t" : " ") + "against you. If you leave it and others come near, it" + (typePF ? "\n\t" : " ") + "describes you as the most" + (!typePF ? "\n\t" : " ") + "heinous of villains and directs the" + (typePF ? "\n\t" : " ") + "newcomers to find and attack you." + (!typePF ? "\n\t" : " ") + "If you are on the same plane of" + (typePF ? "\n\t" : " ") + "existence as the statue, it knows where you are." + (!typePF ? "\n\t" : " ") + "The statue" + (typePF ? "\n\t" : " ") + "becomes inanimate after 24 hours.\n31-40\tA campfire with blue flames springs forth and burns for 24 hours (or\n\tuntil it is extinguished).\n41-50\t1d6+6 shriekers sprout.\n51-60\t1d4+8 bright pink toads crawl forth. Whenever a toad is touched, it" + (typePF ? "\n\t" : " ") + "transforms" + (!typePF ? "\n\t" : " ") + "into a Large or smaller monster of the DM's choice." + (typePF ? "\n\t" : " ") + "The monster remains for" + (!typePF ? "\n\t" : " ") + "1 minute, then disappears in a puff of bright" + (typePF ? "\n\t" : " ") + "pink smoke.\n61-70\tA hungry bulette burrows up and attacks.\n71-80\tA fruit tree grows. It has 1d10+20 fruit, 1d8 of which act as randomly\n\tdetermined magic potions, while one acts as an ingested poison of\n\tthe DM's choice. The tree vanishes after 1 hour. Picked fruit remains,\n\tretaining any magic for 30 days.\n81-90\tA nest of 1d4+3 eggs springs up. Any creature that eats an egg must\n\tmake a DC 20 Constitution saving throw. On a successful save, a\n\tcreature permanently increases its lowest ability score by 1, randomly\n\tchoosing among equally low scores. On a failed save, the creature\n\ttakes 10d6 force damage from an internal magical explosion.\n91-99\tA pyramid with a 60-foot-square base bursts upward. Inside is a" + (typePF ? "\n\t" : " ") + "sarcophagus" + (!typePF ? "\n\t" : " ") + "containing a mummy lord. The pyramid is treated as" + (typePF ? "\n\t" : " ") + "the mummy lord's lair," + (!typePF ? "\n\t" : " ") + "and its sarcophagus contains treasure" + (typePF ? "\n\t" : " ") + "of the DM's choice.\n100\tA giant beanstalk sprouts, growing to a height of the DM's choice.\n\tThe top leads where the DM chooses, such as to a great view,\n\ta cloud giant's castle, or a different plane of existence.",
@@ -421,7 +426,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "D",
 		description: "This bag is a feeding orifice for an extradimensional creature, which is closed if it is turned inside out. It devours all edible matter placed inside. Creatures partially inside get pulled in 50% of the time. Escaping (Str DC 15) or pulling another out (Str DC 20) is an action. Creatures starting their turn inside are devoured.",
 		descriptionLong: "Resembling a Bag of Holding, this bag is a feeding orifice for an extradimensional creature. The orifice is closed if the bag is turned inside out. It devours all vegetable and animal matter placed inside. Creatures partially inside get pulled in 50% of the time. Escaping (Str DC 15) or pulling another out (Str DC 20) takes an action. Creatures starting their turn inside are devoured, their body destroyed. Up to 1 cu ft of inanimate objects can be stored inside, but once each day they are swallowed by the creature and spat out on a random plane. If the bag is pierced or torn, it is destroyed and its content lost.",
-		descriptionFull: "This bag superficially resembles a bag of holding but is a feeding orifice for a gigantic extradimensional creature. Turning the bag inside out closes the orifice.\n   The extradimensional creature attached to the bag can sense whatever is placed inside the bag. Animal or vegetable matter placed wholly in the bag is devoured and lost forever. When part of a living creature is placed in the bag, as happens when someone reaches inside it, there is a 50% chance that the creature is pulled inside the bag. A creature inside the bag can use its action to try to escape with a successful DC 15 Strength check. Another creature can use its action to reach into the bag to pull a creature out, doing so with a successful DC 20 Strength check (provided it isn't pulled inside the bag first). Any creature that starts its turn inside the bag is devoured, its body destroyed.\n   Inanimate objects can be stored in the bag, which can hold a cubic foot of such material. However, once each day, the bag swallows any objects inside it and spits them out into another plane of existence. The DM determines the time and plane.\n   If the bag is pierced or torn, it is destroyed, and anything contained within it is transported to a random location on the Astral Plane.",
+		descriptionFull: "This bag superficially resembles a *bag of holding* but is a feeding orifice for a gigantic extradimensional creature. Turning the bag inside out closes the orifice.\n   The extradimensional creature attached to the bag can sense whatever is placed inside the bag. Animal or vegetable matter placed wholly in the bag is devoured and lost forever. When part of a living creature is placed in the bag, as happens when someone reaches inside it, there is a 50% chance that the creature is pulled inside the bag. A creature inside the bag can use its action to try to escape with a successful DC 15 Strength check. Another creature can use its action to reach into the bag to pull a creature out, doing so with a successful DC 20 Strength check (provided it isn't pulled inside the bag first). Any creature that starts its turn inside the bag is devoured, its body destroyed.\n   Inanimate objects can be stored in the bag, which can hold a cubic foot of such material. However, once each day, the bag swallows any objects inside it and spits them out into another plane of existence. The DM determines the time and plane.\n   If the bag is pierced or torn, it is destroyed, and anything contained within it is transported to a random location on the Astral Plane.",
 		weight: 0.5,
 	},
 	"bag of holding": {
@@ -432,7 +437,7 @@ var Base_MagicItemsList = {
 		magicItemTable: ["A", "B"],
 		description: "This bag is 2 ft in diameter at the mouth, 4 ft deep, and 15 lb regardless of content. It can hold up to 500 lb, not exceeding a volume of 64 cu ft. Retrieving an item from it requires an action. If it's overloaded, pierced, or torn, it's destroyed with its contents in the Astral plane. If turned inside out, all its contents spill forth.",
 		descriptionLong: "This bag is 2 ft in diameter at the mouth, 4 ft deep, and 15 lb regardless of content. It can hold up to 500 lb, not exceeding a volume of 64 cu ft. Retrieving an item from it requires an action. If it is overloaded, pierced, or torn, it is destroyed, leaving its contents in the Astral plane. If it is turned inside out, all its contents spill forth unharmed. Breathing creatures inside the bag can breath for 10 minutes divided by the number of creatures in it (minimum 1 minute), after which they begin to suffocate. Placing the bag in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
-		descriptionFull: "This bag has an interior space considerably larger than its outside dimensions, roughly 2 feet in diameter at the mouth and 4 feet deep. The bag can hold up to 500 pounds, not exceeding a volume of 64 cubic feet. The bag weighs 15 pounds, regardless of its contents. Retrieving an item from the bag requires an action.\n   If the bag is overloaded, pierced, or torn, it ruptures and is destroyed, and its contents are scattered in the Astral Plane. If the bag is turned inside out, its contents spill forth, unharmed, but the bag must be put right before it can be used again. Breathing creatures inside the bag can survive up to a number of minutes equal to 10 divided by the number of creatures (minimum 1 minute), after which time they begin to suffocate.\n   Placing a bag of holding inside an extradimensional space created by a Heward's handy haversack, portable hole, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10 feet of the gate is sucked through it to a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
+		descriptionFull: "This bag has an interior space considerably larger than its outside dimensions, roughly 2 feet in diameter at the mouth and 4 feet deep. The bag can hold up to 500 pounds, not exceeding a volume of 64 cubic feet. The bag weighs 15 pounds, regardless of its contents. Retrieving an item from the bag requires an action.\n   If the bag is overloaded, pierced, or torn, it ruptures and is destroyed, and its contents are scattered in the Astral Plane. If the bag is turned inside out, its contents spill forth, unharmed, but the bag must be put right before it can be used again. Breathing creatures inside the bag can survive up to a number of minutes equal to 10 divided by the number of creatures (minimum 1 minute), after which time they begin to suffocate.\n   Placing a *bag of holding* inside an extradimensional space created by a *Heward's handy haversack*, *portable hole*, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10 feet of the gate is sucked through it to a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
 		weight: 15,
 		action: [["action", " (retrieve item)"]],
 	},
@@ -455,21 +460,21 @@ var Base_MagicItemsList = {
 			sortname: "Bag of Tricks, Gray",
 			description: "As an action, 3 times per dawn, I can pull an object from this bag and throw it 20 ft. It transforms into a random creature when it lands (d8): 1-weasel, 2-giant rat, 3-badger, 4-boar, 5-panther, 6-giant badger, 7-dire wolf, 8-giant elk. It follows my commands, acts on my turn, and vanishes at dawn or if reduced to 0 HP.",
 			descriptionLong: "As an action, I can pull a fuzzy object from this bag and throw it 20 ft. It transforms into a creature when it lands, determined randomly (d8): 1-weasel, 2-giant rat, 3-badger, 4-boar, 5-panther, 6-giant badger, 7-dire wolf, 8-giant elk. The creature is friendly, acts on my turn, and vanishes at the next dawn or when it is reduced to 0 HP. As a bonus action, I can command it how to move and what action to take on its next turn, or give it general orders (e.g. attack my enemies). Without orders, it acts as it normally would. Once three fuzzy objects have been pulled from the bag, it can't be used again until the next dawn.",
-			descriptionFull: "This ordinary bag, made from gray cloth, appears empty. Reaching inside the bag, however, reveals the presence of a small, fuzzy object. The bag weighs \u00BD pound.\n   You can use an action to pull the fuzzy object from the bag and throw it up to 20 feet. When the object lands, it transforms into a creature you determine by rolling a d8 and consulting the table. The creature vanishes at the next dawn or when it is reduced to 0 hit points.\n   The creature is friendly to you and your companions, and it acts on your turn. You can use a bonus action to command how the creature moves and what action it takes on its next turn, or to give it general orders, such as to attack your enemies. In the absence of such orders, the creature acts in a fashion appropriate to its nature.\n   Once three fuzzy objects have been pulled from the bag, the bag can't be used again until the next dawn.\n\n" + toUni("d8\tCreature") + "\n 1\tWeasel\n 2\tGiant rat\n 3\tBadger\n 4\tBoar\n 5\tPanther\n 6\tGiant badger\n 7\tDire wolf\n 8\tGiant elk",
+			descriptionFull: "This ordinary bag, made from gray cloth, appears empty. Reaching inside the bag, however, reveals the presence of a small, fuzzy object. The bag weighs \u00BD pound.\n   You can use an action to pull the fuzzy object from the bag and throw it up to 20 feet. When the object lands, it transforms into a creature you determine by rolling a d8 and consulting the table. The creature vanishes at the next dawn or when it is reduced to 0 hit points.\n   The creature is friendly to you and your companions, and it acts on your turn. You can use a bonus action to command how the creature moves and what action it takes on its next turn, or to give it general orders, such as to attack your enemies. In the absence of such orders, the creature acts in a fashion appropriate to its nature.\n   Once three fuzzy objects have been pulled from the bag, the bag can't be used again until the next dawn.\n\n**d8**\***Creature**\n 1\tWeasel\n 2\tGiant rat\n 3\tBadger\n 4\tBoar\n 5\tPanther\n 6\tGiant badger\n 7\tDire wolf\n 8\tGiant elk",
 		},
 		"rust": {
 			name: "Rust Bag of Tricks",
 			sortname: "Bag of Tricks, Rust",
 			description: "As an action, 3 times per dawn, I can pull an object from this bag and throw it 20 ft. It transforms into a random creature when it lands (d8): 1-rat, 2-owl, 3-mastiff, 4-goat, 5-giant goat, 6-giant boar, 7-lion, 8-brown bear. It follows my commands, acts on my turn, and vanishes at dawn or if reduced to 0 HP.",
 			descriptionLong: "As an action, I can pull a fuzzy object from this bag and throw it 20 ft. It transforms into a creature when it lands, determined randomly (d8): 1-rat, 2-owl, 3-mastiff, 4-goat, 5-giant goat, 6-giant boar, 7-lion, 8-brown bear. The creature is friendly, acts on my turn, and vanishes at the next dawn or when it is reduced to 0 HP. As a bonus action, I can command it how to move and what action to take on its next turn, or give it general orders (e.g. attack my enemies). Without orders, it acts as it normally would. Once three fuzzy objects have been pulled from the bag, it can't be used again until the next dawn.",
-			descriptionFull: "This ordinary bag, made from rust-colored cloth, appears empty. Reaching inside the bag, however, reveals the presence of a small, fuzzy object. The bag weighs \u00BD pound.\n   You can use an action to pull the fuzzy object from the bag and throw it up to 20 feet. When the object lands, it transforms into a creature you determine by rolling a d8 and consulting the table. The creature vanishes at the next dawn or when it is reduced to 0 hit points.\n   The creature is friendly to you and your companions, and it acts on your turn. You can use a bonus action to command how the creature moves and what action it takes on its next turn, or to give it general orders, such as to attack your enemies. In the absence of such orders, the creature acts in a fashion appropriate to its nature.\n   Once three fuzzy objects have been pulled from the bag, the bag can't be used again until the next dawn.\n\n" + toUni("d8\tCreature") + "\n 1\tRat\n 2\tOwl\n 3\tMastiff\n 4\tGoat\n 5\tGiant goat\n 6\tGiant boar\n 7\tLion\n 8\tBrown bear",
+			descriptionFull: "This ordinary bag, made from rust-colored cloth, appears empty. Reaching inside the bag, however, reveals the presence of a small, fuzzy object. The bag weighs \u00BD pound.\n   You can use an action to pull the fuzzy object from the bag and throw it up to 20 feet. When the object lands, it transforms into a creature you determine by rolling a d8 and consulting the table. The creature vanishes at the next dawn or when it is reduced to 0 hit points.\n   The creature is friendly to you and your companions, and it acts on your turn. You can use a bonus action to command how the creature moves and what action it takes on its next turn, or to give it general orders, such as to attack your enemies. In the absence of such orders, the creature acts in a fashion appropriate to its nature.\n   Once three fuzzy objects have been pulled from the bag, the bag can't be used again until the next dawn.\n\n**d8**\t**Creature**\n 1\tRat\n 2\tOwl\n 3\tMastiff\n 4\tGoat\n 5\tGiant goat\n 6\tGiant boar\n 7\tLion\n 8\tBrown bear",
 		},
 		"tan": {
 			name: "Tan Bag of Tricks",
 			sortname: "Bag of Tricks, Tan",
 			description: "As an action, 3 times per dawn, I can pull an object from this bag and throw it 20 ft. It transforms into a random creature when it lands (d8): 1-jackal, 2-ape, 3-baboon, 4-axe beak, 5-black bear, 6-giant weasel, 7-giant hyena, 8-tiger. It follows my commands, acts on my turn, and vanishes at dawn or if reduced to 0 HP.",
 			descriptionLong: "As an action, I can pull a fuzzy object from this bag and throw it 20 ft. It transforms into a creature when it lands, determined randomly (d8): 1-jackal, 2-ape, 3-baboon, 4-axe beak, 5-black bear, 6-giant weasel, 7-giant hyena, 8-tiger. The creature is friendly, acts on my turn, and vanishes at the next dawn or when it is reduced to 0 HP. As a bonus action, I can command it how to move and what action to take on its next turn, or give it general orders (e.g. attack my enemies). Without orders, it acts as it normally would. Once three fuzzy objects have been pulled from the bag, it can't be used again until the next dawn.",
-			descriptionFull: "This ordinary bag, made from tan cloth, appears empty. Reaching inside the bag, however, reveals the presence of a small, fuzzy object. The bag weighs \u00BD pound.\n   You can use an action to pull the fuzzy object from the bag and throw it up to 20 feet. When the object lands, it transforms into a creature you determine by rolling a d8 and consulting the table. The creature vanishes at the next dawn or when it is reduced to 0 hit points.\n   The creature is friendly to you and your companions, and it acts on your turn. You can use a bonus action to command how the creature moves and what action it takes on its next turn, or to give it general orders, such as to attack your enemies. In the absence of such orders, the creature acts in a fashion appropriate to its nature.\n   Once three fuzzy objects have been pulled from the bag, the bag can't be used again until the next dawn.\n\n" + toUni("d8\tCreature") + "\n 1\tJackal\n 2\tApe\n 3\tBaboon\n 4\tAxe beak\n 5\tBlack bear\n 6\tGiant weasel\n 7\tGiant hyena\n 8\tTiger",
+			descriptionFull: "This ordinary bag, made from tan cloth, appears empty. Reaching inside the bag, however, reveals the presence of a small, fuzzy object. The bag weighs \u00BD pound.\n   You can use an action to pull the fuzzy object from the bag and throw it up to 20 feet. When the object lands, it transforms into a creature you determine by rolling a d8 and consulting the table. The creature vanishes at the next dawn or when it is reduced to 0 hit points.\n   The creature is friendly to you and your companions, and it acts on your turn. You can use a bonus action to command how the creature moves and what action it takes on its next turn, or to give it general orders, such as to attack your enemies. In the absence of such orders, the creature acts in a fashion appropriate to its nature.\n   Once three fuzzy objects have been pulled from the bag, the bag can't be used again until the next dawn.\n\n**d8**\t**Creature**\n 1\tJackal\n 2\tApe\n 3\tBaboon\n 4\tAxe beak\n 5\tBlack bear\n 6\tGiant weasel\n 7\tGiant hyena\n 8\tTiger",
 		},
 	},
 	"bead of force": { // contains contributions by Larry Hoy
@@ -480,7 +485,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "C",
 		description: "Once as an action, I can throw this sphere 60 ft, creating a 10-ft radius explosion on impact. All creatures within the explosion must make a DC 15 Dex save or take 5d4 force damage and are trapped in a sphere of transparent force that encloses the area for 1 minute. The sphere can be moved from the in- and outside.",
 		descriptionLong: "Once as an action, I can throw this 0.75 inch sphere 60 ft, creating a 10-ft radius explosion on impact. All creatures within the area of the explosion must make a DC 15 Dexterity saving throw or take 5d4 force damage and become trapped in a sphere of transparent force that encloses the area for 1 minute. Only breathable air can pass through it. Those that succeed on the save or are only partially in the area are pushed outside of the sphere of force. Enclosed creatures can use their action to push its wall, moving the whole at half their walking speed. The whole sphere of force weighs only 1 lb, regardless of content.",
-		descriptionFull: "This small black sphere measures \xBE of an inch in diameter and weighs an ounce. Typically, 1d4 + 4 beads of force are found together.\n   You can use an action to throw the bead up to 60 feet. The bead explodes on impact and is destroyed. Each creature within a 10-foot radius of where the bead landed must succeed on a DC 15 Dexterity saving throw or take 5d4 force damage. A sphere of transparent force then encloses the area for 1 minute. Any creature that failed the save and is completely within the area is trapped inside this sphere. Creatures that succeeded on the save, or are partially within the area, are pushed away from the center of the sphere until they are no longer inside it. Only breathable air can pass through the sphere's wall. No attack or other effect can.\n   An enclosed creature can use its action to push against the sphere's wall, moving the sphere up to half the creature's walking speed. The sphere can be picked up, and its magic causes it to weigh only 1 pound, regardless of the weight of creatures inside.",
+		descriptionFull: "This small black sphere measures \xBE of an inch in diameter and weighs an ounce. Typically, 1d4 + 4 *beads of force* are found together.\n   You can use an action to throw the bead up to 60 feet. The bead explodes on impact and is destroyed. Each creature within a 10-foot radius of where the bead landed must succeed on a DC 15 Dexterity saving throw or take 5d4 force damage. A sphere of transparent force then encloses the area for 1 minute. Any creature that failed the save and is completely within the area is trapped inside this sphere. Creatures that succeeded on the save, or are partially within the area, are pushed away from the center of the sphere until they are no longer inside it. Only breathable air can pass through the sphere's wall. No attack or other effect can.\n   An enclosed creature can use its action to push against the sphere's wall, moving the sphere up to half the creature's walking speed. The sphere can be picked up, and its magic causes it to weigh only 1 pound, regardless of the weight of creatures inside.",
 		weight: 0.0625,
 	},
 	"belt of dwarvenkind": {
@@ -503,7 +508,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 211], ["D", 155]],
 		type: "wondrous item",
 		description: "Set the type of giant using the button in this line. While wearing this belt, my Strength score changes to a certain number depending on the type of giant the belt is associated with, provided that my Strength is not already that amount or higher.",
-		descriptionFull: "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt's score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The belt of stone giant strength and the belt of frost giant strength look different, but they have the same effect.\n\n" + toUni("Type\t\tStr\tRarity") + "\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant   \t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
+		descriptionFull: "While wearing this belt, your Strength score changes to a score granted by the belt. If your Strength is already equal to or greater than the belt's score, the item has no effect on you. Six varieties of this belt exist, corresponding with and having rarity according to the six kinds of true giants. The *belt of stone giant strength* and the *belt of frost giant strength* look different, but they have the same effect.\n\n**Type**\t\t**Str**\t**Rarity**\nHill giant\t\t21\tRare\nStone/frost giant\t23\tVery rare\nFire giant   \t25\tVery rare\nCloud giant\t27\tLegendary\nStorm giant\t29\tLegendary",
 		attunement: true,
 		allowDuplicates: true,
 		choices: ["Hill Giant (Str 21, rare)", "Frost Giant (Str 23, very rare)", "Stone Giant (Str 23, very rare)", "Fire Giant (Str 25, very rare)", "Cloud Giant (Str 27, legendary)", "Storm Giant (Str 29, legendary)"],
@@ -565,7 +570,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "G",
 		attunement: true,
 		description: "This axe gives +1 to hit and damage, +1 HP per level, and is cursed. I can't part with it and have disadv. using other weapons. Whenever I'm damaged by a hostile, I must make a DC 15 Wis save or go berserk, using my action each round to attack the closest creature with the axe until none remain within 60 ft.",
-		descriptionFull: "You gain a +1 bonus to attack and damage rolls made with this magic weapon. In addition, while you are attuned to this weapon, your hit point maximum increases by 1 for each level you have attained.\n   " + toUni("Curse") + ". This axe is cursed, and becoming attuned to it extends the curse to you. As long as you remain cursed, you are unwilling to part with the axe, keeping it within reach at all times. You also have disadvantage on attack rolls with weapons other than this one, unless no foe is within 60 feet of you that you can see or hear.\n   Whenever a hostile creature damages you while the axe is in your possession, you must succeed on a DC 15 Wisdom saving throw or go berserk. While berserk, you must use your action each round to attack the creature nearest to you with the axe. If you can make extra attacks as part of the Attack action, you use those extra attacks, moving to attack the next nearest creature after you fell your current target. If you have multiple possible targets, you attack one at random. You are berserk until you start your turn with no creatures within 60 feet of you that you can see or hear.",
+		descriptionFull: "You gain a +1 bonus to attack and damage rolls made with this magic weapon. In addition, while you are attuned to this weapon, your hit point maximum increases by 1 for each level you have attained.\n   ***Curse***. This axe is cursed, and becoming attuned to it extends the curse to you. As long as you remain cursed, you are unwilling to part with the axe, keeping it within reach at all times. You also have disadvantage on attack rolls with weapons other than this one, unless no foe is within 60 feet of you that you can see or hear.\n   Whenever a hostile creature damages you while the axe is in your possession, you must succeed on a DC 15 Wisdom saving throw or go berserk. While berserk, you must use your action each round to attack the creature nearest to you with the axe. If you can make extra attacks as part of the Attack action, you use those extra attacks, moving to attack the next nearest creature after you fell your current target. If you have multiple possible targets, you attack one at random. You are berserk until you start your turn with no creatures within 60 feet of you that you can see or hear.",
 		chooseGear: {
 			type: "weapon",
 			prefixOrSuffix: "suffix",
@@ -623,8 +628,8 @@ var Base_MagicItemsList = {
 		rarity: "rare",
 		magicItemTable: "G",
 		attunement: true,
-		description: "While I wear these boots, I can cast Levitate on myself at will.",
-		descriptionFull: "While you wear these boots, you can use an action to cast the Levitate spell on yourself at will.",
+		description: "While I wear these boots, I can cast *Levitate* on myself at will.",
+		descriptionFull: "While you wear these boots, you can use an action to cast the *Levitate* spell on yourself at will.",
 		spellcastingBonus: [{
 			name: "Self Only",
 			spells: ["levitate"],
@@ -682,8 +687,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "While this bowl is filled with water, I can speak the bowl's command word as an action and summon a water elemental, as if I had cast Conjure Elemental. The bowl can't be used again until the next dawn. The bowl is about 1 foot in diameter and half as deep, and holds about 3 gallons of water.",
-		descriptionFull: "While this bowl is filled with water, you can use an action to speak the bowl's command word and summon a water elemental, as if you had cast the Conjure Elemental spell. The bowl can't be used this way again until the next dawn.\n   The bowl is about 1 foot in diameter and half as deep. It weighs 3 pounds and holds about 3 gallons.",
+		description: "While this bowl is filled with water, I can speak the bowl's command word as an action and summon a water elemental, as if I had cast *Conjure Elemental*. The bowl can't be used again until the next dawn. The bowl is about 1 foot in diameter and half as deep, and holds about 3 gallons of water.",
+		descriptionFull: "While this bowl is filled with water, you can use an action to speak the bowl's command word and summon a water elemental, as if you had cast the *Conjure Elemental* spell. The bowl can't be used this way again until the next dawn.\n   The bowl is about 1 foot in diameter and half as deep. It weighs 3 pounds and holds about 3 gallons.",
 		weight: 3,
 		spellcastingBonus: [{
 			name: "Water Elemental only",
@@ -746,8 +751,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "While a fire burns in this brass brazier, I can use an action to speak the brazier's command word and summon a fire elemental, as if I had cast the Conjure Elemental spell. The brazier can't be used this way again until the next dawn.",
-		descriptionFull: "While a fire burns in this brass brazier, you can use an action to speak the brazier's command word and summon a fire elemental, as if you had cast the Conjure Elemental spell. The brazier can't be used this way again until the next dawn.\n   The brazier weighs 5 pounds.",
+		description: "While a fire burns in this brass brazier, I can use an action to speak the brazier's command word and summon a fire elemental, as if I had cast the *Conjure Elemental* spell. The brazier can't be used this way again until the next dawn.",
+		descriptionFull: "While a fire burns in this brass brazier, you can use an action to speak the brazier's command word and summon a fire elemental, as if you had cast the *Conjure Elemental* spell. The brazier can't be used this way again until the next dawn.\n   The brazier weighs 5 pounds.",
 		weight: 5,
 		spellcastingBonus: [{
 			name: "Fire Elemental only",
@@ -773,8 +778,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "While wearing this brooch, I have resistance to force damage, and have immunity to damage from the Magic Missile spell.",
-		descriptionFull: "While wearing this brooch, you have resistance to force damage, and you have immunity to damage from the Magic Missile spell.",
+		description: "While wearing this brooch, I have resistance to force damage, and have immunity to damage from the *Magic Missile* spell.",
+		descriptionFull: "While wearing this brooch, you have resistance to force damage, and you have immunity to damage from the *Magic Missile* spell.",
 		attunement: true,
 		dmgres: ["Force"],
 		savetxt: {
@@ -798,13 +803,13 @@ var Base_MagicItemsList = {
 		rarity: "very rare",
 		magicItemTable: "H",
 		description: "This slender taper is dedicated to a deity and shares that deity's alignment. Lit, it sheds dim light in a 30-ft radius for up to 4 hours and grants benefits to creatures of matching alignment in the light.",
-		descriptionFull: "This slender taper is dedicated to a deity and shares that deity's alignment. The candle's alignment can be detected with the Detect Evil and Good spell. The DM chooses the god and associated alignment or determines the alignment randomly.\n\n" + toUni("d20\tAlignment\td20\tAlignment") + "\n1-2\tChaotic evil\t10-11\tNeutral\n3-4\tChaotic neutral\t12-13\tNeutral good\n5-7\tChaotic good\t14-15\tLawful evil\n8-9\tNeutral evil\t16-17\tLawful neutral\n\t\t\t18-20\tLawful good\n\nThe candle's magic is activated when the candle is lit, which requires an action. After burning for 4 hours, the candle is destroyed. You can snuff it out early for use at a later time. Deduct the time it burned in increments of 1 minute from the candle's total burn time.\n   While lit, the candle sheds dim light in a 30-foot radius. Any creature within that light whose alignment matches that of the candle makes attack rolls, saving throws, and ability checks with advantage. In addition, a cleric or druid in the light whose alignment matches the candle's can cast 1st-level spells he or she has prepared without expending spell slots, though the spell's effect is as if cast with a 1st-level slot.\n   Alternatively, when you light the candle for the first time, you can cast the Gate spell with it. Doing so destroys the candle.",
+		descriptionFull: "This slender taper is dedicated to a deity and shares that deity's alignment. The candle's alignment can be detected with the *Detect Evil and Good* spell. The DM chooses the god and associated alignment or determines the alignment randomly.\n\n**d20**\t**Alignment**\t**d20**\t**Alignment**\n1-2\tChaotic evil\t10-11\tNeutral\n3-4\tChaotic neutral\t12-13\tNeutral good\n5-7\tChaotic good\t14-15\tLawful evil\n8-9\tNeutral evil\t16-17\tLawful neutral\n\t\t\t18-20\tLawful good\n\nThe candle's magic is activated when the candle is lit, which requires an action. After burning for 4 hours, the candle is destroyed. You can snuff it out early for use at a later time. Deduct the time it burned in increments of 1 minute from the candle's total burn time.\n   While lit, the candle sheds dim light in a 30-foot radius. Any creature within that light whose alignment matches that of the candle makes attack rolls, saving throws, and ability checks with advantage. In addition, a cleric or druid in the light whose alignment matches the candle's can cast 1st-level spells he or she has prepared without expending spell slots, though the spell's effect is as if cast with a 1st-level slot.\n   Alternatively, when you light the candle for the first time, you can cast the *Gate* spell with it. Doing so destroys the candle.",
 		attunement: true,
 		allowDuplicates: true,
 		usages: "240 min",
-		recovery: "Never",
+		recovery: "\u2013",
 		spellcastingBonus: [{
-			name: "1\xD7 \u0026\u0026 candle is destroyed",
+			name: "1\xD7 \x26\x26 candle is destroyed",
 			spells: ["gate"],
 			selection: ["gate"],
 			firstCol: "1\xD7",
@@ -813,31 +818,31 @@ var Base_MagicItemsList = {
 		choices: ["Chaotic Evil", "Chaotic Neutral", "Chaotic Good", "Neutral Evil", "Neutral", "Neutral Good", "Lawful Evil", "Lawful Neutral", "Lawful Good"],
 		choicesNotInMenu: true,
 		"chaotic evil": {
-			description: "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are chaotic evil have adv. on attacks, saves, and checks, while CE clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
+			description: "As an action, I can light this candle. The first time I do, I can cast *Gate* and destroy it or have it shed dim light in a 30-ft radius. All in the light who are chaotic evil have adv. on attacks, saves, and checks, while CE clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
 		},
 		"chaotic neutral": {
-			description: "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are chaotic neutral have adv. on attacks, saves, and checks, while CN clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
+			description: "As an action, I can light this candle. The first time I do, I can cast *Gate* and destroy it or have it shed dim light in a 30-ft radius. All in the light who are chaotic neutral have adv. on attacks, saves, and checks, while CN clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
 		},
 		"chaotic good": {
-			description: "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are chaotic good have adv. on attacks, saves, and checks, while CG clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
+			description: "As an action, I can light this candle. The first time I do, I can cast *Gate* and destroy it or have it shed dim light in a 30-ft radius. All in the light who are chaotic good have adv. on attacks, saves, and checks, while CG clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
 		},
 		"neutral evil": {
-			description: "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are neutral evil have adv. on attacks, saves, and checks, while NE clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
+			description: "As an action, I can light this candle. The first time I do, I can cast *Gate* and destroy it or have it shed dim light in a 30-ft radius. All in the light who are neutral evil have adv. on attacks, saves, and checks, while NE clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
 		},
 		"neutral": {
-			description: "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are neutral have adv. on attacks, saves, and checks, while N clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
+			description: "As an action, I can light this candle. The first time I do, I can cast *Gate* and destroy it or have it shed dim light in a 30-ft radius. All in the light who are neutral have adv. on attacks, saves, and checks, while N clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
 		},
 		"neutral good": {
-			description: "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are neutral good have adv. on attacks, saves, and checks, while NG clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
+			description: "As an action, I can light this candle. The first time I do, I can cast *Gate* and destroy it or have it shed dim light in a 30-ft radius. All in the light who are neutral good have adv. on attacks, saves, and checks, while NG clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
 		},
 		"lawful evil": {
-			description: "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are lawful evil have adv. on attacks, saves, and checks, while LE clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
+			description: "As an action, I can light this candle. The first time I do, I can cast *Gate* and destroy it or have it shed dim light in a 30-ft radius. All in the light who are lawful evil have adv. on attacks, saves, and checks, while LE clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
 		},
 		"lawful neutral": {
-			description: "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are lawful neutral have adv. on attacks, saves, and checks, while LN clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
+			description: "As an action, I can light this candle. The first time I do, I can cast *Gate* and destroy it or have it shed dim light in a 30-ft radius. All in the light who are lawful neutral have adv. on attacks, saves, and checks, while LN clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
 		},
 		"lawful good": {
-			description: "As an action, I can light this candle. The first time I do, I can cast Gate and destroy it or have it shed dim light in a 30-ft radius. All in the light who are lawful good have adv. on attacks, saves, and checks, while LG clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
+			description: "As an action, I can light this candle. The first time I do, I can cast *Gate* and destroy it or have it shed dim light in a 30-ft radius. All in the light who are lawful good have adv. on attacks, saves, and checks, while LG clerics/druids can cast their 1st-level spells without using a level 1 slot. It can burn for 4 hours intermittently.",
 		},
 	},
 	"cape of the mountebank": { // contributed by Smashman
@@ -846,8 +851,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "While wearing this cape, I can use it to cast the Dimension Door spell as an action. This property of the cape can't be used again until the next dawn. The cape smells faintly of brimstone. When I disappear, smoke lightly obscures the place that I left and the place that I appear, which dissipates at the end of my next turn.",
-		descriptionFull: "This cape smells faintly of brimstone. While wearing it, you can use it to cast the Dimension Door spell as an action. This property of the cape can't be used again until the next dawn.\n   When you disappear, you leave behind a cloud of smoke, and you appear in a similar cloud of smoke at your destination. The smoke lightly obscures the space you left and the space you appear in, and it dissipates at the end of your next turn. A light or stronger wind disperses the smoke.",
+		description: "While wearing this cape, I can use it to cast the *Dimension Door* spell as an action. This property of the cape can't be used again until the next dawn. The cape smells faintly of brimstone. When I disappear, smoke lightly obscures the place that I left and the place that I appear, which dissipates at the end of my next turn.",
+		descriptionFull: "This cape smells faintly of brimstone. While wearing it, you can use it to cast the *Dimension Door* spell as an action. This property of the cape can't be used again until the next dawn.\n   When you disappear, you leave behind a cloud of smoke, and you appear in a similar cloud of smoke at your destination. The smoke lightly obscures the space you left and the space you appear in, and it dissipates at the end of your next turn. A light or stronger wind disperses the smoke.",
 		usages: 1,
 		recovery: "dawn",
 		spellcastingBonus: [{
@@ -864,7 +869,7 @@ var Base_MagicItemsList = {
 		rarity: "very rare",
 		magicItemTable: "H",
 		description: "I can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to my spoken directions if I am within 30 feet of it. A carpet can carry up to twice the weight for its type, but it flies at half speed if it carries more than its normal capacity.",
-		descriptionFull: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   Four sizes of carpet of flying exist. The DM chooses the size of a given carpet or determines it randomly.\n\n" + toUni("d100\tSize\tCapacity\tFlying Speed") + "\n01-20\t3 \xD7 5 ft.\t  200 lb.\t  80 feet\n21-55\t4 \xD7 6 ft.\t  400 lb.\t  60 feet\n56-80\t5 \xD7 7 ft.\t  600 lb.\t  40 feet\n81-100\t6 \xD7 9 ft.\t  800 lb.\t  30 feet\n\nA carpet can carry up to twice the weight shown on the table, but it flies at half speed if it carries more than its normal capacity.",
+		descriptionFull: "You can speak the carpet's command word as an action to make the carpet hover and fly. It moves according to your spoken directions, provided that you are within 30 feet of it.\n   Four sizes of *carpet of flying* exist. The DM chooses the size of a given carpet or determines it randomly.\n\n**d100**\t**Size**\t**Capacity**\t**Flying Speed**\n01-20\t3 \xD7 5 ft.\t  200 lb.\t  80 feet\n21-55\t4 \xD7 6 ft.\t  400 lb.\t  60 feet\n56-80\t5 \xD7 7 ft.\t  600 lb.\t  40 feet\n81-100\t6 \xD7 9 ft.\t  800 lb.\t  30 feet\n\nA carpet can carry up to twice the weight shown on the table, but it flies at half speed if it carries more than its normal capacity.",
 		action: [["action", ""]],
 		choices: ["3 \xD7 5 ft (fly 80 ft, 200 lb)", "4 \xD7 6 ft (fly 60 ft, 400 lb)", "5 \xD7 7 ft (fly 40 ft, 600 lb)", "6 \xD7 9 ft (fly 30 ft, 800 lb)"],
 		choicesNotInMenu: true,
@@ -895,8 +900,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "While incense is burning in this censer, I can use an action to speak the censer's command word and summon an air elemental, as if I had cast Conjure Elemental. The censer can't be used this way again until the next dawn. This 6\" wide, 1' high vessel resembles a chalice with a decorated lid.",
-		descriptionFull: "While incense is burning in this censer, you can use an action to speak the censer's command word and summon an air elemental, as if you had cast the Conjure Elemental spell. The censer can't be used this way again until the next dawn.\n   This 6-inch-wide, 1-foot-high vessel resembles a chalice with a decorated lid. It weighs 1 pound.",
+		description: "While incense is burning in this censer, I can use an action to speak the censer's command word and summon an air elemental, as if I had cast *Conjure Elemental*. The censer can't be used this way again until the next dawn. This 6\" wide, 1' high vessel resembles a chalice with a decorated lid.",
+		descriptionFull: "While incense is burning in this censer, you can use an action to speak the censer's command word and summon an air elemental, as if you had cast the *Conjure Elemental* spell. The censer can't be used this way again until the next dawn.\n   This 6-inch-wide, 1-foot-high vessel resembles a chalice with a decorated lid. It weighs 1 pound.",
 		weight: 1,
 		spellcastingBonus: [{
 			name: "Air Elemental only",
@@ -927,7 +932,7 @@ var Base_MagicItemsList = {
 		weight: 1,
 		action: [["action", ""]],
 		usages: 10,
-		recovery: "Never",
+		recovery: "\u2013",
 	},
 	"circlet of blasting": { // contains contributions by Larry Hoy
 		name: "Circlet of Blasting",
@@ -935,8 +940,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "While wearing this circlet, I can use an action to cast the Scorching Ray spell with it. When I make the spell's attacks, I do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn.",
-		descriptionFull: "While wearing this circlet, you can use an action to cast the Scorching Ray spell with it. When you make the spell's attacks, you do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn.",
+		description: "While wearing this circlet, I can use an action to cast the *Scorching Ray* spell with it. When I make the spell's attacks, I do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn.",
+		descriptionFull: "While wearing this circlet, you can use an action to cast the *Scorching Ray* spell with it. When you make the spell's attacks, you do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn.",
 		usages: 1,
 		recovery: "dawn",
 		fixedDC: 13,
@@ -953,8 +958,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "very rare",
 		magicItemTable: "H",
-		description: "This cloak grants me resistance to poison damage, climbing speed equal to my walking speed, even along vertical surfaces and upside down while keeping my hands free, freedom from being caught in webs, the ability to move through webs as if just difficult terrain, and the ability to cast Web once per dawn.",
-		descriptionFull: "This fine garment is made of black silk interwoven with faint silvery threads. While wearing it, you gain the following benefits:\n \u2022 You have resistance to poison damage.\n \u2022 You have a climbing speed equal to your walking speed.\n \u2022 You can move up, down, and across vertical surfaces and upside down along ceilings, while leaving your hands free.\n \u2022 You can't be caught in webs of any sort and can move through webs as if they were difficult terrain.\n \u2022 You can use an action to cast the Web spell (save DC 13). The web created by the spell fills twice its normal area. Once used, this property of the cloak can't be used again until the next dawn.",
+		description: "This cloak grants me resistance to poison damage, climbing speed equal to my walking speed, even along vertical surfaces and upside down while keeping my hands free, freedom from being caught in webs, the ability to move through webs as if just difficult terrain, and the ability to cast *Web* once per dawn.",
+		descriptionFull: "This fine garment is made of black silk interwoven with faint silvery threads. While wearing it, you gain the following benefits:\n \u2022 You have resistance to poison damage.\n \u2022 You have a climbing speed equal to your walking speed.\n \u2022 You can move up, down, and across vertical surfaces and upside down along ceilings, while leaving your hands free.\n \u2022 You can't be caught in webs of any sort and can move through webs as if they were difficult terrain.\n \u2022 You can use an action to cast the *Web* spell (save DC 13). The web created by the spell fills twice its normal area. Once used, this property of the cloak can't be used again until the next dawn.",
 		attunement: true,
 		dmgres: ["Poison"],
 		usages: 1,
@@ -971,7 +976,7 @@ var Base_MagicItemsList = {
 		spellChanges: {
 			"web": {
 				description: "2\xD7 20-ft cubes, anchored, all save or restrained; dif. ter.; lightly obscures; Str check vs. DC 13 to free",
-				changes: "The web created by the Cloak of Arachnida fills twice its normal area. Once used, the cloak can't be used to cast Web again until the next dawn.",
+				changes: "The web created by the Cloak of Arachnida fills twice its normal area. Once used, the cloak can't be used to cast *Web* again until the next dawn.",
 			},
 		},
 		savetxt: { immune: ["webs"] },
@@ -1023,8 +1028,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "This cloak grants me adv. on Stealth checks. In dim light or darkness, I can fly with it and, once per dawn, use it to transform myself into a bat as if casting Polymorph. To fly, at 40 ft speed, I have to grip its edges with both my hands. While in the form of the bat, I retain my Intelligence, Wisdom, and Charisma scores.",
-		descriptionFull: "While wearing this cloak, you have advantage on Dexterity (Stealth) checks. In an area of dim light or darkness, you can grip the edges of the cloak with both hands and use it to fly at a speed of 40 feet. If you ever fail to grip the cloak's edges while flying in this way, or if you are no longer in dim light or darkness, you lose this flying speed.\n   While wearing the cloak in an area of dim light or darkness, you can use your action to cast Polymorph on yourself, transforming into a bat. While you are in the form of the bat, you retain your Intelligence, Wisdom, and Charisma scores. The cloak can't be used this way again until the next dawn.",
+		description: "This cloak grants me adv. on Stealth checks. In dim light or darkness, I can fly with it and, once per dawn, use it to transform myself into a bat as if casting *Polymorph*. To fly, at 40 ft speed, I have to grip its edges with both my hands. While in the form of the bat, I retain my Intelligence, Wisdom, and Charisma scores.",
+		descriptionFull: "While wearing this cloak, you have advantage on Dexterity (Stealth) checks. In an area of dim light or darkness, you can grip the edges of the cloak with both hands and use it to fly at a speed of 40 feet. If you ever fail to grip the cloak's edges while flying in this way, or if you are no longer in dim light or darkness, you lose this flying speed.\n   While wearing the cloak in an area of dim light or darkness, you can use your action to cast *Polymorph* on yourself, transforming into a bat. While you are in the form of the bat, you retain your Intelligence, Wisdom, and Charisma scores. The cloak can't be used this way again until the next dawn.",
 		attunement: true,
 		usages: 1,
 		recovery: "dawn",
@@ -1059,8 +1064,8 @@ var Base_MagicItemsList = {
 		name: "Crystal Ball",
 		source: [["SRD", 214], ["D", 159]],
 		type: "wondrous item",
-		description: "I can cast Scrying (DC 17) at will while touching this ball of about 6 inches in diameter.",
-		descriptionFull: "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.",
+		description: "I can cast *Scrying* (DC 17) at will while touching this ball of about 6 inches in diameter.",
+		descriptionFull: "This *crystal ball* is about 6 inches in diameter. While touching it, you can cast the *Scrying* spell (save DC 17) with it.",
 		attunement: true,
 		weight: 3, // As orb arcane focus
 		allowDuplicates: true,
@@ -1081,8 +1086,8 @@ var Base_MagicItemsList = {
 			name: "Crystal Ball of Mind Reading",
 			rarity: "legendary",
 			magicItemTable: "I",
-			description: "I can cast Scrying (DC 17) at will while touching this crystal ball of 6\" diameter. While scrying, I can cast Detect Thoughts (DC 17) to target creatures I can see within 30 ft of the spell's sensor. I don't need to concentrate on this Detect Thoughts, but it ends when the scrying ends.",
-			descriptionFull: "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   You can use an action to cast the Detect Thoughts spell (save DC 17) while you are Scrying with the crystal ball, targeting creatures you can see within 30 feet of the spell's sensor. You don't need to concentrate on this Detect Thoughts to maintain it during its duration, but it ends if Scrying ends.",
+			description: "I can cast *Scrying* (DC 17) at will while touching this crystal ball of 6\" diameter. While scrying, I can cast *Detect Thoughts* (DC 17) to target creatures I can see within 30 ft of the spell's sensor. I don't need to concentrate on this *Detect Thoughts*, but it ends when the scrying ends.",
+			descriptionFull: "This *crystal ball* is about 6 inches in diameter. While touching it, you can cast the *Scrying* spell (save DC 17) with it.\n   You can use an action to cast the *Detect Thoughts* spell (save DC 17) while you are Scrying with the *crystal ball*, targeting creatures you can see within 30 feet of the spell's sensor. You don't need to concentrate on this *Detect Thoughts* to maintain it during its duration, but it ends if *Scrying* ends.",
 			fixedDC: 17,
 			spellcastingBonus: [{
 				name: "DC 17",
@@ -1094,7 +1099,7 @@ var Base_MagicItemsList = {
 			spellChanges: {
 				"detect thoughts": {
 					duration: "1 min",
-					changes: "Detect Thoughts only works through the spell sensor of the Scrying spell and doesn't require concentration. It ends when the Scrying spell ends.",
+					changes: "*Detect Thoughts* only works through the spell sensor of the *Scrying* spell and doesn't require concentration. It ends when the *Scrying* spell ends.",
 				},
 			},
 		},
@@ -1102,8 +1107,8 @@ var Base_MagicItemsList = {
 			name: "Crystal Ball of Telepathy",
 			rarity: "legendary",
 			magicItemTable: "I",
-			description: "I can cast Scrying (DC 17) while touching this 6\" crystal ball. While scrying, I can communicate telepathically with creatures within 30 ft of the spell's sensor and can cast Suggestion (DC 17) once per dawn on one of them. I don't need to concentrate on this Suggestion, but it ends when the scrying ends.",
-			descriptionFull: "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   While Scrying with the crystal ball, you can communicate telepathically with creatures you can see within 30 feet of the spell's sensor. You can also use an action to cast the Suggestion spell (save DC 17) through the sensor on one of those creatures. You don't need to concentrate on this suggestion to maintain it during its duration, but it ends if Scrying ends. Once used, the suggestion power of the crystal ball can't be used again until the next dawn.",
+			description: "I can cast *Scrying* (DC 17) while touching this 6\" crystal ball. While scrying, I can communicate telepathically with creatures within 30 ft of the spell's sensor and can cast *Suggestion* (DC 17) once per dawn on one of them. I don't need to concentrate on this *Suggestion*, but it ends when the scrying ends.",
+			descriptionFull: "This *crystal ball* is about 6 inches in diameter. While touching it, you can cast the *Scrying* spell (save DC 17) with it.\n   While Scrying with the *crystal ball*, you can communicate telepathically with creatures you can see within 30 feet of the spell's sensor. You can also use an action to cast the *Suggestion* spell (save DC 17) through the sensor on one of those creatures. You don't need to concentrate on this suggestion to maintain it during its duration, but it ends if *Scrying* ends. Once used, the suggestion power of the *crystal ball* can't be used again until the next dawn.",
 			fixedDC: 17,
 			spellcastingBonus: [{
 				name: "At will, DC 17",
@@ -1122,7 +1127,7 @@ var Base_MagicItemsList = {
 			spellChanges: {
 				"suggestion": {
 					duration: "8 h (scrying)",
-					changes: "Suggestion only works through the spell sensor of the Scrying spell and doesn't require concentration. It ends when the Scrying spell ends.",
+					changes: "*Suggestion* only works through the spell sensor of the *Scrying* spell and doesn't require concentration. It ends when the *Scrying* spell ends.",
 				},
 				"scrying": {
 					description: "1 crea save or sensor follows it around; or sensor in familiar location; telepathy 30 ft on sensor; see B",
@@ -1134,8 +1139,8 @@ var Base_MagicItemsList = {
 			name: "Crystal Ball of True Seeing",
 			rarity: "legendary",
 			magicItemTable: "I",
-			description: "I can cast Scrying (save DC 17) at will while touching this ball of about 6 inches in diameter. While scrying, I can see out from the spell's sensor with truesight out to 120 ft.",
-			descriptionFull: "This crystal ball is about 6 inches in diameter. While touching it, you can cast the Scrying spell (save DC 17) with it.\n   While Scrying with the crystal ball, you have truesight with a radius of 120 feet centered on the spell's sensor.",
+			description: "I can cast *Scrying* (save DC 17) at will while touching this ball of about 6 inches in diameter. While scrying, I can see out from the spell's sensor with truesight out to 120 ft.",
+			descriptionFull: "This *crystal ball* is about 6 inches in diameter. While touching it, you can cast the *Scrying* spell (save DC 17) with it.\n   While Scrying with the *crystal ball*, you have truesight with a radius of 120 feet centered on the spell's sensor.",
 			fixedDC: 17,
 			spellcastingBonus: [{
 				name: "DC 17",
@@ -1158,7 +1163,7 @@ var Base_MagicItemsList = {
 		rarity: "rare",
 		magicItemTable: "G",
 		description: "Each face of this 1-inch cube has a distinct marking on it. As an action, I can press one of these faces, expending a number of charges to create an effect based on the chosen face, if enough charges remain. This creates a 15-ft cube barrier of force on me for 1 min, which moves with me. See Notes page for details.",
-		descriptionFull: "This cube is about an inch across. Each face has a distinct marking on it that can be pressed. The cube starts with 36 charges, and it regains 1d20 expended charges daily at dawn.\n   You can use an action to press one of the cube's faces, expending a number of charges based on the chosen face, as shown in the Cube of Force Faces table. Each face has a different effect. If the cube has insufficient charges remaining, nothing happens. Otherwise, a barrier of invisible force springs into existence, forming a cube 15 feet on a side. The barrier is centered on you, moves with you, and lasts for 1 minute, until you use an action to press the cube's sixth face, or the cube runs out of charges. You can change the barrier's effect by pressing a different face of the cube and expending the requisite number of charges, resetting the duration. If your movement causes the barrier to come into contact with a solid object that can't pass through the cube, you can't move any closer to that object as long as the barrier remains.\n\n" + toUni("Face    Charges\tEffect") + "\n  1\t1\tGases, wind, and fog can't pass through the barrier.\n  2\t2\tNonliving matter can't pass through the barrier.*\n  3\t3\tLiving matter can't pass through the barrier.\n  4\t4\tSpell effects can't pass through the barrier.\n  5\t5\tNothing can pass through the barrier.*\n  6\t0\tThe barrier deactivates.\n\n   * Walls, floors, and ceilings can pass through at your discretion.\n\nThe cube loses charges when the barrier is targeted by certain spells or comes into contact with certain spell or magic item effects, as shown in the table below.\n\n" + toUni("Spell or Item\tCharges Lost") + "\nDisintegrate\t1d12\nHorn of Blasting\t1d10\nPasswall\t\t1d6\nPrismatic Spray\t1d20\nWall of Fire\t1d4",
+		descriptionFull: "This cube is about an inch across. Each face has a distinct marking on it that can be pressed. The cube starts with 36 charges, and it regains 1d20 expended charges daily at dawn.\n   You can use an action to press one of the cube's faces, expending a number of charges based on the chosen face, as shown in the Cube of Force Faces table. Each face has a different effect. If the cube has insufficient charges remaining, nothing happens. Otherwise, a barrier of invisible force springs into existence, forming a cube 15 feet on a side. The barrier is centered on you, moves with you, and lasts for 1 minute, until you use an action to press the cube's sixth face, or the cube runs out of charges. You can change the barrier's effect by pressing a different face of the cube and expending the requisite number of charges, resetting the duration. If your movement causes the barrier to come into contact with a solid object that can't pass through the cube, you can't move any closer to that object as long as the barrier remains.\n\n**Face**    **Charges**\t**Effect**\n  1\t1\tGases, wind, and fog can't pass through the barrier.\n  2\t2\tNonliving matter can't pass through the barrier.*\n  3\t3\tLiving matter can't pass through the barrier.\n  4\t4\tSpell effects can't pass through the barrier.\n  5\t5\tNothing can pass through the barrier.*\n  6\t0\tThe barrier deactivates.\n\n   * Walls, floors, and ceilings can pass through at your discretion.\n\nThe cube loses charges when the barrier is targeted by certain spells or comes into contact with certain spell or magic item effects, as shown in the table below.\n\n**Spell or Item**\t**Charges Lost**\nDisintegrate\t1d12\nHorn of Blasting\t1d10\nPasswall\t\t1d6\nPrismatic Spray\t1d20\nWall of Fire\t1d4",
 		attunement: true,
 		usages: 36,
 		recovery: "dawn",
@@ -1180,11 +1185,11 @@ var Base_MagicItemsList = {
 				"* Walls, floors, and ceilings can pass through at my discretion.\n",
 				"The cube loses charges when the barrier is targeted by certain spells or comes into contact with certain spell or magic item effects, as shown in the table below.",
 				"SPELL OR ITEM\tCHARGES LOST",
-				"Disintegrate  \t1d12",
+				"*Disintegrate*  \t1d12",
 				"Horn of Blasting\t1d10",
-				"Passwall\t\t1d6",
-				"Prismatic Spray\t1d20",
-				"Wall of Fire\t1d4",
+				"*Passwall*\t\t1d6",
+				"*Prismatic Spray*\t1d20",
+				"*Wall of Fire*\t1d4",
 			],
 		}],
 	},
@@ -1194,8 +1199,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "legendary",
 		magicItemTable: "I",
-		description: "The six sides of this 3-inch cube, which radiates palpable magic energy, are each keyed to a different plane of existence (one is material plane). As an action, I can expend a charge and press a side of the cube once to cast Gate or twice to cast Plane Shift (DC 17). Both spells only link to the plane on the pressed side.",
-		descriptionFull: "This cube is 3 inches across and radiates palpable magical energy. The six sides of the cube are each keyed to a different plane of existence, one of which is the Material Plane. The other sides are linked to planes determined by the DM.\n   You can use an action to press one side of the cube to cast the Gate spell with it, opening a portal to the plane keyed to that side. Alternatively, if you use an action to press one side twice, you can cast the Plane Shift spell (save DC 17) with the cube and transport the targets to the plane keyed to that side.\n   The cube has 3 charges. Each use of the cube expends 1 charge. The cube regains 1d3 expended charges daily at dawn.",
+		description: "The six sides of this 3-inch cube, which radiates palpable magic energy, are each keyed to a different plane of existence (one is material plane). As an action, I can expend a charge and press a side of the cube once to cast *Gate* or twice to cast *Plane Shift* (DC 17). Both spells only link to the plane on the pressed side.",
+		descriptionFull: "This cube is 3 inches across and radiates palpable magical energy. The six sides of the cube are each keyed to a different plane of existence, one of which is the Material Plane. The other sides are linked to planes determined by the DM.\n   You can use an action to press one side of the cube to cast the *Gate* spell with it, opening a portal to the plane keyed to that side. Alternatively, if you use an action to press one side twice, you can cast the *Plane Shift* spell (save DC 17) with the cube and transport the targets to the plane keyed to that side.\n   The cube has 3 charges. Each use of the cube expends 1 charge. The cube regains 1d3 expended charges daily at dawn.",
 		usages: 3,
 		recovery: "dawn",
 		additional: "regains 1d3",
@@ -1214,7 +1219,7 @@ var Base_MagicItemsList = {
 				changes: "Using the Cubic Gate, the spell only links to the plane on the side of the cube that pressed.",
 			},
 			"gate": {
-				description: "Create a portal to a precise location on the plane keyed to the side; can transport named creature to me",
+				description: "Create a portal to an exact location on the plane keyed to the side; can transport named creature to me",
 				changes: "Using the Cubic Gate, the spell only links to the plane on the side of the cube that pressed.",
 			},
 		},
@@ -1226,17 +1231,17 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "As an action, I can place this 1-inch metal cube on the ground and speak its command word, making it grow into a 20-ft by 20-ft by 30-ft high adamantine tower with a door facing me, arrow slits on all sides, battlement atop, two floors, and a ladder along one wall ending at a trapdoor to the roof. See Notes page for details.",
-		descriptionFull: "You can use an action to place this 1-inch metal cube on the ground and speak its command word. The cube rapidly grows into a fortress that remains until you use an action to speak the command word that dismisses it, which works only if the fortress is empty.\n   The fortress is a square tower, 20 feet on a side and 30 feet high, with arrow slits on all sides and a battlement atop it. Its interior is divided into two floors. with a ladder running along one wall to connect them. The ladder ends at a trapdoor leading to the roof. When activated, the tower has a small door on the side facing you. The door opens only at your command, which you can speak as a bonus action. It is immune to the Knock spell and similar magic, such as that of a chime of opening.\n   Each creature in the area where the fortress appears must make a DC 15 Dexterity saving throw, taking 10d10 bludgeoning damage on a failed save, or half as much damage on a successful one. In either case, the creature is pushed to an unoccupied space outside but next to the fortress. Objects in the area that aren't being worn or carried take this damage and are pushed automatically.\n   The tower is made of adamantine, and its magic prevents it from being tipped over. The roof, the door, and the walls each have 100 hit points, immunity to damage from nonmagical weapons excluding siege weapons, and resistance to all other damage. Only a Wish spell can repair the fortress (this use of the spell counts as replicating a spell of 8th level or lower). Each casting of Wish causes the roof, the door, or one wall to regain 50 hit points.",
+		description: "As an action, I can place this 1-inch metal cube on the ground and speak its command word, making it grow into a 20-ft by 20-ft by 30-ft high adamantine tower with a door facing me, arrow slits on all sides, battlement atop, two floors, and a ladder along one wall ending at a trapdoor to the roof. See Notes page.",
+		descriptionFull: "You can use an action to place this 1-inch metal cube on the ground and speak its command word. The cube rapidly grows into a fortress that remains until you use an action to speak the command word that dismisses it, which works only if the fortress is empty.\n   The fortress is a square tower, 20 feet on a side and 30 feet high, with arrow slits on all sides and a battlement atop it. Its interior is divided into two floors. with a ladder running along one wall to connect them. The ladder ends at a trapdoor leading to the roof. When activated, the tower has a small door on the side facing you. The door opens only at your command, which you can speak as a bonus action. It is immune to the *Knock* spell and similar magic, such as that of a *chime of opening*.\n   Each creature in the area where the fortress appears must make a DC 15 Dexterity saving throw, taking 10d10 bludgeoning damage on a failed save, or half as much damage on a successful one. In either case, the creature is pushed to an unoccupied space outside but next to the fortress. Objects in the area that aren't being worn or carried take this damage and are pushed automatically.\n   The tower is made of adamantine, and its magic prevents it from being tipped over. The roof, the door, and the walls each have 100 hit points, immunity to damage from nonmagical weapons excluding siege weapons, and resistance to all other damage. Only a *Wish* spell can repair the fortress (this use of the spell counts as replicating a spell of 8th level or lower). Each casting of *Wish* causes the roof, the door, or one wall to regain 50 hit points.",
 		action: [["action", ""]],
 		toNotesPage: [{
 			name: "Fortress Details",
 			note: [
 				"As an action I can place this 1-inch metal cube on the ground and speak its command word. The cube rapidly grows into a fortress that remains until I use an action to speak the command word that dismisses it, which works only if the fortress is empty.",
 				"The fortress is a square tower, 20 feet on a side and 30 feet high, with arrow slits on all sides and a battlement atop it. Its interior is divided into two floors. with a ladder running along one wall to connect them. The ladder ends at a trapdoor leading to the roof.",
-				"When activated, the tower has a small door on the side facing me. The door opens only at my command, which I can speak as a bonus action. It is immune to the Knock spell and similar magic (e.g., a Chime of Opening).",
+				"When activated, the tower has a small door on the side facing me. The door opens only at my command, which I can speak as a bonus action. It is immune to the *Knock* spell and similar magic (e.g., a Chime of Opening).",
 				"Each creature in the area where the fortress appears must make a DC 15 Dex save or take 10d10 bludgeoning damage (half damage on a success). In either case, the creature is pushed to an unoccupied space outside but next to the fortress. Objects in the area that aren't being worn or carried take this damage and are pushed automatically.",
-				"The tower is made of adamantine, and its magic prevents it from being tipped over. The roof, the door, and the walls each have 100 hit points, immunity to damage from nonmagical weapons excluding siege weapons, and resistance to all other damage. Only a Wish spell can repair the fortress (this use of the spell counts as replicating a spell of 8th level or lower). Each casting of Wish causes the roof, the door, or one wall to regain 50 hit points.",
+				"The tower is made of adamantine, and its magic prevents it from being tipped over. The roof, the door, and the walls each have 100 hit points, immunity to damage from nonmagical weapons excluding siege weapons, and resistance to all other damage. Only a *Wish* spell can repair the fortress (this use of the spell counts as replicating a spell of 8th level or lower). Each casting of *Wish* causes the roof, the door, or one wall to regain 50 hit points.",
 			],
 		}],
 	},
@@ -1256,7 +1261,7 @@ var Base_MagicItemsList = {
 			regExpSearch: /^(?=.*dagger)(?=.*venom).*$/i,
 			name: "Dagger of Venom",
 			source: [["SRD", 215], ["D", 161]],
-			description: "Finesse, light, thrown; If coated, DC 15 Con save or +2d10 poison damage \u0026 1 min poisoned",
+			description: "Finesse, light, thrown; If coated, DC 15 Con save or +2d10 poison damage \x26 1 min poisoned",
 			modifiers: [1, 1],
 			selectNow: true,
 		}],
@@ -1301,7 +1306,7 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "C",
-		description: 'As an action, I open the flask \u0026 speak a command word, pouring fresh/salt water out until my next turn starts. "Stream" for 1 gal. "Fountain" for 5 gal. "Geyser" for 30 gal in 30 ft \xD7 1 ft geyser. As a bonus action, I can aim it at a target, which has to make a DC 13 Str save or take 1d4 bludgeoning damage and fall prone.',
+		description: 'As an action, I open the flask \x26 speak a command word, pouring fresh/salt water out until my next turn starts. "Stream" for 1 gal. "Fountain" for 5 gal. "Geyser" for 30 gal in 30 ft \xD7 1 ft geyser. As a bonus action, I can aim it at a target, which has to make a DC 13 Str save or take 1d4 bludgeoning damage and fall prone.',
 		descriptionLong: 'As an action, I can remove the stopper from this flask and speak one of three command words, pouring fresh or salt water (my choice) out until my next turn starts. "Stream" produces 1 gallon. "Fountain" produces 5 gallons. "Geyser" produces 30 gallons of water that gushes forth in a geyser 30 ft long by 1 ft wide. As a bonus action while holding it, I can aim the geyser at a creature I can see within 30 ft. The target must succeed on a DC 13 Strength save or take 1d4 bludgeoning damage and fall prone. I can instead target an unattended object weighing up to 200 lb, knocking it over or pushing it up to 15 ft away.',
 		descriptionFull: "This stoppered flask sloshes when shaken, as if it contains water. The decanter weighs 2 pounds.\n   You can use an action to remove the stopper and speak one of three command words, whereupon an amount of fresh water or salt water (your choice) pours out of the flask. The water stops pouring out at the start of your next turn. Choose from the following options:\n \u2022 \"Stream\" produces 1 gallon of water.\n \u2022 \"Fountain\" produces 5 gallons of water.\n \u2022 \"Geyser\" produces 30 gallons of water that gushes forth in a geyser 30 feet long and 1 foot wide. As a bonus action while holding the decanter, you can aim the geyser at a creature you can see within 30 feet of you. The target must succeed on a DC 13 Strength saving throw or take 1d4 bludgeoning damage and fall prone. Instead of a creature, you can target an object that isn't being worn or carried and that weighs no more than 200 pounds. The object is either knocked over or pushed up to 15 feet away from you.",
 		weight: 2,
@@ -1318,7 +1323,7 @@ var Base_MagicItemsList = {
 			"   The magic of the deck functions only if cards are drawn at random (you can use an altered deck of playing cards to simulate the deck). You can use an action to draw a card at random from the deck and throw it to the ground at a point within 30 feet of you.",
 			"   An illusion of one or more creatures forms over the thrown card and remains until dispelled. An illusory creature appears real, of the appropriate size, and behaves as if it were a real creature, except that it can do no harm. While you are within 120 feet of the illusory creature and can see it, you can use an action to move it magically anywhere within 30 feet of its card. Any physical interaction with the illusory creature reveals it to be an illusion, because objects pass through it. Someone who uses an action to visually inspect the creature identifies it as illusory with a successful DC 15 Intelligence (Investigation) check. The creature then appears translucent.",
 			"   The illusion lasts until its card is moved or the illusion is dispelled. When the illusion ends, the image on its card disappears, and that card can't be used again.\n",
-			toUni("1d34\tPlaying Card\tIllusion"),
+			"**1d34**\t**Playing Card**\t**Illusion**",
 			"  1\tAce of hearts\tRed dragon",
 			"  2\tKing of hearts\tKnight and four guards",
 			"  3\tQueen of hearts\tSuccubus/Incubus",
@@ -1405,29 +1410,29 @@ var Base_MagicItemsList = {
 		magicItemTable: "I",
 		notLegalAL: true,
 		description: "Before drawing cards from this deck, I must declare how many I wish to draw and then draw that number randomly. Any cards drawn in excess have no effect. When a card is drawn, its magic takes effect, it fades from existence, and, unless the card is the Fool or the Jester, reappears in the deck. See Notes page.",
-		descriptionFull: "Usually found in a box or pouch, this deck contains a number of cards made of ivory or vellum. Most (75 percent) of these decks have only thirteen cards, but the rest have twenty-two.\n   Before you draw a card, you must declare how many cards you intend to draw and then draw them randomly (you can use an altered deck of playing cards to simulate the deck). Any cards drawn in excess of this number have no effect. Otherwise, as soon as you draw a card from the deck, its magic takes effect. You must draw each card no more than 1 hour after the previous draw. If you fail to draw the chosen number, the remaining number of cards fly from the deck on their own and take effect all at once.\n   Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.\n   " + toUni("A Question of Enmity") + ". Two of the cards in a deck of many things can earn a character the enmity of another being. With the Flames card, the enmity is overt. The character should experience the devil's malevolent efforts on multiple occasions. Seeking out the fiend shouldn't be a simple task, and the adventurer should clash with the devil's allies and followers a few times before being able to confront the devil itself.\n   In the case of the Rogue card, the enmity is secret and should come from someone thought to be a friend or an ally. As Dungeon Master, you should wait for a dramatically appropriate moment to reveal this enmity, leaving the adventurer guessing who is likely to become a betrayer.\n\n" + toUni("1d22\tPlaying Card\tCard") + "\n   1\tAce of diamonds\tVizier*\n   2\tKing of diamonds\tSun\n   3\tQueen diamonds\tMoon\n   4\tJack of diamonds\tStar\n   5\tTwo of diamonds\tComet*\n   6\tAce of hearts\tThe Fates*\n   7\tKing of hearts\tThrone\n   8\tQueen of hearts\tKey\n   9\tJack of hearts\tKnight\n   10\tTwo of hearts\tGem*\n   11\tAce of clubs\tTalons*\n   12\tKing of clubs\tThe Void\n   13\tQueen of clubs\tFlames\n   14\tJack of clubs\tSkull\n   15\tTwo of clubs\tIdiot*\n   16\tAce of spades\tDonjon*\n   17\tKing of spades\tRuin\n   18\tQueen of spades\tEuryale\n   19\tJack of spades\tRogue\n   20\tTwo of spades\tBalance*\n   21\tJoker (with TM)\tFool*\n   22\tJoker (no TM)\tJester\n\n   * Found only in a deck with twenty-two cards\n" + [
-			toUni("Balance") + ". Your mind suffers a wrenching alteration, causing your alignment to change. Lawful becomes chaotic, good becomes evil, and vice versa. If you are true neutral or unaligned, this card has no effect on you.",
-			toUni("Comet") + ". If you single-handedly defeat the next hostile monster or group of monsters you encounter, you gain experience points enough to gain one level. Otherwise, this card has no effect.",
-			toUni("Donjon") + ". You disappear and become entombed in a state of suspended animation in an extradimensional sphere. Everything you were wearing and carrying stays behind in the space you occupied when you disappeared. You remain imprisoned until you are found and removed from the sphere. You can't be located by any divination magic, but a Wish spell can reveal the location of your prison. You draw no more cards.",
-			toUni("Euryale") + ". The card's medusa-like visage curses you. You take a -2 penalty on saving throws while cursed in this way. Only a god or the magic of The Fates card can end this curse.",
-			toUni("The Fates") + ". Reality's fabric unravels and spins anew, allowing you to avoid or erase one event as if it never happened. You can use the card's magic as soon as you draw the card or at any other time before you die.",
-			toUni("Flames") + ". A powerful devil becomes your enemy. The devil seeks your ruin and plagues your life, savoring your suffering before attempting to slay you. This enmity lasts until either you or the devil dies.",
-			toUni("Fool") + ". You lose 10,000 XP, discard this card, and draw from the deck again, counting both draws as one of your declared draws. If losing that much XP would cause you to lose a level, you instead lose an amount that leaves you with just enough XP to keep your level.",
-			toUni("Gem") + ". Twenty-five pieces of jewelry worth 2,000 gp each or fifty gems worth 1,000 gp each appear at your feet.",
-			toUni("Idiot") + ". Permanently reduce your Intelligence by 1d4+1 (to a minimum score of 1). You can draw one additional card beyond your declared draws.",
-			toUni("Jester") + ". You gain 10,000 XP, or you can draw two additional cards beyond your declared draws.",
-			toUni("Key") + ". A rare or rarer magic weapon with which you are proficient appears in your hands. The DM chooses the weapon.",
-			toUni("Knight") + ". You gain the service of a 4th-level fighter who appears in a space you choose within 30 feet of you. The fighter is of the same race as you and serves you loyally until death, believing the fates have drawn him or her to you. You control this character.",
-			toUni("Moon") + ". You are granted the ability to cast the Wish spell 1d3 times.",
-			toUni("Rogue") + ". A nonplayer character of the DM's choice becomes hostile toward you. The identity of your new enemy isn't known until the NPC or someone else reveals it. Nothing less than a Wish spell or divine intervention can end the NPC's hostility toward you.",
-			toUni("Ruin") + ". All forms of wealth that you carry or own, other than magic items, are lost to you. Portable property vanishes. Businesses, buildings, and land you own are lost in a way that alters reality the least. Any documentation that proves you should own something lost to this card also disappears.",
-			toUni("Skull") + ". You summon an avatar of death-a ghostly humanoid skeleton clad in a tattered black robe and carrying a spectral scythe. It appears in a space of the DM's choice within 10 feet of you and attacks you, warning all others that you must win the battle alone. The avatar fights until you die or it drops to 0 hit points, whereupon it disappears. If anyone tries to help you, the helper summons its own avatar of death. A creature slain by an avatar of death can't be restored to life.",
-			toUni("Star") + ". Increase one of your ability scores by 2. The score can exceed 20 but can't exceed 24.",
-			toUni("Sun") + ". You gain 50,000 XP, and a wondrous item (which the DM determines randomly) appears in your hands.",
-			toUni("Talons") + ". Every magic item you wear or carry disintegrates. Artifacts in your possession aren't destroyed but do vanish.",
-			toUni("Throne") + ". You gain proficiency in the Persuasion skill, and you double your proficiency bonus on checks made with that skill. In addition, you gain rightful ownership of a small keep somewhere in the world. However, the keep is currently in the hands of monsters, which you must clear out before you can claim the keep as yours.",
-			toUni("Vizier") + ". At any time you choose within one year of drawing this card, you can ask a question in meditation and mentally receive a truthful answer to that question. Besides information, the answer helps you solve a puzzling problem or other dilemma. In other words, the knowledge comes with wisdom on how to apply it.",
-			toUni("The Void") + ". This black card spells disaster. Your soul is drawn from your body and contained in an object in a place of the DM's choice. One or more powerful beings guard the place. While your soul is trapped in this way, your body is incapacitated. A Wish spell can't restore your soul, but the spell reveals the location of the object that holds it. You draw no more cards.",
+		descriptionFull: "Usually found in a box or pouch, this deck contains a number of cards made of ivory or vellum. Most (75 percent) of these decks have only thirteen cards, but the rest have twenty-two.\n   Before you draw a card, you must declare how many cards you intend to draw and then draw them randomly (you can use an altered deck of playing cards to simulate the deck). Any cards drawn in excess of this number have no effect. Otherwise, as soon as you draw a card from the deck, its magic takes effect. You must draw each card no more than 1 hour after the previous draw. If you fail to draw the chosen number, the remaining number of cards fly from the deck on their own and take effect all at once.\n   Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.\n   ***A Question of Enmity***. Two of the cards in a *deck of many things* can earn a character the enmity of another being. With the Flames card, the enmity is overt. The character should experience the devil's malevolent efforts on multiple occasions. Seeking out the fiend shouldn't be a simple task, and the adventurer should clash with the devil's allies and followers a few times before being able to confront the devil itself.\n   In the case of the Rogue card, the enmity is secret and should come from someone thought to be a friend or an ally. As Dungeon Master, you should wait for a dramatically appropriate moment to reveal this enmity, leaving the adventurer guessing who is likely to become a betrayer.\n\n**1d22**\t**Playing Card**\t**Card**\n   1\tAce of diamonds\tVizier*\n   2\tKing of diamonds\tSun\n   3\tQueen diamonds\tMoon\n   4\tJack of diamonds\tStar\n   5\tTwo of diamonds\tComet*\n   6\tAce of hearts\tThe Fates*\n   7\tKing of hearts\tThrone\n   8\tQueen of hearts\tKey\n   9\tJack of hearts\tKnight\n   10\tTwo of hearts\tGem*\n   11\tAce of clubs\tTalons*\n   12\tKing of clubs\tThe Void\n   13\tQueen of clubs\tFlames\n   14\tJack of clubs\tSkull\n   15\tTwo of clubs\tIdiot*\n   16\tAce of spades\tDonjon*\n   17\tKing of spades\tRuin\n   18\tQueen of spades\tEuryale\n   19\tJack of spades\tRogue\n   20\tTwo of spades\tBalance*\n   21\tJoker (with TM)\tFool*\n   22\tJoker (no TM)\tJester\n\n   * Found only in a deck with twenty-two cards\n" + [
+			"***Balance***. Your mind suffers a wrenching alteration, causing your alignment to change. Lawful becomes chaotic, good becomes evil, and vice versa. If you are true neutral or unaligned, this card has no effect on you.",
+			"***Comet***. If you single-handedly defeat the next hostile monster or group of monsters you encounter, you gain experience points enough to gain one level. Otherwise, this card has no effect.",
+			"***Donjon***. You disappear and become entombed in a state of suspended animation in an extradimensional sphere. Everything you were wearing and carrying stays behind in the space you occupied when you disappeared. You remain imprisoned until you are found and removed from the sphere. You can't be located by any divination magic, but a *Wish* spell can reveal the location of your prison. You draw no more cards.",
+			"***Euryale***. The card's medusa-like visage curses you. You take a -2 penalty on saving throws while cursed in this way. Only a god or the magic of The Fates card can end this curse.",
+			"***The Fates***. Reality's fabric unravels and spins anew, allowing you to avoid or erase one event as if it never happened. You can use the card's magic as soon as you draw the card or at any other time before you die.",
+			"***Flames***. A powerful devil becomes your enemy. The devil seeks your ruin and plagues your life, savoring your suffering before attempting to slay you. This enmity lasts until either you or the devil dies.",
+			"***Fool***. You lose 10,000 XP, discard this card, and draw from the deck again, counting both draws as one of your declared draws. If losing that much XP would cause you to lose a level, you instead lose an amount that leaves you with just enough XP to keep your level.",
+			"***Gem***. Twenty-five pieces of jewelry worth 2,000 gp each or fifty gems worth 1,000 gp each appear at your feet.",
+			"***Idiot***. Permanently reduce your Intelligence by 1d4+1 (to a minimum score of 1). You can draw one additional card beyond your declared draws.",
+			"***Jester***. You gain 10,000 XP, or you can draw two additional cards beyond your declared draws.",
+			"***Key***. A rare or rarer magic weapon with which you are proficient appears in your hands. The DM chooses the weapon.",
+			"***Knight***. You gain the service of a 4th-level fighter who appears in a space you choose within 30 feet of you. The fighter is of the same race as you and serves you loyally until death, believing the fates have drawn him or her to you. You control this character.",
+			"***Moon***. You are granted the ability to cast the *Wish* spell 1d3 times.",
+			"***Rogue***. A nonplayer character of the DM's choice becomes hostile toward you. The identity of your new enemy isn't known until the NPC or someone else reveals it. Nothing less than a *Wish* spell or divine intervention can end the NPC's hostility toward you.",
+			"***Ruin***. All forms of wealth that you carry or own, other than magic items, are lost to you. Portable property vanishes. Businesses, buildings, and land you own are lost in a way that alters reality the least. Any documentation that proves you should own something lost to this card also disappears.",
+			"***Skull***. You summon an avatar of death-a ghostly humanoid skeleton clad in a tattered black robe and carrying a spectral scythe. It appears in a space of the DM's choice within 10 feet of you and attacks you, warning all others that you must win the battle alone. The avatar fights until you die or it drops to 0 hit points, whereupon it disappears. If anyone tries to help you, the helper summons its own avatar of death. A creature slain by an avatar of death can't be restored to life.",
+			"***Star***. Increase one of your ability scores by 2. The score can exceed 20 but can't exceed 24.",
+			"***Sun***. You gain 50,000 XP, and a wondrous item (which the DM determines randomly) appears in your hands.",
+			"***Talons***. Every magic item you wear or carry disintegrates. Artifacts in your possession aren't destroyed but do vanish.",
+			"***Throne***. You gain proficiency in the Persuasion skill, and you double your proficiency bonus on checks made with that skill. In addition, you gain rightful ownership of a small keep somewhere in the world. However, the keep is currently in the hands of monsters, which you must clear out before you can claim the keep as yours.",
+			"***Vizier***. At any time you choose within one year of drawing this card, you can ask a question in meditation and mentally receive a truthful answer to that question. Besides information, the answer helps you solve a puzzling problem or other dilemma. In other words, the knowledge comes with wisdom on how to apply it.",
+			"***The Void***. This black card spells disaster. Your soul is drawn from your body and contained in an object in a place of the DM's choice. One or more powerful beings guard the place. While your soul is trapped in this way, your body is incapacitated. A *Wish* spell can't restore your soul, but the spell reveals the location of the object that holds it. You draw no more cards.",
 		].join("\n \u2022 "),
 		toNotesPage: [{
 			name: "Features and Table",
@@ -1435,7 +1440,7 @@ var Base_MagicItemsList = {
 				"Usually found in a box or pouch, this deck contains either 13 (75%) or 22 (25%) cards made of ivory or vellum.",
 				"Before I draw a card, I must declare how many cards I intend to draw and then draw them randomly. Any cards drawn in excess of this number have no effect. Otherwise, as soon as I draw a card from the deck, its magic takes effect. I must draw each card no more than 1 hour after the previous draw. If I fail to draw the chosen number, the remaining number of cards fly from the deck on their own and take effect all at once.",
 				"Once a card is drawn, it fades from existence. Unless the card is the Fool or the Jester, the card reappears in the deck, making it possible to draw the same card twice.",
-				"\n1d13\t1d22\tPLAYING CARD\t\tCARD",
+				"\n**1d13**\t**1d22**\t**Playing Card**\t\t**Card**",
 				"\t   1\t[A\u2666] Ace of diamonds\t\tVizier*",
 				"1\t   2\t[K\u2666] King of diamonds\t\tSun",
 				"2\t   3\t[Q\u2666] Queen of diamonds \tMoon",
@@ -1458,34 +1463,33 @@ var Base_MagicItemsList = {
 				"\t   20\t[2\u2660] Two of spades\t\tBalance*",
 				"\t   21\tJoker (with TM)\t\tFool*",
 				"13\t   22\tJoker (no TM)\t\tJester\n",
-				"* Found only in a deck with twenty-two cards",
+				"* Found only in a deck with twenty-two cards.",
 			],
 		}, {
 			name: "Cards and Their Effects",
 			note: [
-				"",
-				"Balance: My mind suffers a wrenching alteration, causing my alignment to change. Lawful to chaotic, good to evil, and vice versa.",
-				"Comet: If I single-handedly defeat the next hostile monster/group of monsters I encounter, I gain enough XP to gain one level.",
-				"Donjon: I disappear into a state of suspended animation in an extradimensional sphere. Everything I had stays behind. Wish can reveal my location. I draw no more cards.",
-				"Euryale: This card's medusa-like visage curses me with a -2 penalty on saving throws. Only a god or the magic of The Fates card can end this curse.",
-				"The Fates: Reality's fabric unravels and spins anew, allowing me to avoid or erase one event. I can use the card's magic any one time before I die.",
-				"Flames: A powerful devil becomes my enemy until one of us dies. It seeks my ruin and plagues my life, savoring my suffering before attempting to slay me.",
-				"Fool: I lose up to 10,000 XP (no level loss), discard this card, and draw again.",
-				"Gem: 25 pieces of jewelry (2000 gp each) or 50 gems (1000 gp each) appear at my feet.",
-				"Idiot: Permanently reduce my Intelligence by 1d4+1 (min of 1). I can draw one additional card.",
-				"Jester: I gain 10,000 XP or I can draw two extra cards.",
-				"Key: A rare or rarer magic weapon with which I'm proficient appears in my hands.",
-				"Knight: A 4th-level fighter of my race appears within 30 ft, serving me loyally until death, believing the fates have drawn him/her to me (I control this NPC).",
-				"Moon: I am granted the ability to cast the Wish spell 1d3 times.",
-				"Rogue: An NPC becomes hostile toward me (Wish or divine intervention ends).",
-				"Ruin: All forms of wealth that I carry or own, other than magic items, are lost. Businesses, buildings, and land I own are lost in a way that alters reality the least.",
-				"Skull: I summon a ghostly skeleton with tattered robes and a spectral scythe within 10 ft. It attacks me, warning all others that I must win the battle alone.",
-				"Star: Increase one of my ability scores by 2 (can't exceed 24).",
-				"Sun: I gain 50,000 XP and a wondrous item appears in my hands.",
-				"Talons: Every magic item I wear or carry disintegrates. Artifacts in my possession aren't destroyed but do vanish.",
-				"Throne: I gain expertise in Persuasion and rightful ownership of a small keep somewhere in the world (currently occupied by monsters).",
-				"Vizier: Within one year I can ask one question in meditation and receive a truthful answer. This knowledge comes with the wisdom on how to apply it.",
-				"The Void: This black card spells disaster. My soul is contained in an object, powerful beings guard it, and my body is incapacitated. Wish can reveal my location. I draw no more cards.",
+				"   ***Balance***. My mind suffers a wrenching alteration, causing my alignment to change. Lawful to chaotic, good to evil, and vice versa.",
+				"***Comet***. If I single-handedly defeat the next hostile monster/group of monsters I encounter, I gain enough XP to gain one level.",
+				"***Donjon***. I disappear into a state of suspended animation in an extradimensional sphere. Everything I had stays behind. *Wish* can reveal my location. I draw no more cards.",
+				"***Euryale***. This card's medusa-like visage curses me with a -2 penalty on saving throws. Only a god or the magic of The Fates card can end this curse.",
+				"***The Fates***. Reality's fabric unravels and spins anew, allowing me to avoid or erase one event. I can use the card's magic any one time before I die.",
+				"***Flames***. A powerful devil becomes my enemy until one of us dies. It seeks my ruin and plagues my life, savoring my suffering before attempting to slay me.",
+				"***Fool***. I lose up to 10,000 XP (no level loss), discard this card, and draw again.",
+				"***Gem***. 25 pieces of jewelry (2000 gp each) or 50 gems (1000 gp each) appear at my feet.",
+				"***Idiot***. Permanently reduce my Intelligence by 1d4+1 (min of 1). I can draw one additional card.",
+				"***Jester***. I gain 10,000 XP or I can draw two extra cards.",
+				"***Key***. A rare or rarer magic weapon with which I'm proficient appears in my hands.",
+				"***Knight***. A 4th-level fighter of my race appears within 30 ft, serving me loyally until death, believing the fates have drawn him/her to me (I control this NPC).",
+				"***Moon***. I am granted the ability to cast the *Wish* spell 1d3 times.",
+				"***Rogue***. An NPC becomes hostile toward me (*Wish* or divine intervention ends).",
+				"***Ruin***. All forms of wealth that I carry or own, other than magic items, are lost. Businesses, buildings, and land I own are lost in a way that alters reality the least.",
+				"***Skull***. I summon a ghostly skeleton with tattered robes and a spectral scythe within 10 ft. It attacks me, warning all others that I must win the battle alone.",
+				"***Star***. Increase one of my ability scores by 2 (can't exceed 24).",
+				"***Sun***. I gain 50,000 XP and a wondrous item appears in my hands.",
+				"***Talons***. Every magic item I wear or carry disintegrates. Artifacts in my possession aren't destroyed but do vanish.",
+				"***Throne***. I gain expertise in Persuasion and rightful ownership of a small keep somewhere in the world (currently occupied by monsters).",
+				"***Vizier***. Within one year I can ask one question in meditation and receive a truthful answer. This knowledge comes with the wisdom on how to apply it.",
+				"***The Void***. This black card spells disaster. My soul is contained in an object, powerful beings guard it, and my body is incapacitated. *Wish* can reveal my location. I draw no more cards.",
 			].join("\n\u2022 "),
 		}],
 	},
@@ -1533,8 +1537,8 @@ var Base_MagicItemsList = {
 		type: "armor (plate)",
 		rarity: "very rare",
 		magicItemTable: "H",
-		description: "While wearing this plate armor, I have +1 AC, know Abyssal, and can use its clawed gauntlets to make unarmed strikes that deal 1d8 slashing damage with a +1 bonus to hit and damage. I have disadv. on attacks and on saves vs. demons, their spells and abilities. I can't doff it without Remove Curse or similar magic.",
-		descriptionFull: "While wearing this armor, you gain a +1 bonus to AC, and you can understand and speak Abyssal. In addition, the armor's clawed gauntlets turn unarmed strikes with your hands into magic weapons that deal slashing damage, with a +1 bonus to attack and damage rolls and a damage die of 1d8.\n   " + toUni("Curse") + ". Once you don this cursed armor, you can't doff it unless you are targeted by the Remove Curse spell or similar magic. While wearing the armor, you have disadvantage on attack rolls against demons and on saving throws against their spells and special abilities.",
+		description: "While wearing this plate armor, I have +1 AC, know Abyssal, and can use its clawed gauntlets to make unarmed strikes that deal 1d8 slashing damage with a +1 bonus to hit and damage. I have disadv. on attacks and on saves vs. demons, their spells and abilities. I can't doff it without *Remove Curse* or similar magic.",
+		descriptionFull: "While wearing this armor, you gain a +1 bonus to AC, and you can understand and speak Abyssal. In addition, the armor's clawed gauntlets turn unarmed strikes with your hands into magic weapons that deal slashing damage, with a +1 bonus to attack and damage rolls and a damage die of 1d8.\n   ***Curse***. Once you don this cursed armor, you can't doff it unless you are targeted by the *Remove Curse* spell or similar magic. While wearing the armor, you have disadvantage on attack rolls against demons and on saving throws against their spells and special abilities.",
 		attunement: true,
 		weight: 65,
 		cursed: true,
@@ -1578,7 +1582,7 @@ var Base_MagicItemsList = {
 		rarity: "very rare",
 		magicItemTable: "H",
 		description: "While wearing this armor, I gain a resistance to a damage type, +1 AC and advantage on saving throws against the frightful presence and breath weapons of dragons. Once per dawn as an action, I can magically discern the distance and direction to the closest dragon of the armor's type within 30 miles of me.",
-		descriptionFull: "Dragon scale mail is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, dragon scale mail is highly valued.\n   While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to one damage type that is determined by the kind of dragon that provided the scales (see the table).\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest dragon within 30 miles of you that is of the same type as the armor. This special action can't be used again until the next dawn.\n\n" + toUni("Dragon\tResistance\tDragon\tResistance") + "\nBlack\tAcid\t\tGold\tFire\nBlue\tLightning  \tGreen\tPoison\nBrass\tFire\t\tRed\tFire\nBronze\tLightning  \tSilver\tCold\nCopper\tAcid\t\tWhite\tCold",
+		descriptionFull: "*Dragon scale mail* is made of the scales of one kind of dragon. Sometimes dragons collect their cast-off scales and gift them to humanoids. Other times, hunters carefully skin and preserve the hide of a dead dragon. In either case, *dragon scale mail* is highly valued.\n   While wearing this armor, you gain a +1 bonus to AC, you have advantage on saving throws against the Frightful Presence and breath weapons of dragons, and you have resistance to one damage type that is determined by the kind of dragon that provided the scales (see the table).\n   Additionally, you can focus your senses as an action to magically discern the distance and direction to the closest dragon within 30 miles of you that is of the same type as the armor. This special action can't be used again until the next dawn.\n\n**Dragon**\t**Resistance**\t**Dragon**\t**Resistance**\nBlack\tAcid\t\tGold\tFire\nBlue\tLightning  \tGreen\tPoison\nBrass\tFire\t\tRed\tFire\nBronze\tLightning  \tSilver\tCold\nCopper\tAcid\t\tWhite\tCold",
 		attunement: true,
 		weight: 45,
 		allowDuplicates: true,
@@ -1815,7 +1819,7 @@ var Base_MagicItemsList = {
 		description: "As an action, I can sprinkle a pinch of dust over water, turning a 15-ft cube into a floating, marble-sized pellet. As an action, someone can smash the pellet against a hard surface, destroying it and releasing the absorbed water. A pinch of dust does 10d6 necrotic damage to a water elemental, Con save DC 13 halves.",
 		descriptionFull: "This small packet contains 1d6+4 pinches of dust. You can use an action to sprinkle a pinch of it over water. The dust turns a cube of water 15 feet on a side into one marble-sized pellet, which floats or rests near where the dust was sprinkled. The pellet's weight is negligible.\n   Someone can use an action to smash the pellet against a hard surface, causing the pellet to shatter and release the water the dust absorbed. Doing so ends that pellet's magic.\n   An elemental composed mostly of water that is exposed to a pinch of the dust must make a DC 13 Constitution saving throw, taking 10d6 necrotic damage on a failed save, or half as much damage on a successful one.",
 		usages: "1d6+4",
-		recovery: "Never",
+		recovery: "\u2013",
 	},
 	"dust of sneezing and choking": {
 		name: "Dust of Sneezing and Choking",
@@ -1824,7 +1828,7 @@ var Base_MagicItemsList = {
 		rarity: "uncommon",
 		magicItemTable: "B",
 		description: "Once as an action, I can throw this dust into the air, causing me and all creatures within 30 ft that need to breathe to make a DC 15 Con save or start sneezing uncontrollably and be unable to breathe, thus becoming incapacitated and suffocating. Those affected can repeat their save at the end of each of their turns.",
-		descriptionFull: "Found in a small container, this powder resembles very fine sand. It appears to be dust of disappearance, and an Identify spell reveals it to be such. There is enough of it for one use.\n   When you use an action to throw a handful of the dust into the air, you and each creature that needs to breathe within 30 feet of you must succeed on a DC 15 Constitution saving throw or become unable to breathe while sneezing uncontrollably. A creature affected in this way is incapacitated and suffocating. As long as it is conscious, a creature can repeat the saving throw at the end of each of its turns, ending the effect on it on a success. The Lesser Restoration spell can also end the effect on a creature.",
+		descriptionFull: "Found in a small container, this powder resembles very fine sand. It appears to be *dust of disappearance*, and an *Identify* spell reveals it to be such. There is enough of it for one use.\n   When you use an action to throw a handful of the dust into the air, you and each creature that needs to breathe within 30 feet of you must succeed on a DC 15 Constitution saving throw or become unable to breathe while sneezing uncontrollably. A creature affected in this way is incapacitated and suffocating. As long as it is conscious, a creature can repeat the saving throw at the end of each of its turns, ending the effect on it on a success. The *Lesser Restoration* spell can also end the effect on a creature.",
 	},
 	"dwarven plate": {
 		name: "Dwarven Plate",
@@ -1879,7 +1883,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "H",
 		description: "When I use an action to remove the stopper from this painted brass bottle, a cloud of thick smoke flows out of the bottle. At the end of my turn, an efreeti appears in an unoccupied space within 30 ft of me. The first time the bottle is opened, the DM rolls to determine what happens.",
 		descriptionLong: "When I use an action to remove the stopper from this painted brass bottle, a cloud of thick smoke flows out of the bottle. At the end of my turn, an efreeti appears in an unoccupied space within 30 feet of me. The first time the bottle is opened, the DM rolls to determine what happens. 10% chance that the efreeti attacks me for 5 rounds before disappearing. 80% chance that the efreeti serves me for 1 hour, following my commands. It then returns to the bottle and I can have it serve me 2 more times, but only 24 hours after it returned to the bottle. 10% chance that the efreeti will grant me 3 wishes.",
-		descriptionFull: "This painted brass bottle weighs 1 pound. When you use an action to remove the stopper, a cloud of thick smoke flows out of the bottle. At the end of your turn, the smoke disappears with a flash of harmless fire, and an efreeti appears in an unoccupied space within 30 feet of you.\n   The first time the bottle is opened, the DM rolls to determine what happens.\n\n" + toUni("d100") + "\t" + toUni("Effect") + "\n01-10\tThe efreeti attacks you. After fighting for 5 rounds, the efreeti disappears, and the bottle loses its magic.\n11-90\tThe efreeti serves you for 1 hour, doing as you command. Then the efreeti returns to the bottle, and a new stopper contains it. The stopper can't be removed for 24 hours. The next two times the bottle is opened, the same effect occurs. If the bottle is opened a fourth time, the efreeti escapes and disappears, and the bottle loses its magic.\n91-00\tThe efreeti can cast the Wish spell three times for you. It disappears when it grants the final wish or after 1 hour, and the bottle loses its magic.",
+		descriptionFull: "This painted brass bottle weighs 1 pound. When you use an action to remove the stopper, a cloud of thick smoke flows out of the bottle. At the end of your turn, the smoke disappears with a flash of harmless fire, and an efreeti appears in an unoccupied space within 30 feet of you.\n   The first time the bottle is opened, the DM rolls to determine what happens.\n\n**d100**\t**Effect**\n01-10\tThe efreeti attacks you. After fighting for 5 rounds, the efreeti disappears, and the bottle loses its magic.\n11-90\tThe efreeti serves you for 1 hour, doing as you command. Then the efreeti returns to the bottle, and a new stopper contains it. The stopper can't be removed for 24 hours. The next two times the bottle is opened, the same effect occurs. If the bottle is opened a fourth time, the efreeti escapes and disappears, and the bottle loses its magic.\n91-00\tThe efreeti can cast the *Wish* spell three times for you. It disappears when it grants the final wish or after 1 hour, and the bottle loses its magic.",
 		weight: 1,
 		action: [["action", ""]],
 	},
@@ -1889,14 +1893,14 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "B",
-		description: "This gem contains a mote of elemental energy. When I use an action to break the gem, an elemental is summoned as if I had cast the Conjure Elemental spell, and the gem's magic is lost. The type of gem determines the elemental summoned by the spell.",
-		descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, an elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost. The type of gem determines the elemental summoned by the spell.",
+		description: "This gem contains a mote of elemental energy. When I use an action to break the gem, an elemental is summoned as if I had cast the *Conjure Elemental* spell, and the gem's magic is lost. The type of gem determines the elemental summoned by the spell.",
+		descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, an elemental is summoned as if you had cast the *Conjure Elemental* spell, and the gem's magic is lost. The type of gem determines the elemental summoned by the spell.",
 		choices: ["Blue Sapphire (air)", "Emerald (water)", "Red Corundum (fire)", "Yellow Diamond (earth)"],
 		allowDuplicates: true,
 		"blue sapphire (air)": {
 			name: "Elemental Gem [Blue Sapphire]",
-			description: "This gem contains a mote of air elemental energy. Once as an action, I can break this gem to summon an air elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
-			descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, an air elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
+			description: "This gem contains a mote of air elemental energy. Once as an action, I can break this gem to summon an air elemental as if I had cast the *Conjure Elemental* spell. After doing so, the gem's magic is lost.",
+			descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, an air elemental is summoned as if you had cast the *Conjure Elemental* spell, and the gem's magic is lost.",
 			spellcastingBonus: [{
 				name: "Air Elemental only",
 				spells: ["conjure elemental"],
@@ -1912,8 +1916,8 @@ var Base_MagicItemsList = {
 		},
 		"emerald (water)": {
 			name: "Elemental Gem [Emerald]",
-			description: "This gem contains a mote of water elemental energy. Once as an action, I can break this gem to summon a water elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
-			descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, a water elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
+			description: "This gem contains a mote of water elemental energy. Once as an action, I can break this gem to summon a water elemental as if I had cast the *Conjure Elemental* spell. After doing so, the gem's magic is lost.",
+			descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, a water elemental is summoned as if you had cast the *Conjure Elemental* spell, and the gem's magic is lost.",
 			spellcastingBonus: [{
 				name: "Water Elemental only",
 				spells: ["conjure elemental"],
@@ -1929,8 +1933,8 @@ var Base_MagicItemsList = {
 		},
 		"red corundum (fire)": {
 			name: "Elemental Gem [Red Corundum]",
-			description: "This gem contains a mote of fire elemental energy. Once as an action, I can break this gem to summon a fire elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
-			descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, a fire elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
+			description: "This gem contains a mote of fire elemental energy. Once as an action, I can break this gem to summon a fire elemental as if I had cast the *Conjure Elemental* spell. After doing so, the gem's magic is lost.",
+			descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, a fire elemental is summoned as if you had cast the *Conjure Elemental* spell, and the gem's magic is lost.",
 			spellcastingBonus: [{
 				name: "Fire Elemental only",
 				spells: ["conjure elemental"],
@@ -1946,8 +1950,8 @@ var Base_MagicItemsList = {
 		},
 		"yellow diamond (earth)": {
 			name: "Elemental Gem [Yellow Diamond]",
-			description: "This gem contains a mote of earth elemental energy. Once as an action, I can break this gem to summon an earth elemental as if I had cast the Conjure Elemental spell. After doing so, the gem's magic is lost.",
-			descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, an earth elemental is summoned as if you had cast the Conjure Elemental spell, and the gem's magic is lost.",
+			description: "This gem contains a mote of earth elemental energy. Once as an action, I can break this gem to summon an earth elemental as if I had cast the *Conjure Elemental* spell. After doing so, the gem's magic is lost.",
+			descriptionFull: "This gem contains a mote of elemental energy. When you use an action to break the gem, an earth elemental is summoned as if you had cast the *Conjure Elemental* spell, and the gem's magic is lost.",
 			spellcastingBonus: [{
 				name: "Earth Elemental only",
 				spells: ["conjure elemental"],
@@ -1987,7 +1991,7 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "When I use an action to remove the stopper, a cloud of thick heavily obscuring smoke flows out of the bottle in a 60-ft radius, increasing by 10 ft for each minute the bottle is open, until it reaches 120 ft. Closing it requires me to speak the command word as an action. Once closed, the cloud disperses after 10 min.",
+		description: "When I use an action to remove the stopper, a cloud of thick heavily obscuring smoke flows from the bottle in a 60-ft radius, increasing by 10 ft for each minute the bottle is open, until it reaches 120 ft. Closing it requires me to speak the command word as an action. Once closed, the cloud disperses after 10 min.",
 		descriptionFull: "Smoke leaks from the lead-stoppered mouth of this brass bottle, which weighs 1 pound. When you use an action to remove the stopper, a cloud of thick smoke pours out in a 60-foot radius from the bottle. The cloud's area is heavily obscured. Each minute the bottle remains open and within the cloud, the radius increases by 10 feet until it reaches its maximum radius of 120 feet.\n   The cloud persists as long as the bottle is open. Closing the bottle requires you to speak its command word as an action. Once the bottle is closed, the cloud disperses after 10 minutes. A moderate wind (11 to 20 miles per hour) can also disperse the smoke after 1 minute, and a strong wind (21 or more miles per hour) can do so after 1 round.",
 		weight: 1,
 		action: [["action", " (open/close)"]],
@@ -1998,8 +2002,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "These crystal lenses fit over the eyes. They have 3 charges. While wearing them, I can expend 1 charge as an action to cast Charm Person (save DC 13) on a humanoid within 30 ft of me, provided that I and the target can see each other. The lenses regain all expended charges daily at dawn.",
-		descriptionFull: "These crystal lenses fit over the eyes. They have 3 charges. While wearing them, you can expend 1 charge as an action to cast the Charm Person spell (save DC 13) on a humanoid within 30 feet of you, provided that you and the target can see each other. The lenses regain all expended charges daily at dawn.",
+		description: "These crystal lenses fit over the eyes. They have 3 charges. While wearing them, I can expend 1 charge as an action to cast *Charm Person* (save DC 13) on a humanoid within 30 ft of me, provided that I and the target can see each other. The lenses regain all expended charges daily at dawn.",
+		descriptionFull: "These crystal lenses fit over the eyes. They have 3 charges. While wearing them, you can expend 1 charge as an action to cast the *Charm Person* spell (save DC 13) on a humanoid within 30 feet of you, provided that you and the target can see each other. The lenses regain all expended charges daily at dawn.",
 		attunement: true,
 		usages: 3,
 		recovery: "dawn",
@@ -2038,7 +2042,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 221], ["D", 169]],
 		type: "wondrous item",
 		description: "As an action, I can speak the command word and throw one or more statuettes to an unoccupied space within 60 ft where it becomes a specific creature for a certain amount of time. It is friendly, understands my languages, and obeys my commands.",
-		descriptionFull: "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.",
+		descriptionFull: "A *figurine of wondrous power* is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description.",
 		action: [["action", ""]],
 		allowDuplicates: true,
 		choices: ["Bronze Griffon", "Ebony Fly", "Golden Lions", "Ivory Goats", "Marble Elephant", "Obsidian Steed", "Onyx Dog", "Serpentine Owl", "Silver Raven"],
@@ -2047,7 +2051,7 @@ var Base_MagicItemsList = {
 			magicItemTable: "G",
 			description: "As an action, I can speak the command word and throw this bronze statuette to an unoccupied space within 60 ft, where it becomes a griffon for up to 6 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, and obeys my commands.",
 			descriptionLong: "As an action, I can speak the command word and throw this bronze statuette of a griffon rampant to an unoccupied space within 60 ft, where it becomes a griffon for up to 6 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 5 days have passed.",
-			descriptionFull: "This figurine of wondrous power is a bronze statuette of a griffon rampant, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living griffon. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 6 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 5 days have passed.",
+			descriptionFull: "This *figurine of wondrous power* is a bronze statuette of a griffon rampant, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living griffon. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 6 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 5 days have passed.",
 			limfeaname: "Figurine of WP (Bronze Griffon)",
 			usages: 1,
 			recovery: "5 days",
@@ -2057,7 +2061,7 @@ var Base_MagicItemsList = {
 			magicItemTable: "G",
 			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a giant fly for up to 12 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, obeys my commands, and can be ridden as a mount.",
 			descriptionLong: "As an action, I can speak the command word and throw this ebony statuette of a horsefly to an unoccupied space within 60 ft, where it becomes a giant fly for up to 12 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, obeys my spoken commands, and can be ridden as a mount. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
-			descriptionFull: "This figurine of wondrous power is an ebony statuette carved in the likeness of a horsefly, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living giant fly and can be ridden as a mount. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 12 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.",
+			descriptionFull: "This *figurine of wondrous power* is an ebony statuette carved in the likeness of a horsefly, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living giant fly and can be ridden as a mount. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 12 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.",
 			limfeaname: "Figurine of WP (Ebony Fly)",
 			usages: 1,
 			recovery: "2 days",
@@ -2067,7 +2071,7 @@ var Base_MagicItemsList = {
 			magicItemTable: "G",
 			description: "As an action, I can speak the command word and throw one or both of these gold statuettes to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use the command word again, or it reaches 0 HP. They are friendly, understand my languages, and obey my commands.",
 			descriptionLong: "As an action, I can speak the command word and throw one or both of these gold statuettes of a lion to an unoccupied space within 60 ft, where each becomes a lion for up to 1 hour, until I use an action to repeat the command word, or it reaches 0 HP. They are friendly to me and my allies, understand my languages, and obey my spoken commands. If I issue no commands, they defend themselves but takes no other actions. When a lion reverts back to a figurine, that figurine can't be used again until 7 days have passed.",
-			descriptionFull: "This figurine of wondrous power is a pair of gold statuettes of lions, small enough to fit in a pocket. If you use an action to speak the command word and throw one or both of the figurines to a point on the ground within 60 feet of you, each figurine becomes a living lion. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 1 hour. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
+			descriptionFull: "This *figurine of wondrous power* is a pair of gold statuettes of lions, small enough to fit in a pocket. If you use an action to speak the command word and throw one or both of the figurines to a point on the ground within 60 feet of you, each figurine becomes a living lion. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 1 hour. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
 			limfeaname: "Figurine of WP (Golden Lions)",
 			usages: 2,
 			recovery: "7 days",
@@ -2077,7 +2081,7 @@ var Base_MagicItemsList = {
 			magicItemTable: "G",
 			description: "As an action, I can speak the command word and throw one or more of these 3 ivory statuettes to an unoccupied space within 60 ft, where each becomes a creature, until I use the command word again, or it reaches 0 HP. They are friendly, understands my languages, and obeys my commands. See Notes page.",
 			descriptionLong: "As an action, I can speak the command word and throw one or more of these three ivory statuettes of goats to an unoccupied space within 60 ft, where each becomes a creature, until I use an action to repeat the command word, or it reaches 0 HP. They are friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until a certain amount of time has passed. See Notes page for details about each of the statuettes.",
-			descriptionFull: "This figurine of wondrous power is three ivory statuettes of goats, small enough to fit in a pocket. Each goat looks unique and functions differently from the others. If you use an action to speak the command word and throw one or more of the figurines to a point on the ground within 60 feet of you, each figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description." +
+			descriptionFull: "This *figurine of wondrous power* is three ivory statuettes of goats, small enough to fit in a pocket. Each goat looks unique and functions differently from the others. If you use an action to speak the command word and throw one or more of the figurines to a point on the ground within 60 feet of you, each figurine becomes a living creature. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description." +
 			"\n \u2022 The goat of traveling can become a Large goat with the same statistics as a riding horse. It has 24 charges, and each hour or portion thereof it spends in beast form costs 1 charge. While it has charges, you can use it as often as you wish. When it runs out of charges, it reverts to a figurine and can't be used again until 7 days have passed, when it regains all its charges." +
 			"\n \u2022 The goat of travail becomes a giant goat for up to 3 hours. Once it has been used, it can't be used again until 30 days have passed." +
 			"\n \u2022 The goat of terror becomes a giant goat for up to 3 hours. The goat can't attack, but you can remove its horns and use them as weapons. One horn becomes a +1 lance, and the other becomes a +2 longsword. Removing a horn requires an action, and the weapons disappear and the horns return when the goat reverts to figurine form. In addition, the goat radiates a 30-foot-radius aura of terror while you are riding it. Any creature hostile to you that starts its turn in the aura must succeed on a DC 15 Wisdom saving throw or be frightened of the goat for 1 minute, or until the goat reverts to figurine form. The frightened creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. Once it successfully saves against the effect, a creature is immune to the goat's aura for the next 24 hours. Once the figurine has been used, it can't be used again until 15 days have passed.",
@@ -2096,6 +2100,7 @@ var Base_MagicItemsList = {
 			}],
 			toNotesPage: [{
 				name: "Ivory Goat Details",
+				origin: "Figurine of Wondrous Power",
 				note: [
 					"The goat of traveling can become a Large goat with the same statistics as a riding horse. It has 24 charges, and each hour or portion thereof it spends in beast form costs 1 charge. While it has charges, you can use it as often as you wish. When it runs out of charges, it reverts to a figurine and can't be used again until 7 days have passed, when it regains all its charges.",
 					"The goat of travail becomes a giant goat for up to 3 hours. Once it has been used, it can't be used again until 30 days have passed.",
@@ -2121,7 +2126,7 @@ var Base_MagicItemsList = {
 			magicItemTable: "G",
 			description: "As an action, I can speak the command word and throw this marble statuette to an unoccupied space within 60 ft, where it becomes a elephant for up to 24 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, and obeys my commands.",
 			descriptionLong: "As an action, I can speak the command word and throw this marble statuette of about 4 inches high and long to an unoccupied space within 60 ft, where it becomes a elephant for up to 24 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
-			descriptionFull: "This figurine of wondrous power is a marble statuette of about 4 inches high and long, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living elephant. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 24 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
+			descriptionFull: "This *figurine of wondrous power* is a marble statuette of about 4 inches high and long, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living elephant. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 24 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
 			limfeaname: "Figurine of WP (Marble Elephant)",
 			usages: 1,
 			recovery: "7 days",
@@ -2131,13 +2136,14 @@ var Base_MagicItemsList = {
 			magicItemTable: "H",
 			description: "As an action, I can speak the command word and throw this obsidian statuette to an unoccupied space within 60 ft, where it becomes a nightmare for up to 24 hours, until it reaches 0 HP, or I use the command word again. It is friendly, understands my languages, and obeys my commands. See Notes page.",
 			descriptionLong: "As an action, I can speak the command word and throw this polished obsidian statuette of an horse to an unoccupied space within 60 ft, where it becomes a nightmare for up to 24 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. It only fights to defend itself. When it reverts back to a figurine, it can't be used again until 5 days have passed. See Notes page for more details.",
-			descriptionFull: "This figurine of wondrous power is a polished obsidian statuette of a horse, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living nightmare. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 24 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 5 days have passed." +
+			descriptionFull: "This *figurine of wondrous power* is a polished obsidian statuette of a horse, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living nightmare. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 24 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 5 days have passed." +
 			"\n   The nightmare fights only to defend itself.\n   If you have a good alignment, the figurine has a 10% chance each time you use it to ignore your orders, including a command to revert to figurine form. If you mount the nightmare while it is ignoring your orders, you and the nightmare are instantly transported to a random location on the plane of Hades, where the nightmare reverts to figurine form.",
 			limfeaname: "Figurine of WP (Obsidian Steed)",
 			usages: 1,
 			recovery: "5 days",
 			toNotesPage: [{
 				name: "Obsidian Steed Details",
+				origin: "Figurine of Wondrous Power",
 				note: "\n   If I have a good alignment, the figurine has a 10% chance each time I use it to ignore my orders, including a command to revert to figurine form. If I mount the nightmare while it is ignoring my orders, we are both instantly transported to a random location on the plane of Hades, where the nightmare reverts to figurine form.",
 			}],
 		},
@@ -2146,7 +2152,7 @@ var Base_MagicItemsList = {
 			magicItemTable: "G",
 			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a mastiff for up to 6 hours, until I use the command word again, or it reaches 0 HP. It has 60 ft darkvision, see invisible out to 60 ft, is friendly, understands me, and obeys my commands.",
 			descriptionLong: "As an action, I can speak the command word and throw this onyx statuette to an unoccupied space within 60 ft, where it becomes a mastiff for up to 6 hours, until I use an action to repeat the command word, or it reaches 0 HP. It has Intelligence 8, speaks common, darkvision out to 60 ft and can see invisible creatures and objects out to that same range. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 7 days have passed.",
-			descriptionFull: "This figurine of wondrous power is an onyx statuette of a dog, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living mastiff. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The mastiff has an Intelligence of 8 and can speak Common. It also has darkvision out to a range of 60 feet and can see invisible creatures and objects within that range. It is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 6 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
+			descriptionFull: "This *figurine of wondrous power* is an onyx statuette of a dog, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living mastiff. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The mastiff has an Intelligence of 8 and can speak Common. It also has darkvision out to a range of 60 feet and can see invisible creatures and objects within that range. It is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 6 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 7 days have passed.",
 			limfeaname: "Figurine of WP (Onyx Dog)",
 			usages: 1,
 			recovery: "7 days",
@@ -2156,7 +2162,7 @@ var Base_MagicItemsList = {
 			magicItemTable: "G",
 			description: "As an action, I can speak the command word and throw this statuette to an unoccupied space within 60 ft, where it becomes a giant owl for up to 8 hours, until I use the command word again, or it reaches 0 HP. It is friendly, can convers telepathically with me, understands my languages, and obeys my commands.",
 			descriptionLong: "As an action, I can speak the command word and throw this serpentine statuette to an unoccupied space within 60 ft, where it becomes a giant owl for up to 8 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. As long as it is on the same plane of existence, it can communicate telepathically with me. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
-			descriptionFull: "This figurine of wondrous power is a serpentine statuette of an owl, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living giant owl. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. It can telepathically communicate with you at any range if you and it are on the same plane of existence. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 8 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.",
+			descriptionFull: "This *figurine of wondrous power* is a serpentine statuette of an owl, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living giant owl. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. It can telepathically communicate with you at any range if you and it are on the same plane of existence. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 8 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.",
 			limfeaname: "Figurine of WP (Serpentine Owl)",
 			usages: 1,
 			recovery: "2 days",
@@ -2165,8 +2171,8 @@ var Base_MagicItemsList = {
 			rarity: "uncommon",
 			magicItemTable: "F",
 			description: "As an action, I can speak the command word and throw this silver statuette to an unoccupied space within 60 ft, where it becomes a raven for up to 12 hours, until I use the command word again, or it reaches 0 HP. It is friendly, understands my languages, and obeys my commands.",
-			descriptionLong: "As an action, I can speak the command word and throw this silver statuette to an unoccupied space within 60 ft, where it becomes a raven for up to 12 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. While in raven form, the figurine allows me to cast Animal Messenger on it at will. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
-			descriptionFull: "This figurine of wondrous power is as sliver statuette of a raven, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living raven. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 12 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.\n   While in raven form, the figurine allows you to cast the Animal Messenger spell on it at will.",
+			descriptionLong: "As an action, I can speak the command word and throw this silver statuette to an unoccupied space within 60 ft, where it becomes a raven for up to 12 hours, until I use an action to repeat the command word, or it reaches 0 HP. It is friendly to me and my allies, understands my languages, and obeys my spoken commands. While in raven form, the figurine allows me to cast *Animal Messenger* on it at will. If I issue no commands, the creature defends itself but takes no other actions. When it reverts back to a figurine, it can't be used again until 2 days have passed.",
+			descriptionFull: "This *figurine of wondrous power* is as sliver statuette of a raven, small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living raven. If the space where the creature would appear is occupied by other creatures or objects, or if there isn't enough space for the creature, the figurine doesn't become a creature.\n   The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions.\n   The creature exists for 12 hours. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until 2 days have passed.\n   While in raven form, the figurine allows you to cast the *Animal Messenger* spell on it at will.",
 			limfeaname: "Figurine of WP (Silver Raven)",
 			usages: 1,
 			recovery: "2 days",
@@ -2223,8 +2229,8 @@ var Base_MagicItemsList = {
 		rarity: "rare",
 		magicItemTable: "C",
 		description: "As an action, I can speak a command word to have this wooden box become a boat, a ship, or to fold back up. The boat holds 4 Medium creatures and has oars, anchor, mast, and a sail. The ship holds 15 Medium creatures and has a deck, five sets of oars, rowing seats, a steering oar, anchor, deck cabin, mast, and a sail.",
-		descriptionLong: "A wooden box of 12 inch \xD7 6 inch \xD7 6 inch, that can be opened to put items in. As an action, I can speak one of its three command words. The first causes it to unfold into a boat 10 ft \xD7 4 ft \xD7 2 ft, with oars, an anchor, a mast, and a lateen sail, which can hold four Medium creatures comfortably. The second causes it to unfold into a ship 24 ft \xD7 8 ft \xD7 6 ft, with a deck, rowing seats, five sets of oars, a steering oar, an anchor, a deck cabin, and a mast with a square sail, which can hold fifteen Medium creatures comfortably. Three causes it to fold up, leaving large objects placed in the boat/ship outside of the box.",
-		descriptionFull: "This object appears as a wooden box that measures 12 inches long, 6 inches wide, and 6 inches deep. It weighs 4 pounds and floats. It can be opened to store items inside. This item also has three command words, each requiring you to use an action to speak it.\n   One command word causes the box to unfold into a boat 10 feet long, 4 feet wide, and 2 feet deep. The boat has one pair of oars, an anchor, a mast, and a lateen sail. The boat can hold up to four Medium creatures comfortably.\n   The second command word causes the box to unfold into a ship 24 feet long, 8 feet wide; and 6 feet deep. The ship has a deck, rowing seats, five sets of oars, a steering oar, an anchor, a deck cabin, and a mast with a square sail. The ship can hold fifteen Medium creatures comfortably.\n   When the box becomes a vessel, its weight becomes that of a normal vessel its size, and anything that was stored in the box remains in the boat.\n   The third command word causes the folding boat to fold back into a box, provided that no creatures are aboard. Any objects in the vessel that can't fit inside the box remain outside the box as it folds. Any objects in the vessel that can fit inside the box do so.",
+		descriptionLong: "A wooden box of 12 inch \xD7 6 inch \xD7 6 inch, that can be opened to put items in. As an action, I can speak one of its 3 command words. The first causes it to unfold into a boat 10 ft \xD7 4 ft \xD7 2 ft, with oars, an anchor, a mast, and a lateen sail, which can hold four Medium creatures comfortably. The second causes it to unfold into a ship 24 ft \xD7 8 ft \xD7 6 ft, with a deck, rowing seats, five sets of oars, a steering oar, an anchor, a deck cabin, and a mast with a square sail, which can hold fifteen Medium creatures comfortably. Three causes it to fold up, leaving large objects placed in the boat/ship outside of the box.",
+		descriptionFull: "This object appears as a wooden box that measures 12 inches long, 6 inches wide, and 6 inches deep. It weighs 4 pounds and floats. It can be opened to store items inside. This item also has three command words, each requiring you to use an action to speak it.\n   One command word causes the box to unfold into a boat 10 feet long, 4 feet wide, and 2 feet deep. The boat has one pair of oars, an anchor, a mast, and a lateen sail. The boat can hold up to four Medium creatures comfortably.\n   The second command word causes the box to unfold into a ship 24 feet long, 8 feet wide; and 6 feet deep. The ship has a deck, rowing seats, five sets of oars, a steering oar, an anchor, a deck cabin, and a mast with a square sail. The ship can hold fifteen Medium creatures comfortably.\n   When the box becomes a vessel, its weight becomes that of a normal vessel its size, and anything that was stored in the box remains in the boat.\n   The third command word causes the *folding boat* to fold back into a box, provided that no creatures are aboard. Any objects in the vessel that can't fit inside the box remain outside the box as it folds. Any objects in the vessel that can fit inside the box do so.",
 		weight: 4,
 		action: [["action", ""]],
 	},
@@ -2299,7 +2305,7 @@ var Base_MagicItemsList = {
 		],
 		weight: 1,
 		usages: 50,
-		recovery: "Never",
+		recovery: "\u2013",
 		action: [
 			["action", " (activate)"],
 			["bonus action", " (end light)"],
@@ -2409,132 +2415,14 @@ var Base_MagicItemsList = {
 		descriptionFull: "While wearing these dark lenses, you have darkvision out to a range of 60 feet. If you already have darkvision. wearing the goggles increases its range by 60 feet.",
 		vision: [["Darkvision", "fixed 60"], ["Darkvision", "+60"]],
 	},
-	"hammer of thunderbolts": function () {
-		/** Ability score increases and magic items setting the ability scores
-		 * 2024 version of this item increases the override of the attuend item by 4 and
-		 * that is how this 5e version has been made to work from v14.0.13 onwards.
-		 * This is the prefered interpertation of Jeremy Crawford's ruling,
-		 * instead of having all magic items with `scores` stack with `scoresOverride`.
-		 * See https://www.sageadvice.eu/does-the-bonus-strength-from-the-hammer-of-thunderbolts-stack-with-your-giants-strength-belt/
-		*/
-		var baseWeapon = {
-			baseWeapon: "maul",
-			regExpSearch: /^(?=.*hammer)(?=.*thunderbolts).*$/i,
-			name: "Hammer of Thunderbolts",
-			source: [["SRD", 224], ["D", 173]],
-			modifiers: [1, 1],
-			selectNow: true,
-		};
-		var obj = {
-			name: "Hammer of Thunderbolts",
-			source: [["SRD", 224], ["D", 173]],
-			type: "weapon (maul)",
-			rarity: "legendary",
-			magicItemTable: "I",
-			description: "Select one of the choices.",
-			descriptionFull: [
-				"You gain a +1 bonus to attack and damage rolls made with this magic weapon.",
-				"***Giant's Bane (Requires Attunement)***. You must be wearing a *belt of giant strength* (any variety) and *gauntlets of ogre power* to attune to this weapon. The attunement ends if you take off either of those items. While you are attuned to this weapon and holding it, your Strength score increases by 4 and can exceed 20, but not 30. When you roll a 20 on an attack roll made with this weapon against a giant, the giant must succeed on a DC 17 Constitution saving throw or die.",
-				"The hammer also has 5 charges. While attuned to it, you can expend 1 charge and make a ranged weapon attack with the hammer, hurling it as if it had the thrown property with a normal range of 20 feet and a long range of 60 feet. If the attack hits, the hammer unleashes a thunderclap audible out to 300 feet. The target and every creature within 30 feet of it must succeed on a DC 17 Constitution saving throw or be stunned until the end of your next turn. The hammer regains 1d4+1 expended charges daily at dawn.",
-			],
-			weight: 10,
-			selfChoosing: function () {
-				var returnValue = "Not wearing both Belt of Giant Strength and Gauntlets of Ogre Power";
-				var hasGauntlets = CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1;
-				var hasBelt = CurrentMagicItems.known.indexOf("belt of giant strength") !== -1;
-				// If it doesn't have both, stop now
-				if (!hasGauntlets || !hasBelt) return returnValue.toLowerCase();
-				returnValue = "Wearing, but not attuned to, Belt of Giant Strength and Gauntlets of Ogre Power";
-				// Loop through all the magic items and see attuned to which belt
-				var strOverride = 0;
-				for (var i = 0; i < CurrentMagicItems.known.length; i++) {
-					if (CurrentMagicItems.known[i] !== "belt of giant strength") continue;
-					if (!isMagicItemAttuned(i)) continue; // not attuned
-					var oItem = MagicItemsList[CurrentMagicItems.known[i]];
-					if (oItem && oItem.choices) {
-						oItem = oItem[CurrentMagicItems.choices[i]];
-					};
-					if (oItem && oItem.scoresOverride[0] > strOverride) {
-						strOverride = oItem.scoresOverride[0];
-						returnValue = "Attuned to " + oItem.name + " (and wearing Gauntlets of Ogre Power)";
-					};
-				};
-				return returnValue.toLowerCase();
-			},
-			choices: [
-				"Not wearing both Belt of Giant Strength and Gauntlets of Ogre Power",
-				"Wearing, but not attuned to, Belt of Giant Strength and Gauntlets of Ogre Power",
-			],
-			"not wearing both belt of giant strength and gauntlets of ogre power": {
-				name: "Hammer of Thunderbolts [not attuned]",
-				description: "This magical maul adds a +1 bonus to attack and damage rolls made with it. It has additional features when I'm attuned to it, which requires me to wear both a *belt of giant strength* (any variety) and *gauntlets of ogre power*.",
-				weaponOptions: [baseWeapon],
-			},
-			"wearing, but not attuned to, belt of giant strength and gauntlets of ogre power": {
-				name: "Hammer of Thunderbolts [attuned]",
-				attunement: true,
-				description: "This +1 maul has 5 charges, regaining 1d4+1 at dawn. I can use 1 charge to make it Thrown (20/60 ft) for 1 attack. If that hits, it's audible out to 300 ft and all within 30 ft of the target must make a DC 17 Con save or be Stunned until the end of my next turn. On a 20 to hit vs Giant: must make a DC 17 Con save or die.",
-				prerequisite: "Requires wearing a Belt of Giant Strength and Gauntlets of Ogre Power to attune",
-				prereqeval: function () {
-					// Don't have to be attuned, just wearing https://twitter.com/jeremyecrawford/status/948346891296653315
-					return CurrentMagicItems.known.indexOf("belt of giant strength") !== -1 && CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1;
-				},
-				extraLimitedFeatures: [{
-					name: "Hammer of Thunderbolts",
-					usages: 5,
-					recovery: "dawn",
-					additional: "regains 1d4+1",
-				}],
-				weaponOptions: [Object.assign({}, baseWeapon, {
-					description: "Heavy, two-handed; 1 charge to throw (20/60 ft); On 20 to hit Giant: DC 17 Con save or die",
-				})],
-			},
-		};
-		tDoc.createHammerOfThunderboltsChoices = function () {
-			if (!tDoc.MagicItemsList) {
-				tDoc.hammerOfThunderboltsTimeOut = app.setTimeOut("tDoc.createHammerOfThunderboltsChoices();", 500);
-				return;
-			}
-			var oHammer = MagicItemsList["hammer of thunderbolts"];
-			var oBelt = MagicItemsList["belt of giant strength"];
-			if (!oHammer || !oBelt) return;
-			var oHammerBase = oHammer["wearing, but not attuned to, belt of giant strength and gauntlets of ogre power"];
-			var sBaseDescription = oHammerBase.description + " My Strength is ";
-			if (typePF) sBaseDescription = sBaseDescription.replace(" of the target", "");
-			oBelt.choices.forEach(function (beltChoice) {
-				var beltChoiceLC = beltChoice.toLowerCase();
-				var oChoice = oBelt[beltChoiceLC];
-				var sGiant = beltChoice.replace(/ giant.*/i, "");
-				var sChoice = "Attuned to " + oChoice.name + " (and wearing Gauntlets of Ogre Power)";
-				var sChoiceLS = sChoice.toLowerCase();
-				var iOverride = Math.min(oChoice.scoresOverride[0] + 4, 30);
-				oHammer.choices.push(sChoice);
-				oHammer[sChoiceLS] = {
-					name: "Hammer of Thunderbolts [" + sGiant + "]",
-					attunement: true,
-					description: sBaseDescription + iOverride + ".",
-					extraLimitedFeatures: oHammerBase.extraLimitedFeatures,
-					weaponOptions: oHammerBase.weaponOptions,
-					scoresOverride: [iOverride, 0, 0, 0, 0, 0],
-					prerequisite: "Requires attunement to " + oChoice.name + " and to be wearing Gauntlets of Ogre Power",
-				};
-				// Add the prerequisite function
-				eval("oHammer[sChoiceLS].prereqeval = function () {\n\tif (CurrentMagicItems.known.indexOf('gauntlets of ogre power') === -1) return false;\n\tvar knownIdx = CurrentMagicItems.choices.indexOf('" + beltChoiceLC + "');\n\treturn knownIdx !== -1 && CurrentMagicItems.known[knownIdx] === 'belt of giant strength' && isMagicItemAttuned(knownIdx) ? true : false;\n}");
-			});
-			delete tDoc.hammerOfThunderboltsTimeOut;
-			delete tDoc.createHammerOfThunderboltsChoices;
-		};
-		tDoc.hammerOfThunderboltsTimeOut = app.setTimeOut("tDoc.createHammerOfThunderboltsChoices();", 1000);
-		return obj;
-	}(),
 	"hat of disguise": { // contributed by Larry Hoy
 		name: "Hat of Disguise",
 		source: [["SRD", 225], ["D", 173]],
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "As an action while wearing this hat, I can cast Disguise Self from it at will. The spell ends if the hat is removed.",
-		descriptionFull: "While wearing this hat, you can use an action to cast the Disguise Self spell from it at will. The spell ends if the hat is removed.",
+		description: "As an action while wearing this hat, I can cast *Disguise Self* from it at will. The spell ends if the hat is removed.",
+		descriptionFull: "While wearing this hat, you can use an action to cast the *Disguise Self* spell from it at will. The spell ends if the hat is removed.",
 		attunement: true,
 		spellcastingBonus: [{
 			name: "At will",
@@ -2562,7 +2450,7 @@ var Base_MagicItemsList = {
 		rarity: "very rare",
 		magicItemTable: "H",
 		description: "This helm is set with diamonds, rubies, fire opals, and opals. Gems pried from the helm turn to dust. When all the gems are removed or destroyed, the helm loses its magic. I can use an action to cast a spell by having a gem crumble to dust. The helm has special properties for each type of gem, see Notes page.",
-		descriptionFull: "This dazzling helm is set with 1d10 diamonds, 2d10 rubies, 3d10 fire opals, and 4d10 opals. Any gem pried from the helm crumbles to dust. When all the gems are removed or destroyed, the helm loses its magic.\n   You gain the following benefits while wearing it:\n \u2022 You can use an action to cast one of the following spells (save DC 18), using one of the helm's gems of the specified type as a component: Daylight (opal), Fireball (fire opal), Prismatic Spray (diamond), or Wall of Fire (ruby). The gem is destroyed when the spell is cast and disappears from the helm.\n \u2022 As long as it has at least one diamond, the helm emits dim light in a 30-foot radius when at least one undead is within that area. Any undead that starts its turn in that area takes 1d6 radiant damage.\n \u2022 As long as the helm has at least one ruby, you have resistance to fire damage.\n \u2022 As long as the helm has at least one fire opal, you can use an action and speak a command word to cause one weapon you are holding to burst into flames. The flames emit bright light in a 10-foot radius and dim light for an additional 10 feet. The flames are harmless to you and the weapon. When you hit with an attack using the blazing weapon, the target takes an extra 1d6 fire damage. The flames last until you use a bonus action to speak the command word again or until you drop or stow the weapon.\n\nRoll a d20 if you are wearing the helm and take fire damage as a result of failing a saving throw against a spell. On a roll of 1, the helm emits beams of light from its remaining gems. Each creature within 60 feet of the helm other than you must succeed on a DC 17 Dexterity saving throw or be struck by a beam, taking radiant damage equal to the number of gems in the helm. The helm and its gems are then destroyed.",
+		descriptionFull: "This dazzling helm is set with 1d10 diamonds, 2d10 rubies, 3d10 fire opals, and 4d10 opals. Any gem pried from the helm crumbles to dust. When all the gems are removed or destroyed, the helm loses its magic.\n   You gain the following benefits while wearing it:\n \u2022 You can use an action to cast one of the following spells (save DC 18), using one of the helm's gems of the specified type as a component: *Daylight* (opal), *Fireball* (fire opal), *Prismatic Spray* (diamond), or *Wall of Fire* (ruby). The gem is destroyed when the spell is cast and disappears from the helm.\n \u2022 As long as it has at least one diamond, the helm emits dim light in a 30-foot radius when at least one undead is within that area. Any undead that starts its turn in that area takes 1d6 radiant damage.\n \u2022 As long as the helm has at least one ruby, you have resistance to fire damage.\n \u2022 As long as the helm has at least one fire opal, you can use an action and speak a command word to cause one weapon you are holding to burst into flames. The flames emit bright light in a 10-foot radius and dim light for an additional 10 feet. The flames are harmless to you and the weapon. When you hit with an attack using the blazing weapon, the target takes an extra 1d6 fire damage. The flames last until you use a bonus action to speak the command word again or until you drop or stow the weapon.\n\nRoll a d20 if you are wearing the helm and take fire damage as a result of failing a saving throw against a spell. On a roll of 1, the helm emits beams of light from its remaining gems. Each creature within 60 feet of the helm other than you must succeed on a DC 17 Dexterity saving throw or be struck by a beam, taking radiant damage equal to the number of gems in the helm. The helm and its gems are then destroyed.",
 		attunement: true,
 		dmgres: ["Fire (if Ruby)"],
 		action: [
@@ -2572,19 +2460,19 @@ var Base_MagicItemsList = {
 		extraLimitedFeatures: [{
 			name: "Helm of Brilliance - Diamonds (D)",
 			usages: "1d10",
-			recovery: "Never",
+			recovery: "\u2013",
 		}, {
 			name: "Helm of Brilliance - Rubies (R)",
 			usages: "2d10",
-			recovery: "Never",
+			recovery: "\u2013",
 		}, {
 			name: "Helm of Brilliance - Fire Opals (F)",
 			usages: "3d10",
-			recovery: "Never",
+			recovery: "\u2013",
 		}, {
 			name: "Helm of Brilliance - Opals (O)",
 			usages: "4d10",
-			recovery: "Never",
+			recovery: "\u2013",
 		}],
 		fixedDC: 18,
 		spellFirstColTitle: "GE",
@@ -2613,29 +2501,29 @@ var Base_MagicItemsList = {
 			"daylight": {
 				components: "M\u0192,M\u2020",
 				compMaterial: "Spells cast from magic items don't require any components other than the magic item itself and, when casting Daylight from the Helm of Brilliance, causes one of the opals in the helm to crumble to dust.",
-				changes: "Using the Helm of Brilliance to cast Daylight causes one of the opals in the helm to crumble to dust.",
+				changes: "Using the Helm of Brilliance to cast *Daylight* causes one of the opals in the helm to crumble to dust.",
 			},
 			"fireball": {
 				components: "M\u0192,M\u2020",
 				compMaterial: "Spells cast from magic items don't require any components other than the magic item itself and, when casting Fireball from the Helm of Brilliance, causes one of the fire opals in the helm to crumble to dust.",
-				changes: "Using the Helm of Brilliance to cast Fireball causes one of the fire opals in the helm to crumble to dust.",
+				changes: "Using the Helm of Brilliance to cast *Fireball* causes one of the fire opals in the helm to crumble to dust.",
 			},
 			"prismatic spray": {
 				components: "M\u0192,M\u2020",
 				compMaterial: "Spells cast from magic items don't require any components other than the magic item itself and, when casting Prismatic Spray from the Helm of Brilliance, causes one of the diamonds in the helm to crumble to dust.",
-				changes: "Using the Helm of Brilliance to cast Prismatic Spray causes one of the diamonds in the helm to crumble to dust.",
+				changes: "Using the Helm of Brilliance to cast *Prismatic Spray* causes one of the diamonds in the helm to crumble to dust.",
 			},
 			"wall of fire": {
 				components: "M\u0192,M\u2020",
 				compMaterial: "Spells cast from magic items don't require any components other than the magic item itself and, when casting Wall of Fire from the Helm of Brilliance, causes one of the rubies in the helm to crumble to dust.",
-				changes: "Using the Helm of Brilliance to cast Wall of Fire causes one of the rubies in the helm to crumble to dust.",
+				changes: "Using the Helm of Brilliance to cast *Wall of Fire* causes one of the rubies in the helm to crumble to dust.",
 			},
 		},
 		toNotesPage: [{
 			name: "Special Properties",
 			note: [
 				"This dazzling helm is set with 1d10 diamonds, 2d10 rubies, 3d10 fire opals, and 4d10 opals. Any gem pried from the helm crumbles to dust. When all the gems are removed or destroyed, the helm loses its magic.",
-				"As an action, I can cast one of the following spells (save DC 18), using one of the helm's gems of the specified type as a component: Daylight (opal), Fireball (fire opal), Prismatic Spray (diamond), or Wall of Fire (ruby). The gem is destroyed when the spell is cast and disappears from the helm.",
+				"As an action, I can cast one of the following spells (save DC 18), using one of the helm's gems of the specified type as a component: *Daylight* (opal), *Fireball* (fire opal), *Prismatic Spray* (diamond), or *Wall of Fire* (ruby). The gem is destroyed when the spell is cast and disappears from the helm.",
 				"As long as the helm has at least one diamond remaining, it emits dim light in a 30-ft radius when at least one undead is within that area. Any undead that starts its turn in that area takes 1d6 radiant damage.",
 				"As long as the helm has at least one ruby remaining, I have resistance to fire damage.",
 				"As long as the helm has at least one fire opal remaining, I can use an action and speak a command word to cause one weapon I'm holding to burst into flames. The flames emit bright light in a 10-ft radius and dim light for an additional 10 ft. The flames are harmless to me and the weapon. When I hit with an attack using the blazing weapon, the target takes an extra 1d6 fire damage. The flames last until I use a bonus action to speak the command word again or until I drop or stow the weapon.",
@@ -2649,8 +2537,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "B",
-		description: "While wearing this helm, I can cast Comprehend Languages at will.",
-		descriptionFull: "While wearing this helm, you can use an action to cast the Comprehend Languages spell from it at will.",
+		description: "While wearing this helm, I can cast *Comprehend Languages* at will.",
+		descriptionFull: "While wearing this helm, you can use an action to cast the *Comprehend Languages* spell from it at will.",
 		spellcastingBonus: [{
 			name: "At will",
 			spells: ["comprehend languages"],
@@ -2664,8 +2552,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "While wearing this helm, I can cast Detect Thoughts (DC 13). As a bonus action, I can send a telepathic message to a creature that I'm focusing on with Detect Thoughts, which can reply as a bonus action. Once between each dawn, I can cast Suggestion (DC 13) on a creature I'm focusing on with Detect Thoughts.",
-		descriptionFull: "While wearing this helm, you can use an action to cast the Detect Thoughts spell (save DC 13) from it. As long as you maintain concentration on the spell, you can use a bonus action to send a telepathic message to a creature you are focused on. It can reply\u2014using a bonus action to do so\u2014while your focus on it continues.\n   While focusing on a creature with Detect Thoughts, you can use an action to cast the Suggestion spell (save DC 13) from the helm on that creature. Once used, the suggestion property can't be used again until the next dawn.",
+		description: "While wearing this helm, I can cast *Detect Thoughts* (DC 13). As a bonus action, I can send a telepathic message to a creature that I'm focusing on with *Detect Thoughts*, which can reply as a bonus action. Once between each dawn, I can cast *Suggestion* (DC 13) on a creature I'm focusing on with *Detect Thoughts*.",
+		descriptionFull: "While wearing this helm, you can use an action to cast the *Detect Thoughts* spell (save DC 13) from it. As long as you maintain concentration on the spell, you can use a bonus action to send a telepathic message to a creature you are focused on. It can reply\u2014using a bonus action to do so\u2014while your focus on it continues.\n   While focusing on a creature with *Detect Thoughts*, you can use an action to cast the *Suggestion* spell (save DC 13) from the helm on that creature. Once used, the suggestion property can't be used again until the next dawn.",
 		attunement: true,
 		limfeaname: "Helm of Telepathy: Suggestion",
 		usages: 1,
@@ -2689,8 +2577,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "This helm has 3 charges. While wearing it, I can use an action and expend 1 charge to cast Teleport from it. The helm regains 1d3 expended charges daily at dawn.",
-		descriptionFull: "This helm has 3 charges. While wearing it, you can use an action and expend 1 charge to cast the Teleport spell from it. The helm regains 1d3 expended charges daily at dawn.",
+		description: "This helm has 3 charges. While wearing it, I can use an action and expend 1 charge to cast *Teleport* from it. The helm regains 1d3 expended charges daily at dawn.",
+		descriptionFull: "This helm has 3 charges. While wearing it, you can use an action and expend 1 charge to cast the *Teleport* spell from it. The helm regains 1d3 expended charges daily at dawn.",
 		attunement: true,
 		usages: 3,
 		recovery: "dawn",
@@ -2764,9 +2652,9 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "C",
-		description: "This backpack weighs 5 lb, regardless of its contents. It has two side pouches that hold 20 lb (2 cu ft) each and a central pouch that holds 80 lb (8 cu ft). Retrieving an item from it requires an action. If it's overloaded, pierced, or torn, it and its contents are destroyed. If turned inside out, all its contents spill forth.",
-		descriptionLong: "This backpack weighs 5 lb, regardless of its contents. It has two side pouches that hold up to 20 lb (2 cu ft) each and a central pouch that holds up to 80 lb (8 cu ft). Retrieving an item from it requires an action. When I reach in the bag for a specific item, the item is always magically on top. If it's overloaded, pierced, or torn, it and its contents are destroyed. If turned inside out, all its contents spill forth. A creature placed inside the bag can survive for 10 minutes before starting to suffocate. Placing the haversack in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
-		descriptionFull: "This backpack has a central pouch and two side pouches, each of which is an extradimensional space. Each side pouch can hold up to 20 pounds of material, not exceeding a volume of 2 cubic feet. The large central pouch can hold up to 8 cubic feet or 80 pounds of material. The backpack always weighs 5 pounds, regardless of its contents.\n   Placing an object in the haversack follows the normal rules for interacting with objects. Retrieving an item from the haversack requires you to use an action. When you reach into the haversack for a specific item, the item is always magically on top.\n   The haversack has a few limitations. If it is overloaded, or if a sharp object pierces it or tears it, the haversack ruptures and is destroyed. If the haversack is destroyed, its contents are lost forever, although an artifact always turns up again somewhere. If the haversack is turned inside out, its contents spill forth, unharmed, and the haversack must be put right before it can be used again. If a breathing creature is placed within the haversack, the creature can survive for up to 10 minutes, after which time it begins to suffocate.\n   Placing the haversack inside an extradimensional space created by a bag of holding, portable hole, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10-feet of the gate is sucked through it and deposited in a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
+		description: "This backpack weighs 5 lb regardless of contents. It has two side pouches that hold 20 lb (2 cu ft) each and a central pouch that holds 80 lb (8 cu ft). Retrieving an item from it requires an action. If it's overloaded, pierced, or torn, it and its contents are destroyed. If turned inside out, all its contents spill forth.",
+		descriptionLong: "This backpack weighs 5 lb regardless of contents. It has two side pouches that hold up to 20 lb (2 cu ft) each and a central pouch that holds up to 80 lb (8 cu ft). Retrieving an item from it requires an action. When I reach in the bag for a specific item, the item is always magically on top. If it's overloaded, pierced, or torn, it and its contents are destroyed. If turned inside out, all its contents spill forth. A creature placed inside the bag can survive for 10 minutes before starting to suffocate. Placing the haversack in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
+		descriptionFull: "This backpack has a central pouch and two side pouches, each of which is an extradimensional space. Each side pouch can hold up to 20 pounds of material, not exceeding a volume of 2 cubic feet. The large central pouch can hold up to 8 cubic feet or 80 pounds of material. The backpack always weighs 5 pounds, regardless of its contents.\n   Placing an object in the haversack follows the normal rules for interacting with objects. Retrieving an item from the haversack requires you to use an action. When you reach into the haversack for a specific item, the item is always magically on top.\n   The haversack has a few limitations. If it is overloaded, or if a sharp object pierces it or tears it, the haversack ruptures and is destroyed. If the haversack is destroyed, its contents are lost forever, although an artifact always turns up again somewhere. If the haversack is turned inside out, its contents spill forth, unharmed, and the haversack must be put right before it can be used again. If a breathing creature is placed within the haversack, the creature can survive for up to 10 minutes, after which time it begins to suffocate.\n   Placing the haversack inside an extradimensional space created by a *bag of holding*, *portable hole*, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10-feet of the gate is sucked through it and deposited in a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
 		weight: 5,
 		action: [["action", " (retrieve item)"]],
 	},
@@ -2787,7 +2675,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 226], ["D", 175]],
 		type: "wondrous item",
 		description: "As an action once per 7 days, I can blow this horn to summon warrior spirits from Ysgard within 60 ft me. These have the statistics of a berserker and return after 1 hour or when they drop to 0 HP. The number and how they respond depends on the type of material the horn is made of.",
-		descriptionFull: "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n Four types of Horn of Valhalla are known to exist, each made of a different metal. The horn's type determines how many berserkers answer it summons, as well as the requirement for its use. The DM chooses the horn's type or determines it randomly.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands.",
+		descriptionFull: "You can use an action to blow this horn. In response, warrior spirits from the plane of Ysgard appear within 60 feet of you. These spirits use the berserker statistics. They return to Ysgard after 1 hour or when they drop to 0 hit points. Once you use the horn, it can't be used again until 7 days have passed.\n Four types of *Horn of Valhalla* are known to exist, each made of a different metal. The horn's type determines how many berserkers answer it summons, as well as the requirement for its use. The DM chooses the horn's type or determines it randomly.\n   If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands.",
 		weight: 2,
 		usages: 1,
 		recovery: "7 days",
@@ -2894,7 +2782,7 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		attunement: true,
 		description: "As an action, I can make an ioun stone orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. Different stones grant different benefits.",
-		descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.",
+		descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.",
 		allowDuplicates: true,
 		action: [["action", " (orbit/retrieve)"]],
 		choices: ["Absorption", "Agility", "Awareness", "Fortitude", "Greater Absorption", "Insight", "Intellect", "Leadership", "Mastery", "Protection", "Regeneration", "Reserve", "Strength", "Sustenance"],
@@ -2903,31 +2791,31 @@ var Base_MagicItemsList = {
 			magicItemTable: "H",
 			description: "As an action, I can make this pale lavender ellipsoid orbit my head at 1d3 ft or retrieve it. While it orbits my head, I can use my reaction to cancel a spell of 4th level or lower targeting only me, if I can see the caster and the stone has enough charges left. It can cancel 20 levels of spells before it loses its magic.",
 			descriptionLong: "As an action, I can make this pale lavender ellipsoid orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I can use my reaction to cancel a spell of 4th level or lower targeting only me, if I can see the caster and the stone has enough charges left. It can cancel 20 levels of spells before it loses its magic.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   While this pale lavender ellipsoid orbits your head, you can use your reaction to cancel a spell of 4th level or lower cast by a creature you can see and targeting only you.\n   Once the stone has canceled 20 levels of spells, it burns out and turns dull gray, losing its magic. If you are targeted by a spell whose level is higher than the number of spell levels the stone has left, the stone can't cancel it.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   While this pale lavender ellipsoid orbits your head, you can use your reaction to cancel a spell of 4th level or lower cast by a creature you can see and targeting only you.\n   Once the stone has canceled 20 levels of spells, it burns out and turns dull gray, losing its magic. If you are targeted by a spell whose level is higher than the number of spell levels the stone has left, the stone can't cancel it.",
 			limfeaname: "Ioun Stone of Absorption",
 			usages: 20,
-			recovery: "Never",
+			recovery: "\u2013",
 			action: [["reaction", ""]],
 		},
 		"agility": {
 			rarity: "very rare",
 			magicItemTable: "H",
 			description: "As an action, I can make this deep red sphere orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Dexterity score increases by 2, to a maximum of 20.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Dexterity score increases by 2, to a maximum of 20, while this deep red sphere orbits your head.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Dexterity score increases by 2, to a maximum of 20, while this deep red sphere orbits your head.",
 			scores: [0, 2, 0, 0, 0, 0],
 		},
 		"awareness": {
 			rarity: "rare",
 			magicItemTable: "G",
 			description: "As an action, I can make this dark blue rhomboid orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I can't be surprised.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You can't be surprised while this dark blue rhomboid orbits your head.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You can't be surprised while this dark blue rhomboid orbits your head.",
 			savetxt: { immune: ["surprised"] },
 		},
 		"fortitude": {
 			rarity: "very rare",
 			magicItemTable: "H",
 			description: "As an action, I can make this pink rhomboid orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Constitution score increases by 2, to a maximum of 20.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Constitution score increases by 2, to a maximum of 20, while this pink rhomboid orbits your head.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Constitution score increases by 2, to a maximum of 20, while this pink rhomboid orbits your head.",
 			scores: [0, 0, 2, 0, 0, 0],
 		},
 		"greater absorption": {
@@ -2935,72 +2823,72 @@ var Base_MagicItemsList = {
 			magicItemTable: "I",
 			description: "As an action, I can make this marbled lavender and green ellipsoid orbit my head at 1d3 ft or retrieve it. While it orbits my head, I can use a reaction to cancel a spell of 8th level or lower targeting only me, if I can see the caster and enough charges are left. It can cancel 50 levels of spells before it loses its magic.",
 			descriptionLong: "As an action, I can make this marbled lavender and green ellipsoid orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I can use my reaction to cancel a spell of 8th level or lower targeting only me, if I can see the caster and the stone has enough charges left. It can cancel 50 levels of spells before it loses its magic.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   While this marbled lavender and green ellipsoid orbits your head, you can use your reaction to cancel a spell of 8th level or lower cast by a creature you can see and targeting only you. Once the stone has canceled 50 levels of spells, it burns out and turns dull gray, losing its magic. If you are targeted by a spell whose level is higher than the number of spell levels the stone has left, the stone can't cancel it.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   While this marbled lavender and green ellipsoid orbits your head, you can use your reaction to cancel a spell of 8th level or lower cast by a creature you can see and targeting only you. Once the stone has canceled 50 levels of spells, it burns out and turns dull gray, losing its magic. If you are targeted by a spell whose level is higher than the number of spell levels the stone has left, the stone can't cancel it.",
 			limfeaname: "Ioun Stone of Greater Absorption",
 			usages: 50,
-			recovery: "Never",
+			recovery: "\u2013",
 			action: [["reaction", ""]],
 		},
 		"insight": {
 			rarity: "very rare",
 			magicItemTable: "H",
 			description: "As an action, I can make this incandescent blue sphere orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Wisdom score increases by 2, to a maximum of 20.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Wisdom score increases by 2, to a maximum of 20, while this incandescent blue sphere orbits your head.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Wisdom score increases by 2, to a maximum of 20, while this incandescent blue sphere orbits your head.",
 			scores: [0, 0, 0, 0, 2, 0],
 		},
 		"intellect": {
 			rarity: "very rare",
 			magicItemTable: "H",
 			description: "As an action, I can make this marbled scarlet and blue sphere orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Intelligence score increases by 2, to a maximum of 20.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Intelligence score increases by 2, to a maximum of 20, while this marbled scarlet and blue sphere orbits your head.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Intelligence score increases by 2, to a maximum of 20, while this marbled scarlet and blue sphere orbits your head.",
 			scores: [0, 0, 0, 2, 0, 0],
 		},
 		"leadership": {
 			rarity: "very rare",
 			magicItemTable: "H",
 			description: "As an action, I can make this marbled pink and green sphere orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Charisma score increases by 2, to a maximum of 20.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Charisma score increases by 2, to a maximum of 20, while this marbled pink and green sphere orbits your head.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Charisma score increases by 2, to a maximum of 20, while this marbled pink and green sphere orbits your head.",
 			scores: [0, 0, 0, 0, 0, 2],
 		},
 		"mastery": {
 			rarity: "legendary",
 			magicItemTable: "I",
 			description: "As an action, I can make this pale green prism orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Proficiency Bonus increases by 1.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your proficiency bonus increases by 1 while this pale green prism orbits your head.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your proficiency bonus increases by 1 while this pale green prism orbits your head.",
 			addMod: [{ type: "", field: "Proficiency Bonus Modifier", mod: 1, text: "My Proficiency Bonus increases by 1." }],
 		},
 		"protection": {
 			rarity: "rare",
 			magicItemTable: "G",
 			description: "As an action, I can make this dusty rose prism orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I have a +1 bonus to AC.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You gain a +1 bonus to AC while this dusty rose prism orbits your head.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You gain a +1 bonus to AC while this dusty rose prism orbits your head.",
 			extraAC: [{ name: "Ioun Stone of Protection", mod: 1, magic: true, text: "I gain a +1 bonus to AC while attuned." }],
 		},
 		"regeneration": {
 			rarity: "legendary",
 			magicItemTable: "I",
 			description: "As an action, I can make this pearly white spindle orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I regain 15 HP at the end of each hour as long as I have at least 1 HP.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You regain 15 hit points at the end of each hour this pearly white spindle orbits your head, provided that you have at least 1 hit point.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You regain 15 hit points at the end of each hour this pearly white spindle orbits your head, provided that you have at least 1 hit point.",
 		},
 		"reserve": {
 			rarity: "rare",
 			magicItemTable: "G",
 			description: "As an action, I can make this vibrant purple prism orbit my head at 1d3 ft or retrieve it. It can store 3 (spell slot) levels worth of spells. By touching it, one can cast a 1-3 level spell into it. While it orbits my head, I can cast any spell stored in it as if casting it myself, but using the original casters spellcasting ability.",
 			descriptionLong: "As an action, I can make this vibrant purple prism orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. It can store 3 (spell slot) levels worth of spells. By touching it, one can cast a 1-3 level spell into it. While it orbits my head, I can cast any spell stored in it as if casting it myself, but using the original casters spellcasting ability.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   This vibrant purple prism stores spells cast into it, holding them until you use them. The stone can store up to 3 levels worth of spells at a time. When found, it contains 1d4-1 levels of stored spells chosen by the DM.\n   Any creature can cast a spell of 1st through 3rd level into the stone by touching it as the spell is cast. The spell has no effect, other than to be stored in the stone. If the stone can't hold the spell, the spell is expended without effect. The level of the slot used to cast the spell determines how much space it uses.\n   While this stone orbits your head, you can cast any spell stored in it. The spell uses the slot level, spell save DC, spell attack bonus, and spellcasting ability of the original caster, but is otherwise treated as if you cast the spell. The spell cast from the stone is no longer stored in it, freeing up space.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   This vibrant purple prism stores spells cast into it, holding them until you use them. The stone can store up to 3 levels worth of spells at a time. When found, it contains 1d4-1 levels of stored spells chosen by the DM.\n   Any creature can cast a spell of 1st through 3rd level into the stone by touching it as the spell is cast. The spell has no effect, other than to be stored in the stone. If the stone can't hold the spell, the spell is expended without effect. The level of the slot used to cast the spell determines how much space it uses.\n   While this stone orbits your head, you can cast any spell stored in it. The spell uses the slot level, spell save DC, spell attack bonus, and spellcasting ability of the original caster, but is otherwise treated as if you cast the spell. The spell cast from the stone is no longer stored in it, freeing up space.",
 		},
 		"strength": {
 			rarity: "very rare",
 			magicItemTable: "H",
 			description: "As an action, I can make this pale blue rhomboid orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, my Strength score increases by 2, to a maximum of 20.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Strength score increases by 2, to a maximum of 20, while this pale blue rhomboid orbits your head.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   Your Strength score increases by 2, to a maximum of 20, while this pale blue rhomboid orbits your head.",
 			scores: [2, 0, 0, 0, 0, 0],
 		},
 		"sustenance": {
 			rarity: "rare",
 			magicItemTable: "G",
 			description: "As an action, I can make this clear spindle orbit my head at 1d3 ft or retrieve it. Others can catch it as an action with an attack or Acrobatics check (AC/DC 24). It has 10 HP and resistance to all damage. While it orbits my head, I don't need to eat or drink.",
-			descriptionFull: "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You don't need to eat or drink while this clear spindle orbits your head.",
+			descriptionFull: "An *Ioun stone* is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of *Ioun stone* exist, each type a distinct combination of shape and color.\n   When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect.\n   A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head.\n   You don't need to eat or drink while this clear spindle orbits your head.",
 		},
 	},
 	"iron bands of bilarro": { // contains contributions by AelarTheElfRogue
@@ -3040,7 +2928,7 @@ var Base_MagicItemsList = {
 		notLegalAL: true,
 		description: "As an action I can speak the flask's command word and target a creature from another plane that I can see within 60 ft. It must make a DC 17 Wis save (adv. if trapped before) or be trapped in the flask. It holds only 1 creature. As an action, I can open it to release the creature, which then obeys my commands for 1 hour.",
 		descriptionLong: "As an action I can speak the flask's command word and target a creature from another plane that I can see within 60 ft. It must make a DC 17 Wisdom saving throw or be trapped inside the flask. It has advantage on this save if it was trapped in the flask before. The flask holds only 1 creature, which remain inside until released and doesn't need to breathe, eat, or drink and doesn't age. As an action, I can remove the flak's brass stopper and release the creature inside, which then obeys my commands for 1 hour as long as those commands aren't likely to cause its death. After this time, it acts normally.",
-		descriptionFull: "This iron bottle has a brass stopper. You can use an action to speak the flask's command word, targeting a creature that you can see within 60 feet of you. If the target is native to a plane of existence other than the one you're on, the target must succeed on a DC 17 Wisdom saving throw or be trapped in the flask. If the target has been trapped by the flask before, it has advantage on the saving throw. Once trapped, a creature remains in the flask until released. The flask can hold only one creature at a time. A creature trapped in the flask doesn't need to breathe, eat, or drink and doesn't age.\n   You can use an action to remove the flask's stopper and release the creature the flask contains. The creature is friendly to you and your companions for 1 hour and obeys your commands for that duration. If you give no commands or give it a command that is likely to result in its death, it defends itself but otherwise takes no actions. At the end of the duration, the creature acts in accordance with its normal disposition and alignment.\n   An Identify spell reveals that a creature is inside the flask, but the only way to determine the type of creature is to open the flask. A newly discovered bottle might already contain a creature chosen by the DM or determined randomly.\n\n" + toUni("d100\tContents") + "\n01-50\tEmpty\n   51\tArcanaloth\n   52\tCambion\n53-54\tDao\n55-57\tDemon (type 1): barlgura, shadow demon, or vrock\n58-60\tDemon (type 2): chasme or hezrou\n61-62\tDemon (type 3): glabrezu or yochlol\n63-64\tDemon (type 4): nalfeshnee\n   65\tDemon (type 5): marilith\n   66\tDemon (type 6): balor or goristro\n   67\tDeva\n68-69\tDevil (greater): horned devil, erinyes, ice devil, or pit fiend\n70-72\tDevil (lesser): imp, spined devil, bearded devil, barbed devil, chain devil, or bone devil\n73-74\tDjinni\n75-76\tEfreeti\n77-78\tElemental (any)\n   79\tGithyanki knight\n   80\tGithzerai zerth\n81-82\tInvisible stalker\n83-84\tMarid\n85-86\tMezzoloth\n87-88\tNight hag\n89-90\tNycaloth\n   91\tPlanetar\n92-93\tSalamander\n94-95\tSlaad (any)\n   96\tSolar\n97-98\tSuccubus/Incubus\n   99\tUltroloth\n   00\tXorn",
+		descriptionFull: "This iron bottle has a brass stopper. You can use an action to speak the flask's command word, targeting a creature that you can see within 60 feet of you. If the target is native to a plane of existence other than the one you're on, the target must succeed on a DC 17 Wisdom saving throw or be trapped in the flask. If the target has been trapped by the flask before, it has advantage on the saving throw. Once trapped, a creature remains in the flask until released. The flask can hold only one creature at a time. A creature trapped in the flask doesn't need to breathe, eat, or drink and doesn't age.\n   You can use an action to remove the flask's stopper and release the creature the flask contains. The creature is friendly to you and your companions for 1 hour and obeys your commands for that duration. If you give no commands or give it a command that is likely to result in its death, it defends itself but otherwise takes no actions. At the end of the duration, the creature acts in accordance with its normal disposition and alignment.\n   An *Identify* spell reveals that a creature is inside the flask, but the only way to determine the type of creature is to open the flask. A newly discovered bottle might already contain a creature chosen by the DM or determined randomly.\n\n**d100**\t**Contents**\n01-50\tEmpty\n   51\tArcanaloth\n   52\tCambion\n53-54\tDao\n55-57\tDemon (type 1): barlgura, shadow demon, or vrock\n58-60\tDemon (type 2): chasme or hezrou\n61-62\tDemon (type 3): glabrezu or yochlol\n63-64\tDemon (type 4): nalfeshnee\n   65\tDemon (type 5): marilith\n   66\tDemon (type 6): balor or goristro\n   67\tDeva\n68-69\tDevil (greater): horned devil, erinyes, ice devil, or pit fiend\n70-72\tDevil (lesser): imp, spined devil, bearded devil, barbed devil, chain devil, or bone devil\n73-74\tDjinni\n75-76\tEfreeti\n77-78\tElemental (any)\n   79\tGithyanki knight\n   80\tGithzerai zerth\n81-82\tInvisible stalker\n83-84\tMarid\n85-86\tMezzoloth\n87-88\tNight hag\n89-90\tNycaloth\n   91\tPlanetar\n92-93\tSalamander\n94-95\tSlaad (any)\n   96\tSolar\n97-98\tSuccubus/Incubus\n   99\tUltroloth\n   00\tXorn",
 		weight: 1,
 	},
 	"javelin of lightning": { // contains contributions by Larry Hoy
@@ -3074,7 +2962,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This glass jar, 3 inches in diameter, contains 1d4+1 doses of a thick mixture that smells faintly of aloe. The jar and its contents weigh \xBD pound.\n   As an action, one dose of the ointment can be swallowed or applied to the skin. The creature that receives it regains 2d8+2 hit points, ceases to be poisoned, and is cured of any disease.",
 		weight: 0.5,
 		usages: "1d4+1",
-		recovery: "Never",
+		recovery: "\u2013",
 	},
 	"lantern of revealing": {
 		name: "Lantern of Revealing",
@@ -3094,8 +2982,8 @@ var Base_MagicItemsList = {
 		rarity: "legendary",
 		magicItemTable: "I",
 		attunement: true,
-		description: "This magic sword has a +1 bonus to attack and damage rolls made with it, and grants me +1 to all saves. Once per dawn, I can use its luck to reroll one attack, ability check, or save, but I must use the second result. As an action, I can use one of its 1d4-1 charges to cast Wish. Charges can't be regained.",
-		descriptionFull: "You gain a +1 bonus to attack and damage rolls made with this magic weapon. While the sword is on your person, you also gain a +1 bonus to saving throws.\n   " + toUni("Luck") + ". If the sword is on your person, you can call on its luck (no action required) to reroll one attack roll, ability check, or saving throw you dislike. You must use the second roll. This property can't be used again until the next dawn.\n   " + toUni("Wish") + ". The sword has 1d4-1 charges. While holding it, you can use an action to expend 1 charge and cast the wish spell from it. This property can't be used again until the next dawn. The sword loses this property if it has no charges.",
+		description: "This magic sword has a +1 bonus to attack and damage rolls made with it, and grants me +1 to all saves. Once per dawn, I can use its luck to reroll one attack, ability check, or save, but I must use the second result. As an action, I can use one of its 1d4-1 charges to cast *Wish*. Charges can't be regained.",
+		descriptionFull: "You gain a +1 bonus to attack and damage rolls made with this magic weapon. While the sword is on your person, you also gain a +1 bonus to saving throws.\n   ***Luck***. If the sword is on your person, you can call on its luck (no action required) to reroll one attack roll, ability check, or saving throw you dislike. You must use the second roll. This property can't be used again until the next dawn.\n   ***Wish***. The sword has 1d4-1 charges. While holding it, you can use an action to expend 1 charge and cast the *wish* spell from it. This property can't be used again until the next dawn. The sword loses this property if it has no charges.",
 		extraLimitedFeatures: [{
 			name: "Luck Blade - luck reroll",
 			usages: 1,
@@ -3103,7 +2991,7 @@ var Base_MagicItemsList = {
 		}, {
 			name: "Luck Blade - cast Wish",
 			usages: "1d4-1",
-			recovery: "Never",
+			recovery: "\u2013",
 		}],
 		chooseGear: {
 			type: "weapon",
@@ -3233,7 +3121,7 @@ var Base_MagicItemsList = {
 		rarity: "very rare",
 		magicItemTable: "H",
 		description: "This tome can only be used by a spellcaster with two 5th-level spell slots. Others reading it take 6d6 psychic damage.",
-		descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a golem, you must spend a the time shown on the table, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay the specified cost to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
+		descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a *manual of golems* and attempts to read it takes 6d6 psychic damage.\n   To create a golem, you must spend a the time shown on the table, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay the specified cost to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
 		weight: 5,
 		allowDuplicates: true,
 		prerequisite: "Requires a spellcaster with at least two 5th-level spell slots to decipher and use the manual",
@@ -3244,7 +3132,7 @@ var Base_MagicItemsList = {
 			sortname: "Manual of Golems, Clay",
 			description: "Only spellcasters with two 5th-level spell slots can use this tome. Creating a clay golem requires 65000 gp of supplies, 30 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionLong: "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a clay golem requires 65000 gp of supplies, 30 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
-			descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a clay golem, you must spend 30 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 65,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
+			descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a *manual of golems* and attempts to read it takes 6d6 psychic damage.\n   To create a clay golem, you must spend 30 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 65,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
 			creaturesAdd: [["Clay Golem", "stop"]],
 		},
 		"flesh": {
@@ -3252,7 +3140,7 @@ var Base_MagicItemsList = {
 			sortname: "Manual of Golems, Flesh",
 			description: "Only spellcasters with two 5th-level spell slots can use this tome. Creating a flesh golem requires 50000 gp of supplies, 60 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionLong: "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a flesh golem requires 50000 gp of supplies, 60 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
-			descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a flesh golem, you must spend 60 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 50,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
+			descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a *manual of golems* and attempts to read it takes 6d6 psychic damage.\n   To create a flesh golem, you must spend 60 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 50,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
 			creaturesAdd: [["Flesh Golem", "stop"]],
 		},
 		"iron": {
@@ -3260,7 +3148,7 @@ var Base_MagicItemsList = {
 			sortname: "Manual of Golems, Iron",
 			description: "Only spellcasters with two 5th-level spell slots can use this tome. Creating a iron golem requires 100000 gp of supplies, 120 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionLong: "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a iron golem requires 100000 gp of supplies, 120 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
-			descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create an iron golem, you must spend 120 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 100,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
+			descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a *manual of golems* and attempts to read it takes 6d6 psychic damage.\n   To create an iron golem, you must spend 120 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 100,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
 			creaturesAdd: [["Iron Golem", "stop"]],
 		},
 		"stone": {
@@ -3268,7 +3156,7 @@ var Base_MagicItemsList = {
 			sortname: "Manual of Golems, Stone",
 			description: "Only spellcasters with two 5th-level spell slots can use this tome. Creating a stone golem requires 80000 gp of supplies, 90 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
 			descriptionLong: "Only spellcasters with two 5th-level spell slots can use this tome, others reading it take 6d6 psychic damage. Creating a stone golem requires 80000 gp of supplies, 90 days working uninterrupted with the manual at hand, resting no more than 8 hours per day. The manual is consumed to animate the golem, which understands and obeys my spoken commands.",
-			descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a manual of golems and attempts to read it takes 6d6 psychic damage.\n   To create a stone golem, you must spend 90 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 80,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
+			descriptionFull: "This tome contains information and incantations necessary to make a particular type of golem. The DM chooses the type or determines it randomly. To decipher and use the manual, you must be a spellcaster with at least two 5th-level spell slots. A creature that can't use a *manual of golems* and attempts to read it takes 6d6 psychic damage.\n   To create a stone golem, you must spend 90 days, working without interruption with the manual at hand and resting no more than 8 hours per day. You must also pay 80,000 gp to purchase supplies. Once you finish creating the golem, the book is consumed in eldritch flames. The golem becomes animate when the ashes of the manual are sprinkled on it. It is under your control, and it understands and obeys your spoken commands.",
 			creaturesAdd: [["Stone Golem", "stop"]],
 		},
 	},
@@ -3291,8 +3179,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "The medallion has 3 charges. While wearing it, I can use an action and expend 1 charge to cast Detect Thoughts (save DC 13) from it. The medallion regains 1d3 expended charges daily at dawn.",
-		descriptionFull: "The medallion has 3 charges. While wearing it, you can use an action and expend 1 charge to cast the Detect Thoughts spell (save DC 13) from it. The medallion regains 1d3 expended charges daily at dawn.",
+		description: "The medallion has 3 charges. While wearing it, I can use an action and expend 1 charge to cast *Detect Thoughts* (save DC 13) from it. The medallion regains 1d3 expended charges daily at dawn.",
+		descriptionFull: "The medallion has 3 charges. While wearing it, you can use an action and expend 1 charge to cast the *Detect Thoughts* spell (save DC 13) from it. The medallion regains 1d3 expended charges daily at dawn.",
 		attunement: true,
 		weight: 1,
 		usages: 3,
@@ -3356,8 +3244,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "While wearing this necklace, I can breathe normally in any environment, and I have advantage on saving throws made against harmful gases and vapors (such as Cloudkill and Stinking Cloud effects, inhaled poisons, and the breath weapons of some dragons).",
-		descriptionFull: "While wearing this necklace, you can breathe normally in any environment, and you have advantage on saving throws made against harmful gases and vapors (such as Cloudkill and Stinking Cloud effects, inhaled poisons, and the breath weapons of some dragons).",
+		description: "While wearing this necklace, I can breathe normally in any environment, and I have advantage on saving throws made against harmful gases and vapors (such as *Cloudkill* and *Stinking Cloud* effects, inhaled poisons, and the breath weapons of some dragons).",
+		descriptionFull: "While wearing this necklace, you can breathe normally in any environment, and you have advantage on saving throws made against harmful gases and vapors (such as *Cloudkill* and *Stinking Cloud* effects, inhaled poisons, and the breath weapons of some dragons).",
 		weight: 1,
 		attunement: true,
 		savetxt: { adv_vs: ["gases", "vapors"] },
@@ -3368,11 +3256,11 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "C",
-		description: "This necklace has 1d6+3 beads hanging from it. As an action, I can detach a bead and throw it up to 60 ft away where it detonates as a 3rd-level Fireball (save DC 15). I can hurl multiple beads as part of the same action, increasing the level of the Fireball by 1 for each bead beyond the first.",
-		descriptionFull: "This necklace has 1d6+3 beads hanging from it. You can use an action to detach a bead and throw it up to 60 feet away. When it reaches the end of its trajectory, the bead detonates as a 3rd-level Fireball spell (save DC 15).\n   You can hurl multiple beads, or even the whole necklace, as one action. When you do so, increase the level of the Fireball by 1 for each bead beyond the first.",
+		description: "This necklace has 1d6+3 beads hanging from it. As an action, I can detach a bead and throw it up to 60 ft away where it detonates as a 3rd-level *Fireball* (save DC 15). I can hurl multiple beads as part of the same action, increasing the level of the *Fireball* by 1 for each bead beyond the first.",
+		descriptionFull: "This necklace has 1d6+3 beads hanging from it. You can use an action to detach a bead and throw it up to 60 feet away. When it reaches the end of its trajectory, the bead detonates as a 3rd-level *Fireball* spell (save DC 15).\n   You can hurl multiple beads, or even the whole necklace, as one action. When you do so, increase the level of the *Fireball* by 1 for each bead beyond the first.",
 		weight: 1,
 		usages: "1d6+3",
-		recovery: "Never",
+		recovery: "\u2013",
 		spellcastingBonus: [{
 			name: "Fireball",
 			spells: ["fireball"],
@@ -3384,7 +3272,7 @@ var Base_MagicItemsList = {
 				description: "20-ft rad all crea 8d6+1d6/extra bead Fire dmg; save halves; unattended flammable objects ignite",
 				components: "M\u2020",
 				compMaterial: "Using the Necklace of Fireballs to cast Fireball requires removing and destroying one or more of the beads from it.",
-				changes: "Using the Necklace of Fireballs to cast Fireball requires removing and destroying one or more of the beads from it. The damage is that of a Fireball cast a 3rd-level, +1 level per bead thrown as part of the same action beyond the first.",
+				changes: "Using the Necklace of Fireballs to cast *Fireball* requires removing and destroying one or more of the beads from it. The damage is that of a *Fireball* cast a 3rd-level, +1 level per bead thrown as part of the same action beyond the first.",
 			},
 		},
 	},
@@ -3397,9 +3285,9 @@ var Base_MagicItemsList = {
 		prerequisite: "Requires attunement by a cleric, druid, or paladin",
 		prereqeval: function (v) { return classes.known.cleric || classes.known.druid || classes.known.paladin ? true : false; },
 		magicItemTable: "G",
-		description: "This necklace has many beads, 1d4+2 are magical and can each be used to cast a spell once per dawn as a bonus action. The DM selects the spells from: Bless, Cure Wounds \u0026 Lesser Restoration, Greater Restoration, Branding Smite, Planar Ally, and Wind Walk. Multiple beads of the same type can be on one necklace.",
-		descriptionLong: "This necklace has many beads, 1d4+2 are magical aquamarine, black pearl, or topaz beads and can each be used to cast a spell once per dawn as a bonus action. The DM selects the bead from: blessing bead (Bless), curing bead (Cure Wounds \u0026 Lesser Restoration), favor bead (Greater Restoration), smiting bead (Branding Smite), summons bead (Planar Ally), and wind walking bead (Wind Walk). Multiple beads of the same type can be on one necklace.",
-		descriptionFull: "This necklace has 1d4+2 magic beads made from aquamarine, black pearl, or topaz. It also has many nonmagical beads made from stones such as amber, bloodstone, citrine, coral, jade, pearl, or quartz. If a magic bead is removed from the necklace, that bead loses its magic.\n   Six types of magic beads exist. The DM decides the type of each bead on the necklace or determines it randomly. A necklace can have more than one bead of the same type. To use one, you must be wearing the necklace. Each bead contains a spell that you can cast from it as a bonus action (using your spell save DC if a save is necessary). Once a magic bead's spell is cast, that bead can't be used again until the next dawn.\n\n" + toUni("d20\tBead of ...\tSpell") + "\n1-6\tBlessing\t\tBless\n7-12\tCuring\t\tCure Wounds (2nd level) or Lesser Restoration\n13-16\tFavor\t\tGreater Restoration\n17-18\tSmiting\t\tBranding Smite\n19\tSummons   \tPlanar Ally\n20\tWind walking\tWind Walk",
+		description: "This necklace has many beads, 1d4+2 are magical and can each be used to cast a spell once per dawn as a bonus action. The DM selects the spells from: *Bless*, *Cure Wounds* \x26 *Lesser Restoration*, *Greater Restoration*, *Branding Smite*, *Planar Ally*, and *Wind Walk*. Multiple beads of the same type can be on one necklace.",
+		descriptionLong: "This necklace has many beads, 1d4+2 are magical aquamarine, black pearl, or topaz beads and can each be used to cast a spell once per dawn as a bonus action. The DM selects the bead from: blessing bead (*Bless*), curing bead (*Cure Wounds* \x26 *Lesser Restoration*), favor bead (*Greater Restoration*), smiting bead (*Branding Smite*), summons bead (*Planar Ally*), and wind walking bead (*Wind Walk*). Multiple beads of the same type can be on one necklace.",
+		descriptionFull: "This necklace has 1d4+2 magic beads made from aquamarine, black pearl, or topaz. It also has many nonmagical beads made from stones such as amber, bloodstone, citrine, coral, jade, pearl, or quartz. If a magic bead is removed from the necklace, that bead loses its magic.\n   Six types of magic beads exist. The DM decides the type of each bead on the necklace or determines it randomly. A necklace can have more than one bead of the same type. To use one, you must be wearing the necklace. Each bead contains a spell that you can cast from it as a bonus action (using your spell save DC if a save is necessary). Once a magic bead's spell is cast, that bead can't be used again until the next dawn.\n\n**d20**\t**Bead of ...**\t**Spell**\n1-6\tBlessing\t\tBless\n7-12\tCuring\t\tCure Wounds (2nd level) or *Lesser Restoration*\n13-16\tFavor\t\tGreater Restoration\n17-18\tSmiting\t\tBranding Smite\n19\tSummons   \tPlanar Ally\n20\tWind walking\tWind Walk",
 		weight: 1,
 		spellcastingAbility: "class",
 		spellFirstColTitle: "Us",
@@ -3423,7 +3311,7 @@ var Base_MagicItemsList = {
 						return toReturn;
 					}
 				},
-				"Using the Necklace of Prayer Beads, the casting time is only a bonus action. Also, Cure Wounds is cast as a 2nd-level spell.",
+				"Using the Necklace of Prayer Beads, the casting time is only a bonus action. Also, *Cure Wounds* is cast as a 2nd-level spell.",
 			],
 		},
 	},
@@ -3449,7 +3337,7 @@ var Base_MagicItemsList = {
 		description: "I have a +2 bonus to attack and damage rolls with this magic sword. It has 1d8+1 charges and if it inflicts a critical hit while it has charges left on a creature with fewer than 100 HP (and that is not a construct or undead), the target must make a DC 15 Con save or die. If it dies, the sword uses a charge.",
 		descriptionFull: "You gain a +2 bonus to attack and damage rolls made with this magic weapon.\n   The sword has 1d8+1 charges. If you score a critical hit against a creature that has fewer than 100 hit points, it must succeed on a DC 15 Constitution saving throw or be slain instantly as the sword tears its life force from its body (a construct or an undead is immune). The sword loses 1 charge if the creature is slain. When the sword has no charges remaining, it loses this property.",
 		usages: "1d8+1",
-		recovery: "Never",
+		recovery: "\u2013",
 		chooseGear: {
 			type: "weapon",
 			prefixOrSuffix: "brackets",
@@ -3505,9 +3393,9 @@ var Base_MagicItemsList = {
 		type: "potion",
 		rarity: "rare",
 		magicItemTable: "C",
-		description: "This cloudy gray oil can be used once to cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected target then gains the effect of the Etherealness spell for 1 hour.",
-		descriptionLong: "This cloudy gray oil can be used once to cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of the Etherealness spell for 1 hour. It step into the border regions of the Ethereal Plane, in the area where it overlaps with my current plane, remaining there until it uses an action to dismiss the spell. I can still see the plane I came from, but can move anywhere, up, down, and even through solid objects and creatures.",
-		descriptionFull: "Beads of this cloudy gray oil form on the outside of its container and quickly evaporate. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of the Etherealness spell for 1 hour.",
+		description: "This cloudy gray oil can be used once to cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected target then gains the effect of the *Etherealness* spell for 1 hour.",
+		descriptionLong: "This cloudy gray oil can be used once to cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of the *Etherealness* spell for 1 hour. It step into the border regions of the Ethereal Plane, in the area where it overlaps with my current plane, remaining there until it uses an action to dismiss the spell. I can still see the plane I came from, but can move anywhere, up, down, and even through solid objects and creatures.",
+		descriptionFull: "Beads of this cloudy gray oil form on the outside of its container and quickly evaporate. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of the *Etherealness* spell for 1 hour.",
 		weight: 0.5,
 		action: false, // To keep the default potion action from being added
 	},
@@ -3528,9 +3416,9 @@ var Base_MagicItemsList = {
 		type: "potion",
 		rarity: "uncommon",
 		magicItemTable: "B",
-		description: "This sticky black unguent can be used once to cover a Medium or smaller creature and its equipment, granting it the effects of Freedom of Movement for 8 hours. Applying it takes 10 minutes. Alternatively, it can be poured out as an action, duplicating the effects of the Grease spell in a 10-ft square for 8 hours.",
-		descriptionLong: "This sticky black unguent can be used once to cover a Medium or smaller creature and its equipment, granting it the effects of Freedom of Movement for 8 hours. Applying it takes 10 minutes. The creature's movement is unaffected by difficult terrain, being underwater, and spells and other magical effects can't reduce it's speed or cause it to be paralyzed or restrained. Alternatively, it can be poured out as an action, duplicating the effects of the Grease spell in a 10-ft square for 8 hours. The area is difficult terrain and any in it when it appears, entering it, or ending their turn in it must make a DC 10 Dex save or fall prone.",
-		descriptionFull: "This sticky black unguent is thick and heavy in the container, but it flows quickly when poured. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of a Freedom of Movement spell for 8 hours.\n   Alternatively, the oil can be poured on the ground as an action, where it covers a 10-foot square, duplicating the effect of the Grease spell in that area for 8 hours.",
+		description: "This sticky black unguent can be used once to cover a Medium or smaller creature and its equipment, granting it the effects of *Freedom of Movement* for 8 hours. Applying it takes 10 minutes. Alternatively, it can be poured out as an action, duplicating the effects of the *Grease* spell in a 10-ft square for 8 hours.",
+		descriptionLong: "This sticky black unguent can be used once to cover a Medium or smaller creature and its equipment, granting it the effects of *Freedom of Movement* for 8 hours. Applying it takes 10 minutes. The creature's movement is unaffected by difficult terrain, being underwater, and spells and other magical effects can't reduce it's speed or cause it to be paralyzed or restrained. Alternatively, it can be poured out as an action, duplicating the effects of the *Grease* spell in a 10-ft square for 8 hours. The area is difficult terrain and any in it when it appears, entering it, or ending their turn in it must make a DC 10 Dex save or fall prone.",
+		descriptionFull: "This sticky black unguent is thick and heavy in the container, but it flows quickly when poured. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of a *Freedom of Movement* spell for 8 hours.\n   Alternatively, the oil can be poured on the ground as an action, where it covers a 10-foot square, duplicating the effect of the *Grease* spell in that area for 8 hours.",
 		weight: 0.5,
 		action: false, // To keep the default potion action from being added
 	},
@@ -3679,8 +3567,8 @@ var Base_MagicItemsList = {
 		type: "armor (plate)",
 		rarity: "legendary",
 		magicItemTable: "I",
-		description: "As an action while I'm wearing this plate armor, I can speak its command word to cast Etherealness on myself. This effect lasts for 10 minutes or until I remove the armor or use an action to speak the command word again. This property of the armor can't be used again until the next dawn.",
-		descriptionFull: "While you're wearing this armor, you can speak its command word as an action to gain the effect of the Etherealness spell, which lasts for 10 minutes or until you remove the armor or use an action to speak the command word again. This property of the armor can't be used again until the next dawn.",
+		description: "As an action while I'm wearing this plate armor, I can speak its command word to cast *Etherealness* on myself. This effect lasts for 10 minutes or until I remove the armor or use an action to speak the command word again. This property of the armor can't be used again until the next dawn.",
+		descriptionFull: "While you're wearing this armor, you can speak its command word as an action to gain the effect of the *Etherealness* spell, which lasts for 10 minutes or until you remove the armor or use an action to speak the command word again. This property of the armor can't be used again until the next dawn.",
 		attunement: true,
 		weight: 65,
 		usages: 1,
@@ -3708,7 +3596,7 @@ var Base_MagicItemsList = {
 				components: "V,M\u0192",
 				duration: "10 min",
 				description: "I go to Ethereal Plane; move there freely, but able to perceive 60 ft into the normal plane",
-				changes: "Using the Plate Armor of Etherealness, I can cast Etherealness, but only on myself and it lasts only 10 minutes.",
+				changes: "Using the Plate Armor of Etherealness, I can cast *Etherealness*, but only on myself and it lasts only 10 minutes.",
 			},
 		},
 	},
@@ -3719,8 +3607,8 @@ var Base_MagicItemsList = {
 		rarity: "rare",
 		magicItemTable: "D",
 		description: "As an action, I can unfold this black cloth, 6 ft in diameter, and place it on a solid surface, whereupon it creates a 10-ft deep extradimensional hole. It can't be used to create passages. The space is always the same, so I can store things and creatures in there. Removing it and folding it back takes an action.",
-		descriptionLong: "As an action, I can unfold this circular black cloth, 6 ft in diameter, and place it on a solid surface, whereupon it creates a 10-ft deep extradimensional hole. It can't be used to create passages. Removing it and folding it back takes an action. The space created is always the same, so I can store things and creatures in there. The hole always weighs next to nothing. Creatures inside the folded up hole can breathe for 10 min and can escape as an action with a DC 10 Strength check, appearing next to me if they do. Placing the hole in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
-		descriptionFull: "This fine black cloth, soft as silk, is folded up to the dimensions of a handkerchief. It unfolds into a circular sheet 6 feet in diameter.\n   You can use an action to unfold a portable hole and place it on or against a solid surface, whereupon the portable hole creates an extradimensional hole 10 feet deep. The cylindrical space within the hole exists on a different plane, so it can't be used to create open passages. Any creature inside an open portable hole can exit the hole by climbing out of it.\n   You can use an action to close a portable hole by taking hold of the edges of the cloth and folding it up. Folding the cloth closes the hole, and any creatures or objects within remain in the extradimensional space. No matter what's in it, the hole weighs next to nothing.\n   If the hole is folded up, a creature within the hole's extradimensional space can use an action to make a DC 10 Strength check. On a successful check, the creature forces its way out and appears within 5 feet of the portable hole or the creature carrying it. A breathing creature within a closed portable hole can survive for up to 10 minutes, after which time it begins to suffocate.\n   Placing a portable hole inside an extradimensional space created by a bag of holding, Heward's handy haversack, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10 feet of the gate is sucked through it and deposited in a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
+		descriptionLong: "As an action, I can unfold this circular black cloth, 6 ft in diameter, and place it on a solid surface, whereupon it creates a 10-ft deep extradimensional hole. I can't use it to create passages. Removing it and folding it back takes an action. The space created is always the same, so I can store things and creatures in there. The hole always weighs next to nothing. Creatures inside the folded up hole can breathe for 10 min and can escape as an action with a DC 10 Strength check, appearing next to me if they do. Placing the hole in another extradimensional space instantly destroys both and opens a gate to the Astral Plane.",
+		descriptionFull: "This fine black cloth, soft as silk, is folded up to the dimensions of a handkerchief. It unfolds into a circular sheet 6 feet in diameter.\n   You can use an action to unfold a *portable hole* and place it on or against a solid surface, whereupon the *portable hole* creates an extradimensional hole 10 feet deep. The cylindrical space within the hole exists on a different plane, so it can't be used to create open passages. Any creature inside an open *portable hole* can exit the hole by climbing out of it.\n   You can use an action to close a *portable hole* by taking hold of the edges of the cloth and folding it up. Folding the cloth closes the hole, and any creatures or objects within remain in the extradimensional space. No matter what's in it, the hole weighs next to nothing.\n   If the hole is folded up, a creature within the hole's extradimensional space can use an action to make a DC 10 Strength check. On a successful check, the creature forces its way out and appears within 5 feet of the *portable hole* or the creature carrying it. A breathing creature within a closed *portable hole* can survive for up to 10 minutes, after which time it begins to suffocate.\n   Placing a *portable hole* inside an extradimensional space created by a *bag of holding*, *Heward's handy haversack*, or similar item instantly destroys both items and opens a gate to the Astral Plane. The gate originates where the one item was placed inside the other. Any creature within 10 feet of the gate is sucked through it and deposited in a random location on the Astral Plane. The gate then closes. The gate is one-way only and can't be reopened.",
 		action: [["action", " (place/fold)"]],
 	},
 	"potion of animal friendship": {
@@ -3729,8 +3617,8 @@ var Base_MagicItemsList = {
 		type: "potion",
 		rarity: "uncommon",
 		magicItemTable: "B",
-		description: "Once as an action, I can drink this potion or administer it to another to be able to cast the Animal Friendship spell for 1 hour at will, charming beasts with Int < 4 for 1 hour if it fails a DC 13 Wis save. Agitating this muddy liquid brings little bits into view: a fish scale, a hummingbird tongue, a cat claw, or a squirrel hair.",
-		descriptionFull: "When you drink this potion, you can cast the Animal Friendship spell (save DC 13) for 1 hour at will. Agitating this muddy liquid brings little bits into view: a fish scale, a hummingbird tongue, a cat claw, or a squirrel hair.",
+		description: "Once as an action, I can drink this potion or administer it to another to be able to cast the *Animal Friendship* spell for 1 hour at will, charming beasts with Int < 4 for 1 hour if it fails a DC 13 Wis save. Agitating this muddy liquid brings little bits into view: a fish scale, a hummingbird tongue, a cat claw, or a squirrel hair.",
+		descriptionFull: "When you drink this potion, you can cast the *Animal Friendship* spell (save DC 13) for 1 hour at will. Agitating this muddy liquid brings little bits into view: a fish scale, a hummingbird tongue, a cat claw, or a squirrel hair.",
 		weight: 0.5,
 		extraTooltip: "AL: can always be bought for 100 gp",
 	},
@@ -3740,8 +3628,8 @@ var Base_MagicItemsList = {
 		type: "potion",
 		rarity: "rare",
 		magicItemTable: "C",
-		description: "Once as an action, I can drink this potion or administer it to another to gain the effect of the Clairvoyance spell. This creates an invisible sensor within 1 mile, in a familiar or obvious location, that the consumer can see or hear through. An eyeball bobs in this yellowish liquid but vanishes when the potion is opened.",
-		descriptionFull: "When you drink this potion, you gain the effect of the Clairvoyance spell. An eyeball bobs in this yellowish liquid but vanishes when the potion is opened.",
+		description: "Once as an action, I can drink this potion or administer it to another to gain the effect of the *Clairvoyance* spell. This creates an invisible sensor within 1 mile in a familiar or obvious location, that the consumer can see or hear through. An eyeball bobs in this yellowish liquid but vanishes when the potion is opened.",
+		descriptionFull: "When you drink this potion, you gain the effect of the *Clairvoyance* spell. An eyeball bobs in this yellowish liquid but vanishes when the potion is opened.",
 		weight: 0.5,
 	},
 	"potion of climbing": {
@@ -3761,9 +3649,9 @@ var Base_MagicItemsList = {
 		type: "potion",
 		rarity: "rare",
 		magicItemTable: "C",
-		description: "Once as an action, I can drink this potion or administer it to another to be reduced as per the Enlarge/Reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it.",
-		descriptionLong: "Once as an action, I can drink this potion or administer it to another to be reduced as per the Enlarge/Reduce spell for 1d4 hours (no concentration required). This causes the consumer to decrease one size category as it halves in size in all dimensions and its weight is reduced to one-eight of normal. Its weapon attacks deal -1d4 damage (min 1) and it has disadvantage on Strength checks and saving throws. The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it. Shaking the bottle fails to interrupt this process.",
-		descriptionFull: "When you drink this potion, you gain the \"reduce\" effect of the Enlarge/Reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it. Shaking the bottle fails to interrupt this process.",
+		description: "Once as an action, I can drink this potion or administer it to another to be reduced as per the *Enlarge/Reduce* spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it.",
+		descriptionLong: "Once as an action, I can drink this potion or administer it to another to be reduced as per the *Enlarge/Reduce* spell for 1d4 hours (no concentration required). This causes the consumer to decrease one size category as it halves in size in all dimensions and its weight is reduced to one-eight of normal. Its weapon attacks deal -1d4 damage (min 1) and it has disadvantage on Strength checks and saving throws. The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it. Shaking the bottle fails to interrupt this process.",
+		descriptionFull: "When you drink this potion, you gain the \"reduce\" effect of the *Enlarge/Reduce* spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it. Shaking the bottle fails to interrupt this process.",
 		weight: 0.5,
 	},
 	"potion of flying": {
@@ -3782,9 +3670,9 @@ var Base_MagicItemsList = {
 		type: "potion",
 		rarity: "rare",
 		magicItemTable: "C",
-		description: "Once as an action, I can drink this potion or administer it to another to gain the effect of the Gaseous Form spell for 1 hour (no concentration required), until the consumer drops to 0 HP, or ends the effect as a bonus action. This potion's container seems to hold fog that moves and pours like water.",
-		descriptionLong: "Once as an action, I can drink this potion or administer it to another to gain the effect of the Gaseous Form spell for 1 hour (no concentration required), until the consumer drops to 0 HP, or ends the effect as a bonus action. The consumer, along with everything it's wearing and carrying, transforms into a misty cloud. In this form, it can only move by flying at 10 ft speed, can hover, can't fall, has resistance to nonmagical damage, adv. on Str, Dex, and Con saves, can pass through mere cracks, but can't talk, manipulate items, cast spells, or attack. This container seems to hold fog that moves and pours like water.",
-		descriptionFull: "When you drink this potion, you gain the effect of the Gaseous Form spell for 1 hour (no concentration required) or until you end the effect as a bonus action. This potion's container seems to hold fog that moves and pours like water.",
+		description: "Once as an action, I can drink this potion or administer it to another to gain the effect of the *Gaseous Form* spell for 1 hour (no concentration required), until the consumer drops to 0 HP, or ends the effect as a bonus action. This potion's container seems to hold fog that moves and pours like water.",
+		descriptionLong: "Once as an action, I can drink this potion or administer it to another to gain the effect of the *Gaseous Form* spell for 1 hour (no concentration required), until the consumer drops to 0 HP, or ends the effect as a bonus action. The consumer, along with everything it's wearing and carrying, transforms into a misty cloud. In this form, it can only move by flying at 10 ft speed, can hover, can't fall, has resistance to nonmagical damage, adv. on Str, Dex, and Con saves, can pass through mere cracks, but can't talk, manipulate items, cast spells, or attack. This container seems to hold fog that moves and pours like water.",
+		descriptionFull: "When you drink this potion, you gain the effect of the *Gaseous Form* spell for 1 hour (no concentration required) or until you end the effect as a bonus action. This potion's container seems to hold fog that moves and pours like water.",
 		weight: 0.5,
 	},
 	"potion of giant strength": {
@@ -3792,7 +3680,7 @@ var Base_MagicItemsList = {
 		source: [["SRD", 234], ["D", 187]],
 		type: "potion",
 		description: "Once as an action, I can drink this potion or administer it to another to change the consumer's Strength score for 1 hour. The number of this score depends on the type of giant from which a sliver of fingernail is floating in this potion's transparent liquid.",
-		descriptionFull: "When you drink this potion, your Strength score changes for 1 hour. The type of giant determines the score (see the table below). The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a giant of the appropriate type. The potion of frost giant strength and the potion of stone giant strength have the same effect.\n\n" + toUni("Type\t\tStr\tRarity") + "\nHill giant\t\t21\tUncommon\nStone/frost giant\t23\tRare\nFire giant   \t25\tRare\nCloud giant\t27\tVery rare\nStorm giant\t29\tLegendary",
+		descriptionFull: "When you drink this potion, your Strength score changes for 1 hour. The type of giant determines the score (see the table below). The potion has no effect on you if your Strength is equal to or greater than that score.\n   This potion's transparent liquid has floating in it a sliver of fingernail from a giant of the appropriate type. The *potion of frost giant strength* and the *potion of stone giant strength* have the same effect.\n\n**Type**\t\t**Str**\t**Rarity**\nHill giant\t\t21\tUncommon\nStone/frost giant\t23\tRare\nFire giant   \t25\tRare\nCloud giant\t27\tVery rare\nStorm giant\t29\tLegendary",
 		weight: 0.5,
 		allowDuplicates: true,
 		choices: ["Hill (Str 21, uncommon)", "Frost (Str 23, rare)", "Stone (Str 23, rare)", "Fire (Str 25, rare)", "Cloud (Str 27, very rare)", "Storm (Str 29, legendary)"],
@@ -3851,9 +3739,9 @@ var Base_MagicItemsList = {
 		type: "potion",
 		rarity: "uncommon",
 		magicItemTable: "B",
-		description: "Once as an action, I can drink this potion or administer it to another to be enlarged as per the Enlarge/Reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts.",
-		descriptionLong: "Once as an action, I can drink this potion or administer it to another to be enlarged as per the Enlarge/Reduce spell for 1d4 hours (no concentration required). This causes the consumer to grow one size category as it doubles in size in all dimensions and its weight is multiplied by eight. This growth stops early if the encompassing space is fully filled. Its weapon attacks deal +1d4 damage and it has advantage on Strength checks and saving throws. The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts. Shaking the bottle fails to interrupt this process.",
-		descriptionFull: "When you drink this potion, you gain the \"enlarge\" effect of the Enlarge/Reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts. Shaking the bottle fails to interrupt this process.",
+		description: "Once as an action, I can drink this potion or administer it to another to be enlarged as per the *Enlarge/Reduce* spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts.",
+		descriptionLong: "Once as an action, I can drink this potion or administer it to another to be enlarged as per the *Enlarge/Reduce* spell for 1d4 hours (no concentration required). This causes the consumer to grow one size category as it doubles in size in all dimensions and its weight is multiplied by eight. This growth stops early if the encompassing space is fully filled. Its weapon attacks deal +1d4 damage and it has advantage on Strength checks and saving throws. The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts. Shaking the bottle fails to interrupt this process.",
+		descriptionFull: "When you drink this potion, you gain the \"enlarge\" effect of the *Enlarge/Reduce* spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts. Shaking the bottle fails to interrupt this process.",
 		weight: 0.5,
 	},
 	"potion of healing": {
@@ -3907,8 +3795,8 @@ var Base_MagicItemsList = {
 		type: "potion",
 		rarity: "rare",
 		magicItemTable: "C",
-		description: "Once as an action, I can drink this potion or administer it to another to gain 10 temporary hit points for 1 hour. For the same duration, the consumer is under the effect of the Bless spell (no concentration required), which adds +1d4 on all attack rolls and saving throws. This blue potion bubbles and steams as if boiling.",
-		descriptionFull: "For 1 hour after drinking it, you gain 10 temporary hit points that last for 1 hour. For the same duration, you are under the effect of the Bless spell (no concentration required). This blue potion bubbles and steams as if boiling.",
+		description: "Once as an action, I can drink this potion or administer it to another to gain 10 temporary hit points for 1 hour. For the same duration, the consumer is under the effect of the *Bless* spell (no concentration required), which adds +1d4 on all attack rolls and saving throws. This blue potion bubbles and steams as if boiling.",
+		descriptionFull: "For 1 hour after drinking it, you gain 10 temporary hit points that last for 1 hour. For the same duration, you are under the effect of the *Bless* spell (no concentration required). This blue potion bubbles and steams as if boiling.",
 		weight: 0.5,
 	},
 	"potion of invisibility": {
@@ -3928,8 +3816,8 @@ var Base_MagicItemsList = {
 		type: "potion",
 		rarity: "rare",
 		magicItemTable: "C",
-		description: "Once as an action, I can drink this potion or administer it to another to gain the effect of the Detect Thoughts spell (save DC 13) for 1 minute. The potion's dense, purple liquid has an ovoid cloud of pink floating in it.",
-		descriptionFull: "When you drink this potion, you gain the effect of the Detect Thoughts spell (save DC 13). The potion's dense, purple liquid has an ovoid cloud of pink floating in it.",
+		description: "Once as an action, I can drink this potion or administer it to another to gain the effect of the *Detect Thoughts* spell (save DC 13) for 1 minute. The potion's dense, purple liquid has an ovoid cloud of pink floating in it.",
+		descriptionFull: "When you drink this potion, you gain the effect of the *Detect Thoughts* spell (save DC 13). The potion's dense, purple liquid has an ovoid cloud of pink floating in it.",
 		weight: 0.5,
 	},
 	"potion of poison": {
@@ -3940,7 +3828,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "B",
 		description: "The consumer of this potion takes 3d6 poison damage and must make a DC 13 Con save or be poisoned. While poisoned this way, it takes 3d6 poison damage at the start of each of its turns and can repeat the save at the end of each of its turns to lower subsequent damage by 1d6. The poison ends when it reaches 0.",
 		descriptionLong: "This concoction looks, smells, and tastes like a potion of healing or other beneficial potion. However, whomever consumes it takes 3d6 poison damage and must make a DC 13 Con save or be poisoned. While poisoned this way, the consumer takes 3d6 poison damage at the start of each of its turns. At the end of each of the consumer's turns, it can repeat the saving throw. On a successful save, the poison damage on subsequent turns decreases by 1d6. The poison ends when the damage decreases to 0.",
-		descriptionFull: "This concoction looks, smells, and tastes like a potion of healing or other beneficial potion. However, it is actually poison masked by illusion magic. An Identify spell reveals its true nature.\n   If you drink it, you take 3d6 poison damage, and you must succeed on a DC 13 Constitution saving throw or be poisoned. At the start of each of your turns while you are poisoned in this way, you take 3d6 poison damage. At the end of each of your turns, you can repeat the saving throw. On a successful save, the poison damage you take on your subsequent turns decreases by 1d6. The poison ends when the damage decreases to 0.",
+		descriptionFull: "This concoction looks, smells, and tastes like a *potion of healing* or other beneficial potion. However, it is actually poison masked by illusion magic. An *Identify* spell reveals its true nature.\n   If you drink it, you take 3d6 poison damage, and you must succeed on a DC 13 Constitution saving throw or be poisoned. At the start of each of your turns while you are poisoned in this way, you take 3d6 poison damage. At the end of each of your turns, you can repeat the saving throw. On a successful save, the poison damage you take on your subsequent turns decreases by 1d6. The poison ends when the damage decreases to 0.",
 		weight: 0.5,
 		action: false, // To keep the default potion action from being added
 	},
@@ -3951,7 +3839,7 @@ var Base_MagicItemsList = {
 		rarity: "uncommon",
 		magicItemTable: "B",
 		description: "Once as an action, I can drink this potion or administer it to another to gain resistance to one damage type for 1 hour.",
-		descriptionFull: "When you drink this potion, you gain resistance to one type of damage for 1 hour. The DM chooses the type or determines it randomly from the options below.\n\n" + toUni("d10\tType\t\td10\tType") + "\n 1\tAcid\t\t 6\tNecrotic\n 2\tCold\t\t 7\tPoison\n 3\tFire\t\t 8\tPsychic\n 4\tForce\t\t 9\tRadiant\n 5\tLightning   \t 10\tThunder",
+		descriptionFull: "When you drink this potion, you gain resistance to one type of damage for 1 hour. The DM chooses the type or determines it randomly from the options below.\n\n**d10**\t**Type**\t\t**d10\t**Type**\n 1\tAcid\t\t 6\tNecrotic\n 2\tCold\t\t 7\tPoison\n 3\tFire\t\t 8\tPsychic\n 4\tForce\t\t 9\tRadiant\n 5\tLightning   \t 10\tThunder",
 		weight: 0.5,
 		allowDuplicates: true,
 		choices: ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
@@ -4003,9 +3891,9 @@ var Base_MagicItemsList = {
 		type: "potion",
 		rarity: "very rare",
 		magicItemTable: "D",
-		description: "Once as an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
-		descriptionLong: "Once as an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own. Haste doubles its speed, gives a +2 bonus to AC, gives advantage on Dex saves, and gives an additional action on each turn. That action can be used only to take the Attack (one weapon attack only), Dash, Disengage, Hide, or Use an Object action. When the spell ends, the target can't move or take actions until after its next turn, as a wave of lethargy sweeps over it.",
-		descriptionFull: "When you drink this potion, you gain the effect of the Haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
+		description: "Once as an action, I can drink this potion or administer it to another to gain the effects of *Haste* for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
+		descriptionLong: "Once as an action, I can drink this potion or administer it to another to gain the effects of *Haste* for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own. *Haste* doubles its speed, gives a +2 bonus to AC, gives advantage on Dex saves, and gives an additional action on each turn. That action can be used only to take the Attack (one weapon attack only), Dash, Disengage, Hide, or Use an Object action. When the spell ends, the target can't move or take actions until after its next turn, as a wave of lethargy sweeps over it.",
+		descriptionFull: "When you drink this potion, you gain the effect of the *Haste* spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
 		weight: 0.5,
 	},
 	"potion of water breathing": {
@@ -4026,7 +3914,7 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "C",
-		descriptionFull: "This tiny object looks like a feather. Different types of feather tokens exist, each with a different single-use effect. The DM chooses the kind of token or determines it randomly.\n\n" + toUni("d100\tToken\td100\tToken") +
+		descriptionFull: "This tiny object looks like a feather. Different types of *feather tokens* exist, each with a different single-use effect. The DM chooses the kind of token or determines it randomly.\n\n**d100**\t**Token**\t**d100**\t**Token**" +
 		"\n01-20\tAnchor\t51-65\tSwan boat" +
 		"\n21-35\tBird   \t66-90\tTree" +
 		"\n36-50\tFan   \t91-00\tWhip",
@@ -4080,8 +3968,8 @@ var Base_MagicItemsList = {
 		type: "ring",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. As an action while wearing the ring, I can expend 1 of its charges to cast a spell (save DC 13): Animal Friendship, Speak with Animals, or Fear. Fear cast from this ring can target only beasts that have an Intelligence of 3 or lower.",
-		descriptionFull: "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. While wearing the ring, you can use an action to expend 1 of its charges to cast one of the following spells:\n \u2022 Animal Friendship (save DC 13)\n \u2022 Fear (save DC 13), targeting only beasts that have an Intelligence of 3 or lower\n \u2022 Speak with Animals",
+		description: "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. As an action while wearing the ring, I can expend 1 of its charges to cast a spell (save DC 13): *Animal Friendship*, *Speak with Animals*, or *Fear*. *Fear* cast from this ring can target only beasts that have an Intelligence of 3 or lower.",
+		descriptionFull: "This ring has 3 charges, and it regains 1d3 expended charges daily at dawn. While wearing the ring, you can use an action to expend 1 of its charges to cast one of the following spells:\n \u2022 *Animal Friendship* (save DC 13)\n \u2022 *Fear* (save DC 13), targeting only beasts that have an Intelligence of 3 or lower\n \u2022 *Speak with Animals*",
 		usages: 3,
 		recovery: "dawn",
 		additional: "regains 1d3",
@@ -4130,8 +4018,8 @@ var Base_MagicItemsList = {
 		"air": {
 			name: "Ring of Air Elemental Command",
 			sortname: "Ring of Elemental Command, Air",
-			description: "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Air and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster on an air elemental. When I fall, I descend 60 ft per round and take no falling damage. I also know Auran.",
-			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Air, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Air.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an air elemental. In addition, when you fall, you descend 60 feet per round and take no damage from falling. You can also speak and understand Auran.\n   If you help slay an air elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to lightning damage.\n \u2022 You have a flying speed equal to your walking speed and can hover.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Chain Lightning (3 charges), Gust of Wind (2 charges), or Wind Wall (1 charge).",
+			description: "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Air and they have disadv. vs. me. I can expend 2 charges to cast *Dominate Monster* on an air elemental. When I fall, I descend 60 ft per round and take no falling damage. I also know Auran.",
+			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Air, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Air.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast *Dominate Monster* on an air elemental. In addition, when you fall, you descend 60 feet per round and take no damage from falling. You can also speak and understand Auran.\n   If you help slay an air elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to lightning damage.\n \u2022 You have a flying speed equal to your walking speed and can hover.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: *Chain Lightning* (3 charges), *Gust of Wind* (2 charges), or *Wind Wall* (1 charge).",
 			languageProfs: ["Auran"],
 			fixedDC: 17,
 			spellFirstColTitle: "Ch",
@@ -4152,7 +4040,7 @@ var Base_MagicItemsList = {
 			name: "Ring of Air Elemental Command [unlocked]",
 			sortname: "Ring of Elemental Command, Air [unlocked]",
 			description: "This ring grants adv. on attacks vs. elementals from the Plane of Air while they have disadv. vs. me. I have resistance to lightning damage, flying speed equal to my walking speed. I fall at 60 ft per round and take no falling damage. I know Auran. I can cast spells by using its 5 charges, of which it regains 1d4+1 at dawn.",
-			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Air, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Air.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an air elemental. In addition, when you fall, you descend 60 feet per round and take no damage from falling. You can also speak and understand Auran.\n   If you help slay an air elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to lightning damage.\n \u2022 You have a flying speed equal to your walking speed and can hover.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Chain Lightning (3 charges), Gust of Wind (2 charges), or Wind Wall (1 charge).",
+			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Air, and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Air.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast *Dominate Monster* on an air elemental. In addition, when you fall, you descend 60 feet per round and take no damage from falling. You can also speak and understand Auran.\n   If you help slay an air elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to lightning damage.\n \u2022 You have a flying speed equal to your walking speed and can hover.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: *Chain Lightning* (3 charges), *Gust of Wind* (2 charges), or *Wind Wall* (1 charge).",
 			languageProfs: ["Auran"],
 			dmgres: ["Lightning"],
 			speed: { fly: { spd: "walk", enc: "walk" } },
@@ -4186,8 +4074,8 @@ var Base_MagicItemsList = {
 		"earth": {
 			name: "Ring of Earth Elemental Command",
 			sortname: "Ring of Elemental Command, Earth",
-			description: "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Earth and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster on an earth elemental. I move normally in difficult terrain of rubble, rocks, or dirt. I also know Terran.",
-			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Earth and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Earth.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an earth elemental. In addition, you can move in difficult terrain that is composed of rubble, rocks, or dirt as if it were normal terrain. You can also speak and understand Terran.\n   If you help slay an earth elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to acid damage.\n \u2022 You can move through solid earth or rock as if those areas were difficult terrain. If you end your turn there, you are shunted out to the nearest unoccupied space you last occupied.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Stone Shape (2 charges), Stoneskin (3 charges), or Wall of Stone (3 charges).",
+			description: "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Earth and they have disadv. vs. me. I can expend 2 charges to cast *Dominate Monster* on an earth elemental. I move normally in difficult terrain of rubble, rocks, or dirt. I also know Terran.",
+			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Earth and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Earth.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast *Dominate Monster* on an earth elemental. In addition, you can move in difficult terrain that is composed of rubble, rocks, or dirt as if it were normal terrain. You can also speak and understand Terran.\n   If you help slay an earth elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to acid damage.\n \u2022 You can move through solid earth or rock as if those areas were difficult terrain. If you end your turn there, you are shunted out to the nearest unoccupied space you last occupied.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: *Stone Shape* (2 charges), *Stoneskin* (3 charges), or *Wall of Stone* (3 charges).",
 			languageProfs: ["Terran"],
 			fixedDC: 17,
 			spellFirstColTitle: "Ch",
@@ -4208,7 +4096,7 @@ var Base_MagicItemsList = {
 			name: "Ring of Earth Elemental Command [unlocked]",
 			sortname: "Ring of Elemental Command, Earth [unlocked]",
 			description: "This ring grants resistance to acid damage and adv. on attacks vs. elementals from the Plane of Earth while they have disadv. vs. me. I know Terran, move normally in difficult terrain of rubble, rocks, or dirt, and can move through solid earth or rock as if it were difficult terrain. I can cast spells by using its 5 charges.",
-			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Earth and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Earth.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on an earth elemental. In addition, you can move in difficult terrain that is composed of rubble, rocks, or dirt as if it were normal terrain. You can also speak and understand Terran.\n   If you help slay an earth elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to acid damage.\n \u2022 You can move through solid earth or rock as if those areas were difficult terrain. If you end your turn there, you are shunted out to the nearest unoccupied space you last occupied.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Stone Shape (2 charges), Stoneskin (3 charges), or Wall of Stone (3 charges).",
+			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Earth and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Earth.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast *Dominate Monster* on an earth elemental. In addition, you can move in difficult terrain that is composed of rubble, rocks, or dirt as if it were normal terrain. You can also speak and understand Terran.\n   If you help slay an earth elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You have resistance to acid damage.\n \u2022 You can move through solid earth or rock as if those areas were difficult terrain. If you end your turn there, you are shunted out to the nearest unoccupied space you last occupied.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: *Stone Shape* (2 charges), *Stoneskin* (3 charges), or *Wall of Stone* (3 charges).",
 			languageProfs: ["Terran"],
 			dmgres: ["Acid"],
 			fixedDC: 17,
@@ -4237,8 +4125,8 @@ var Base_MagicItemsList = {
 		"fire": {
 			name: "Ring of Fire Elemental Command",
 			sortname: "Ring of Elemental Command, Fire",
-			description: "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Fire and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster (DC 17) on a fire elemental. I have resistance to fire damage and can speak and understand Ignan.",
-			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Fire and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Fire.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a fire elemental. In addition, you have resistance to fire damage. You can also speak and understand Ignan.\n   If you help slay a fire elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You are immune to fire damage.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Burning Hands (1 charge), Fireball (2 charges), and Wall of Fire (3 charges).",
+			description: "This ring has 5 charges and regains 1d4+1 daily at dawn. It grants me adv. on attacks vs. elementals from the Plane of Fire and they have disadv. vs. me. I can expend 2 charges to cast *Dominate Monster* (DC 17) on a fire elemental. I have resistance to fire damage and can speak and understand Ignan.",
+			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Fire and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Fire.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast *Dominate Monster* on a fire elemental. In addition, you have resistance to fire damage. You can also speak and understand Ignan.\n   If you help slay a fire elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You are immune to fire damage.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: *Burning Hands* (1 charge), *Fireball* (2 charges), and *Wall of Fire* (3 charges).",
 			languageProfs: ["Ignan"],
 			dmgres: ["Fire"],
 			fixedDC: 17,
@@ -4259,8 +4147,8 @@ var Base_MagicItemsList = {
 		"fire (help kill fire elemental while attuned)": {
 			name: "Ring of Fire Elemental Command [unlocked]",
 			sortname: "Ring of Elemental Command, Fire [unlocked]",
-			description: "This ring has 5 charges, regaining 1d4+1 at dawn. It grants me immunity to fire damage, adv. on attacks vs. elementals from the Plane of Fire and they have disadv. vs. me. I can expend charges to cast spells (DC 17), Burning Hands (1), Dominate Monster (1; fire elemental only), Fireball (2), Wall of Fire (3). I know Ignan.",
-			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Fire and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Fire.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a fire elemental. In addition, you have resistance to fire damage. You can also speak and understand Ignan.\n   If you help slay a fire elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You are immune to fire damage.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Burning Hands (1 charge), Fireball (2 charges), and Wall of Fire (3 charges).",
+			description: "This ring has 5 charges, regaining 1d4+1 at dawn. It grants me immunity to fire damage, adv. on attacks vs. elementals from the Plane of Fire and they have disadv. vs. me. I can expend charges to cast spells (DC 17), *Burning Hands* (1), *Dominate Monster* (1; fire elemental only), *Fireball* (2), *Wall of Fire* (3). I know Ignan.",
+			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Fire and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Fire.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast *Dominate Monster* on a fire elemental. In addition, you have resistance to fire damage. You can also speak and understand Ignan.\n   If you help slay a fire elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You are immune to fire damage.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: *Burning Hands* (1 charge), *Fireball* (2 charges), and *Wall of Fire* (3 charges).",
 			languageProfs: ["Ignan"],
 			savetxt: { immune: ["fire"] },
 			fixedDC: 17,
@@ -4293,8 +4181,8 @@ var Base_MagicItemsList = {
 		"water": {
 			name: "Ring of Water Elemental Command",
 			sortname: "Ring of Elemental Command, Water",
-			description: "This ring has 5 charges, regaining 1d4+1 at dawn. It grants me adv. on attacks vs. elementals from the Plane of Water and they have disadv. vs. me. I can expend 2 charges to cast Dominate Monster on a water elemental. I can stand on and walk across liquid surfaces as if they were solid ground. I know Aquan.",
-			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Water and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Water.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a water elemental. In addition, you can stand on and walk across liquid surfaces as if they were solid ground. You can also speak and understand Aquan.\n   If you help slay a water elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You can breathe underwater and have a swimming speed equal to your walking speed.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Create or Destroy Water (1 charge), Control Water (3 charges), Ice Storm (2 charges), or Wall of Ice (3 charges).",
+			description: "This ring has 5 charges, regaining 1d4+1 at dawn. It grants me adv. on attacks vs. elementals from the Plane of Water and they have disadv. vs. me. I can expend 2 charges to cast *Dominate Monster* on a water elemental. I can stand on and walk across liquid surfaces as if they were solid ground. I know Aquan.",
+			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Water and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Water.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast *Dominate Monster* on a water elemental. In addition, you can stand on and walk across liquid surfaces as if they were solid ground. You can also speak and understand Aquan.\n   If you help slay a water elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You can breathe underwater and have a swimming speed equal to your walking speed.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: *Create or Destroy Water* (1 charge), *Control Water* (3 charges), *Ice Storm* (2 charges), or *Wall of Ice* (3 charges).",
 			languageProfs: ["Aquan"],
 			fixedDC: 17,
 			spellFirstColTitle: "Ch",
@@ -4315,7 +4203,7 @@ var Base_MagicItemsList = {
 			name: "Ring of Water Elemental Command [unlocked]",
 			sortname: "Ring of Elemental Command, Water [unlocked]",
 			description: "This ring gives me adv. on attacks vs. elementals from the Plane of Water while they have disadv. vs. me. I know Aquan, can stand and walk on liquid surfaces as if they were solid ground, swim at my walking speed, and breathe underwater.  I can cast spells by using the ring's 5 charges, of which it regains 1d4+1 at dawn.",
-			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Water and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Water.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast Dominate Monster on a water elemental. In addition, you can stand on and walk across liquid surfaces as if they were solid ground. You can also speak and understand Aquan.\n   If you help slay a water elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You can breathe underwater and have a swimming speed equal to your walking speed.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: Create or Destroy Water (1 charge), Control Water (3 charges), Ice Storm (2 charges), or Wall of Ice (3 charges).",
+			descriptionFull: "While wearing this ring, you have advantage on attack rolls against elementals from the Elemental Plane of Water and they have disadvantage on attack rolls against you. In addition, you have access to properties based on the Elemental Plane of Water.\n   The ring has 5 charges. It regains 1d4+1 expended charges daily at dawn. Spells cast from the ring have a save DC of 17.\n   You can expend 2 of the ring's charges to cast *Dominate Monster* on a water elemental. In addition, you can stand on and walk across liquid surfaces as if they were solid ground. You can also speak and understand Aquan.\n   If you help slay a water elemental while attuned to the ring, you gain access to the following additional properties:\n \u2022 You can breathe underwater and have a swimming speed equal to your walking speed.\n \u2022 You can cast the following spells from the ring, expending the necessary number of charges: *Create or Destroy Water* (1 charge), *Control Water* (3 charges), *Ice Storm* (2 charges), or *Wall of Ice* (3 charges).",
 			languageProfs: ["Aquan"],
 			speed: { swim: { spd: "walk", enc: "walk" } },
 			fixedDC: 17,
@@ -4399,8 +4287,8 @@ var Base_MagicItemsList = {
 		type: "ring",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "As a bonus action, I can use this ring to cast Jump on myself. That spell causes my jump distance to triple for 1 minute.",
-		descriptionFull: "While wearing this ring, you can cast the Jump spell from it as a bonus action at will, but can target only yourself when you do so.",
+		description: "As a bonus action, I can use this ring to cast *Jump* on myself. That spell causes my jump distance to triple for 1 minute.",
+		descriptionFull: "While wearing this ring, you can cast the *Jump* spell from it as a bonus action at will, but can target only yourself when you do so.",
 		attunement: true,
 		action: [["bonus action", ""]],
 		spellcastingBonus: [{
@@ -4459,7 +4347,7 @@ var Base_MagicItemsList = {
 		rarity: "rare",
 		magicItemTable: "G",
 		description: "I have resistance to one damage type while wearing this ring. The gem in the ring indicates the type of damage.",
-		descriptionFull: "You have resistance to one damage type while wearing this ring. The gem in the ring indicates the type, which the GM chooses or determines randomly.\n\n" + toUni("d10\tDamage Type\tGem") +
+		descriptionFull: "You have resistance to one damage type while wearing this ring. The gem in the ring indicates the type, which the GM chooses or determines randomly.\n\n**d10**\t**Damage Type**\t**Gem**" +
 		"\n   1\tAcid\t\tPearl" +
 		"\n   2\tCold\t\tTourmaline" +
 		"\n   3\tFire\t\tGarnet" +
@@ -4530,8 +4418,8 @@ var Base_MagicItemsList = {
 		type: "ring",
 		rarity: "very rare",
 		magicItemTable: "H",
-		description: "This ring has 6 charges and it regains 1d6 expended charges daily at dawn. While wearing this ring in dim light or darkness, I can cast Dancing Lights and Light at will. As an action, I can expend charges to cast Faerie Fire, Ball Lightning (see 3rd page notes), or Shooting Stars (see 3rd page notes). All spells DC 15.",
-		descriptionFull: "While wearing this ring in dim light or darkness, you can cast Dancing Lights and Light from the ring at will. Casting either spell from the ring requires an action.\n   The ring has 6 charges for the following other properties. The ring regains 1d6 expended charges daily at dawn.\n   " + toUni("Faerie Fire") + ". You can expend 1 charge as an action to cast Faerie Fire from the ring.\n   " + toUni("Ball Lightning") + ". You can expend 2 charges as an action to create one to four 3-foot-diameter spheres of lightning. The more spheres you create, the less powerful each sphere is individually.\n   Each sphere appears in an unoccupied space you can see within 120 feet of you. The spheres last as long as you concentrate (as if concentrating on a spell), up to 1 minute. Each sphere sheds dim light in a 30-foot radius.\n   As a bonus action, you can move each sphere up to 30 feet, but no farther than 120 feet away from you. When a creature other than you comes within 5 feet of a sphere, the sphere discharges lightning at that creature and disappears. That creature must make a DC 15 Dexterity saving throw. On a failed save, the creature takes lightning damage based on the number of spheres you created (4 spheres = 2d4, 3 spheres = 2d6, 2 spheres = 5d4, 1 sphere = 4d12).\n   " + toUni("Shooting Stars") + ". \n   You can expend 1 to 3 charges as an action. For every charge you expend, you launch a glowing mote of light from the ring at a point you can see within 60 feet of you. Each creature within a 15-foot cube originating from that point is showered in sparks and must make a DC 15 Dexterity saving throw. taking 5d4 fire damage on a failed save, or half as much damage on a successful one.",
+		description: "This ring has 6 charges and it regains 1d6 expended charges daily at dawn. While wearing this ring in dim light or darkness, I can cast *Dancing Lights* and *Light* at will. As an action, I can expend charges to cast *Faerie Fire*, Ball Lightning (see 3rd page notes), or Shooting Stars (see 3rd page notes). All spells DC 15.",
+		descriptionFull: "While wearing this ring in dim light or darkness, you can cast *Dancing Lights* and *Light* from the ring at will. Casting either spell from the ring requires an action.\n   The ring has 6 charges for the following other properties. The ring regains 1d6 expended charges daily at dawn.\n   ***Faerie Fire***. You can expend 1 charge as an action to cast *Faerie Fire* from the ring.\n   ***Ball Lightning***. You can expend 2 charges as an action to create one to four 3-foot-diameter spheres of lightning. The more spheres you create, the less powerful each sphere is individually.\n   Each sphere appears in an unoccupied space you can see within 120 feet of you. The spheres last as long as you concentrate (as if concentrating on a spell), up to 1 minute. Each sphere sheds dim light in a 30-foot radius.\n   As a bonus action, you can move each sphere up to 30 feet, but no farther than 120 feet away from you. When a creature other than you comes within 5 feet of a sphere, the sphere discharges lightning at that creature and disappears. That creature must make a DC 15 Dexterity saving throw. On a failed save, the creature takes lightning damage based on the number of spheres you created (4 spheres = 2d4, 3 spheres = 2d6, 2 spheres = 5d4, 1 sphere = 4d12).\n   ***Shooting Stars***. \n   You can expend 1 to 3 charges as an action. For every charge you expend, you launch a glowing mote of light from the ring at a point you can see within 60 feet of you. Each creature within a 15-foot cube originating from that point is showered in sparks and must make a DC 15 Dexterity saving throw. taking 5d4 fire damage on a failed save, or half as much damage on a successful one.",
 		attunement: true,
 		toNotesPage: [{
 			name: "Ball Lightning",
@@ -4595,10 +4483,11 @@ var Base_MagicItemsList = {
 				duration: "Conc, 1 min",
 				save: "Dex",
 				description: "1-4 spheres; bns a move all 30 ft; 1st crea in 5 ft save or Lightning dmg (1:4d12, 2:5d4, 3:2d6, 4:2d4)",
+				descriptionMetric: "1-4 spheres; bns a move all 9m; 1st crea in 1,5m save or Lightning dmg (1:4d12, 2:5d4, 3:2d6, 4:2d4)",
 				descriptionShorter: false,
 				descriptionFull: "You can expend 2 charges from the ring of shooting starts as an action to create one to four 3-foot-diameter spheres of lightning. The more spheres you create, the less powerful each sphere is individually.\n   Each sphere appears in an unoccupied space you can see within 120 feet of you. The spheres last as long as you concentrate (as if concentrating on a spell), up to 1 minute. Each sphere sheds dim light in a 30-foot radius.\n   As a bonus action, you can move each sphere up to 30 feet, but no farther than 120 feet away from you. When a creature other than you comes within 5 feet of a sphere, the sphere discharges lightning at that creature and disappears. That creature must make a DC 15 Dexterity saving throw. On a failed save, the creature takes lightning damage based on the number of spheres you created (4 spheres = 2d4, 3 spheres = 2d6, 2 spheres = 5d4, 1 sphere = 4d12).",
 				completeRewrite: true, // indicates that the changes here even overwrite the tooltip
-				changes: "The listing of Flaming Sphere has been completely changed to reflect the Ball Lightning property of the Ring of Shooting Stars. Even the information above has been changed.",
+				changes: "The listing of *Flaming Sphere* has been completely changed to reflect the Ball Lightning property of the Ring of Shooting Stars. Even the information above has been changed.",
 			},
 			"magic missile": { // change into Shooting Stars
 				name: "Shooting Stars",
@@ -4612,10 +4501,10 @@ var Base_MagicItemsList = {
 				duration: "Instantaneous",
 				save: "Dex",
 				description: "15-ft cube in range per expended charge; all crea in cubes take 5d4 Fire damage, save halves",
-				descriptionFull: "You can expend 1 to 3 charges from the ring of shooting stars as an action. For every charge you expend, you launch a glowing mote of light from the ring at a point you can see within 60 feet of you. Each creature within a 15-foot cube originating from that point is showered in sparks and must make a DC 15 Dexterity saving throw. taking 5d4 fire damage on a failed save, or half as much damage on a successful one.",
+				descriptionFull: "You can expend 1 to 3 charges from the *ring of shooting stars* as an action. For every charge you expend, you launch a glowing mote of light from the ring at a point you can see within 60 feet of you. Each creature within a 15-foot cube originating from that point is showered in sparks and must make a DC 15 Dexterity saving throw. taking 5d4 fire damage on a failed save, or half as much damage on a successful one.",
 				dynamicDamageBonus: undefined,
 				completeRewrite: true, // indicates that the changes here even overwrite the tooltip
-				changes: "The listing of Magic Missile has been completely changed to reflect the Shooting Stars property of the Ring of Shooting Stars. Even the information above has been changed.",
+				changes: "The listing of *Magic Missile* has been completely changed to reflect the Shooting Stars property of the Ring of Shooting Stars. Even the information above has been changed.",
 			},
 		},
 	},
@@ -4658,8 +4547,8 @@ var Base_MagicItemsList = {
 		type: "ring",
 		rarity: "very rare",
 		magicItemTable: "H",
-		description: "While wearing this ring, I can cast Telekinesis at will, but I can target only an object up to 1000 lb that isn't being worn or carried. I can move it up to 30 ft in any direction, but not more than 60 ft away from me. I can exert fine control on it, such as manipulating a tool, opening a door, or pouring out its contents.",
-		descriptionFull: "While wearing this ring, you can cast the Telekinesis spell at will, but you can target only objects that aren't being worn or carried.",
+		description: "While wearing this ring, I can cast *Telekinesis* at will, but I can target only an object up to 1000 lb that isn't being worn or carried. I can move it up to 30 ft in any direction, but not more than 60 ft away from me. I can exert fine control on it, such as manipulating a tool, opening a door, or pouring out its contents.",
+		descriptionFull: "While wearing this ring, you can cast the *Telekinesis* spell at will, but you can target only objects that aren't being worn or carried.",
 		attunement: true,
 		spellcastingBonus: [{
 			name: "At will",
@@ -4708,10 +4597,10 @@ var Base_MagicItemsList = {
 		type: "ring",
 		rarity: "legendary",
 		magicItemTable: "I",
-		description: "While wearing this ring, I can use an action to expend 1 of its 3 charges to cast the Wish spell from it. The ring becomes nonmagical when I use the last charge.",
-		descriptionFull: "While wearing this ring, you can use an action to expend 1 of its 3 charges to cast the Wish spell from it. The ring becomes nonmagical when you use the last charge.",
+		description: "While wearing this ring, I can use an action to expend 1 of its 3 charges to cast the *Wish* spell from it. The ring becomes nonmagical when I use the last charge.",
+		descriptionFull: "While wearing this ring, you can use an action to expend 1 of its 3 charges to cast the *Wish* spell from it. The ring becomes nonmagical when you use the last charge.",
 		usages: 3,
-		recovery: "Never",
+		recovery: "\u2013",
 		spellFirstColTitle: "Ch",
 		spellcastingBonus: [{
 			name: "1 charge",
@@ -4746,7 +4635,7 @@ var Base_MagicItemsList = {
 		type: "ring",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "As an action, I can speak this ring's command word to make me see into and through solid matter as if it is transparent and light passes through for 1 minute within 30 ft (1 ft stone, 1 inch metal, 3 ft wood/dirt, not lead). When I use this again before a long rest, I must make a DC 15 Con save or gain 1 level of exhaustion.",
+		description: "As an action, I can speak this ring's command word to make me see into and through solid matter as if it is transparent and light passes through for 1 min within 30 ft (1 ft stone, 1 inch metal, 3 ft wood/dirt, not lead). When I use this again before a long rest, I must make a DC 15 Con save or gain 1 level of exhaustion.",
 		descriptionFull: "While wearing this ring, you can use an action to speak its command word. When you do so, you can see into and through solid matter for 1 minute. This vision has a radius of 30 feet. To you, solid objects within that radius appear transparent and don't prevent light from passing through them. The vision can penetrate 1 foot of stone, 1 inch of common metal, or up to 3 feet of wood or dirt. Thicker substances block the vision, as does a thin sheet of lead.\n   Whenever you use the ring again before taking a long rest, you must succeed on a DC 15 Constitution saving throw or gain one level of exhaustion.",
 		attunement: true,
 		action: [["action", ""]],
@@ -4760,8 +4649,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "This robe gives me adv. on sight-based Perception checks, the ability to see in all directions, see invisible/ethereal out to 120 ft, darkvision 120 ft. I can't close or avert my eyes. If Light is cast on it or Daylight within 5 ft of it, I'm blinded for 1 min, Con save (DC 11-Light, 15-Daylight) at the end of my each of my turns to end.",
-		descriptionFull: "This robe is adorned with eyelike patterns. While you wear the robe, you gain the following benefits:\n \u2022 The robe lets you see in all directions, and you have advantage on Wisdom (Perception) checks that rely on sight.\n \u2022 You have darkvision out to a range of 120 feet.\n \u2022 You can see invisible creatures and objects, as well as see into the Ethereal Plane, out to a range of 120 feet.\n\nThe eyes on the robe can't be closed or averted. Although you can close or avert your own eyes, you are never considered to be doing so while wearing this robe.\n   A Light spell cast on the robe or a Daylight spell cast within 5 feet of the robe causes you to be blinded for 1 minute. At the end of each of your turns, you can make a Constitution saving throw (DC 11 for Light or DC 15 for Daylight), ending the blindness on a success.",
+		description: "This robe gives me adv. on sight-based Perception checks, the ability to see in all directions, see invisible/ethereal out to 120 ft, darkvision 120 ft. I can't close or avert my eyes. If *Light* is cast on it or *Daylight* within 5 ft of it, I'm blinded for 1 min, Con save (DC 11-*Light*, 15-*Daylight*) at the end of each of my turns.",
+		descriptionFull: "This robe is adorned with eyelike patterns. While you wear the robe, you gain the following benefits:\n \u2022 The robe lets you see in all directions, and you have advantage on Wisdom (Perception) checks that rely on sight.\n \u2022 You have darkvision out to a range of 120 feet.\n \u2022 You can see invisible creatures and objects, as well as see into the Ethereal Plane, out to a range of 120 feet.\n\nThe eyes on the robe can't be closed or averted. Although you can close or avert your own eyes, you are never considered to be doing so while wearing this robe.\n   A *Light* spell cast on the robe or a *Daylight* spell cast within 5 feet of the robe causes you to be blinded for 1 minute. At the end of each of your turns, you can make a Constitution saving throw (DC 11 for *Light* or DC 15 for *Daylight*), ending the blindness on a success.",
 		attunement: true,
 		weight: 4,
 		vision: [
@@ -4791,8 +4680,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "very rare",
 		magicItemTable: "H",
-		description: "This dark robe gives a +1 bonus to saving throws. It has 6 large stars embroidered on it, that I can use to cast Magic Missile at 5th-level. 1d6 used stars reappear at dusk. As an action, I can enter or exit the Astral Plane along with all I'm wearing and carrying. I can return as an action, appearing in the spot I left.",
-		descriptionFull: "This black or dark blue robe is embroidered with small white or silver stars. You gain a +1 bonus to saving throws while you wear it.\n   Six stars, located on the robe's upper front portion, are particularly large. While wearing this robe, you can use an action to pull off one of the stars and use it to cast Magic Missile as a 5th-level spell. Daily at dusk, 1d6 removed stars reappear on the robe.\n   While you wear the robe, you can use an action to enter the Astral Plane along with everything you are wearing and carrying. You remain there until you use an action to return to the plane you were on. You reappear in the last space you occupied, or if that space is occupied, the nearest unoccupied space.",
+		description: "This dark robe gives a +1 bonus to saving throws. It has 6 large stars embroidered on it, that I can use to cast *Magic Missile* at 5th-level. 1d6 used stars reappear at dusk. As an action, I can enter or exit the Astral Plane along with all I'm wearing and carrying. I can return as an action, appearing in the spot I left.",
+		descriptionFull: "This black or dark blue robe is embroidered with small white or silver stars. You gain a +1 bonus to saving throws while you wear it.\n   Six stars, located on the robe's upper front portion, are particularly large. While wearing this robe, you can use an action to pull off one of the stars and use it to cast *Magic Missile* as a 5th-level spell. Daily at dusk, 1d6 removed stars reappear on the robe.\n   While you wear the robe, you can use an action to enter the Astral Plane along with everything you are wearing and carrying. You remain there until you use an action to return to the plane you were on. You reappear in the last space you occupied, or if that space is occupied, the nearest unoccupied space.",
 		attunement: true,
 		weight: 4,
 		action: [["action", ""]],
@@ -4810,7 +4699,7 @@ var Base_MagicItemsList = {
 		spellChanges: {
 			"magic missile": {
 				description: "7 darts hit creature(s) I can see for 1d4+1 Force dmg per dart",
-				changes: "Magic Missile cast from the Robe of Stars is always at 5th-level.",
+				changes: "*Magic Missile* cast from the Robe of Stars is always at 5th-level.",
 			},
 		},
 	},
@@ -4821,7 +4710,7 @@ var Base_MagicItemsList = {
 		rarity: "legendary",
 		magicItemTable: "I",
 		description: "I can only attune to a robe of the archmagi that matches my alignment: white for good, gray for neutral, black for evil. I gain these benefits while wearing the robe: if unarmored, my AC is 15 + my Dex mod; I have adv on saves against spells and magical effects; my spell save DC and spell attack bonus increase by 2.",
-		descriptionFull: "This elegant garment is made from exquisite cloth of white, gray, or black and adorned with silvery runes. The robe's color corresponds to the alignment for which the item was created. A white robe was made for good, gray for neutral, and black for evil. You can't attune to a robe of the archmagi that doesn't correspond to your alignment.\n   You gain these benefits while wearing the robe:\n \u2022 If you aren't wearing armor, your base Armor Class is 15 + your Dexterity modifier.\n \u2022 You have advantage on saving throws against spell and other magical effects.\n \u2022 Your spell save DC and spell attack bonus each increase by 2.",
+		descriptionFull: "This elegant garment is made from exquisite cloth of white, gray, or black and adorned with silvery runes. The robe's color corresponds to the alignment for which the item was created. A white robe was made for good, gray for neutral, and black for evil. You can't attune to a *robe of the archmagi* that doesn't correspond to your alignment.\n   You gain these benefits while wearing the robe:\n \u2022 If you aren't wearing armor, your base Armor Class is 15 + your Dexterity modifier.\n \u2022 You have advantage on saving throws against spell and other magical effects.\n \u2022 Your spell save DC and spell attack bonus each increase by 2.",
 		attunement: true,
 		weight: 4,
 		savetxt: { adv_vs: ["spells", "magical effects"] },
@@ -4866,7 +4755,7 @@ var Base_MagicItemsList = {
 		rarity: "uncommon",
 		magicItemTable: "B",
 		description: "As an action while donned, I can detach one patch, causing it to become the thing it represents. The robe becomes ordinary if it runs out of patches. It has two each of: dagger, bullseye lantern (filled and lit), steel mirror, 10-ft pole, 50 ft hempen rope, sack. In addition, it has 4d4 patches that are determined by the DM.",
-		descriptionFull: "This robe has cloth patches of various shapes and colors covering it. While wearing the robe. you can use an action to detach one of the patches, causing it to become the object or creature it represents. Once the last patch is removed, the robe becomes an ordinary garment.\n\nThe robe has two of each of the following patches:\n \u2022 Dagger\n \u2022 Bullseye lantern (filled and lit)\n \u2022 Steel mirror\n \u2022 10-foot pole\n \u2022 Hempen rope (50 feet, coiled)\n \u2022 Sack\n\nIn addition, the robe has 4d4 other patches. The DM chooses the patches or determines them randomly.\n\n" + toUni("d100\tPatch") + "\n01-08\tBag of 100 gp\n09-15\tSilver coffer (1 foot long, 6 inches wide and deep) worth 500 gp\n16-22\tIron door (up to 10 feet wide and 10 feet high, barred on one side of your choice), which you can place in an opening you can reach; it conforms to fit the opening, attaching and hinging itself\n23-30\t10 gems worth 100 gp each\n31-44\tWooden ladder (24 feet long)\n45-51\tA riding horse with saddle bags\n52-59\tPit (a cube 10 feet on a side), which you can place on the ground within 10 feet of you\n60-68\t4 potions of healing\n69-75\tRowboat (12 feet long)\n76-83\tSpell scroll containing one spell of 1st to 3rd level\n84-90\t2 mastiffs\n91-96\tWindow (2 feet by 4 feet, up to 2 feet deep), which you can place on a vertical surface you can reach\n97-00\tPortable ram",
+		descriptionFull: "This robe has cloth patches of various shapes and colors covering it. While wearing the robe. you can use an action to detach one of the patches, causing it to become the object or creature it represents. Once the last patch is removed, the robe becomes an ordinary garment.\n\nThe robe has two of each of the following patches:\n \u2022 Dagger\n \u2022 Bullseye lantern (filled and lit)\n \u2022 Steel mirror\n \u2022 10-foot pole\n \u2022 Hempen rope (50 feet, coiled)\n \u2022 Sack\n\nIn addition, the robe has 4d4 other patches. The DM chooses the patches or determines them randomly.\n\n**d100**\t**Patch**\n01-08\tBag of 100 gp\n09-15\tSilver coffer (1 foot long, 6 inches wide and deep) worth 500 gp\n16-22\tIron door (up to 10 feet wide and 10 feet high, barred on one side of your choice), which you can place in an opening you can reach; it conforms to fit the opening, attaching and hinging itself\n23-30\t10 gems worth 100 gp each\n31-44\tWooden ladder (24 feet long)\n45-51\tA riding horse with saddle bags\n52-59\tPit (a cube 10 feet on a side), which you can place on the ground within 10 feet of you\n60-68\t4 *potions of healing*\n69-75\tRowboat (12 feet long)\n76-83\tSpell scroll containing one spell of 1st to 3rd level\n84-90\t2 mastiffs\n91-96\tWindow (2 feet by 4 feet, up to 2 feet deep), which you can place on a vertical surface you can reach\n97-00\tPortable ram",
 		weight: 4,
 		action: [["action", ""]],
 	},
@@ -4885,11 +4774,11 @@ var Base_MagicItemsList = {
 		extraLimitedFeatures: [{
 			name: "Rod of Absorption [Total Levels Absorbed]",
 			usages: 50,
-			recovery: "Never",
+			recovery: "\u2013",
 		}, {
 			name: "Rod of Absorption [Stored Levels]",
 			usages: "1d10",
-			recovery: "Never",
+			recovery: "\u2013",
 		}],
 	},
 	"rod of alertness": { // contains contributions by SoilentBrad
@@ -4898,9 +4787,9 @@ var Base_MagicItemsList = {
 		type: "rod",
 		rarity: "very rare",
 		magicItemTable: "H",
-		description: "While holding this rod, I have adv. on initiative and Perception and can cast certain spells. As an action once per dawn, I can plant it in the ground, making it shed 60-ft radius bright light, dim for another 60 ft for 10 min. In the bright light, my allies and I gain +1 AC, +1 bonus to saves, and can sense invisible hostiles.",
-		descriptionLong: "While holding this rod, I have advantage on my initiative and Wisdom (Perception) checks. As an action, I can use it to cast either Detect Evil and Good, Detect Magic, Detect Poison and Disease, or See Invisibility. As an action once per dawn, I can plant the rod's haft in the ground, making its head shed bright light in a 60-ft radius and dim light for another 60 ft. This lasts 10 minutes or until a creature pulls the rod from the ground as an action. While in the bright light, my allies and I gain +1 bonus to AC and saving throws and can sense the location of any invisible hostile creatures that are also within the bright light.",
-		descriptionFull: "This rod has a flanged head and the following properties.\n   " + toUni("Alertness") + ". While holding the rod, you have advantage on Wisdom (Perception) checks and on rolls for initiative.\n   " + toUni("Spells") + ". While holding the rod, you can use an action to cast one of the following spells from it: Detect Evil and Good, Detect Magic, Detect Poison and Disease, or See Invisibility.\n   " + toUni("Protective Aura") + ". As an action, you can plant the haft end of the rod in the ground, whereupon the rod's head sheds bright light in a 60-foot radius and dim light for an additional 60 feet. While in that bright light, you and any creature that is friendly to you gain a +1 bonus to AC and saving throws and can sense the location of any invisible hostile creature that is also in the bright light.\n   The rod's head stops glowing and the effect ends after 10 minutes, or when a creature uses an action to pull the rod from the ground. This property can't be used again until the next dawn.",
+		description: "While holding this rod, I have adv. on initiative and Perception and can cast certain spells. As an action once per dawn, I can plant it in the ground, making it shed 60-ft radius bright light, dim for another 60 ft for 10 min. In the bright light, my allies and I gain +1 AC, +1 to saves, and can sense invisible hostiles.",
+		descriptionLong: "While holding this rod, I have advantage on my initiative and Wisdom (Perception) checks. As an action, I can use it to cast either *Detect Evil and Good*, *Detect Magic*, *Detect Poison and Disease*, or *See Invisibility*. As an action once per dawn, I can plant the rod's haft in the ground, making its head shed bright light in a 60-ft radius and dim light for another 60 ft. This lasts 10 minutes or until a creature pulls the rod from the ground as an action. While in the bright light, my allies and I gain +1 bonus to AC and saving throws and can sense the location of any invisible hostile creatures that are also within the bright light.",
+		descriptionFull: "This rod has a flanged head and the following properties.\n   ***Alertness***. While holding the rod, you have advantage on Wisdom (Perception) checks and on rolls for initiative.\n   ***Spells***. While holding the rod, you can use an action to cast one of the following spells from it: *Detect Evil and Good*, *Detect Magic*, *Detect Poison and Disease*, or *See Invisibility*.\n   ***Protective Aura***. As an action, you can plant the haft end of the rod in the ground, whereupon the rod's head sheds bright light in a 60-foot radius and dim light for an additional 60 feet. While in that bright light, you and any creature that is friendly to you gain a +1 bonus to AC and saving throws and can sense the location of any invisible hostile creature that is also in the bright light.\n   The rod's head stops glowing and the effect ends after 10 minutes, or when a creature uses an action to pull the rod from the ground. This property can't be used again until the next dawn.",
 		attunement: true,
 		weight: 2,
 		usages: 1,
@@ -4923,7 +4812,7 @@ var Base_MagicItemsList = {
 		rarity: "legendary",
 		magicItemTable: "I",
 		description: "This rod functions as a +3 mace. As a bonus action, I can press one of the six buttons on the rod, changing it. The rod can also drain life, paralyze, and terrify, each once per dawn. See the notes page for what the different buttons do and how the functions work that can each be used once per dawn.",
-		descriptionFull: "This rod has a flanged head, and it functions as a magic mace that grants a +3 bonus to attack and damage roll made with it. The rod has properties associated with six different buttons that are set in a row along the haft. It has three other properties as well, detailed below.\n   " + toUni("Six Buttons") + ". You can press one of the rod's six buttons as a bonus action. A button's effect lasts until you push a different button or until you push the same button again, which causes the rod to revert to its normal form.\n   If you press " + toUni("button 1") + ", the rod becomes a flame tongue as a fiery blade sprouts from the end opposite the rod's flanged head (you choose the type of sword).\n   If you press " + toUni("button 2") + ", the rod's flanged head folds down and two crescent-shaped blades spring out, transforming the rod into a magic battleaxe that grants a +3 bonus to attack and damage rolls made with it.\n   If you press " + toUni("button 3") + ", the rod's flanged head folds down, a spear point springs from the rod's tip, and the rod's handle lengthens into a 6-foot haft, transforming the rod into a magic spear that grants a +3 bonus to attack and damage rolls made with it.\n   If you press " + toUni("button 4") + ", the rod transforms into a climbing pole up to 50 feet long, as you specify. In surfaces as hard as granite, a spike at the bottom and three hooks at the top anchor the pole. Horizontal bars 3 inches long fold out from the sides, 1 foot apart, forming a ladder. The pole can bear up to 4,000 pounds. More weight or lack of solid anchoring causes the rod to revert to its normal form.\n   If you press " + toUni("button 5") + ", the rod transforms into a handheld battering ram and grants its user a +10 bonus to Strength checks made to break through doors, barricades, and other barriers.\n   If you press " + toUni("button 6") + ", the rod assumes or remains in its normal form and indicates magnetic north. (Nothing happens if this function of the rod is used in a location that has no magnetic north.) The rod also gives you knowledge of your approximate depth beneath the ground or your height above it.\n   " + toUni("Drain Life") + ". When you hit a creature with a melee attack using the rod, you can force the target to make a DC 17 Constitution saving throw. On a failure, the target rakes an extra 4d6 necrotic damage, and you regain a number of hit points equal to half that necrotic damage. This property can't be used again until the next dawn.\n   " + toUni("Paralyze") + ". When you hit a creature with a melee attack using the rod, you can force the target to make a DC 17 Strength saving throw. On a failure, the target is paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on a success. This property can't be used again until the next dawn.\n   " + toUni("Terrify") + ". While holding the rod, you can use an action to force each creature you can see within 30 feet of you to make a DC 17 Wisdom saving throw. On a failure, a target is frightened of you for 1 minute. A frightened target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. This property can't be used again until the next dawn.",
+		descriptionFull: "This rod has a flanged head, and it functions as a magic mace that grants a +3 bonus to attack and damage roll made with it. The rod has properties associated with six different buttons that are set in a row along the haft. It has three other properties as well, detailed below.\n   ***Six Buttons***. You can press one of the rod's six buttons as a bonus action. A button's effect lasts until you push a different button or until you push the same button again, which causes the rod to revert to its normal form.\n   If you press ***button 1***, the rod becomes a *flame tongue* as a fiery blade sprouts from the end opposite the rod's flanged head (you choose the type of sword).\n   If you press ***button 2***, the rod's flanged head folds down and two crescent-shaped blades spring out, transforming the rod into a magic battleaxe that grants a +3 bonus to attack and damage rolls made with it.\n   If you press ***button 3***, the rod's flanged head folds down, a spear point springs from the rod's tip, and the rod's handle lengthens into a 6-foot haft, transforming the rod into a magic spear that grants a +3 bonus to attack and damage rolls made with it.\n   If you press ***button 4***, the rod transforms into a climbing pole up to 50 feet long, as you specify. In surfaces as hard as granite, a spike at the bottom and three hooks at the top anchor the pole. Horizontal bars 3 inches long fold out from the sides, 1 foot apart, forming a ladder. The pole can bear up to 4,000 pounds. More weight or lack of solid anchoring causes the rod to revert to its normal form.\n   If you press ***button 5***, the rod transforms into a handheld battering ram and grants its user a +10 bonus to Strength checks made to break through doors, barricades, and other barriers.\n   If you press ***button 6***, the rod assumes or remains in its normal form and indicates magnetic north. (Nothing happens if this function of the rod is used in a location that has no magnetic north.) The rod also gives you knowledge of your approximate depth beneath the ground or your height above it.\n   ***Drain Life***. When you hit a creature with a melee attack using the rod, you can force the target to make a DC 17 Constitution saving throw. On a failure, the target rakes an extra 4d6 necrotic damage, and you regain a number of hit points equal to half that necrotic damage. This property can't be used again until the next dawn.\n   ***Paralyze***. When you hit a creature with a melee attack using the rod, you can force the target to make a DC 17 Strength saving throw. On a failure, the target is paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on a success. This property can't be used again until the next dawn.\n   ***Terrify***. While holding the rod, you can use an action to force each creature you can see within 30 feet of you to make a DC 17 Wisdom saving throw. On a failure, a target is frightened of you for 1 minute. A frightened target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. This property can't be used again until the next dawn.",
 		attunement: true,
 		weight: 2,
 		action: [["bonus action", " (press button)"], ["action", " (Terrify)"]],
@@ -5066,7 +4955,7 @@ var Base_MagicItemsList = {
 		attunement: true,
 		savetxt: { adv_vs: ["spells"] },
 		usages: 12,
-		recovery: "Never",
+		recovery: "\u2013",
 		action: [["reaction", ""]],
 	},
 	"scimitar of speed": {
@@ -5133,8 +5022,8 @@ var Base_MagicItemsList = {
 		type: "shield",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "While holding this shield, I have resistance to damage from ranged weapon attacks. Once attuned to it, I am cursed until I am the target of Remove Curse or similar magic. Whenever a ranged weapon attack is made against a target within 10 ft of me, the curse causes me to become the target instead.",
-		descriptionFull: "While holding this shield, you have resistance to damage from ranged weapon attacks.\n   " + toUni("Curse") + ". This shield is cursed. Attuning to it curses you until you are targeted by the Remove Curse spell or similar magic. Removing the shield fails to end the curse on you. Whenever a ranged weapon attack is made against a target within 10 feet of you, the curse causes you to become the target instead.",
+		description: "While holding this shield, I have resistance to damage from ranged weapon attacks. Once attuned to it, I am cursed until I am the target of *Remove Curse* or similar magic. Whenever a ranged weapon attack is made against a target within 10 ft of me, the curse causes me to become the target instead.",
+		descriptionFull: "While holding this shield, you have resistance to damage from ranged weapon attacks.\n   ***Curse***. This shield is cursed. Attuning to it curses you until you are targeted by the *Remove Curse* spell or similar magic. Removing the shield fails to end the curse on you. Whenever a ranged weapon attack is made against a target within 10 feet of you, the curse causes you to become the target instead.",
 		attunement: true,
 		weight: 6,
 		shieldAdd: "Shield of Missile Attraction",
@@ -5158,10 +5047,10 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "legendary",
 		magicItemTable: "E",
-		description: "This viscous, milky-white substance is stored in a jar or flask, coated on the inside with oil of slipperiness. One ounce of the glue can cover a 1-ft square surface, taking 1 minute to set. Once it sets, the bond it creates can be broken only by universal solvent, oil of etherealness, or with a Wish spell.",
-		descriptionFull: "This viscous, milky-white substance can form a permanent adhesive bond between any two objects. It must be stored in a jar or flask that has been coated inside with oil of slipperiness. When found, a container contains 1d6+1 ounces.\n   One ounce of the glue can cover a 1-foot square surface. The glue takes 1 minute to set. Once it has done so, the bond it creates can be broken only by the application of universal solvent or oil of etherealness, or with a Wish spell.",
+		description: "This viscous, milky-white substance is stored in a jar or flask, coated on the inside with oil of slipperiness. One ounce of the glue can cover a 1-ft square surface, taking 1 minute to set. Once it sets, the bond it creates can be broken only by universal solvent, oil of etherealness, or with a *Wish* spell.",
+		descriptionFull: "This viscous, milky-white substance can form a permanent adhesive bond between any two objects. It must be stored in a jar or flask that has been coated inside with *oil of slipperiness*. When found, a container contains 1d6+1 ounces.\n   One ounce of the glue can cover a 1-foot square surface. The glue takes 1 minute to set. Once it has done so, the bond it creates can be broken only by the application of *universal solvent* or *oil of etherealness*, or with a *Wish* spell.",
 		usages: "1d6+1",
-		recovery: "Never",
+		recovery: "\u2013",
 	},
 	"spell scroll": {
 		name: "Spell Scroll",
@@ -5169,7 +5058,7 @@ var Base_MagicItemsList = {
 		type: "scroll",
 		description: "If the spell on this scroll is on my class' spell list(s), I can cast it with its normal casting time, but have the scroll crumble to dust. If the spell is of a higher level than I can cast, I need to make an ability check using my spellcasting ability. The DC for this, the spell save, and its attack modifier depend on its level.",
 		descriptionFull: [
-			"A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.",
+			"A *spell scroll* bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.",
 			"If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10 + the spell's level. On a failed check, the spell disappears from the scroll with no other effect.",
 			"The level of the spell on the scroll determines the spell's saving throw DC and attack bonus, as well as the scroll's rarity, as shown below.",
 			[
@@ -5186,7 +5075,7 @@ var Base_MagicItemsList = {
 				["8th    ",   "Very rare     ", "18",      "+10"],
 				["9th    ",   "Legendary     ", "19",      "+11"],
 			],
-			"A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on an Intelligence (Arcana) check with a DC equal to 10 + the spell's level. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			"A wizard spell on a *spell scroll* can be copied just as spells in spellbooks can be copied. When a spell is copied from a *spell scroll*, the copier must succeed on an Intelligence (Arcana) check with a DC equal to 10 + the spell's level. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the *spell scroll* is destroyed.",
 		],
 		allowDuplicates: true,
 		calcChanges: {
@@ -5214,7 +5103,7 @@ var Base_MagicItemsList = {
 			rarity: "common",
 			magicItemTable: "A",
 			description: "If the cantrip on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If I can't cast any cantrips, I need to make a DC 10 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The cantrips is cast with DC 13 and a +5 attack modifier.",
-			descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.",
+			descriptionFull: "A *spell scroll* bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC equals 10. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.",
 			extraTooltip: "AL: can always be bought for 25 gp",
 			fixedDC: 13,
 			spellFirstColTitle: "Us", // used
@@ -5230,7 +5119,7 @@ var Base_MagicItemsList = {
 			rarity: "common",
 			magicItemTable: "A",
 			description: "If the 1st-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 11 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 13 and a +5 attack modifier.",
-			descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 11. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 11 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull: "A *spell scroll* bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 11. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a *spell scroll* can be copied just as spells in spellbooks can be copied. When a spell is copied from a *spell scroll*, the copier must succeed on a DC 11 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the *spell scroll* is destroyed.",
 			extraTooltip: "AL: can always be bought for 75 gp",
 			fixedDC: 13,
 			spellFirstColTitle: "Us", // used
@@ -5245,7 +5134,7 @@ var Base_MagicItemsList = {
 			rarity: "uncommon",
 			magicItemTable: ["A", "B"],
 			description: "If the 2nd-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 12 check with my spellcasting ability to use this scroll or destroy it if I fail. The spell is cast with DC 13 and a +5 attack modifier.",
-			descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 12. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 12 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull: "A *spell scroll* bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 12. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 13 and an attack bonus of +5.\n   A wizard spell on a *spell scroll* can be copied just as spells in spellbooks can be copied. When a spell is copied from a *spell scroll*, the copier must succeed on a DC 12 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the *spell scroll* is destroyed.",
 			extraTooltip: "AL: can always be bought for 150 gp",
 			fixedDC: 13,
 			spellFirstColTitle: "Us", // used
@@ -5260,7 +5149,7 @@ var Base_MagicItemsList = {
 			rarity: "uncommon",
 			magicItemTable: "B",
 			description: "If the 3rd-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 13 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 15 and a +7 attack modifier.",
-			descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 13. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 13 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull: "A *spell scroll* bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 13. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a *spell scroll* can be copied just as spells in spellbooks can be copied. When a spell is copied from a *spell scroll*, the copier must succeed on a DC 13 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the *spell scroll* is destroyed.",
 			extraTooltip: "AL: can always be bought for 300 gp",
 			fixedDC: 15,
 			spellFirstColTitle: "Us", // used
@@ -5275,7 +5164,7 @@ var Base_MagicItemsList = {
 			rarity: "rare",
 			magicItemTable: "C",
 			description: "If the 4th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 14 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 15 and a +7 attack modifier.",
-			descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 14. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 14 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull: "A *spell scroll* bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 14. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 15 and an attack bonus of +7.\n   A wizard spell on a *spell scroll* can be copied just as spells in spellbooks can be copied. When a spell is copied from a *spell scroll*, the copier must succeed on a DC 14 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the *spell scroll* is destroyed.",
 			extraTooltip: "AL: can always be bought for 500 gp",
 			fixedDC: 15,
 			spellFirstColTitle: "Us", // used
@@ -5290,7 +5179,7 @@ var Base_MagicItemsList = {
 			rarity: "rare",
 			magicItemTable: "C",
 			description: "If the 5th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 15 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 17 and a +9 attack modifier.",
-			descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 15. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 15 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull: "A *spell scroll* bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 15. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a *spell scroll* can be copied just as spells in spellbooks can be copied. When a spell is copied from a *spell scroll*, the copier must succeed on a DC 15 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the *spell scroll* is destroyed.",
 			extraTooltip: "AL: can always be bought for 1000 gp",
 			fixedDC: 17,
 			spellFirstColTitle: "Us", // used
@@ -5305,7 +5194,7 @@ var Base_MagicItemsList = {
 			rarity: "very rare",
 			magicItemTable: "D",
 			description: "If the 6th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 16 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 17 and a +9 attack modifier.",
-			descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 16. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 16 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull: "A *spell scroll* bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 16. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 17 and an attack bonus of +9.\n   A wizard spell on a *spell scroll* can be copied just as spells in spellbooks can be copied. When a spell is copied from a *spell scroll*, the copier must succeed on a DC 16 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the *spell scroll* is destroyed.",
 			fixedDC: 17,
 			spellFirstColTitle: "Us", // used
 			spellcastingBonus: [{
@@ -5319,7 +5208,7 @@ var Base_MagicItemsList = {
 			rarity: "very rare",
 			magicItemTable: "D",
 			description: "If the 7th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 17 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 18 and a +10 attack modifier.",
-			descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 17. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 17 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull: "A *spell scroll* bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 17. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a *spell scroll* can be copied just as spells in spellbooks can be copied. When a spell is copied from a *spell scroll*, the copier must succeed on a DC 17 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the *spell scroll* is destroyed.",
 			fixedDC: 18,
 			spellFirstColTitle: "Us", // used
 			spellcastingBonus: [{
@@ -5333,7 +5222,7 @@ var Base_MagicItemsList = {
 			rarity: "very rare",
 			magicItemTable: ["D", "E"],
 			description: "If the 8th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 18 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 18 and a +10 attack modifier.",
-			descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 18. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 18 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull: "A *spell scroll* bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 18. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 18 and an attack bonus of +10.\n   A wizard spell on a *spell scroll* can be copied just as spells in spellbooks can be copied. When a spell is copied from a *spell scroll*, the copier must succeed on a DC 18 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the *spell scroll* is destroyed.",
 			fixedDC: 18,
 			spellFirstColTitle: "Us", // used
 			spellcastingBonus: [{
@@ -5347,7 +5236,7 @@ var Base_MagicItemsList = {
 			rarity: "legendary",
 			magicItemTable: "E",
 			description: "If the 9th-level spell on this scroll is on my class' spell list(s), I can cast it, having the scroll crumble to dust afterwards. If the spell is of a level that I can't yet cast, I need to make a DC 19 check with my spellcasting ability to use this scroll or it is destroyed if I fail. The spell is cast with DC 19 and a +11 attack modifier.",
-			descriptionFull: "A spell scroll bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 19. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 19 and an attack bonus of +11.\n   A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on a DC 19 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+			descriptionFull: "A *spell scroll* bears the words of a single spell, written as a mystical cipher. If the spell is on your class's spell list, you can read the scroll and cast its spell without providing any material components. Otherwise, the scroll is unintelligible. Casting the spell by reading the scroll requires the spell's normal casting time. Once the spell is cast, the words on the scroll fade, and it crumbles to dust. If the casting is interrupted, the scroll is not lost.\n   If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spellcasting ability to determine whether you cast it successfully. The DC is 19. On a failed check, the spell disappears from the scroll with no other effect.\n   Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.\n   A spell cast from this scroll has a save DC of 19 and an attack bonus of +11.\n   A wizard spell on a *spell scroll* can be copied just as spells in spellbooks can be copied. When a spell is copied from a *spell scroll*, the copier must succeed on a DC 19 Intelligence (Arcana) check. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the *spell scroll* is destroyed.",
 			fixedDC: 19,
 			spellFirstColTitle: "Us", // used
 			spellcastingBonus: [{
@@ -5398,7 +5287,7 @@ var Base_MagicItemsList = {
 		rarity: "legendary",
 		magicItemTable: "I",
 		description: "This 1-ft radius black sphere obliterates all matter it comes into contact with, except artifacts. Anything not wholly engulfed by it and destroyed takes 4d10 force damage. I can control it as an action with a DC 25 Arcana check, moving it 5 ft per my Int mod, or 10 ft towards me if I fail. See notes page for more details.",
-		descriptionFull: "This 2-foot-diameter black sphere is a hole in the multiverse, hovering in space and stabilized by a magical field surrounding it.\n   The sphere obliterates all matter it passes through and all matter that passes through it. Artifacts are the exception. Unless an artifact is susceptible to damage from a sphere of annihilation, it passes through the sphere unscathed. Anything else that touches the sphere but isn't wholly engulfed and obliterated by it takes 4d10 force damage.\n   The sphere is stationary until someone controls it. If you are within 60 feet of an uncontrolled sphere, you can use an action to make a DC 25 Intelligence (Arcana) check. On a success, the sphere levitates in one direction of your choice, up to a number of feet equal to 5 \xD7 your Intelligence modifier (minimum 5 feet). On a failure, the sphere moves 10 feet toward you. A creature whose space the sphere enters must succeed on a DC 13 Dexterity saving throw or be touched by it, taking 4d10 force damage.\n   If you attempt to control a sphere that is under another creature's control, you make an Intelligence (Arcana) check contested by the other creature's Intelligence (Arcana) check. The winner of the contest gains control of the sphere and can levitate it as normal.\n   If the sphere comes into contact with a planar portal, such as that created by the Gate spell, or an extradimensional space, such as that within a portable hole, the DM determines randomly what happens, using the following table.\n\n" + toUni("d100\tResult") + "\n01-50\tThe sphere is destroyed.\n51-85\tThe sphere moves through the portal or into the extradimensional space.\n86-00\tA spatial rift sends each creature and object within 180 feet of the sphere, including the sphere, to a random plane of existence.",
+		descriptionFull: "This 2-foot-diameter black sphere is a hole in the multiverse, hovering in space and stabilized by a magical field surrounding it.\n   The sphere obliterates all matter it passes through and all matter that passes through it. Artifacts are the exception. Unless an artifact is susceptible to damage from a *sphere of annihilation*, it passes through the sphere unscathed. Anything else that touches the sphere but isn't wholly engulfed and obliterated by it takes 4d10 force damage.\n   The sphere is stationary until someone controls it. If you are within 60 feet of an uncontrolled sphere, you can use an action to make a DC 25 Intelligence (Arcana) check. On a success, the sphere levitates in one direction of your choice, up to a number of feet equal to 5 \xD7 your Intelligence modifier (minimum 5 feet). On a failure, the sphere moves 10 feet toward you. A creature whose space the sphere enters must succeed on a DC 13 Dexterity saving throw or be touched by it, taking 4d10 force damage.\n   If you attempt to control a sphere that is under another creature's control, you make an Intelligence (Arcana) check contested by the other creature's Intelligence (Arcana) check. The winner of the contest gains control of the sphere and can levitate it as normal.\n   If the sphere comes into contact with a planar portal, such as that created by the *Gate* spell, or an extradimensional space, such as that within a *portable hole*, the DM determines randomly what happens, using the following table.\n\n**d100**\t**Result**\n01-50\tThe sphere is destroyed.\n51-85\tThe sphere moves through the portal or into the extradimensional space.\n86-00\tA spatial rift sends each creature and object within 180 feet of the sphere, including the sphere, to a random plane of existence.",
 		action: [["action", ""]],
 		toNotesPage: [{
 			name: "Special Properties",
@@ -5406,7 +5295,7 @@ var Base_MagicItemsList = {
 				"This 2-ft-diameter black sphere is a hole in the multiverse, hovering in space and stabilized by a magical field surrounding it. It obliterates all matter it passes through and all matter that passes through it. Artifacts are the exception. Unless an artifact is susceptible to damage from a sphere of annihilation, it passes through the sphere unscathed. Anything else that touches the sphere but isn't wholly engulfed and obliterated by it takes 4d10 force damage.",
 				"The sphere is stationary until someone controls it. If I am within 60 ft of an uncontrolled sphere, I can use an action to make a DC 25 Intelligence (Arcana) check. On a success, the sphere levitates in one direction of my choice, up to 5 ft \xD7 my Intelligence modifier (minimum 5 ft). On a failure, the sphere moves 10 ft toward me. A creature whose space the sphere enters must succeed on a DC 13 Dexterity saving throw or be touched by it, taking 4d10 force damage.",
 				"If I attempt to control a sphere that is under another creature's control, I make an Intelligence (Arcana) check contested by the other creature's Intelligence (Arcana) check. The winner of the contest gains control of the sphere and can levitate it as normal.",
-				"If the sphere comes into contact with a planar portal, such as that created by the Gate spell, or an extradimensional space, such as that within a portable hole, the DM determines randomly what happens, by rolling a d100.",
+				"If the sphere comes into contact with a planar portal, such as that created by the *Gate* spell, or an extradimensional space, such as that within a portable hole, the DM determines randomly what happens, by rolling a d100.",
 				" \u2022 01-50 The sphere is destroyed.",
 				" \u2022 51-85 The sphere moves through the portal or into the extradimensional space.",
 				" \u2022 86-00 A spatial rift sends each creature and object within 180 ft of the sphere, including the sphere, to a random plane of existence.",
@@ -5420,7 +5309,7 @@ var Base_MagicItemsList = {
 		rarity: "rare",
 		magicItemTable: "G",
 		description: "This staff has 10 charges, regaining 1d8+2 at dawn, 5% chance it loses its magic when its last charge is used. If an enchantment spell is cast only on me, I can use the staff to, once per dawn, turn a failed save into a success and as a reaction if I make the save, I can expend 1 charge to turn the spell back on its caster.",
-		descriptionFull: "While holding this staff, you can use an action to expend 1 of its 10 charges to cast Charm Person, Command, or Comprehend Languages from it using your spell save DC. The staff can also be used as a magic quarterstaff.\n   If you are holding the staff and fail a saving throw against an enchantment spell that targets only you, you can turn your failed save into a successful one. You can't use this property of the staff again until the next dawn. If you succeed on a save against an enchantment spell that targets only you, with or without the staff's intervention, you can use your reaction to expend 1 charge from the staff and turn the spell back on its caster as if you had cast the spell.\n   The staff regains 1d8+2 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff becomes a nonmagical quarterstaff.",
+		descriptionFull: "While holding this staff, you can use an action to expend 1 of its 10 charges to cast *Charm Person*, *Command*, or *Comprehend Languages* from it using your spell save DC. The staff can also be used as a magic quarterstaff.\n   If you are holding the staff and fail a saving throw against an enchantment spell that targets only you, you can turn your failed save into a successful one. You can't use this property of the staff again until the next dawn. If you succeed on a save against an enchantment spell that targets only you, with or without the staff's intervention, you can use your reaction to expend 1 charge from the staff and turn the spell back on its caster as if you had cast the spell.\n   The staff regains 1d8+2 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff becomes a nonmagical quarterstaff.",
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a bard, cleric, druid, sorcerer, warlock, or wizard",
@@ -5450,8 +5339,8 @@ var Base_MagicItemsList = {
 		type: "staff",
 		rarity: "very rare",
 		magicItemTable: "H",
-		description: "I have resistance to fire while I'm holding this staff. It has 10 charges, regaining 1d6+4 expended charges at dawn. If I use its last charge, roll a d20. On a 1, it is destroyed. I can use its charges to cast Burning Hands (1 charge), Fireball (3 charges), and Wall of Fire (4 charges), using my spellcasting ability.",
-		descriptionFull: "You have resistance to fire damage while you hold this staff.\n   The staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC: Burning Hands (1 charge), Fireball (3 charges), or Wall of Fire (4 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff blackens, crumbles into cinders, and is destroyed.",
+		description: "I have resistance to fire while I'm holding this staff. It has 10 charges, regaining 1d6+4 expended charges at dawn. If I use its last charge, roll a d20. On a 1, it is destroyed. I can use its charges to cast *Burning Hands* (1 charge), *Fireball* (3 charges), and *Wall of Fire* (4 charges), using my spellcasting ability.",
+		descriptionFull: "You have resistance to fire damage while you hold this staff.\n   The staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC: *Burning Hands* (1 charge), *Fireball* (3 charges), or *Wall of Fire* (4 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff blackens, crumbles into cinders, and is destroyed.",
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a druid, sorcerer, warlock, or wizard",
@@ -5485,8 +5374,8 @@ var Base_MagicItemsList = {
 		type: "staff",
 		rarity: "very rare",
 		magicItemTable: "H",
-		description: "I have resistance to cold while I'm holding this staff. It has 10 charges, regaining 1d6+4 at dawn. If I use its last charge, roll a d20. On a 1, it is destroyed. I can use its charges to cast Cone of Cold (5 charges), Fog Cloud (1 charge), Ice Storm (4 charges), and Wall of Ice (4 charges) using my spellcasting ability.",
-		descriptionFull: "You have resistance to cold damage while you hold this staff.\n   The staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC: Cone of Cold (5 charges), Fog Cloud (1 charge), Ice Storm (4 charges), or Wall of Ice (4 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1. the staff turns to water and is destroyed.",
+		description: "I have resistance to cold while I'm holding this staff. It has 10 charges, regaining 1d6+4 at dawn. If I use its last charge, roll a d20. On a 1, it is destroyed. I can use its charges to cast *Cone of Cold* (5 charges), *Fog Cloud* (1 charge), *Ice Storm* (4 charges), and *Wall of Ice* (4 charges) using my spellcasting ability.",
+		descriptionFull: "You have resistance to cold damage while you hold this staff.\n   The staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC: *Cone of Cold* (5 charges), *Fog Cloud* (1 charge), *Ice Storm* (4 charges), or *Wall of Ice* (4 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1. the staff turns to water and is destroyed.",
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a druid, sorcerer, warlock, or wizard",
@@ -5521,8 +5410,8 @@ var Base_MagicItemsList = {
 		type: "staff",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "This staff has 10 charges, regaining 1d6+4 expended charges at dawn. If I use its last charge, roll a d20. On a 1, it vanishes in a flash of light. I can use its charges to cast Cure Wounds (1 charge per spell level, up to 4th), Lesser Restoration (2 charges), and Mass Cure Wounds (5 charges) using my spellcasting ability.",
-		descriptionFull: "This staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC and spellcasting ability modifier: Cure Wounds (1 charge per spell level, up to 4th), Lesser Restoration (2 charges), or Mass Cure Wounds (5 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1. the staff vanishes in a flash of light, lost forever.",
+		description: "This staff has 10 charges, regaining 1d6+4 expended charges at dawn. If I use its last charge, roll a d20. On a 1, it vanishes in a flash of light. I can use its charges to cast *Cure Wounds* (1 charge per spell level, up to 4th), *Lesser Restoration* (2 charges), and *Mass Cure Wounds* (5 charges) using my spellcasting ability.",
+		descriptionFull: "This staff has 10 charges. While holding it, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC and spellcasting ability modifier: *Cure Wounds* (1 charge per spell level, up to 4th), *Lesser Restoration* (2 charges), or *Mass Cure Wounds* (5 charges).\n   The staff regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1. the staff vanishes in a flash of light, lost forever.",
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a bard, cleric, or druid",
@@ -5552,7 +5441,7 @@ var Base_MagicItemsList = {
 			"cure wounds": {
 				allowUpCasting: true,
 				description: "1 living creature heals 1d8+1d8/SL+spell mod HP; +1 SL/extra charge",
-				changes: "The spell level that Cure Wounds is cast at depends on the amount of charges spend, 1 charge per spell slot level up to maximum level 4.",
+				changes: "The spell level that *Cure Wounds* is cast at depends on the amount of charges spend, 1 charge per spell slot level up to maximum level 4.",
 			},
 		},
 	},
@@ -5564,7 +5453,20 @@ var Base_MagicItemsList = {
 		magicItemTable: "H",
 		description: "While holding this +2 quarterstaff, I gain a +2 bonus on saves, AC, and spell attacks. The staff has 20 charges, regaining 2d8+4 at dawn. Charges can be used to cast spells, or, on a hit in melee with it, I can expend 1 charge to deal +1d6 force damage. As an action, I can break it, causing a 30-ft radius explosion.",
 		descriptionLong: "While holding this staff, I gain a +2 bonus on saves, AC, and spell attacks. The staff has 20 charges, regaining 2d8+4 at dawn. If I use the last charge, roll a d20. On a 1, it converts to a +2 quarterstaff without other abilities. On a 20, it regains 1d8+2 charges. Charges can be used to cast spells, or, on a hit in melee with it, I can expend 1 charge to deal +1d6 force damage. As an action, I can break it so it explodes. When it explodes, there is a 50% chance I teleport to a random plane, otherwise I take 16\xD7 the charges left in force damage. All within 10 ft take 8\xD7, 20 ft 6\xD7, and 30 ft 4\xD7; DC 17 Dex save halves.",
-		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While holding it, you gain a +2 bonus to Armor Class, saving throws, and spell attack rolls.\n   The staff has 20 charges for the following properties. The staff regains 2d8+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff retains its +2 bonus to attack and damage roll but loses all other properties. On a 20, the staff regain 1d8+2 charges.\n   " + toUni("Power Strike") + ". When you hit with a melee attack using the staff, you can expend 1 charge to deal an extra 1d6 force damage to the target.\n   " + toUni("Spells") + ". While holding this staff, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC and spell attack bonus: Cone of Cold (5 charges), Fireball (5th-level version, 5 charges), Globe of Invulnerability (6 charges), Hold Monster (5 charges), Levitate (2 charges). Lightning Bolt (5th-level version, 5 charges), Magic Missile (1 charge), Ray of Enfeeblement (1 charge), or Wall of Force (5 charges).\n   " + toUni("Retributive Strike") + ". You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.\n   You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.\n\n" + toUni("Distance from Origin\tEffect") + "\n10 ft. away or closer\t8 \xD7 the number of charges in the staff\n11 to 20 ft. away\t6 \xD7 the number of charges in the staff\n21 to 30 ft. away\t4 \xD7 the number of charges in the staff",
+		descriptionFull: [
+			"This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While holding it, you gain a +2 bonus to Armor Class, saving throws, and spell attack rolls.",
+			"The staff has 20 charges for the following properties. The staff regains 2d8+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff retains its +2 bonus to attack and damage roll but loses all other properties. On a 20, the staff regain 1d8+2 charges.",
+			"***Power Strike***. When you hit with a melee attack using the staff, you can expend 1 charge to deal an extra 1d6 force damage to the target.",
+			"***Spells***. While holding this staff, you can use an action to expend 1 or more of its charges to cast one of the following spells from it, using your spell save DC and spell attack bonus: *Cone of Cold* (5 charges), *Fireball* (5th-level version, 5 charges), *Globe of Invulnerability* (6 charges), *Hold Monster* (5 charges), *Levitate* (2 charges). *Lightning Bolt* (5th-level version, 5 charges), *Magic Missile* (1 charge), *Ray of Enfeeblement* (1 charge), or *Wall of Force* (5 charges).",
+			"***Retributive Strike***. You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.",
+			"You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.",
+			[
+				["Distance from Origin", "Effect"],
+				["10 ft. away or closer", "8 \xD7 the number of charges in the staff"],
+				["11 to 20 ft. away        ", "6 \xD7 the number of charges in the staff"],
+				["21 to 30 ft. away        ", "4 \xD7 the number of charges in the staff"],
+			],
+		],
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a sorcerer, warlock, or wizard",
@@ -5595,16 +5497,22 @@ var Base_MagicItemsList = {
 		spellcastingAbility: "class",
 		spellFirstColTitle: "Ch",
 		spellcastingBonus: [{
+			name: "1 charge",
+			spells: ["magic missile", "ray of enfeeblement"],
+			selection: ["magic missile", "ray of enfeeblement"],
+			firstCol: 1,
+			times: 2,
+		}, {
+			name: "2 charges",
+			spells: ["levitate"],
+			selection: ["levitate"],
+			firstCol: 2,
+		}, {
 			name: "5 charges; 5th level",
 			spells: ["fireball", "lightning bolt"],
 			selection: ["fireball", "lightning bolt"],
 			firstCol: 5,
 			times: 2,
-		}, {
-			name: "6 charges",
-			spells: ["globe of invulnerability"],
-			selection: ["globe of invulnerability"],
-			firstCol: 6,
 		}, {
 			name: "5 charges",
 			spells: ["cone of cold", "hold monster", "wall of force"],
@@ -5612,16 +5520,10 @@ var Base_MagicItemsList = {
 			firstCol: 5,
 			times: 3,
 		}, {
-			name: "2 charges",
-			spells: ["levitate"],
-			selection: ["levitate"],
-			firstCol: 2,
-		}, {
-			name: "1 charge",
-			spells: ["magic missile", "ray of enfeeblement"],
-			selection: ["magic missile", "ray of enfeeblement"],
-			firstCol: 1,
-			times: 2,
+			name: "6 charges",
+			spells: ["globe of invulnerability"],
+			selection: ["globe of invulnerability"],
+			firstCol: 6,
 		}],
 		spellChanges: {
 			"fireball": {
@@ -5635,6 +5537,12 @@ var Base_MagicItemsList = {
 				changes: "Cast as if using a 5th-level spell slot.",
 			},
 		},
+		toNotesPage: [{
+			name: "Staff of Power",
+			useDescriptionFull: function (str) {
+				return str.replace(/(\d)( to \d+ ft)\. away +/g, "$1 ft$2 away").replace("ft.", "ft");
+			},
+		}],
 	},
 	"staff of striking": {
 		name: "Staff of Striking",
@@ -5666,7 +5574,7 @@ var Base_MagicItemsList = {
 		rarity: "rare",
 		magicItemTable: "G",
 		description: "This staff has 10 charges, regaining 1d6+4 at dawn, 5% chance it is destroyed when its last charge is used. As an action, I can expend 1 charge to create a 30-ft radius swarm of flying insects for 10 minutes that moves with me, making the area heavily obscured for anybody but me. A 10+ mph wind disperses it.",
-		descriptionFull: "This staff has 10 charges and regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, a swarm of insects consumes and destroys the staff, then disperses.\n   " + toUni("Spells") + ". While holding the staff, you can use an action to expend some of its charges to cast one of the following spells from it, using your spell save DC: Giant Insect (4 charges) or Insect Plague (5 charges).\n   " + toUni("Insect Cloud") + ". While holding the staff, you can use an action and expend 1 charge to cause a swarm of harmless flying insects to spread out in a 30-foot radius from you. The insects remain for 10 minutes, making the area heavily obscured for creatures other than you. The swarm moves with you, remaining centered on you. A wind of at least 10 miles per hour disperses the swarm and ends the effect.",
+		descriptionFull: "This staff has 10 charges and regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, a swarm of insects consumes and destroys the staff, then disperses.\n   ***Spells***. While holding the staff, you can use an action to expend some of its charges to cast one of the following spells from it, using your spell save DC: *Giant Insect* (4 charges) or *Insect Plague* (5 charges).\n   ***Insect Cloud***. While holding the staff, you can use an action and expend 1 charge to cause a swarm of harmless flying insects to spread out in a 30-foot radius from you. The insects remain for 10 minutes, making the area heavily obscured for creatures other than you. The swarm moves with you, remaining centered on you. A wind of at least 10 miles per hour disperses the swarm and ends the effect.",
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a bard, cleric, druid, sorcerer, warlock, or wizard",
@@ -5697,7 +5605,7 @@ var Base_MagicItemsList = {
 		magicItemTable: "I",
 		description: "While holding this +2 quarterstaff, I have adv. on saves vs. spells and +2 on spell attacks. The staff has 50 charges to cast spells, regaining 4d6+2 at dawn. As a reaction, I can absorb a spell targeting only me, converting its spell level to charges. If this brings it over 50 charges or I break it is as an action, it explodes.",
 		descriptionLong: "While holding this staff I have a +2 to spell attacks, adv. on saving throws vs. spells, and can be used as a +2 quarterstaff. The staff has 50 charges (4d6+2 at dawn) to cast spells. When the last charge is used, it has a 5% chance to regain 1d12+1 charges. I can use a reaction to absorb a spell targeting only me, converting its spell level to charges. If that brings the staff over 50 charges or I use an action to break it, it explodes. If it explodes, there is a 50% chance I teleport to a random plane, otherwise I take 16\xD7 the charges left in force damage. All within 10 ft take 8\xD7, 20 ft 6\xD7, and 30 ft 4\xD7; DC 17 Dex save halves.",
-		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While you hold it, you gain a +2 bonus to spell attack rolls.\n   The staff has 50 charges for the following properties. It regains 4d6+2 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 20, the staff regains 1d12+1 charges.\n   " + toUni("Spell Absorption") + ". While holding the staff, you have advantage on saving throws against spells. In addition, you can use your reaction when another creature casts a spell that targets only you. If you do, the staff absorbs the magic of the spell, canceling its effect and gaining a number of charges equal to the absorbed spell's level. However, if doing so brings the staff's total number of charges above 50, the staff explodes as if you activated its retributive strike (see below).\n   " + toUni("Spells") + ". While holding the staff, you can use an action to expend some of its charges to cast one of the following spells from it, using your spell save DC and spellcasting ability: Conjure Elemental (7 charges), Dispel Magic (3 charges), Fireball (7th-level version, 7 charges), Flaming Sphere (2 charges), Ice Storm (4 charges), Invisibility (2 charges), Knock (2 charges), Lightning Bolt (7th-level version, 7 charges), Passwall (5 charges), Plane Shift (7 charges), Telekinesis (5 charges), Wall of Fire (4 charges), or Web (2 charges).\n   You can also use an action to cast one of the following spells from the staff without using any charges: Arcane Lock, Detect Magic, Enlarge/Reduce, Light, Mage Hand, or Protection from Evil and Good.\n   " + toUni("Retributive Strike") + ". You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.\n   You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.\n\n" + toUni("Distance from Origin\tDamage") + "\n10 ft. away or closer\t8 \xD7 the number of charges in the staff\n11 to 20 ft. away\t\t6 \xD7 the number of charges in the staff\n21 to 30 ft. away\t\t4 \xD7 the number of charges in the staff",
+		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While you hold it, you gain a +2 bonus to spell attack rolls.\n   The staff has 50 charges for the following properties. It regains 4d6+2 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 20, the staff regains 1d12+1 charges.\n   ***Spell Absorption***. While holding the staff, you have advantage on saving throws against spells. In addition, you can use your reaction when another creature casts a spell that targets only you. If you do, the staff absorbs the magic of the spell, canceling its effect and gaining a number of charges equal to the absorbed spell's level. However, if doing so brings the staff's total number of charges above 50, the staff explodes as if you activated its retributive strike (see below).\n   ***Spells***. While holding the staff, you can use an action to expend some of its charges to cast one of the following spells from it, using your spell save DC and spellcasting ability: *Conjure Elemental* (7 charges), *Dispel Magic* (3 charges), *Fireball* (7th-level version, 7 charges), *Flaming Sphere* (2 charges), *Ice Storm* (4 charges), *Invisibility* (2 charges), *Knock* (2 charges), *Lightning Bolt* (7th-level version, 7 charges), *Passwall* (5 charges), *Plane Shift* (7 charges), *Telekinesis* (5 charges), *Wall of Fire* (4 charges), or *Web* (2 charges).\n   You can also use an action to cast one of the following spells from the staff without using any charges: *Arcane Lock*, *Detect Magic*, *Enlarge/Reduce*, *Light*, *Mage Hand*, or *Protection from Evil and Good*.\n   ***Retributive Strike***. You can use an action to break the staff over your knee or against a solid surface, performing a retributive strike. The staff is destroyed and releases its remaining magic in an explosion that expands to fill a 30-foot-radius sphere centered on it.\n   You have a 50% chance to instantly travel to a random plane of existence, avoiding the explosion. If you fail to avoid the effect, you take force damage equal to 16 \xD7 the number of charges in the staff. Every other creature in the area must make a DC 17 Dexterity saving throw. On a failed save, a creature takes an amount of damage based on how far away it is from the point of origin, as shown in the following table. On a successful save, a creature takes half as much damage.\n\n**Distance from Origin**\t**Damage**\n10 ft. away or closer\t8 \xD7 the number of charges in the staff\n11 to 20 ft. away\t\t6 \xD7 the number of charges in the staff\n21 to 30 ft. away\t\t4 \xD7 the number of charges in the staff",
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a sorcerer, warlock, or wizard",
@@ -5810,8 +5718,8 @@ var Base_MagicItemsList = {
 		type: "staff",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "This +2 quarterstaff gives me a +2 bonus on spell attacks. It has 10 charges, regaining 1d6+4 at dawn, 5% chance of losing its magic when its last charge is used. As an action, I can plant it into the ground and expend 1 charge to have it grow into a 60 ft tree, which it remains until I use another action to revert it back.",
-		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While holding it, you have a +2 bonus to spell attack rolls.\n   The staff has 10 charges for the following properties. It regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff loses its properties and becomes a nonmagical quarterstaff.\n   " + toUni("Spells") + ". You can use an action to expend 1 or more of the staff's charges to cast one of the following spells from it, using your spell save DC: Animal Friendship (1 charge), Awaken (5 charges), Barkskin (2 charges), Locate Animals or Plants (2 charges), Speak with Animals (1 charge), Speak with Plants (3 charges), or Wall of Thorns (6 charges).\n   You can also use an action to cast the Pass Without Trace spell from the staff without using any charges.\n   " + toUni("Tree Form") + ". You can use an action to plant one end of the staff in fertile earth and expend 1 charge to transform the staff into a healthy tree. The tree is 60 feet tall and has a 5-foot-diameter trunk, and its branches at the top spread out in a 20-foot radius. The tree appears ordinary but radiates a faint aura of transmutation magic if targeted by Detect Magic. While touching the tree and using another action to speak its command word, you return the staff to its normal form. Any creature in the tree falls when it reverts to a staff.",
+		description: "This +2 quarterstaff gives me a +2 bonus on spell attacks. It has 10 charges, regaining 1d6+4 at dawn, 5% chance of losing its magic when its last charge is used. As an action, I can plant it into the ground and use 1 charge to have it grow into a 60 ft tree, which it remains until I use another action to revert it back.",
+		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. While holding it, you have a +2 bonus to spell attack rolls.\n   The staff has 10 charges for the following properties. It regains 1d6+4 expended charges daily at dawn. If you expend the last charge, roll a d20. On a 1, the staff loses its properties and becomes a nonmagical quarterstaff.\n   ***Spells***. You can use an action to expend 1 or more of the staff's charges to cast one of the following spells from it, using your spell save DC: *Animal Friendship* (1 charge), *Awaken* (5 charges), *Barkskin* (2 charges), *Locate Animals or Plants* (2 charges), *Speak with Animals* (1 charge), *Speak with Plants* (3 charges), or *Wall of Thorns* (6 charges).\n   You can also use an action to cast the *Pass Without Trace* spell from the staff without using any charges.\n   ***Tree Form***. You can use an action to plant one end of the staff in fertile earth and expend 1 charge to transform the staff into a healthy tree. The tree is 60 feet tall and has a 5-foot-diameter trunk, and its branches at the top spread out in a 20-foot radius. The tree appears ordinary but radiates a faint aura of transmutation magic if targeted by *Detect Magic*. While touching the tree and using another action to speak its command word, you return the staff to its normal form. Any creature in the tree falls when it reverts to a staff.",
 		attunement: true,
 		weight: 4,
 		prerequisite: "Requires attunement by a druid",
@@ -5885,10 +5793,10 @@ var Base_MagicItemsList = {
 		rarity: "very rare",
 		magicItemTable: "H",
 		description: "This +2 quarterstaff has 5 special abilities that each can be used once per dawn. Both 'Lightning' and 'Thunder' can be used when I hit a melee attack with it, while 'Lightning Strike', 'Thunderclap', and 'Thunder and Lightning' require an action to use. See the Notes page for what all of these abilities entail.",
-		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. It also has the following additional properties. When one of these properties is used, it can't be used again until the next dawn.\n   " + toUni("Lightning") + ". When you hit with a melee attack using the staff, you can cause the target to take an extra 2d6 lightning damage.\n   " + toUni("Thunder") + ". When you hit with a melee attack using the staff, you can cause the staff to emit a crack of thunder, audible out to 300 feet. The target you hit must succeed on a DC 17 Constitution saving throw or become stunned until the end of your next turn.\n   " + toUni("Lightning Strike") + ". You can use an action to cause a bolt of lightning to leap from the staff's tip in a line that is 5 feet wide and 120 feet long. Each creature in that line must make a DC 17 Dexterity saving throw, taking 9d6 lightning damage on a failed save, or half as much damage on a successful one.\n   " + toUni("Thunderclap") + ". You can use an action to cause the staff to issue a deafening thunderclap, audible out to 600 feet. Each creature within 60 feet of you (not including you) must make a DC 17 Constitution saving throw. On a failed save, a creature takes 2d6 thunder damage and becomes deafened for 1 minute. On a successful save, a creature takes half damage and isn't deafened.\n   " + toUni("Thunder and Lightning") + ". You can use an action to use the Lightning Strike and Thunderclap properties at the same time. Doing so doesn't expend the daily use of those properties, only the use of this one.",
+		descriptionFull: "This staff can be wielded as a magic quarterstaff that grants a +2 bonus to attack and damage rolls made with it. It also has the following additional properties. When one of these properties is used, it can't be used again until the next dawn.\n   ***Lightning***. When you hit with a melee attack using the staff, you can cause the target to take an extra 2d6 lightning damage.\n   ***Thunder***. When you hit with a melee attack using the staff, you can cause the staff to emit a crack of thunder, audible out to 300 feet. The target you hit must succeed on a DC 17 Constitution saving throw or become stunned until the end of your next turn.\n   ***Lightning Strike***. You can use an action to cause a bolt of lightning to leap from the staff's tip in a line that is 5 feet wide and 120 feet long. Each creature in that line must make a DC 17 Dexterity saving throw, taking 9d6 lightning damage on a failed save, or half as much damage on a successful one.\n   ***Thunderclap***. You can use an action to cause the staff to issue a deafening thunderclap, audible out to 600 feet. Each creature within 60 feet of you (not including you) must make a DC 17 Constitution saving throw. On a failed save, a creature takes 2d6 thunder damage and becomes deafened for 1 minute. On a successful save, a creature takes half damage and isn't deafened.\n   ***Thunder and Lightning***. You can use an action to use the Lightning Strike and Thunderclap properties at the same time. Doing so doesn't expend the daily use of those properties, only the use of this one.",
 		attunement: true,
 		weight: 4,
-		action: [["action", "Staff of T\u0026L (Lightning Strike, Thunderclap, both)"]],
+		action: [["action", "Staff of T\x26L (Lightning Strike, Thunderclap, both)"]],
 		weaponOptions: [{
 			baseWeapon: "quarterstaff",
 			regExpSearch: /^(?=.*staff)(?=.*thunder)(?=.*lightning).*$/i,
@@ -5899,23 +5807,23 @@ var Base_MagicItemsList = {
 			selectNow: true,
 		}],
 		extraLimitedFeatures: [{
-			name: "Staff of T\u0026L [Lightning]",
+			name: "Staff of T\x26L [Lightning]",
 			usages: 1,
 			recovery: "dawn",
 		}, {
-			name: "Staff of T\u0026L [Thunder]",
+			name: "Staff of T\x26L [Thunder]",
 			usages: 1,
 			recovery: "dawn",
 		}, {
-			name: "Staff of T\u0026L [Lightning Strike]",
+			name: "Staff of T\x26L [Lightning Strike]",
 			usages: 1,
 			recovery: "dawn",
 		}, {
-			name: "Staff of T\u0026L [Thunderclap]",
+			name: "Staff of T\x26L [Thunderclap]",
 			usages: 1,
 			recovery: "dawn",
 		}, {
-			name: "Staff of T\u0026L [Thunder and Lightning]",
+			name: "Staff of T\x26L [Thunder and Lightning]",
 			usages: 1,
 			recovery: "dawn",
 		}],
@@ -5961,8 +5869,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "While the stone is touching the ground, I can use an action to speak its command word and summon an earth elemental, as if I had cast the Conjure Elemental spell. The stone can't be used this way again until the next dawn.",
-		descriptionFull: "If the stone is touching the ground, you can use an action to speak its command word and summon an earth elemental, as if you had cast the Conjure Elemental spell. The stone can't be used this way again until the next dawn. The stone weighs 5 pounds.",
+		description: "While the stone is touching the ground, I can use an action to speak its command word and summon an earth elemental, as if I had cast the *Conjure Elemental* spell. The stone can't be used this way again until the next dawn.",
+		descriptionFull: "If the stone is touching the ground, you can use an action to speak its command word and summon an earth elemental, as if you had cast the *Conjure Elemental* spell. The stone can't be used this way again until the next dawn. The stone weighs 5 pounds.",
 		weight: 5,
 		spellcastingBonus: [{
 			name: "Earth Elemental only",
@@ -6004,9 +5912,9 @@ var Base_MagicItemsList = {
 		rarity: "rare",
 		magicItemTable: "G",
 		attunement: true,
-		description: "As a bonus action, I can have this hilt create a blade of radiance. While the blade exists, it acts like a longsword that does +2 to attack and damage rolls, radiant damage (+1d8 to undead), has finesse, emits bright sunlight in a 15-ft radius and dim light in another 15 ft. As an action, I can change the light's radius by 5 ft.",
+		description: "As a bonus action, I can have this hilt emit a blade of radiance. While the blade exists, it acts like a +2 Longsword with finesse that deals radiant damage (+1d8 to undead) and emits sunlight, 15 ft radius bright light plus 15 ft dim light. As an action, I can alter the radius of both lights by 5 ft, between 10 ft and 30 ft.",
 		descriptionLong: "As a bonus action, I can have this longsword hilt create or dismiss a blade of pure radiance. While the blade exists, it acts like a longsword that grants a +2 bonus to attack and damage rolls, does radiant damage and has the finesse property. It also deals +1d8 radiant damage to undead and emits sunlight, bright light in a 15-ft radius and dim light in an additional 15-ft radius. As an action, I can expand or reduce both the bright and dim light's radius by 5 ft each, to a maximum of 30 ft each or a minimum of 10 ft each. I am proficient with this weapon if I'm proficient with either longswords or shortswords.",
-		descriptionFull: "This item appears to be a longsword hilt. While grasping the hilt, you can use a bonus action to cause a blade of pure radiance to spring into existence, or make the blade disappear. While the blade exists, this magic longsword has the finesse property. If you are proficient with shortswords or longswords, you are proficient with the sun blade.\n   You gain a +2 bonus to attack and damage rolls made with this weapon, which deals radiant damage instead of slashing damage. When you hit an undead with it, that target takes an extra 1d8 radiant damage.\n   The sword's luminous blade emits bright light in a 15-foot radius and dim light for an additional 15 feet. The light is sunlight. While the blade persists, you can use an action to expand or reduce its radius of bright and dim light by 5 feet each, to a maximum of 30 feet each or a minimum of 10 feet each.",
+		descriptionFull: "This item appears to be a longsword hilt. While grasping the hilt, you can use a bonus action to cause a blade of pure radiance to spring into existence, or make the blade disappear. While the blade exists, this magic longsword has the finesse property. If you are proficient with shortswords or longswords, you are proficient with the *sun blade*.\n   You gain a +2 bonus to attack and damage rolls made with this weapon, which deals radiant damage instead of slashing damage. When you hit an undead with it, that target takes an extra 1d8 radiant damage.\n   The sword's luminous blade emits bright light in a 15-foot radius and dim light for an additional 15 feet. The light is sunlight. While the blade persists, you can use an action to expand or reduce its radius of bright and dim light by 5 feet each, to a maximum of 30 feet each or a minimum of 10 feet each.",
 		weight: 3,
 		action: [["bonus action", " (start/stop)"], ["action", " (change light)"]],
 		weaponOptions: [{
@@ -6069,7 +5977,7 @@ var Base_MagicItemsList = {
 		rarity: "rare",
 		magicItemTable: "H",
 		attunement: true,
-		description: "When I roll a 20 to hit with this magic sword vs. a creature, it takes +14 slashing damage and I have a 5% chance of lopping off one of its limbs. It does maximum damage vs. objects. With the command word, the blade gives bright light in a 10-ft radius \u0026 dim light in another 10 ft. " + (typePF ? "This stops if sheathed." : "The light stops when commanded again or sheathed."),
+		description: "When I roll a 20 to hit with this magic sword vs. a creature, it takes +14 slashing damage and I have a 5% chance of lopping off one of its limbs. It does maximum damage vs. objects. With the command word, the blade gives bright light in a 10-ft radius \x26 dim light in another 10 ft. " + (typePF ? "This stops if sheathed." : "The light stops when commanded again or sheathed."),
 		descriptionLong: "When I attack a creature with this magic sword and roll a 20 on the attack roll, that target takes an extra 14 slashing damage and I roll another d20. If that turns up a 20 as well, I lop off one of the target's limbs. If the creature has no limb to sever, I lop off a portion of its body instead. When used against an object, the damage dice are maximized. In addition, I can speak the sword's command word to cause the blade to shed bright light in a 10-ft radius and dim light for an additional 10 ft. Speaking the command word again or sheathing the sword puts out the light.",
 		descriptionFull: "When you attack an object with this magic sword and hit, maximize your weapon damage dice against the target.\n   When you attack a creature with this weapon and roll a 20 on the attack roll, that target takes an extra 14 slashing damage. Then roll another d20. If you roll a 20, you lop off one of the target's limbs, with the effect of such loss determined by the DM. If the creature has no limb to sever, you lop off a portion of its body instead.\n   In addition, you can speak the sword's command word to cause the blade to shed bright light in a 10-foot radius and dim light for an additional 10 feet. Speaking the command word again or sheathing the sword puts out the light.", // the SRD says 4d6 but that is incorrect
 		chooseGear: {
@@ -6087,7 +5995,7 @@ var Base_MagicItemsList = {
 					if (!v.theWea.isMagicWeapon && v.isMeleeWeapon && /sword|scimitar/i.test(v.baseWeaponName) && /of sharpness/i.test(v.WeaponTextName) && v.theWea.damage[2] == "slashing") {
 						v.theWea.isMagicWeapon = true;
 						fields.Description = fields.Description.replace(/(, |; )?Counts as magical/i, "");
-						fields.Description += (fields.Description ? "; " : "") + "On 20 to hit: +14 damage \u0026 5% chance to sever limb; Max damage vs. objects";
+						fields.Description += (fields.Description ? "; " : "") + "On 20 to hit: +14 damage \x26 5% chance to sever limb; Max damage vs. objects";
 					}
 				},
 				'If I include the words "of Sharpness" in the name of a sword that deals slashing damage, it will be treated as the magic weapon Sword of Sharpness. It deals maximum damage against objects. On a roll of 20 to hit against creatures, it deals +14 slashing damage and has a 5% chance to lop off one limb.',
@@ -6141,7 +6049,7 @@ var Base_MagicItemsList = {
 		prerequisite: "Requires attunement by a creature of good alignment",
 		prereqeval: function (v) { return /good/i.test(What("Alignment")); },
 		usages: 7,
-		recovery: "Never",
+		recovery: "\u2013",
 		action: [["action", ""]],
 		calcChanges: {
 			spellCalc: [
@@ -6159,7 +6067,7 @@ var Base_MagicItemsList = {
 		rarity: "legendary",
 		magicItemTable: "I",
 		description: "While I'm holding this talisman, I double my Proficiency Bonus on the Intelligence (Arcana) check to control a sphere of annihilation. In addition, when I start my turn with control over a sphere of annihilation, I can use an action to levitate it 10 ft plus 10 ft times my Intelligence modifier.",
-		descriptionFull: "When you make an Intelligence (Arcana) check to control a sphere of annihilation while you are holding this talisman, you double your proficiency bonus on the check. In addition, when you start your turn with control over a sphere of annihilation, you can use an action to levitate it 10 feet plus a number of additional feet equal to 10 \xD7 your Intelligence modifier.",
+		descriptionFull: "When you make an Intelligence (Arcana) check to control a *sphere of annihilation* while you are holding this talisman, you double your proficiency bonus on the check. In addition, when you start your turn with control over a *sphere of annihilation*, you can use an action to levitate it 10 feet plus a number of additional feet equal to 10 \xD7 your Intelligence modifier.",
 		attunement: true,
 		weight: 1,
 	},
@@ -6177,7 +6085,7 @@ var Base_MagicItemsList = {
 		prerequisite: "Requires attunement by a creature of evil alignment",
 		prereqeval: function (v) { return /evil/i.test(What("Alignment")); },
 		usages: 6,
-		recovery: "Never",
+		recovery: "\u2013",
 		action: [["action", ""]],
 		calcChanges: {
 			spellCalc: [
@@ -6233,8 +6141,8 @@ var Base_MagicItemsList = {
 		type: "weapon (trident)",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "This magic trident has 3 charges. While I carry it, I can use an action and expend 1 charge to cast Dominate Beast (save DC 15) from it on a beast that has an innate swimming speed. The trident regains 1d3 expended charges daily at dawn.",
-		descriptionFull: "This trident is a magic weapon. It has 3 charges. While you carry it, you can use an action and expend 1 charge to cast Dominate Beast (save DC 15) from it on a beast that has an innate swimming speed. The trident regains 1d3 expended charges daily at dawn.",
+		description: "This magic trident has 3 charges. While I carry it, I can use an action and expend 1 charge to cast *Dominate Beast* (save DC 15) from it on a beast that has an innate swimming speed. The trident regains 1d3 expended charges daily at dawn.",
+		descriptionFull: "This trident is a magic weapon. It has 3 charges. While you carry it, you can use an action and expend 1 charge to cast *Dominate Beast* (save DC 15) from it on a beast that has an innate swimming speed. The trident regains 1d3 expended charges daily at dawn.",
 		attunement: true,
 		weight: 4,
 		usages: 3,
@@ -6269,7 +6177,7 @@ var Base_MagicItemsList = {
 		rarity: "legendary",
 		magicItemTable: "E",
 		description: "This tube holds milky liquid with a strong alcohol smell. Once as an action, I can pour the contents of the tube onto a surface within reach. The liquid instantly dissolves up to 1 square foot of adhesive it touches, including sovereign glue.",
-		descriptionFull: "This tube holds milky liquid with a strong alcohol smell. You can use an action to pour the contents of the tube onto a surface within reach. The liquid instantly dissolves up to 1 square foot of adhesive it touches, including sovereign glue.",
+		descriptionFull: "This tube holds milky liquid with a strong alcohol smell. You can use an action to pour the contents of the tube onto a surface within reach. The liquid instantly dissolves up to 1 square foot of adhesive it touches, including *sovereign glue*.",
 	},
 	"vicious weapon": {
 		name: "Vicious Weapon",
@@ -6345,8 +6253,8 @@ var Base_MagicItemsList = {
 		rarity: "rare",
 		magicItemTable: "G",
 		description: "This wand has 7 charges, regaining 1d6+1 at dawn, which I can use to cast its spells. I can expend 1 charge to gain adv. on a check to escape a grapple or on a save vs. being paralyzed or restrained, the latter requiring me to use my reaction. When the last charge is used there is a 5% chance the wand is destroyed.",
-		descriptionLong: "This wand has 7 charges, regaining 1d6+1 at dawn. I can expend charges to cast (save DC 17) Hold Monster (5 charges) or Hold Person (2 charges). As a reaction, I can expend 1 charge to gain adv. on a save to avoid being paralyzed or restrained. I can also expend 1 charge to gain adv. on a check to escape a grapple. If I expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
-		descriptionFull: "This wand has 7 charges for the following properties. It regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.\n   " + toUni("Spells") + ". While holding the wand, you can use an action to expend some of its charges to cast one of the following spells (save DC 17): Hold Monster (5 charges) or Hold Person (2 charges).\n   " + toUni("Assisted Escape") + ". While holding the wand, you can use your reaction to expend 1 charge and gain advantage on a saving throw you make to avoid being paralyzed or restrained, or you can expend 1 charge and gain advantage on any check you make to escape a grapple.",
+		descriptionLong: "This wand has 7 charges, regaining 1d6+1 at dawn. I can expend charges to cast (save DC 17) *Hold Monster* (5 charges) or *Hold Person* (2 charges). As a reaction, I can expend 1 charge to gain adv. on a save to avoid being paralyzed or restrained. I can also expend 1 charge to gain adv. on a check to escape a grapple. If I expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		descriptionFull: "This wand has 7 charges for the following properties. It regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.\n   ***Spells***. While holding the wand, you can use an action to expend some of its charges to cast one of the following spells (save DC 17): *Hold Monster* (5 charges) or *Hold Person* (2 charges).\n   ***Assisted Escape***. While holding the wand, you can use your reaction to expend 1 charge and gain advantage on a saving throw you make to avoid being paralyzed or restrained, or you can expend 1 charge and gain advantage on any check you make to escape a grapple.",
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
@@ -6390,9 +6298,9 @@ var Base_MagicItemsList = {
 		type: "wand",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "This wand has 7 charges, regaining 1d6+1 at dawn, which I can use to cast Command (1 charge), or as an action have all in a 60-ft cone (2 charges) make a DC 15 Wis save or be frightened and move away from me for 1 min (save end of each turn). When using the last charge, 5% chance the wand is destroyed.",
-		descriptionLong: "This wand has 7 charges, regaining 1d6+1 charges at dawn. As an action, I can expend 1 charge to cast Command, but only to use \"flee\" or \"grovel\". I can also use an action to expend 2 charges, causing the wand's tip to emit a 60-ft cone of amber light. All within the cone must make a DC 15 Wis save or be frightened of me for 1 minute. While frightened, a target moves away from me as fast as possible, can only use the Dash action, and is unwilling to move within 30 ft of me, but can repeat the save at the end of each of its turn. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
-		descriptionFull: "This wand has 7 charges for the following properties. It regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.\n   " + toUni("Command") + ". While holding the wand, you can use an action to expend 1 charge and command another creature to flee or grovel, as with the Command spell (save DC 15).\n   " + toUni("Cone of Fear") + ". While holding the wand, you can use an action to expend 2 charges, causing the wand's tip to emit a 60-foot cone of amber light. Each creature in the cone must succeed on a DC 15 Wisdom saving throw or become frightened of you for 1 minute. While it is frightened in this way, a creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevent it from moving. If it has nowhere it can move, the creature can use the Dodge action. At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.",
+		description: "This wand has 7 charges, regaining 1d6+1 at dawn, which I can use to cast *Command* (1 charge), or as an action have all in a 60-ft cone (2 charges) make a DC 15 Wis save or be frightened and move away from me for 1 min (save end of each turn). When using the last charge, 5% chance the wand is destroyed.",
+		descriptionLong: "This wand has 7 charges, regaining 1d6+1 charges at dawn. As an action, I can expend 1 charge to cast *Command*, but only to use \"flee\" or \"grovel\". I can also use an action to expend 2 charges, causing the wand's tip to emit a 60-ft cone of amber light. All within the cone must make a DC 15 Wis save or be frightened of me for 1 minute. While frightened, a target moves away from me as fast as possible, can only use the Dash action, and is unwilling to move within 30 ft of me, but can repeat the save at the end of each of its turn. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
+		descriptionFull: "This wand has 7 charges for the following properties. It regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.\n   ***Command***. While holding the wand, you can use an action to expend 1 charge and command another creature to flee or grovel, as with the *Command* spell (save DC 15).\n   ***Cone of Fear***. While holding the wand, you can use an action to expend 2 charges, causing the wand's tip to emit a 60-foot cone of amber light. Each creature in the cone must succeed on a DC 15 Wisdom saving throw or become frightened of you for 1 minute. While it is frightened in this way, a creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevent it from moving. If it has nowhere it can move, the creature can use the Dodge action. At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.",
 		attunement: true,
 		weight: 1,
 		usages: 7,
@@ -6419,8 +6327,8 @@ var Base_MagicItemsList = {
 		type: "wand",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "This wand has 7 charges, regaining 1d6+1 at dawn. As an action, I can expend 1 or more of its charges to cast Fireball (save DC 15) from it as a 3rd level spell. The spell slot level increases by one for each charge expended after the first. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
-		descriptionFull: "This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the Fireball spell (save DC 15) from it. For 1 charge, you cast the 3rd-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		description: "This wand has 7 charges, regaining 1d6+1 at dawn. As an action, I can expend 1 or more of its charges to cast *Fireball* (save DC 15) from it as a 3rd level spell. The spell slot level increases by one for each charge expended after the first. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
+		descriptionFull: "This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the *Fireball* spell (save DC 15) from it. For 1 charge, you cast the 3rd-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
@@ -6449,8 +6357,8 @@ var Base_MagicItemsList = {
 		type: "wand",
 		rarity: "rare",
 		magicItemTable: "G",
-		description: "This wand has 7 charges, regaining 1d6+1 at dawn. As an action, I can expend 1 or more of its charges to cast Lightning Bolt (save DC 15) from it as a 3rd level spell. The spell slot level increases by one for each charge expended after the first. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
-		descriptionFull: "This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the Lightning Bolt spell (save DC 15) from it. For 1 charge, you cast the 3rd-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		description: "This wand has 7 charges, regaining 1d6+1 at dawn. As an action, I can expend 1 or more of its charges to cast *Lightning Bolt* (save DC 15) from it as a 3rd level spell. The spell slot level increases by one for each charge expended after the first. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
+		descriptionFull: "This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the *Lightning Bolt* spell (save DC 15) from it. For 1 charge, you cast the 3rd-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
@@ -6479,8 +6387,8 @@ var Base_MagicItemsList = {
 		type: "wand",
 		rarity: "uncommon",
 		magicItemTable: "B",
-		description: "This wand has 3 charges. While holding it, I can expend 1 charge as an action to cast Detect Magic from it. The wand regains 1d3 expended charges daily at dawn.",
-		descriptionFull: "This wand has 3 charges. While holding it, you can expend 1 charge as an action to cast the Detect Magic spell from it. The wand regains 1d3 expended charges daily at dawn.",
+		description: "This wand has 3 charges. While holding it, I can expend 1 charge as an action to cast *Detect Magic* from it. The wand regains 1d3 expended charges daily at dawn.",
+		descriptionFull: "This wand has 3 charges. While holding it, you can expend 1 charge as an action to cast the *Detect Magic* spell from it. The wand regains 1d3 expended charges daily at dawn.",
 		weight: 1,
 		spellcastingBonus: [{
 			name: "1 charge",
@@ -6499,8 +6407,8 @@ var Base_MagicItemsList = {
 		type: "wand",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "This wand has 7 charges, regaining 1d6+1 at dawn. As an action, I can expend 1 or more of its charges to cast Magic Missile from it as a 1st level spell. The spell slot level increases by one for each charge expended after the first. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
-		descriptionFull: "This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the Magic Missile spell from it. For 1 charge, you cast the 1st-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		description: "This wand has 7 charges, regaining 1d6+1 at dawn. As an action, I can expend 1 or more of its charges to cast *Magic Missile* from it as a 1st level spell. The spell slot level increases by one for each charge expended after the first. When the last charge is used, roll a d20. On a 1, the wand crumbles into ashes.",
+		descriptionFull: "This wand has 7 charges. While holding it, you can use an action to expend 1 or more of its charges to cast the *Magic Missile* spell from it. For 1 charge, you cast the 1st-level version of the spell. You can increase the spell slot level by one for each additional charge you expend.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
 		weight: 1,
 		usages: 7,
 		recovery: "dawn",
@@ -6542,8 +6450,8 @@ var Base_MagicItemsList = {
 		type: "wand",
 		rarity: "very rare",
 		magicItemTable: "H",
-		description: "This wand has 7 charges and regains 1d6+1 expended charges daily at dawn. As an action, I can expend 1 of its charges to cast Polymorph (save DC 15) from it. If I expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
-		descriptionFull: "This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges to cast the Polymorph spell (save DC 15) from it.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		description: "This wand has 7 charges and regains 1d6+1 expended charges daily at dawn. As an action, I can expend 1 of its charges to cast *Polymorph* (save DC 15) from it. If I expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		descriptionFull: "This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges to cast the *Polymorph* spell (save DC 15) from it.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
@@ -6639,8 +6547,8 @@ var Base_MagicItemsList = {
 		type: "wand",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "This wand has 7 charges and regains 1d6+1 expended charges daily at dawn. As an action, I can expend 1 of its charges to cast Web (save DC 15) from it. If I expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
-		descriptionFull: "This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges to cast the Web spell (save DC 15) from it.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		description: "This wand has 7 charges and regains 1d6+1 expended charges daily at dawn. As an action, I can expend 1 of its charges to cast *Web* (save DC 15) from it. If I expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
+		descriptionFull: "This wand has 7 charges. While holding it, you can use an action to expend 1 of its charges to cast the *Web* spell (save DC 15) from it.\n   The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into ashes and is destroyed.",
 		attunement: true,
 		weight: 1,
 		prerequisite: "Requires attunement by a spellcaster",
@@ -6668,29 +6576,29 @@ var Base_MagicItemsList = {
 			"If the effect causes you to cast a spell from the wand, the spell's save DC is 15. If the spell normally has a range expressed in feet, its range becomes 120 feet if it isn't already.",
 			"If an effect covers an area, you must center the spell on and include the target. If an effect has multiple possible subjects, the DM randomly determines which ones are affected.",
 			"The wand regains 1d6+1 expended charges daily at dawn. If you expend the wand's last charge, roll a d20. On a 1, the wand crumbles into dust and is destroyed.\n",
-			toUni("d100 and effects"),
-			toUni("01-05") + ". You cast Slow.",
-			toUni("06-10") + ". You cast Faerie Fire.",
-			toUni("11-15") + ". You are stunned until the start of your next turn, believing something awesome just happened.",
-			toUni("16-20") + ". You cast Gust of Wind.",
-			toUni("21-25") + ". You cast Detect Thoughts on the target you chose. If you didn't target a creature, you instead take 1d6 psychic damage.",
-			toUni("26-30") + ". You cast Stinking Cloud.",
-			toUni("31-33") + ". Heavy rain falls in a 60-foot radius centered on the target. The area becomes lightly obscured. The rain falls until the start of your next turn.",
-			toUni("34-36") + ". An animal appears in the unoccupied space nearest the target. The animal isn't under your control and acts as it normally would. Roll a d100 to determine which animal appears. On a 01-25, a rhinoceros appears; on a 26-50, an elephant appears; and on a 51-100, a rat appears.",
-			toUni("37-46") + ". You cast Lightning Bolt.",
-			toUni("47-49") + ". A cloud of 600 oversized butterflies fills a 30-foot radius centered on the target. The area becomes heavily obscured. The butterflies remain for 10 minutes.",
-			toUni("50-53") + ". You enlarge the target as if you had cast Enlarge/Reduce. If the target can't be affected by that spell or if you didn't target a creature, you become the target.",
-			toUni("54-58") + ". You cast Darkness.",
-			toUni("59-62") + ". Grass grows on the ground in a 60-foot radius centered on the target. If grass is already there, it grows to ten times its normal size and remains overgrown for 1 minute.",
-			toUni("63-65") + ". An object of the DM's choice disappears into the Ethereal Plane. The object must be neither worn nor carried, within 120 feet of the target, and no larger than 10 feet in any dimension.",
-			toUni("66-69") + ". You shrink yourself as if you had cast Enlarge/Reduce on yourself.",
-			toUni("70-79") + ". You cast Fireball.",
-			toUni("80-84") + ". You cast Invisibility.",
-			toUni("85-87") + ". Leaves grow from the target. If you chose a point in space as the target, leaves sprout from the creature nearest to that point. Unless they are picked off, the leaves turn brown and fall off after 24 hours.",
-			toUni("88-90") + ". A stream of 1d4 \xD7 10 gems, each worth 1 gp, shoots from the wand's tip in a line 30 feet long and 5 feet wide. Each gem deals 1 bludgeoning damage, and the total damage of the gems is divided equally among all creatures in the line.",
-			toUni("91-95") + ". A burst of colorful shimmering light extends from you in a 30-foot radius. You and each creature in the area that can see must succeed on a DC 15 Constitution saving throw or become blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
-			toUni("96-97") + ". The target's skin turns bright blue for 1d10 days. If you chose a point in space, the creature nearest to that point is affected.",
-			toUni("98-00") + ". If you targeted a creature, it must make a DC 15 Constitution saving throw. If you didn't target a creature, you become the target and must make the saving throw. If the saving throw fails by 5 or more, the target is instantly petrified. On any other failed save, the target is restrained and begins to turn to stone. While restrained in this way, the target must repeat the saving throw at the end of its next turn, becoming petrified on a failure or ending the effect on a success. The petrification lasts until the target is freed by the Greater Restoration spell or similar magic.",
+			"***d100 and effects***",
+			"***01-05***. You cast *Slow*.",
+			"***06-10***. You cast *Faerie Fire*.",
+			"***11-15***. You are stunned until the start of your next turn, believing something awesome just happened.",
+			"***16-20***. You cast *Gust of Wind*.",
+			"***21-25***. You cast *Detect Thoughts* on the target you chose. If you didn't target a creature, you instead take 1d6 psychic damage.",
+			"***26-30***. You cast *Stinking Cloud*.",
+			"***31-33***. Heavy rain falls in a 60-foot radius centered on the target. The area becomes lightly obscured. The rain falls until the start of your next turn.",
+			"***34-36***. An animal appears in the unoccupied space nearest the target. The animal isn't under your control and acts as it normally would. Roll a d100 to determine which animal appears. On a 01-25, a rhinoceros appears; on a 26-50, an elephant appears; and on a 51-100, a rat appears.",
+			"***37-46***. You cast *Lightning Bolt*.",
+			"***47-49***. A cloud of 600 oversized butterflies fills a 30-foot radius centered on the target. The area becomes heavily obscured. The butterflies remain for 10 minutes.",
+			"***50-53***. You enlarge the target as if you had cast *Enlarge/Reduce*. If the target can't be affected by that spell or if you didn't target a creature, you become the target.",
+			"***54-58***. You cast *Darkness*.",
+			"***59-62***. Grass grows on the ground in a 60-foot radius centered on the target. If grass is already there, it grows to ten times its normal size and remains overgrown for 1 minute.",
+			"***63-65***. An object of the DM's choice disappears into the Ethereal Plane. The object must be neither worn nor carried, within 120 feet of the target, and no larger than 10 feet in any dimension.",
+			"***66-69***. You shrink yourself as if you had cast *Enlarge/Reduce* on yourself.",
+			"***70-79***. You cast *Fireball*.",
+			"***80-84***. You cast *Invisibility*.",
+			"***85-87***. Leaves grow from the target. If you chose a point in space as the target, leaves sprout from the creature nearest to that point. Unless they are picked off, the leaves turn brown and fall off after 24 hours.",
+			"***88-90***. A stream of 1d4 \xD7 10 gems, each worth 1 gp, shoots from the wand's tip in a line 30 feet long and 5 feet wide. Each gem deals 1 bludgeoning damage, and the total damage of the gems is divided equally among all creatures in the line.",
+			"***91-95***. A burst of colorful shimmering light extends from you in a 30-foot radius. You and each creature in the area that can see must succeed on a DC 15 Constitution saving throw or become blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
+			"***96-97***. The target's skin turns bright blue for 1d10 days. If you chose a point in space, the creature nearest to that point is affected.",
+			"***98-00***. If you targeted a creature, it must make a DC 15 Constitution saving throw. If you didn't target a creature, you become the target and must make the saving throw. If the saving throw fails by 5 or more, the target is instantly petrified. On any other failed save, the target is restrained and begins to turn to stone. While restrained in this way, the target must repeat the saving throw at the end of its next turn, becoming petrified on a failure or ending the effect on a success. The petrification lasts until the target is freed by the *Greater Restoration* spell or similar magic.",
 		]),
 		attunement: true,
 		weight: 1,
@@ -6706,28 +6614,28 @@ var Base_MagicItemsList = {
 				"If the effect causes me to cast a spell from the wand, the spell's save DC is 15. If the spell normally has a range expressed in feet, its range becomes 120 ft if it isn't already.",
 				"If an effect covers an area, I must center the spell on and include the target. If an effect has multiple possible subjects, the DM randomly determines which ones are affected.",
 				"\nd100 RESULT AND EFFECTS",
-				"01-05: I cast Slow.",
-				"06-10: I cast Faerie Fire.",
+				"01-05: I cast *Slow*.",
+				"06-10: I cast *Faerie Fire*.",
 				"11-15: I am stunned until the start of my next turn, believing something awesome just happened.",
-				"16-20: I cast Gust of Wind.",
-				"21-25: I cast Detect Thoughts on the target I chose. If I didn't target a creature, I instead take 1d6 psychic damage.",
-				"26-30: I cast Stinking Cloud.",
+				"16-20: I cast *Gust of Wind*.",
+				"21-25: I cast *Detect Thoughts* on the target I chose. If I didn't target a creature, I instead take 1d6 psychic damage.",
+				"26-30: I cast *Stinking Cloud*.",
 				"31-33: Heavy rain falls in a 60-ft radius centered on the target. The area becomes lightly obscured. The rain falls until the start of my next turn.",
 				"34-36: An animal appears in the unoccupied space nearest the target. The animal isn't under my control and acts as it normally would. Roll a d100 to determine which animal appears. On a 01-25, a rhinoceros appears; on a 26-50, an elephant appears; and on a 51-100, a rat appears.",
-				"37-46: I cast Lightning Bolt.",
+				"37-46: I cast *Lightning Bolt*.",
 				"47-49: A cloud of 600 oversized butterflies fills a 30-ft radius centered on the target. The area becomes heavily obscured. The butterflies remain for 10 minutes.",
-				"50-53: I enlarge the target as if I had cast Enlarge/Reduce. If the target can't be affected by that spell or if I didn't target a creature, I become the target.",
-				"54-58: I cast Darkness.",
+				"50-53: I enlarge the target as if I had cast *Enlarge/Reduce*. If the target can't be affected by that spell or if I didn't target a creature, I become the target.",
+				"54-58: I cast *Darkness*.",
 				"59-62: Grass grows on the ground in a 60-ft radius centered on the target. If grass is already there, it grows to ten times its normal size and remains overgrown for 1 minute.",
 				"63-65: An object of the DM's choice disappears into the Ethereal Plane. The object must be neither worn nor carried, within 120 ft of the target, and no larger than 10 ft in any dimension.",
-				"66-69: I shrink myself as if I had cast Enlarge/Reduce on myself.",
-				"70-79: I cast Fireball.",
-				"80-84: I cast Invisibility.",
+				"66-69: I shrink myself as if I had cast *Enlarge/Reduce* on myself.",
+				"70-79: I cast *Fireball*.",
+				"80-84: I cast *Invisibility*.",
 				"85-87: Leaves grow from the target. If I chose a point in space as the target, leaves sprout from the creature nearest to that point. Unless they are picked off, the leaves turn brown and fall off after 24 hours.",
 				"88-90: A stream of 1d4 \xD7 10 gems, each worth 1 gp, shoots from the wand's tip in a line 30 ft long and 5 ft wide. Each gem deals 1 bludgeoning damage, and the total damage of the gems is divided equally among all creatures in the line.",
 				"91-95: A burst of colorful shimmering light extends from me in a 30-ft radius. Me and each creature in the area that can see must succeed on a DC 15 Constitution saving throw or become blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
 				"96-97: The target's skin turns bright blue for 1d10 days. If I chose a point in space, the creature nearest to that point is affected.",
-				"98-00: If I targeted a creature, it must make a DC 15 Constitution saving throw. If I didn't target a creature, I become the target and must make the saving throw. If the saving throw fails by 5 or more, the target is instantly petrified. On any other failed save, the target is restrained and begins to turn to stone. While restrained in this way, the target must repeat the saving throw at the end of its next turn, becoming petrified on a failure or ending the effect on a success. The petrification lasts until the target is freed by the Greater Restoration spell or similar magic.",
+				"98-00: If I targeted a creature, it must make a DC 15 Constitution saving throw. If I didn't target a creature, I become the target and must make the saving throw. If the saving throw fails by 5 or more, the target is instantly petrified. On any other failed save, the target is restrained and begins to turn to stone. While restrained in this way, the target must repeat the saving throw at the end of its next turn, becoming petrified on a failure or ending the effect on a success. The petrification lasts until the target is freed by the *Greater Restoration* spell or similar magic.",
 			],
 		}],
 		fixedDC: 15,
@@ -6789,7 +6697,7 @@ var Base_MagicItemsList = {
 		rarity: "legendary",
 		magicItemTable: "I",
 		description: "As an action, I can unfold this black cloth, 6 ft in diameter, and place it on a solid surface, whereupon it creates a two-way portal to another world or plane, a random one each time. I can use an action to grab it from the edges and fold it, closing the portal. Once used in this way, it can't do so again for 1d8 hours.",
-		descriptionFull: "This fine black cloth, soft as silk, is folded up to the dimensions of a handkerchief. It unfolds into a circular sheet 6 feet in diameter.\n   You can use an action to unfold and place the well of many worlds on a solid surface, whereupon it creates a two-way portal to another world or plane of existence. Each time the item opens a portal, the DM decides where it leads. You can use an action to close an open portal by taking hold of the edges of the cloth and folding it up. Once well of many worlds has opened a portal, it can't do so again for 1d8 hours.",
+		descriptionFull: "This fine black cloth, soft as silk, is folded up to the dimensions of a handkerchief. It unfolds into a circular sheet 6 feet in diameter.\n   You can use an action to unfold and place the *well of many worlds* on a solid surface, whereupon it creates a two-way portal to another world or plane of existence. Each time the item opens a portal, the DM decides where it leads. You can use an action to close an open portal by taking hold of the edges of the cloth and folding it up. Once *well of many worlds* has opened a portal, it can't do so again for 1d8 hours.",
 		action: [["action", " (place/fold)"]],
 		usages: 1,
 		recovery: "1d8 h",
@@ -6800,8 +6708,8 @@ var Base_MagicItemsList = {
 		type: "wondrous item",
 		rarity: "uncommon",
 		magicItemTable: "F",
-		description: "While holding this fan, I can use an action to cast Gust of Wind (save DC 13) from it. Once used, the fan shouldn't be used again until the next dawn. Each time it is used again before then, it has a cumulative 20% chance of not working and tearing into useless, nonmagical tatters.",
-		descriptionFull: "While holding this fan, you can use an action to cast the Gust of Wind spell (save DC 13) from it. Once used, the fan shouldn't be used again until the next dawn. Each time it is used again before then, it has a cumulative 20% chance of not working and tearing into useless, nonmagical tatters.",
+		description: "While holding this fan, I can use an action to cast *Gust of Wind* (save DC 13) from it. Once used, the fan shouldn't be used again until the next dawn. Each time it is used again before then, it has a cumulative 20% chance of not working and tearing into useless, nonmagical tatters.",
+		descriptionFull: "While holding this fan, you can use an action to cast the *Gust of Wind* spell (save DC 13) from it. Once used, the fan shouldn't be used again until the next dawn. Each time it is used again before then, it has a cumulative 20% chance of not working and tearing into useless, nonmagical tatters.",
 		usages: 1,
 		recovery: "dawn",
 		additional: "more uses +20% to destroy",
@@ -6846,9 +6754,125 @@ var Base_MagicItemsList = {
 		type : "wondrous item",
 		rarity : "artifact",
 		description : "",
-		descriptionFull : "Ages past, on the world of Krynn, elves and humans waged a terrible war against evil dragons. When the world seemed doomed, the wizards of the Towers of High Sorcery came together and worked their greatest magic, forging five Orbs of Dragonkind (or Dragon Orbs) to help them defeat the dragons. One orb was taken to each of the five towers, and there they were used to speed the war toward a victorious end. The wizards used the orbs to lure dragons to them, then destroyed the dragons with powerful magic.\n   As the Towers of High Sorcery fell in later ages, the orbs were destroyed or faded into legend, and only three are thought to survive. Their magic has been warped and twisted over the centuries, so although their primary purpose of calling dragons still functions, they also allow some measure of control over dragons.\n   Each orb contains the essence of an evil dragon, a presence that resents any attempt to coax magic from it. Those lacking in force of personality might find themselves enslaved to an orb.\n   An orb is an etched crystal globe about 10 inches in diameter. When used, it grows to about 20 inches in diameter, and mist swirls inside it.\n   While attuned to an orb, you can use an action to peer into the orb's depths and speak its command word. You must then make a DC 15 Charisma check. On a successful check, you control the orb for as long as you remain attuned to it. On a failed check, you become charmed by the orb for as long as you remain attuned to it.\n   While you are charmed by the orb, you can't voluntarily end your attunement to it, and the orb casts Suggestion on you at will (save DC 18), urging you to work toward the evil ends it desires. The dragon essence within the orb might want many things: the annihilation of a particular people, freedom from the orb, to spread suffering in the world, to advance the worship of Tiamat, or something else the DM decides.\n   " + toUni("Random Properties") + ". An Orb of Dragon kind has the following random properties:\n \u2022 2 minor beneficial properties\n \u2022 1 minor detrimental property\n \u2022 1 major detrimental property\n\n" + toUni("Spells") + ". The orb has 7 charges and regains 1d4+3 expended charges daily at dawn. If you control the orb, you can use an action and expend 1 or more charges to cast one of the following spells (save DC 18) from it: Cure Wounds (5th-level version, 3 charges), Daylight (1 charge), Death Ward (2 charges), or Scrying (3 charges). You can also use an action to cast the Detect Magic spell from the orb without using any charges.\n   " + toUni("Call Dragons") + ". While you control the orb, you can use an action to cause the artifact to issue a telepathic call that extends in all directions for 40 miles. Evil dragons in range feel compelled to come to the orb as soon as possible by the most direct route. Dragon deities such as Tiamat are unaffected by this call. Dragons drawn to the orb might be hostile toward you for compelling them against their will. Once you have used this property, it can't be used again for 1 hour.\n   " + toUni("Destroying an Orb") + ". An Orb of Dragonkind appears fragile but is impervious to most damage, including the attacks and breath weapons of dragons. A Disintegrate spell or one good hit from a +3 magic weapon is sufficient to destroy an orb, however.",
+		descriptionFull : "Ages past, on the world of Krynn, elves and humans waged a terrible war against evil dragons. When the world seemed doomed, the wizards of the Towers of High Sorcery came together and worked their greatest magic, forging five Orbs of Dragonkind (or Dragon Orbs) to help them defeat the dragons. One orb was taken to each of the five towers, and there they were used to speed the war toward a victorious end. The wizards used the orbs to lure dragons to them, then destroyed the dragons with powerful magic.\n   As the Towers of High Sorcery fell in later ages, the orbs were destroyed or faded into legend, and only three are thought to survive. Their magic has been warped and twisted over the centuries, so although their primary purpose of calling dragons still functions, they also allow some measure of control over dragons.\n   Each orb contains the essence of an evil dragon, a presence that resents any attempt to coax magic from it. Those lacking in force of personality might find themselves enslaved to an orb.\n   An orb is an etched crystal globe about 10 inches in diameter. When used, it grows to about 20 inches in diameter, and mist swirls inside it.\n   While attuned to an orb, you can use an action to peer into the orb's depths and speak its command word. You must then make a DC 15 Charisma check. On a successful check, you control the orb for as long as you remain attuned to it. On a failed check, you become charmed by the orb for as long as you remain attuned to it.\n   While you are charmed by the orb, you can't voluntarily end your attunement to it, and the orb casts Suggestion on you at will (save DC 18), urging you to work toward the evil ends it desires. The dragon essence within the orb might want many things: the annihilation of a particular people, freedom from the orb, to spread suffering in the world, to advance the worship of Tiamat, or something else the DM decides.\n   ***Random Properties***. An Orb of Dragon kind has the following random properties:\n \u2022 2 minor beneficial properties\n \u2022 1 minor detrimental property\n \u2022 1 major detrimental property\n\n***Spells***. The orb has 7 charges and regains 1d4+3 expended charges daily at dawn. If you control the orb, you can use an action and expend 1 or more charges to cast one of the following spells (save DC 18) from it: Cure Wounds (5th-level version, 3 charges), Daylight (1 charge), Death Ward (2 charges), or Scrying (3 charges). You can also use an action to cast the Detect Magic spell from the orb without using any charges.\n   ***Call Dragons***. While you control the orb, you can use an action to cause the artifact to issue a telepathic call that extends in all directions for 40 miles. Evil dragons in range feel compelled to come to the orb as soon as possible by the most direct route. Dragon deities such as Tiamat are unaffected by this call. Dragons drawn to the orb might be hostile toward you for compelling them against their will. Once you have used this property, it can't be used again for 1 hour.\n   ***Destroying an Orb***. An Orb of Dragonkind appears fragile but is impervious to most damage, including the attacks and breath weapons of dragons. A Disintegrate spell or one good hit from a +3 magic weapon is sufficient to destroy an orb, however.",
 		weight : 3,
 		attunement : true
 	}
 */
 };
+
+Base_MagicItemsList["hammer of thunderbolts"] = function () {
+	/** Ability score increases and magic items setting the ability scores
+	 * 2024 version of this item increases the override of the attuend item by 4 and
+	 * that is how this 5e version has been made to work from v14.0.13 onwards.
+	 * This is the prefered interpertation of Jeremy Crawford's ruling,
+	 * instead of having all magic items with `scores` stack with `scoresOverride`.
+	 * See https://www.sageadvice.eu/does-the-bonus-strength-from-the-hammer-of-thunderbolts-stack-with-your-giants-strength-belt/
+	*/
+	var baseWeapon = {
+		baseWeapon: "maul",
+		regExpSearch: /^(?=.*hammer)(?=.*thunderbolts).*$/i,
+		name: "Hammer of Thunderbolts",
+		source: [["SRD", 224], ["D", 173]],
+		modifiers: [1, 1],
+		selectNow: true,
+	};
+	var obj = {
+		name: "Hammer of Thunderbolts",
+		source: [["SRD", 224], ["D", 173]],
+		type: "weapon (maul)",
+		rarity: "legendary",
+		magicItemTable: "I",
+		description: "Select one of the choices.",
+		descriptionFull: [
+			"You gain a +1 bonus to attack and damage rolls made with this magic weapon.",
+			"***Giant's Bane (Requires Attunement)***. You must be wearing a *belt of giant strength* (any variety) and *gauntlets of ogre power* to attune to this weapon. The attunement ends if you take off either of those items. While you are attuned to this weapon and holding it, your Strength score increases by 4 and can exceed 20, but not 30. When you roll a 20 on an attack roll made with this weapon against a giant, the giant must succeed on a DC 17 Constitution saving throw or die.",
+			"The hammer also has 5 charges. While attuned to it, you can expend 1 charge and make a ranged weapon attack with the hammer, hurling it as if it had the thrown property with a normal range of 20 feet and a long range of 60 feet. If the attack hits, the hammer unleashes a thunderclap audible out to 300 feet. The target and every creature within 30 feet of it must succeed on a DC 17 Constitution saving throw or be stunned until the end of your next turn. The hammer regains 1d4+1 expended charges daily at dawn.",
+		],
+		weight: 10,
+		selfChoosing: function () {
+			var returnValue = "Not wearing both Belt of Giant Strength and Gauntlets of Ogre Power";
+			var hasGauntlets = CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1;
+			var hasBelt = CurrentMagicItems.known.indexOf("belt of giant strength") !== -1;
+			// If it doesn't have both, stop now
+			if (!hasGauntlets || !hasBelt) return returnValue.toLowerCase();
+			returnValue = "Wearing, but not attuned to, Belt of Giant Strength and Gauntlets of Ogre Power";
+			// Loop through all the magic items and see attuned to which belt
+			var strOverride = 0;
+			for (var i = 0; i < CurrentMagicItems.known.length; i++) {
+				if (CurrentMagicItems.known[i] !== "belt of giant strength") continue;
+				if (!isMagicItemAttuned(i)) continue; // not attuned
+				var oItem = MagicItemsList[CurrentMagicItems.known[i]];
+				if (oItem && oItem.choices) {
+					oItem = oItem[CurrentMagicItems.choices[i]];
+				};
+				if (oItem && oItem.scoresOverride[0] > strOverride) {
+					strOverride = oItem.scoresOverride[0];
+					returnValue = "Attuned to " + oItem.name + " (and wearing Gauntlets of Ogre Power)";
+				};
+			};
+			return returnValue.toLowerCase();
+		},
+		choices: [
+			"Not wearing both Belt of Giant Strength and Gauntlets of Ogre Power",
+			"Wearing, but not attuned to, Belt of Giant Strength and Gauntlets of Ogre Power",
+		],
+		"not wearing both belt of giant strength and gauntlets of ogre power": {
+			name: "Hammer of Thunderbolts [not attuned]",
+			description: "This magical maul adds a +1 bonus to attack and damage rolls made with it. It has additional features when I'm attuned to it, which requires me to wear both a *belt of giant strength* (any variety) and *gauntlets of ogre power*.",
+			weaponOptions: [baseWeapon],
+		},
+		"wearing, but not attuned to, belt of giant strength and gauntlets of ogre power": {
+			name: "Hammer of Thunderbolts [attuned]",
+			attunement: true,
+			description: "This +1 maul has 5 charges, regaining 1d4+1 at dawn. I can use 1 charge to make it Thrown (20/60 ft) for 1 attack. If that hits, it's audible out to 300 ft and all within 30 ft of the target must make a DC 17 Con save or be Stunned until the end of my next turn. On a 20 to hit vs Giant: must make a DC 17 Con save or die.",
+			prerequisite: "Requires wearing a Belt of Giant Strength and Gauntlets of Ogre Power to attune",
+			prereqeval: function () {
+				// Don't have to be attuned, just wearing https://twitter.com/jeremyecrawford/status/948346891296653315
+				return CurrentMagicItems.known.indexOf("belt of giant strength") !== -1 && CurrentMagicItems.known.indexOf("gauntlets of ogre power") !== -1;
+			},
+			extraLimitedFeatures: [{
+				name: "Hammer of Thunderbolts",
+				usages: 5,
+				recovery: "dawn",
+				additional: "regains 1d4+1",
+			}],
+			weaponOptions: [Object.assign({}, baseWeapon, {
+				description: "Heavy, two-handed; 1 charge to throw (20/60 ft); On 20 to hit Giant: DC 17 Con save or die",
+			})],
+		},
+	};
+	var oBelt = Base_MagicItemsList["belt of giant strength"];
+	if (oBelt) {
+		var objBase = obj["wearing, but not attuned to, belt of giant strength and gauntlets of ogre power"];
+		var sBaseDescription = objBase.description + " My Strength is ";
+		if (typePF) sBaseDescription = sBaseDescription.replace(" of the target", "");
+		oBelt.choices.forEach(function (beltChoice) {
+			var beltChoiceLC = beltChoice.toLowerCase();
+			var oChoice = oBelt[beltChoiceLC];
+			var sGiant = beltChoice.replace(/ giant.*/i, "");
+			var sChoice = "Attuned to " + oChoice.name + " (and wearing Gauntlets of Ogre Power)";
+			var sChoiceLS = sChoice.toLowerCase();
+			var iOverride = Math.min(oChoice.scoresOverride[0] + 4, 30);
+			obj.choices.push(sChoice);
+			obj[sChoiceLS] = {
+				name: "Hammer of Thunderbolts [" + sGiant + "]",
+				attunement: true,
+				description: sBaseDescription + iOverride + ".",
+				extraLimitedFeatures: objBase.extraLimitedFeatures,
+				weaponOptions: objBase.weaponOptions,
+				scoresOverride: [iOverride, 0, 0, 0, 0, 0],
+				prerequisite: "Requires attunement to " + oChoice.name + " and to be wearing Gauntlets of Ogre Power",
+			};
+			// Add the prerequisite function
+			eval([
+				"obj[sChoiceLS].prereqeval = function () {",
+				'if (CurrentMagicItems.known.indexOf("gauntlets of ogre power") === -1) return false;',
+				'var knownIdx = CurrentMagicItems.choices.indexOf("' + beltChoiceLC + '");',
+				'return knownIdx !== -1 && CurrentMagicItems.known[knownIdx] === "belt of giant strength" && isMagicItemAttuned(knownIdx);',
+				"}",
+			].join("\n"));
+		});
+	};
+	return obj;
+}();

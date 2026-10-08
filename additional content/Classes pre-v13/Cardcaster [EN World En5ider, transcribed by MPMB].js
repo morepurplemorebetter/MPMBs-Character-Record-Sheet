@@ -729,7 +729,7 @@ AddSubClass("cardcaster", "jack of beasts", {
 			minlevel: 6,
 			description: desc([
 				"Creatures I manipulate or summon with a card, as well as my familiar, gain bonuses",
-				"It gains my cardcaster level as temp HP and adds my Prof B. to its weapon damage rolls",
+				"It gains my cardcaster level as temp HP and adds my Prof B to its weapon damage rolls",
 			]),
 		},
 		"subclassfeature10": {
