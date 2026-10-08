@@ -2967,6 +2967,7 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 			   Each subarray is rendered with a tab between each column (i.e. `Array.join("\t")`).
 			   If instead of a subarray there is a string, it will be added as is.
 			   The table will be preceded by two line breaks and followed by one line break.
+			   This options doesn't work if `page3notes == true`, see below.
 
 		FORMATTING CHARACTERS (since v14.0.0)
 		Regardless if you use a string or an array, the note can be formatted using the
@@ -3033,6 +3034,8 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 		USE:	whether to add this to the 3rd page's Notes section (true) or on a Notes page (false)
 
 		If this is set to true, `amendTo` will be ignored (see below).
+		If this is true, the `note` attribute (see above) shouldn't include
+		any subarrays (option 2), as they won't be formatted as a table.
 
 		Setting this to 0 or false is the same as not including this attribute.
 	*/
