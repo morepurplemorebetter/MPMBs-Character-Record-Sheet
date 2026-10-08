@@ -1003,7 +1003,7 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 	// Enqueue the main objects' eval if adding the creature for the first time
 	if (oldLvl === 0 && newLvl > 0) {
 		if (objCrea.eval) arrToEval.push([objCrea, "eval", objCrea.name]);
-		if (objComp && objComp.eval) arrToEval.push([objComp, "eval", objComp.menuName]);
+		if (objComp && objComp.eval) arrToEval.push([objComp, "eval", objComp.nameMenu]);
 	}
 
 	/* The string for the Features and Traits fields */
@@ -1040,8 +1040,9 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 				if (doPropTxt) {
 					// Create the strings for the property
 					var joinString = prop.joinString !== undefined ? prop.joinString : ". ";
-					var bulletString = prop.bulletString !== undefined ? "##" + prop.bulletString + " " : "##\u25C6 ";
-					var propFirstLine = bulletString + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name) + "##";
+					var formattingChar = prop.formattingChar !== undefined ? prop.formattingChar : "##";
+					var bulletString = prop.bulletString !== undefined ? formattingChar + prop.bulletString + " " : formattingChar + "\u25C6 ";
+					var propFirstLine = bulletString + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name) + formattingChar;
 					var propFullLine = propFirstLine + joinString + (isMetric ? ConvertToMetric(prop.description, 0.5) : prop.description);
 					// Apply the name of the creature if [THIS] is present in the strings
 					if (rxThisAdd.test(propFullLine)) {

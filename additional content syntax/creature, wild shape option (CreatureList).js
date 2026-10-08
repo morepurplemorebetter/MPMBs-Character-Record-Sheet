@@ -688,6 +688,7 @@ CreatureList["purple crawler"] = {
 	CHANGE: v14.0.0 (formatting characters)
 	CHANGE: v14.0.6 (added `wildshapeShow`)
 	CHANGE: v14.0.8 (added `bulletString`)
+	CHANGE: v14.1.3 (added `formattingChar`)
 
 	Each of these four attributes work in the same way.
 	Each is an array with objects that have at least two attributes, `name` and `description`,
@@ -734,6 +735,17 @@ CreatureList["purple crawler"] = {
 		}
 	Will result in:
 		##(✽) Beast's Strike Damage Type##. The damage type of the beast's attack can be Bludgeoning, Piercing, or Slashing damage, which is chosen by its master when they summon the beast.
+
+	If you want something else than a ## before and after the name, you can change it
+	to anything you like by adding the `formattingChar` attribute.
+	See FORMATTING CHARACTERS below for what these do. For example:
+		{
+			name: "Purple Scent",
+			description: "The creature has advantage on any Wisdom (Perception) checks it makes that rely on scent.",
+			formattingChar: "***"
+		}
+	Will result in:
+		***◆ Purple Scent***. The creature has advantage on any Wisdom (Perception) checks it makes that rely on scent.
 
 	If the `description` attribute is not present, no string will be added to the field.
 	Any description will do, even an empty string (e.g. description : "").

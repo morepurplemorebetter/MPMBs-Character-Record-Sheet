@@ -20,6 +20,7 @@ var Base_CompanionList = {
 				"It reappears when I cast this spell again (in a new form if so desired)",
 			].join("\n   "),
 			joinString: ", ",
+			formattingChar: "",
 		}, {
 			name: "The familiar acts independently of me",
 			description: [
@@ -27,26 +28,32 @@ var Base_CompanionList = {
 				"In combat, it rolls its own initiative and acts on its own turn, but it can't attack",
 			].join("\n   "),
 			joinString: ", ",
+			formattingChar: "",
 		}, {
 			name: "While it is within 100 ft of me",
 			description: "I can communicate with it telepathically",
 			joinString: ", ",
+			formattingChar: "",
 		}, {
 			name: "As an action, I see/hear what it does",
 			description: " (but not with my senses) until the start of my next turn",
 			joinString: "",
+			formattingChar: "",
 		}, {
 			name: "As an action, I can temporarily dismiss it",
 			description: "having it disappear into a pocket dimension",
 			joinString: ", ",
+			formattingChar: "",
 		}, {
 			name: "As an action, while it is temporarily dismissed",
 			description: "I can cause it to reappear within 30 ft",
 			joinString: ", ",
+			formattingChar: "",
 		}, {
 			name: "I can't have more than one familiar bonded at a time",
 			description: "As an action, I can dismiss it forever",
 			joinString: "; ",
+			formattingChar: "",
 		}, {
 			name: "When I cast a spell with a range of touch",
 			description: [
@@ -55,6 +62,7 @@ var Base_CompanionList = {
 				"It acts as if it cast the spell, but it can use my modifiers for any attack rolls the spell requires",
 			].join("\n   "),
 			joinString: ", ",
+			formattingChar: "",
 		}],
 		attributesAdd: {
 			header: "Familiar",
@@ -118,30 +126,37 @@ var Base_CompanionList = {
 				"When the steed drops to 0 hit points, it disappears, leaving behind no physical form",
 			].join("\n   "),
 			joinString: ", ",
+			formattingChar: "",
 		}, {
 			name: "The steed serves me as a mount",
 			description: "I have a bond with it that allows us to fight as a seamless unit",
 			joinString: ". ",
+			formattingChar: "",
 		}, {
 			name: "While mounted on my steed",
 			description: "I can make any spell I cast that targets only me also target it",
 			joinString: ", ",
+			formattingChar: "",
 		}, {
 			name: "While my steed is within 1 mile of me",
 			description: "we can communicate with each other telepathically",
 			joinString: ", ",
+			formattingChar: "",
 		}, {
 			name: "I can dismiss my steed at any time as an action",
 			description: "causing it to disappear",
 			joinString: ", ",
+			formattingChar: "",
 		}, {
 			name: "Casting this spell again",
 			description: "summons the same steed, restored to its max HP, without conditions",
 			joinString: " ",
+			formattingChar: "",
 		}, {
 			name: "I can't have more than one steed bonded at a time",
 			description: "As an action, I can release it from its bond",
 			joinString: "; ",
+			formattingChar: "",
 		}],
 		attributesAdd: {
 			header: "Mount",
@@ -171,14 +186,17 @@ var Base_CompanionList = {
 			name: "A beast no larger than Medium",
 			description: "of challenge rating 1/4 or lower",
 			joinString: " ",
+			formattingChar: "",
 		}, {
 			name: "If the beast dies",
 			description: "I can spend 8 hours magically bonding with another that isn't hostile to me",
 			joinString: ", ",
+			formattingChar: "",
 		}, {
 			name: "When moving in favored terrain with only the beast",
 			description: "we can move stealthily at a normal pace",
 			joinString: ", ",
+			formattingChar: "",
 		}, {
 			name: "The beast adds my Proficiency Bonus",
 			description: typePF ? "to its AC, attack rolls, damage rolls, and saves/skills it is proficient with" : [
@@ -186,10 +204,12 @@ var Base_CompanionList = {
 				"as well as to any saving throws and skills it is proficient with.",
 			].join("\n   "),
 			joinString: " ",
+			formattingChar: "",
 		}, {
 			name: "The beast's hit point maximum equals",
 			description: "four times my ranger level if higher than its normal HP",
 			joinString: " ",
+			formattingChar: "",
 		}, {
 			name: "In Combat",
 			description: [
@@ -203,6 +223,7 @@ var Base_CompanionList = {
 			name: "Extra Attack (Ranger 5, PHB 89)",
 			description: "If the beast takes the Attack action, I can use my Extra Attack feature to attack once myself",
 			joinString: "\n   ",
+			formattingChar: "",
 			minlevel: 5,
 		}, {
 			name: "Exceptional Training (Beast Master 7, PHB 93)",
@@ -211,6 +232,7 @@ var Base_CompanionList = {
 				"As a bonus action, I can command it to take the Dash, Disengage, or Help action on its turn",
 			].join("\n   "),
 			joinString: "\n   ",
+			formattingChar: "",
 			minlevel: 7,
 			eval: function (prefix, lvl) {
 				for (var i = 1; i <= 3; i++) {
@@ -235,6 +257,7 @@ var Base_CompanionList = {
 			name: "Bestial Fury (Beast Master 11, PHB 93)",
 			description: "The beast can make two attacks (or multiattack) when I command it to take an Attack action",
 			joinString: "\n   ",
+			formattingChar: "",
 			minlevel: 11,
 			eval: function (prefix, lvl) {
 				Value(prefix + "Comp.Use.Attack.perAction", 2);
@@ -246,6 +269,7 @@ var Base_CompanionList = {
 			name: "Share Spells (Beast Master 15, PHB 93)",
 			description: "When I cast a spell on myself, I can have it also affect the beast if it is within 30 ft of me",
 			joinString: "\n   ",
+			formattingChar: "",
 			minlevel: 15,
 		}],
 		attributesAdd: {
@@ -349,6 +373,7 @@ Base_CompanionList.pact_of_the_chain.notes = function () {
 		name: "With my Attack action",
 		description: "I can forgo one attack to have the familiar make one with its reaction",
 		joinString: ", ",
+		formattingChar: "",
 	});
 	return a;
 }();
