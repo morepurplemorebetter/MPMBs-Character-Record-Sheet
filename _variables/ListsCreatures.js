@@ -3,6 +3,7 @@ var Base_CreatureList = {
 	"air elemental": {
 		name: "Air Elemental",
 		nameAlt: ["Elemental, Air"],
+		nameThis: "elemental",
 		source: [["SRD", 305], ["M", 124]],
 		size: 2, //Large
 		type: "Elemental",
@@ -34,15 +35,15 @@ var Base_CreatureList = {
 			range: "All in shared area",
 			dc: true,
 			description: "Str save; fail\u2015 flung 20 ft random direction, prone; success\u2015 half damage",
-			tooltip: "Each creature in the elemental's space that fails its saving throw is flung up to 20 ft away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 ft it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone.",
+			tooltip: "Each creature in the elemental's space that fails its saving throw is flung up to 20 ft away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 1d6 bludgeoning damage for every 10 ft it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone.",
 		}],
 		traits: [{
 			name: "Air Form",
-			description: "The elemental can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing.",
+			description: "The [THIS] can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing.",
 		}],
 		actions: [{
 			name: "Whirlwind (Recharge 4-6)",
-			description: "See Attack. Each creature in the elemental's space that fails its saving throw is flung up to 20 ft away from the elemental in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 3 (1d6) bludgeoning damage for every 10 ft it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone.",
+			description: "See Attack. Each creature in the [THIS]'s space that fails its saving throw is flung up to 20 ft away from the [THIS] in a random direction and knocked prone. If a thrown target strikes an object, such as a wall or floor, the target takes 1d6 bludgeoning damage for every 10 ft it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 13 Dexterity saving throw or take the same damage and be knocked prone.\nIf the saving throw is successful, the target takes half the bludgeoning damage and isn't flung away or knocked prone.",
 		}],
 		wildshapeString: [
 			"##Senses##. Darkvision 60 ft. ##Languages##. Knows Auran.",
@@ -56,6 +57,7 @@ var Base_CreatureList = {
 	"earth elemental": {
 		name: "Earth Elemental",
 		nameAlt: ["Elemental, Earth"],
+		nameThis: "elemental",
 		source: [["SRD", 306], ["M", 124]],
 		size: 2, //Large
 		type: "Elemental",
@@ -84,10 +86,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Earth Glide",
-			description: "The elemental can burrow through nonmagical, unworked earth and stone. While doing so, the elemental doesn't disturb the material it moves through.",
+			description: "The [THIS] can burrow through nonmagical, unworked earth and stone. While doing so, the [THIS] doesn't disturb the material it moves through.",
 		}, {
 			name: "Siege Monster",
-			description: "The elemental deals double damage to objects and structures.",
+			description: "The [THIS] deals double damage to objects and structures.",
 		}],
 		wildshapeString: [
 			"##Senses##. Darkvision 60 ft; Tremorsense 60 ft.",
@@ -102,6 +104,7 @@ var Base_CreatureList = {
 	"fire elemental": {
 		name: "Fire Elemental",
 		nameAlt: ["Elemental, Fire"],
+		nameThis: "elemental",
 		source: [["SRD", 306], ["M", 124]],
 		size: 2, //Large
 		type: "Elemental",
@@ -129,13 +132,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Fire Form",
-			description: "The elemental can move through a space as narrow as 1 inch wide without squeezing. A creature that touches the elemental or hits it with a melee attack while within 5 ft of it takes 5 (1d10) fire damage. In addition, the elemental can enter a hostile creature's space and stop there. The first time it enters a creature's space on a turn, that creature takes 5 (1d10) fire damage and catches fire; until someone takes an action to douse the fire, the creature takes 5 (1d10) fire damage at the start of each of its turns.",
+			description: "The [THIS] can move through a space as narrow as 1 inch wide without squeezing. A creature that touches the [THIS] or hits it with a melee attack while within 5 ft of it takes 1d10 fire damage. In addition, the [THIS] can enter a hostile creature's space and stop there. The first time it enters a creature's space on a turn, that creature takes 1d10 fire damage and catches fire; until someone takes an action to douse the fire, the creature takes 1d10 fire damage at the start of each of its turns.",
 		}, {
 			name: "Illumination",
-			description: "The elemental sheds bright light in a 30-ft radius and dim light in an additional 30 ft.",
+			description: "The [THIS] sheds bright light in a 30-ft radius and dim light in an additional 30 ft.",
 		}, {
 			name: "Water Susceptibility",
-			description: "For every 5 ft the elemental moves in water, or for every gallon of water splashed on it, it takes 1 cold damage.",
+			description: "For every 5 ft the [THIS] moves in water, or for every gallon of water splashed on it, it takes 1 cold damage.",
 		}],
 		wildshapeString: [
 			(typePF ? "##Senses##. " : "") + "Darkvision 60 ft. " + (typePF ? "##Languages##. " : "") + "Knows Ignan.",
@@ -146,6 +149,7 @@ var Base_CreatureList = {
 	"water elemental": {
 		name: "Water Elemental",
 		nameAlt: ["Elemental, Water"],
+		nameThis: "elemental",
 		source: [["SRD", 307], ["M", 124]],
 		size: 2, //Large
 		type: "Elemental",
@@ -177,19 +181,19 @@ var Base_CreatureList = {
 			damage: [2, 8, "bludgeoning"],
 			range: "All in shared area",
 			description: "Str save; fail\u2015 dmg/grappled/restrained/can't breathe until grapple ends (escape DC 14); success\u2015 no dmg/pushed out",
-			tooltip: "Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 ft of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding.",
+			tooltip: "Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 2d8 + 4 bludgeoning damage. A creature within 5 ft of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding.",
 		}],
 		features: [{
 			name: "Freeze",
-			description: "If the elemental takes cold damage, it partially freezes; its speed is reduced by 20 ft until the end of its next turn.",
+			description: "If the [THIS] takes cold damage, it partially freezes; its speed is reduced by 20 ft until the end of its next turn.",
 		}],
 		traits: [{
 			name: "Water Form",
-			description: "The elemental can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing.",
+			description: "The [THIS] can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing.",
 		}],
 		actions: [{
 			name: "Whelm (Recharge 4-6)",
-			description: "See attack. Each creature in the elemental's space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the elemental's space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the elemental's turns, each target grappled by it takes 13 (2d8 + 4) bludgeoning damage. A creature within 5 ft of the elemental can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding.",
+			description: "See attack. Each creature in the [THIS]'s space that is Large or smaller, is also grappled (escape DC 14). Until this grapple ends, the target is restrained and unable to breathe unless it can breathe water. If the saving throw is successful, the target is pushed out of the [THIS]'s space.\nThe elemental can grapple one Large creature or up to two Medium or smaller creatures at one time. At the start of each of the [THIS]'s turns, each target grappled by it takes 2d8 + 4 bludgeoning damage. A creature within 5 ft of the [THIS] can pull a creature or object out of it by taking an action to make a DC 14 Strength check and succeeding.",
 		}],
 		wildshapeString: [
 			(typePF ? "##Senses##. " : "") + "Darkvision 60 ft. " + (typePF ? "##Languages##. " : "") + "Knows Aquan.",
@@ -229,7 +233,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Hold Breath",
-			description: "The plesiosaurus can hold its breath for 1 hour.",
+			description: "The [THIS] can hold its breath for 1 hour.",
 		}],
 	},
 	"triceratops": {
@@ -262,7 +266,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Trampling Charge",
-			description: "If the triceratops moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the triceratops can make one stomp attack against it as a bonus action.",
+			description: "If the [THIS] moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the [THIS] can make one stomp attack against it as a bonus action.",
 		}],
 	},
 	"tyrannosaurus rex": {
@@ -343,7 +347,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Sight",
-			description: "The griffon has advantage on Wisdom (Perception) checks that rely on sight.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on sight.",
 		}],
 	},
 	"hippogriff": {
@@ -384,7 +388,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Sight",
-			description: "The hippogriff has advantage on Wisdom (Perception) checks that rely on sight.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on sight.",
 		}],
 	},
 	"nightmare": {
@@ -413,14 +417,14 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Confer Fire Resistance",
-			description: "The nightmare can grant resistance to fire damage to anyone riding it.",
+			description: "The [THIS] can grant resistance to fire damage to anyone riding it.",
 		}, {
 			name: "Illumination",
-			description: "The nightmare sheds bright light in a 10-ft radius and dim light for an additional 10 ft.",
+			description: "The [THIS] sheds bright light in a 10-ft radius and dim light for an additional 10 ft.",
 		}],
 		actions: [{
 			name: "Ethereal Stride",
-			description: "As an action, the nightmare and up to three willing creatures within 5 ft of it magically enter the Ethereal Plane from the Material Plane, or vice versa.",
+			description: "As an action, the [THIS] and up to three willing creatures within 5 ft of it magically enter the Ethereal Plane from the Material Plane, or vice versa.",
 		}],
 	},
 	"owlbear": {
@@ -461,7 +465,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Sight and Smell",
-			description: "The owlbear has advantage on Wisdom (Perception) checks that rely on sight or smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on sight or smell.",
 		}],
 	},
 	"pegasus": {
@@ -519,14 +523,14 @@ var Base_CreatureList = {
 			damage: [1, "", "piercing"],
 			range: "Melee (5 ft)",
 			description: "DC 10 Con save or poisoned for 1 min; Fail by 5 or more: poisoned and unconscious for 1d10 min",
-			tooltip: "A target of the homunculus' bite attack must succeed on a DC 10 Constitution saving throw or be poisoned for 1 minute. If the saving throw fails by 5 or more, the target is instead poisoned for 5 (1d10) minutes and unconscious while poisoned in this way.",
+			tooltip: "A target of the homunculus' bite attack must succeed on a DC 10 Constitution saving throw or be poisoned for 1 minute. If the saving throw fails by 5 or more, the target is instead poisoned for 1d10 minutes and unconscious while poisoned in this way.",
 		}],
 		features: [{
 			name: "Telepathic Bond",
-			description: "While the homunculus is on the same plane of existence as its master, it can magically convey what it senses to its master, and the two can communicate telepathically.",
+			description: "While the [THIS] is on the same plane of existence as its master, it can magically convey what it senses to its master, and the two can communicate telepathically.",
 		}, {
 			name: "Bite",
-			description: "A target of the homunculus' bite attack must succeed on a DC 10 Constitution saving throw or be poisoned for 1 minute. If the saving throw fails by 5 or more, the target is instead poisoned for 5 (1d10) minutes and unconscious while poisoned in this way.",
+			description: "A target of the [THIS]' bite attack must succeed on a DC 10 Constitution saving throw or be poisoned for 1 minute. If the saving throw fails by 5 or more, the target is instead poisoned for 1d10 minutes and unconscious while poisoned in this way.",
 		}],
 	},
 	"imp": {
@@ -566,10 +570,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Shapechanger",
-			description: "The imp can use its action to polymorph into a beast form that resembles a rat (speed 20 ft), a raven (20 ft, fly 60 ft), or a spider (20 ft, climb 20 ft), or back into its true form. Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.",
+			description: "The [THIS] can use its action to polymorph into a beast form that resembles a rat (speed 20 ft), a raven (20 ft, fly 60 ft), or a spider (20 ft, climb 20 ft), or back into its true form. Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.",
 		}, {
 			name: "Magic Resistance",
-			description: "The imp has advantage on saving throws against spells and other magical effects.",
+			description: "The [THIS] has advantage on saving throws against spells and other magical effects.",
 		}],
 		variant: [{
 			name: "Variant: Familiar",
@@ -577,7 +581,7 @@ var Base_CreatureList = {
 		}],
 		actions: [{
 			name: "Invisibility",
-			description: "As an action, the imp magically turns invisible until it attacks, or until its concentration ends (as if concentrating on a spell). Any equipment the imp wears or carries is invisible with it.",
+			description: "As an action, the [THIS] magically turns invisible until it attacks, or until its concentration ends (as if concentrating on a spell). Any equipment the [THIS] wears or carries is invisible with it.",
 		}],
 	},
 	"pseudodragon": {
@@ -619,13 +623,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Senses",
-			description: "The pseudodragon has advantage on Wisdom (Perception) checks that rely on sight, hearing, or smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on sight, hearing, or smell.",
 		}, {
 			name: "Magic Resistance",
-			description: "The pseudodragon has advantage on saving throws against spells and other magical effects.",
+			description: "The [THIS] has advantage on saving throws against spells and other magical effects.",
 		}, {
 			name: "Limited Telepathy",
-			description: "The pseudodragon can magically communicate simple ideas, emotions, and images telepathically with any creature within 100 ft of it that can understand a language.",
+			description: "The [THIS] can magically communicate simple ideas, emotions, and images telepathically with any creature within 100 ft of it that can understand a language.",
 		}],
 		variant: [{
 			name: "Variant: Familiar",
@@ -675,10 +679,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Shapechanger",
-			description: "The quasit can use its action to polymorph into a beast form that resembles a bat (speed 10 ft, fly 40 ft), a centipede (40 ft, climb 40 ft), or a toad (40 ft, swim 40 ft), or back into its true form . Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed . It reverts to its true form if it dies.",
+			description: "The [THIS] can use its action to polymorph into a beast form that resembles a bat (speed 10 ft, fly 40 ft), a centipede (40 ft, climb 40 ft), or a toad (40 ft, swim 40 ft), or back into its true form . Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed . It reverts to its true form if it dies.",
 		}, {
 			name: "Magic Resistance",
-			description: "The quasit has advantage on saving throws against spells and other magical effects.",
+			description: "The [THIS] has advantage on saving throws against spells and other magical effects.",
 		}],
 		variant: [{
 			name: "Variant: Familiar",
@@ -686,11 +690,12 @@ var Base_CreatureList = {
 		}],
 		actions: [{
 			name: "Invisibility",
-			description: "As an action, the quasit magically turns invisible until it attacks, or until its concentration ends (as if concentrating on a spell). Any equipment the quasit wears or carries is invisible with it.",
+			description: "As an action, the [THIS] magically turns invisible until it attacks, or until its concentration ends (as if concentrating on a spell). Any equipment the [THIS] wears or carries is invisible with it.",
 		}],
 	},
 	"shield guardian": {
 		name: "Shield Guardian",
+		nameThis: "guardian",
 		source: [["SRD", 345], ["M", 271]],
 		size: 2, //Large
 		type: "Construct",
@@ -717,18 +722,18 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Regeneration",
-			description: "The guardian regains 10 HP at the start of its turn if it has at least 1 HP.",
+			description: "The [THIS] regains 10 HP at the start of its turn if it has at least 1 HP.",
 		}, {
 			name: "Spell Storing",
-			description: "A spellcaster who wears the shield guardian's amulet can cause the guardian to store one spell of 4th level or lower. To do so, the wearer must cast the spell on the guardian. The spell has no effect but is stored within the guardian. When commanded to do so by the wearer or when a situation arises that was predefined by the spellcaster, the guardian casts the stored spell with any parameters set by the original caster, requiring no components. When the spell is cast or a new spell is stored, any previously stored spell is lost.",
+			description: "A spellcaster who wears the [THIS]'s amulet can cause the [THIS] to store one spell of 4th level or lower. To do so, the wearer must cast the spell on the [THIS]. The spell has no effect but is stored within the [THIS]. When commanded to do so by the wearer or when a situation arises that was predefined by the spellcaster, the [THIS] casts the stored spell with any parameters set by the original caster, requiring no components. When the spell is cast or a new spell is stored, any previously stored spell is lost.",
 		}],
 		features: [{
 			name: "Bound",
-			description: "The shield guardian is magically bound to an amulet. As long as the guardian and its amulet are on the same plane of existence, the amulet's wearer can telepathically call the guardian to travel to it, and the guardian knows the distance and direction to the amulet. If the guardian is within 60 ft of the amulet's wearer, half of any damage the wearer takes (rounded up) is transferred to the guardian.",
+			description: "The [THIS] is magically bound to an amulet. As long as the [THIS] and its amulet are on the same plane of existence, the amulet's wearer can telepathically call the [THIS] to travel to it, and the [THIS] knows the distance and direction to the amulet. If the [THIS] is within 60 ft of the amulet's wearer, half of any damage the wearer takes (rounded up) is transferred to the [THIS].",
 		}],
 		actions: [{
 			name: "Shield",
-			description: "As a reaction, when a creature makes an attack against the wearer of the guardian's amulet, the guardian grants a +2 bonus to the wearer's AC if the guardian is within 5 ft of the wearer.",
+			description: "As a reaction, when a creature makes an attack against the wearer of the [THIS]'s amulet, the [THIS] grants a +2 bonus to the wearer's AC if the [THIS] is within 5 ft of the wearer.",
 		}],
 	},
 	"sprite": {
@@ -779,7 +784,7 @@ var Base_CreatureList = {
 		}],
 		actions: [{
 			name: "Invisibility",
-			description: "As an action, the sprite magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell). Any equipment the sprite wears or carries is invisible with it.",
+			description: "As an action, the [THIS] magically turns invisible until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell). Any equipment the [THIS] wears or carries is invisible with it.",
 		}],
 	},
 	// Undead minions
@@ -820,10 +825,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Stench",
-			description: "Any creature that starts its turn within 5 ft of the ghast must succeed on a DC 10 Constitution saving throw or be poisoned until the start of its next turn. On a successful saving throw, the creature is immune to the ghast's Stench for 24 hours.",
+			description: "Any creature that starts its turn within 5 ft of the [THIS] must succeed on a DC 10 Constitution saving throw or be poisoned until the start of its next turn. On a successful saving throw, the creature is immune to the [THIS]'s Stench for 24 hours.",
 		}, {
 			name: "Turn Defiance",
-			description: "The ghast and any ghouls within 30 ft of it have advantage on saving throws against effects that turn undead.",
+			description: "The [THIS] and any ghouls within 30 ft of it have advantage on saving throws against effects that turn undead.",
 		}],
 	},
 	"ghoul": {
@@ -889,7 +894,7 @@ var Base_CreatureList = {
 			damage: [2, 6, "bludgeoning"],
 			range: "Melee (5 ft)",
 			description: "+3d6 necrotic damage; DC 12 Constitution save or cursed with Mummy Rot",
-			tooltip: "Multiattack\nAs an action on its turn, the mummy can use its Dreadful Glare and make one Rotting Fist attack.\n\nRotting Fist\nIf the target is a creature, it must succeed on a DC 12 Constitution saving throw or be cursed with mummy rot. The cursed target can't regain hit points, and its hit point maximum decreases by 10 (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic.",
+			tooltip: "Multiattack\nAs an action on its turn, the mummy can use its Dreadful Glare and make one Rotting Fist attack.\n\nRotting Fist\nIf the target is a creature, it must succeed on a DC 12 Constitution saving throw or be cursed with mummy rot. The cursed target can't regain hit points, and its hit point maximum decreases by 3d6 for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic.",
 		}, {
 			name: "Dreadful Glare",
 			ability: 6,
@@ -902,13 +907,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Multiattack",
-			description: "As an action on its turn, the mummy can use its Dreadful Glare and make one Rotting Fist attack.",
+			description: typePF ? "As an action on its turn, the [THIS] can use its Dreadful Glare and make one Rotting Fist attack." : "As an action on its turn, Dreadful Glare and one Rotting Fist attack.",
 		}, {
 			name: "Mummy Rot",
 			description: "A cursed creature can't regain hit points, and its hit point maximum decreases by 3d6 for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic.",
 		}, {
 			name: "Dreadful Glare",
-			description: "If the target can see the mummy, it must succeed on a DC 11 Wisdom saving throw against this magic or become frightened until the end of the mummy's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies (but not mummy lords) for the next 24 hours.",
+			description: "If the target can see the [THIS], it must succeed on a DC 11 Wisdom saving throw against this magic or become frightened until the end of the [THIS]'s next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies (but not mummy lords) for the next 24 hours.",
 		}],
 	},
 	"shadow": {
@@ -940,20 +945,20 @@ var Base_CreatureList = {
 			damage: [2, 6, "necrotic"],
 			range: "Melee (5 ft)",
 			description: "Reduces Str by 1d4 till target's next short rest; If Str goes to 0, the target dies and forms a new shadow",
-			tooltip: "A target of the shadows' strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later.",
+			tooltip: "A target of the shadows' strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest. If a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later.",
 		}],
 		traits: [{
 			name: "Amorphous",
-			description: "The shadow can move through a space as narrow as 1 inch wide without squeezing.",
+			description: "The [THIS] can move through a space as narrow as 1 inch wide without squeezing.",
 		}, {
 			name: "Shadow Stealth",
-			description: "While in dim light or darkness, the shadow can take the Hide action as a bonus action and adds an extra +2 on Stealth checks.",
+			description: "While in dim light or darkness, the [THIS] can take the Hide action as a bonus action and adds an extra +2 on Stealth checks.",
 		}, {
 			name: "Sunlight Weakness",
-			description: "While in sunlight, the shadow has disadvantage on attack rolls, ability checks, and saving throws.",
+			description: "While in sunlight, the [THIS] has disadvantage on attack rolls, ability checks, and saving throws.",
 		}, {
 			name: "Strength Drain",
-			description: "A target of the shadows' strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest.\nIf a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later.",
+			description: "A target of the [THIS]'s strength drain has its Strength score reduced by 1d4. The target dies if this reduces its Strength to 0. Otherwise, the reduction lasts until the target finishes a short or long rest. If a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later.",
 		}],
 	},
 	"skeleton (humanoid)": {
@@ -1051,13 +1056,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Incorporeal Movement",
-			description: "The specter can move through other creatures and objects as if they were difficult terrain. It takes 5 (1d10) force damage if it ends its turn inside an object.",
+			description: "The [THIS] can move through other creatures and objects as if they were difficult terrain. It takes 1d10 force damage if it ends its turn inside an object.",
 		}, {
 			name: "Sunlight Sensitivity",
-			description: "While in sunlight, the specter has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.",
+			description: "While in sunlight, the [THIS] has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.",
 		}, {
 			name: "Life Drain",
-			description: "A target of the specter's life drain must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.",
+			description: "A target of the [THIS]'s life drain must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.",
 		}],
 	},
 	"wight": {
@@ -1103,10 +1108,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Sunlight Sensitivity",
-			description: "While in sunlight, the wight has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.",
+			description: "While in sunlight, the [THIS] has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.",
 		}, {
 			name: "Life Drain",
-			description: "A target of the wight's life drain attack must succeed on a DC 13 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the target finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.\n   A humanoid slain by this attack rises 24 hours later as a zombie under the wight's control, unless the humanoid is restored to life or its body is destroyed. The wight can have no more than twelve zombies under its control at one time.",
+			description: "A target of the [THIS]'s life drain attack must succeed on a DC 13 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the target finishes a long rest. The target dies if this effect reduces its hit point maximum to 0. A humanoid slain by this attack rises 24 hours later as a zombie under the [THIS]'s control, unless the humanoid is restored to life or its body is destroyed. The [THIS] can have no more than twelve zombies under its control at one time.",
 		}],
 		actions: [{
 			name: "Multiattack",
@@ -1142,12 +1147,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Undead Fortitude",
-			description: "If damage reduces the zombie to 0 hit points, it must make a Constitution saving throw with a DC of 5 + the damage taken, unless the damage is radiant or from a critical hit. On a success, the zombie drops to 1 hit point instead.",
+			description: "If damage reduces the [THIS] to 0 hit points, it must make a Constitution saving throw with a DC of 5 + the damage taken, unless the damage is radiant or from a critical hit. On a success, the [THIS] drops to 1 hit point instead.",
 		}],
 	},
 	"ogre zombie": {
 		name: "Ogre Zombie",
 		nameAlt: ["Zombie, Ogre"],
+		nameThis: "zombie",
 		source: [["SRD", 357], ["M", 316]],
 		size: 2, //Large
 		type: "Undead",
@@ -1175,7 +1181,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Undead Fortitude",
-			description: "If damage reduces the zombie to 0 hit points, it must make a Constitution saving throw with a DC of 5 + the damage taken, unless the damage is radiant or from a critical hit. On a success, the zombie drops to 1 hit point instead.",
+			description: "If damage reduces the [THIS] to 0 hit points, it must make a Constitution saving throw with a DC of 5 + the damage taken, unless the damage is radiant or from a critical hit. On a success, the [THIS] drops to 1 hit point instead.",
 		}],
 	},
 	// Fungi
@@ -1308,6 +1314,7 @@ var Base_CreatureList = {
 	"dust mephit": {
 		name: "Dust Mephit",
 		nameAlt: ["Mephit, Dust"],
+		nameThis: "mephit",
 		source: [["SRD", 330], ["M", 215]],
 		size: 5, //Tiny
 		type: "Elemental",
@@ -1348,18 +1355,19 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Death Burst",
-			description: "When the mephit dies, it explodes in a burst of dust. Each creature within 5 ft of it must then succeed on a DC 10 Constitution saving throw or be blinded for 1 minute. A blinded creature can repeat the saving throw on each of its turns, ending the effect on itself on a success.",
+			description: "When the [THIS] dies, it explodes in a burst of dust. Each creature within 5 ft of it must then succeed on a DC 10 Constitution saving throw or be blinded for 1 minute. A blinded creature can repeat the saving throw on each of its turns, ending the effect on itself on a success.",
 		}, {
 			name: "Innate Spellcasting (1/day)",
-			description: "The mephit can innately cast Sleep, requiring no material components. Its innate spellcasting ability is Charisma.",
+			description: "The [THIS] can innately cast Sleep, requiring no material components. Its innate spellcasting ability is Charisma.",
 		}, {
 			name: "Blinding Breath (Recharge 6)",
-			description: "The mephit exhales a 15-ft cone of blinding dust. Each creature in that area must succeed on a DC 10 Dexterity saving throw or be blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
+			description: "The [THIS] exhales a 15-ft cone of blinding dust. Each creature in that area must succeed on a DC 10 Dexterity saving throw or be blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
 		}],
 	},
 	"ice mephit": {
 		name: "Ice Mephit",
 		nameAlt: ["Mephit, Ice"],
+		nameThis: "mephit",
 		source: [["SRD", 331], ["M", 215]],
 		size: 4, //Small
 		type: "Elemental",
@@ -1396,26 +1404,27 @@ var Base_CreatureList = {
 			description: "Hits all in area; Dex save, success - half damage",
 			dc: true,
 			abilitytodamage: false,
-			tooltip: "The mephit exhales a 15-ft cone of cold air. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 5 (2d4) cold damage on a failed save, or half as much damage on a successful one.",
+			tooltip: "The mephit exhales a 15-ft cone of cold air. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 2d4 cold damage on a failed save, or half as much damage on a successful one.",
 		}],
 		traits: [{
 			name: "Death Burst",
-			description: "When the mephit dies, it explodes in a burst of jagged ice. Each creature within 5 ft of it must then succeed on a DC 10 Dexterity saving throw, taking 4 (1d8) slashing damage on a failed save, or half as much damage on a successful one.",
+			description: "When the [THIS] dies, it explodes in a burst of jagged ice. Each creature within 5 ft of it must then succeed on a DC 10 Dexterity saving throw, taking 1d8 slashing damage on a failed save, or half as much damage on a successful one.",
 		}, {
 			name: "Innate Spellcasting (1/day)",
-			description: "The mephit can innately cast Fog Cloud, requiring no material components. Its innate spellcasting ability is Charisma.",
+			description: "The [THIS] can innately cast Fog Cloud, requiring no material components. Its innate spellcasting ability is Charisma.",
 		}, {
 			name: "Frost Breath (Recharge 6)",
-			description: "The mephit exhales a 15-ft cone of cold air. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 5 (2d4) cold damage on a failed save, or half as much damage on a successful one.",
+			description: "The [THIS] exhales a 15-ft cone of cold air. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 2d4 cold damage on a failed save, or half as much damage on a successful one.",
 		}],
 		features: [{
 			name: "False Appearance",
-			description: "While the mephit remains motionless, it is indistinguishable from an ordinary shard of ice.",
+			description: "While the [THIS] remains motionless, it is indistinguishable from an ordinary shard of ice.",
 		}],
 	},
 	"magma mephit": {
 		name: "Magma Mephit",
 		nameAlt: ["Mephit, Magma"],
+		nameThis: "mephit",
 		source: [["SRD", 331], ["M", 216]],
 		size: 4, //Small
 		type: "Elemental",
@@ -1451,26 +1460,27 @@ var Base_CreatureList = {
 			description: "Hits all in area; Dex save, success - half damage",
 			dc: true,
 			abilitytodamage: false,
-			tooltip: "The mephit exhales a 15-ft cone of fire. Each creature in that area must make a DC 11 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one.",
+			tooltip: "The mephit exhales a 15-ft cone of fire. Each creature in that area must make a DC 11 Dexterity saving throw, taking 2d6 fire damage on a failed save, or half as much damage on a successful one.",
 		}],
 		traits: [{
 			name: "Death Burst",
-			description: "When the mephit dies, it explodes in a burst of lava. Each creature within 5 ft of it must then succeed on a DC 10 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one.",
+			description: "When the [THIS] dies, it explodes in a burst of lava. Each creature within 5 ft of it must then succeed on a DC 10 Dexterity saving throw, taking 2d6 fire damage on a failed save, or half as much damage on a successful one.",
 		}, {
 			name: "Innate Spellcasting (1/day)",
-			description: "The mephit can innately cast Heat Metal (spell save DC 10), requiring no material components. Its innate spellcasting ability is Charisma.",
+			description: "The [THIS] can innately cast Heat Metal (spell save DC 10), requiring no material components. Its innate spellcasting ability is Charisma.",
 		}, {
 			name: "Fire Breath (Recharge 6)",
-			description: "The mephit exhales a 15-ft cone of fire. Each creature in that area must make a DC 11 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one.",
+			description: "The [THIS] exhales a 15-ft cone of fire. Each creature in that area must make a DC 11 Dexterity saving throw, taking 2d6 fire damage on a failed save, or half as much damage on a successful one.",
 		}],
 		features: [{
 			name: "False Appearance",
-			description: "While the mephit remains motionless, it is indistinguishable from an ordinary mound of magma.",
+			description: "While the [THIS] remains motionless, it is indistinguishable from an ordinary mound of magma.",
 		}],
 	},
 	"mud mephit": {
 		name: "Mud Mephit",
 		nameAlt: ["Mephit, Mud"],
+		nameThis: "mephit",
 		source: [["SRD", 331], ["M", 216]],
 		size: 5, //Tiny
 		type: "Elemental",
@@ -1509,18 +1519,19 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Death Burst",
-			description: "When the mephit dies, it explodes in a burst of sticky mud. Each Medium or smaller creature within 5 ft of it must succeed on a DC 11 Dexterity saving throw or be restrained until the end of the creature's next turn.",
+			description: "When the [THIS] dies, it explodes in a burst of sticky mud. Each Medium or smaller creature within 5 ft of it must succeed on a DC 11 Dexterity saving throw or be restrained until the end of the creature's next turn.",
 		}, {
 			name: "False Appearance",
-			description: "While the mephit remains motionless, it is indistinguishable from an ordinary mound of mud.",
+			description: "While the [THIS] remains motionless, it is indistinguishable from an ordinary mound of mud.",
 		}, {
 			name: "Mud Breath (Recharge 6)",
-			description: "The mephit belches viscid mud onto one creature within 5 ft of it. If the target is Medium or smaller, it must succeed on a DC 11 Dexterity saving throw or be restrained for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
+			description: "The [THIS] belches viscid mud onto one creature within 5 ft of it. If the target is Medium or smaller, it must succeed on a DC 11 Dexterity saving throw or be restrained for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
 		}],
 	},
 	"smoke mephit": {
 		name: "Smoke Mephit",
 		nameAlt: ["Mephit, Smoke"],
+		nameThis: "mephit",
 		source: [["SRD", 331], ["M", 217]],
 		size: 4, //Small
 		type: "Elemental",
@@ -1561,18 +1572,19 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Death Burst",
-			description: "When the mephit dies, it leaves behind a cloud of smoke that fills a 5-ft-radius sphere centered on its space. The sphere is heavily obscured. Wind disperses the cloud, which otherwise lasts for 1 minute.",
+			description: "When the [THIS] dies, it leaves behind a cloud of smoke that fills a 5-ft-radius sphere centered on its space. The sphere is heavily obscured. Wind disperses the cloud, which otherwise lasts for 1 minute.",
 		}, {
 			name: "Innate Spellcasting (1/day)",
-			description: "The mephit can innately cast Dancing Lights, requiring no material components. Its innate spellcasting ability is Charisma.",
+			description: "The [THIS] can innately cast Dancing Lights, requiring no material components. Its innate spellcasting ability is Charisma.",
 		}, {
 			name: "Cinder Breath (Recharge 6)",
-			description: "The mephit exhales a 15-ft cone of smoldering ash. Each creature in that area must succeed on a DC 10 Dexterity saving throw or be blinded until the end of the mephit's next turn.",
+			description: "The [THIS] exhales a 15-ft cone of smoldering ash. Each creature in that area must succeed on a DC 10 Dexterity saving throw or be blinded until the end of the [THIS]'s next turn.",
 		}],
 	},
 	"steam mephit": {
 		name: "Steam Mephit",
 		nameAlt: ["Mephit, Steam"],
+		nameThis: "mephit",
 		source: [["SRD", 331], ["M", 217]],
 		size: 4, //Small
 		type: "Elemental",
@@ -1604,23 +1616,24 @@ var Base_CreatureList = {
 			description: "Hits all in area; Dex save, success - half damage",
 			dc: true,
 			abilitytodamage: false,
-			tooltip: "The mephit exhales a 15-ft cone of scalding steam. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 4 (1d8) fire damage on a failed save, or half as much damage on a successful one.",
+			tooltip: "The mephit exhales a 15-ft cone of scalding steam. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 1d8 fire damage on a failed save, or half as much damage on a successful one.",
 		}],
 		traits: [{
 			name: "Death Burst",
-			description: "When the mephit dies, it explodes in a cloud of steam. Each creature within 5 ft of the mephit must succeed on a DC 10 Dexterity saving throw or take 4 (1d8) fire damage.",
+			description: "When the [THIS] dies, it explodes in a cloud of steam. Each creature within 5 ft of the [THIS] must succeed on a DC 10 Dexterity saving throw or take 1d8 fire damage.",
 		}, {
 			name: "Innate Spellcasting (1/day)",
-			description: "The mephit can innately cast Blur, requiring no material components. Its innate spellcasting ability is Charisma.",
+			description: "The [THIS] can innately cast Blur, requiring no material components. Its innate spellcasting ability is Charisma.",
 		}, {
 			name: "Steam Breath (Recharge 6)",
-			description: "The mephit exhales a 15-ft cone of scalding steam. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 4 (1d8) fire damage on a failed save, or half as much damage on a successful one.",
+			description: "The [THIS] exhales a 15-ft cone of scalding steam. Each creature in that area must succeed on a DC 10 Dexterity saving throw, taking 1d8 fire damage on a failed save, or half as much damage on a successful one.",
 		}],
 	},
 	// Golems
 	"clay golem": { // contributed by Nod_Hero
 		name: "Clay Golem",
 		nameAlt: ["Golem, Clay"],
+		nameThis: "golem",
 		source: [["SRD", 318], ["M", 168]],
 		size: 2, //Large
 		type: "Construct",
@@ -1658,32 +1671,33 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Acid Absorption",
-			description: "Whenever the golem is subjected to acid damage, it takes no damage and instead regains a number of hit points equal to the acid damage dealt.",
+			description: "Whenever the [THIS] is subjected to acid damage, it takes no damage and instead regains a number of hit points equal to the acid damage dealt.",
 		}, {
 			name: "Berserk",
-			description: "If the golem starts its turn with 60 HP or fewer, roll a d6. On a 6, it goes berserk until destroyed or it regains all its HP. While berserk, the golem moves to and attacks the nearest creature it can see. If no creature is near enough, it attacks an object, with preference for an object smaller than itself.",
+			description: "If the [THIS] starts its turn with 60 HP or fewer, roll a d6. On a 6, it goes berserk until destroyed or it regains all its HP. While berserk, the [THIS] moves to and attacks the nearest creature it can see. If no creature is near enough, it attacks an object, with preference for an object smaller than itself.",
 		}],
 		actions: [{
 			name: "Slam",
-			description: "Target of the golem's slam attack must make a DC 15 Con save or have their HP maximum reduced by the damage taken. This can be restored by the Greater Restoration" + (typePF ? " or other magic." : "."),
+			description: "Target of the [THIS]'s slam attack must make a DC 15 Con save or have their HP maximum reduced by the damage taken. This can be restored by the Greater Restoration" + (typePF ? " or other magic." : "."),
 		}, {
 			name: "Haste (Recharge 5-6)",
-			description: "As an Action, the golem can magically gain, until the end of its next turn, +2 to its AC, advantage on Dex saves, and can use its slam attack as a bonus action.",
+			description: "As an Action, the [THIS] can magically gain, until the end of its next turn, +2 to its AC, advantage on Dex saves, and can use its slam attack as a bonus action.",
 		}],
 		features: [{
 			name: "Immutable Form",
-			description: "The golem is immune to any spell or effect that would alter its form.",
+			description: "The [THIS] is immune to any spell or effect that would alter its form.",
 		}, {
 			name: "Magic Resistance",
-			description: "The golem has advantage on saving throws against spells and other magical effects.",
+			description: "The [THIS] has advantage on saving throws against spells and other magical effects.",
 		}, {
 			name: "Magic Weapons",
-			description: "The golem's attacks are magical.",
+			description: "The [THIS]'s attacks are magical.",
 		}],
 	},
 	"flesh golem": { // contributed by Nod_Hero
 		name: "Flesh Golem",
 		nameAlt: ["Golem, Flesh"],
+		nameThis: "golem",
 		source: [["SRD", 319], ["M", 169]],
 		size: 2, //Large
 		type: "Construct",
@@ -1711,28 +1725,29 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Aversion of Fire",
-			description: "If the golem takes fire damage, it has disadvantage on attack rolls and ability checks until the end of its next turn.",
+			description: "If the [THIS] takes fire damage, it has disadvantage on attack rolls and ability checks until the end of its next turn.",
 		}, {
 			name: "Berserk",
-			description: "If the golem starts its turn with 40 HP or fewer, roll a d6. On a 6, it goes berserk until destroyed or it regains all its HP. While berserk, it moves to and attacks the nearest creature it can see, or an object (smaller than itself if possible) if no creature is near enough. As an action, the golem's creator can try to calm it, if within 60 ft and earshot of it. it stops being berserk with a successful DC 15 Charisma (Persuasion) check. If the golem takes damage while still at 40 HP or fewer, it might go berserk again.",
+			description: "If the [THIS] starts its turn with 40 HP or fewer, roll a d6. On a 6, it goes berserk until destroyed or it regains all its HP. While berserk, it moves to and attacks the nearest creature it can see, or an object (smaller than itself if possible) if no creature is near enough. As an action, the [THIS]'s creator can try to calm it, if within 60 ft and earshot of it. it stops being berserk with a successful DC 15 Charisma (Persuasion) check. If the [THIS] takes damage while still at 40 HP or fewer, it might go berserk again.",
 		}, {
 			name: "Lightning Absorption",
-			description: "Whenever the golem is subjected to lightning damage, it takes no damage and instead regains a number of HP equal to the lightning damage.",
+			description: "Whenever the [THIS] is subjected to lightning damage, it takes no damage and instead regains a number of HP equal to the lightning damage.",
 		}],
 		features: [{
 			name: "Immutable Form",
-			description: "The golem is immune to any spell or effect that would alter its form.",
+			description: "The [THIS] is immune to any spell or effect that would alter its form.",
 		}, {
 			name: "Magic Resistance",
-			description: "The golem has advantage on saving throws against spells and other magical effects.",
+			description: "The [THIS] has advantage on saving throws against spells and other magical effects.",
 		}, {
 			name: "Magic Weapons",
-			description: "The golem's attacks are magical.",
+			description: "The [THIS]'s attacks are magical.",
 		}],
 	},
 	"iron golem": { // contributed by Nod_Hero
 		name: "Iron Golem",
 		nameAlt: ["Golem, Iron"],
+		nameThis: "golem",
 		source: [["SRD", 319], ["M", 170]],
 		size: 2, //Large
 		type: "Construct",
@@ -1773,30 +1788,31 @@ var Base_CreatureList = {
 			abilitytodamage: false,
 			dc: true,
 			modifiers: [1, ""],
-			tooltip: "The golem exhales poisonous gas in a 15-foot cone. Each creature in that area must make a DC 19 Constitution saving throw, taking 45 (10d8) poison damage on a failed save, or half as much damage on a successful one.",
+			tooltip: "The golem exhales poisonous gas in a 15-foot cone. Each creature in that area must make a DC 19 Constitution saving throw, taking 10d8 poison damage on a failed save, or half as much damage on a successful one.",
 		}],
 		traits: [{
 			name: "Fire Absorption",
-			description: "Whenever the golem is subjected to fire damage, it takes no damage and instead regains a number of hit points equal to the fire damage dealt.",
+			description: "Whenever the [THIS] is subjected to fire damage, it takes no damage and instead regains a number of hit points equal to the fire damage dealt.",
 		}, {
 			name: "Magic Weapons",
-			description: "The golem's weapon attacks are magical.",
+			description: "The [THIS]'s weapon attacks are magical.",
 		}],
 		actions: [{
 			name: "Poison Breath (Recharge 5-6)",
-			description: "As an action, the golem can exhale poisonous gas in a 15-ft cone. Each creature in that area must make a DC 19 Constitution saving throw, taking 45 (10d8) poison damage on a failed save, or half as much damage on a successful one.",
+			description: "As an action, the [THIS] can exhale poisonous gas in a 15-ft cone. Each creature in that area must make a DC 19 Constitution saving throw, taking 10d8 poison damage on a failed save, or half as much damage on a successful one.",
 		}],
 		features: [{
 			name: "Immutable Form",
-			description: "The golem is immune to any spell or effect that would alter its form.",
+			description: "The [THIS] is immune to any spell or effect that would alter its form.",
 		}, {
 			name: "Magic Resistance",
-			description: "The golem has advantage on saving throws against spells and other magical effects.",
+			description: "The [THIS] has advantage on saving throws against spells and other magical effects.",
 		}],
 	},
 	"stone golem": { // contributed by Nod_Hero
 		name: "Stone Golem",
 		nameAlt: ["Golem, Stone"],
+		nameThis: "golem",
 		source: [["SRD", 320], ["M", 170]],
 		size: 2, //Large
 		type: "Construct",
@@ -1832,18 +1848,18 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Magic Weapons",
-			description: "The golem's weapon attacks are magical.",
+			description: "The [THIS]'s weapon attacks are magical.",
 		}],
 		actions: [{
 			name: "Slow (Recharge 5-6)",
-			description: "As an action, the golem can target one or more creatures it can see within 10 ft of it. Each target must make a DC 17 Wisdom saving throw against this magic. On a failed save, a target can't use reactions, its speed is halved, and it can't make more than one attack on its turn. In addition, the target can take either an action or a bonus action on its turn, not both. These effects last for 1 minute. A target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
+			description: "As an action, the [THIS] can target one or more creatures it can see within 10 ft of it. Each target must make a DC 17 Wisdom saving throw against this magic. On a failed save, a target can't use reactions, its speed is halved, and it can't make more than one attack on its turn. In addition, the target can take either an action or a bonus action on its turn, not both. These effects last for 1 minute. A target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
 		}],
 		features: [{
 			name: "Immutable Form",
-			description: "The golem is immune to any spell or effect that would alter its form.",
+			description: "The [THIS] is immune to any spell or effect that would alter its form.",
 		}, {
 			name: "Magic Resistance",
-			description: "The golem has advantage on saving throws against spells and other magical effects.",
+			description: "The [THIS] has advantage on saving throws against spells and other magical effects.",
 		}],
 	},
 	// Beasts (familiars, Ranger and general animal companions, and Druid Wild Shapes) [Miscellaneous Creatures Section]
@@ -1931,7 +1947,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Pack Tactics",
-			description: "The baboon has advantage on an attack roll against a creature if at least one of the baboon's allies is within 5 ft of the creature and the ally isn't incapacitated.",
+			description: "The [THIS] has advantage on an attack roll against a creature if at least one of the [THIS]'s allies is within 5 ft of the creature and the ally isn't incapacitated.",
 		}],
 	},
 	"badger": {
@@ -1959,7 +1975,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Smell",
-			description: "The badger has advantage on Wisdom (Perception) checks that rely on smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}],
 	},
 	"bat": {
@@ -1990,15 +2006,16 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Echolocation",
-			description: "The bat can't use its Blindsight while deafened.",
+			description: "The [THIS] can't use its Blindsight while deafened.",
 		}, {
 			name: "Keen Hearing",
-			description: "The bat has advantage on Wisdom (Perception) checks that rely on hearing.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing.",
 		}],
 	},
 	"black bear": {
 		name: "Black Bear",
 		nameAlt: ["Bear, Black"],
+		nameThis: "bear",
 		source: [["SRD", 367], ["M", 318]],
 		size: 3, //Medium
 		type: "Beast",
@@ -2035,12 +2052,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Smell",
-			description: "The bear has advantage on Wisdom (Perception) checks that rely on smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}],
 	},
 	"blink dog": {
 		name: "Blink Dog",
 		nameAlt: ["Dog, Blink"],
+		nameThis: "dog",
 		source: [["SRD", 368], ["M", 318]],
 		size: 3, //Medium
 		type: "Fey",
@@ -2069,15 +2087,16 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Hearing and Smell",
-			description: "The dog has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
 		}],
 		actions: [{
 			name: "Teleport (Recharge 4-6)",
-			description: "As an action, the dog magically teleports, along with any equipment it is wearing or carrying, up to 40 ft to an unoccupied space it can see. Before or after teleporting, the dog can make one bite attack.",
+			description: "As an action, the [THIS] magically teleports, along with any equipment it is wearing or carrying, up to 40 ft to an unoccupied space it can see. Before or after teleporting, the [THIS] can make one bite attack.",
 		}],
 	},
 	"blood hawk": {
 		name: "Blood Hawk",
+		nameThis: "hawk",
 		source: [["SRD", 368], ["M", 319]],
 		size: 4, //Small
 		type: "Beast",
@@ -2104,10 +2123,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Sight",
-			description: "The hawk has advantage on Wisdom (Perception) checks that rely on sight.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on sight.",
 		}, {
 			name: "Pack Tactics",
-			description: "The hawk has advantage on an attack roll against a creature if at least one of the hawk's allies is within 5 ft of the creature and the ally isn't incapacitated.",
+			description: "The [THIS] has advantage on an attack roll against a creature if at least one of the [THIS]'s allies is within 5 ft of the creature and the ally isn't incapacitated.",
 		}],
 	},
 	"boar": {
@@ -2134,15 +2153,16 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Charge",
-			description: "If the boar moves at least 20 ft straight toward a target and then hits it with a tusk attack on the same turn, the target takes an extra 3 (1d6) slashing damage. A targeted creature must succeed on a DC 11 Strength saving throw or be knocked prone.",
+			description: "If the [THIS] moves at least 20 ft straight toward a target and then hits it with a tusk attack on the same turn, the target takes an extra 1d6 slashing damage. A targeted creature must succeed on a DC 11 Strength saving throw or be knocked prone.",
 		}, {
 			name: "Relentless (Recharges after a Short or Long Rest)",
-			description: "If the boar takes 7 damage or less that would reduce it to 0 HP, it is reduced to 1 HP instead.",
+			description: "If the [THIS] takes 7 damage or less that would reduce it to 0 HP, it is reduced to 1 HP instead.",
 		}],
 	},
 	"brown bear": {
 		name: "Brown Bear",
 		nameAlt: ["Bear, Brown"],
+		nameThis: "bear",
 		source: [["SRD", 369], ["M", 319]],
 		size: 2, //Large
 		type: "Beast",
@@ -2179,7 +2199,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Smell",
-			description: "The bear has advantage on Wisdom (Perception) checks that rely on smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}],
 	},
 	"camel": {
@@ -2239,12 +2259,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Smell",
-			description: "The cat has advantage on Wisdom (Perception) checks that rely on smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}],
 	},
 	"cave bear": {
 		name: "Cave Bear",
 		nameAlt: ["Bear, Cave"],
+		nameThis: "bear",
 		source: [["SRD", 369], ["M", 334]],
 		size: 2, //Large
 		type: "Beast",
@@ -2281,7 +2302,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Smell",
-			description: "The bear has advantage on Wisdom (Perception) checks that rely on smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}],
 	},
 	"constrictor snake": {
@@ -2346,7 +2367,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Amphibious",
-			description: "The crab can breathe air and water.",
+			description: "The [THIS] can breathe air and water.",
 		}],
 	},
 	"crocodile": {
@@ -2406,7 +2427,7 @@ var Base_CreatureList = {
 			damage: [1, 6, "piercing"],
 			range: "Melee (5 ft)",
 			description: "Two bite attacks as an Attack action; Target DC 12 Con save or diseased and poisoned",
-			tooltip: "If the target of the death dog's bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 5 (1d10) on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0.",
+			tooltip: "If the target of the death dog's bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 1d10 on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0.",
 		}],
 		actions: [{
 			name: "Multiattack",
@@ -2414,10 +2435,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Two-Headed",
-			description: "The death dog has advantage on Wisdom (Perception) checks and on saving throws against being blinded, charmed, deafened, frightened, stunned, or knocked unconscious.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks and on saving throws against being blinded, charmed, deafened, frightened, stunned, or knocked unconscious.",
 		}, {
 			name: "Bite attack",
-			description: "If the target of the death dog's bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 5 (1d10) on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0.",
+			description: "If the target of the [THIS]'s bite attack is a creature, it must succeed on a DC 12 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the creature must repeat the saving throw, reducing its hit point maximum by 1d10 on a failure. This reduction lasts until the disease is cured. The creature dies if the disease reduces its hit point maximum to 0.",
 		}],
 	},
 	"deer": {
@@ -2473,10 +2494,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Hearing and Smell",
-			description: "The wolf has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
 		}, {
 			name: "Pack Tactics",
-			description: "The wolf has advantage on an attack roll against a creature if at least one of the wolf's allies is within 5 ft of the creature and the ally isn't incapacitated.",
+			description: "The [THIS] has advantage on an attack roll against a creature if at least one of the [THIS]'s allies is within 5 ft of the creature and the ally isn't incapacitated.",
 		}],
 	},
 	"draft horse": {
@@ -2531,7 +2552,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Sight",
-			description: "The eagle has advantage on Wisdom (Perception) checks that rely on sight.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on sight.",
 		}],
 	},
 	"elephant": {
@@ -2564,7 +2585,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Trampling Charge",
-			description: "If the elephant moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 12 Strength saving throw or be knocked prone. If the target is prone, the elephant can make one stomp attack against it as a bonus action.",
+			description: "If the [THIS] moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 12 Strength saving throw or be knocked prone. If the target is prone, the [THIS] can make one stomp attack against it as a bonus action.",
 		}],
 	},
 	"elk": {
@@ -2599,12 +2620,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Charge",
-			description: "If the [THIS] moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.",
+			description: "If the [THIS] moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 2d6 damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.",
 		}],
 	},
 	"flying snake": {
 		name: "Flying Snake",
 		nameAlt: ["Snake, Flying"],
+		nameThis: "snake",
 		source: [["SRD", 372], ["M", 322]],
 		size: 5, //Tiny
 		type: "Beast",
@@ -2629,7 +2651,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Flyby",
-			description: "The snake doesn't provoke opportunity attacks when it flies out of an enemy's reach.",
+			description: "The [THIS] doesn't provoke opportunity attacks when it flies out of an enemy's reach.",
 		}],
 	},
 	"frog": {
@@ -2737,7 +2759,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Smell",
-			description: "The badger has advantage on Wisdom (Perception) checks that rely on smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}],
 	},
 	"giant bat": {
@@ -2766,10 +2788,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Echolocation",
-			description: "The bat can't use its Blindsight while deafened.",
+			description: "The [THIS] can't use its Blindsight while deafened.",
 		}, {
 			name: "Keen Hearing",
-			description: "The bat has advantage on Wisdom (Perception) checks that rely on hearing.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing.",
 		}],
 	},
 	"giant boar": {
@@ -2797,10 +2819,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Charge",
-			description: "If the boar hits with a tusk attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 2d6 slashing damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.",
+			description: "If the [THIS] hits with a tusk attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 2d6 slashing damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.",
 		}, {
 			name: "Relentless (Recharges after a Short or Long Rest)",
-			description: "If the boar takes 10 damage or less that would reduce it to 0 HP, it is reduced to 1 HP instead.",
+			description: "If the [THIS] takes 10 damage or less that would reduce it to 0 HP, it is reduced to 1 HP instead.",
 		}],
 	},
 	"giant centipede": {
@@ -2829,7 +2851,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Bite",
-			description: "If the poison damage from the centipede's bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way.",
+			description: "If the poison damage from the [THIS]'s bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way.",
 		}],
 	},
 	"giant constrictor snake": {
@@ -2895,7 +2917,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Amphibious",
-			description: "The crab can breathe air and water.",
+			description: "The [THIS] can breathe air and water.",
 		}],
 	},
 	"giant crocodile": {
@@ -2978,7 +3000,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Sight",
-			description: "The eagle has advantage on Wisdom (Perception) checks that rely on sight.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on sight.",
 		}],
 	},
 	"giant elk": {
@@ -3016,7 +3038,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Charge",
-			description: "If the elk moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 14 Strength saving throw or be knocked prone.",
+			description: "If the [THIS] moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 2d6 damage. If the target is a creature, it must succeed on a DC 14 Strength saving throw or be knocked prone.",
 		}],
 	},
 	"giant fly": {
@@ -3041,6 +3063,7 @@ var Base_CreatureList = {
 	"giant fire beetle": {
 		name: "Giant Fire Beetle",
 		nameAlt: ["Beetle, Giant Fire"],
+		nameThis: "beetle",
 		source: [["SRD", 375], ["M", 325]],
 		size: 4, //Small
 		type: "Beast",
@@ -3064,7 +3087,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Illumination",
-			description: "The beetle sheds bright light in a 10-ft radius and dim light for an additional 10 ft.",
+			description: "The [THIS] sheds bright light in a 10-ft radius and dim light for an additional 10 ft.",
 		}],
 	},
 	"giant frog": {
@@ -3097,13 +3120,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Amphibious",
-			description: "The frog can breathe air and water",
+			description: "The [THIS] can breathe air and water",
 		}, {
 			name: "Standing Leap",
-			description: "The frog's long jump is up to 20 ft and its high jump is up to 10 ft, with or without a running start.",
+			description: "The [THIS]'s long jump is up to 20 ft and its high jump is up to 10 ft, with or without a running start.",
 		}, {
 			name: "Swallow",
-			description: "The frog makes one bite attack against a Small or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the frog, and it takes 5 (2d4) acid damage at the start of each of the frog's turns. The frog can have only one target swallowed at a time. If the frog dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 ft of movement, exiting prone.",
+			description: "The [THIS] makes one bite attack against a Small or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the [THIS], and it takes 2d4 acid damage at the start of each of the [THIS]'s turns. The [THIS] can have only one target swallowed at a time. If the [THIS] dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 ft of movement, exiting prone.",
 		}],
 		wildshapeString: [
 			"##Senses##. Darkvision 30 ft.",
@@ -3171,7 +3194,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Rampage",
-			description: "When the hyena reduces a creature to 0 HP with a melee attack on its turn, the hyena can take a bonus action to move up to half its speed and make a bite attack.",
+			description: "When the [THIS] reduces a creature to 0 HP with a melee attack on its turn, the [THIS] can take a bonus action to move up to half its speed and make a bite attack.",
 		}],
 	},
 	"giant lizard": {
@@ -3200,10 +3223,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Variant: Hold Breath",
-			description: "The lizard can hold its breath for 15 minutes. (A lizard that has this trait also has a swimming speed of 30 ft.)",
+			description: "The [THIS] can hold its breath for 15 minutes. (A lizard that has this trait also has a swimming speed of 30 ft.)",
 		}, {
 			name: "Variant: Spider Climb",
-			description: "The lizard can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.",
+			description: "The [THIS] can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.",
 		}],
 	},
 	"giant octopus": {
@@ -3236,17 +3259,17 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Hold Breath",
-			description: "While out of water, the octopus can hold its breath for 1 hour.",
+			description: "While out of water, the [THIS] can hold its breath for 1 hour.",
 		}, {
 			name: "Underwater Camouflage",
-			description: "The octopus has advantage on Dexterity (Stealth) checks made while underwater.",
+			description: "The [THIS] has advantage on Dexterity (Stealth) checks made while underwater.",
 		}, {
 			name: "Water Breathing",
-			description: "The octopus can breathe only underwater.",
+			description: "The [THIS] can breathe only underwater.",
 		}],
 		actions: [{
 			name: "Ink Cloud (Recharges after a Short or Long Rest)",
-			description: "As an action, a 20-ft-radius cloud of ink extends all around the octopus if it is underwater. The area is heavily obscured for 1 minute, although a significant current can disperse the ink. After releasing the ink, the octopus can use the Dash action as a bonus action.",
+			description: "As an action, a 20-ft-radius cloud of ink extends all around the [THIS] if it is underwater. The area is heavily obscured for 1 minute, although a significant current can disperse the ink. After releasing the ink, the [THIS] can use the Dash action as a bonus action.",
 		}],
 		wildshapeString: [
 			"##Senses##. Darkvision 60 ft." +
@@ -3286,10 +3309,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Flyby",
-			description: "The owl doesn't provoke opportunity attacks when it flies out of an enemy's reach.",
+			description: "The [THIS] doesn't provoke opportunity attacks when it flies out of an enemy's reach.",
 		}, {
 			name: "Keen Hearing and Sight",
-			description: "The owl has advantage on Wisdom (Perception) checks that rely on hearing or sight.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing or sight.",
 		}],
 	},
 	"giant poisonous snake": {
@@ -3346,10 +3369,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Smell",
-			description: "The rat has advantage on Wisdom (Perception) checks that rely on smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}, {
 			name: "Pack Tactics",
-			description: "The rat has advantage on an attack roll against a creature if at least one of the rat's allies is within 5 ft of the creature and the ally isn't incapacitated.",
+			description: "The [THIS] has advantage on an attack roll against a creature if at least one of the [THIS]'s allies is within 5 ft of the creature and the ally isn't incapacitated.",
 		}],
 	},
 	"giant rat (diseased)": {
@@ -3378,7 +3401,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Disease",
-			description: "A target that contracted the disease by the bite attack of the diseased giant rat has it until the disease is cured. It can't regain HP except by magical means, and the it's HP maximum decreases by 3 (1d6) every 24 hours. If the target's HP maximum drops to 0 as a result of this disease, the target dies.",
+			description: "A target that contracted the disease by the bite attack of the [THIS] has it until the disease is cured. It can't regain HP except by magical means, and the it's HP maximum decreases by 1d6 every 24 hours. If the target's HP maximum drops to 0 as a result of this disease, the target dies.",
 		}],
 	},
 	"giant scorpion": {
@@ -3441,10 +3464,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Charge",
-			description: "If the sea horse moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) bludgeoning damage. If the target is a creature, it must succeed on a DC 11 Strength saving throw or be knocked prone.",
+			description: "If the [THIS] moves at least 20 ft straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 2d6 bludgeoning damage. If the target is a creature, it must succeed on a DC 11 Strength saving throw or be knocked prone.",
 		}, {
 			name: "Water Breathing",
-			description: "The sea horse can breathe only underwater.",
+			description: "The [THIS] can breathe only underwater.",
 		}],
 	},
 	"giant shark": {
@@ -3476,10 +3499,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Blood Frenzy",
-			description: "The shark has advantage on melee attack rolls against any creature that doesn't have all its HP.",
+			description: "The [THIS] has advantage on melee attack rolls against any creature that doesn't have all its HP.",
 		}, {
 			name: "Water Breathing",
-			description: "The shark can breathe only underwater.",
+			description: "The [THIS] can breathe only underwater.",
 		}],
 	},
 	"giant spider": {
@@ -3517,20 +3540,20 @@ var Base_CreatureList = {
 			abilitytodamage: false,
 			tooltip: "On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage).",
 		}],
-		traits: [{
-			name: "Bite",
-			description: "If the poison damage from the spider's bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way.",
-		}, {
+		features: [{
 			name: "Spider Climb",
-			description: "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.",
+			description: "The [THIS] can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.",
 		}, {
 			name: "Web Sense",
-			description: "While in contact with a web, the spider knows the exact location of any other creature in contact with the same web.",
+			description: "While in contact with a web, the [THIS] knows the exact location of any other creature in contact with the same web.",
 		}, {
 			name: "Web Walker",
-			description: "The spider ignores movement restrictions caused by webbing.",
+			description: "The [THIS] ignores movement restrictions caused by webbing.",
 		}],
 		actions: [{
+			name: "Bite",
+			description: "If the poison damage from the [THIS]'s bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way.",
+		}, {
 			name: "Web (Recharge 5-6)",
 			description: "See attack. On a hit, the target is restrained by webbing. As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success. The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage).",
 		}],
@@ -3568,13 +3591,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Amphibious",
-			description: "The toad can breathe air and water",
+			description: "The [THIS] can breathe air and water",
 		}, {
 			name: "Standing Leap",
-			description: "The toad's long jump is up to 20 ft and its high jump is up to 10 ft, with or without a running start.",
+			description: "The [THIS]'s long jump is up to 20 ft and its high jump is up to 10 ft, with or without a running start.",
 		}, {
 			name: "Swallow",
-			description: "The toad makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the toad, and it takes 10 (3d6) acid damage at the start of each of the toad's turns. The toad can have only one target swallowed at a time.\nIf the toad dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 ft of movement, exiting prone.",
+			description: "The [THIS] makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is swallowed, and the grapple ends. The swallowed target is blinded and restrained, it has total cover against attacks and other effects outside the [THIS], and it takes 3d6 acid damage at the start of each of the [THIS]'s turns. The [THIS] can have only one target swallowed at a time.\nIf the [THIS] dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 5 ft of movement, exiting prone.",
 		}],
 		wildshapeString: [
 			"##Senses##. Darkvision 30 ft.",
@@ -3656,7 +3679,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Sting",
-			description: "If the poison damage from the giant wasp's sting attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way.",
+			description: "If the poison damage from the [THIS]'s sting attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way.",
 		}],
 	},
 	"giant weasel": {
@@ -3689,12 +3712,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Hearing and Smell",
-			description: "The weasel has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
 		}],
 	},
 	"giant wolf spider": {
 		name: "Giant Wolf Spider",
 		nameAlt: ["Wolf Spider, Giant"],
+		nameThis: "spider",
 		source: [["SRD", 381], ["M", 330]],
 		size: 3, //Medium
 		type: "Beast",
@@ -3722,16 +3746,16 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Bite",
-			description: "If the poison damage from the spider's bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way.",
+			description: "If the poison damage from the [THIS]'s bite attack reduces the target to 0 HP, the target is stable but poisoned for 1 hour, even after regaining HP, and is paralyzed while poisoned in this way.",
 		}, {
 			name: "Spider Climb",
-			description: "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.",
+			description: "The [THIS] can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.",
 		}, {
 			name: "Web Sense",
-			description: "While in contact with a web, the spider knows the exact location of any other creature in contact with the same web.",
+			description: "While in contact with a web, the [THIS] knows the exact location of any other creature in contact with the same web.",
 		}, {
 			name: "Web Walker",
-			description: "The spider ignores movement restrictions caused by webbing.",
+			description: "The [THIS] ignores movement restrictions caused by webbing.",
 		}],
 		wildshapeString: [
 			"##Senses##. Blindsight 10 ft, Darkvision 60 ft.",
@@ -3765,10 +3789,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Charge",
-			description: "If the goat hits with a ram attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 1d4 bludgeoning damage. If the target is a creature, it must succeed on a DC 10 Strength saving throw or be knocked prone.",
+			description: "If the [THIS] hits with a ram attack after moving at least 20 ft straight toward a target on the same turn, the target takes an extra 1d4 bludgeoning damage. If the target is a creature, it must succeed on a DC 10 Strength saving throw or be knocked prone.",
 		}, {
 			name: "Sure-Footed",
-			description: "The goat has advantage on Strength and Dexterity saving throws made against effects that would knock it prone.",
+			description: "The [THIS] has advantage on Strength and Dexterity saving throws made against effects that would knock it prone.",
 		}],
 	},
 	"hawk": {
@@ -3808,6 +3832,7 @@ var Base_CreatureList = {
 	"hunter shark": {
 		name: "Hunter Shark",
 		nameAlt: ["Shark, Hunter"],
+		nameThis: "shark",
 		source: [["SRD", 382], ["M", 330]],
 		size: 2, //Large
 		type: "Beast",
@@ -3834,10 +3859,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Blood Frenzy",
-			description: "The shark has advantage on melee attack rolls against any creature that doesn't have all its HP.",
+			description: "The [THIS] has advantage on melee attack rolls against any creature that doesn't have all its HP.",
 		}, {
 			name: "Water Breathing",
-			description: "The shark can breathe only underwater.",
+			description: "The [THIS] can breathe only underwater.",
 		}],
 	},
 	"hyena": {
@@ -3867,7 +3892,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Pack Tactics",
-			description: "The hyena has advantage on an attack roll against a creature if at least one of the hyena's allies is within 5 ft of the creature and the ally isn't incapacitated.",
+			description: "The [THIS] has advantage on an attack roll against a creature if at least one of the [THIS]'s allies is within 5 ft of the creature and the ally isn't incapacitated.",
 		}],
 	},
 	"jackal": {
@@ -3898,15 +3923,16 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Hearing and Smell",
-			description: "The jackal has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
 		}, {
 			name: "Pack Tactics",
-			description: "The jackal has advantage on an attack roll against a creature if at least one of the jackal's allies is within 5 ft of the creature and the ally isn't incapacitated.",
+			description: "The [THIS] has advantage on an attack roll against a creature if at least one of the [THIS]'s allies is within 5 ft of the creature and the ally isn't incapacitated.",
 		}],
 	},
 	"killer whale": {
 		name: "Killer Whale",
 		nameAlt: ["Orca"],
+		nameThis: "whale",
 		source: [["SRD", 383], ["M", 331]],
 		size: 1, //Huge
 		type: "Beast",
@@ -3933,13 +3959,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Echolocation",
-			description: "The whale can't use its Blindsight while deafened.",
+			description: "The [THIS] can't use its Blindsight while deafened.",
 		}, {
 			name: "Hold Breath",
-			description: "The whale can hold its breath for 30 minutes.",
+			description: "The [THIS] can hold its breath for 30 minutes.",
 		}, {
 			name: "Keen Hearing",
-			description: "The whale has advantage on Wisdom (Perception) checks that rely on hearing.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing.",
 		}],
 	},
 	"lion": {
@@ -3977,16 +4003,16 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Smell",
-			description: "The lion has advantage on Wisdom (Perception) checks that rely on smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}, {
 			name: "Pack Tactics",
-			description: "The lion has advantage on an attack roll against a creature if at least one of the lion's allies is within 5 ft of the creature and the ally isn't incapacitated.",
+			description: "The [THIS] has advantage on an attack roll against a creature if at least one of the [THIS]'s allies is within 5 ft of the creature and the ally isn't incapacitated.",
 		}, {
 			name: "Pounce",
-			description: "If the lion moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the lion can make one bite attack against it as a bonus action.",
+			description: "If the [THIS] moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength save or be knocked prone. If the target is prone, the [THIS] can make one bite attack against it as a bonus action.",
 		}, {
 			name: "Running Leap",
-			description: "With a 10-ft running start, the lion can long jump up to 25 ft.",
+			description: "With a 10-ft running start, the [THIS] can long jump up to 25 ft.",
 		}],
 		wildshapeString: [
 			"##Keen Smell##. Adv. on Wis (Perception) checks using smell.",
@@ -4052,7 +4078,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Trampling Charge",
-			description: "If the mammoth moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 18 Strength saving throw or be knocked prone. If the target is prone, the mammoth can make one stomp attack against it as a bonus action.",
+			description: "If the [THIS] moves at least 20 ft straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 18 Strength saving throw or be knocked prone. If the target is prone, the [THIS] can make one stomp attack against it as a bonus action.",
 		}],
 	},
 	"mastiff": {
@@ -4084,7 +4110,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Hearing and Smell",
-			description: "The mastiff has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
 		}],
 	},
 	"mule": {
@@ -4111,10 +4137,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Beast of Burden",
-			description: "The mule is considered to be a Large animal for the purpose of determining its carrying capacity.",
+			description: "The [THIS] is considered to be a Large animal for the purpose of determining its carrying capacity.",
 		}, {
 			name: "Sure-Footed",
-			description: "The mule has advantage on Strength and Dexterity saving throws made against effects that would knock it prone.",
+			description: "The [THIS] has advantage on Strength and Dexterity saving throws made against effects that would knock it prone.",
 		}],
 	},
 	"octopus": {
@@ -4148,13 +4174,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Hold Breath",
-			description: "While out of water, the octopus can hold its breath for 30 minutes.",
+			description: "While out of water, the [THIS] can hold its breath for 30 minutes.",
 		}, {
 			name: "Underwater Camouflage",
-			description: "The octopus has advantage on Dexterity (Stealth) checks made while underwater.",
+			description: "The [THIS] has advantage on Dexterity (Stealth) checks made while underwater.",
 		}, {
 			name: "Water Breathing",
-			description: "The octopus can breathe only underwater.",
+			description: "The [THIS] can breathe only underwater.",
 		}],
 		wildshapeString: [
 			"##Senses##. Darkvision 30 ft." +
@@ -4194,10 +4220,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Flyby",
-			description: "The owl doesn't provoke opportunity attacks when it flies out of an enemy's reach.",
+			description: "The [THIS] doesn't provoke opportunity attacks when it flies out of an enemy's reach.",
 		}, {
 			name: "Keen Hearing and Sight",
-			description: "The owl has advantage on Wisdom (Perception) checks that rely on hearing or sight.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing or sight.",
 		}],
 	},
 	"panther": {
@@ -4235,10 +4261,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Smell",
-			description: "The panther has advantage on Wisdom (Perception) checks that rely on smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}, {
 			name: "Pounce",
-			description: "If the panther moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 12 Strength saving throw or be knocked prone. If the target is prone, the panther can make one bite attack against it as a bonus action.",
+			description: "If the [THIS] moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 12 Strength save or be knocked prone. If the target is prone, the [THIS] can make one bite attack against it as a bonus action.",
 		}],
 	},
 	"poisonous snake": {
@@ -4271,6 +4297,7 @@ var Base_CreatureList = {
 	"polar bear": {
 		name: "Polar Bear",
 		nameAlt: ["Bear, Polar"],
+		nameThis: "bear",
 		source: [["SRD", 386], ["M", 334]],
 		size: 2, //Large
 		type: "Beast",
@@ -4307,7 +4334,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Smell",
-			description: "The bear has advantage on Wisdom (Perception) checks that rely on smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}],
 	},
 	"pony": {
@@ -4361,10 +4388,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Blood Frenzy",
-			description: "The quipper has advantage on melee attack rolls against any creature that doesn't have all its HP.",
+			description: "The [THIS] has advantage on melee attack rolls against any creature that doesn't have all its HP.",
 		}, {
 			name: "Water Breathing",
-			description: "The quipper can breathe only underwater.",
+			description: "The [THIS] can breathe only underwater.",
 		}],
 	},
 	"rat": {
@@ -4434,6 +4461,7 @@ var Base_CreatureList = {
 	"reef shark": {
 		name: "Reef Shark",
 		nameAlt: ["Shark, Reef"],
+		nameThis: "shark",
 		source: [["SRD", 387], ["M", 336]],
 		size: 3, //Medium
 		type: "Beast",
@@ -4460,10 +4488,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Pack Tactics",
-			description: "The shark has advantage on an attack roll against a creature if at least one of the shark's allies is within 5 ft of the creature and the ally isn't incapacitated.",
+			description: "The [THIS] has advantage on an attack roll against a creature if at least one of the [THIS]'s allies is within 5 ft of the creature and the ally isn't incapacitated.",
 		}, {
 			name: "Water Breathing",
-			description: "The shark can breathe only underwater.",
+			description: "The [THIS] can breathe only underwater.",
 		}],
 	},
 	"rhinoceros": {
@@ -4492,7 +4520,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Charge",
-			description: "If the [THIS] moves at least 20 ft straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) bludgeoning damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone.",
+			description: "If the [THIS] moves at least 20 ft straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 2d8 bludgeoning damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone.",
 		}],
 	},
 	"riding horse": {
@@ -4522,6 +4550,7 @@ var Base_CreatureList = {
 	"saber-toothed tiger": {
 		name: "Saber-Toothed Tiger",
 		nameAlt: ["Tiger, Saber-Toothed"],
+		nameThis: "tiger",
 		source: [["SRD", 388], ["M", 336]],
 		size: 2, //Large
 		type: "Beast",
@@ -4558,10 +4587,10 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Smell",
-			description: "The tiger has advantage on Wisdom (Perception) checks that rely on smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}, {
 			name: "Pounce",
-			description: "If the tiger moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the tiger can make one bite attack against it as a bonus action.",
+			description: "If the [THIS] moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 14 Strength save or be knocked prone. If the target is prone, the [THIS] can make one bite attack against it as a bonus action.",
 		}],
 	},
 	"scorpion": {
@@ -4607,7 +4636,7 @@ var Base_CreatureList = {
 		attacks: [],
 		traits: [{
 			name: "Water Breathing",
-			description: "The sea horse can breathe only underwater.",
+			description: "The [THIS] can breathe only underwater.",
 		}],
 	},
 	"spider": {
@@ -4640,13 +4669,13 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Spider Climb",
-			description: "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.",
+			description: "The [THIS] can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.",
 		}, {
 			name: "Web Sense",
-			description: "While in contact with a web, the spider knows the exact location of any other creature in contact with the same web.",
+			description: "While in contact with a web, the [THIS] knows the exact location of any other creature in contact with the same web.",
 		}, {
 			name: "Web Walker",
-			description: "The spider ignores movement restrictions caused by webbing.",
+			description: "The [THIS] ignores movement restrictions caused by webbing.",
 		}],
 		wildshapeString: [
 			"##Senses##. Darkvision 30 ft.",
@@ -4680,7 +4709,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Blood Drain",
-			description: "While attached, the stirge doesn't attack. Instead, at the start of each of the stirge's turns, the target loses 5 (1d4 + 3) HP due to blood loss. The stirge can detach itself by spending 5 ft of its movement. It does so after it drains 10 HP of blood from the target or the target dies. A creature, including the target, can use its action to detach the stirge.",
+			description: "While attached, the [THIS] doesn't attack. Instead, at the start of each of the [THIS]'s turns, the target loses 1d4 + 3 HP due to blood loss. The [THIS] can detach itself by spending 5 ft of its movement. It does so after it drains 10 HP of blood from the target or the target dies. A creature, including the target, can use its action to detach the [THIS].",
 		}],
 	},
 	"tiger": {
@@ -4722,7 +4751,7 @@ var Base_CreatureList = {
 			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
 		}, {
 			name: "Pounce",
-			description: "If the [THIS] moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the [THIS] can make one bite attack against it as a bonus action.",
+			description: "If the [THIS] moves at least 20 ft straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength save or be knocked prone. If the target is prone, the [THIS] can make one bite attack against it as a bonus action.",
 		}],
 	},
 	"vulture": {
@@ -4763,6 +4792,7 @@ var Base_CreatureList = {
 	"warhorse": {
 		name: "Warhorse",
 		nameAlt: ["Horse, War"],
+		nameThis: "horse",
 		source: [["SRD", 392], ["M", 340]],
 		size: 2, //Large
 		type: "Beast",
@@ -4786,7 +4816,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Trampling Charge",
-			description: "If the horse moves at least 20 ft straight toward a creature and then hits it with a hooves attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the horse can make another attack with its hooves against it as a bonus action.",
+			description: "If the [THIS] moves at least 20 ft straight toward a creature and then hits it with a hooves attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the [THIS] can make another attack with its hooves against it as a bonus action.",
 		}],
 	},
 	"weasel": {
@@ -4820,7 +4850,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Hearing and Smell",
-			description: "The weasel has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
 		}],
 	},
 	"wolf": {
@@ -4888,7 +4918,7 @@ var Base_CreatureList = {
 		}],
 		traits: [{
 			name: "Keen Hearing and Smell",
-			description: "The worg has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
+			description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on hearing or smell.",
 		}],
 	},
 };

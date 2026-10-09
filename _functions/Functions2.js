@@ -1941,14 +1941,14 @@ function ApplyWildshape() {
 	// Senses (seperate because on some sheet versions it has its own field)
 	var skipKeenSenses = false;
 	if (oWS.senses) {
-		var keenSensesRx = /([,;] )?\bAdv\. on (Wis|Perception).*?(checks|hearing|sight|smell)/i;
+		var keenSensesRx = /([,;] )?\bAdv\. on (Wis|Perception).*(checks|hearing|sight|smell)/i;
 		if (tDoc.getField(fldBase + ".Senses")) {
 			skipKeenSenses = keenSensesRx.test(oWS.senses);
 			var senses = oWS.senses.replace("Wis (Perception)", "Perception");
 			AddString(fldBase + ".Senses", senses, true);
 		} else {
 			var senses = oWS.senses.replace(keenSensesRx, ""); // remove duplicate Keen Hearing/Senses/Sight/Smell
-			arrTraits.push("##Senses##. " + senses + ".");
+			if (senses.length > 4) arrTraits.push("##Senses##. " + senses + ".");
 		}
 	}
 
