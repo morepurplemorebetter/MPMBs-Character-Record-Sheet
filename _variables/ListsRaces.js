@@ -67,7 +67,7 @@ var Base_RaceList = {
 	},
 	"hill dwarf": {
 		regExpSearch: /^((?=.*(neidar|klar))|((?=.*\b(dwarfs?|dwarves|dwarfish|dwarvish|dwarven)\b)(?=.*\b(hill|gold)\b))).*$/i,
-		name: "Hill dwarf",
+		name: "Hill Dwarf",
 		sortname: "Dwarf, Hill",
 		source: [["SRD", 3], ["P", 20]],
 		plural: "Hill dwarves",
@@ -98,7 +98,7 @@ var Base_RaceList = {
 	},
 	"high elf": {
 		regExpSearch: /^(?!.*half)((?=.*(silvanesti|qualinesti))|((?=.*\b(elfs?|elves|elvish|elven)\b)(?=.*\b(high|sun|moon|grey|gray|valleys?|silvers?)\b))).*$/i,
-		name: "High elf",
+		name: "High Elf",
 		sortname: "Elf, High",
 		source: [["SRD", 4], ["P", 23]],
 		plural: "High elves",
@@ -134,7 +134,7 @@ var Base_RaceList = {
 	},
 	"rock gnome": {
 		regExpSearch: /^((?=.*\bgnomes?\b)(?=.*\b(rocks?|tinker|tinkering)\b)).*$/i,
-		name: "Rock gnome",
+		name: "Rock Gnome",
 		sortname: "Gnome, Rock",
 		source: [["SRD", 6], ["P", 37]],
 		plural: "Rock gnomes",
@@ -163,7 +163,7 @@ var Base_RaceList = {
 	},
 	"lightfoot halfling": {
 		regExpSearch: /^((?=.*(hairfoot|tallfellow))|((?=.*\b(halflings?|hobbits?)\b)(?=.*lightfoot))).*$/i,
-		name: "Lightfoot halfling",
+		name: "Lightfoot Halfling",
 		sortname: "Halfling, Lightfoot",
 		source: [["SRD", 4], ["P", 28]],
 		plural: "Lightfoot halflings",
@@ -188,7 +188,7 @@ var Base_RaceList = {
 	},
 	"half-elf": {
 		regExpSearch: /^(?=.*half)(?=.*(elf|elv|drow|silvanesti|qualinesti|grugach|kagonesti)).*$/i,
-		name: "Half-elf",
+		name: "Half-Elf",
 		source: [["SRD", 6], ["P", 39]],
 		plural: "Half-elves",
 		size: 3,
@@ -216,7 +216,7 @@ var Base_RaceList = {
 	},
 	"half-orc": {
 		regExpSearch: /^(?=.*half)(?=.*\bor(c|k)).*$/i,
-		name: "Half-orc",
+		name: "Half-Orc",
 		source: [["SRD", 7], ["P", 41]],
 		plural: "Half-orcs",
 		size: 3,
@@ -352,7 +352,7 @@ var Base_RaceList = {
 var Base_RaceSubList = {
 	"dragonborn-black": {
 		regExpSearch: /black/i,
-		name: "Black dragonborn",
+		name: "Black Dragonborn",
 		trait: [
 			"**Black Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Acid Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 acid damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
@@ -361,7 +361,7 @@ var Base_RaceSubList = {
 	},
 	"dragonborn-blue": {
 		regExpSearch: /blue/i,
-		name: "Blue dragonborn",
+		name: "Blue Dragonborn",
 		trait: [
 			"**Blue Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Lightning Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 lightning damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
@@ -370,7 +370,7 @@ var Base_RaceSubList = {
 	},
 	"dragonborn-brass": {
 		regExpSearch: /brass/i,
-		name: "Brass dragonborn",
+		name: "Brass Dragonborn",
 		trait: [
 			"**Brass Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Fire Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 fire damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
@@ -379,7 +379,7 @@ var Base_RaceSubList = {
 	},
 	"dragonborn-bronze": {
 		regExpSearch: /bronze/i,
-		name: "Bronze dragonborn",
+		name: "Bronze Dragonborn",
 		trait: [
 			"**Bronze Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Lightning Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 lightning damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
@@ -388,7 +388,7 @@ var Base_RaceSubList = {
 	},
 	"dragonborn-copper": {
 		regExpSearch: /copper/i,
-		name: "Copper dragonborn",
+		name: "Copper Dragonborn",
 		trait: [
 			"**Copper Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Acid Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 acid damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
@@ -397,7 +397,7 @@ var Base_RaceSubList = {
 	},
 	"dragonborn-gold": {
 		regExpSearch: /gold/i,
-		name: "Gold dragonborn",
+		name: "Gold Dragonborn",
 		trait: [
 			"**Gold Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Fire Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 fire damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
@@ -406,7 +406,7 @@ var Base_RaceSubList = {
 	},
 	"dragonborn-green": {
 		regExpSearch: /green/i,
-		name: "Green dragonborn",
+		name: "Green Dragonborn",
 		trait: [
 			"**Green Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Poison Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 poison damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
@@ -415,7 +415,7 @@ var Base_RaceSubList = {
 	},
 	"dragonborn-red": {
 		regExpSearch: /red/i,
-		name: "Red dragonborn",
+		name: "Red Dragonborn",
 		trait: [
 			"**Red Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Fire Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 fire damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
@@ -424,7 +424,7 @@ var Base_RaceSubList = {
 	},
 	"dragonborn-silver": {
 		regExpSearch: /silver/i,
-		name: "Silver dragonborn",
+		name: "Silver Dragonborn",
 		trait: [
 			"**Silver Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Cold Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 cold damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
@@ -433,7 +433,7 @@ var Base_RaceSubList = {
 	},
 	"dragonborn-white": {
 		regExpSearch: /white/i,
-		name: "White dragonborn",
+		name: "White Dragonborn",
 		trait: [
 			"**White Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Cold Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 cold damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",

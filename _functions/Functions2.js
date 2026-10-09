@@ -1984,28 +1984,30 @@ function ApplyWildshape() {
 	// Addthe entries gained from wildshapeCallback and process all entries, if any
 	entries = entries.concat(oWS.wildshapeTraits);
 	for (var i = 0; i < entries.length; i++) {
-		if (entries[i].wildshapeShow === false) continue;
-		var joinStr = entries[i].joinString !== undefined ? entries[i].joinString : ". ";
-		var hasWildshapeShow = typeof entries[i].wildshapeShow === "string";
-		var entryDescr = hasWildshapeShow ? entries[i].wildshapeShow : entries[i].description;
+		var prop = entries[i];
+		if (prop.wildshapeShow === false) continue;
+		var joinStr = prop.joinString !== undefined ? prop.joinString : ". ";
+		var formattingChar = prop.formattingChar !== undefined ? prop.formattingChar : "##";
+		var hasWildshapeShow = typeof prop.wildshapeShow === "string";
+		var entryDescr = hasWildshapeShow ? prop.wildshapeShow : prop.description;
 		if (!hasWildshapeShow) {
-			if (skipKeenSenses && /Keen (Hearing|Senses|Smell|Sight)/i.test(entries[i].name)) {
+			if (skipKeenSenses && /Keen (Hearing|Senses|Smell|Sight)/i.test(prop.name)) {
 				// Skip if Keen Hearing/Senses/Smell/Sight was already added to a Senses field
 				continue;
-			} else if (/multiattack/i.test(entries[i].name)) {
+			} else if (/multiattack/i.test(prop.name)) {
 				// Condense the wording of multiattack
 				var descrMatch = entryDescr.match(/As an(?: Attack)? action((?: on its turn)?.*?), the .*? (?:can make|makes) (.*)/);
 				if (descrMatch) {
 					var newDescr = (descrMatch[1] ? descrMatch[1].trim() + ", " : "") + descrMatch[2].replace(/\bone\b/ig, 1).replace(/\btwo\b/ig, 2).replace(/\bthree\b/ig, 3);
 					entryDescr = newDescr[0].toUpperCase() + newDescr.substring(1);
 				}
-			} else if (/^pack tactics$/i.test(entries[i].name)) {
+			} else if (/^pack tactics$/i.test(prop.name)) {
 				entryDescr = "Advantage on an attack roll if at least one ally, that isn't Incapacitated, is within 5 ft of the target.";
 			} else if (/(^T|, t)he \[THIS\] (can|has|moves)/.test(entryDescr)) {
 				entryDescr = entryDescr.replace(/^The \[THIS\] can/, "Can").replace(/^The \[THIS\] has/, "Has").replace(/, the \[THIS\] (can|has|moves)/g, ", $1");
 			}
 		}
-		arrTraits.push("##" + entries[i].name + "##" + joinStr + entryDescr);
+		arrTraits.push(formattingChar + prop.name + formattingChar + joinStr + entryDescr);
 	}
 	// Add arrTraits to the field
 	if (arrTraits.length) {

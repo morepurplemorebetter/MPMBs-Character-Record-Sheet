@@ -2497,14 +2497,14 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 		if (!novardialog && IsNotImport && inputracetxt && !tempFound[1] && !CurrentVars.manual.race) {
 			var aRace = RaceList[tempFound[0]];
 			var rSource = stringSource(aRace, "first,abbr", "    [", "]");
-			var aBasic = "Basic " + aRace.name.toLowerCase() + rSource;
+			var aBasic = "Basic " + aRace.name + rSource;
 			var rVarNames = [aBasic];
 			var rVarObj = {};
 			rVarObj[aBasic] = "";
 			for (var i = 0; i < tempFound[2].length; i++) {
 				var varR = tempFound[2][i];
 				var varRobj = RaceSubList[tempFound[0] + "-" + varR];
-				var varRname = varRobj.sortname ? varRobj.sortname : varRobj.name ? varRobj.name : varR.capitalize() + " " + aRace.name.toLowerCase();
+				var varRname = varRobj.sortname ? varRobj.sortname : varRobj.name ? varRobj.name : varR.capitalize() + " " + aRace.name;
 				var varRsrc = varRobj && varRobj.source ? stringSource(varRobj, "first,abbr", "    [", "]") : rSource;
 				rVarNames.push(varRname + varRsrc);
 				rVarObj[varRname + varRsrc] = varR;
@@ -8938,8 +8938,9 @@ function MakeRaceMenu() {
 		for (var i = 0; i < array.length; i++) {
 			var varR = RaceSubList[CurrentRace.known + "-" + array[i]];
 			var varSrc = varR && varR.source ? stringSource(varR, "first,abbr", "\t   [", "]") : raceSrc;
+			var varName = varR.sortname ? varR.sortname : varR.name ? varR.name : array[i].capitalize() + " " + CurrentRace.name;
 			item.push({
-				cName: array[i].capitalize() + " " + RaceList[CurrentRace.known].name + varSrc,
+				cName: varName + varSrc,
 				cReturn: CurrentRace.known + "#" + array[i],
 				bMarked: (isCurrent === "" && array[i] === "basic") || isCurrent === array[i],
 			});
