@@ -687,7 +687,7 @@ function AbilityScores_Button(onlySetTooltip) {
 					item_id: aNo + "Nm",
 					font: "dialog",
 					bold: true,
-					char_width: /override/i.test(theStat.name) ? 6 : 5,
+					char_width: /override/i.test(theStat.name) || theStat.name.split(" ").length > 2 ? 6 : 5,
 					height: 30,
 					alignment: "align_left",
 					wrap_name: true,

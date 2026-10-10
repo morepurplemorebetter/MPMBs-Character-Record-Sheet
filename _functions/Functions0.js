@@ -465,12 +465,10 @@ function keystroke1(allowDec, allowNegative) {
 function format2() {
 	if (!event.value) return;
 	var newValue = event.value.replace(/,/g, ".");
-	if (isNaN(newValue)) {
-		try {
-			newValue = Number(eval_ish(newValue));
-		} catch (e) {}
-		if (isNaN(newValue)) return;
-	}
+	try {
+		newValue = Number(eval_ish(newValue));
+	} catch (e) {}
+	if (typeof newValue !== "number") return;
 	var decSepStyle = What("Decimal Separator") === "dot" ? 0 : 2;
 	var numberOfDecimals = Math.min(newValue.countDecimals(), 3);
 	event.value = util.printf("%," + decSepStyle + "." + numberOfDecimals + "f", newValue);
