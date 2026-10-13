@@ -5,9 +5,9 @@
  * @param {string} featureName name of the feature, has to be unique
  * @param {number[]} aScoresIn array with 6 or 7 numbers, `scores(Override|Maximum|MaxLimited)` attribute
  * @param {string} [dialogTxt] string to use instead of generating it from `inScoresA`,  `scorestxt` attribute
- * @param {string} [isSpecial] "limited", "maximums", "overrides"
+ * @param {string} [isSpecial] "limited", "maximums", "overrides", "stackable"
  * @param {number[]|string[]} [aHasMaxIn] array with 6 or 7 numbers, `scores(Maximum|MaxLimited)` attribute
- * @param {boolean} [isStackable] adds to instead of overrides the same featureName. Only applicable if isSpecial == "limited"
+ * @param {boolean} [isStackable] adds to instead of overrides the same featureName. Only applicable if isSpecial == "limited" or isSpecial == "stackable"
  * @param {boolean} [noUserDialog] prevents the dialog to show asking user to proceed or not
 **/
 function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpecial, aHasMaxIn, isStackable, noUserDialog) {
@@ -21,18 +21,23 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 
 	var firstLevelStatFrom = tDoc.use2024Rules ? "background" : "race";
 
-	var isSpecialIdx = ["limited", "maximums", "overrides"].indexOf(isSpecial);
-	if (isSpecialIdx === -1) isSpecial = null; // Special type not recognized
+	var allowedSpecials = {
+		"limited": { type: false },
+		"maximums": { type: "maximum" },
+		"overrides": { type: "override" },
+		"stackable": { type: false },
+	};
+	if (!allowedSpecials[isSpecial]) isSpecial = null; // Special type not recognized
 
 	sType = GetFeatureType(sType);
-	var type = isSpecial && isSpecialIdx > 0 ? isSpecial.replace(/s$/, "") : sType;
+	var type = isSpecial && allowedSpecials[isSpecial].type ? allowedSpecials[isSpecial].type : sType;
 
 	// Special actions depending on type
 	if (type === "items" && !isSpecial && aScores) {
 		// Magic Item that increase, but is not a one-time addition
 		type = "ongoing";
 		isSpecial = "ongoing";
-	} else if (type === "items" && isSpecial === "limited" && IsNotReset && IsNotImport && !noUserDialog) {
+	} else if (type === "items" && ["limited", "stackable"].indexOf(isSpecial) !== -1 && IsNotReset && IsNotImport && !noUserDialog) {
 		// Prompt the user for if an item should apply/remove its one-time (stackable) bonuses or not
 		var askUserToContinue = scoresMaxLimitedItemAskUser(AddRemove, featureName, aScores, aHasMax, isStackable);
 		if (!askUserToContinue) return;
@@ -127,6 +132,7 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 
 		switch (isSpecial) {
 			case "limited": // type 3 & 6, score and max to apply depend on current state
+			case "stackable": // type 7, score and max set to a new value, but saved independent of magic item being present
 				if (!iScore) continue;
 				if (!iMax) iMax = 20; // Set to 20 if no maximum is provided
 				// Gather the previous entries and the next key
@@ -135,11 +141,12 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 					var description = type === "items" ? "one-time " : "";
 					description += (iScore >= 0 ? "+" : "") + iScore + " " + oScoreNow.name;
 					var displayMax = iMax;
+					var isLimited = isSpecial === "limited";
 					if (iScoreNow + iScore > iMax) {
 					// The score would increase the total beyond its max, so reduce the addition
 						iScore = Math.max(0, iMax - iScoreNow);
-					} else if (iScoreNow + iScore < iMax) {
-					// The total is less than the max, so set the max to the new total
+					} else if (isLimited && iScoreNow + iScore < iMax) {
+					// The total is less than the max, so set the max to the new total, but only if it is a "limited" maximum
 						iMax = Math.max(20, iScoreNow + iScore);
 					}
 					// Maximum and changes to the description
@@ -203,16 +210,16 @@ function processStats(AddRemove, sType, featureName, aScoresIn, dialogTxt, isSpe
 				}
 				break;
 
-			case "overrides": // type 8: only sets override
+			case "overrides": // type 9: only sets override
 				registerSpecial("override", i, featureName, iScore);
 				if (AddRemove) {
 					aDescriptions.push(oScoreNow.name + " is " + iScore);
 				}
 				break;
 
-			default: // type 1, 2, and 7. type 1: score and no maximum (not magic item).
+			default: // type 1, 2, and 8. type 1: score and no maximum (not magic item).
 				// type 2: maximum applicable separately (legacy, not magic item).
-				// type 7: set only maximum.
+				// type 8: set only maximum.
 
 				// iScores apply to column
 				if (iScore) {
@@ -355,7 +362,7 @@ function scoresMaxLimitedItemAskUser(AddRemove, sItemName, aScores, aMaximums, i
 	if (AddRemove) {
 		// Compile the message when adding
 		var aMessage = [
-			"Do you want to apply the one-time ability score bonus from the " + sItemName + (oCompiled.thisIteration > 1 ? "for a " + toOrdinal(oCompiled.thisIteration) + "time" : "") + "?",
+			"Do you want to apply the one-time ability score bonus from the " + sItemName + (oCompiled.thisIteration > 1 ? " for a " + toOrdinal(oCompiled.thisIteration) + " time" : "") + "?",
 			formatLineList('Click "Yes" to add', oCompiled.benefitsNew) + ".",
 		];
 		if (oCompiled.benefitsOld.length) {
@@ -431,7 +438,7 @@ function recurringItemApplyLegacy(sItemName, ability, iBonus) {
 		return;
 	}
 	// Call the main function
-	processStats(AddRemove, "items", sItemName, aScores, false, "limited", aMaximums, true, true);
+	processStats(AddRemove, "items", sItemName, aScores, false, "stackable", aMaximums, true, true);
 }
 
 // a function to initiate the global variable if it doesn't yet exist

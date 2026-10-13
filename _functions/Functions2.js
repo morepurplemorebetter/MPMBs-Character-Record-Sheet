@@ -1454,8 +1454,8 @@ function ApplyWildshape() {
 	// Update the nameThis if not matching the creature entered and the entered creature is not the name of the creature
 	var newFormLC = newForm.toLowerCase();
 	if (!oWS.nameThis || (
-		newFormLC.indexOf(oWS.nameThis.toLowerCase()) !== -1 &&
-		newFormLC.indexOf(oWS.name.toLowerCase()) !== -1
+		newFormLC.indexOf(oWS.nameThis.toLowerCase()) === -1 &&
+		newFormLC.indexOf(oWS.name.toLowerCase()) === -1
 	)) {
 		oWS.nameThis = clean(newForm.replace(/,? ?(giant|dire)/ig, "").replace(/ +/g, " "));
 	}

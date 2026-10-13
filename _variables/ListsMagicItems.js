@@ -70,38 +70,57 @@ var Base_MagicItemsList = {
 		description: "I have a bonus to attack and damage rolls made with this piece of magic ammunition. The bonus is determined by the rarity of the magic item: uncommon (+1), rare (+2), or very rare (+3). Once it hits a target, the ammunition is no longer magical. Select the bonus using the little square button in this magic item line.",
 		descriptionFull: "You have a bonus to attack and damage rolls made with this piece of magic ammunition. The bonus is determined by the rarity of the ammunition: uncommon (+1), rare (+2), or very rare (+3). Once it hits a target, the ammunition is no longer magical.",
 		allowDuplicates: true,
-		chooseGear: {
-			type: "ammo",
-			prefixOrSuffix: "brackets",
-			descriptionChange: ["replace", "ammunition"],
-			excludeCheck: function (inObjKey, inObj) {
-				return /vials|flasks/i.test(inObj.icon);
-			},
-		},
 		choices: ["+1 Ammunition (uncommon)", "+2 Ammunition (rare)", "+3 Ammunition (very rare)"],
 		"+1 ammunition (uncommon)": {
 			name: "Ammunition +1",
-			nameTest: "+1 Ammunition",
+			nameTest: /(ammo|ammunition) \+1|\+1.+(ammo|ammunition|\u180B)/i,
 			rarity: "uncommon",
 			magicItemTable: "B",
 			description: "I have a +1 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
 			allowDuplicates: true,
+			chooseGear: {
+				type: "ammo",
+				prefixOrSuffix: ["between", "+1", "\u180B"],
+				itemName1stPage: ["suffix", "+1"],
+				descriptionChange: ["replace", "ammunitions"],
+				excludeCheck: function (inObjKey, inObj) {
+					return /vials|flasks/i.test(inObj.icon);
+				},
+			},
 		},
 		"+2 ammunition (rare)": {
 			name: "Ammunition +2",
-			nameTest: "+2 Ammunition",
+			nameTest: /(ammo|ammunition) \+2|\+2.+(ammo|ammunition|\u180B)/i,
 			rarity: "rare",
 			magicItemTable: "C",
 			description: "I have a +2 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
 			allowDuplicates: true,
+			chooseGear: {
+				type: "ammo",
+				prefixOrSuffix: ["between", "+2", "\u180B"],
+				itemName1stPage: ["suffix", "+2"],
+				descriptionChange: ["replace", "ammunitions"],
+				excludeCheck: function (inObjKey, inObj) {
+					return /vials|flasks/i.test(inObj.icon);
+				},
+			},
 		},
 		"+3 ammunition (very rare)": {
 			name: "Ammunition +3",
-			nameTest: "+3 Ammunition",
+			nameTest: /(ammo|ammunition) \+3|\+3.+(ammo|ammunition|\u180B)/i,
 			rarity: "very rare",
 			magicItemTable: "D",
 			description: "I have a +3 bonus to attack and damage rolls made with this magic ammunition. Once it hits a target, the ammunition is no longer magical.",
 			allowDuplicates: true,
+			chooseGear: {
+				type: "ammo",
+				prefixOrSuffix: ["between", "+3", "\u180B"],
+				itemName1stPage: ["suffix", "+3"],
+				descriptionChange: ["replace", "ammunitions"],
+				excludeCheck: function (inObjKey, inObj) {
+					return /vials|flasks/i.test(inObj.icon);
+				},
+			},
 		},
 	},
 	"amulet of health": {
@@ -251,32 +270,48 @@ var Base_MagicItemsList = {
 			],
 		],
 		allowDuplicates: true,
-		chooseGear: {
-			type: "armor",
-			prefixOrSuffix: "brackets",
-			descriptionChange: ["prefix", "armor"],
-		},
 		choices: ["+1 AC bonus (rare)", "+2 AC bonus (very rare)", "+3 AC bonus (legendary)"],
 		"+1 ac bonus (rare)": {
 			name: "Armor +1",
-			nameTest: "+1 Armor",
+			nameTest: /armou?r \+1|\+1.+(armou?r|\u180C)/i,
 			rarity: "rare",
 			description: "I have a +1 bonus to AC while wearing this armor.",
 			allowDuplicates: true,
+			chooseGear: {
+				type: "armor",
+				prefixOrSuffix: "brackets",
+				prefixOrSuffix: ["between", "+1", "\u180C"],
+				itemName1stPage: ["suffix", "+1"],
+				descriptionChange: ["prefix", "armor"],
+			},
 		},
 		"+2 ac bonus (very rare)": {
 			name: "Armor +2",
-			nameTest: "+2 Armor",
+			nameTest: /armou?r \+2|\+2.+(armou?r|\u180C)/i,
 			rarity: "very rare",
 			description: "I have a +2 bonus to AC while wearing this armor.",
 			allowDuplicates: true,
+			chooseGear: {
+				type: "armor",
+				prefixOrSuffix: "brackets",
+				prefixOrSuffix: ["between", "+2", "\u180C"],
+				itemName1stPage: ["suffix", "+2"],
+				descriptionChange: ["prefix", "armor"],
+			},
 		},
 		"+3 ac bonus (legendary)": {
 			name: "Armor +3",
-			nameTest: "+3 Armor",
+			nameTest: /armou?r \+3|\+3.+(armou?r|\u180C)/i,
 			rarity: "legendary",
 			description: "I have a +3 bonus to AC while wearing this armor.",
 			allowDuplicates: true,
+			chooseGear: {
+				type: "armor",
+				prefixOrSuffix: "brackets",
+				prefixOrSuffix: ["between", "+3", "\u180C"],
+				itemName1stPage: ["suffix", "+3"],
+				descriptionChange: ["prefix", "armor"],
+			},
 		},
 	},
 	"armor of invulnerability": { // contains contributions by Larry Hoy
@@ -462,10 +497,10 @@ var Base_MagicItemsList = {
 		attunement: true,
 		weight: 6,
 		action: [["reaction", ""]],
-		shieldAdd: "Arrow-Catching Shield (+\u200A2 vs. ranged)",
+		shieldAdd: "Arrow-Catching Shield (+\uFEFF2 vs. ranged)",
 	},
 	"arrow of slaying": {
-		name: "Arro\u200Aw of Slaying",
+		name: "Arro\uFEFFw of Slaying",
 		nameTest: "of Slaying",
 		source: [["SRD", 209], ["D", 152]],
 		type: "weapon (any ammunition)",
@@ -3163,11 +3198,11 @@ var Base_MagicItemsList = {
 			return !classes.known.paladin ? "" : classes.known.paladin.level < 17 ? "paladin level 1-16 (10-ft aura)" : "paladin level 17+ (30-ft aura)";
 		},
 		"paladin level 1-16 (10-ft aura)": {
-			name: "Holy\u200A Avenger",
+			name: "Holy Avenger \uFEFF",
 			description: "I have a +3 bonus to attack and damage rolls made with this magic sword. It does +2d10 radiant damage against fiends and undead. While holding the drawn sword, I have a 10-ft radius aura that grants me and my allies advantage on saving throws against spells and magical effects.",
 		},
 		"paladin level 17+ (30-ft aura)": {
-			name: "Holy\u200A\u200A Avenger",
+			name: "Holy Avenger \uFEFF\uFEFF",
 			description: "I have a +3 bonus to attack and damage rolls made with this magic sword. It does +2d10 radiant damage against fiends and undead. While holding the drawn sword, I have a 30-ft radius aura that grants me and my allies advantage on saving throws against spells and magical effects.",
 		},
 	},
@@ -3789,7 +3824,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This book contains health and diet tips, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Constitution score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight: 5,
 		scores: [0, 0, 2, 0, 0, 0],
-		scoresMaxLimited: [0, 0, "+2", 0, 0, 0],
+		scoresMaximum: [0, 0, "+2", 0, 0, 0],
 		scoresStackable: true,
 		applyStatBonus: recurringItemApplyLegacy, // for backwards compatibility with add-on scripts
 	},
@@ -3803,7 +3838,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This book describes fitness exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Strength score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight: 5,
 		scores: [2, 0, 0, 0, 0, 0],
-		scoresMaxLimited: ["+2", 0, 0, 0, 0, 0],
+		scoresMaximum: ["+2", 0, 0, 0, 0, 0],
 		scoresStackable: true,
 	},
 	"manual of golems": { // contains contributions by Larry Hoy & Nod_Hero
@@ -3877,7 +3912,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This book contains coordination and balance exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Dexterity score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight: 5,
 		scores: [0, 2, 0, 0, 0, 0],
-		scoresMaxLimited: [0, "+2", 0, 0, 0, 0],
+		scoresMaximum: [0, "+2", 0, 0, 0, 0],
 		scoresStackable: true,
 	},
 	"medallion of thoughts": {
@@ -7246,7 +7281,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This book contains memory and logic exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Intelligence score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight: 5,
 		scores: [0, 0, 0, 2, 0, 0],
-		scoresMaxLimited: [0, 0, 0, "+2", 0, 0],
+		scoresMaximum: [0, 0, 0, "+2", 0, 0],
 		scoresStackable: true,
 	},
 	"tome of leadership and influence": {
@@ -7259,7 +7294,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This book contains guidelines for influencing and charming others, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Charisma score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight: 5,
 		scores: [0, 0, 0, 0, 0, 2],
-		scoresMaxLimited: [0, 0, 0, 0, 0, "+2"],
+		scoresMaximum: [0, 0, 0, 0, 0, "+2"],
 		scoresStackable: true,
 	},
 	"tome of understanding": {
@@ -7272,7 +7307,7 @@ var Base_MagicItemsList = {
 		descriptionFull: "This book contains intuition and insight exercises, and its words are charged with magic. If you spend 48 hours over a period of 6 days or fewer studying the book's contents and practicing its guidelines, your Wisdom score increases by 2, as does your maximum for that score. The manual then loses its magic, but regains it in a century.",
 		weight: 5,
 		scores: [0, 0, 0, 0, 2, 0],
-		scoresMaxLimited: [0, 0, 0, 0, "+2", 0],
+		scoresMaximum: [0, 0, 0, 0, "+2", 0],
 		scoresStackable: true,
 	},
 	"trident of fish command": {
@@ -7836,35 +7871,48 @@ var Base_MagicItemsList = {
 		description: "I have a bonus to attack and damage rolls made with this magic weapon. The bonus is determined by the rarity of the magic item: uncommon (+1), rare (+2), or very rare (+3). Select the bonus using the little square button in this magic item line.",
 		descriptionFull: "You have a bonus to attack and damage rolls made with this magic weapon. The bonus is determined by the weapon's rarity: uncommon (+1), rare (+2), or very rare (+3).",
 		allowDuplicates: true,
-		chooseGear: {
-			type: "weapon",
-			prefixOrSuffix: "brackets",
-			descriptionChange: ["replace", "weapon"],
-		},
 		choices: ["+1 Weapon (uncommon)", "+2 Weapon (rare)", "+3 Weapon (very rare)"],
 		"+1 weapon (uncommon)": {
 			name: "Weapon +1",
-			nameTest: "+1 Weapon",
+			nameTest: /weapon \+1|\+1.+(weapon|\uFEFF)/i,
 			rarity: "uncommon",
 			magicItemTable: "F",
 			description: "I have a +1 bonus to attack and damage rolls made with this magic weapon.",
 			allowDuplicates: true,
+			chooseGear: {
+				type: "weapon",
+				prefixOrSuffix: ["between", "+1", "\uFEFF"],
+				itemName1stPage: ["suffix", "+1"],
+				descriptionChange: ["replace", "weapon"],
+			},
 		},
 		"+2 weapon (rare)": {
 			name: "Weapon +2",
-			nameTest: "+2 Weapon",
+			nameTest: /weapon \+2|\+2.+(weapon|\uFEFF)/i,
 			rarity: "rare",
 			magicItemTable: "G",
 			description: "I have a +2 bonus to attack and damage rolls made with this magic weapon.",
 			allowDuplicates: true,
+			chooseGear: {
+				type: "weapon",
+				prefixOrSuffix: ["between", "+2", "\uFEFF"],
+				itemName1stPage: ["suffix", "+2"],
+				descriptionChange: ["replace", "weapon"],
+			},
 		},
 		"+3 weapon (very rare)": {
 			name: "Weapon +3",
-			nameTest: "+3 Weapon",
+			nameTest: /weapon \+3|\+3.+(weapon|\uFEFF)/i,
 			rarity: "very rare",
 			magicItemTable: "H",
 			description: "I have a +3 bonus to attack and damage rolls made with this magic weapon.",
 			allowDuplicates: true,
+			chooseGear: {
+				type: "weapon",
+				prefixOrSuffix: ["between", "+3", "\uFEFF"],
+				itemName1stPage: ["suffix", "+3"],
+				descriptionChange: ["replace", "weapon"],
+			},
 		},
 	},
 	"well of many worlds": {

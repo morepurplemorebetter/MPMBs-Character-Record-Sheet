@@ -211,7 +211,8 @@ function ApplyFeatureAttributes(type, fObjName, lvlA, choiceA, forceNonCurrent) 
 			processStats(addIt, type, tipNm, uObj.scores, abiScoresTxt, "limited", abiScoresLimit, uObj.scoresStackable);
 			if (!isArray(uObj.scoresMaxLimited)) processMaximumsSeparately = false;
 		} else if (uObj.scores || abiScoresTxt) {
-			processStats(addIt, type, tipNm, uObj.scores, abiScoresTxt, false, uObj.scoresMaximum);
+			var isStackable = uObj.scoresStackable ? "stackable" : false;
+			processStats(addIt, type, tipNm, uObj.scores, abiScoresTxt, isStackable, uObj.scoresMaximum, uObj.scoresStackable);
 			processMaximumsSeparately = false;
 		}
 		if (processMaximumsSeparately) {

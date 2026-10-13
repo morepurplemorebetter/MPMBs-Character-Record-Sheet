@@ -1924,7 +1924,7 @@ var Base_ClassList = {
 						selection: ["levitate"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 9; },
+					minlevel: 9,
 					spellChanges: {
 						"levitate": {
 							range: "Self",
@@ -1965,7 +1965,7 @@ var Base_ClassList = {
 						selection: ["compulsion"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 7; },
+					minlevel: 7,
 				},
 				"book of ancient secrets (prereq: pact of the tome)": {
 					name: "Book of Ancient Secrets",
@@ -1998,7 +1998,8 @@ var Base_ClassList = {
 						delete CurrentSpells["warlock-book of ancient secrets"];
 						SetStringifieds("spells"); CurrentUpdates.types.push("spells");
 					},
-					prereqeval: function (v) { return classes.known.warlock.level >= 3 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the tome"; },
+					minlevel: 3,
+					prereqeval: function (v) { return GetFeatureChoice("class", "warlock", "pact boon") == "pact of the tome"; },
 					calcChanges: {
 						spellAdd: [
 							function (spellKey, spellObj, spName) {
@@ -2030,7 +2031,8 @@ var Base_ClassList = {
 						selection: ["hold monster"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 15 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the chain"; },
+					minlevel: 15,
+					prereqeval: function (v) { return GetFeatureChoice("class", "warlock", "pact boon") == "pact of the chain"; },
 					spellChanges: {
 						"hold monster": {
 							components: "V,S",
@@ -2059,7 +2061,7 @@ var Base_ClassList = {
 						selection: ["confusion"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 7; },
+					minlevel: 7,
 				},
 				"eldritch sight": {
 					name: "Eldritch Sight",
@@ -2149,7 +2151,8 @@ var Base_ClassList = {
 							}, "",
 						],
 					},
-					prereqeval: function (v) { return classes.known.warlock.level >= 12 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the blade"; },
+					minlevel: 12,
+					prereqeval: function (v) { return GetFeatureChoice("class", "warlock", "pact boon") == "pact of the blade"; },
 				},
 				"mask of many faces": {
 					name: "Mask of Many Faces",
@@ -2173,7 +2176,7 @@ var Base_ClassList = {
 						selection: ["alter self"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 15; },
+					minlevel: 15,
 				},
 				"minions of chaos (prereq: level 9 warlock)": {
 					name: "Minions of Chaos",
@@ -2188,7 +2191,7 @@ var Base_ClassList = {
 						selection: ["conjure elemental"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 9; },
+					minlevel: 9,
 				},
 				"mire the mind (prereq: level 5 warlock)": {
 					name: "Mire the Mind",
@@ -2203,7 +2206,7 @@ var Base_ClassList = {
 						selection: ["slow"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 5; },
+					minlevel: 5,
 				},
 				"misty visions": {
 					name: "Misty Visions",
@@ -2232,7 +2235,7 @@ var Base_ClassList = {
 					source: [["SRD", 49], ["P", 111]],
 					submenu: "[warlock level  5+]",
 					action: [["action", ""]],
-					prereqeval: function (v) { return classes.known.warlock.level >= 5; },
+					minlevel: 5,
 				},
 				"otherworldly leap (prereq: level 9 warlock)": {
 					name: "Otherworldly Leap",
@@ -2245,7 +2248,7 @@ var Base_ClassList = {
 						selection: ["jump"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 9; },
+					minlevel: 9,
 					spellChanges: {
 						"jump": {
 							range: "Self",
@@ -2296,7 +2299,7 @@ var Base_ClassList = {
 						selection: ["polymorph"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 7; },
+					minlevel: 7,
 				},
 				"sign of ill omen (prereq: level 5 warlock)": {
 					name: "Sign of Ill Omen",
@@ -2311,7 +2314,7 @@ var Base_ClassList = {
 						selection: ["bestow curse"],
 						firstCol: "oncelr",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 5; },
+					minlevel: 5,
 				},
 				"thief of five fates": {
 					name: "Thief of Five Fates",
@@ -2332,7 +2335,8 @@ var Base_ClassList = {
 					source: [["SRD", 50], ["P", 111]],
 					submenu: "[improves Pact of the Blade]",
 					action: ["action", "Pact Weapon (2 attacks per action)"],
-					prereqeval: function (v) { return classes.known.warlock.level >= 5 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the blade"; },
+					minlevel: 5,
+					prereqeval: function (v) { return GetFeatureChoice("class", "warlock", "pact boon") == "pact of the blade"; },
 				},
 				"visions of distant realms (prereq: level 15 warlock)": {
 					name: "Visions of Distant Realms",
@@ -2345,7 +2349,7 @@ var Base_ClassList = {
 						selection: ["arcane eye"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 15; },
+					minlevel: 15,
 				},
 				"voice of the chain master (prereq: pact of the chain)": {
 					name: "Voice of the Chain Master",
@@ -2355,7 +2359,8 @@ var Base_ClassList = {
 					]),
 					source: [["SRD", 50], ["P", 111]],
 					submenu: "[improves Pact of the Chain]",
-					prereqeval: function (v) { return classes.known.warlock.level >= 3 && GetFeatureChoice("class", "warlock", "pact boon") == "pact of the chain"; },
+					minlevel: 3,
+					prereqeval: function (v) { return GetFeatureChoice("class", "warlock", "pact boon") == "pact of the chain"; },
 				},
 				"whispers of the grave (prereq: level 9 warlock)": {
 					name: "Whispers of the Grave",
@@ -2368,7 +2373,7 @@ var Base_ClassList = {
 						selection: ["speak with dead"],
 						firstCol: "atwill",
 					}],
-					prereqeval: function (v) { return classes.known.warlock.level >= 9; },
+					minlevel: 9,
 				},
 				"witch sight (prereq: level 15 warlock)": {
 					name: "Witch Sight",
@@ -2376,7 +2381,7 @@ var Base_ClassList = {
 					source: [["SRD", 50], ["P", 111]],
 					submenu: "[warlock level 15+]",
 					vision: [["Witch sight", 30]],
-					prereqeval: function (v) { return classes.known.warlock.level >= 15; },
+					minlevel: 15,
 				},
 			},
 			"pact boon": {

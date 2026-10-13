@@ -990,8 +990,8 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	Only use this if the feature permanently changes the maximum, or it is a magic item
 	that increases the score up to a certain value.
 	For all other features that increases a score up to a value other than 20,
-	or magic items that apply a one-time (not ongoing) increase,
-	use `scoresMaxLimited` instead.
+	or magic items that apply a one-time (not ongoing) bonus that has a limited,
+	use `scoresMaxLimited` instead. See the examples below.
 
 	MAGIC ITEMS WITH ONGOING EFFECT
 	Magic items that increase an ability score to a number higher than 20 whenever the
@@ -1004,6 +1004,8 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	`scoresMaximum`     "Your Strength score increases by 4. Your maximum for it is now 24."
 	`scoresMaxLimited`  "Your Strength score increases by 4, to a maximum of 24."
 	`scoresMaximum`     "While attuned to this magic item, your Strength score increases by 4, to a maximum of 24."
+	`scoresMaximum` &
+	`scoresStackable`   "After consuming this magic item, your Strength score increases by 4, as does your maximum for that score."
 
 	Note that this maximum has no effect on something set by the 'scoresOverride' attribute.
 
@@ -1023,6 +1025,18 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	Thus, it matters when the feature is added for what maximum it sets.
 	The array will also be used to generate a textual description of the improvement for
 	dialogs and tooltips, but only if the feature doesn't have the `scorestxt` attribute.
+
+	MAGIC ITEMS WITH ONE-TIME SCORE INCREASES
+	When this attribute, a matching `scores` attribute, and `scoresStackable: true` are set
+	for a magic item, it will be treated as causing a one-time ability score increase and
+	a one-time change to the maximum (which can be a dynamic modifier like "+2").
+	This works different than an item that needs attuning, the one-time increase is gained
+	and stays regardless of what happens to the item.
+	The sheet will prompt the player when they select a magic item with this attribute,
+	asking if the one-time increase should be applied. It will also ask the player if this
+	increase should remain when the magic item is removed.
+	Setting `scoresStackable` to `true` makes it possible to apply the magic item multiple
+	times. See the "magic item (MagicItemsList).js" syntax file for `scoresStackable`.
 */
 
 	scoresMaxLimited: [0, 0, 25, 0, 25, "-2"],
@@ -1095,6 +1109,11 @@ var exampleFeatureName = { // you can ignore this, it is just here to make this 
 	increase should remain when the magic item is removed.
 	If the magic item can be applied multiple times, it can set the `scoresStackable`
 	attribute, see the "magic item (MagicItemsList).js" syntax file.
+	Example: Tome of Understanding in the 5.5e (2024) rules.
+
+	If the one-time increase also changes the maximum of the score to a fixed value,
+	or increases with a fixed value, use `scoresMaximum` instead, see above.
+	Example: Tome of Understanding in the 5e (2014) rules.
 
 	The array will also be used to generate a textual description of the improvement for
 	dialogs and tooltips, but only if the feature doesn't have the `scorestxt` attribute.

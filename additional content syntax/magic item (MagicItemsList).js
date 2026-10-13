@@ -504,18 +504,25 @@ MagicItemsList["staff of purple"] = {
 	scoresStackable: true,
 /*	scoresStackable // OPTIONAL //
 	TYPE:	boolean
-	USE:	allow the `scores` and `scoresMaxLimited` of the magic item to stack with themselves
+	USE:	allow the `scores` and `scoresMaximum` or `scoresMaxLimited` of the magic item to stack with themselves
 	ADDED:	v14.0.12
 
-	To use this attribute, make sure both the `scores` and `scoresMaxLimited` attributes
-	are set for the item. See the "_common attributes.js" syntax file for how they work.
-	If either the `scores` or `scoresMaxLimited` attribute is missing, this attribute
-	will do nothing.
+	To use this attribute, the `scores` attribute needs to be in the same object, as well
+	as either the `scoresMaximum` or `scoresMaxLimited` attribute.
+	See the "_common attributes.js" syntax file for how those three work.
+	If the `scores` attribute or both `scoresMaximum` and `scoresMaxLimited` attributes
+	are missing, the `scoresStackable` attribute will do nothing.
+
+	If both `scoresMaximum` and `scoresMaxLimited` are present, the sheet will use
+	`scoresMaxLimited`.
 
 	Set this attribute to `true` for magic items that can apply their one-time ability
 	score increase multiple times. When adding a magic item with this attribute set to
 	`true`, the player will be prompted to apply the ability score increase, even if
 	the item already applied it before.
+	And when the item is removed from the sheet, the player will be prompted wether
+	to keep the ability score increase without the item being present or to remove them
+	together with the item.
 
 	Setting this attribute to `false` is the same as not including this attribute.
 */
