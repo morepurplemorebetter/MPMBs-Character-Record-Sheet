@@ -3706,7 +3706,7 @@ function GenerateSpellSheet(GoOn) {
 			var spArray = orderedSpellList[lvl];
 			if (!spArray || !spArray.length) continue;
 			//add spell dependencies to fill out the array
-			spArray = addSpellDependencies(spArray);
+			spArray = addSpellDependencies(spArray, spCast);
 			//first test if there is enough space left on the current page to add what we need to
 			//assume that we need to add at least 10 of the spells, the total of this level of spells, whichever is less
 			// so 3 (divider + title line) + 4 (header, if applicable) + lowest of [10, arrayLength]
@@ -5653,13 +5653,19 @@ function amendPsionicsToSpellsList() {
 };
 
 //a way to add dependencies of spells to an array of spells at the right spot
-function addSpellDependencies(spArr) {
+function addSpellDependencies(spArr, oCast) {
 	if (CurrentCasters.useDependencies === false) return spArr;
 	var returnArray = [];
 	spArr.forEach(function (sp) {
 		if (SpellsList[sp]) {
 			returnArray.push(sp);
-			if (SpellsList[sp].dependencies) returnArray = returnArray.concat(SpellsList[sp].dependencies);
+			var useDependencies = SpellsList[sp].dependencies;
+			if (oCast && oCast.spellAttrOverride && oCast.spellAttrOverride[sp] && oCast.spellAttrOverride[sp].dependencies !== undefined) {
+				useDependencies = oCast.spellAttrOverride[sp].dependencies;
+			}
+			if (useDependencies && isArray(useDependencies)) {
+				returnArray = returnArray.concat(useDependencies);
+			}
 		}
 	})
 	return returnArray;
