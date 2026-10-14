@@ -2894,13 +2894,18 @@ function AddRacialVariant(race, variantName, variantObj) {
 	if (!RaceList[race]) return;
 	if (!RaceList[race].variants || !isArray(RaceList[race].variants)) RaceList[race].variants = [];
 	var suffix = 1;
-	while (RaceList[race].variants.indexOf(variantName) !== -1) {
-		suffix += 1;
-		variantName += suffix;
+	var useVarName = variantName.toLowerCase();
+	while (RaceList[race].variants.indexOf(useVarName) !== -1) {
+		suffix++;
+		useVarName = variantName + "-" + suffix;
 	};
-	RaceList[race].variants.push(variantName);
-	RaceSubList[race + "-" + variantName] = variantObj;
+	RaceList[race].variants.push(useVarName);
+	RaceSubList[race + "-" + useVarName] = variantObj;
+	return race + "-" + useVarName;
 };
+// set for forwards compatibility
+var AddSubRace = AddRacialVariant;
+var AddSubSpecies = AddRacialVariant;
 
 // a way to add a subclass without conflicts
 function AddSubClass(iClass, subclassName, subclassObj) {
@@ -2927,10 +2932,11 @@ function AddBackgroundVariant(background, variantName, variantObj) {
 	if (!BackgroundList[background]) return;
 	if (!BackgroundList[background].variant || !isArray(BackgroundList[background].variant)) BackgroundList[background].variant = [];
 	var suffix = 1;
-	var fullBvNm = background + "-" + variantName;
+	var baseBvNm = background + "-" + variantName;
+	var fullBvNm = baseBvNm;
 	while (BackgroundList[background].variant.indexOf(fullBvNm) !== -1) {
 		suffix += 1;
-		fullBvNm += suffix;
+		fullBvNm = baseBvNm + "-" + suffix;
 	};
 	BackgroundList[background].variant.push(fullBvNm);
 	BackgroundSubList[fullBvNm] = variantObj;
