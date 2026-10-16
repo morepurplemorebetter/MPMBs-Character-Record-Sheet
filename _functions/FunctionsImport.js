@@ -2901,6 +2901,7 @@ function AddRacialVariant(race, variantName, variantObj) {
 	};
 	RaceList[race].variants.push(useVarName);
 	RaceSubList[race + "-" + useVarName] = variantObj;
+	RaceList[race].variants.sort();
 	return race + "-" + useVarName;
 };
 // set for forwards compatibility

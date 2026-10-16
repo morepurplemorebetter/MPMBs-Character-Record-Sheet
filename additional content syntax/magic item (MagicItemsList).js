@@ -639,7 +639,6 @@ MagicItemsList["staff of purple"] = {
 	*/
 		descriptionChange: false,
 		descriptionChange: ["replace", "armor"],
-		descriptionChange: ["between", "Purple", "of Sparkles"],
 	/*	descriptionChange // OPTIONAL //
 		TYPE:	array or `false`
 		USE:	what part of the magic item's description to add the name of the selected gear to
@@ -657,7 +656,6 @@ MagicItemsList["staff of purple"] = {
 			1.2 "prefix"	// Add the name of selected gear before the 2nd array entry
 			1.3 "suffix"	// Add the name of selected gear after the 2nd array entry
 			1.4 "brackets"	// Add the name of selected gear in brackets after the 2nd array entry
-			1.5 "between"	// Add the name of selected gear between the 2nd and 3rd array entries
 		2. The second string is the string that selected gear will be replaced/amended to.
 			Common uses include "armor", "weapon", and "ammunition".
 			Only the first instance of the 2nd array entry in the magic item's description will be replaced/amended.

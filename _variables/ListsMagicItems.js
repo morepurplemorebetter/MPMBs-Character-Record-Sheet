@@ -33,7 +33,7 @@ var sentientItemConflictTxt = "#\u25C6 Sentient Item Conflict# (SRD 252, DMG 216
 var Base_MagicItemsList = {
 	"adamantine armor": {
 		name: "Adamantine Armor",
-		nameTest: /adamantine.*armou?r/i,
+		nameTest: /adamantine.+(armou?r|\u180C)/i,
 		source: [["SRD", 207], ["D", 150]],
 		type: "armor (medium or heavy)",
 		rarity: "uncommon",
@@ -55,9 +55,9 @@ var Base_MagicItemsList = {
 		allowDuplicates: true,
 		chooseGear: {
 			type: "armor",
-			prefixOrSuffix: ["between", "Adamantine", "Armor"],
+			prefixOrSuffix: ["between", "Adamantine", "\u180C"],
 			itemName1stPage: ["suffix", "Adamantine"],
-			descriptionChange: ["prefix", "armor"],
+			descriptionChange: ["replace", "armor"],
 			excludeCheck: function (inObjKey, inObj) {
 				return !/medium|heavy/i.test(inObj.type) || /hide/i.test(inObj.name);
 			},
@@ -279,10 +279,9 @@ var Base_MagicItemsList = {
 			allowDuplicates: true,
 			chooseGear: {
 				type: "armor",
-				prefixOrSuffix: "brackets",
 				prefixOrSuffix: ["between", "+1", "\u180C"],
 				itemName1stPage: ["suffix", "+1"],
-				descriptionChange: ["prefix", "armor"],
+				descriptionChange: ["replace", "armor"],
 			},
 		},
 		"+2 ac bonus (very rare)": {
@@ -293,10 +292,9 @@ var Base_MagicItemsList = {
 			allowDuplicates: true,
 			chooseGear: {
 				type: "armor",
-				prefixOrSuffix: "brackets",
 				prefixOrSuffix: ["between", "+2", "\u180C"],
 				itemName1stPage: ["suffix", "+2"],
-				descriptionChange: ["prefix", "armor"],
+				descriptionChange: ["replace", "armor"],
 			},
 		},
 		"+3 ac bonus (legendary)": {
@@ -307,10 +305,9 @@ var Base_MagicItemsList = {
 			allowDuplicates: true,
 			chooseGear: {
 				type: "armor",
-				prefixOrSuffix: "brackets",
 				prefixOrSuffix: ["between", "+3", "\u180C"],
 				itemName1stPage: ["suffix", "+3"],
-				descriptionChange: ["prefix", "armor"],
+				descriptionChange: ["replace", "armor"],
 			},
 		},
 	},
@@ -376,56 +373,67 @@ var Base_MagicItemsList = {
 		chooseGear: {
 			type: "armor",
 			prefixOrSuffix: "prefix",
+			descriptionChange: ["replace", "armor"],
 		},
 		choices: ["Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder"],
 		choicesNotInMenu: true,
 		"acid": {
 			name: "Armor of Acid Resistance",
+			nameTest: "of Acid Resistance",
 			description: "While I'm wearing this armor and I'm attuned to it, I have resistance to acid damage.",
 			dmgres: ["Acid"],
 		},
 		"cold": {
 			name: "Armor of Cold Resistance",
+			nameTest: "of Cold Resistance",
 			description: "While I'm wearing this armor and I'm attuned to it, I have resistance to cold damage.",
 			dmgres: ["Cold"],
 		},
 		"fire": {
 			name: "Armor of Fire Resistance",
+			nameTest: "of Fire Resistance",
 			description: "While I'm wearing this armor and I'm attuned to it, I have resistance to fire damage.",
 			dmgres: ["Fire"],
 		},
 		"force": {
 			name: "Armor of Force Resistance",
+			nameTest: "of Force Resistance",
 			description: "While I'm wearing this armor and I'm attuned to it, I have resistance to force damage.",
 			dmgres: ["Force"],
 		},
 		"lightning": {
 			name: "Armor of Lightning Resistance",
+			nameTest: "of Lightning Resistance",
 			description: "While I'm wearing this armor and I'm attuned to it, I have resistance to lightning damage.",
 			dmgres: ["Lightning"],
 		},
 		"necrotic": {
 			name: "Armor of Necrotic Resistance",
+			name: "of Necrotic Resistance",
 			description: "While I'm wearing this armor and I'm attuned to it, I have resistance to necrotic damage.",
 			dmgres: ["Necrotic"],
 		},
 		"poison": {
 			name: "Armor of Poison Resistance",
+			nameTest: "of Poison Resistance",
 			description: "While I'm wearing this armor and I'm attuned to it, I have resistance to poison damage.",
 			dmgres: ["Poison"],
 		},
 		"psychic": {
 			name: "Armor of Psychic Resistance",
+			nameTest: "of Psychic Resistance",
 			description: "While I'm wearing this armor and I'm attuned to it, I have resistance to psychic damage.",
 			dmgres: ["Psychic"],
 		},
 		"radiant": {
 			name: "Armor of Radiant Resistance",
+			nameTest: "of Radiant Resistance",
 			description: "While I'm wearing this armor and I'm attuned to it, I have resistance to radiant damage.",
 			dmgres: ["Radiant"],
 		},
 		"thunder": {
 			name: "Armor of Thunder Resistance",
+			nameTest: "of Thunder Resistance",
 			description: "While I'm wearing this armor and I'm attuned to it, I have resistance to thunder damage.",
 			dmgres: ["Thunder"],
 		},
@@ -3970,7 +3978,7 @@ var Base_MagicItemsList = {
 	},
 	"mithral armor": {
 		name: "Mithral Armor",
-		nameTest: "Mithral",
+		nameTest: /mithral.+(armou?r|\u180C)/i,
 		source: [["SRD", 231], ["D", 182]],
 		type: "armor (medium or heavy)",
 		rarity: "uncommon",
@@ -3980,11 +3988,12 @@ var Base_MagicItemsList = {
 		allowDuplicates: true,
 		chooseGear: {
 			type: "armor",
-			prefixOrSuffix: "suffix",
+			prefixOrSuffix: ["between", "Mithral", "\u180C"],
+			itemName1stPage: ["suffix", "Mithral"],
+			descriptionChange: ["replace", "armor"],
 			excludeCheck: function (inObjKey, inObj) {
 				return !/medium|heavy/i.test(inObj.type) || /hide/i.test(inObj.name);
 			},
-			descriptionChange: ["prefix", "armor"],
 			noStealthDis: /mithral/i,
 		},
 	},

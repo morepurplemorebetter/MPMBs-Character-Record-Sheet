@@ -149,7 +149,7 @@ var Base_RaceList = {
 		age: " start adult life around age 40 and can live 350 to almost 500 years",
 		height: " are 3 to 4 feet tall (2'11\" + 2d4\")",
 		weight: " weigh around 40 lb (35 + 2d4 lb)",
-		heightMetric: " are 90 to 120 cm tall (2'11\" + 5d4)",
+		heightMetric: " are 90 to 110 cm tall (89 + 5d4 cm)",
 		weightMetric: " weigh around 18 kg (16 + 5d4 / 10 kg)",
 		scores: [0, 0, 1, 2, 0, 0],
 		trait: [

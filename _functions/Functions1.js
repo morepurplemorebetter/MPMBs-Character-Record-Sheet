@@ -2531,10 +2531,7 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 		}
 		// Do the features separately, so we don't merge them with the subrace later
 		if (RaceList[CurrentRace.known].features) {
-			CurrentRace.features = {};
-			for (var feature in RaceList[CurrentRace.known].features) {
-				CurrentRace.features[feature] = RaceList[CurrentRace.known].features[feature];
-			}
+			CurrentRace.features = Object.assign({}, RaceList[CurrentRace.known].features);
 		}
 		// the properties of the variant (overriding anything from the main)
 		if (CurrentRace.variant) {
@@ -2545,17 +2542,9 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 			}
 			// merge features, if any
 			if (RaceSubList[subrace].features) {
-				if (!CurrentRace.features) {
-					CurrentRace.features = RaceSubList[subrace].features;
-				} else {
-					for (var feature in RaceSubList[subrace].features) {
-						CurrentRace.features[feature] = RaceSubList[subrace].features[feature];
-						if (!CurrentRace.features[feature]) {
-							// This feature is not valid, possibly because it is set to `null` to deliberately invalidate a feature from the parent RaceList. Thus, delete this entry from the CurrentRace.features
-							delete CurrentRace.features[feature];
-						}
-					}
-				}
+				CurrentRace.features = Object.assign({}, CurrentRace.features, RaceSubList[subrace].features);
+			} else if (RaceSubList[subrace].features !== undefined) {
+				CurrentRace.features = "";
 			}
 			// --- backwards compatibility --- //
 			// if an old attribute exists in the racial variant, but the RaceList object uses the new attribute name, make sure the variant's version is used
@@ -2563,6 +2552,12 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 			for (var i = 0; i < backwardsAttr.length; i++) {
 				var aBW = backwardsAttr[i];
 				if (RaceSubList[subrace][aBW[0]] && RaceSubList[subrace][aBW[1]] == undefined && RaceList[CurrentRace.known][aBW[1]]) CurrentRace[aBW[1]] = RaceSubList[subrace][aBW[0]];
+			}
+		}
+		// Clean invalid features (e.g. deliberately set to `null` by a subrace/variant)
+		if (CurrentRace.features) {
+			for (var feature in CurrentRace.features) {
+				if (!CurrentRace.features[feature]) delete CurrentRace.features[feature];
 			}
 		}
 		// the properties from a previous race (overriding anything from the main) (inputracetxt === undefined at startup)
@@ -2716,13 +2711,21 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 	} else if (bSkipDialogAndForce) {
 		iAskUser = 4; // Yes
 	}
-	if (iAskUser === 4) { // Use the traits fromt he previous race
+	if (iAskUser === 4) { // Use the traits from the previous race
 		// First make the base race combined object
 		var oBaseRace = newObj(oOldRace);
 		var bMergeEverything = false;
 		if (oOldVariant) {
 			oOldVariant = newObj(oOldVariant);
 			for (var prop in oOldVariant) {
+				if (prop === "features") {
+					if (oOldVariant.features) {
+						oBaseRace.features = Object.assign({}, oBaseRace.features, oOldVariant.features);
+					} else if (oOldVariant.features !== undefined) {
+						oBaseRace.features = "";
+					}
+					continue;
+				}
 				oBaseRace[prop] = oOldVariant[prop];
 			}
 			// --- backwards compatibility --- //
@@ -2731,6 +2734,12 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 			for (var i = 0; i < backwardsAttr.length; i++) {
 				var aBW = backwardsAttr[i];
 				if (oOldVariant[aBW[0]] && oOldVariant[aBW[1]] == undefined && oBaseRace[aBW[1]]) oBaseRace[aBW[1]] = oOldVariant[aBW[0]];
+			}
+		}
+		// Clean invalid features (e.g. deliberately set to `null` by a subrace/variant)
+		if (oBaseRace.features) {
+			for (var feature in oBaseRace.features) {
+				if (!oBaseRace.features[feature]) delete oBaseRace.features[feature];
 			}
 		}
 		// Merge the source
@@ -2800,6 +2809,7 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 				var bMergeAllFeatures = bMergeEverything || oInstr.gainTraits.indexOf("features") !== -1;
 				for (var sFea in oBaseRace.features) {
 					var oFea = oBaseRace.features[sFea], oTemp, bAddFeature = false;
+					if (!oFea) continue;
 					if (!bMergeAllFeatures) {
 						// Add only features from the base race that have an attribute defined in `gainTraits`
 						var rxFeatureAttrSkip = /^(known(Old)?|variants?(Old)?|level|source|name|plural|useFromPreviousRace|features|minlevel|limfeaname|usages|recovery|action)$/;
@@ -2891,7 +2901,8 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 			if (prop === "features") { // merge instead of replace
 				if (!CurrentRace.features) CurrentRace.features = {};
 				for (var fea in oInstr.defaultTraits.features) {
-					CurrentRace.features = oInstr.defaultTraits.features[fea];
+					CurrentRace.features[fea] = oInstr.defaultTraits.features[fea];
+					if (!CurrentRace.features[fea]) delete CurrentRace.features[fea];
 				}
 				continue;
 			}
@@ -6096,8 +6107,9 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 		thermoM(5 / 8); //increment the progress dialog's progress
 		// iterate through the racial features and apply/update them
 		if (CurrentRace.features) {
-			feaA = [];
-			for (var key in CurrentRace.features) feaA.push(key);
+			var feaA = Object.keys(CurrentRace.features).filter(function (n) {
+				return !!CurrentRace.features[n];
+			});
 			if (oldRaceLvl > newRaceLvl) feaA.reverse(); // when removing, loop through them backwards
 			for (var f = 0; f < feaA.length; f++) {
 				var prop = feaA[f]
@@ -6106,7 +6118,7 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 				var propFea = CurrentRace.features[prop];
 				if (propFea.tooltip && !propFea.limfeaname) {
 					propFea.limfeaname = propFea.name;
-					propFea.name = propFea.tooltip.replace(/^ *\(|\)$/g, "");
+					propFea.name += propFea.tooltip.replace(/^ *\(|\)$/g, "");
 				}
 
 				try {

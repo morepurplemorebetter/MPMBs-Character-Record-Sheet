@@ -3834,11 +3834,23 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	}
 
 	var createString = function (type, addition, fixed) {
-		switch (type ? type.toLowerCase() : "") {
+		type = type ? type.toLowerCase() : "";
+		addition = addition.toString();
+		var additionTest = addition.toLowerCase();
+		if ((type === "prefix" || type === "suffix") && additionTest.indexOf(fixed) !== -1) {
+			// The fixed already exists in the addition (item name), so just return it
+			return addition;
+		}
+		switch (type) {
 			default:
 			case "between":
 				if (isArray(fixed) && fixed.length > 1) {
-					return fixed[0] + " " + addition + " " + fixed[1];
+					var pre = fixed[0].toString() + " ";
+					var post = " " + fixed[1].toString();
+					// Make sure none of them are already part of the addition (item name)
+					if (additionTest.indexOf(pre.trim().toLowerCase()) !== -1) pre = "";
+					if (additionTest.indexOf(post.trim().toLowerCase()) !== -1) post = "";
+					return pre + addition + post;
 				}
 			case "prefix":
 				return addition + " " + fixed.toString();
@@ -3924,7 +3936,7 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 		selectedItem = baseList[isItem].name;
 	} else {
 		if (isApplyFld && event.target.setValPrepared) selectedItem = baseList[isItem].name;
-		var theItemName = (baseList[isItem].invName ? baseList[isItem].invName : baseList[isItem].name);
+		var theItemName = baseList[isItem].invName ? baseList[isItem].invName : baseList[isItem].name;
 	}
 	// Make lower case if using 5e rules or capitalized if using 2024 rules
 	theItemName = tDoc.use2024Rules ? theItemName.capitalize() : theItemName.toLowerCase();
@@ -3977,15 +3989,10 @@ function selectMagicItemGearType(AddRemove, FldNmbr, typeObj, oldChoice, correct
 	if (AddRemove && (isApplyFld || correctingDescrLong) && typeObj.descriptionChange !== false) {
 		// Update the description of the magic item to reflect the choice
 		var descrWrd = typeObj.descriptionChange ? typeObj.descriptionChange[1] : typeNm;
-		var desrcStr = What(MIflds[2]).replace(
-			descrWrd,
-			typeObj.descriptionChange && typeObj.descriptionChange[0].toLowerCase() == "replace" ? theItemName :
-				createString(
-					typeObj.descriptionChange ? typeObj.descriptionChange[0] : typeObj.prefixOrSuffix,
-					theItemName,
-					descrWrd
-				)
-		);
+		var actionType = typeObj.descriptionChange ? typeObj.descriptionChange[0] : typeObj.prefixOrSuffix;
+		var replaceWith = actionType.toLowerCase() == "replace" ? theItemName :
+			createString(actionType, theItemName, descrWrd);
+		var desrcStr = What(MIflds[2]).replace(descrWrd, replaceWith);
 		Value(MIflds[2], desrcStr);
 	}
 	if (AddRemove && isApplyFld) {

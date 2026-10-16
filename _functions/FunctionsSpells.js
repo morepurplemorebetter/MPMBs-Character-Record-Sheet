@@ -288,17 +288,35 @@ function GetSpellObject(theSpl, theCast, firstCol, isDuplicate, tooltipOnly) {
 	return aSpell;
 }
 
-// under certain conditions, the range of a spell might not fit on the colourful sheet
+// under certain conditions, the range of a spell might not fit
 function fixSpellRangeOverflow(rangeStr) {
 	rangeStr = rangeStr.trim();
-	if (What("Unit System") === "metric") {
-		if (typePF) {
-			rangeStr = rangeStr.replace(/(S:\d+[,.]?\d+)[- /]?m (cone|cube|line|rad)/i, "$1m $2").replace(/(S:\d+[,.]\d+m (con|cub))e/i, "$1");
+	if (/S:/i.test(rangeStr)) {
+		// Make Cone, Cube, and Line lowercase
+		rangeStr = rangeStr.replace(/C(one|ube)/, "c$1").replace("Line", "line");
+		if (What("Unit System") === "metric") {
+			// Always remove hyphen if metric
+			rangeStr = rangeStr.replace(/(S:\d+[,.]?\d+)[- /]?m.(cone|cube|line|rad)/i, "$1m $2");
+			// If it has a decimal separator, remove the trailing "e" from cone and cube, and use a hair space (\u2009) instead of a normal space
+			if (/\d+[,.]\d+/.test(rangeStr)) {
+				rangeStr = rangeStr.replace(/(S:\d+[,.]\d+m).(con|cub)e/i, "$1\u2009$2");
+			} else if (!typePF) {
+				// On the Colourful sheet, always make the cone and cube have a hair space, and make it lowercase, if 2+ numbers
+				rangeStr = rangeStr.replace(/(S:\d\d+m).c(one|ube)/i, "$1\u2009c$2");
+			}
 		} else {
-			rangeStr = rangeStr.replace(/(S:\d+[,.]?\d+)[- /]?m (con|cub|line)e?/i, "$1m $2").replace(/(S:\d+[,.]\d+)[- /]?m rad/i, "$1m rad");
+			if (typePF) { // Printer Friendly
+				// Remove hyphen for a cone or cube with a decimal separator
+				rangeStr = rangeStr.replace(/(S:\d+[,.]?\d+)[- /].(cone|cube)/i, "$1 $2");
+			} else { // Colourful
+				// Remove hyphen for cone, cube, and line
+				rangeStr = rangeStr.replace(/(S:\d+[,.]?\d+)[- /]?ft.(cone|cube|line)/i, "$1ft $2")
+					// and from miles radius
+					.replace(/(S:\d+)[- /]?miles? rad/i, "$1mile rad")
+					// If a cone or cube has a decimal separator, use a hair space (\u2009) instead of a normal space
+					.replace(/(S:\d+[,.]\d+ft).(con|cub)e/i, "$1\u2009$2");
+			}
 		}
-	} else if (!typePF) {
-		rangeStr = rangeStr.replace(/(S:\d+[,.]?\d+)[- /]?ft (cone|cube|line)/i, "$1ft $2").replace(/(S:\d+)[- /]?miles? rad/i, "$1mile rad");
 	}
 	return rangeStr;
 }
