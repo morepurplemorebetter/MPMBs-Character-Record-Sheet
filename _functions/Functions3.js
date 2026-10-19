@@ -3175,6 +3175,7 @@ function ParseMagicItemMenu() {
 			"Spellcasting improvement": [],
 			Vision: [],
 		},
+		newtypes: [],
 		source: { namesArr: [] },
 		ref: {},
 	};
@@ -3231,11 +3232,20 @@ function ParseMagicItemMenu() {
 			iMenus.wondrousAlphabetical[firstLetter].push(itemName);
 		}
 		var searchType = tObj.type ? tObj.type.toLowerCase() : false;
-		for (var aType in iMenus.type) {
-			if (!searchType) break;
-			if (/weapon|armor|shield|wondrous item/i.test(aType)) continue;
-			if (searchType.indexOf(aType.toLowerCase()) !== -1) {
-				iMenus.type[aType].push(itemName);
+		if (searchType) {
+			var foundType = false;
+			for (var aType in iMenus.type) {
+				if (/weapon|armor|shield|wondrous item/i.test(aType)) continue;
+				if (searchType.indexOf(aType.toLowerCase()) !== -1) {
+					iMenus.type[aType].push(itemName);
+					foundType = true;
+					break;
+				}
+			}
+			if (!foundType && !/weapon|armor|shield|wondrous item/i.test(searchType)) {
+				var newType = tObj.type.replace(/ ?\(.*?\)/, "").capitalize();
+				iMenus.type[newType] = [itemName];
+				iMenus.newtypes.push(newType);
 			}
 		}
 		if (tObj.scores || tObj.scorestxt || tObj.scoresOverride) {
@@ -3356,9 +3366,7 @@ function ParseMagicItemMenu() {
 		oSubMenu: [].concat(tempMenu),
 	}, { cName: "-" });
 	// Then a main menu item per type
-	for (var entry in iMenus.type) {
-		var tempMenu2 = iMenus.type[entry];
-		if (!tempMenu2.length) continue;
+	var processItemType = function (entry, tempMenu2) {
 		if (entry !== "Wondrous item") {
 			tempMenu2.sort();
 			for (var a = 0; a < tempMenu2.length; a++) {
@@ -3370,7 +3378,22 @@ function ParseMagicItemMenu() {
 		}
 		AddMagicItemsMenu.push({ cName: entry, oSubMenu: [].concat(tempMenu2) });
 	}
+	for (var entry in iMenus.type) {
+		var tempMenu2 = iMenus.type[entry];
+		if (!tempMenu2.length || iMenus.newtypes.indexOf(entry) !== -1) continue;
+		processItemType(entry, tempMenu2);
+	}
 	AddMagicItemsMenu.push({ cName: "-" });
+	// Then a main meny item per new item type
+	if (iMenus.newtypes.length) {
+		iMenus.newtypes.sort();
+		for (var i = 0; i < iMenus.newtypes.length; i++) {
+			var entry = iMenus.newtypes[i];
+			var tempMenu2 = iMenus.type[entry];
+			processItemType(entry, tempMenu2);
+		}
+		AddMagicItemsMenu.push({ cName: "-" });
+	}
 	// Then a main menu item per bonus
 	for (var entry in iMenus.special) {
 		var tempMenu2 = iMenus.special[entry];
