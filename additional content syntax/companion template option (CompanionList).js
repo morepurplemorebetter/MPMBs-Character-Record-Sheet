@@ -35,10 +35,10 @@
 	Effect:		This is the syntax for adding a new companion template option to the sheet,
 	        	for use on the companion pages in the Companion Options button on each page.
 
-	Remarks:	You will also need the syntax for adding a creature if you want to change certain
-				attributes of a creature, as they are only described there.
-	        	You will also need the syntax for common attributes for certain attributes,
-				as they are identical as described there and refer to that file.
+	Remarks:  - You will also need the syntax for adding a creature if you want to change certain
+				attributes of a creature, see "creature, wild shape option (CreatureList).js".
+	          - You will also need the syntax for common attributes, as certain of those
+				attributes are used here but explained there, see "source (SourceList).js".
 
 	Sheet:		v14.0.5 and above
 
@@ -91,7 +91,7 @@ RequiredSheetVersion("14.0.5", "24.0.0");
 
 CompanionList["purple familiar"] = {
 /* 	CreatureList object name // REQUIRED //
-	TYPE:	string
+	TYPE:	string (lowercase)
 	USE:	object name of the companion as it will be used by the sheet
 
 	By adding a new object to the existing CompanionList object, we create a new companion option.

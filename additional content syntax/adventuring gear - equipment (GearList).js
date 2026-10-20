@@ -34,7 +34,8 @@
 
 	Effect:		This is the syntax for adding new gear options to the sheet.
 
-	Remarks:	For adding tools or packs, see their respective syntax files "adventuring gear - tool (ToolsList).js" and "adventuring gear - pack (PacksList).js".
+	Remarks:	For adding tools or packs, see their respective syntax files "adventuring gear - tool (ToolsList).js"
+				and "adventuring gear - pack (PacksList).js".
 
 	Sheet:		v14.0.5 and newer
 
@@ -87,7 +88,7 @@ RequiredSheetVersion("14.0.5", "24.0.0");
 
 GearList["purple bullets"] = {
 /* 	GearList object name // REQUIRED //
-	TYPE:	string
+	TYPE:	string (lowercase)
 	USE:	object name of the piece of equipment as it will be used by the sheet
 
 	By adding a new object to the existing GearList object, we create a new piece of equipment.

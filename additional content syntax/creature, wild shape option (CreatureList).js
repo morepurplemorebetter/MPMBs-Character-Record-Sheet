@@ -35,12 +35,12 @@
 	Effect:		This is the syntax for adding a new creature to the sheet,
 	        	for use on the companion and wild shape pages.
 
-	Remarks:	You will also need the syntax for adding a weapon if you want the creature
-	        	to have attack options.
-	        	You will also need the syntax for adding a source if you want the creature
-				to have a source that doesn't yet exist in the sheet.
-	        	You will also need the syntax for common attributes if you want to use a
-	        	custom calculation for hit points (calcChanges.hp).
+	Remarks:  - You will also need the syntax for adding a weapon if you want the creature
+	        	to have attack options, see "weapon (WeaponsList).js".
+	          - You will also need the syntax for adding a source if you want the creature
+				to have a source that doesn't yet exist in the sheet, see "source (SourceList).js".
+	          - You will also need the syntax for common attributes if you want to use a
+	        	custom calculation for hit points (calcChanges.hp), see "_common attributes.js".
 
 	Sheet:		v14.0.6 and above
 
@@ -93,7 +93,7 @@ RequiredSheetVersion("14.0.5", "24.0.0");
 
 CreatureList["purple crawler"] = {
 /* 	CreatureList object name // REQUIRED //
-	TYPE:	string
+	TYPE:	string (lowercase)
 	USE:	object name of the creature as it will be used by the sheet
 
 	By adding a new object to the existing CreatureList object, we create a new creature.

@@ -34,10 +34,10 @@
 
 	Effect:		This is the syntax for adding a new magic item to the sheet.
 
-	Remarks:	You will also need the syntax for common attributes if you want the magic item
-				to do anything besides populating its description field.
-				You will also need the syntax for adding a source if you want the magic item
-				to have a source that doesn't yet exist in the sheet.
+	Remarks:  - You will also need the syntax for common attributes if you want the magic item
+				to do anything besides populating its description field, see "_common attributes.js".
+			  - You will also need the syntax for adding a source if you want the magic item
+				to have a source that doesn't yet exist in the sheet, see "source (SourceList).js".
 
 	Sheet:		v14.0.15 and above
 
@@ -90,7 +90,7 @@ RequiredSheetVersion("14.0.5", "24.0.0");
 
 MagicItemsList["staff of purple"] = {
 /* 	MagicItemsList object name // REQUIRED //
-	TYPE:	string
+	TYPE:	string (lowercase)
 	USE:	object name of the magic item as it will be used by the sheet
 
 	By adding a new object to the existing MagicItemsList object, we create a new magic item.

@@ -90,7 +90,7 @@ RequiredSheetVersion("14.0.5", "24.0.0");
 
 ArmourList["purple mail"] = {
 /* 	ArmourList object name // REQUIRED //
-	TYPE:	string
+	TYPE:	string (lowercase)
 	USE:	object name of the armour as it will be used by the sheet
 
 	By adding a new object to the existing ArmourList object, we create a new armour.

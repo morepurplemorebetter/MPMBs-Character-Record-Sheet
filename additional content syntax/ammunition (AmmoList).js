@@ -36,8 +36,8 @@
 
 	Remarks:	This syntax is also used for objects in the 'ammoOptions' attribute found in '_common attributes.js'.
 				For the 'ammoOptions', you can disregard the object name and AmmoList variable.
-				Note that if you want a class feature, race, racial trait, feat, background, or magic item to add an ammunition,
-				you should be using the 'ammoOptions' attribute.
+				Note that if you want a class feature, race, racial trait, feat, background, or magic item to add
+				an ammunition, you should be using the 'ammoOptions' attribute.
 
 	Sheet:		v14.0.5 and above
 
@@ -90,7 +90,7 @@ RequiredSheetVersion("14.0.5", "24.0.0");
 
 AmmoList["purple bullets"] = {
 /* 	AmmoList object name // REQUIRED //
-	TYPE:	string
+	TYPE:	string (lowercase)
 	USE:	object name of the ammunition as it will be used by the sheet
 
 	By adding a new object to the existing AmmoList object, we create a new ammunition.

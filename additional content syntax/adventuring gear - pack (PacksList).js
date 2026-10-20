@@ -89,7 +89,7 @@ RequiredSheetVersion("14.0.5", "24.0.0");
 
 PacksList["purplepack"] = {
 /* 	PacksList object name // REQUIRED //
-	TYPE:	string
+	TYPE:	string (lowercase)
 	USE:	object name of the adventuring pack as it will be used by the sheet
 
 	By adding a new object to the existing PacksList object, we create a new adventuring pack.

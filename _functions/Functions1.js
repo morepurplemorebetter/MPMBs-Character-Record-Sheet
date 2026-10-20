@@ -2497,14 +2497,18 @@ function FindRace(inputracetxt, novardialog, aOldRace) {
 		if (!novardialog && IsNotImport && inputracetxt && !tempFound[1] && !CurrentVars.manual.race) {
 			var aRace = RaceList[tempFound[0]];
 			var rSource = stringSource(aRace, "first,abbr", "    [", "]");
-			var aBasic = "Basic " + aRace.name + rSource;
-			var rVarNames = [aBasic];
+			var rVarNames = [];
 			var rVarObj = {};
-			rVarObj[aBasic] = "";
+			if (!aRace.forceVariantSelection) {
+				var aBasic = "Basic " + aRace.name + rSource;
+				rVarNames.push(aBasic);
+				rVarObj[aBasic] = "";
+			}
 			for (var i = 0; i < tempFound[2].length; i++) {
 				var varR = tempFound[2][i];
 				var varRobj = RaceSubList[tempFound[0] + "-" + varR];
-				var varRname = varRobj.sortname ? varRobj.sortname : varRobj.name ? varRobj.name : varR.capitalize() + " " + aRace.name;
+				var varRname = varRobj && varRobj.sortname ? varRobj.sortname :
+					varRobj && varRobj.name ? varRobj.name : varR.capitalize() + " " + aRace.name;
 				var varRsrc = varRobj && varRobj.source ? stringSource(varRobj, "first,abbr", "    [", "]") : rSource;
 				rVarNames.push(varRname + varRsrc);
 				rVarObj[varRname + varRsrc] = varR;
@@ -8936,21 +8940,24 @@ function SetBackgroundFeaturesdropdown(forceTooltips) {
 function MakeRaceMenu() {
 	//make an array of the variants that are not excluded by the resource settings
 	var racialVarArr = ["basic"];
-	if (CurrentRace.known && CurrentRace.variants) {
+	var baseRace = RaceList[CurrentRace.known];
+	var isCurrent = CurrentRace.variant;
+	if (baseRace && CurrentRace.variants) {
+		if (baseRace.forceVariantSelection) racialVarArr = [];
 		for (var r = 0; r < CurrentRace.variants.length; r++) {
 			var theR = CurrentRace.known + "-" + CurrentRace.variants[r];
-			if (testSource(theR, RaceSubList[theR], "racesExcl")) continue; // test if the racial variant or its source isn't excluded
+			if (testSource(theR, RaceSubList[theR], "racesExcl") && isCurrent !== CurrentRace.variants[r]) continue; // test if the racial variant or its source isn't excluded
 			racialVarArr.push(CurrentRace.variants[r]);
 		}
 	};
 
 	var menuLVL1R = function (item, array) {
-		var isCurrent = CurrentRace.variant;
-		var raceSrc = stringSource(RaceList[CurrentRace.known], "first,abbr", "\t   [", "]");
+		var raceSrc = stringSource(baseRace, "first,abbr", "\t   [", "]");
 		for (var i = 0; i < array.length; i++) {
 			var varR = RaceSubList[CurrentRace.known + "-" + array[i]];
 			var varSrc = varR && varR.source ? stringSource(varR, "first,abbr", "\t   [", "]") : raceSrc;
-			var varName = varR.sortname ? varR.sortname : varR.name ? varR.name : array[i].capitalize() + " " + CurrentRace.name;
+			var varName = varR && varR.sortname ? varR.sortname :
+				varR && varR.name ? varR.name : array[i].capitalize() + " " + CurrentRace.name;
 			item.push({
 				cName: varName + varSrc,
 				cReturn: CurrentRace.known + "#" + array[i],
@@ -8961,7 +8968,7 @@ function MakeRaceMenu() {
 
 	var RaceMenu = [];
 
-	if (racialVarArr.length === 1) {
+	if (racialVarArr.length <= 1) {
 		RaceMenu = [{
 			cName: "No race options that require a choice",
 			cReturn: "nothing",
@@ -8980,7 +8987,17 @@ function RaceFeatureOptions() {
 
 	if (MenuSelection && MenuSelection[0] !== "nothing") {
 		var key = MenuSelection.join("-");
-		if (RaceSubList[key]) {
+		if (MenuSelection[1] === "basic" && RaceList[MenuSelection[0]]) {
+			// the race without a variant, which has no RaceSubList entry
+			var raceName = RaceList[MenuSelection[0]].name;
+			// apply the race without prompting to select a variant
+			ApplyRace(raceName, true);
+			// set the Race field to the race's name, without applying it again
+			if (What("Race") !== raceName) {
+				tDoc.getField("Race").remVal = raceName;
+				Value("Race", raceName);
+			}
+		} else if (RaceSubList[key]) {
 			var varName = RaceSubList[key].name ? RaceSubList[key].name : MenuSelection[1].capitalize() + " " + RaceList[MenuSelection[0]].name.toLowerCase();
 			if (What("Race") !== varName) {
 				Value("Race", varName);

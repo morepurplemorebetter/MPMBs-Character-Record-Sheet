@@ -1060,7 +1060,8 @@ function resourceSelectionDialog(type) {
 						var uSubTest = testSource(uSub, uRaceVar, CSatt, true);
 						if (uSubTest === "source") continue;
 						doAny = z !== rLen ? true : doAny;
-						if (z === rLen && !doAny) continue;
+						// do not add a basic option if the race doesn't use one or if all other variants were excluded because their sources were
+						if (z === rLen && (RaceList[u].forceVariantSelection || !doAny)) continue;
 						var uName = z === rLen ? " basic " + useName : (uRaceVar && uRaceVar.name ? uRaceVar.name : RaceList[u].variants[z].capitalize() + " " + useName);
 						uName = amendSource(uName, uRaceVar, RaceList[u]);
 						refObj[uName] = uSub;
@@ -1071,7 +1072,7 @@ function resourceSelectionDialog(type) {
 						}
 					}
 				}
-				if (!doAny) {
+				if (!doAny) { // all variants excluded because their sources were
 					if (uTest) {
 						exclObj[uGroup] = -1;
 					} else {

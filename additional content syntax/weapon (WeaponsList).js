@@ -91,7 +91,7 @@ RequiredSheetVersion("14.0.5", "24.0.0");
 
 WeaponsList["purple sword"] = {
 /* 	WeaponsList object name // REQUIRED //
-	TYPE:	string
+	TYPE:	string (lowercase)
 	USE:	object name of the weapon as it will be used by the sheet
 
 	By adding a new object to the existing WeaponsList object, we create a new weapon/attack.

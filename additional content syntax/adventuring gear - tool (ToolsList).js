@@ -34,7 +34,8 @@
 
 	Effect:		This is the syntax for adding new tool options to the sheet.
 
-	Remarks:	For adding regular equipment or packs, see their respective syntax files "adventuring gear - equipment (GearList).js" and "adventuring gear - pack (PacksList).js".
+	Remarks:	For adding regular equipment or packs, see their respective syntax files
+				"adventuring gear - equipment (GearList).js" and "adventuring gear - pack (PacksList).js".
 
 	Sheet:		v14.0.5 and above
 
@@ -87,7 +88,7 @@ RequiredSheetVersion("14.0.5", "24.0.0");
 
 ToolsList["purplemancer's tools"] = {
 /* 	ToolsList object name // REQUIRED //
-	TYPE:	string
+	TYPE:	string (lowercase)
 	USE:	object name of the tool as it will be used by the sheet
 
 	By adding a new object to the existing ToolsList object, we create a new tool.

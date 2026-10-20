@@ -34,10 +34,10 @@
 
 	Effect:		This is the syntax for adding a new feat to the sheet.
 
-	Remarks:	You will also need the syntax for common attributes if you want the feat
-				to do anything besides populating its description field.
-				You will also need the syntax for adding a source if you want the feat
-				to have a source that doesn't yet exist in the sheet.
+	Remarks:  - You will also need the syntax for common attributes if you want the feat
+				to do anything besides populating its description field, see "_common attributes.js".
+			  - You will also need the syntax for adding a source if you want the feat
+				to have a source that doesn't yet exist in the sheet, see "source (SourceList).js".
 
 	Sheet:		v14.0.13 and above
 
@@ -90,7 +90,7 @@ RequiredSheetVersion("14.0.5", "24.0.0");
 
 FeatsList["purple power"] = {
 /* 	FeatsList object name // REQUIRED //
-	TYPE:	string
+	TYPE:	string (lowercase)
 	USE:	object name of the feat as it will be used by the sheet
 
 	By adding a new object to the existing FeatsList object, we create a new feat.

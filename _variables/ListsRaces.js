@@ -64,6 +64,7 @@ var Base_RaceList = {
 			},
 		},
 		variants: ["black", "blue", "brass", "bronze", "copper", "gold", "green", "red", "silver", "white"],
+		forceVariantSelection: true,
 	},
 	"hill dwarf": {
 		regExpSearch: /^((?=.*(neidar|klar))|((?=.*\b(dwarfs?|dwarves|dwarfish|dwarvish|dwarven)\b)(?=.*\b(hill|gold)\b))).*$/i,
@@ -211,6 +212,7 @@ var Base_RaceList = {
 		scores: [0, 0, 0, 0, 0, 2],
 		trait: [
 			"**Half-Elf** (+2 Charisma and +1 to two other ability scores of my choice)",
+			"##\u25C6 Fey Ancestry##. I have advantage on saving throws against being charmed, and magic can't put me to sleep.",
 			"##\u25C6 Skill Versatility##. I gain proficiency in two skills of my choice.",
 		],
 	},
@@ -353,90 +355,110 @@ var Base_RaceSubList = {
 	"dragonborn-black": {
 		regExpSearch: /black/i,
 		name: "Black Dragonborn",
+		source: [["SRD", 5], ["P", 34]],
 		trait: [
 			"**Black Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Acid Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 acid damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+			"##\u25C6 Acid Damage Resistance##. I have resistance to acid damage.",
 		],
 		dmgres: ["Acid"],
 	},
 	"dragonborn-blue": {
 		regExpSearch: /blue/i,
 		name: "Blue Dragonborn",
+		source: [["SRD", 5], ["P", 34]],
 		trait: [
 			"**Blue Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Lightning Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 lightning damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+			"##\u25C6 Lightning Damage Resistance##. I have resistance to lightning damage.",
 		],
 		dmgres: ["Lightning"],
 	},
 	"dragonborn-brass": {
 		regExpSearch: /brass/i,
 		name: "Brass Dragonborn",
+		source: [["SRD", 5], ["P", 34]],
 		trait: [
 			"**Brass Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Fire Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 fire damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+			"##\u25C6 Fire Damage Resistance##. I have resistance to fire damage.",
 		],
 		dmgres: ["Fire"],
 	},
 	"dragonborn-bronze": {
 		regExpSearch: /bronze/i,
 		name: "Bronze Dragonborn",
+		source: [["SRD", 5], ["P", 34]],
 		trait: [
 			"**Bronze Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Lightning Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 lightning damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+			"##\u25C6 Lightning Damage Resistance##. I have resistance to lightning damage.",
 		],
 		dmgres: ["Lightning"],
 	},
 	"dragonborn-copper": {
 		regExpSearch: /copper/i,
 		name: "Copper Dragonborn",
+		source: [["SRD", 5], ["P", 34]],
 		trait: [
 			"**Copper Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Acid Breath Weapon##. As an action, I exhale destructive energy in a 5-ft by 30-ft line. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 acid damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+			"##\u25C6 Acid Damage Resistance##. I have resistance to acid damage.",
 		],
 		dmgres: ["Acid"],
 	},
 	"dragonborn-gold": {
 		regExpSearch: /gold/i,
 		name: "Gold Dragonborn",
+		source: [["SRD", 5], ["P", 34]],
 		trait: [
 			"**Gold Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Fire Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 fire damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+			"##\u25C6 Fire Damage Resistance##. I have resistance to fire damage.",
 		],
 		dmgres: ["Fire"],
 	},
 	"dragonborn-green": {
 		regExpSearch: /green/i,
 		name: "Green Dragonborn",
+		source: [["SRD", 5], ["P", 34]],
 		trait: [
 			"**Green Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Poison Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 poison damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+			"##\u25C6 Poison Damage Resistance##. I have resistance to poison damage.",
 		],
 		dmgres: ["Poison"],
 	},
 	"dragonborn-red": {
 		regExpSearch: /red/i,
 		name: "Red Dragonborn",
+		source: [["SRD", 5], ["P", 34]],
 		trait: [
 			"**Red Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Fire Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Dex saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 fire damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+			"##\u25C6 Fire Damage Resistance##. I have resistance to fire damage.",
 		],
 		dmgres: ["Fire"],
 	},
 	"dragonborn-silver": {
 		regExpSearch: /silver/i,
 		name: "Silver Dragonborn",
+		source: [["SRD", 5], ["P", 34]],
 		trait: [
 			"**Silver Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Cold Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 cold damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+			"##\u25C6 Cold Damage Resistance##. I have resistance to cold damage.",
 		],
 		dmgres: ["Cold"],
 	},
 	"dragonborn-white": {
 		regExpSearch: /white/i,
 		name: "White Dragonborn",
+		source: [["SRD", 5], ["P", 34]],
 		trait: [
 			"**White Dragonborn** (+2 Strength, +1 Charisma)",
 			"##\u25C6 Cold Breath Weapon##. As an action, I exhale destructive energy in a 15-ft cone. All in the area must make a Con saving throw with DC 8 + Con modifier + Prof Bonus. It does 2d6 cold damage, half as much damage on a successful save. The damage increases to 3d6 at level 6, 4d6 at level 11, and 5d6 at level 16. I can't use this feature again until I finish a short rest.",
+			"##\u25C6 Cold Damage Resistance##. I have resistance to cold damage.",
 		],
 		dmgres: ["Cold"],
 	},
