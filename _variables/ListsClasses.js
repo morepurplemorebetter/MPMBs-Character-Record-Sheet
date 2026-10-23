@@ -996,7 +996,7 @@ var Base_ClassList = {
 				name: "Empty Body",
 				source: [["SRD", 28], ["P", 79]],
 				minlevel: 18,
-				description: desc("Be invisible and resist non-force damage for 1 min or cast Astral Projection on self"),
+				description: desc("Be invisible and resist non-force damage for 1 min or cast *Astral Projection* on self"),
 				additional: "Invisible: 4 ki " + (typePF ? "" : "points") + "; Astral Projection: 8 ki points",
 				action: [["action", ""]],
 				spellcastingBonus: [{
@@ -1636,8 +1636,8 @@ var Base_ClassList = {
 				source: [["SRD", 40], ["P", 97]],
 				minlevel: 20,
 				description: desc("I can turn a missed attack into a hit or a failed ability check into a natural 20"),
-				recovery: "short rest",
 				usages: 1,
+				recovery: "short rest",
 			},
 		},
 	},
@@ -1871,7 +1871,7 @@ var Base_ClassList = {
 				}),
 				"agonizing blast (prereq: eldritch blast cantrip)": {
 					name: "Agonizing Blast",
-					description: desc("I can add my Charisma modifier to every hit with my Eldritch Blast cantrip"),
+					description: desc("I can add my Charisma modifier to every hit with my *Eldritch Blast* cantrip"),
 					source: [["SRD", 48], ["P", 110]],
 					submenu: "[improves Eldritch Blast]",
 					prereqeval: function (v) { return v.hasEldritchBlast; },
@@ -1895,7 +1895,7 @@ var Base_ClassList = {
 				},
 				"armor of shadows": {
 					name: "Armor of Shadows",
-					description: desc("I can cast Mage Armor on myself at will, without using a spell slot or material components"),
+					description: desc("I can cast *Mage Armor* on myself at will, without using a spell slot or material components"),
 					source: [["SRD", 48], ["P", 110]],
 					spellcastingBonus: [{
 						name: "Armor of Shadows",
@@ -1915,7 +1915,7 @@ var Base_ClassList = {
 				},
 				"ascendant step (prereq: level 9 warlock)": {
 					name: "Ascendant Step",
-					description: desc("I can cast Levitate on myself at will, without using a spell slot or material components"),
+					description: desc("I can cast *Levitate* on myself at will, without using a spell slot or material components"),
 					source: [["SRD", 48], ["P", 110]],
 					submenu: "[warlock level  9+]",
 					spellcastingBonus: [{
@@ -1937,7 +1937,7 @@ var Base_ClassList = {
 				},
 				"beast speech": {
 					name: "Beast Speech",
-					description: desc("I can cast Speak with Animals at will, without using a spell slots"),
+					description: desc("I can cast *Speak with Animals* at will, without using a spell slots"),
 					source: [["SRD", 48], ["P", 110]],
 					spellcastingBonus: [{
 						name: "Beast Speech",
@@ -1954,11 +1954,9 @@ var Base_ClassList = {
 				},
 				"bewitching whispers (prereq: level 7 warlock)": {
 					name: "Bewitching Whispers",
-					description: desc("Once per long rest, I can cast Compulsion using a warlock spell slot"),
+					description: desc("Once per long rest, I can cast *Compulsion* using a warlock spell slot"),
 					source: [["SRD", 48], ["P", 110]],
 					submenu: "[warlock level  7+]",
-					usages: 1,
-					recovery: "long rest",
 					spellcastingBonus: [{
 						name: "Bewitching Whispers",
 						spells: ["compulsion"],
@@ -2020,7 +2018,7 @@ var Base_ClassList = {
 				"chains of carceri (prereq: level 15 warlock, pact of the chain)": {
 					name: "Chains of Carceri",
 					description: desc([
-						"I can cast Hold Monster at will if the target is a celestial, fiend, or elemental",
+						"I can cast *Hold Monster* at will if the target is a celestial, fiend, or elemental",
 						"This uses no spell slots/material comp.; I can only target an individual once per long rest",
 					]),
 					source: [["SRD", 49], ["P", 110]],
@@ -2050,11 +2048,9 @@ var Base_ClassList = {
 				},
 				"dreadful word (prereq: level 7 warlock)": {
 					name: "Dreadful Word",
-					description: desc("Once per long rest, I can cast Confusion using a warlock spell slot"),
+					description: desc("Once per long rest, I can cast *Confusion* using a warlock spell slot"),
 					source: [["SRD", 49], ["P", 110]],
 					submenu: "[warlock level  7+]",
-					usages: 1,
-					recovery: "long rest",
 					spellcastingBonus: [{
 						name: "Dreadful Word",
 						spells: ["confusion"],
@@ -2065,7 +2061,7 @@ var Base_ClassList = {
 				},
 				"eldritch sight": {
 					name: "Eldritch Sight",
-					description: desc("I can cast Detect Magic at will, without using a spell slot"),
+					description: desc("I can cast *Detect Magic* at will, without using a spell slot"),
 					source: [["SRD", 49], ["P", 110]],
 					spellcastingBonus: [{
 						name: "Eldritch Sight",
@@ -2076,7 +2072,7 @@ var Base_ClassList = {
 				},
 				"eldritch spear (prereq: eldritch blast cantrip)": {
 					name: "Eldritch Spear",
-					description: desc("My Eldritch Blast cantrip has a range of 300 ft"),
+					description: desc("My *Eldritch Blast* cantrip has a range of 300 ft"),
 					source: [["SRD", 49], ["P", 111]],
 					submenu: "[improves Eldritch Blast]",
 					prereqeval: function (v) { return v.hasEldritchBlast; },
@@ -2107,7 +2103,7 @@ var Base_ClassList = {
 				},
 				"fiendish vigor": {
 					name: "Fiendish Vigor",
-					description: desc("I can cast False Life on myself at will, without using a spell slot or material components"),
+					description: desc("I can cast *False Life* on myself at will, without using a spell slot or material components"),
 					source: [["SRD", 49], ["P", 111]],
 					spellcastingBonus: [{
 						name: "Fiendish Vigor",
@@ -2156,7 +2152,7 @@ var Base_ClassList = {
 				},
 				"mask of many faces": {
 					name: "Mask of Many Faces",
-					description: desc("I can cast Disguise Self on myself at will, without using a spell slot"),
+					description: desc("I can cast *Disguise Self* on myself at will, without using a spell slot"),
 					source: [["SRD", 49], ["P", 111]],
 					spellcastingBonus: [{
 						name: "Mask of Many Faces",
@@ -2167,7 +2163,7 @@ var Base_ClassList = {
 				},
 				"master of myriad forms (prereq: level 15 warlock)": {
 					name: "Master of Myriad Forms",
-					description: desc("I can cast Alter Self at will, without using a spell slot"),
+					description: desc("I can cast *Alter Self* at will, without using a spell slot"),
 					source: [["SRD", 49], ["P", 111]],
 					submenu: "[warlock level 15+]",
 					spellcastingBonus: [{
@@ -2180,11 +2176,9 @@ var Base_ClassList = {
 				},
 				"minions of chaos (prereq: level 9 warlock)": {
 					name: "Minions of Chaos",
-					description: desc("Once per long rest, I can cast Conjure Elemental using a warlock spell slot"),
+					description: desc("Once per long rest, I can cast *Conjure Elemental* using a warlock spell slot"),
 					source: [["SRD", 49], ["P", 111]],
 					submenu: "[warlock level  9+]",
-					usages: 1,
-					recovery: "long rest",
 					spellcastingBonus: [{
 						name: "Minions of Chaos",
 						spells: ["conjure elemental"],
@@ -2195,11 +2189,9 @@ var Base_ClassList = {
 				},
 				"mire the mind (prereq: level 5 warlock)": {
 					name: "Mire the Mind",
-					description: desc("Once per long rest, I can cast Slow using a warlock spell slot"),
+					description: desc("Once per long rest, I can cast *Slow* using a warlock spell slot"),
 					source: [["SRD", 49], ["P", 111]],
 					submenu: "[warlock level  5+]",
-					usages: 1,
-					recovery: "long rest",
 					spellcastingBonus: [{
 						name: "Mire the Mind",
 						spells: ["slow"],
@@ -2210,7 +2202,7 @@ var Base_ClassList = {
 				},
 				"misty visions": {
 					name: "Misty Visions",
-					description: desc("I can cast Silent Image at will, without using a spell slot or material components"),
+					description: desc("I can cast *Silent Image* at will, without using a spell slot or material components"),
 					source: [["SRD", 49], ["P", 111]],
 					spellcastingBonus: [{
 						name: "Misty Visions",
@@ -2239,7 +2231,7 @@ var Base_ClassList = {
 				},
 				"otherworldly leap (prereq: level 9 warlock)": {
 					name: "Otherworldly Leap",
-					description: desc("I can cast Jump on myself at will, without using a spell slot or material components"),
+					description: desc("I can cast *Jump* on myself at will, without using a spell slot or material components"),
 					source: [["SRD", 49], ["P", 111]],
 					submenu: "[warlock level  9+]",
 					spellcastingBonus: [{
@@ -2261,7 +2253,7 @@ var Base_ClassList = {
 				},
 				"repelling blast (prereq: eldritch blast cantrip)": {
 					name: "Repelling Blast",
-					description: desc("I can have creatures hit by my Eldritch Blast cantrip be pushed 10 ft away from me"),
+					description: desc("I can have creatures hit by my *Eldritch Blast* cantrip be pushed 10 ft away from me"),
 					source: [["SRD", 49], ["P", 111]],
 					submenu: "[improves Eldritch Blast]",
 					prereqeval: function (v) { return v.hasEldritchBlast; },
@@ -2288,11 +2280,9 @@ var Base_ClassList = {
 				},
 				"sculptor of flesh (prereq: level 7 warlock)": {
 					name: "Sculptor of Flesh",
-					description: desc("Once per long rest, I can cast Polymorph using a warlock spell slot"),
+					description: desc("Once per long rest, I can cast *Polymorph* using a warlock spell slot"),
 					source: [["SRD", 50], ["P", 111]],
 					submenu: "[warlock level  7+]",
-					usages: 1,
-					recovery: "long rest",
 					spellcastingBonus: [{
 						name: "Sculptor of Flesh",
 						spells: ["polymorph"],
@@ -2303,11 +2293,9 @@ var Base_ClassList = {
 				},
 				"sign of ill omen (prereq: level 5 warlock)": {
 					name: "Sign of Ill Omen",
-					description: desc("Once per long rest, I can cast Bestow Curse using a warlock spell slot"),
+					description: desc("Once per long rest, I can cast *Bestow Curse* using a warlock spell slot"),
 					source: [["SRD", 50], ["P", 111]],
 					submenu: "[warlock level  5+]",
-					usages: 1,
-					recovery: "long rest",
 					spellcastingBonus: [{
 						name: "Sign of Ill Omen",
 						spells: ["bestow curse"],
@@ -2318,10 +2306,8 @@ var Base_ClassList = {
 				},
 				"thief of five fates": {
 					name: "Thief of Five Fates",
-					description: desc("Once per long rest, I can cast Bane using a warlock spell slot"),
+					description: desc("Once per long rest, I can cast *Bane* using a warlock spell slot"),
 					source: [["SRD", 50], ["P", 111]],
-					usages: 1,
-					recovery: "long rest",
 					spellcastingBonus: [{
 						name: "Thief of Five Fates",
 						spells: ["bane"],
@@ -2340,7 +2326,7 @@ var Base_ClassList = {
 				},
 				"visions of distant realms (prereq: level 15 warlock)": {
 					name: "Visions of Distant Realms",
-					description: desc("I can cast Arcane Eye at will, without using a spell slot"),
+					description: desc("I can cast *Arcane Eye* at will, without using a spell slot"),
 					source: [["SRD", 50], ["P", 111]],
 					submenu: "[warlock level 15+]",
 					spellcastingBonus: [{
@@ -2364,7 +2350,7 @@ var Base_ClassList = {
 				},
 				"whispers of the grave (prereq: level 9 warlock)": {
 					name: "Whispers of the Grave",
-					description: desc("I can cast Speak with Dead at will, without using a spell slot"),
+					description: desc("I can cast *Speak with Dead* at will, without using a spell slot"),
 					source: [["SRD", 50], ["P", 111]],
 					submenu: "[warlock level  9+]",
 					spellcastingBonus: [{
@@ -2427,7 +2413,7 @@ var Base_ClassList = {
 				"pact of the chain": {
 					name: "Pact of the Chain",
 					description: desc([
-						"I can cast Find Familiar as a ritual and it can be a Pseudodragon, Imp, Quasit, or Sprite",
+						"I can cast *Find Familiar* as a ritual and it can be a Pseudodragon, Imp, Quasit, or Sprite",
 						"When taking the attack action, I can forgo 1 attack to have my familiar attack instead",
 						"It makes this 1 attack by using its reaction",
 					]),
@@ -2510,8 +2496,8 @@ var Base_ClassList = {
 				source: [["SRD", 48], ["P", 108]],
 				minlevel: 20,
 				description: desc("I can regain all used pact magic spells slots by spending 1 minute entreating my patron"),
-				recovery: "long rest",
 				usages: 1,
+				recovery: "long rest",
 			},
 		},
 	},
@@ -2587,16 +2573,63 @@ var Base_ClassList = {
 					"While prepared, I can cast them at their lowest levels without expending spell slots",
 				]),
 			},
-			"signature spell": {
-				name: "Signature Spell",
+			"signature spells": {
+				name: "Signature Spells",
 				source: [["SRD", 54], ["P", 115]],
 				minlevel: 20,
 				description: desc([
 					"Two 3rd-level spells of my choice in my spellbook will always count as prepared",
 					"I can cast both at third level once per short rest without expending spell slots",
 				]),
-				recovery: "short rest",
-				usages: 2,
+				spellcastingBonus: [{
+					name: "Signature Spells",
+					"class": "wizard",
+					level: [3, 3],
+					firstCol: "oncesr",
+					times: 2,
+					signatureSpell: true,
+				}],
+				calcChanges: {
+					spellList: [
+						function (spList, spName, spType) {
+							// Limit the selectable spells to those in the spellbook
+							// This has the downside that newly added spells to the spellbook are only selectable the next time the dialog is opened
+							if (spList.signatureSpell && CurrentSpells.wizard && CurrentSpells.wizard.selectSP) {
+								var oWiz = CurrentSpells.wizard;
+								var signatureSpells = oWiz.bonus["signature spells"][0].selection;
+								var spellbook = oWiz.selectBo.filter(function (spell) {
+									return !signatureSpells ? true : signatureSpells.indexOf(spell) === -1;
+								}).concat(oWiz.selectSp);
+								if (oWiz.extra && oWiz.extraSpecial) spellbook = spellbook.concat(oWiz.extra);
+								var spellByLvl = CreateSpellList({ spells: spellbook }, false, false, true);
+								if (spellByLvl[3].length) {
+									spList.class = undefined;
+									spList.spells = spellByLvl[3];
+								}
+							}
+						},
+						"The selectable spells for Signature Spells are generated from the 3rd-level spells in the spellbook. This means that when you add a new 3rd-level spell, it will only be selectable as a Signature Spell after closing and re-opening the Wizard's spell selection dialog.",
+					],
+					spellAdd: [
+						function (spellKey, spellObj, spName, isDuplicate) {
+							if (spName !== "wizard" || spellObj.level !== 3 || !CurrentSpells.wizard) return;
+							var signatureSpells = CurrentSpells.wizard.bonus["signature spells"][0].selection;
+							if (signatureSpells.indexOf(spellKey) !== -1) {
+								if (isDuplicate) {
+									// Mark the regular version as always prepared
+									spellObj.firstCol = "markedbox";
+								} else {
+									// Remove upcasting from the "oncesr" version
+									removeSpellUpcasting(spellObj);
+									spellObj.firstCol = "oncesr";
+								}
+								spellObj.changesObj["Changes by Wizard: Signature Spells"] = "\n \u2022 I have the spells picked as my Signature Spells always prepared, and can cast each once per short rest without expending a spell slot, but then at their lowest level.";
+								return true;
+							}
+						},
+						"",
+					],
+				},
 			},
 		},
 	},
@@ -3057,7 +3090,7 @@ var Base_ClassSubList = {
 				name: "Tranquility",
 				source: [["SRD", 29], ["P", 80]],
 				minlevel: 11,
-				description: desc("After a long rest, I gain the effect of a Sanctuary spell until a next long rest"),
+				description: desc("After a long rest, I gain the effect of a *Sanctuary* spell until a next long rest"),
 				"quivering palm": {
 					name: "Quivering Palm",
 					extraname: "Way of the Open Hand 17",
@@ -3127,7 +3160,7 @@ var Base_ClassSubList = {
 				name: "Purity of Spirit",
 				source: [["SRD", 33], ["P", 86]],
 				minlevel: 15,
-				description: desc("I am always under the effect of a Protection from Evil and Good spell"),
+				description: desc("I am always under the effect of a *Protection from Evil and Good* spell"),
 			},
 			"subclassfeature20": {
 				name: "Holy Nimbus",
@@ -3138,8 +3171,8 @@ var Base_ClassSubList = {
 					"If an enemy starts its turn in the bright light, it takes 10 radiant damage",
 					"For the duration, I have advantage on saves vs. spells cast by fiends and undead",
 				]),
-				recovery: "long rest",
 				usages: 1,
+				recovery: "long rest",
 				action: [["action", ""]],
 			},
 		},
@@ -3579,8 +3612,8 @@ var Base_ClassSubList = {
 				source: [["SRD", 50], ["P", 109]],
 				minlevel: 6,
 				description: desc("When I make an ability check or saving throw, I can add 1d10 after rolling the d20"),
-				recovery: "short rest",
 				usages: 1,
+				recovery: "short rest",
 			},
 			"subclassfeature10": {
 				name: "Fiendish Resilience",
@@ -3599,8 +3632,8 @@ var Base_ClassSubList = {
 					"When I hit a creature with an attack, I can instantly transport it through lower planes",
 					"It returns at the end of my next turn and takes 10d10 psychic damage if not a fiend",
 				]),
-				recovery: "long rest",
 				usages: 1,
+				recovery: "long rest",
 			},
 		},
 	},

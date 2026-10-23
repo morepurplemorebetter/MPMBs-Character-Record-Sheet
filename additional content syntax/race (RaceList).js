@@ -51,7 +51,7 @@
 			  - You will also need the syntax for adding a source if you want the race to have
 				a source that doesn't yet exist in the sheet, see "source (SourceList).js".
 
-	Sheet:		v14.1.3 and above
+	Sheet:		v14.2.0 and above
 */
 
 var iFileName = "Homebrew Syntax - RaceList.js";
@@ -68,7 +68,7 @@ var iFileName = "Homebrew Syntax - RaceList.js";
 	Only the first occurrence of this variable will be used.
 */
 
-RequiredSheetVersion("14.1.3", "24.0.0");
+RequiredSheetVersion("14.2.0", "24.0.0");
 /*	RequiredSheetVersion // OPTIONAL //
 	TYPE:	function call with one variable, a string or number
 	USE:	the minimum and maximum versions of the sheet required for the add-on script to work
@@ -266,7 +266,7 @@ RaceList["purple catfolk"] = {
 /*	trait // REQUIRED //
 	TYPE:	string or array of strings
 	USE:	the text to be filled in the Racial Traits field on the 2nd page
-	CHANGE:	v14.1.3 (array input joined by carriage return "\r")
+	CHANGE:	v14.2.0 (array input joined by carriage return "\r")
 
 	This is the description of all the traits of the race.
 	Note that the sheet normally uses the first person for this.
@@ -658,7 +658,7 @@ RaceList["purple catfolk"] = {
 /*	forceVariantSelection // OPTIONAL //
 	TYPE:	boolean
 	USE:	whether the player has to select one of the variants (true) or can also use the race without a variant (false)
-	ADDED:	v14.1.3
+	ADDED:	v14.2.0
 
 	Set this attribute to true if the race shouldn't be used without one of its variants,
 	for example because every member of the race has to choose a draconic ancestry.

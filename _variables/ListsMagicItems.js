@@ -1006,8 +1006,6 @@ var Base_MagicItemsList = {
 			selection: ["conjure elemental"],
 			firstCol: "onceday",
 		}],
-		usages: 1,
-		recovery: "dawn",
 		spellChanges: {
 			"conjure elemental": {
 				time: "1 a",
@@ -1073,8 +1071,6 @@ var Base_MagicItemsList = {
 			selection: ["conjure elemental"],
 			firstCol: "onceday",
 		}],
-		usages: 1,
-		recovery: "dawn",
 		spellChanges: {
 			"conjure elemental": {
 				time: "1 a",
@@ -1185,8 +1181,6 @@ var Base_MagicItemsList = {
 			"This cape smells faintly of brimstone. While wearing it, you can use it to cast the *Dimension Door* spell as an action. This property of the cape can't be used again until the next dawn.",
 			"When you disappear, you leave behind a cloud of smoke, and you appear in a similar cloud of smoke at your destination. The smoke lightly obscures the space you left and the space you appear in, and it dissipates at the end of your next turn. A light or stronger wind disperses the smoke.",
 		],
-		usages: 1,
-		recovery: "dawn",
 		spellcastingBonus: [{
 			name: "Cape of the Mountebank",
 			spells: ["dimension door"],
@@ -1255,8 +1249,6 @@ var Base_MagicItemsList = {
 			selection: ["conjure elemental"],
 			firstCol: "onceday",
 		}],
-		usages: 1,
-		recovery: "dawn",
 		spellChanges: {
 			"conjure elemental": {
 				time: "1 a",
@@ -1291,8 +1283,6 @@ var Base_MagicItemsList = {
 		magicItemTable: "F",
 		description: "While wearing this circlet, I can use an action to cast the *Scorching Ray* spell with it. When I make the spell's attacks, I do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn.",
 		descriptionFull: "While wearing this circlet, you can use an action to cast the *Scorching Ray* spell with it. When you make the spell's attacks, you do so with an attack bonus of +5. The circlet can't be used this way again until the next dawn.",
-		usages: 1,
-		recovery: "dawn",
 		fixedDC: 13,
 		spellcastingBonus: [{
 			name: "Once per dawn",
@@ -1318,9 +1308,6 @@ var Base_MagicItemsList = {
 		],
 		attunement: true,
 		dmgres: ["Poison"],
-		usages: 1,
-		recovery: "dawn",
-		additional: "cast Web",
 		fixedDC: 13,
 		speed: { climb: { spd: "walk", enc: "walk" } },
 		spellcastingBonus: [{
@@ -1390,9 +1377,6 @@ var Base_MagicItemsList = {
 			"While wearing the cloak in an area of dim light or darkness, you can use your action to cast *Polymorph* on yourself, transforming into a bat. While you are in the form of the bat, you retain your Intelligence, Wisdom, and Charisma scores. The cloak can't be used this way again until the next dawn.",
 		],
 		attunement: true,
-		usages: 1,
-		recovery: "dawn",
-		additional: "Polymorph",
 		advantages: [["Stealth", true]],
 		spellcastingBonus: [{
 			name: "Only self into bat",
@@ -1486,9 +1470,6 @@ var Base_MagicItemsList = {
 				selection: ["suggestion"],
 				firstCol: "onceday",
 			}],
-			limfeaname: "Suggestion through Crystal Ball",
-			usages: 1,
-			recovery: "dawn",
 			spellChanges: {
 				"suggestion": {
 					duration: "8 h (scrying)",
@@ -3121,9 +3102,6 @@ var Base_MagicItemsList = {
 			"While focusing on a creature with *Detect Thoughts*, you can use an action to cast the *Suggestion* spell (save DC 13) from the helm on that creature. Once used, the suggestion property can't be used again until the next dawn.",
 		],
 		attunement: true,
-		limfeaname: "Helm of Telepathy: Suggestion",
-		usages: 1,
-		recovery: "dawn",
 		fixedDC: 13,
 		spellcastingBonus: [{
 			name: "At will",
@@ -4365,8 +4343,6 @@ var Base_MagicItemsList = {
 		descriptionFull: "While you're wearing this armor, you can speak its command word as an action to gain the effect of the *Etherealness* spell, which lasts for 10 minutes or until you remove the armor or use an action to speak the command word again. This property of the armor can't be used again until the next dawn.",
 		attunement: true,
 		weight: 65,
-		usages: 1,
-		recovery: "dawn",
 		action: [["action", " (start/stop)"]],
 		armorOptions: [{
 			regExpSearch: /^(?=.*plate)(?=.*etherealness).*$/i,
@@ -7043,8 +7019,6 @@ var Base_MagicItemsList = {
 			selection: ["conjure elemental"],
 			firstCol: "onceday",
 		}],
-		usages: 1,
-		recovery: "dawn",
 		spellChanges: {
 			"conjure elemental": {
 				time: "1 a",

@@ -2807,7 +2807,7 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 				}
 			}
 			// The attributes to never overwrite in the CurrentRace object (either stored references or handled differently)
-			var rxNeverOverwrite = /^(known(Old)?|variants?(Old)?|level|source|name|plural|useFromPreviousRace|features)$/;
+			var rxNeverOverwrite = /^(known(Old)?|variants?(Old)?|level|source|name|plural|useFromPreviousRace|features|trait)$/;
 			if (bMergeEverything) {
 				// Merge every attribute from the base race to the CurrentRace object
 				for (var attribute in oBaseRace) {
@@ -2821,6 +2821,9 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 					// Merge the attribute of the base race to the CurrentRace
 					mergeAttr(aProp, oBaseRace, CurrentRace);
 				}
+			}
+			if (CurrentRace.trait && (bMergeEverything || oInstr.gainTraits.indexOf("trait") !== -1)) {
+				CurrentRace.trait = isArray(oBaseRace.trait) ? oBaseRace.trait.join("\r") : oBaseRace.trait;
 			}
 			// Merge the traits in the features, if any exist and match the criteria
 			if (oBaseRace.features) {
@@ -2873,7 +2876,7 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 				var sAction = oInstr.updateName.toLowerCase();
 			}
 			var sNameInTrait = !bMergeEverything && oInstr.gainTraits.indexOf("trait") === -1 ? sCurName : oBaseRace.name;
-			var rxBaseName = RegExp(sNameInTrait.toLowerCase(), "i");
+			var rxBaseName = RegExp(sNameInTrait, "i");
 			switch (sAction) {
 				case "replace" :
 					CurrentRace.name = oBaseRace.name;

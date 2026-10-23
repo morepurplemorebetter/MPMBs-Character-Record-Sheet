@@ -688,7 +688,7 @@ CreatureList["purple crawler"] = {
 	CHANGE: v14.0.0 (formatting characters)
 	CHANGE: v14.0.6 (added `wildshapeShow`)
 	CHANGE: v14.0.8 (added `bulletString`)
-	CHANGE: v14.1.3 (added `formattingChar`)
+	CHANGE: v14.2.0 (added `formattingChar`)
 
 	Each of these four attributes work in the same way.
 	Each is an array with objects that have at least two attributes, `name` and `description`,
