@@ -997,7 +997,7 @@ var Base_ClassList = {
 				source: [["SRD", 28], ["P", 79]],
 				minlevel: 18,
 				description: desc("Be invisible and resist non-force damage for 1 min or cast *Astral Projection* on self"),
-				additional: "Invisible: 4 ki " + (typePF ? "" : "points") + "; Astral Projection: 8 ki points",
+				additional: "Invisible: 4 ki " + (typePF ? "" : "points") + "; *Astral Projection*: 8 ki points",
 				action: [["action", ""]],
 				spellcastingBonus: [{
 					name: "Empty Body",
@@ -2585,7 +2585,7 @@ var Base_ClassList = {
 					name: "Signature Spells",
 					"class": "wizard",
 					level: [3, 3],
-					firstCol: "oncesr",
+					firstCol: "Sp", // So the automation keeps it as a duplicate
 					times: 2,
 					signatureSpell: true,
 				}],
@@ -2594,11 +2594,11 @@ var Base_ClassList = {
 						function (spList, spName, spType) {
 							// Limit the selectable spells to those in the spellbook
 							// This has the downside that newly added spells to the spellbook are only selectable the next time the dialog is opened
-							if (spList.signatureSpell && CurrentSpells.wizard && CurrentSpells.wizard.selectSP) {
+							if (spList.signatureSpell && CurrentSpells.wizard && CurrentSpells.wizard.selectSp) {
 								var oWiz = CurrentSpells.wizard;
-								var signatureSpells = oWiz.bonus["signature spells"][0].selection;
 								var spellbook = oWiz.selectBo.filter(function (spell) {
-									return !signatureSpells ? true : signatureSpells.indexOf(spell) === -1;
+									// Don't add things selected as Signature Spell
+									return !spList.selection || spList.selection.indexOf(spell) === -1;
 								}).concat(oWiz.selectSp);
 								if (oWiz.extra && oWiz.extraSpecial) spellbook = spellbook.concat(oWiz.extra);
 								var spellByLvl = CreateSpellList({ spells: spellbook }, false, false, true);
@@ -2616,12 +2616,12 @@ var Base_ClassList = {
 							var signatureSpells = CurrentSpells.wizard.bonus["signature spells"][0].selection;
 							if (signatureSpells.indexOf(spellKey) !== -1) {
 								if (isDuplicate) {
-									// Mark the regular version as always prepared
-									spellObj.firstCol = "markedbox";
-								} else {
 									// Remove upcasting from the "oncesr" version
 									removeSpellUpcasting(spellObj);
 									spellObj.firstCol = "oncesr";
+								} else {
+									// Mark the regular version as always prepared
+									spellObj.firstCol = "markedbox";
 								}
 								spellObj.changesObj["Changes by Wizard: Signature Spells"] = "\n \u2022 I have the spells picked as my Signature Spells always prepared, and can cast each once per short rest without expending a spell slot, but then at their lowest level.";
 								return true;
