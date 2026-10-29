@@ -283,7 +283,7 @@ function setPrototypes() {
 	};
 	Array.prototype.search = function (regexpObj) {
 		// Used by older versions (v13.0.8 - 13.1.0), but kept for backwards compatibility
-		this.find(regexpObj);
+		return this.find(regexpObj);
 	};
 	Array.prototype.find = function (regexpObj) {
 		if (regexpObj instanceof RegExp !== true) regexpObj = regexpObj.toString().RegEscape();
