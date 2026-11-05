@@ -2005,7 +2005,7 @@ function FindClasses(NotAtStartup, isFieldVal) {
 		//see if this class is a spellcaster and what we need to do with that
 		if (Temps.spellcastingFactor) {
 			var casterType = !isNaN(Temps.spellcastingFactor) ? "default" : Temps.spellcastingFactor.replace(/\d/g, "");
-			var casterFactor = !isNaN(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor) : /\d/g.test(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
+			var casterFactor = !isNaN(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor) : /\d/.test(Temps.spellcastingFactor) ? Number(Temps.spellcastingFactor.match(/\d/g).join("")) : 1;
 			// now only continue if the class level is the factor or higher
 			var isCasterAtLvl = function (lvl, factor, table, roundUp) {
 				var theRe = 0 < Math[roundUp ? "ceil" : "floor"](lvl / factor);

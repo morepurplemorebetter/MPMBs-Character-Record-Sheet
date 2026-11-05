@@ -447,12 +447,14 @@ function keystroke1(allowDec, allowNegative) {
 	if (!event.willCommit) {
 		event.change = event.change.replace(/ /g, "");
 		if (allowDec) {
-			var tests = !isNaN(event.change) || (/,|\./g.test(event.change) && (!/,|\./g.test(event.value) || /,|\./g.test(event.value.substring(event.selStart, event.selEnd))));
+			var rxDotComma = /[,.]/;
+			var tests = !isNaN(event.change) || (rxDotComma.test(event.change) && (!rxDotComma.test(event.value) || rxDotComma.test(event.value.substring(event.selStart, event.selEnd))));
 		} else {
 			var tests = !isNaN(event.change);
 		}
 		if (allowNegative) {
-			tests = tests || (event.change === "-" && event.selStart === 0 && (!/-/g.test(event.value) || /-/g.test(event.value.substring(event.selStart, event.selEnd))));
+			var rxMinus = /-/;
+			tests = tests || (event.change === "-" && event.selStart === 0 && (!rxMinus.test(event.value) || rxMinus.test(event.value.substring(event.selStart, event.selEnd))));
 		}
 		event.rc = tests;
 	} else {

@@ -1552,8 +1552,8 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 	var getRx = function (str) {
 		var sEscaped = str.replace(/\n/g, "\r").replace(/^\r+/, "").RegEscape();
 		var sJustLine = RegExp(sEscaped + ".*", "i");
-		// Regex for everything until the first empty line or the first line that doesn't start with a "#" (the header format character)
-		var sFullSection = RegExp("\\r?" + sEscaped + ".*(\\r(?!\\s*\\r|#).*)*", "i");
+		// Regex for everything until the first empty line or the first line that doesn't start with a "#" (the header format character) or a "\u25C6" (diamond)
+		var sFullSection = RegExp("\\r?" + sEscaped + ".*(\\r(?!\\s*\\r|#|\\u25C6).*)*", "i");
 		return {
 			head: sJustLine,
 			full: sFullSection,

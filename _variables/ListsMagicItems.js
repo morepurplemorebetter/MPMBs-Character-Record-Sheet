@@ -3289,14 +3289,14 @@ var Base_MagicItemsList = {
 				"If you blow the horn without meeting its requirement, the summoned berserkers attack you. If you meet the requirement, they are friendly to you and your companions and follow your commands.",
 			],
 		},
-		creaturesAdd: [["Berserker"]],
+		creaturesAdd: [["Berserker", true]],
 		creatureOptions: [{
 			name: "Berserker",
+			nameThis: "spirit",
 			source: [["SRD", 397], ["M", 344]],
 			eval: function (prefix) {
-				Value(prefix + "Comp.Desc.Name", "Warrior Spirit");
+				Value(prefix + "Comp.Desc.Name", "Horn of Valhalla's Warrior Spirit");
 				Value(prefix + "Comp.Type", "Summon");
-				Value(prefix + "Comp.Use.Attack.1.Weapon Selection", "Greataxe");
 			},
 			size: 3,
 			type: "Humanoid",
@@ -3311,14 +3311,17 @@ var Base_MagicItemsList = {
 			challengeRating: "2",
 			proficiencyBonus: 2,
 			attacksAction: 1,
-			attacks: [],
+			attacks: [{
+				baseWeapon: "greataxe",
+				name: "Greataxe",
+			}],
 			traits: [{
 				name: "Reckless",
-				description: "At the start of its turn, the berserker can gain advantage on all melee weapon attack rolls during that turn, but attack rolls against it have advantage until the start of its next turn.",
+				description: "At the start of its turn, the [THIS] can gain advantage on all melee weapon attack rolls during that turn, but attack rolls against it have advantage until the start of its next turn.",
 			}],
 			features: [{
 				name: "Summoned",
-				description: "The Warrior Spirit is friendly to its summoner and their companions and follows the commands of its summoner. They return to Ysgard after 1 hour or when they drop to 0 hit points.",
+				description: "The [THIS] is friendly to its summoner and their companions and follows the commands of its summoner. It return to Ysgard after 1 hour or when it drop to 0 hit points.",
 			}],
 		}],
 	},
@@ -4326,10 +4329,10 @@ var Base_MagicItemsList = {
 			}],
 			traits: [{
 				name: "Keen Smell",
-				description: "The [THIS] has advantage on Wisdom (Perception) checks that rely on smell.",
+				description: "The swarm has advantage on Wisdom (Perception) checks that rely on smell.",
 			}, {
 				name: "Swarm",
-				description: "The [THIS] can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny rat. The swarm can't regain hit points or gain temporary hit points.",
+				description: "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny rat. The swarm can't regain hit points or gain temporary hit points.",
 			}],
 		}],
 	},

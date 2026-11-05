@@ -1043,14 +1043,15 @@ function UpdateCompLevelFeatures(prefix, objCrea, useName, newLvl) {
 					var formattingChar = prop.formattingChar !== undefined ? prop.formattingChar : "##";
 					var bulletString = prop.bulletString !== undefined ? formattingChar + prop.bulletString + " " : formattingChar + "\u25C6 ";
 					var propFirstLine = bulletString + (isMetric ? ConvertToMetric(prop.name, 0.5) : prop.name) + formattingChar;
-					var propFullLine = propFirstLine + joinString + (isMetric ? ConvertToMetric(prop.description, 0.5) : prop.description);
+					var propDescription = isMetric ? ConvertToMetric(prop.description, 0.5) : prop.description;
 					// Apply the name of the creature if [THIS] is present in the strings
-					if (rxThisAdd.test(propFullLine)) {
+					// if (rxThisAdd.test(propDescription)) {
+					if (propDescription.indexOf("[THIS]") !== -1) {
 						var replaceThis = addIt ? rxThisAdd : rxThisRemove;
 						var replaceWith = addIt ? objCrea.nameThis : "";
-						propFirstLine = propFirstLine.replace(replaceThis, replaceWith);
-						propFullLine = propFullLine.replace(replaceThis, replaceWith);
+						propDescription = propDescription.replace(replaceThis, replaceWith);
 					}
+					var propFullLine = propFirstLine + joinString + propDescription;
 				}
 				// See if we need to do this prop
 				if (minLvl < propMinLvl && maxLvl >= propMinLvl) {
