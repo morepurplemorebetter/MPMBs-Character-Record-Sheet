@@ -1824,7 +1824,7 @@ function ApplyWildshape() {
 	if (oWS.calcSetting[0] === "by_the_numbers") {
 		var passPerc = Math.max(oWS.skill.passivePerception.creature.value, oWS.skill.passivePerception.character.value);
 	} else {
-		var passPerc = 10 + What(fldBase + "Skills.Perc" + (typePF ? ".Mod" : ""));
+		var passPerc = 10 + What(fldBase + ".Skills.Perc" + (typePF ? ".Mod" : ""));
 		if (oWS.skill.passivePerception.creature.bonus) {
 			passPerc += EvalBonus(oWS.skill.passivePerception.creature.bonus, prefix, fld, creaProfB);
 		}
