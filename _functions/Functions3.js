@@ -1550,10 +1550,10 @@ function applyClassFeatureText(act, fldA, oldTxtA, newTxtA, prevTxt) {
 
 	// make some regex objects
 	var getRx = function (str) {
-		var sEscaped = str.replace(/\n/g, "\r").replace(/^\r+/, "").RegEscape();
+		var sEscaped = str.replace(/\r/g, "\n").replace(/^\n+/, "").RegEscape();
 		var sJustLine = RegExp(sEscaped + ".*", "i");
 		// Regex for everything until the first empty line or the first line that doesn't start with a "#" (the header format character) or a "\u25C6" (diamond)
-		var sFullSection = RegExp("\\r?" + sEscaped + ".*(\\r(?!\\s*\\r|#|\\u25C6).*)*", "i");
+		var sFullSection = RegExp("[\\r\\n]?" + sEscaped + ".*([\\r\\n](?!\\s*[\\r\\n]|#|\\u25C6).*)*", "i");
 		return {
 			head: sJustLine,
 			full: sFullSection,
@@ -2118,7 +2118,7 @@ function UpdateSheetDisplay() {
 				["Skill proficiencies", "You can always find the current skill proficiencies in the tooltip (mouseover text) of the skill fields."],
 				[
 					["Old skill proficiencies", this.oldSkillStr],
-					["New skill proficiencies", Who("Acr Prof").replace(/.+(\r|\n)*/, "")],
+					["New skill proficiencies", Who("Acr Prof").replace(/.+[\r\n]*/, "")],
 				],
 				true
 			);
@@ -2907,7 +2907,7 @@ function ApplyMagicItem(input, FldNmbr) {
 
 		// Get the description
 		var theDesc = FldNmbr > FieldNumbers.magicitemsD && theMI.descriptionLong ? theMI.descriptionLong : theMI.description ? theMI.description : "";
-		if (isArray(theDesc)) theDesc = theDesc.join("\r");
+		if (isArray(theDesc)) theDesc = theDesc.join("\n");
 		if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
 
 		// Set it all to the appropriate field
@@ -3018,7 +3018,7 @@ function correctMIdescriptionLong(FldNmbr) {
 	if (!aMI || theMI.calculate || !theMI.descriptionLong) return;
 
 	var theDesc = FldNmbr > FieldNumbers.magicitemsD && theMI.descriptionLong ? theMI.descriptionLong : theMI.description ? theMI.description : "";
-	if (isArray(theDesc)) theDesc = theDesc.join("\r");
+	if (isArray(theDesc)) theDesc = theDesc.join("\n");
 	if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
 	Value("Extra.Magic Item Description " + FldNmbr, theDesc);
 	// Apply the chooseGear item again to the description

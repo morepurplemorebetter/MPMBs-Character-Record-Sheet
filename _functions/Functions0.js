@@ -33,7 +33,13 @@ function Value(field, FldValue, tooltip, submitNm) {
 };
 
 function What(field) {
-	return tDoc.getField(field) ? tDoc.getField(field).value : BackwardsCompatible[field] ? eval(BackwardsCompatible[field]) : "";
+	var val = tDoc.getField(field) ? tDoc.getField(field).value :
+		BackwardsCompatible[field] ? eval(BackwardsCompatible[field]) : "";
+	if (val && typeof val === "string") {
+		// Correct Acrobat sometimes changing line breaks into carriage returns
+		val = val.replace(/\r/g, "\n");
+	}
+	return val;
 };
 
 function Who(field) {
@@ -73,10 +79,14 @@ function Checkbox(field, FldValue, tooltip, submitNm) {
 };
 
 function desc(arr, joinStr, preStr) {
-	joinStr = joinStr ? joinStr : "\n   ";
+	joinStr = joinStr ? joinStr : "\n";
 	if (preStr === undefined) preStr = joinStr;
-	if (!isArray(arr)) return preStr + arr;
-	return preStr + arr.join(joinStr);
+	var text = !isArray(arr) ? arr : arr.reduce( function (renderDescription, n) {
+		var joiner = renderDescription ? joinStr : "";
+		var txt = !isArray(n) ? n : formatArrayToTable(n, true, joinStr);
+		return renderDescription + joiner + txt;
+	}, "");
+	return preStr + text;
 };
 
 // Call all the prototypes within their own function so we can call it again when importing, forcing the latest version
@@ -724,6 +734,12 @@ function clean(input, remove, diacretics) {
 //convert string to usable, complex regex
 function MakeRegex(inputString, extraRegex) {
 	return RegExp("^(?=.*\\b" + inputString.replace(/\W/g, " ").replace(/^ +| +$/g, "").RegEscape().replace(/('?s'?)\b/ig, "\($1\)?").replace(/ +/g, "s?\\b)(?=.*\\b") + "s?\\b)" + (extraRegex ? extraRegex : "") + ".*$", "i");
+};
+
+function getCompareRegex(inputString, flags) {
+	if (!inputString || typeof inputString !== "string") return inputString;
+	if (flags === undefined) flags = "i";
+	return RegExp(inputString.RegEscape().replace(/[\t\s]+/g, "\\s+").replace(/[\r\n]+/g, "[\\r\\n\\s]+"), flags);
 };
 
 function toUni(input, format) {
@@ -1613,6 +1629,28 @@ function getLetterRange(str, aOpt) {
 	return sRng; // higher than the last, so just return the last
 };
 
+// format an array of arrays of strings as a table
+function formatArrayToTable(arr, bReturnRichTextStyled, lineJoinStr) {
+	if (!lineJoinStr) lineJoinStr = "\n";
+	if (!isArray(arr)) return arr;
+	var bIgnoreUnicode = !What("UseUnicode");
+	return arr.reduce(function (finalStr, t, idx) {
+		var richTextHeader = idx === 0 && bReturnRichTextStyled;
+		var joinString = richTextHeader ? "**\t**" : "\t";
+		var tableRow = typeof t === "string" ? t :
+			isArray(t) ? t.join(joinString) : false;
+		if (!tableRow) return finalStr;
+		if (richTextHeader) {
+			tableRow = "**" + tableRow + "**";
+			tableRow = tableRow.replace(/(^|\s)\*{4}|\*{4}(\s|$)/g, "$1"); // Fix for empty header row array entries
+		} else if (idx === 0) {
+			tableRow = bIgnoreUnicode ? tableRow.toUpperCase() : toUni(tableRow, "**");
+		}
+		var lineBreakT = finalStr ? lineJoinStr : "";
+		return finalStr + lineBreakT + tableRow;
+	}, "");
+};
+
 // format a descriptionFull attribute
 function formatDescriptionFull(sDescFull, bReturnRichTextStyled) {
 	var bIgnoreUnicode = !What("UseUnicode");
@@ -1622,21 +1660,7 @@ function formatDescriptionFull(sDescFull, bReturnRichTextStyled) {
 			var lineBreak = renderDescription ? "\n" : "";
 			if (isArray(n)) {
 				// Table, every entry in the array is a row, with the first one being the headers
-				var renderTable = n.reduce(function (finalStr, t, idx) {
-					var richTextHeader = idx === 0 && bReturnRichTextStyled;
-					var joinString = richTextHeader ? "**\t**" : "\t";
-					var tableRow = typeof t === "string" ? t :
-						isArray(t) ? t.join(joinString) : false;
-					if (!tableRow) return finalStr;
-					if (richTextHeader) {
-						tableRow = "**" + tableRow + "**";
-						tableRow = tableRow.replace(/(^|\s)\*{4}|\*{4}(\s|$)/g, "$1"); // Fix for empty header row array entries
-					} else if (idx === 0) {
-						tableRow = bIgnoreUnicode ? tableRow.toUpperCase() : toUni(tableRow, "**");
-					}
-					var lineBreakT = finalStr ? "\n" : "";
-					return finalStr + lineBreakT + tableRow;
-				}, "");
+				var renderTable = formatArrayToTable(n, bReturnRichTextStyled);
 				// Add a line break between a table and a following paragraph, if any
 				var lineBreakEnd = idx !== arr.length - 1 ? "\n" : "";
 				return renderDescription + lineBreak + lineBreak + renderTable + lineBreakEnd;
@@ -1732,7 +1756,10 @@ function richTextReduce(spans, span, idx, orig) {
 	if (typePF && event.target.firstParagraph && event.target.firstLineOneParagraph && span.linespacing === 11) {
 		span.linespacing = 7.25; // Slightly above default font size
 	}
-	if (idx !== orig.length - 1 && span.endParagraph && !/[\r\n]$/.test(span.text)) span.text += "\r";
+	if (idx !== orig.length - 1 && span.endParagraph && !/[\r\n]$/.test(span.text)) {
+		span.text += "\n";
+	}
+	// Get the formatting groups
 	var matches = span.text.match(/(([*_~#]+).+?\2)/g);
 	if (matches) {
 		var remainingText = span.text;
@@ -1743,6 +1770,7 @@ function richTextReduce(spans, span, idx, orig) {
 			if (match) {
 				var matchIndex = remainingText.indexOf(match);
 				var preMatch = remainingText.substr(0, matchIndex);
+				var postMatch = remainingText.substr(matchIndex + match.length);
 				var matchParts = match.match(/^([*_~#]+)(.+?)\1$/);
 				var formatChars = matchParts[1];
 				var cleanedMatch = matchParts[2];
@@ -1757,7 +1785,6 @@ function richTextReduce(spans, span, idx, orig) {
 						remainingText = remainingText.substr(preMatch.length);
 					}
 				}
-				var postMatch = remainingText.substr(matchIndex + match.length);
 				if (postMatch && /^\s+$/.test(postMatch)) {
 					// Just whitespace, no point making it its own span
 					match += postMatch;
@@ -1817,21 +1844,31 @@ function formatRichText() {
 // Field Validate event, i.e.: `.setAction("Validate", "correctRichTextLineSpacing();");`
 function correctRichTextLineSpacing() {
 	if (!event.target.richText) return;
-	// Make sure the linespacing adheres to the sheet
 	var val = event.richValue;
 	if (!val) return;
-	var processed = CurrentVars.fixRichTextFormatting ? false : val.every(function (span) { return span.linespacing !== undefined; });
+	var processed = CurrentVars.fixRichTextFormatting ? false : val.every(function (span) {
+		return span.linespacing !== undefined && !/ {9}/.test(span.text);
+	});
 	if (processed) return;
 	var style = event.target.defaultStyle;
 	var lineHeight = CurrentVars.linespacing !== undefined ? CurrentVars.linespacing : typePF ? 11 : 10;
 	var spans = val.map(function (span, idx, spans) {
+		// Make sure the linespacing adheres to the sheet's setting
 		if (span.linespacing === undefined || CurrentVars.fixRichTextFormatting) {
 			span.linespacing = lineHeight;
 		}
+		// Correct tabs being turned into nine spaces
+		if (span.acrobatmarkup !== undefined || / {9}/.test(span.text)) {
+			span.text = span.text.replace(/(?: {9})+(?! )/g, function (m) {
+				return m.replace(/ {9}/g, "\t");
+			});
+		}
+		// Remove `endParagraph` attribute in favour of line break character
 		if (idx !== spans.length - 1 && span.endParagraph && !/[\r\n]$/.test(span.text)) {
 			span.endParagraph = false;
 			span.text += "\n";
 		}
+		// Enforce default style if set to do so
 		if (CurrentVars.fixRichTextFormatting && style) {
 			span.fontFamily = style.fontFamily;
 			span.textColor = style.textColor;

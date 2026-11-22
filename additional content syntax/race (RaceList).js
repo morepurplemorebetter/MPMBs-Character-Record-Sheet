@@ -51,7 +51,7 @@
 			  - You will also need the syntax for adding a source if you want the race to have
 				a source that doesn't yet exist in the sheet, see "source (SourceList).js".
 
-	Sheet:		v14.2.0 and above
+	Sheet:		v14.2.1 and above
 */
 
 var iFileName = "Homebrew Syntax - RaceList.js";
@@ -68,7 +68,7 @@ var iFileName = "Homebrew Syntax - RaceList.js";
 	Only the first occurrence of this variable will be used.
 */
 
-RequiredSheetVersion("14.2.0", "24.0.0");
+RequiredSheetVersion("14.2.1", "24.0.0");
 /*	RequiredSheetVersion // OPTIONAL //
 	TYPE:	function call with one variable, a string or number
 	USE:	the minimum and maximum versions of the sheet required for the add-on script to work
@@ -266,7 +266,7 @@ RaceList["purple catfolk"] = {
 /*	trait // REQUIRED //
 	TYPE:	string or array of strings
 	USE:	the text to be filled in the Racial Traits field on the 2nd page
-	CHANGE:	v14.2.0 (array input joined by carriage return "\r")
+	CHANGE:	v14.2.0 (array input joined by line break "\n")
 
 	This is the description of all the traits of the race.
 	Note that the sheet normally uses the first person for this.
@@ -275,7 +275,7 @@ RaceList["purple catfolk"] = {
 	so use the Printer Friendly sheets to test if the description fits.
 
 	If this is a string, you can use "\n" for a line break, as in the first example above.
-	If this attribute is an array, the sheet will join it with a carriage return "\r",
+	If this attribute is an array, the sheet will join it with a line break "\n",
 	as in the second example above.
 
 	If the sheet is set to use the metric system, the sheet will convert the units in

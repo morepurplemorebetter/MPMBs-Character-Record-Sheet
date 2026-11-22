@@ -2589,7 +2589,7 @@ function FindRace(inputracetxt, novardialog, aOldRace, parsedResult) {
 		}
 		// convert an array trait to a string joined with line breaks
 		if (isArray(CurrentRace.trait)) {
-			CurrentRace.trait = CurrentRace.trait.join("\r");
+			CurrentRace.trait = CurrentRace.trait.join("\n");
 		}
 	}
 
@@ -2823,7 +2823,7 @@ function AmendOldToNewRace(oInstr, bSkipDialogAndForce) {
 				}
 			}
 			if (CurrentRace.trait && (bMergeEverything || oInstr.gainTraits.indexOf("trait") !== -1)) {
-				CurrentRace.trait = isArray(oBaseRace.trait) ? oBaseRace.trait.join("\r") : oBaseRace.trait;
+				CurrentRace.trait = isArray(oBaseRace.trait) ? oBaseRace.trait.join("\n") : oBaseRace.trait;
 			}
 			// Merge the traits in the features, if any exist and match the criteria
 			if (oBaseRace.features) {
@@ -4582,29 +4582,33 @@ function AddString(field, inputstring, newline) {
 	if (!inputstring && inputstring !== 0) return;
 	var thefield = tDoc.getField(field);
 	if (!thefield) return;
-	var thestring = inputstring.replace(/\n/g, "\r");
-	var regExString = thestring.RegEscape();
-	var multithestring = "\r" + thestring;
-	var multilines = thefield.type === "text" && thefield.multiline && newline === true && thefield.value !== "";
-	var separator = (newline !== true && newline !== false && thefield.value !== "") ? (newline ? newline : " ") : "";
-	if (!(RegExp(regExString, "i")).test(thefield.value) && thefield.value.toLowerCase().indexOf(thestring.toLowerCase()) === -1) {
-		if (!multilines && thefield.value !== "") {
+	var theValue = What(field);
+	var isEmpty = theValue === "";
+	var theValueLC = theValue.toString().toLowerCase();
+	var thestring = inputstring.replace(/\r/g, "\n");
+	var regExString = getCompareRegex(thestring);
+	var rx = RegExp(regExString, "i");
+	var multithestring = "\n" + thestring;
+	var multilines = thefield.type === "text" && thefield.multiline && newline === true && !isEmpty;
+	var separator = (newline !== true && newline !== false && !isEmpty) ? (newline ? newline : " ") : "";
+	if (!rx.test(theValue) && theValueLC.indexOf(thestring.toLowerCase()) === -1) {
+		if (!multilines && !isEmpty) {
 			var cleanSep = clean(separator, " ");
-			var cleanFld = clean(thefield.value, " ");
+			var cleanFld = clean(theValue, " ");
 			if (cleanFld.slice(cleanSep.length * -1) === cleanSep) separator = " ";
-			thefield.value = cleanFld + separator + thestring;
+			Value(field, cleanFld + separator + thestring);
 		} else {
-			thefield.value += multilines ? multithestring : thestring;
+			Value(field, theValue + (multilines ? multithestring : thestring));
 		}
 	}
 };
 
 function RemoveString(field, toremove, newline, alreadyRegExp) {
 	if (!toremove && toremove !== 0) return;
-	var thestring = toremove.replace(/\n/g, "\r");
-	var regExString = alreadyRegExp ? thestring : thestring.RegEscape();
-	var thefield = tDoc.getField(field);
-	if (!thefield || !thefield.value) return;
+	var theValue = What(field);
+	if (!theValue) return;
+	var thestring = toremove.replace(/\r/g, "\n");
+	var regExString = alreadyRegExp ? thestring : getCompareRegex(thestring);
 	var stringsArray, regExStringsArray;
 	if (newline === false ) {
 		stringsArray = [thestring];
@@ -4614,8 +4618,8 @@ function RemoveString(field, toremove, newline, alreadyRegExp) {
 		regExStringsArray = [(newline + thestring).RegEscape(), regExString];
 	} else {
 		stringsArray = [
-			thestring + "\r",
-			"\r" + thestring,
+			thestring + "\n",
+			"\n" + thestring,
 			", " + thestring,
 			"; " + thestring,
 			thestring + ", ",
@@ -4625,24 +4629,20 @@ function RemoveString(field, toremove, newline, alreadyRegExp) {
 			thestring,
 		];
 		regExStringsArray = [
-			regExString + "\\r",
-			"\\r" + regExString,
-			", " + regExString,
-			"; " + regExString,
-			regExString + ", ",
-			regExString + "; ",
-			regExString + " ",
-			" " + regExString,
-			regExString,
+			regExString + "\\s+[\\r\\n]+",
+			"[\\r\\n]+\\s+" + regExString,
+			"[,;]\\s*" + regExString,
+			regExString + "[,;]?\\s*",
+			"\\s*" + regExString,
 		];
 	}
 	for (var i = 0; i < stringsArray.length; i++) {
-		var regex = RegExp(regExStringsArray[i], "i");
-		if (regex.test(thefield.value)) {
-			thefield.value = thefield.value.replace(regex, "");
+		var regex = regExStringsArray[i] ? RegExp(regExStringsArray[i], "i") : false;
+		if (regex && regex.test(theValue)) {
+			Value(field, theValue.replace(regex, ""));
 			break;
-		} else if (thefield.value.indexOf(stringsArray[i]) !== -1) {
-			thefield.value = thefield.value.replace(stringsArray[i], "");
+		} else if (theValue.indexOf(stringsArray[i]) !== -1) {
+			Value(field, theValue.replace(stringsArray[i], ""));
 			break;
 		}
 	}
@@ -4651,18 +4651,18 @@ function RemoveString(field, toremove, newline, alreadyRegExp) {
 function ReplaceString(field, inputstring, newline, theoldstring, alreadyRegExp) {
 	var thefield = tDoc.getField(field);
 	if (!thefield) return;
-	var thestring = theoldstring.replace(/\n/g, "\r");
-	var regExString = alreadyRegExp ? thestring : thestring.RegEscape();
+	var theValue = What(field);
+	var thestring = theoldstring.replace(/\r/g, "\n");
+	var regExString = alreadyRegExp ? thestring : getCompareRegex(thestring);
+	var regEx = RegExp(regExString, "i");
 	var multilines = newline !== undefined ? newline : thefield.multiline;
-	if ((RegExp(regExString, "i")).test(thefield.value) && theoldstring) {
-		thefield.value = thefield.value.replace(RegExp(regExString, "i"), inputstring);
-	} else if (thefield.value.indexOf(thestring) !== -1 && theoldstring) {
-		thefield.value = thefield.value.replace(thestring, inputstring);
+	if (theoldstring && regEx.test(theValue)) {
+		Value(field, theValue.replace(regEx, inputstring).trim());
+	} else if (theoldstring && theValue.indexOf(thestring) !== -1) {
+		Value(field, theValue.replace(thestring, inputstring).trim());
 	} else {
 		AddString(field, inputstring, multilines);
-		return;
 	};
-	if (field == "Extra.Notes") show3rdPageNotes();
 };
 
 // add (change === true) or remove (change === false) a skill proficiency with or without expertise; If expertise === "only", only add/remove the expertise, considering the skill already has proficiency; If expertise === "increment", only add/remove the expertise, considering the skill already has proficiency, otherwise add proficiency
@@ -5314,7 +5314,7 @@ function ApplyFeat(input, FldNmbr) {
 
 		// Get the description
 		var theDesc = !theFeat.description ? "" : theFeat.description;
-		if (isArray(theDesc)) theDesc = theDesc.join("\r");
+		if (isArray(theDesc)) theDesc = theDesc.join("\n");
 		if (What("Unit System") !== "imperial") theDesc = ConvertToMetric(theDesc, 0.5);
 
 		// Set it all to the appropriate field
@@ -6020,7 +6020,7 @@ function ParseClassFeature(theClass, theFeature, FeaLvl, ForceOld, SubChoice, Fe
 
 	return [
 		FeaFirstLine + (Fea.extFirst ? FeaPost : ""),
-		"\r" + FeaFirstLine + FeaPost + FeaDescr,
+		"\n" + FeaFirstLine + FeaPost + FeaDescr,
 		FeaFirstLine,
 	];
 };
@@ -6067,7 +6067,7 @@ function ParseClassFeatureExtra(theClass, theFeature, extraChoice, Fea, ForceOld
 
 	return [
 		FeaFirstLine + (ForceOld ? "" : FeaPost),
-		"\r" + FeaFirstLine + FeaOtherLines,
+		"\n" + FeaFirstLine + FeaOtherLines,
 		FeaFirstLine,
 	];
 };
@@ -6267,10 +6267,10 @@ function UpdateLevelFeatures(Typeswitch, newLvlForce) {
 			var newHeaderString = "**" + cl.fullname + ", level " + newClassLvl[aClass] + ":**";
 			if (newClassLvl[aClass] == 0) { // remove the heading
 				var oldHeaderString = ".*[*_~#]+" + cl.fullname.RegEscape() + ".*, level \\d+.*";
-				if (RegExp("\\r\\r" + oldHeaderString, "i").test(What("Class Features"))) oldHeaderString = "\\r\\r" + oldHeaderString;
+				if (RegExp("\\n\\n" + oldHeaderString, "i").test(What("Class Features"))) oldHeaderString = "\\n\\n" + oldHeaderString;
 				RemoveString("Class Features", oldHeaderString, false, true);
 			} else if (oldClassLvl[aClass] == 0) { // add the heading
-				if (What("Class Features")) newHeaderString = "\r\r" + newHeaderString;
+				if (What("Class Features")) newHeaderString = "\n\n" + newHeaderString;
 				AddString("Class Features", newHeaderString, false);
 			} else { // update the heading
 				var oldHeaderString = !classes.old[aClass] ? "" : ".*[*_~#]+" + classes.old[aClass].fullname.RegEscape() + ".*, level \\d+.*";

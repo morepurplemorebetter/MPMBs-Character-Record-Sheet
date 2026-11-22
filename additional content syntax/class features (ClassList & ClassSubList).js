@@ -45,7 +45,7 @@
 				to do anything besides populating the Class Features section,
 				see "class features (ClassList & ClassSubList).js".
 
-	Sheet:		v14.0.8 and above
+	Sheet:		v14.2.1 and above
 */
 
 /*	-CLASS FEATURES AND SUBCLASS FEATURES-
@@ -193,6 +193,11 @@ var exampleClassOrSubclass = { // you can ignore this, it is just here to make t
 			description: "\nOnce per turn when I hit a creature with a weapon attack, I can do +1d6 force damage",
 			description: desc([
 				"Once per turn when I hit a creature with a weapon attack, I can do extra force damage",
+				[ // This will render as a table (i.e. a tab between each column)
+					["Column 1 header", "Column 2 header", "Column 3 header"], // The first row, which will be made bold
+					["Column 1 entry", "Column 2 entry", "Column 3 entry"], // The rest of the rows won't be changed
+					["Column 1 entry II", "Column 2 entry II", "Column 3 entry II"], // Table row 2
+				],
 				"This extra damage increases as I gain purplemancer levels",
 			]),
 			description: levels.map(function (n) {
@@ -202,6 +207,7 @@ var exampleClassOrSubclass = { // you can ignore this, it is just here to make t
 			TYPE:	string or array of strings with 20 entries
 			USE:	the text to be added to the Class Features section on the 2nd page
 			CHANGE: v14.0.0 (formatting characters)
+			CHANGE: v14.2.1 (array-table)
 
 			Note that the sheet normally uses the first person for this.
 			Make sure that this description is not too long and fits well in the Class Features section.
@@ -214,10 +220,14 @@ var exampleClassOrSubclass = { // you can ignore this, it is just here to make t
 			The part in square brackets is generated from the `additional`, `usages`, and
 			`recovery` common attributes, if present.
 
+			IMPORTANT
+			Do not have any lines without any content, as the sheet will then assume that is the end
+			of the feature.
+
 			LINE BREAKS
 			As the description is added directly after the header, you will normally want it to
 			start with a line break (i.e. "\n"), see the first example above.
-			You can use the `desc()` function to do that for you, see the second example above.
+			You can use the `desc()` function to do that for you, see the explanation below.
 			This function takes a string, or an array of strings, and returns a single string
 			with each of the strings preceded by a line break.
 			If you want the description to be on the same line as the header (e.g. because it is
@@ -235,6 +245,35 @@ var exampleClassOrSubclass = { // you can ignore this, it is just here to make t
 			and what its limitations are.
 			Note that an array of strings is never joined together, it is always treated as
 			being level-dependent. Use the `desc()` function if you want to join strings.
+
+			FUNCTION `desc(arr, joinStr, preStr)`
+			The `desc()` function joins a string or an array of strings together into a single string.
+			The function is passed three variables, of which only the first is required.
+			1. arr      string or array; the text to join together
+				This is the only entry that is required.
+				If this is a string, it is prefixed with a line break and three spaces ("\n   "),
+				or preStr, if set.
+				If this is an array, each entry in the array will be joined using a line break
+				and three spaces ("\n   "), or joinStr if set.
+				Empty entries in the array will be skipped (i.e. no extra line break).
+				Each entry can be one of the following:
+				 A. String
+					If the entry is a string, it will be joined with the other strings using a
+					line break and three spaces ("\n   "), or joinStr if set.
+				 B. Array of arrays, which contain only strings
+					If the entry is in itself an array, it is treated as a table.
+					Each entry in that array is a row in the table, with the first row being the headers.
+					The headers will be made bold with the `**` formatting character, see below.
+					Each subarray is rendered with a tab between each column (i.e. `Array.join("\t")`).
+					If instead of a subarray there is a string, it will be added as is.
+					The table rows will be joined by a line break and three spaces ("\n   "),
+					or joinStr if set.
+			2. joinStr  string; what to put between each entry and between each table row
+			   Defaults to a line break and three spaces ("\n   ") if not present or an empty string.
+			3. preStr   string; what to put at the very start of the returned string
+			   Defaults to `joinStr` if not present. Use "" to add nothing.
+
+			For example, desc(["Part A", "part B"], "; ", " ") returns " Part A; part B".
 
 			FORMATTING CHARACTERS (since v14.0.0)
 			This can be formatted using the Rich Text formatting characters.

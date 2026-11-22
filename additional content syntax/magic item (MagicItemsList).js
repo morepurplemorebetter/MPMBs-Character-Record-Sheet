@@ -39,7 +39,7 @@
 			  - You will also need the syntax for adding a source if you want the magic item
 				to have a source that doesn't yet exist in the sheet, see "source (SourceList).js".
 
-	Sheet:		v14.0.15 and above
+	Sheet:		v14.2.1 and above
 
 */
 
@@ -57,7 +57,7 @@ var iFileName = "Homebrew Syntax - MagicItemsList.js";
 	Only the first occurrence of this variable will be used.
 */
 
-RequiredSheetVersion("14.0.5", "24.0.0");
+RequiredSheetVersion("14.2.1", "24.0.0");
 /*	RequiredSheetVersion // OPTIONAL //
 	TYPE:	function call with one variable, a string or number
 	USE:	the minimum and maximum versions of the sheet required for the add-on script to work
@@ -348,7 +348,7 @@ MagicItemsList["staff of purple"] = {
 	TYPE:	string
 	USE:	the text to be filled in the description field of the magic item
 	CHANGE: v14.0.0 (formatting characters)
-	CHANGE: v14.0.13 (array input joined by carriage return "\r")
+	CHANGE: v14.0.13 (array input joined by line break "\n")
 
 	Note that the sheet normally uses the first person for this.
 	Make sure that this description is not too long and fits on the description field on
@@ -397,14 +397,14 @@ MagicItemsList["staff of purple"] = {
 	Be aware that the default font on the Colourful sheets is already italic,
 	so making something only italic won't be visible on the Colourful sheets.
 
-	If this attribute is an array, the sheet will join it with a carriage return "\r".
+	If this attribute is an array, the sheet will join it with a line break "\n".
 */
 	descriptionLong: "A heavy ceramic jug. As an action, the jug can be commanded to hold a chosen liquid. With another action, I can uncork the jug and pour the liquid out at 2 gallons per minute. Once commanded to produce a liquid, it can't produce a different one or more than the maximum of one, until the next dawn.\nLiquids (with maximum): acid (8 fl. oz.), basic poison (1/2 fl. oz.), beer (4 gallons), honey (1 gallon), mayonnaise (2 gallons), oil (1 quart), vinegar (2 gallons), fresh water (8 gallons), salt water (12 gallons), wine (1 gallon).",
 /*	descriptionLong // OPTIONAL //
 	TYPE:	string
 	USE:	the text to be filled in the description field of the magic item, but only on the overflow page
 	CHANGE: v14.0.0 (formatting characters)
-	CHANGE: v14.0.13 (array input joined by carriage return "\r")
+	CHANGE: v14.0.13 (array input joined by line break "\n")
 
 	Use this attribute in addition to the 'description' attribute.
 	This attribute will only be used when the magic item is added on the overflow page,
@@ -422,7 +422,7 @@ MagicItemsList["staff of purple"] = {
 	This can be formatted using the Rich Text formatting characters.
 	See the `description` attribute above for an explanation of how they work.
 
-	If this attribute is an array, the sheet will join it with a carriage return "\r".
+	If this attribute is an array, the sheet will join it with a line break "\n".
 */
 	descriptionFull: "You have a swimming speed of 40 feet while wearing this ring.",
 	descriptionFull: [
@@ -857,7 +857,7 @@ MagicItemsList["staff of purple"] = {
 		The name of an option should be unique, it can't be the same as the parent item.
 	*/
 
-		description: "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\rThe potion's yellow fluid is streaked with black and swirls on its own.",
+		description: "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\nThe potion's yellow fluid is streaked with black and swirls on its own.",
 	/*
 		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		>>> MagicItemsList Attributes (inside choice) >>>

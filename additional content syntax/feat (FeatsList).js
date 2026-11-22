@@ -39,7 +39,7 @@
 			  - You will also need the syntax for adding a source if you want the feat
 				to have a source that doesn't yet exist in the sheet, see "source (SourceList).js".
 
-	Sheet:		v14.0.13 and above
+	Sheet:		v14.2.1 and above
 
 */
 
@@ -57,7 +57,7 @@ var iFileName = "Homebrew Syntax - FeatsList.js";
 	Only the first occurrence of this variable will be used.
 */
 
-RequiredSheetVersion("14.0.5", "24.0.0");
+RequiredSheetVersion("14.2.1", "24.0.0");
 /*	RequiredSheetVersion // OPTIONAL //
 	TYPE:	function call with one variable, a string or number
 	USE:	the minimum and maximum versions of the sheet required for the add-on script to work
@@ -247,7 +247,7 @@ FeatsList["purple power"] = {
 	TYPE:	string
 	USE:	the text to be filled in the description field of the feat
 	CHANGE: v14.0.0 (formatting characters)
-	CHANGE: v14.0.13 (array input joined by carriage return "\r")
+	CHANGE: v14.0.13 (array input joined by line break "\n")
 
 	Note that the sheet normally uses the first person for this.
 	Make sure that this description is not too long and fits in the description field.
@@ -292,7 +292,7 @@ FeatsList["purple power"] = {
 	Be aware that the default font on the Colourful sheets is already italic,
 	so making something only italic won't be visible on the Colourful sheets.
 
-	If this attribute is an array, the sheet will join it with a carriage return "\r".
+	If this attribute is an array, the sheet will join it with a line break "\n".
 */
 	descriptionFull: "I gain proficiency in any combination of three skills or tools of my choice.",
 	descriptionFull: [
@@ -456,7 +456,7 @@ FeatsList["purple power"] = {
 		The name of an option should be unique, it can't be the same as the parent feat.
 	*/
 
-		description: "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\rThe potion's yellow fluid is streaked with black and swirls on its own.",
+		description: "As an action, I can drink this potion or administer it to another to gain the effects of Haste for 1 minute (no concentration required).\nThe potion's yellow fluid is streaked with black and swirls on its own.",
 	/*
 		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		>>> FeatsList Attributes (inside choice) >>>
