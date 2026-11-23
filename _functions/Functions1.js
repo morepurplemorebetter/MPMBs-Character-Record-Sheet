@@ -4586,12 +4586,11 @@ function AddString(field, inputstring, newline) {
 	var isEmpty = theValue === "";
 	var theValueLC = theValue.toString().toLowerCase();
 	var thestring = inputstring.replace(/\r/g, "\n");
-	var regExString = getCompareRegex(thestring);
-	var rx = RegExp(regExString, "i");
+	var regEx = getCompareRegex(thestring);
 	var multithestring = "\n" + thestring;
 	var multilines = thefield.type === "text" && thefield.multiline && newline === true && !isEmpty;
 	var separator = (newline !== true && newline !== false && !isEmpty) ? (newline ? newline : " ") : "";
-	if (!rx.test(theValue) && theValueLC.indexOf(thestring.toLowerCase()) === -1) {
+	if (!regEx.test(theValue) && theValueLC.indexOf(thestring.toLowerCase()) === -1) {
 		if (!multilines && !isEmpty) {
 			var cleanSep = clean(separator, " ");
 			var cleanFld = clean(theValue, " ");
@@ -4608,7 +4607,7 @@ function RemoveString(field, toremove, newline, alreadyRegExp) {
 	var theValue = What(field);
 	if (!theValue) return;
 	var thestring = toremove.replace(/\r/g, "\n");
-	var regExString = alreadyRegExp ? thestring : getCompareRegex(thestring);
+	var regExString = !alreadyRegExp ? getCompareRegex(thestring, false, true) : typeof thestring === "string" ? thestring : thestring.toString().replace(/^\/|\/\w*$/g, "");
 	var stringsArray, regExStringsArray;
 	if (newline === false ) {
 		stringsArray = [thestring];
@@ -4653,8 +4652,7 @@ function ReplaceString(field, inputstring, newline, theoldstring, alreadyRegExp)
 	if (!thefield) return;
 	var theValue = What(field);
 	var thestring = theoldstring.replace(/\r/g, "\n");
-	var regExString = alreadyRegExp ? thestring : getCompareRegex(thestring);
-	var regEx = RegExp(regExString, "i");
+	var regEx = !alreadyRegExp ? getCompareRegex(thestring) : typeof thestring === "string" ? RegExp(thestring, "i") : thestring;
 	var multilines = newline !== undefined ? newline : thefield.multiline;
 	if (theoldstring && regEx.test(theValue)) {
 		Value(field, theValue.replace(regEx, inputstring).trim());

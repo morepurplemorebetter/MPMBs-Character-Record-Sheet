@@ -736,10 +736,11 @@ function MakeRegex(inputString, extraRegex) {
 	return RegExp("^(?=.*\\b" + inputString.replace(/\W/g, " ").replace(/^ +| +$/g, "").RegEscape().replace(/('?s'?)\b/ig, "\($1\)?").replace(/ +/g, "s?\\b)(?=.*\\b") + "s?\\b)" + (extraRegex ? extraRegex : "") + ".*$", "i");
 };
 
-function getCompareRegex(inputString, flags) {
+function getCompareRegex(inputString, flags, bReturnString) {
 	if (!inputString || typeof inputString !== "string") return inputString;
 	if (flags === undefined) flags = "i";
-	return RegExp(inputString.RegEscape().replace(/[\t\s]+/g, "\\s+").replace(/[\r\n]+/g, "[\\r\\n\\s]+"), flags);
+	var preparedString = inputString.RegEscape().replace(/([^\S\r\n]*\t+[^\S\r\n]*)+/g, "[^\S\r\n]+").replace(/[\r\n]+/g, "[\\r\\n]+[^\S\r\n]*");
+	return !bReturnString ? RegExp(preparedString, flags) : preparedString;
 };
 
 function toUni(input, format) {
